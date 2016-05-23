@@ -1,0 +1,5 @@
+C:\Users\Celso\documents\visual studio 2013\Projects\Teste2\Dominio\obj\Debug\Dominio.csprojResolveAssemblyReference.cache
+C:\Users\Celso\documents\visual studio 2013\Projects\Teste2\Dominio\bin\Debug\Dominio.dll
+C:\Users\Celso\documents\visual studio 2013\Projects\Teste2\Dominio\bin\Debug\Dominio.pdb
+C:\Users\Celso\documents\visual studio 2013\Projects\Teste2\Dominio\obj\Debug\Dominio.dll
+C:\Users\Celso\documents\visual studio 2013\Projects\Teste2\Dominio\obj\Debug\Dominio.pdb
