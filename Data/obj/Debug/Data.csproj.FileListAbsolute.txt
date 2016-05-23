@@ -10,3 +10,15 @@ C:\Users\Celso\documents\visual studio 2013\Projects\Teste2\Data\bin\Debug\Entit
 C:\Users\Celso\documents\visual studio 2013\Projects\Teste2\Data\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Celso\documents\visual studio 2013\Projects\Teste2\Data\obj\Debug\Data.dll
 C:\Users\Celso\documents\visual studio 2013\Projects\Teste2\Data\obj\Debug\Data.pdb
+C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\bin\Debug\Data.dll.config
+C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\bin\Debug\Data.dll
+C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\bin\Debug\Data.pdb
+C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\bin\Debug\Dominio.dll
+C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\bin\Debug\EntityFramework.dll
+C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\bin\Debug\Dominio.pdb
+C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\bin\Debug\EntityFramework.xml
+C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\obj\Debug\Data.csprojResolveAssemblyReference.cache
+C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\obj\Debug\Data.dll
+C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\obj\Debug\Data.pdb
