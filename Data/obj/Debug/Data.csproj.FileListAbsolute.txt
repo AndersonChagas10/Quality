@@ -22,3 +22,15 @@ C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\bin\Debug\En
 C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\obj\Debug\Data.csprojResolveAssemblyReference.cache
 C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\obj\Debug\Data.dll
 C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Data\obj\Debug\Data.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Data\bin\Debug\Data.dll.config
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Data\bin\Debug\Data.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Data\bin\Debug\Data.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Data\bin\Debug\Dominio.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Data\bin\Debug\EntityFramework.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Data\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Data\bin\Debug\Dominio.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Data\bin\Debug\EntityFramework.xml
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Data\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Data\obj\Debug\Data.csprojResolveAssemblyReference.cache
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Data\obj\Debug\Data.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Data\obj\Debug\Data.pdb

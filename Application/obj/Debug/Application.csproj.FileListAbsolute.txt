@@ -12,3 +12,10 @@ C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Application\bin\D
 C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Application\obj\Debug\Application.csprojResolveAssemblyReference.cache
 C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Application\obj\Debug\Application.dll
 C:\Users\Celso\Documents\Visual Studio 2013\Projects\ModeloDDD\Application\obj\Debug\Application.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Application\bin\Debug\Application.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Application\bin\Debug\Application.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Application\bin\Debug\Dominio.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Application\bin\Debug\Dominio.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Application\obj\Debug\Application.csprojResolveAssemblyReference.cache
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Application\obj\Debug\Application.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket\Application\obj\Debug\Application.pdb
