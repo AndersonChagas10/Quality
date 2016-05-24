@@ -20,9 +20,9 @@ namespace Application
             _userService = userService;
         }
 
-        public bool Autorizado(User u)
+        public bool Autorizado(string name, string password)
         {
-            return _userService.Autorizado(u);
+            return _userService.Autorizado(name, password);
         }
 
     }

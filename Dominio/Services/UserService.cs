@@ -18,9 +18,9 @@ namespace Dominio.Services
         {
             _userRepo = userRepo;
         }
-        public bool Autorizado(User u)
+        public bool Autorizado(string name, string password)
         {
-            return _userRepo.Autorizado(u);
+            return _userRepo.Autorizado(name, password);
         }
     }
 }

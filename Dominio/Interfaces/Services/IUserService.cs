@@ -9,6 +9,6 @@ namespace Dominio.Interfaces.Services
 {
     public interface IUserService : IServiceBase<User>
     {
-        bool Autorizado(User u);
+        bool Autorizado(string name, string password);
     }
 }

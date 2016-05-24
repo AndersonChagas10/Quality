@@ -32,8 +32,9 @@ namespace MVC.API.Controllers.Api
         }
 
         // POST: api/Teste
-        public void Post([FromBody]string value)
+        public bool Post([FromBody]string name, string pass)
         {
+            return _userAppService.Autorizado(name, pass);
         }
 
         // PUT: api/Teste/5

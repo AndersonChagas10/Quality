@@ -11,9 +11,9 @@ namespace Data.Repositories
     public class UserRepository : RepositoryBase<User>, IUserRepository
     {
 
-        public bool Autorizado(User u) //Daqui iria pro B.D.
+        public bool Autorizado(string name, string password) //Daqui iria pro B.D.
         {
-            return u.Password.Equals("123");
+            return name.Equals("admin") &&  password.Equals("123");
         }
     }
 }

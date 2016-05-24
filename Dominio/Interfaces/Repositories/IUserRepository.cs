@@ -9,6 +9,6 @@ namespace Dominio.Interfaces.Repositories
 {
     public interface IUserRepository :  IRepositoryBase<User>
     {
-        bool Autorizado(User u);
+        bool Autorizado(string name, string password);
     }
 } 

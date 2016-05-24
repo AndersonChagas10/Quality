@@ -10,7 +10,7 @@ namespace Application.Interface
     public interface IUserAppService : IAppServiceBase<User>
     {
 
-        bool Autorizado(User u);
+        bool Autorizado(string name, string password);
 
     }
 }
