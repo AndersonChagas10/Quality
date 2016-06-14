@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
-namespace Dominio.Entities
+namespace MVC.API.Models
 {
-    public class User
+    public class UserViewModel
     {
+        
         public string Name { get; set; }
         public string Password { get; set; }
         public int Id { get; set; }
-        //public virtual User 
+
     }
 }

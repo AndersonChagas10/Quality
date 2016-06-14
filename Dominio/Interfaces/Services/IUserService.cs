@@ -1,4 +1,5 @@
 ﻿using Dominio.Entities;
+using Dominio.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Dominio.Interfaces.Services
 {
     public interface IUserService : IServiceBase<User>
     {
-        bool Autorizado(string name, string password);
+        GenericReturn<User> Autorizado(string name, string password);
     }
 }

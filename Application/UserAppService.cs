@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application
 {
-    public class UserAppService :  AppServiceBase<User>, IUserAppService
+    public class UserAppService : AppServiceBase<User>, IUserAppService
     {
         
         private readonly IUserService _userService;
@@ -20,10 +20,11 @@ namespace Application
             _userService = userService;
         }
 
-        public bool Autorizado(string name, string password)
+        public GenericReturn<User> Autorizado(string name, string password)
         {
             return _userService.Autorizado(name, password);
         }
 
     }
+
 }

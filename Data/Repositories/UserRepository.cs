@@ -11,9 +11,23 @@ namespace Data.Repositories
     public class UserRepository : RepositoryBase<User>, IUserRepository
     {
 
-        public bool Autorizado(string name, string password) //Daqui iria pro B.D.
+        public User Autorizado(string name, string password) //Daqui iria pro B.D.
         {
-            return name.Equals("admin") &&  password.Equals("123");
+            #region MOCK
+            //UserDBMock USUARIO MOCK
+            var user = new User { Id = 0, Name = "Admin", Password = "123" };
+            var user2 = new User { Id = 2, Name = "User", Password = "123" };
+
+            var listUser = new List<User>();
+            listUser.Add(user);
+            listUser.Add(user2); 
+
+            #endregion
+
+            var result = listUser.Where(r => r.Name.Equals("Admin") && r.Password.Equals("123")).FirstOrDefault();
+            //var result = db.Where(r => r.Name.Equals("Admin") && r.Password.Equals("123")).FirstOrDefault();
+
+            return result; // Retorno para camada Dominio
         }
     }
 }

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Dominio.Interfaces.Repositories
 {
-    public interface IUserRepository :  IRepositoryBase<User>
+    public interface IUserRepository : IRepositoryBase<User>
     {
-        bool Autorizado(string name, string password);
+        User Autorizado(string name, string password);
     }
 } 

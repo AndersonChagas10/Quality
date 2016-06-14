@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dominio.Interfaces.Repositories;
+using Dominio.Entities;
 
 namespace Dominio.Services
 {
@@ -15,6 +16,7 @@ namespace Dominio.Services
 
         public ServiceBase(IRepositoryBase<T> repo)
         {
+
             _repositoryBase = repo;
         }
 
@@ -47,5 +49,20 @@ namespace Dominio.Services
         {
             _repositoryBase.Dispose();
         }
+
+        public GenericReturn<T> RetornaExcecaoBase(Exception ex, string mensagemErro = "", string mensagemAlerta = "", T obj = null)
+        {
+           
+            var inner = ex.InnerException.IsNotNull() ? ex.InnerException.Message : "Não consta.";
+           
+            return new GenericReturn<T>() {
+               MensagemErro = mensagemErro,
+               MensagemExcecao = ex.Message + inner,
+               Retorno = obj,
+               MensagemAlerta = mensagemAlerta
+           };
+
+        }
     }
+
 }

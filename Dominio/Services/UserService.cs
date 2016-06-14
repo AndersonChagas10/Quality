@@ -18,9 +18,37 @@ namespace Dominio.Services
         {
             _userRepo = userRepo;
         }
-        public bool Autorizado(string name, string password)
+
+
+        public GenericReturn<User> Autorizado(string name, string password)
         {
-            return _userRepo.Autorizado(name, password);
+
+            var retorno = new GenericReturn<User>();
+
+            try 
+	        {	        
+		
+                var isUser = _userRepo.Autorizado(name, password);
+                
+                if (isUser.IsNotNull())
+                {
+                    retorno.Retorno = isUser;
+                }
+                else
+                {
+                    retorno.MensagemAlerta = "Usuario não encontrado, verifique e-mail e senha.";
+                }
+           
+	        }
+	        catch (Exception ex)
+	        {
+                return RetornaExcecaoBase(ex, "Ocorreu um erro inesperado");    
+	        }
+
+            return retorno;
+
         }
     }
+
+    
 }

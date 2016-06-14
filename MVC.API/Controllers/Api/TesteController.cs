@@ -1,13 +1,18 @@
 ﻿using Application.Interface;
+using AutoMapper;
+using Dominio.Entities;
+using MVC.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace MVC.API.Controllers.Api
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class TesteController : ApiController
     {
 
@@ -20,9 +25,9 @@ namespace MVC.API.Controllers.Api
 
 
         // GET: api/Teste
-        public IEnumerable<string> Get()
+        public bool Get(string name, string pass)
         {
-            return new string[] { "value1", "value2" };
+            return true;//_userAppService.Autorizado(name, pass);
         }
 
         // GET: api/Teste/5
@@ -32,9 +37,11 @@ namespace MVC.API.Controllers.Api
         }
 
         // POST: api/Teste
-        public bool Post([FromBody]string name, string pass)
+        public GenericReturnViewModel<UserViewModel> Post(string name, string pass)
         {
-            return _userAppService.Autorizado(name, pass);
+            var query =  _userAppService.Autorizado(name, pass);
+            var result = Mapper.Map<GenericReturn<User>, GenericReturnViewModel<UserViewModel>>(query);
+            return result;
         }
 
         // PUT: api/Teste/5
@@ -47,4 +54,9 @@ namespace MVC.API.Controllers.Api
         {
         }
     }
+
+
+
+
 }
+
