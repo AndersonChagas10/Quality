@@ -240,3 +240,6 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket\MVC.API\bin\System.Web.Http.Cors.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket\MVC.API\bin\System.Web.Http.Cors.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket\MVC.API\bin\AutoMapper.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket\MVC.API\bin\AutoMapper.xml
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\MVC.API\obj\Debug\MVC.API.csprojResolveAssemblyReference.cache
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\MVC.API\obj\Debug\MVC.API.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\MVC.API\obj\Debug\MVC.API.pdb
