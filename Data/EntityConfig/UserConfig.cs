@@ -11,16 +11,9 @@ namespace Data.EntityConfig
         public UserConfig()
         {
 
-
-            Property(x => x.Name)
-                .HasColumnName("Id")
-                .HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute("Id_Usuario", 2) { IsUnique = true }));
-
-            //Property(x => x.Name)
-            //    .HasColumnName("UserName")
-            //    .HasMaxLength(User.NameOrPassMaxValue)
-            //    .HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute("Usuario", 2) { IsUnique = true }));
-
+            HasKey(r => r.Id);
+            Property(r => r.Name).IsRequired().HasMaxLength(50);
+            Property(r => r.Password).IsRequired().HasMaxLength(50);
 
 
         }

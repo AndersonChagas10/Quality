@@ -53,6 +53,10 @@
     <Compile Include="EntityConfig\MonitoringConfig.cs" />
     <Compile Include="EntityConfig\IndicatorConfig.cs" />
     <Compile Include="EntityConfig\UserConfig.cs" />
+    <Compile Include="Migrations\201606292020568_UserTAbleCreata.cs" />
+    <Compile Include="Migrations\201606292020568_UserTAbleCreata.Designer.cs">
+      <DependentUpon>201606292020568_UserTAbleCreata.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
@@ -68,7 +72,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201606292020568_UserTAbleCreata.resx">
+      <DependentUpon>201606292020568_UserTAbleCreata.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

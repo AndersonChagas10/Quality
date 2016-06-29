@@ -1,18 +1,15 @@
 namespace Data.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Data.DbContextSgq>
+    internal sealed class Configuration : DbMigrationsConfiguration<DbContextSgq>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Data.DbContextSgq context)
+        protected override void Seed(DbContextSgq context)
         {
             //  This method will be called after migrating to the latest version.
 
