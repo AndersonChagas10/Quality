@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Application.Interface
 {
-    public interface IUserAppService : IAppServiceBase<User>
+    public interface IUserAppService 
     {
 
-        GenericReturn<User> Autorizado(string name, string password);
+        GenericReturn<User> AuthenticationLogin(string name, string password);
 
     }
 }

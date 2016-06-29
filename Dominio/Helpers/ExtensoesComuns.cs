@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dominio.Entities
+namespace Dominio.Helpers
 {
     public static class ExtensoesComuns
     {

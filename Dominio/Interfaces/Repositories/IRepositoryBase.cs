@@ -11,6 +11,8 @@ namespace Dominio.Interfaces.Repositories
         
         void Add(T obj);
 
+        void AddAll(IEnumerable<T> obj);
+
         T GetById(int id);
 
         IEnumerable<T> GetAll();
@@ -18,6 +20,16 @@ namespace Dominio.Interfaces.Repositories
         void Update(T obj);
 
         void Remove(T obj);
+
+        void Delete(int id);
+
+        void RemoveAll(IEnumerable<T> obj);
+
+        T First();
+
+        void AddOrUpdate(T obj);
+
+        void Commit();
 
         void Dispose();
 

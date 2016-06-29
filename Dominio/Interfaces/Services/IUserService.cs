@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Dominio.Interfaces.Services
 {
-    public interface IUserService : IServiceBase<User>
+    public interface IUserService 
     {
-        GenericReturn<User> Autorizado(string name, string password);
+        GenericReturn<User> AuthenticationLogin(string name, string password);
     }
 }
