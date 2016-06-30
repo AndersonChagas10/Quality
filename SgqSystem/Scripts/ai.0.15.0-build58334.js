@@ -11,7 +11,7 @@ var Microsoft;
             function _InternalLogging() {
             }
             _InternalLogging.throwInternalNonUserActionable = function (severity, message) {
-                if (this.enableDebugExceptions()) {
+                if (this.enableDebugExceptions()) {z 
                     throw message;
                 }
                 else {

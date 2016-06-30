@@ -1,0 +1,5 @@
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\Dominio\bin\Release\Dominio.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\Dominio\bin\Release\Dominio.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\Dominio\obj\Release\Dominio.csprojResolveAssemblyReference.cache
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\Dominio\obj\Release\Dominio.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\Dominio\obj\Release\Dominio.pdb
