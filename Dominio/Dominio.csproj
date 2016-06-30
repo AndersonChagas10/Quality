@@ -30,15 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Entities\Audit.cs" />
+    <Compile Include="Entities\AuditCenter.cs" />
     <Compile Include="Entities\BaseEntity\DataCollectionBase.cs" />
     <Compile Include="Entities\BaseEntity\EntityBase.cs" />
-    <Compile Include="Entities\Indicator.cs" />
-    <Compile Include="Entities\Monitoring.cs" />
-    <Compile Include="Entities\Task.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\ExtensoesComuns.cs" />
     <Compile Include="Entities\GenericReturn.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Interfaces\Repositories\IAuditRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRepositoryBase.cs" />
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
     <Compile Include="Interfaces\Services\IServiceBase.cs" />
@@ -51,6 +51,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
