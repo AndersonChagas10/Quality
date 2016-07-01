@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Dominio.Helpers
 {
@@ -140,5 +141,13 @@ namespace Dominio.Helpers
 
         #endregion
 
+        #region Data
+
+        public static DateTime ConverteStringPateParaDateTime(string dataString)
+        {
+            return DateTime.ParseExact(dataString, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        }
+
+        #endregion
     }
 }

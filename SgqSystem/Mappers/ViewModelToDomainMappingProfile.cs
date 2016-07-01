@@ -14,6 +14,7 @@ namespace SgqSystem.Mappers
         {
             CreateMap<GenericReturnViewModel<UserViewModel>, GenericReturn<User>>();
             CreateMap<UserViewModel, User>();
+            CreateMap<ResultOldViewModel, ResultOld>();
         }
     }
 }

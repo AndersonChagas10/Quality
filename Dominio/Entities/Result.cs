@@ -2,10 +2,9 @@
 
 namespace Dominio.Entities
 {
-    public class Audit : DataCollectionBase
+    public class Result : DataCollectionBase
     {
-
+        public int Id_AuditCenter { get; set; }
         public virtual AuditCenter auditCenter { get; set; }
-
     }
 }

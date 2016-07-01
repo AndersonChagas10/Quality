@@ -7,13 +7,13 @@ namespace Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class UserTAbleCreata : IMigrationMetadata
+    public sealed partial class Coleta31 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UserTAbleCreata));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Coleta31));
         
         string IMigrationMetadata.Id
         {
-            get { return "201606292020568_UserTAbleCreata"; }
+            get { return "201607011337157_Coleta31"; }
         }
         
         string IMigrationMetadata.Source
