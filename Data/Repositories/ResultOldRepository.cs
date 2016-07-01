@@ -16,9 +16,9 @@ namespace Data.Repositories
 
         public GenericReturn<ResultOld> Salvar(ResultOld r)
         {
-            _repoBase.AddOrUpdate(r);
             try
             {
+                _repoBase.AddOrUpdate(r);
                 _repoBase.Commit();
             }
             catch (Exception e)
