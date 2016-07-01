@@ -18,19 +18,6 @@ namespace SgqSystem.Controllers.Api
             _userAppService = userAppService;
         }
 
-
-        // GET: api/Teste
-        public bool Get(string name, string pass)
-        {
-            return true;//_userAppService.AuthenticationLogin(name, pass);
-        }
-
-        // GET: api/Teste/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST: api/Teste
         public GenericReturnViewModel<UserViewModel> Post([FromBody] UserViewModel user)
         {

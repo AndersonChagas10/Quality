@@ -38,6 +38,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -49,16 +53,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbContextSgq.cs" />
-    <Compile Include="EntityConfig\TaskConfig.cs" />
-    <Compile Include="EntityConfig\MonitoringConfig.cs" />
-    <Compile Include="EntityConfig\IndicatorConfig.cs" />
+    <Compile Include="EntityConfig\OperacaoConfig.cs" />
+    <Compile Include="EntityConfig\MonitoramentoConfig.cs" />
+    <Compile Include="EntityConfig\ResultConfigOld.cs" />
+    <Compile Include="EntityConfig\TarefaConfig.cs" />
     <Compile Include="EntityConfig\UserConfig.cs" />
-    <Compile Include="Migrations\201606292020568_UserTAbleCreata.cs" />
-    <Compile Include="Migrations\201606292020568_UserTAbleCreata.Designer.cs">
-      <DependentUpon>201606292020568_UserTAbleCreata.cs</DependentUpon>
+    <Compile Include="Migrations\201607011309228_Coleta3.cs" />
+    <Compile Include="Migrations\201607011309228_Coleta3.Designer.cs">
+      <DependentUpon>201607011309228_Coleta3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607011337157_Coleta31.cs" />
+    <Compile Include="Migrations\201607011337157_Coleta31.Designer.cs">
+      <DependentUpon>201607011337157_Coleta31.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607011741215_Coleta.cs" />
+    <Compile Include="Migrations\201607011741215_Coleta.Designer.cs">
+      <DependentUpon>201607011741215_Coleta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607011743185_Coleta1.cs" />
+    <Compile Include="Migrations\201607011743185_Coleta1.Designer.cs">
+      <DependentUpon>201607011743185_Coleta1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ResultOldRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
@@ -73,8 +91,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606292020568_UserTAbleCreata.resx">
-      <DependentUpon>201606292020568_UserTAbleCreata.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201607011309228_Coleta3.resx">
+      <DependentUpon>201607011309228_Coleta3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607011337157_Coleta31.resx">
+      <DependentUpon>201607011337157_Coleta31.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607011741215_Coleta.resx">
+      <DependentUpon>201607011741215_Coleta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607011743185_Coleta1.resx">
+      <DependentUpon>201607011743185_Coleta1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

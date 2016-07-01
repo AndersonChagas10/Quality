@@ -1,4 +1,5 @@
 ﻿using Dominio.Entities.BaseEntity;
+using System;
 
 namespace Dominio.Entities
 {
@@ -6,6 +7,7 @@ namespace Dominio.Entities
     {
         public string Name { get; set; }
         public string Password { get; set; }
+        public DateTime AcessDate { get; set; }
        
     }
 }

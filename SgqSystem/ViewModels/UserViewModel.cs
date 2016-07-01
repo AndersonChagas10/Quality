@@ -1,4 +1,5 @@
 ﻿using SgqSystem.ViewModels.BaseEntityViewModel;
+using System;
 
 namespace SgqSystem.ViewModels
 {
@@ -6,5 +7,6 @@ namespace SgqSystem.ViewModels
     {
         public string Name { get; set; }
         public string Password { get; set; }
+        public DateTime AcessDate { get; set; }
     }
 }

@@ -10,32 +10,27 @@ namespace Data.Repositories
 {
     public class UserRepository :  IUserRepository
     {
-        private readonly IRepositoryBase<User> _userRepo;
+        private readonly IRepositoryBase<User> _repoBase;
 
-        public UserRepository(IRepositoryBase<User> userRepo)
+        public UserRepository(IRepositoryBase<User> repoBase)
         {
-            _userRepo = userRepo;
-        }
-
-        public User Get(int Id)
-        {
-            return _userRepo.GetById(Id);
+            _repoBase = repoBase;
         }
 
         public User Get(string Name)
         {
-            return _userRepo.GetAll().FirstOrDefault(r => r.Name == Name);
+            return _repoBase.GetAll().FirstOrDefault(r => r.Name == Name);
         }
 
         public bool UserNameIsCadastrado(string Name, int id)
         {
-            return _userRepo.GetAll().Any(x => x.Id != id && x.Name == Name);
+            return _repoBase.GetAll().Any(x => x.Id != id && x.Name == Name);
         }
 
         public void Salvar(User user)
         {
-            _userRepo.AddOrUpdate(user);
-            _userRepo.Commit();
+            _repoBase.AddOrUpdate(user);
+            _repoBase.Commit();
         }
 
         public User AuthenticationLogin(string name, string password) //Daqui iria pro B.D.
@@ -43,8 +38,8 @@ namespace Data.Repositories
             #region MOCK
             
             //UserDBMock USUARIO MOCK
-            var user = new User { Id = 0, Name = "Admin", Password = "123" };
-            var user2 = new User { Id = 2, Name = "User", Password = "123" };
+            var user = new User { Id = 0, Name = "Admin", Password = "123" , AcessDate = DateTime.Now };
+            var user2 = new User { Id = 2, Name = "User", Password = "123" , AcessDate = DateTime.Now };
 
             var listUser = new List<User>();
             listUser.Add(user);

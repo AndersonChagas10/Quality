@@ -8,13 +8,13 @@ namespace Dominio.Services
 {
     public class UserService :  IUserService
     {
+
         private readonly IUserRepository _userRepo;
 
         public UserService(IUserRepository userRepo)
         {
             _userRepo = userRepo;
         }
-
 
         public GenericReturn<User> AuthenticationLogin(string name, string password)
         {
@@ -41,6 +41,7 @@ namespace Dominio.Services
             return retorno;
 
         }
+
     }
 
     

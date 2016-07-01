@@ -10,6 +10,7 @@ namespace CrossCutting.IOC.Module
         {
             Bind(typeof(IAppServiceBase<>)).To(typeof(AppServiceBase<>));
             Bind<IUserAppService>().To<UserAppService>();
+            Bind<IResultOldAppService>().To<ResultOldAppService>();
         }
     }
 }
