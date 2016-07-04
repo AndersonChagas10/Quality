@@ -44,12 +44,10 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\bin\Debug\Dominio.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\bin\Debug\EntityFramework.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.csprojResolveAssemblyReference.cache
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.dll
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.Migrations.Coleta3.resources
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.csproj.GenerateResource.Cache
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.Migrations.Coleta31.resources
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\bin\Debug\Newtonsoft.Json.dll
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.Migrations.Coleta.resources
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.Migrations.Coleta1.resources
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.csproj.GenerateResource.Cache
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.pdb

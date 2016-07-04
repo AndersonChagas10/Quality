@@ -2,10 +2,13 @@
 using System;
 using System.Collections.Generic;
 using Dominio.Interfaces.Repositories;
+using Dominio.Helpers;
+using Dominio.Entities;
+using Dominio.Entities.BaseEntity;
 
 namespace Dominio.Services
 {
-    public class ServiceBase<T> : IDisposable, IServiceBase<T> where T : class
+    public class ServiceBase<T> : IDisposable, IServiceBase<T> where T : EntityBase
     {
 
         private readonly IRepositoryBase<T> _repositoryBase;
@@ -16,10 +19,76 @@ namespace Dominio.Services
             _repositoryBase = repo;
         }
 
-        public void Add(T obj)
+        #region Salvar
+
+        public GenericReturn<T> Add(T obj)
         {
-            _repositoryBase.Add(obj);
+            try
+            {
+
+                _repositoryBase.Add(obj);
+                if (obj.Id > 0)
+                    return new GenericReturn<T>() { MensagemSucesso = "Registro alterado com sucesso!" };
+                else
+                    return new GenericReturn<T>() { MensagemSucesso = "Registro inserido com sucesso!" };
+
+            }
+            catch (Exception ex)
+            {
+                return ExceptionHelper<T>.RetornaExcecaoBase(ex, "Erro ao inserir o registro.");
+            }
         }
+
+        public GenericReturn<T> AddAll(IEnumerable<T> obj)
+        {
+            try
+            {
+
+                _repositoryBase.AddAll(obj);
+
+                return new GenericReturn<T>() { MensagemSucesso = "Registros inserido com sucesso!" };
+
+            }
+            catch (Exception ex)
+            {
+                return ExceptionHelper<T>.RetornaExcecaoBase(ex, "Erro ao inserir os registros.");
+            }
+        }
+
+        public GenericReturn<T> AddOrUpdate(T obj)
+        {
+            try
+            {
+
+                _repositoryBase.AddOrUpdate(obj);
+                if (obj.Id > 0)
+                    return new GenericReturn<T>() { MensagemSucesso = "Registro alterado com sucesso!" };
+                else
+                    return new GenericReturn<T>() { MensagemSucesso = "Registro inserido com sucesso!" };
+
+            }
+            catch (Exception ex)
+            {
+                return ExceptionHelper<T>.RetornaExcecaoBase(ex, "Erro ao inserir o registro.");
+            }
+        }
+
+        public GenericReturn<T> Update(T obj)
+        {
+            try
+            {
+
+                _repositoryBase.Update(obj);
+                return new GenericReturn<T>() { MensagemSucesso = "Registro alterado com sucesso!" };
+
+            }
+            catch (Exception ex)
+            {
+                return ExceptionHelper<T>.RetornaExcecaoBase(ex, "Erro ao alterar o registro.");
+            }
+        }
+
+        #endregion
 
         public T GetById(int id)
         {
@@ -29,11 +98,6 @@ namespace Dominio.Services
         public IEnumerable<T> GetAll()
         {
             return _repositoryBase.GetAll();
-        }
-
-        public void Update(T obj)
-        {
-            _repositoryBase.Update(obj);
         }
 
         public void Remove(T obj)
@@ -46,7 +110,20 @@ namespace Dominio.Services
             _repositoryBase.Dispose();
         }
 
-       
+        public void Delete(int id)
+        {
+            _repositoryBase.Delete(id);
+        }
+
+        public void RemoveAll(IEnumerable<T> obj)
+        {
+            _repositoryBase.RemoveAll(obj);
+        }
+
+        public T First()
+        {
+            return _repositoryBase.First();
+        }
     }
 
 }

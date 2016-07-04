@@ -1,4 +1,3 @@
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\obj\Debug\SgqSystem.csprojResolveAssemblyReference.cache
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\ApplicationInsights.config
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\roslyn\csc.exe
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -29,6 +28,7 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.AI.ServerTele
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.AI.Web.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.AI.WindowsServer.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.ApplicationInsights.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.ApplicationInsights.TraceListener.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.AspNet.Identity.Core.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.AspNet.Identity.Owin.dll
@@ -76,13 +76,14 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.AI.ServerTele
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.AI.Web.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.ApplicationInsights.xml
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.ApplicationInsights.TraceListener.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Newtonsoft.Json.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Ninject.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Ninject.Web.Common.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Ninject.Web.Mvc.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Ninject.Web.WebApi.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\System.Web.Http.Cors.xml
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Newtonsoft.Json.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\System.Net.Http.Formatting.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\System.Web.Helpers.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\System.Web.Http.xml
@@ -112,7 +113,7 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\System.Web.Http.Owin.xm
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.Practices.ServiceLocation.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.Practices.ServiceLocation.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Data.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\obj\Debug\SgqSystem.csprojResolveAssemblyReference.cache
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\obj\Debug\SgqSystem.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\obj\Debug\SgqSystem.pdb
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.ApplicationInsights.TraceListener.dll
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.ApplicationInsights.TraceListener.xml
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\GridMvc.dll

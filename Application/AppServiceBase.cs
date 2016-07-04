@@ -1,26 +1,46 @@
 ﻿using Application.Interface;
+using Dominio.Entities;
+using Dominio.Entities.BaseEntity;
+using Dominio.Helpers;
 using Dominio.Interfaces.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application
 {
-    public class AppServiceBase<T> : IDisposable, IAppServiceBase<T> where T : class
+    public class AppServiceBase<T> : IDisposable, IAppServiceBase<T> where T : EntityBase
     {
 
         private readonly IServiceBase<T> _serviceBase;
 
-        public AppServiceBase(IServiceBase<T> serviceBase) 
+        public AppServiceBase(IServiceBase<T> serviceBase)
         {
             _serviceBase = serviceBase;
         }
-        public void Add(T obj)
+
+        #region Salvar
+
+        public GenericReturn<T> Add(T obj)
         {
-            _serviceBase.Add(obj);
+            return _serviceBase.Add(obj);
         }
+
+        public GenericReturn<T> AddAll(IEnumerable<T> obj)
+        {
+            return _serviceBase.AddAll(obj);
+        }
+
+        public GenericReturn<T> AddOrUpdate(T obj)
+        {
+            return _serviceBase.AddOrUpdate(obj);
+        }
+
+        public GenericReturn<T> Update(T obj)
+        {
+            return _serviceBase.Update(obj);
+        }
+
+        #endregion
 
         public T GetById(int id)
         {
@@ -32,11 +52,6 @@ namespace Application
             return _serviceBase.GetAll();
         }
 
-        public void Update(T obj)
-        {
-            _serviceBase.Update(obj);
-        }
-
         public void Remove(T obj)
         {
             _serviceBase.Remove(obj);
@@ -45,6 +60,21 @@ namespace Application
         public void Dispose()
         {
             _serviceBase.Dispose();
+        }
+
+        public void Delete(int id)
+        {
+            _serviceBase.Delete(id);
+        }
+
+        public void RemoveAll(IEnumerable<T> obj)
+        {
+            _serviceBase.RemoveAll(obj);
+        }
+
+        public T First()
+        {
+            return _serviceBase.First();
         }
 
     }

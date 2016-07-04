@@ -23,7 +23,7 @@ namespace Data.Repositories
             }
             catch (Exception e)
             {
-                return ExceptionHelper<ResultOld>.RetornaExcecaoBase(e);
+                throw ExceptionHelper<ResultOld>.RetornaExcecaoBase(e);
             }
             return new GenericReturn<ResultOld>() { ReturnisBool = true };
         }

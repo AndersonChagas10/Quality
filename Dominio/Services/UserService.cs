@@ -35,7 +35,7 @@ namespace Dominio.Services
 	        }
 	        catch (Exception ex)
 	        {
-                return ExceptionHelper<User>.RetornaExcecaoBase(ex, "Ocorreu um erro inesperado");    
+                throw ExceptionHelper<User>.RetornaExcecaoBase(ex, "Ocorreu um erro inesperado");    
 	        }
 
             return retorno;

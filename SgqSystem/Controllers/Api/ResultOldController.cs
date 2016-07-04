@@ -1,7 +1,10 @@
 ﻿using Application.Interface;
 using AutoMapper;
 using Dominio.Entities;
+using Dominio.Helpers;
 using SgqSystem.ViewModels;
+using System;
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -26,6 +29,25 @@ namespace SgqSystem.Controllers.Api
             var response = _resultOldAppService.Salvar(resultToSave);
             var responseViewModel = Mapper.Map<GenericReturn<ResultOld>, GenericReturnViewModel<ResultOldViewModel>>(response);
             return responseViewModel;
+        }
+
+        //// POST: api/SaveList
+        //[Route("api/SalvarLista")]
+        //public GenericReturnViewModel<ResultOldViewModel> SalvarLista([FromBody] List<ResultOldViewModel> result)
+        //{
+        //    //var resultToSave = Mapper.Map<ResultOldViewModel, ResultOld>(result);
+        //    var response = _resultOldAppService.(resultToSave);
+        //    //var responseViewModel = Mapper.Map<GenericReturn<ResultOld>, GenericReturnViewModel<ResultOldViewModel>>(response);
+        //    return responseViewModel;
+        //}
+
+        // POST: api/SaveList
+        [Route("api/SalvarLista")]
+        public GenericReturnViewModel<ResultOldViewModel> SalvarLista([FromBody] List<ResultOldViewModel> obj)
+        {
+            var objToSave = Mapper.Map<List<ResultOldViewModel>, List<ResultOld>>(obj);
+            var result = _resultOldAppService.SalvarLista(objToSave);
+            return Mapper.Map<GenericReturn<ResultOld>, GenericReturnViewModel<ResultOldViewModel>>(result);
         }
 
     }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dominio.Entities.BaseEntity;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace Dominio.Helpers
@@ -149,5 +151,21 @@ namespace Dominio.Helpers
         }
 
         #endregion
+
+        public static string RetornaInsersaoRegistro<T>(List<T> ids) where T : EntityBase
+        {
+            var acao = "inseridos";
+            if (ids.Count > 0)
+            {
+                return ids.Count + " Registros " + acao + " com sucesso!";
+            }
+            else
+                if(ids[0].Id == 0)
+                    return "Registro inserido com sucesso!";
+                else
+                    return "Registro alterado com sucesso!";
+
+
+        }
     }
 }

@@ -6,14 +6,14 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\Data.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\Dominio.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\Microsoft.Practices.ServiceLocation.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\Ninject.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\EntityFramework.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\Application.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\Data.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\Dominio.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\Microsoft.Practices.ServiceLocation.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\Ninject.xml
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\EntityFramework.xml
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\obj\Debug\CrossCutting.csprojResolveAssemblyReference.cache
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\obj\Debug\CrossCutting.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\obj\Debug\CrossCutting.pdb
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\EntityFramework.dll
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\CrossCutting\bin\Debug\EntityFramework.xml

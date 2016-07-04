@@ -27,18 +27,24 @@ namespace Data.Repositories
         {
             obj.AddDate = DateTime.Now;
             Entity.Add(obj);
+            Commit();
         }
 
         public void AddAll(IEnumerable<T> obj)
         {
             foreach (var i in obj)
+            {
+                i.AddDate = DateTime.Now;
                 Entity.Add(i);
+            }
+            Commit();
         }
 
         public void Update(T obj)
         {
             obj.AlterDate = DateTime.Now;
             db.Entry(obj).State = EntityState.Modified;
+            Commit();
         }
 
         public void AddOrUpdate(T obj)
