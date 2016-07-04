@@ -2,6 +2,7 @@
 using AutoMapper;
 using Dominio.Entities;
 using SgqSystem.ViewModels;
+using System;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -21,9 +22,17 @@ namespace SgqSystem.Controllers.Api
         // POST: api/Teste
         public GenericReturnViewModel<UserViewModel> Post([FromBody] UserViewModel user)
         {
-            var query = _userAppService.AuthenticationLogin(user.Name, user.Password);
-            var result = Mapper.Map<GenericReturn<User>, GenericReturnViewModel<UserViewModel>>(query);
-            return result;
+            try
+            {
+
+                var query = _userAppService.AuthenticationLogin(user.Name, user.Password);
+                var result = Mapper.Map<GenericReturn<User>, GenericReturnViewModel<UserViewModel>>(query);
+                return result;
+            }
+            catch (Exception e)
+            {
+                return new GenericReturnViewModel<UserViewModel>(e, e.Message, "");
+            }
         }
 
         // PUT: api/Teste/5

@@ -1,50 +1,70 @@
-﻿using System;
+﻿using Dominio.Helpers;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace SgqSystem.ViewModels
 {
     public class GenericReturnViewModel<T>
     {
+
         public string MensagemErro { get; set; }
         public string MensagemSucesso { get; set; }
         public string MensagemAlerta { get; set; }
-        public string MensagemExcecao { get; set; }
-        public T Retorno { get; set; }
-        public List<T> ListRetorno { get; set; }
+        public string MensagemExcecao { get; private set; }
+        public T Retorno { get; private set; }
+        public List<T> ListRetorno { get; private set; }
         public bool ReturnisBool { get; set; }
 
-        //private DateTime _dtvalueInicio, _dtvalueFim;
+        //Constructor for EF        
+        public GenericReturnViewModel()
+        {
 
-        //public string dataInicio { get; set; }
+        }
 
-        //public string dataFim { get; set; }
+        public GenericReturnViewModel(T obj)
+        {
+            SetRetorno(obj);
+        }
 
-        //public DateTime _dataInicio
-        //{
-        //    get
-        //    {
-        //        if (dataInicio != null)
-        //        {
-        //            this._dtvalueInicio = DateTime.ParseExact(dataInicio, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-        //            return _dtvalueInicio;
-        //        }
-        //        return DateTime.Now;
-        //    }
-        //}
+        public GenericReturnViewModel(List<T> listObj)
+        {
+            SetListRetorno(listObj);
+        }
 
-        //public DateTime _dataFim
-        //{
-        //    get
-        //    {
-        //        if (dataFim != null)
-        //        {
-        //            DateTime.TryParse(dataFim, out _dtvalueFim);
-        //            return _dtvalueFim;
-        //        }
-        //        return DateTime.Now;
-        //    }
-        //}
+        public GenericReturnViewModel(Exception _ex, string mensagemErro = "", string mensagemAlerta = "")
+        {
+            SetMensagemExcecao(_ex, MensagemErro, MensagemAlerta);
+        }
+
+        public void SetMensagemExcecao(Exception _ex, string mensagemErro = "", string mensagemAlerta = "")
+        {
+
+            var inner = "Não consta.";
+
+            if (_ex.InnerException.IsNotNull())
+            {
+                inner = _ex.InnerException.Message;
+                if (_ex.InnerException.InnerException.IsNotNull())
+                    inner += _ex.InnerException.InnerException.Message;
+            }
+            MensagemErro = mensagemErro;
+            MensagemExcecao = _ex.Message + inner;
+            MensagemAlerta = mensagemAlerta;
+        }
+
+        public void SetRetorno(T obj)
+        {
+            if (obj.IsNull())
+                throw new Exception("Objeto não encontrado.");
+
+        }
+
+        public void SetListRetorno(List<T> obj)
+        {
+            if (obj.IsNull())
+                throw new Exception("Objetos não encontrados.");
+
+        }
 
     }
 }

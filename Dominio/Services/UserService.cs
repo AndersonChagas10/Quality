@@ -19,26 +19,22 @@ namespace Dominio.Services
         public GenericReturn<User> AuthenticationLogin(string name, string password)
         {
 
-            var retorno = new GenericReturn<User>();
-
             try 
 	        {	        
                 var isUser = _userRepo.AuthenticationLogin(name, password);
                 if (isUser.IsNotNull())
                 {
-                    retorno.Retorno = isUser;
+                    return new GenericReturn<User>(isUser);
                 }
                 else
                 {
-                    retorno.MensagemAlerta = "Usuario não encontrado, verifique e-mail e senha.";
+                    return new GenericReturn<User>() { MensagemAlerta = "Usuario não encontrado, verifique e-mail e senha." };
                 }
 	        }
 	        catch (Exception ex)
 	        {
-                throw ExceptionHelper<User>.RetornaExcecaoBase(ex, "Ocorreu um erro inesperado");    
+                throw new GenericReturn<User>(ex, "Ocorreu um erro inesperado", "Não foi possível localizar Usuario / Senha, por favor tente novamente.");    
 	        }
-
-            return retorno;
 
         }
 

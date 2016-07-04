@@ -14,8 +14,19 @@ namespace SgqSystem.Mappers
         {
             CreateMap<GenericReturnViewModel<UserViewModel>, GenericReturn<User>>();
             CreateMap<UserViewModel, User>();
-            CreateMap<ResultOldViewModel, ResultOld>();
-                //.ConstructUsing(x => new ResultOld(x.Id, x.Id_Tarefa, x.Id_Operacao, x.Id_Monitoramento));
+            CreateMap<ResultOldViewModel, ResultOld>()
+                .ConstructUsing(src =>
+                    new ResultOld()
+                    {
+                        Id = src.Id,
+                        Id_Monitoramento = src.Id_Monitoramento,
+                        Id_Operacao = src.Id_Operacao,
+                        Id_Tarefa = src.Id_Tarefa
+                        //NotConform = src.NotConform,
+                        //Evaluate = src.Evaluate
+                    }
+                );
+            //.IgnoreAllPropertiesWithAnInaccessibleSetter(); ;
         }
     }
 }

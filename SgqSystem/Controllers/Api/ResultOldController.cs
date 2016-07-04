@@ -31,23 +31,21 @@ namespace SgqSystem.Controllers.Api
             return responseViewModel;
         }
 
-        //// POST: api/SaveList
-        //[Route("api/SalvarLista")]
-        //public GenericReturnViewModel<ResultOldViewModel> SalvarLista([FromBody] List<ResultOldViewModel> result)
-        //{
-        //    //var resultToSave = Mapper.Map<ResultOldViewModel, ResultOld>(result);
-        //    var response = _resultOldAppService.(resultToSave);
-        //    //var responseViewModel = Mapper.Map<GenericReturn<ResultOld>, GenericReturnViewModel<ResultOldViewModel>>(response);
-        //    return responseViewModel;
-        //}
-
         // POST: api/SaveList
         [Route("api/SalvarLista")]
         public GenericReturnViewModel<ResultOldViewModel> SalvarLista([FromBody] List<ResultOldViewModel> obj)
         {
-            var objToSave = Mapper.Map<List<ResultOldViewModel>, List<ResultOld>>(obj);
-            var result = _resultOldAppService.SalvarLista(objToSave);
-            return Mapper.Map<GenericReturn<ResultOld>, GenericReturnViewModel<ResultOldViewModel>>(result);
+            List<ResultOld> objToSave;
+            try
+            {
+                objToSave = Mapper.Map<List<ResultOldViewModel>, List<ResultOld>>(obj);
+                var result = _resultOldAppService.SalvarLista(objToSave);
+                return Mapper.Map<GenericReturn<ResultOld>, GenericReturnViewModel<ResultOldViewModel>>(result);
+            }
+            catch (Exception e)
+            {
+                return new GenericReturnViewModel<ResultOldViewModel>(e, e.Message, "");
+            }
         }
 
     }

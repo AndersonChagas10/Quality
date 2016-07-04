@@ -51,7 +51,7 @@ namespace Dominio.Services
             }
             catch (Exception ex)
             {
-                return ExceptionHelper<T>.RetornaExcecaoBase(ex, "Erro ao inserir os registros.");
+                return new GenericReturn<T>(ex, "Erro ao adicionar o registro", "Ocorreu um problema ao salvar o registro");
             }
         }
 
