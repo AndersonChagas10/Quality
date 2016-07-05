@@ -35,9 +35,9 @@ namespace SgqSystem.Controllers.Api
         [Route("api/SalvarLista")]
         public GenericReturnViewModel<ResultOldViewModel> SalvarLista([FromBody] List<ResultOldViewModel> obj)
         {
-            List<ResultOld> objToSave;
             try
             {
+                List<ResultOld> objToSave;
                 objToSave = Mapper.Map<List<ResultOldViewModel>, List<ResultOld>>(obj);
                 var result = _resultOldAppService.SalvarLista(objToSave);
                 return Mapper.Map<GenericReturn<ResultOld>, GenericReturnViewModel<ResultOldViewModel>>(result);

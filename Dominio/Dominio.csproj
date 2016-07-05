@@ -37,7 +37,7 @@
     <Compile Include="Entities\BaseEntity\DataCollectionBase.cs" />
     <Compile Include="Entities\BaseEntity\EntityBase.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
-    <Compile Include="Helpers\ExtensoesComuns.cs" />
+    <Compile Include="Helpers\Guard.cs" />
     <Compile Include="Entities\GenericReturn.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Interfaces\Repositories\IResultOldRepository.cs" />

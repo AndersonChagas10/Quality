@@ -1,6 +1,8 @@
 ﻿using Dominio.Interfaces.Services;
 using Dominio.Entities;
 using Dominio.Interfaces.Repositories;
+using System;
+using System.Collections.Generic;
 
 namespace Dominio.Services
 {
@@ -16,7 +18,14 @@ namespace Dominio.Services
 
         public GenericReturn<ResultOld> Salvar(ResultOld r)
         {
-            return _repoResultOld.Salvar(r);
+            _repoResultOld.Salvar(r);
+            return new GenericReturn<ResultOld>() { MensagemSucesso = "Resultado Inserido com sucesso."};
+        }
+
+        public GenericReturn<ResultOld> SalvarLista(List<ResultOld> list)
+        {
+            _repoResultOld.SalvarLista(list);
+            return new GenericReturn<ResultOld>() { MensagemSucesso = "Resultados Inseridos com sucesso." };
         }
     }
 }

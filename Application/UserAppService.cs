@@ -14,9 +14,9 @@ namespace Application
             _userService = userService;
         }
 
-        public GenericReturn<User> AuthenticationLogin(string name, string password)
+        public GenericReturn<User> AuthenticationLogin(User user)
         {
-            return _userService.AuthenticationLogin(name, password);
+            return _userService.AuthenticationLogin(user);
         }
 
     }

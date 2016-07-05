@@ -1,6 +1,7 @@
 ﻿using Application.Interface;
 using AutoMapper;
 using Dominio.Entities;
+using Dominio.Helpers;
 using SgqSystem.ViewModels;
 using System;
 using System.Web.Http;
@@ -24,10 +25,10 @@ namespace SgqSystem.Controllers.Api
         {
             try
             {
-
-                var query = _userAppService.AuthenticationLogin(user.Name, user.Password);
-                var result = Mapper.Map<GenericReturn<User>, GenericReturnViewModel<UserViewModel>>(query);
-                return result;
+                var UserModel = Mapper.Map<UserViewModel, User>(user);
+                var queryResult = _userAppService.AuthenticationLogin(UserModel);
+                var userLogado = Mapper.Map<GenericReturn<User>, GenericReturnViewModel<UserViewModel>>(queryResult);
+                return userLogado;
             }
             catch (Exception e)
             {

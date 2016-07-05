@@ -8,49 +8,38 @@ using System.Threading.Tasks;
 
 namespace Data.Repositories
 {
-    public class UserRepository :  IUserRepository
+    public class UserRepository :  RepositoryBase<User>, IUserRepository
     {
-        private readonly IRepositoryBase<User> _repoBase;
+        //private readonly IRepositoryBase<User> _repoBase;
+        //private readonly DbContextSgq _db;
 
-        public UserRepository(IRepositoryBase<User> repoBase)
+        public UserRepository(DbContextSgq _db)
+            :base (_db)
         {
-            _repoBase = repoBase;
+          //  _repoBase = repoBase;
         }
 
         public User Get(string Name)
         {
-            return _repoBase.GetAll().FirstOrDefault(r => r.Name == Name);
+            return GetAll().FirstOrDefault(r => r.Name == Name);
         }
 
         public bool UserNameIsCadastrado(string Name, int id)
         {
-            return _repoBase.GetAll().Any(x => x.Id != id && x.Name == Name);
+            return GetAll().Any(x => x.Id != id && x.Name == Name);
         }
 
         public void Salvar(User user)
         {
-            _repoBase.AddOrUpdate(user);
-            _repoBase.Commit();
+            AddOrUpdate(user);
+            Commit();
         }
 
-        public User AuthenticationLogin(string name, string password) //Daqui iria pro B.D.
+        public User AuthenticationLogin(User user)
         {
-            #region MOCK
-            
-            //UserDBMock USUARIO MOCK
-            var user = new User { Id = 0, Name = "Admin", Password = "123" , AcessDate = DateTime.Now };
-            var user2 = new User { Id = 2, Name = "User", Password = "123" , AcessDate = DateTime.Now };
-
-            var listUser = new List<User>();
-            listUser.Add(user);
-            listUser.Add(user2); 
-
-            #endregion
-
-            var result = listUser.FirstOrDefault(r => r.Name.Equals(name) && r.Password.Equals(password));
-            //var result = db.Where(r => r.Name.Equals("Admin") && r.Password.Equals("123")).FirstOrDefault();
-
-            return result; // Retorno para camada Dominio
+            var teste = db.Set<User>().FirstOrDefault(r => r.Name.Equals(user.Name) && r.Password.Equals(user.Password));
+            var result = GetAll().FirstOrDefault(r => r.Name.Equals(user.Name) && r.Password.Equals(user.Password));
+            return result;
         }
     }
 }

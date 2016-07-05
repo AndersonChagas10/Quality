@@ -6,13 +6,12 @@ using System.Collections.Generic;
 
 namespace Application
 {
-    public class ResultOldAppService : AppServiceBase<ResultOld>, IResultOldAppService
+    public class ResultOldAppService :  IResultOldAppService
     {
 
         private readonly IResultOldService _resultOldService;
 
-        public ResultOldAppService(IServiceBase<ResultOld> serviceBase, IResultOldService resultOldService) 
-            : base(serviceBase)
+        public ResultOldAppService(IResultOldService resultOldService) 
         {
             _resultOldService = resultOldService;
         }
@@ -24,7 +23,7 @@ namespace Application
 
         public GenericReturn<ResultOld> SalvarLista(List<ResultOld> list)
         {
-            return AddAll(list);
+            return _resultOldService.SalvarLista(list);
         }
 
     }

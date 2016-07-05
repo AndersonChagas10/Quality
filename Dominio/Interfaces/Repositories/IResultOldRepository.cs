@@ -1,11 +1,11 @@
 ﻿using Dominio.Entities;
+using System.Collections.Generic;
 
 namespace Dominio.Interfaces.Repositories
 {
     public interface IResultOldRepository
     {
-
-        GenericReturn<ResultOld> Salvar(ResultOld r);
-
+        void Salvar(ResultOld r);
+        void SalvarLista(List<ResultOld> list);
     }
 }

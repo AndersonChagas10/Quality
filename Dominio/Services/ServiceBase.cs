@@ -47,13 +47,11 @@ namespace Dominio.Services
                     throw new Exception("Ocorreu um erro ao salvar a lista, a lista de dados está vazia.");
 
                 _repositoryBase.AddAll(obj);
-
                 return new GenericReturn<T>() { MensagemSucesso = "Registros inserido com sucesso!" };
-
             }
             catch (Exception ex)
             {
-                return new GenericReturn<T>(ex, "Erro ao adicionar o registro", "Ocorreu um problema ao salvar o registro");
+                return new GenericReturn<T>(ex, "Erro ao adicionar o registro.", "Ocorreu um problema ao salvar o registro.");
             }
         }
 
@@ -61,17 +59,15 @@ namespace Dominio.Services
         {
             try
             {
-
                 _repositoryBase.AddOrUpdate(obj);
                 if (obj.Id > 0)
                     return new GenericReturn<T>() { MensagemSucesso = "Registro alterado com sucesso!" };
                 else
                     return new GenericReturn<T>() { MensagemSucesso = "Registro inserido com sucesso!" };
-
             }
             catch (Exception ex)
             {
-                return ExceptionHelper<T>.RetornaExcecaoBase(ex, "Erro ao inserir o registro.");
+                return new GenericReturn<T>(ex, mensagemErro: "Erro ao inserir objeto.");
             }
         }
 

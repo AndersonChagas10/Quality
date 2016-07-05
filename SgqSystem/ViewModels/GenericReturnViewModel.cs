@@ -1,4 +1,5 @@
-﻿using Dominio.Helpers;
+﻿using AutoMapper;
+using Dominio.Helpers;
 using System;
 using System.Collections.Generic;
 
@@ -14,8 +15,11 @@ namespace SgqSystem.ViewModels
         public T Retorno { get; private set; }
         public List<T> ListRetorno { get; private set; }
         public bool ReturnisBool { get; set; }
+        public string Inner { get; private set; }
 
-        //Constructor for EF        
+        /// <summary>
+        /// Constructor for Entity Framework.        
+        /// </summary>
         public GenericReturnViewModel()
         {
 
@@ -39,17 +43,20 @@ namespace SgqSystem.ViewModels
         public void SetMensagemExcecao(Exception _ex, string mensagemErro = "", string mensagemAlerta = "")
         {
 
-            var inner = "Não consta.";
+            var innerMessage = "";
+            Exception ex;
+            if (_ex.GetType() == typeof(AutoMapperMappingException))
+                ex = _ex.InnerException;
+            else
+                ex = _ex;
 
-            if (_ex.InnerException.IsNotNull())
-            {
-                inner = _ex.InnerException.Message;
-                if (_ex.InnerException.InnerException.IsNotNull())
-                    inner += _ex.InnerException.InnerException.Message;
-            }
-            MensagemErro = mensagemErro;
-            MensagemExcecao = _ex.Message + inner;
+            while (ex.InnerException != null)
+                innerMessage += " Inner: " + ex.InnerException.Message;
+
+            MensagemErro = mensagemErro ?? ex.Message;
+            MensagemExcecao = ex.Message;
             MensagemAlerta = mensagemAlerta;
+            Inner = innerMessage;
         }
 
         public void SetRetorno(T obj)

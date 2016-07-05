@@ -4,7 +4,7 @@ namespace Dominio.Interfaces.Repositories
 {
     public interface IUserRepository 
     {
-        User AuthenticationLogin(string name, string password);
+        User AuthenticationLogin(User user);
 
         void Salvar(User user);
 

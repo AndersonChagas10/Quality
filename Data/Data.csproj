@@ -70,6 +70,10 @@
     <Compile Include="Migrations\201607011743185_Coleta1.Designer.cs">
       <DependentUpon>201607011743185_Coleta1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607052000089_Coleta4.cs" />
+    <Compile Include="Migrations\201607052000089_Coleta4.Designer.cs">
+      <DependentUpon>201607052000089_Coleta4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ResultOldRepository.cs" />
@@ -98,6 +102,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607011743185_Coleta1.resx">
       <DependentUpon>201607011743185_Coleta1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607052000089_Coleta4.resx">
+      <DependentUpon>201607052000089_Coleta4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

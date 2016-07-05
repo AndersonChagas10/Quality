@@ -14,7 +14,8 @@ namespace Dominio.Entities
         public T Retorno { get; private set; }
         public List<T> ListRetorno { get; private set; }
         public bool ReturnisBool { get; set; }
-        
+        public string Inner { get; private set; }
+
         //Constructor for EF        
         public GenericReturn()
         {
@@ -31,11 +32,24 @@ namespace Dominio.Entities
             SetListRetorno(listObj);
         }
 
+        /// <summary>
+        /// Cria retorno Genérico com mensagem de exception + inner exception, com opcional.
+        /// </summary>
+        /// <param name="_ex"></param>
+        /// <param name="mensagemErro"></param>
+        /// <param name="mensagemAlerta"></param>
         public GenericReturn(Exception _ex, string mensagemErro = "", string mensagemAlerta = "")
         {
             SetMensagemExcecao(_ex, MensagemErro, MensagemAlerta);
         }
 
+
+        /// <summary>
+        /// Verifica os dados da Classe Exception 
+        /// </summary>
+        /// <param name="_ex"></param>
+        /// <param name="mensagemErro"></param>
+        /// <param name="mensagemAlerta"></param>
         public void SetMensagemExcecao(Exception _ex, string mensagemErro = "", string mensagemAlerta = "")
         {
             
@@ -48,7 +62,8 @@ namespace Dominio.Entities
                     inner += _ex.InnerException.InnerException.Message;
             }
             MensagemErro = mensagemErro;
-            MensagemExcecao = _ex.Message + inner;
+            MensagemExcecao = _ex.Message;
+            Inner = inner;
             MensagemAlerta = mensagemAlerta;
         }
 

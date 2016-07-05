@@ -1,4 +1,5 @@
 ﻿using Dominio.Entities.BaseEntity;
+using Dominio.Helpers;
 using Dominio.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,6 @@ namespace Data.Repositories
 
         public void Add(T obj)
         {
-            obj.AddDate = DateTime.Now;
             Entity.Add(obj);
             Commit();
         }
@@ -34,7 +34,6 @@ namespace Data.Repositories
         {
             foreach (var i in obj)
             {
-                i.AddDate = DateTime.Now;
                 Entity.Add(i);
             }
             Commit();
@@ -42,7 +41,9 @@ namespace Data.Repositories
 
         public void Update(T obj)
         {
-            obj.AlterDate = DateTime.Now;
+            if (obj.AlterDate.IsNull())
+                obj.AlterDate = DateTime.Now;
+
             db.Entry(obj).State = EntityState.Modified;
             Commit();
         }
@@ -113,6 +114,10 @@ namespace Data.Repositories
                     }
                 }
                 throw;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 

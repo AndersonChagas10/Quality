@@ -6,27 +6,21 @@ namespace SgqSystem.Mappers
 {
     public class ViewModelToDomainMappingProfile : Profile
     {
-        //protected override void Configure()
-        //{
-        //    //CreateMap<DateTime, String>().ConvertUsing<StringFromDateTimeTypeConverter>();
-        //}
         public ViewModelToDomainMappingProfile()
         {
             CreateMap<GenericReturnViewModel<UserViewModel>, GenericReturn<User>>();
-            CreateMap<UserViewModel, User>();
+
+            CreateMap<UserViewModel, User>()
+                .ConstructUsing(src =>
+                    new User(name: src.Name, password: src.Password)
+                );
+                //.IgnoreAllPropertiesWithAnInaccessibleSetter();
+
             CreateMap<ResultOldViewModel, ResultOld>()
                 .ConstructUsing(src =>
-                    new ResultOld()
-                    {
-                        Id = src.Id,
-                        Id_Monitoramento = src.Id_Monitoramento,
-                        Id_Operacao = src.Id_Operacao,
-                        Id_Tarefa = src.Id_Tarefa
-                        //NotConform = src.NotConform,
-                        //Evaluate = src.Evaluate
-                    }
+                    new ResultOld(id: src.Id, id_Tarefa: src.Id_Tarefa, id_Operacao: src.Id_Operacao, id_Monitoramento: src.Id_Monitoramento, evaluate: src.Evaluate, notConform: src.NotConform)
                 );
-            //.IgnoreAllPropertiesWithAnInaccessibleSetter(); ;
+            //.IgnoreAllPropertiesWithAnInaccessibleSetter();
         }
     }
 }

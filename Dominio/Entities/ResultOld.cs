@@ -6,22 +6,36 @@ namespace Dominio.Entities
 {
     public class ResultOld : DataCollectionBase
     {
-        //For EF.
+
+        public int Id_Tarefa { get; set; }
+        public int Id_Operacao { get; set; }
+        public int Id_Monitoramento { get; set; }
+
+        /// <summary>
+        /// Construtor para o Entity Framework.
+        /// </summary>
         public ResultOld()
         {
 
         }
 
-        public ResultOld(int id, int id_Tarefa, int id_Operacao, int id_Monitoramento)
+        /// <summary>
+        /// Constructor para nova avaliação.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="id_Tarefa"></param>
+        /// <param name="id_Operacao"></param>
+        /// <param name="id_Monitoramento"></param>
+        /// <param name="evaluate"></param>
+        /// <param name="notConform"></param>
+        public ResultOld(int id, int id_Tarefa, int id_Operacao, int id_Monitoramento, decimal evaluate, decimal notConform)
         {
-            if (id.IsNull())
-                throw new Exception("O Id não pode ser nulo.");
-            if (id_Tarefa.IsNull())
-                throw new Exception("A Tarefa não pode ser nula.");
-            if (id_Operacao.IsNull())
-                throw new Exception("O Indicador não pode ser nulo.");
-            if (id_Monitoramento.IsNull())
-                throw new Exception("O Monitoramento não pode ser nulo.");
+            Guard.ForValidFk(id_Monitoramento, "O Id do Monitoramento está em formato Inválido ou Nulo.");
+            Guard.ForValidFk(id_Operacao, "O Id da Operação está em formato Inválido ou Nulo.");
+            Guard.ForValidFk(id_Tarefa, "O Id da Tarefa está em formato Inválido ou Nulo.");
+            Guard.ForNegative(id, "O Id do Registro");
+            Guard.ForNegative(evaluate, "O Total Avalido");
+            Guard.ForNegative(notConform, "O Total Avalido");
 
             Id = id;
             Id_Tarefa = id_Tarefa;
@@ -29,9 +43,6 @@ namespace Dominio.Entities
             Id_Monitoramento = id_Monitoramento;
         }
 
-        public int Id_Tarefa { get; set; }
-        public int Id_Operacao { get; set; }
-        public int Id_Monitoramento { get; set; }
 
 
 

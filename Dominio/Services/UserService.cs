@@ -11,31 +11,35 @@ namespace Dominio.Services
 
         private readonly IUserRepository _userRepo;
 
+        /// <summary>
+        /// Construtor para Inversion of Control.
+        /// </summary>
+        /// <param name="userRepo"> Repositório de Usuario, interface de comunicação com Data. </param>
         public UserService(IUserRepository userRepo)
         {
             _userRepo = userRepo;
         }
 
-        public GenericReturn<User> AuthenticationLogin(string name, string password)
+        /// <summary>
+        /// VErifica se existe Usuario e Senha Correspondentes no Banco de dados.
+        /// </summary>
+        /// <param name="name"> Nome do Usuário. </param>
+        /// <param name="password"> Senha do Usuário. </param>
+        /// <returns> Retorna o Usuário caso exista, caso não exista retorna exceção com uma mensagem</returns>
+        public GenericReturn<User> AuthenticationLogin(User user)
         {
+            if (user.IsNull())
+                throw new Exception("Nome de Usuario e Senha devem ser informados.");
 
-            try 
-	        {	        
-                var isUser = _userRepo.AuthenticationLogin(name, password);
-                if (isUser.IsNotNull())
-                {
-                    return new GenericReturn<User>(isUser);
-                }
-                else
-                {
-                    return new GenericReturn<User>() { MensagemAlerta = "Usuario não encontrado, verifique e-mail e senha." };
-                }
-	        }
-	        catch (Exception ex)
-	        {
-                throw new GenericReturn<User>(ex, "Ocorreu um erro inesperado", "Não foi possível localizar Usuario / Senha, por favor tente novamente.");    
-	        }
-
+            var isUser = _userRepo.AuthenticationLogin(user);
+            if (isUser.IsNotNull())
+            {
+                return new GenericReturn<User>(isUser);
+            }
+            else
+            {
+                throw new Exception("Usuario não encontrado, verifique e-mail e senha.");
+            }
         }
 
     }
