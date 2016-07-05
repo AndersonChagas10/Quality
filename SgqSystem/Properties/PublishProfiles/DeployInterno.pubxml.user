@@ -85,19 +85,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/28/2016 18:02:35</publishTime>
     </File>
     <File Include="bin/Application.dll">
-      <publishTime>07/01/2016 15:53:15</publishTime>
+      <publishTime>07/04/2016 17:27:05</publishTime>
     </File>
     <File Include="bin/Application.pdb">
-      <publishTime>07/01/2016 15:53:15</publishTime>
+      <publishTime>07/04/2016 17:27:05</publishTime>
     </File>
     <File Include="bin/ApplicationInsights.config">
       <publishTime>07/01/2016 15:18:16</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>07/01/2016 15:53:37</publishTime>
+      <publishTime>07/04/2016 17:30:18</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>07/01/2016 15:53:37</publishTime>
+      <publishTime>07/04/2016 17:30:17</publishTime>
     </File>
     <File Include="bin/AutoMapper.dll">
       <publishTime>06/29/2016 13:15:15</publishTime>
@@ -106,28 +106,31 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2016 13:15:15</publishTime>
     </File>
     <File Include="bin/CrossCutting.dll">
-      <publishTime>07/01/2016 15:53:16</publishTime>
+      <publishTime>07/04/2016 17:27:05</publishTime>
     </File>
     <File Include="bin/CrossCutting.pdb">
-      <publishTime>07/01/2016 15:53:16</publishTime>
+      <publishTime>07/04/2016 17:27:05</publishTime>
     </File>
     <File Include="bin/Data.dll">
-      <publishTime>07/01/2016 15:53:16</publishTime>
+      <publishTime>07/04/2016 17:27:05</publishTime>
     </File>
     <File Include="bin/Data.pdb">
-      <publishTime>07/01/2016 15:53:16</publishTime>
+      <publishTime>07/04/2016 17:27:05</publishTime>
     </File>
     <File Include="bin/Dominio.dll">
-      <publishTime>07/01/2016 15:53:15</publishTime>
+      <publishTime>07/04/2016 17:27:03</publishTime>
     </File>
     <File Include="bin/Dominio.pdb">
-      <publishTime>07/01/2016 15:53:15</publishTime>
+      <publishTime>07/04/2016 17:27:03</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>06/28/2016 18:02:35</publishTime>
     </File>
     <File Include="bin/EntityFramework.SqlServer.dll">
       <publishTime>06/28/2016 18:02:35</publishTime>
+    </File>
+    <File Include="bin/GridMvc.dll">
+      <publishTime>09/25/2013 14:34:54</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>07/01/2016 15:18:19</publishTime>
@@ -259,10 +262,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2016 13:15:15</publishTime>
     </File>
     <File Include="bin/SgqSystem.dll">
-      <publishTime>07/01/2016 15:53:24</publishTime>
+      <publishTime>07/04/2016 17:27:14</publishTime>
     </File>
     <File Include="bin/SgqSystem.pdb">
-      <publishTime>07/01/2016 15:53:24</publishTime>
+      <publishTime>07/04/2016 17:27:14</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
       <publishTime>06/28/2016 18:02:36</publishTime>
@@ -315,6 +318,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Content/bootstrap.min.css">
       <publishTime>06/29/2016 13:15:13</publishTime>
     </File>
+    <File Include="Content/Gridmvc.css">
+      <publishTime>07/04/2016 11:40:36</publishTime>
+    </File>
+    <File Include="Content/gridmvc.datepicker.css">
+      <publishTime>07/04/2016 11:58:35</publishTime>
+    </File>
+    <File Include="Content/gridmvc.datepicker.min.css">
+      <publishTime>07/04/2016 11:58:35</publishTime>
+    </File>
     <File Include="Content/Site.css">
       <publishTime>06/29/2016 13:15:13</publishTime>
     </File>
@@ -333,11 +345,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="fonts/glyphicons-halflings-regular.woff">
       <publishTime>06/29/2016 13:15:14</publishTime>
     </File>
+    <File Include="Grid.mvc.readme">
+      <publishTime>07/04/2016 11:40:36</publishTime>
+    </File>
     <File Include="packages.config">
-      <publishTime>07/01/2016 15:18:19</publishTime>
+      <publishTime>07/04/2016 11:58:35</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>07/01/2016 15:53:26</publishTime>
+      <publishTime>07/04/2016 17:30:06</publishTime>
     </File>
     <File Include="Scripts/ai.0.15.0-build58334.js">
       <publishTime>06/30/2016 08:35:08</publishTime>
@@ -345,11 +360,23 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/ai.0.15.0-build58334.min.js">
       <publishTime>06/29/2016 13:15:13</publishTime>
     </File>
+    <File Include="Scripts/bootstrap-datepicker.js">
+      <publishTime>07/04/2016 11:58:34</publishTime>
+    </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>06/29/2016 13:15:13</publishTime>
     </File>
     <File Include="Scripts/bootstrap.min.js">
       <publishTime>06/29/2016 13:15:13</publishTime>
+    </File>
+    <File Include="Scripts/gridmvc.js">
+      <publishTime>07/04/2016 11:40:36</publishTime>
+    </File>
+    <File Include="Scripts/gridmvc.lang.ru.js">
+      <publishTime>07/04/2016 11:40:36</publishTime>
+    </File>
+    <File Include="Scripts/gridmvc.min.js">
+      <publishTime>07/04/2016 11:40:35</publishTime>
     </File>
     <File Include="Scripts/jquery-1.10.2.js">
       <publishTime>06/29/2016 13:15:13</publishTime>
@@ -382,13 +409,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2016 13:15:13</publishTime>
     </File>
     <File Include="Scripts/_references.js">
-      <publishTime>06/29/2016 13:15:13</publishTime>
+      <publishTime>07/04/2016 11:58:34</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>06/29/2016 13:15:13</publishTime>
     </File>
+    <File Include="Views/RelatorioColeta/Index.cshtml">
+      <publishTime>07/04/2016 14:23:04</publishTime>
+    </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>06/29/2016 13:15:13</publishTime>
+    </File>
+    <File Include="Views/Shared/_Grid.cshtml">
+      <publishTime>07/04/2016 11:40:35</publishTime>
+    </File>
+    <File Include="Views/Shared/_GridPager.cshtml">
+      <publishTime>07/04/2016 11:40:35</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
       <publishTime>06/29/2016 13:15:13</publishTime>
@@ -400,7 +436,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2016 13:15:13</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/01/2016 15:53:25</publishTime>
+      <publishTime>07/04/2016 17:30:05</publishTime>
     </File>
   </ItemGroup>
 </Project>

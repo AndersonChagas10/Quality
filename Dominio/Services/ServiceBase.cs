@@ -43,6 +43,8 @@ namespace Dominio.Services
         {
             try
             {
+                if (!obj.GetEnumerator().MoveNext())
+                    throw new Exception("Ocorreu um erro ao salvar a lista, a lista de dados está vazia.");
 
                 _repositoryBase.AddAll(obj);
 

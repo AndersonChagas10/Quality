@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SgqSystem.Tests", "SgqSyste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossCutting", "CrossCutting\CrossCutting.csproj", "{0896BC38-DF38-4E39-ADF9-DB1F9910BFE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Test", "Domain.Test\Domain.Test.csproj", "{20E00546-BC40-411E-906D-55B91A3F55CC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{0896BC38-DF38-4E39-ADF9-DB1F9910BFE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0896BC38-DF38-4E39-ADF9-DB1F9910BFE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0896BC38-DF38-4E39-ADF9-DB1F9910BFE6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20E00546-BC40-411E-906D-55B91A3F55CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20E00546-BC40-411E-906D-55B91A3F55CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20E00546-BC40-411E-906D-55B91A3F55CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20E00546-BC40-411E-906D-55B91A3F55CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
