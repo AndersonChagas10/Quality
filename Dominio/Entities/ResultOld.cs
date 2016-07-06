@@ -41,6 +41,8 @@ namespace Dominio.Entities
             Id_Tarefa = id_Tarefa;
             Id_Operacao = id_Operacao;
             Id_Monitoramento = id_Monitoramento;
+            Evaluate = evaluate;
+            NotConform = notConform;
         }
 
 
