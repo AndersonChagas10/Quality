@@ -12,4 +12,3 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket3\Dominio\bin\Debug\Dominio.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Dominio\bin\Debug\Dominio.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Dominio\obj\Debug\Dominio.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Dominio\obj\Debug\Dominio.pdb
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Dominio\obj\Debug\Dominio.csprojResolveAssemblyReference.cache

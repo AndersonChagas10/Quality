@@ -1,7 +1,6 @@
 ﻿using Application.Interface;
 using AutoMapper;
 using Dominio.Entities;
-using Dominio.Helpers;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -22,7 +21,7 @@ namespace SgqSystem.Controllers.Api
         }
 
 
-        // POST: api/ResultOld
+        [Route("api/Result/Salvar")]
         public GenericReturnViewModel<ResultOldViewModel> Post([FromBody] ResultOldViewModel result)
         {
             var resultToSave = Mapper.Map<ResultOldViewModel, ResultOld>(result);
@@ -31,8 +30,7 @@ namespace SgqSystem.Controllers.Api
             return responseViewModel;
         }
 
-        // POST: api/SaveList
-        [Route("api/SalvarLista")]
+        [Route("api/Result/SalvarLista")]
         public GenericReturnViewModel<ResultOldViewModel> SalvarLista([FromBody] List<ResultOldViewModel> obj)
         {
             try

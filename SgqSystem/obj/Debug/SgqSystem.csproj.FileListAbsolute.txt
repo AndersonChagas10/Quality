@@ -21,6 +21,7 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\CrossCutting.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Dominio.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\EntityFramework.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\EntityFramework.SqlServer.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\GridMvc.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.AI.Agent.Intercept.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.AI.DependencyCollector.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Microsoft.AI.PerfCounterCollector.dll
@@ -116,4 +117,3 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\Data.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\obj\Debug\SgqSystem.csprojResolveAssemblyReference.cache
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\obj\Debug\SgqSystem.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\obj\Debug\SgqSystem.pdb
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem\bin\GridMvc.dll
