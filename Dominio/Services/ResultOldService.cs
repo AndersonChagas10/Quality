@@ -1,7 +1,6 @@
 ﻿using Dominio.Interfaces.Services;
 using Dominio.Entities;
 using Dominio.Interfaces.Repositories;
-using System;
 using System.Collections.Generic;
 
 namespace Dominio.Services
@@ -15,6 +14,8 @@ namespace Dominio.Services
         {
             _repoResultOld = repoResultOld;
         }
+
+        public object DbFunction { get; private set; }
 
         public GenericReturn<ResultOld> Salvar(ResultOld r)
         {

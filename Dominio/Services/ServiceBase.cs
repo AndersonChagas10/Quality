@@ -32,9 +32,9 @@ namespace Dominio.Services
                     return new GenericReturn<T>("Registro inserido com sucesso!");
 
             }
-            catch (Exception ex)
+            catch (ExceptionHelper ex)
             {
-                throw new Exception("Erro ao inserir o registro.", ex);
+                throw new ExceptionHelper("Erro ao inserir o registro.", ex);
             }
         }
 
@@ -43,14 +43,14 @@ namespace Dominio.Services
             try
             {
                 if (!obj.GetEnumerator().MoveNext())
-                    throw new Exception("Ocorreu um erro ao salvar a lista, a lista de dados está vazia.");
+                    throw new ExceptionHelper("Ocorreu um erro ao salvar a lista, a lista de dados está vazia.");
 
                 _repositoryBase.AddAll(obj);
                 return new GenericReturn<T>("Registro inserido com sucesso!");
             }
-            catch (Exception ex)
+            catch (ExceptionHelper ex)
             {
-                throw new Exception("Erro ao inserir o registro.", ex);
+                throw new ExceptionHelper("Erro ao inserir o registro.", ex);
             }
         }
 
@@ -64,9 +64,9 @@ namespace Dominio.Services
                 else
                     return new GenericReturn<T>("Registros inserido com sucesso!");
             }
-            catch (Exception ex)
+            catch (ExceptionHelper ex)
             {
-                throw new Exception("Erro ao inserir o registro.", ex);
+                throw new ExceptionHelper("Erro ao inserir o registro.", ex);
             }
         }
 
@@ -79,9 +79,9 @@ namespace Dominio.Services
                 return new GenericReturn<T>("Registro alterado com sucesso!");
 
             }
-            catch (Exception ex)
+            catch (ExceptionHelper ex)
             {
-                throw new Exception("Erro ao alterar o registro.", ex);
+                throw new ExceptionHelper("Erro ao alterar o registro.", ex);
             }
         }
 
