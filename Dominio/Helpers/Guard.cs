@@ -17,7 +17,7 @@ namespace Dominio.Helpers
                 resultado = (T)Convert.ChangeType(valor, typeof(T));
                 return true;
             }
-            catch (Exception)
+            catch (ExceptionHelper)
             {
                 resultado = valorPadrao;
                 return false;
@@ -35,7 +35,7 @@ namespace Dominio.Helpers
             {
                 return (T)Convert.ChangeType(valor, typeof(T));
             }
-            catch (Exception)
+            catch (ExceptionHelper)
             {
                 return valorPadrao;
             }
@@ -51,7 +51,7 @@ namespace Dominio.Helpers
             {
                 return Convert.ToString(valor);
             }
-            catch (Exception)
+            catch (ExceptionHelper)
             {
                 return "";
             }
@@ -63,7 +63,7 @@ namespace Dominio.Helpers
             {
                 return Convert.ToString(valor);
             }
-            catch (Exception)
+            catch (ExceptionHelper)
             {
                 return valorPadrao;
             }
@@ -75,7 +75,7 @@ namespace Dominio.Helpers
             {
                 return Convert.ToDateTime(valor);
             }
-            catch (Exception)
+            catch (ExceptionHelper)
             {
                 return DateTime.Now;
             }
@@ -87,7 +87,7 @@ namespace Dominio.Helpers
             {
                 return Convert.ToDateTime(valor);
             }
-            catch (Exception)
+            catch (ExceptionHelper)
             {
                 return valorPadrao;
             }
@@ -99,7 +99,7 @@ namespace Dominio.Helpers
             {
                 return Convert.ToDateTime(valor, formato);
             }
-            catch (Exception)
+            catch (ExceptionHelper)
             {
                 return valorPadrao;
             }
@@ -119,7 +119,7 @@ namespace Dominio.Helpers
                 }
                 return false;
             }
-            catch (Exception)
+            catch (ExceptionHelper)
             {
                 return false;
             }
@@ -135,7 +135,7 @@ namespace Dominio.Helpers
                 }
                 return false;
             }
-            catch (Exception)
+            catch (ExceptionHelper)
             {
                 return false;
             }
@@ -206,7 +206,7 @@ namespace Dominio.Helpers
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new Exception(mensagemErro);
+                throw new ExceptionHelper(mensagemErro);
             }
         }
 
@@ -218,7 +218,7 @@ namespace Dominio.Helpers
         public static void ForValidId(int id, string mensagemErro)
         {
             if (!(id >= 0))
-                throw new Exception(mensagemErro);
+                throw new ExceptionHelper(mensagemErro);
         }
 
         public static void ForValidFk(string propName, string id)
@@ -229,55 +229,55 @@ namespace Dominio.Helpers
         public static void ForValidFk(int id, string mensagemErro)
         {
             if (!(id > 0))
-                throw new Exception(mensagemErro);
+                throw new ExceptionHelper(mensagemErro);
         }
 
         public static void ForNegative(int number, string propName)
         {
             if (number < 0)
-                throw new Exception(propName + " não pode ser negativo!");
+                throw new ExceptionHelper(propName + " não pode ser negativo!");
         }
 
         public static void ForNegative(decimal number, string propName)
         {
             if (number < 0)
-                throw new Exception(propName + " não pode ser negativo!");
+                throw new ExceptionHelper(propName + " não pode ser negativo!");
         }
 
         public static void ForNegative(double number, string propName)
         {
             if (number < 0)
-                throw new Exception(propName + " não pode ser negativo!");
+                throw new ExceptionHelper(propName + " não pode ser negativo!");
         }
 
         public static void ForNegative(float number, string propName)
         {
             if (number < 0)
-                throw new Exception(propName + " não pode ser negativo!");
+                throw new ExceptionHelper(propName + " não pode ser negativo!");
         }
 
         public static void ForMaiorQuer(int number, int number2, string propName, string propName2)
         {
             if (number < number2)
-                throw new Exception(propName + " não pode menor que "+ propName2 + "!");
+                throw new ExceptionHelper(propName + " não pode menor que "+ propName2 + "!");
         }
 
         public static void ForMaiorQuer(decimal number, decimal number2, string propName, string propName2)
         {
             if (number < number2)
-                throw new Exception(propName + " não pode menor que " + propName2 + "!");
+                throw new ExceptionHelper(propName + " não pode menor que " + propName2 + "!");
         }
 
         public static void ForMaiorQuer(double number, double number2, string propName, string propName2)
         {
             if (number < number2)
-                throw new Exception(propName + " não pode menor que " + propName2 + "!");
+                throw new ExceptionHelper(propName + " não pode menor que " + propName2 + "!");
         }
 
         public static void ForMaiorQuer(float number, float number2, string propName, string propName2)
         {
             if (number < number2)
-                throw new Exception(propName + " não pode menor que " + propName2 + "!");
+                throw new ExceptionHelper(propName + " não pode menor que " + propName2 + "!");
 
         }
 
@@ -297,7 +297,7 @@ namespace Dominio.Helpers
         {
             //Se o valor da STRING é NULL e for Obrigatório.
             if (string.IsNullOrEmpty(value) && requerido == true)
-                throw new Exception(mensagem ?? propName + " não pode ser vazia.");
+                throw new ExceptionHelper(mensagem ?? propName + " não pode ser vazia.");
 
             if (!string.IsNullOrEmpty(value))
             {
@@ -307,7 +307,7 @@ namespace Dominio.Helpers
                 //Compara a STRING com os possíveis erros de parametros passados através do JAVASCRIPT.
                 if (compareValue == "undefined" || compareValue == "null" || compareValue == "[object object]")
                 {
-                    throw new Exception("Formato do campo " + propName + " inválido.");
+                    throw new ExceptionHelper("Formato do campo " + propName + " inválido.");
                 }
                 
                 //Caso a string contenha valor, trata espaços em branco.
@@ -375,7 +375,7 @@ namespace Dominio.Helpers
         public static void VerificaEspacoString(string value, string message)
         {
             if (string.IsNullOrWhiteSpace(value) && value.Length > 0)
-                throw new Exception(message);
+                throw new ExceptionHelper(message);
 
         }
 

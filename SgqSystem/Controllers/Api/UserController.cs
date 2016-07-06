@@ -32,7 +32,7 @@ namespace SgqSystem.Controllers.Api
             }
             catch (Exception e)
             {
-                return new GenericReturnViewModel<UserViewModel>(e, e.Message, "");
+                return new GenericReturnViewModel<UserViewModel>(e, "Ocorreu um erro ao buscar o Usuário.");
             }
         }
 

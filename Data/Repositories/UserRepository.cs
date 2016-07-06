@@ -37,8 +37,7 @@ namespace Data.Repositories
 
         public User AuthenticationLogin(User user)
         {
-            var teste = db.Set<User>().FirstOrDefault(r => r.Name.Equals(user.Name) && r.Password.Equals(user.Password));
-            var result = GetAll().FirstOrDefault(r => r.Name.Equals(user.Name) && r.Password.Equals(user.Password));
+            var result = db.Set<User>().FirstOrDefault(r => r.Name.Equals(user.Name) && r.Password.Equals(user.Password));
             return result;
         }
     }

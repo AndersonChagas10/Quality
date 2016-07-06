@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Dominio.Helpers;
 using System;
 using System.Collections.Generic;
 
@@ -8,69 +7,44 @@ namespace SgqSystem.ViewModels
     public class GenericReturnViewModel<T>
     {
 
-        public string MensagemErro { get; set; }
-        public string MensagemSucesso { get; set; }
-        public string MensagemAlerta { get; set; }
-        public string MensagemExcecao { get; private set; }
+        public string Mensagem { get; set; }
+        public string MensagemExcecao { get; set; }
         public T Retorno { get; private set; }
-        public List<T> ListRetorno { get; private set; }
-        public bool ReturnisBool { get; set; }
+        public List<T> ListRetorno { get; set; }
         public string Inner { get; private set; }
-
+        
         /// <summary>
-        /// Constructor for Entity Framework.        
+        /// Construtor para o AutoMapper
         /// </summary>
         public GenericReturnViewModel()
         {
 
         }
 
-        public GenericReturnViewModel(T obj)
+
+        public GenericReturnViewModel(Exception _ex, string mensagemPadrao = "")
         {
-            SetRetorno(obj);
+            SetMensagemExcecao(_ex, mensagemPadrao);
         }
 
-        public GenericReturnViewModel(List<T> listObj)
-        {
-            SetListRetorno(listObj);
-        }
-
-        public GenericReturnViewModel(Exception _ex, string mensagemErro = "", string mensagemAlerta = "")
-        {
-            SetMensagemExcecao(_ex, MensagemErro, MensagemAlerta);
-        }
-
-        public void SetMensagemExcecao(Exception _ex, string mensagemErro = "", string mensagemAlerta = "")
+        public void SetMensagemExcecao(Exception _ex, string mensagemPadrao)
         {
 
             var innerMessage = "";
-            Exception ex;
-            if (_ex.GetType() == typeof(AutoMapperMappingException))
-                ex = _ex.InnerException;
-            else
-                ex = _ex;
+            var isExceptionHelper = _ex.GetType() == typeof(ExceptionHelper);
+            //Exception ex;
 
-            while (ex.InnerException != null)
-                innerMessage += " Inner: " + ex.InnerException.Message;
+            //if (isExceptionHelper)
+            //    ex = _ex;
+            //else
+            //    ex = _ex.InnerException ?? _ex;
 
-            MensagemErro = mensagemErro ?? ex.Message;
-            MensagemExcecao = ex.Message;
-            MensagemAlerta = mensagemAlerta;
+            while (_ex.InnerException != null)
+                innerMessage += " Inner: " + _ex.InnerException.Message;
+
+            Mensagem = isExceptionHelper ? _ex.Message : mensagemPadrao;
+            MensagemExcecao = _ex.Message;
             Inner = innerMessage;
-        }
-
-        public void SetRetorno(T obj)
-        {
-            if (obj.IsNull())
-                throw new Exception("Objeto não encontrado.");
-
-        }
-
-        public void SetListRetorno(List<T> obj)
-        {
-            if (obj.IsNull())
-                throw new Exception("Objetos não encontrados.");
-
         }
 
     }

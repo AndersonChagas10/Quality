@@ -29,7 +29,7 @@ namespace Dominio.Entities
         {
             //Verifica se ambos parametros estao nulos.
             if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(password))
-                throw new Exception("Nome de Usuario e Senha devem ser informados.");
+                throw new ExceptionHelper("Nome de Usuario e Senha devem ser informados.");
 
             SetName(name);
             SetPassword(password);
@@ -56,6 +56,8 @@ namespace Dominio.Entities
             Guard.NullOrEmptyValuesCheck(out pass, "Senha" ,pass, mensagem: "O campo senha deve ser informado.", requerido: true);
             Password = pass;
         }
+
+        #region Cripyto center.
 
         //private void ChangePassword(string senha, string senhaConfirmacao, string senhaAtual)
         //{
@@ -88,16 +90,16 @@ namespace Dominio.Entities
         //            //decryptedData = EncryptHelper.RSADecrypt(dataToEncryptNew, RSA.ExportParameters(false), false);
 
         //            if (encryptedDataOld == encryptedDataNew)
-        //                throw new Exception("Senha atual deve ser diferente da nova senha.");
+        //                throw new ExceptionHelper("Senha atual deve ser diferente da nova senha.");
 
         //            Password = encryptedDataNew;
 
         //        }
 
         //    }
-        //    catch (Exception)
+        //    catch (ExceptionHelper)
         //    {
-        //        throw new Exception("Problema ao cryptografar a senha.");
+        //        throw new ExceptionHelper("Problema ao cryptografar a senha.");
         //    }
 
         //}
@@ -117,10 +119,11 @@ namespace Dominio.Entities
         //        }
 
         //    }
-        //    catch (Exception)
+        //    catch (ExceptionHelper)
         //    {
-        //        throw new Exception("Problema ao cryptografar a senha.");
+        //        throw new ExceptionHelper("Problema ao cryptografar a senha.");
         //    }
-        //}
+        //} 
+        #endregion
     }
 }

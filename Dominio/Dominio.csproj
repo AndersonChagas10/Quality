@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Entities\GenericReturn.cs" />
     <Compile Include="Entities\ResultOld.cs" />
     <Compile Include="Entities\Tarefa.cs" />
     <Compile Include="Entities\Operacao.cs" />
@@ -38,7 +39,6 @@
     <Compile Include="Entities\BaseEntity\EntityBase.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\Guard.cs" />
-    <Compile Include="Entities\GenericReturn.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Interfaces\Repositories\IResultOldRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRepositoryBase.cs" />

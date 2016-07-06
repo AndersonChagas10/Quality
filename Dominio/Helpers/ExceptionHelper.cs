@@ -1,15 +1,15 @@
-﻿using Dominio.Entities;
-using System;
+﻿using System;
 
-namespace Dominio.Helpers
+[Serializable()]
+public class ExceptionHelper : System.Exception
 {
-    public static class ExceptionHelper<T> where T : class
-    {
+    public ExceptionHelper() : base() { }
+    public ExceptionHelper(string message) : base(message) { }
+    public ExceptionHelper(string message, System.Exception inner) : base(message, inner) { }
 
-        public static GenericReturn<T> RetornaExcecaoBase(Exception ex, string mensagemErro = "", string mensagemAlerta = "", T obj = null)
-        {
-            return new GenericReturn<T>(ex, mensagemErro, mensagemAlerta);
-        }
-
-    }
+    // A constructor is needed for serialization when an
+    // exception propagates from a remoting server to the client. 
+    protected ExceptionHelper(System.Runtime.Serialization.SerializationInfo info,
+        System.Runtime.Serialization.StreamingContext context)
+    { }
 }

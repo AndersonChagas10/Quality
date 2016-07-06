@@ -24,10 +24,17 @@ namespace SgqSystem.Controllers.Api
         [Route("api/Result/Salvar")]
         public GenericReturnViewModel<ResultOldViewModel> Post([FromBody] ResultOldViewModel result)
         {
-            var resultToSave = Mapper.Map<ResultOldViewModel, ResultOld>(result);
-            var response = _resultOldAppService.Salvar(resultToSave);
-            var responseViewModel = Mapper.Map<GenericReturn<ResultOld>, GenericReturnViewModel<ResultOldViewModel>>(response);
-            return responseViewModel;
+            try
+            {
+                var resultToSave = Mapper.Map<ResultOldViewModel, ResultOld>(result);
+                var response = _resultOldAppService.Salvar(resultToSave);
+                var responseViewModel = Mapper.Map<GenericReturn<ResultOld>, GenericReturnViewModel<ResultOldViewModel>>(response);
+                return responseViewModel;
+            }
+            catch (Exception e)
+            {
+                return new GenericReturnViewModel<ResultOldViewModel>(e);
+            }
         }
 
         [Route("api/Result/SalvarLista")]
@@ -42,7 +49,7 @@ namespace SgqSystem.Controllers.Api
             }
             catch (Exception e)
             {
-                return new GenericReturnViewModel<ResultOldViewModel>(e, e.Message, "");
+                return new GenericReturnViewModel<ResultOldViewModel>(e);
             }
         }
 
