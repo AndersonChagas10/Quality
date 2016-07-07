@@ -9,8 +9,8 @@ namespace Dominio.Entities.Tests
 
         
         [TestMethod()]
-        [ExpectedException(typeof(Exception))]
-        public void NewResult_Total_Avalido_Negativo()
+        [ExpectedException(typeof(ExceptionHelper))]
+        public void ResultControllertTest_Total_Avalido_Negativo()
         {
             decimal valor1 = -1;
             new ResultOld(0, 1, 2, 3, valor1, 0);
@@ -18,45 +18,79 @@ namespace Dominio.Entities.Tests
         }
 
         [TestMethod()]
-        [ExpectedException(typeof(Exception))]
-        public void NewResult_Total_Nao_Conformidade_Negativo()
+        public void ResultControllertTest_Total_Nao_Conformidade_Negativo()
         {
-            decimal valor1 = -1;
-            new ResultOld(0, 1, 2, 3, 0, valor1);
+            try
+            {
+                decimal naoConformidade = -1;
+                new ResultOld(0, 1, 2, 3, 0, naoConformidade);
+                Assert.Fail("Should throw here");
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual(ex.Message, "O Total Avaliado não pode ser negativo!");
+            }
         }
 
         #region Teste de Ids Fks e Pks
 
        
         [TestMethod()]
-        [ExpectedException(typeof(Exception))]
-        public void NewResult_Id_Tarefa_Invalido()
+        [ExpectedException(typeof(ExceptionHelper))]
+        public void ResultControllertTest_Id_Tarefa_Invalido()
         {
-            new ResultOld(0, -1, 2, 3, 0, 0);
+            try
+            {
+                int idTarefa = -1;
+                new ResultOld(0, idTarefa, 2, 3, 0, 0);
+                Assert.Fail("Should throw here");
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual(ex.Message, "O Id da Tarefa está em formato Inválido ou Nulo.");
+            }
         }
 
      
 
         [TestMethod()]
-        [ExpectedException(typeof(Exception))]
-        public void NewResult_Id_Monitoramento_Invalido()
+        [ExpectedException(typeof(ExceptionHelper))]
+        public void ResultControllertTest_Id_Monitoramento_Invalido()
         {
-            new ResultOld(0, 1, 1, -1, 0, 0);
+            try
+            {
+                int idMonitoramento = -1;
+                new ResultOld(0, 1, 1, idMonitoramento, 0, 0);
+                Assert.Fail("Should throw here");
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual(ex.Message, "O Id do Monitoramento está em formato Inválido ou Nulo.");
+            }
         }
 
       
 
         [TestMethod()]
-        [ExpectedException(typeof(Exception))]
-        public void NewResult_Id_Operacao_Invalido()
+        [ExpectedException(typeof(ExceptionHelper))]
+        public void ResultControllertTest_Id_Operacao_Invalido()
         {
-            new ResultOld(0, 1, -2, 3, 0, 0);
+            try
+            {
+                int idOperacao = -1;
+                new ResultOld(0, 1, 1, idOperacao, 0, 0);
+                Assert.Fail("Should throw here");
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual(ex.Message, "O Id do Monitoramento está em formato Inválido ou Nulo.");
+            }
         }
       
 
         [TestMethod()]
-        [ExpectedException(typeof(Exception))]
-        public void NewResult_Id_Invalido()
+        [ExpectedException(typeof(ExceptionHelper))]
+        public void ResultControllertTest_Id_Invalido()
         {
             new ResultOld(-10, 1, 2, 3, 0, 0);
         }

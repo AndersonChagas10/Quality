@@ -84,3 +84,7 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem.Tests\bin\Debug\Data.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem.Tests\obj\Debug\SgqSystem.Tests.csprojResolveAssemblyReference.cache
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem.Tests\obj\Debug\SgqSystem.Tests.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem.Tests\obj\Debug\SgqSystem.Tests.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem.Tests\bin\Debug\Castle.Core.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem.Tests\bin\Debug\Moq.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem.Tests\bin\Debug\Castle.Core.xml
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\SgqSystem.Tests\bin\Debug\Moq.xml

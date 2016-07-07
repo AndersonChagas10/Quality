@@ -26,3 +26,5 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket3\Application\bin\Debug\Dominio.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Application\obj\Debug\Application.csprojResolveAssemblyReference.cache
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Application\obj\Debug\Application.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Application\obj\Debug\Application.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\Application\bin\Debug\Castle.Core.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\Application\bin\Debug\Castle.Core.xml

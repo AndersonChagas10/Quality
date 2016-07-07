@@ -34,8 +34,8 @@ namespace Dominio.Entities
             Guard.ForValidFk(id_Operacao, "O Id da Operação está em formato Inválido ou Nulo.");
             Guard.ForValidFk(id_Tarefa, "O Id da Tarefa está em formato Inválido ou Nulo.");
             Guard.ForNegative(id, "O Id do Registro");
-            Guard.ForNegative(evaluate, "O Total Avalido");
-            Guard.ForNegative(notConform, "O Total Avalido");
+            Guard.ForNegative(evaluate, "O Total Avaliado");
+            Guard.ForNegative(notConform, "O Total Avaliado");
 
             Id = id;
             Id_Tarefa = id_Tarefa;
