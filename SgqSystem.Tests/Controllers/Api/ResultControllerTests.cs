@@ -1,13 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dominio.Entities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Dominio.Entities.Tests
+namespace Dominio.Controllers.Api.Tests
 {
     [TestClass()]
     public class ResultControllerTests
     {
 
-        
+        #region Testes dados negativo quantidade
+
         [TestMethod()]
         [ExpectedException(typeof(ExceptionHelper))]
         public void ResultControllertTest_Total_Avalido_Negativo()
@@ -32,11 +34,12 @@ namespace Dominio.Entities.Tests
             }
         }
 
+        #endregion
+
         #region Teste de Ids Fks e Pks
 
-       
+
         [TestMethod()]
-        [ExpectedException(typeof(ExceptionHelper))]
         public void ResultControllertTest_Id_Tarefa_Invalido()
         {
             try
@@ -54,7 +57,6 @@ namespace Dominio.Entities.Tests
      
 
         [TestMethod()]
-        [ExpectedException(typeof(ExceptionHelper))]
         public void ResultControllertTest_Id_Monitoramento_Invalido()
         {
             try
@@ -72,7 +74,6 @@ namespace Dominio.Entities.Tests
       
 
         [TestMethod()]
-        [ExpectedException(typeof(ExceptionHelper))]
         public void ResultControllertTest_Id_Operacao_Invalido()
         {
             try

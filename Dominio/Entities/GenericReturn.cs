@@ -10,18 +10,22 @@ namespace Dominio.Entities
         public string Mensagem { get; set; }
         public string MensagemExcecao { get; set; }
         public T Retorno { get; private set; }
-        public List<T> ListRetorno { get; set; }
+        //public List<T> ListRetorno { get; set; }
         public string Inner { get; private set; }
+
+        public GenericReturn()
+        {
+        }
 
         public GenericReturn(T obj)
         {
-            SetRetorno(obj);
+             SetRetorno(obj);
         }
 
-        public GenericReturn(List<T> listObj)
-        {
-            SetListRetorno(listObj);
-        }
+        //public GenericReturn(List<T> listObj)
+        //{
+        //    SetListRetorno(listObj);
+        //}
 
         public GenericReturn(string _mensagem)
         {
@@ -37,12 +41,14 @@ namespace Dominio.Entities
             Retorno = obj;
         }
 
-        public void SetListRetorno(List<T> obj)
-        {
-            if (obj.IsNull())
-                throw new ExceptionHelper("Objetos não encontrados.");
+        //public void SetListRetorno(List<T> obj)
+        //{
+        //    if (obj.IsNull())
+        //        throw new ExceptionHelper("Objetos não encontrados.");
 
-        }
+        //        ListRetorno = obj;
+
+        //}
 
     }
 }

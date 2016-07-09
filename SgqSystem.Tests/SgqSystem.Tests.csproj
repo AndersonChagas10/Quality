@@ -100,7 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Api\UserControllerTests.cs" />
-    <Compile Include="Entities\ResultControllerTests.cs" />
+    <Compile Include="Controllers\Api\ResultControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\ValuesControllerTest.cs" />
@@ -124,6 +124,9 @@
       <Project>{EF4A17A1-123E-4FC4-A75E-35ABBC39DB21}</Project>
       <Name>SgqSystem</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

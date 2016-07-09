@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace SgqSystem.ViewModels
@@ -10,9 +9,9 @@ namespace SgqSystem.ViewModels
         public string Mensagem { get; set; }
         public string MensagemExcecao { get; set; }
         public T Retorno { get; private set; }
-        public List<T> ListRetorno { get; set; }
+        //public List<T> ListRetorno { get; set; }
         public string Inner { get; private set; }
-        
+
         /// <summary>
         /// Construtor para o AutoMapper
         /// </summary>
@@ -29,18 +28,24 @@ namespace SgqSystem.ViewModels
 
         public void SetMensagemExcecao(Exception _ex, string mensagemPadrao)
         {
-
             var innerMessage = "";
             var isExceptionHelper = _ex.GetType() == typeof(ExceptionHelper);
-            //Exception ex;
 
-            //if (isExceptionHelper)
-            //    ex = _ex;
-            //else
-            //    ex = _ex.InnerException ?? _ex;
 
-            while (_ex.InnerException != null)
+            if (!isExceptionHelper && _ex.InnerException != null) // Se a Exception lancada não for Exception Helper & Se a InnerException for diferente de null:
+                if (_ex.InnerException.GetType() == typeof(ExceptionHelper)) //Se for exceção de validação Guard pelo contrutor, acionado pelo auto mapper, a inner exception é a execeção lançada pelo guard. Caso alguma outra excessão caia neste contexto, adaptar o mesmo para tratamento.
+                {
+                    _ex = _ex.InnerException;
+                    isExceptionHelper = _ex.GetType() == typeof(ExceptionHelper);
+                }
+
+
+            if (_ex.InnerException != null)
+            {
                 innerMessage += " Inner: " + _ex.InnerException.Message;
+                if (_ex.InnerException.InnerException != null)
+                    innerMessage += " Inner: " + _ex.InnerException.InnerException.Message;
+            }
 
             Mensagem = isExceptionHelper ? _ex.Message : mensagemPadrao;
             MensagemExcecao = _ex.Message;

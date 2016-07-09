@@ -78,8 +78,18 @@
     <Compile Include="Migrations\201607061314022_LoginAccessDateNullable.Designer.cs">
       <DependentUpon>201607061314022_LoginAccessDateNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607072158000_inclusaoAmostraAvaliacao.cs" />
+    <Compile Include="Migrations\201607072158000_inclusaoAmostraAvaliacao.Designer.cs">
+      <DependentUpon>201607072158000_inclusaoAmostraAvaliacao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607081512411_InclusaoDeDadosPorSeed.cs" />
+    <Compile Include="Migrations\201607081512411_InclusaoDeDadosPorSeed.Designer.cs">
+      <DependentUpon>201607081512411_InclusaoDeDadosPorSeed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\IndicadoresOperacoesMonitoramentoIntilizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\RelatorioBetaRepository.cs" />
     <Compile Include="Repositories\ResultOldRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
@@ -112,6 +122,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607061314022_LoginAccessDateNullable.resx">
       <DependentUpon>201607061314022_LoginAccessDateNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607072158000_inclusaoAmostraAvaliacao.resx">
+      <DependentUpon>201607072158000_inclusaoAmostraAvaliacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607081512411_InclusaoDeDadosPorSeed.resx">
+      <DependentUpon>201607081512411_InclusaoDeDadosPorSeed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -45,9 +45,11 @@
   <ItemGroup>
     <Compile Include="AppServiceBase.cs" />
     <Compile Include="Interface\IAppServiceBase.cs" />
+    <Compile Include="Interface\IRelatorioBetaAppService.cs" />
     <Compile Include="Interface\IResultOldAppService.cs" />
     <Compile Include="Interface\IUserAppService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelatorioBetaAppService.cs" />
     <Compile Include="ResultOldAppService.cs" />
     <Compile Include="UserAppService.cs" />
   </ItemGroup>

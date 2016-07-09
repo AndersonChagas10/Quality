@@ -11,6 +11,7 @@ namespace CrossCutting.IOC.Module
             Bind(typeof(IRepositoryBase<>)).To(typeof(RepositoryBase<>));
             Bind<IUserRepository>().To<UserRepository>();
             Bind<IResultOldRepository>().To<ResultOldRepository>();
+            Bind<IRelatorioBetaRepository>().To<RelatorioBetaRepository>();
         }
     }
 }

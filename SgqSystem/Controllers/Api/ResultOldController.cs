@@ -42,14 +42,14 @@ namespace SgqSystem.Controllers.Api
         {
             try
             {
-                List<ResultOld> objToSave;
-                objToSave = Mapper.Map<List<ResultOldViewModel>, List<ResultOld>>(obj);
+                //List<ResultOld> objToSave;
+                var objToSave = Mapper.Map<List<ResultOldViewModel>, List<ResultOld>>(obj);
                 var result = _resultOldAppService.SalvarLista(objToSave);
                 return Mapper.Map<GenericReturn<ResultOld>, GenericReturnViewModel<ResultOldViewModel>>(result);
             }
             catch (Exception e)
             {
-                return new GenericReturnViewModel<ResultOldViewModel>(e);
+                return new GenericReturnViewModel<ResultOldViewModel>(e, "Não foi possível inserir a coleta.");
             }
         }
 

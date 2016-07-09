@@ -15,6 +15,8 @@ namespace Data.EntityConfig
             Property(r => r.AlterDate).IsOptional();
             Property(r => r.NotConform).IsOptional();
             Property(r => r.Evaluate).IsOptional();
+            Property(r => r.numero1).IsRequired();
+            Property(r => r.numero2).IsRequired();
         }
     }
 }

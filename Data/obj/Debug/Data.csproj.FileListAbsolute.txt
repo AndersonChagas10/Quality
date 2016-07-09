@@ -53,3 +53,5 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.csproj.GenerateRe
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.Migrations.LoginAccessDateNullable.resources
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.Migrations.inclusaoAmostraAvaliacao.resources
+C:\Users\Celso\Source\Repos\ddd.bitbucket3\Data\obj\Debug\Data.Migrations.InclusaoDeDadosPorSeed.resources

@@ -1,4 +1,5 @@
 ﻿using Data.EntityConfig;
+using Data.Migrations;
 using Dominio.Entities;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
@@ -13,11 +14,22 @@ namespace Data
         {
             Configuration.LazyLoadingEnabled = false;
             Database.CreateIfNotExists();
+            Database.CommandTimeout = 9600;
+            Database.Log = s => System.Diagnostics.Debug.Write(s);
+
+            //Seeds
+            //Database.SetInitializer(new IndicadoresOperacoesMonitoramentoIntilizer());
         }
 
-        //public DbSet<EntityBase> EntityBases { get; set; }
+
+        /// <summary>
+        /// Tabelas relacionadas no Entity Framework, para serem utilizadas pelo context, por ex. db.TabelaX.Where...
+        /// </summary>
         public DbSet<User> Usuarios { get; set; }
         public DbSet<ResultOld> Results { get; set; }
+        public DbSet<Tarefa> Tarefas { get; set; }
+        public DbSet<Operacao> indicadores { get; set; }
+        public DbSet<Monitoramento> Monitoramentos { get; set; }
         //public DbSet<Result> Results { get; set; }
         //public DbSet<AuditCenter> AuditCenters { get; set; }
 

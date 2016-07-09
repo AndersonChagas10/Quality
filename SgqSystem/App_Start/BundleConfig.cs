@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace SgqSystem
 {
@@ -10,6 +9,12 @@ namespace SgqSystem
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
+
+            //HighCharts
+            bundles.Add(new ScriptBundle("~/bundles/hc")
+                .Include("~/Scripts/highcharts/4.2.0/highcharts.js")
+                //.Include("~/Scripts/highcharts/4.2.0/highcharts.src.js")
+            );
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
