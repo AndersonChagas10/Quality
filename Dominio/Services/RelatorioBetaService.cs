@@ -30,5 +30,35 @@ namespace Dominio.Services
             }
 
         }
+
+        public GenericReturn<List<ResultOld>> GetNcPorMonitoramento(int indicadorId)
+        {
+            try
+            {
+                var retornoRepositorio = _relatorioBetaService.GetNcPorMonitoramento(indicadorId);
+                var retorno = new GenericReturn<List<ResultOld>>(retornoRepositorio);
+                return retorno;
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionHelper("Não foi possível gerar o relatório de Monitoramentos.", ex);
+            }
+
+        }
+
+        public GenericReturn<List<ResultOld>> GetNcPorTarefa(int indicadorId, int monitoramentoId)
+        {
+            try
+            {
+                var retornoRepositorio = _relatorioBetaService.GetNcPorTarefa(indicadorId, monitoramentoId);
+                var retorno = new GenericReturn<List<ResultOld>>(retornoRepositorio);
+                return retorno;
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionHelper("Não foi possível gerar o relatório de Tarefas.", ex);
+            }
+
+        }
     }
 }

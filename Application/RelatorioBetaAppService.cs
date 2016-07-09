@@ -15,9 +15,20 @@ namespace Application
             _relatorioBetaService = relatorioBetaService;
         }
 
+
         public GenericReturn<List<ResultOld>> GetNcPorIndicador(int indicadorId)
         {
             return _relatorioBetaService.GetNcPorIndicador(indicadorId);
+        }
+
+        public GenericReturn<List<ResultOld>> GetNcPorMonitoramento(int indicadorId)
+        {
+            return _relatorioBetaService.GetNcPorMonitoramento(indicadorId);
+        }
+
+        public GenericReturn<List<ResultOld>> GetNcPorTarefa(int indicadorId, int monitoramentoId)
+        {
+            return _relatorioBetaService.GetNcPorTarefa(indicadorId, monitoramentoId);
         }
     }
 }

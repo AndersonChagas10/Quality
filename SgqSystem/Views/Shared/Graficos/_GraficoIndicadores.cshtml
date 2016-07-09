@@ -1,5 +1,8 @@
 ﻿
 @{
+    var urlIndicadores = Url.Action("GetNcPorIndicador", "RelatorioBetaApi");
+    var urlMonitoramentos = Url.Action("GetNcPorIndicador", "RelatorioBetaApi");
+    var urlTarefas = Url.Action("GetNcPorIndicador", "RelatorioBetaApi");
     ViewBag.Title = "_GraficoIndicadores";
 }
 
@@ -18,7 +21,9 @@
     var divTemperatura = "";
     var divMonitoramento = "";
     var divTarefa = "";
-
+    var urlIndicador = '@Html.Raw(urlIndicadores)';
+    var urlMonitoramento = '@Html.Raw(urlMonitoramentos)';
+    var urlTarefa = '@Html.Raw(urlTarefas)';
 
     var _GraficoIndicadoresJsControl = {
 
@@ -39,7 +44,7 @@
                     divClonada.find('.panel-heading').html(a.Id_Operacao);
 
                     divTemperatura = DivManager.criaDiv(idDivTendencia, b, "temperatura");
-                    
+
 
                     divMonitoramento = DivManager.criaDiv(idDivTendencia, b, "monitoramento");
 
