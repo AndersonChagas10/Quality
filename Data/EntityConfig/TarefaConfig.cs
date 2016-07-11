@@ -8,8 +8,7 @@ namespace Data.EntityConfig
         public TarefaConfig()
         {
             HasKey(r => r.Id);
-            Property(r => r.Name).IsRequired();
-
+            Property(r => r.Name).IsRequired().HasMaxLength(250);
         }
     }
 }

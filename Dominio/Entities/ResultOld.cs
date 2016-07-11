@@ -14,6 +14,13 @@ namespace Dominio.Entities
         public int numero2 { get; set; }
 
         /// <summary>
+        /// Ignoreds pelo Entity Framework.
+        /// </summary>
+        public string Operacao { get; set; }
+        public string Monitoramento { get; set; }
+        public string Tarefa { get; set; }
+
+        /// <summary>
         /// Construtor para o Entity Framework.
         /// </summary>
         public ResultOld()
@@ -47,8 +54,8 @@ namespace Dominio.Entities
             NotConform = notConform;
         }
 
-
-
-
+      
     }
+
+   
 }

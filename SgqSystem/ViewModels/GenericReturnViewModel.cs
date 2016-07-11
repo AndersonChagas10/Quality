@@ -20,7 +20,6 @@ namespace SgqSystem.ViewModels
 
         }
 
-
         public GenericReturnViewModel(Exception _ex, string mensagemPadrao = "")
         {
             SetMensagemExcecao(_ex, mensagemPadrao);
@@ -31,14 +30,12 @@ namespace SgqSystem.ViewModels
             var innerMessage = "";
             var isExceptionHelper = _ex.GetType() == typeof(ExceptionHelper);
 
-
             if (!isExceptionHelper && _ex.InnerException != null) // Se a Exception lancada não for Exception Helper & Se a InnerException for diferente de null:
                 if (_ex.InnerException.GetType() == typeof(ExceptionHelper)) //Se for exceção de validação Guard pelo contrutor, acionado pelo auto mapper, a inner exception é a execeção lançada pelo guard. Caso alguma outra excessão caia neste contexto, adaptar o mesmo para tratamento.
                 {
                     _ex = _ex.InnerException;
                     isExceptionHelper = _ex.GetType() == typeof(ExceptionHelper);
                 }
-
 
             if (_ex.InnerException != null)
             {

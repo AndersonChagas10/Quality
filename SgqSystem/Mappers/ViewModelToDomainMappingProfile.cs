@@ -14,13 +14,11 @@ namespace SgqSystem.Mappers
                 .ConstructUsing(src =>
                     new User(name: src.Name, password: src.Password)
                 );
-                //.IgnoreAllPropertiesWithAnInaccessibleSetter();
 
             CreateMap<ResultOldViewModel, ResultOld>()
                 .ConstructUsing(src =>
                     new ResultOld(id: src.Id, id_Tarefa: src.Id_Tarefa, id_Operacao: src.Id_Operacao, id_Monitoramento: src.Id_Monitoramento, evaluate: src.Evaluate, notConform: src.NotConform)
                 );
-            //.IgnoreAllPropertiesWithAnInaccessibleSetter();
         }
     }
 }

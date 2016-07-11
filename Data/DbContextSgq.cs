@@ -15,7 +15,7 @@ namespace Data
             Configuration.LazyLoadingEnabled = false;
             Database.CreateIfNotExists();
             Database.CommandTimeout = 9600;
-            Database.Log = s => System.Diagnostics.Debug.Write(s);
+            //Database.Log = s => System.Diagnostics.Debug.Write(s);
 
             //Seeds
             //Database.SetInitializer(new IndicadoresOperacoesMonitoramentoIntilizer());
@@ -45,7 +45,7 @@ namespace Data
 
             modelBuilder.Properties().Where(r => r.Name == r.ReflectedType.Name + "Id").Configure(r => r.IsKey());
 
-            modelBuilder.Properties<string>().Configure(p => p.HasMaxLength(70));
+            modelBuilder.Properties<string>().Configure(p => p.HasMaxLength(270));
 
 
             modelBuilder.Configurations.Add(new UserConfig());

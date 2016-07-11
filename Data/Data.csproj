@@ -54,37 +54,9 @@
     <Compile Include="EntityConfig\ResultConfigOld.cs" />
     <Compile Include="EntityConfig\TarefaConfig.cs" />
     <Compile Include="EntityConfig\UserConfig.cs" />
-    <Compile Include="Migrations\201607011309228_Coleta3.cs" />
-    <Compile Include="Migrations\201607011309228_Coleta3.Designer.cs">
-      <DependentUpon>201607011309228_Coleta3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607011337157_Coleta31.cs" />
-    <Compile Include="Migrations\201607011337157_Coleta31.Designer.cs">
-      <DependentUpon>201607011337157_Coleta31.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607011741215_Coleta.cs" />
-    <Compile Include="Migrations\201607011741215_Coleta.Designer.cs">
-      <DependentUpon>201607011741215_Coleta.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607011743185_Coleta1.cs" />
-    <Compile Include="Migrations\201607011743185_Coleta1.Designer.cs">
-      <DependentUpon>201607011743185_Coleta1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607052000089_Coleta4.cs" />
-    <Compile Include="Migrations\201607052000089_Coleta4.Designer.cs">
-      <DependentUpon>201607052000089_Coleta4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607061314022_LoginAccessDateNullable.cs" />
-    <Compile Include="Migrations\201607061314022_LoginAccessDateNullable.Designer.cs">
-      <DependentUpon>201607061314022_LoginAccessDateNullable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607072158000_inclusaoAmostraAvaliacao.cs" />
-    <Compile Include="Migrations\201607072158000_inclusaoAmostraAvaliacao.Designer.cs">
-      <DependentUpon>201607072158000_inclusaoAmostraAvaliacao.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607081512411_InclusaoDeDadosPorSeed.cs" />
-    <Compile Include="Migrations\201607081512411_InclusaoDeDadosPorSeed.Designer.cs">
-      <DependentUpon>201607081512411_InclusaoDeDadosPorSeed.cs</DependentUpon>
+    <Compile Include="Migrations\201607091856447_Reset.cs" />
+    <Compile Include="Migrations\201607091856447_Reset.Designer.cs">
+      <DependentUpon>201607091856447_Reset.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\IndicadoresOperacoesMonitoramentoIntilizer.cs" />
@@ -105,29 +77,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201607011309228_Coleta3.resx">
-      <DependentUpon>201607011309228_Coleta3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607011337157_Coleta31.resx">
-      <DependentUpon>201607011337157_Coleta31.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607011741215_Coleta.resx">
-      <DependentUpon>201607011741215_Coleta.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607011743185_Coleta1.resx">
-      <DependentUpon>201607011743185_Coleta1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607052000089_Coleta4.resx">
-      <DependentUpon>201607052000089_Coleta4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607061314022_LoginAccessDateNullable.resx">
-      <DependentUpon>201607061314022_LoginAccessDateNullable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607072158000_inclusaoAmostraAvaliacao.resx">
-      <DependentUpon>201607072158000_inclusaoAmostraAvaliacao.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607081512411_InclusaoDeDadosPorSeed.resx">
-      <DependentUpon>201607081512411_InclusaoDeDadosPorSeed.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201607091856447_Reset.resx">
+      <DependentUpon>201607091856447_Reset.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

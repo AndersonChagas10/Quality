@@ -7,7 +7,6 @@ namespace SgqSystem.Controllers
 
         public ActionResult index()
         {
-
             return View();
         }
 

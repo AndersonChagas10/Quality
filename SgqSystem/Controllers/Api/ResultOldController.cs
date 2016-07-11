@@ -20,7 +20,6 @@ namespace SgqSystem.Controllers.Api
             _resultOldAppService = resultOldAppService;
         }
 
-
         [Route("api/Result/Salvar")]
         public GenericReturnViewModel<ResultOldViewModel> Post([FromBody] ResultOldViewModel result)
         {

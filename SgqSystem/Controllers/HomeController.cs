@@ -6,7 +6,7 @@ namespace SgqSystem.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            ViewBag.Title = "Sgq Global Beta";
 
             return View();
         }

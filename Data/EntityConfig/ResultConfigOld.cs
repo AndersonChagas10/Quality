@@ -17,6 +17,9 @@ namespace Data.EntityConfig
             Property(r => r.Evaluate).IsOptional();
             Property(r => r.numero1).IsRequired();
             Property(r => r.numero2).IsRequired();
+            Ignore(r => r.Operacao);
+            Ignore(r => r.Monitoramento);
+            Ignore(r => r.Tarefa);
         }
     }
 }

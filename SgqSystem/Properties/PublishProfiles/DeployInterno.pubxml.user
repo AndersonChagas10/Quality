@@ -85,19 +85,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/28/2016 18:02:35</publishTime>
     </File>
     <File Include="bin/Application.dll">
-      <publishTime>07/08/2016 11:33:33</publishTime>
+      <publishTime>07/11/2016 11:04:30</publishTime>
     </File>
     <File Include="bin/Application.pdb">
-      <publishTime>07/08/2016 11:33:33</publishTime>
+      <publishTime>07/11/2016 11:04:30</publishTime>
     </File>
     <File Include="bin/ApplicationInsights.config">
       <publishTime>07/01/2016 15:18:16</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>07/08/2016 12:35:12</publishTime>
+      <publishTime>07/11/2016 11:18:24</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>07/08/2016 12:35:12</publishTime>
+      <publishTime>07/11/2016 11:18:23</publishTime>
     </File>
     <File Include="bin/AutoMapper.dll">
       <publishTime>06/29/2016 13:15:15</publishTime>
@@ -106,22 +106,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2016 13:15:15</publishTime>
     </File>
     <File Include="bin/CrossCutting.dll">
-      <publishTime>07/08/2016 12:31:54</publishTime>
+      <publishTime>07/11/2016 11:04:31</publishTime>
     </File>
     <File Include="bin/CrossCutting.pdb">
-      <publishTime>07/08/2016 12:31:54</publishTime>
+      <publishTime>07/11/2016 11:04:31</publishTime>
     </File>
     <File Include="bin/Data.dll">
-      <publishTime>07/08/2016 12:31:52</publishTime>
+      <publishTime>07/11/2016 11:04:30</publishTime>
     </File>
     <File Include="bin/Data.pdb">
-      <publishTime>07/08/2016 12:31:52</publishTime>
+      <publishTime>07/11/2016 11:04:30</publishTime>
     </File>
     <File Include="bin/Dominio.dll">
-      <publishTime>07/08/2016 11:33:31</publishTime>
+      <publishTime>07/11/2016 11:04:30</publishTime>
     </File>
     <File Include="bin/Dominio.pdb">
-      <publishTime>07/08/2016 11:33:31</publishTime>
+      <publishTime>07/11/2016 11:04:30</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>06/28/2016 18:02:35</publishTime>
@@ -262,10 +262,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2016 13:15:15</publishTime>
     </File>
     <File Include="bin/SgqSystem.dll">
-      <publishTime>07/08/2016 12:32:04</publishTime>
+      <publishTime>07/11/2016 11:08:12</publishTime>
     </File>
     <File Include="bin/SgqSystem.pdb">
-      <publishTime>07/08/2016 12:32:04</publishTime>
+      <publishTime>07/11/2016 11:08:12</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
       <publishTime>06/28/2016 18:02:36</publishTime>
@@ -349,10 +349,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/04/2016 11:40:36</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>07/04/2016 11:58:35</publishTime>
+      <publishTime>07/08/2016 15:45:58</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>07/08/2016 12:35:01</publishTime>
+      <publishTime>07/11/2016 11:18:13</publishTime>
     </File>
     <File Include="Scripts/ai.0.15.0-build58334.js">
       <publishTime>06/30/2016 08:35:08</publishTime>
@@ -377,6 +377,126 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Scripts/gridmvc.min.js">
       <publishTime>07/04/2016 11:40:35</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/adapters/standalone-framework.js">
+      <publishTime>07/08/2016 15:45:58</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/adapters/standalone-framework.src.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/highcharts-3d.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/highcharts-3d.src.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/highcharts-more.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/highcharts-more.src.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/highcharts.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/highcharts.src.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/boost.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/boost.src.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/broken-axis.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/broken-axis.src.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/canvas-tools.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/canvas-tools.src.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/data.js">
+      <publishTime>07/08/2016 15:45:57</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/data.src.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/drilldown.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/drilldown.src.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/exporting.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/exporting.src.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/funnel.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/funnel.src.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/heatmap.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/heatmap.src.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/no-data-to-display.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/no-data-to-display.src.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/offline-exporting.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/offline-exporting.src.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/solid-gauge.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/solid-gauge.src.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/treemap.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/modules/treemap.src.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/themes/dark-blue.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/themes/dark-green.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/themes/dark-unica.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/themes/gray.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/themes/grid-light.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/themes/grid.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/themes/sand-signika.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
+    </File>
+    <File Include="Scripts/highcharts/4.2.0/themes/skies.js">
+      <publishTime>07/08/2016 15:45:56</publishTime>
     </File>
     <File Include="Scripts/jquery-1.10.2.js">
       <publishTime>06/29/2016 13:15:13</publishTime>
@@ -409,16 +529,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2016 13:15:13</publishTime>
     </File>
     <File Include="Scripts/_references.js">
-      <publishTime>07/04/2016 11:58:34</publishTime>
+      <publishTime>07/08/2016 15:45:58</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>06/29/2016 13:15:13</publishTime>
+      <publishTime>07/11/2016 11:13:44</publishTime>
+    </File>
+    <File Include="Views/RelatorioBeta/Index.cshtml">
+      <publishTime>07/11/2016 08:31:00</publishTime>
     </File>
     <File Include="Views/RelatorioColeta/Index.cshtml">
-      <publishTime>07/04/2016 14:23:04</publishTime>
+      <publishTime>07/11/2016 11:05:25</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>06/29/2016 13:15:13</publishTime>
+    </File>
+    <File Include="Views/Shared/Graficos/_GraficoIndicadores.cshtml">
+      <publishTime>07/11/2016 10:41:14</publishTime>
     </File>
     <File Include="Views/Shared/_Grid.cshtml">
       <publishTime>07/04/2016 11:40:35</publishTime>
@@ -427,7 +553,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/04/2016 11:40:35</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>06/29/2016 13:15:13</publishTime>
+      <publishTime>07/11/2016 11:16:16</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>06/29/2016 13:15:13</publishTime>
@@ -436,7 +562,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2016 13:15:13</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/07/2016 16:03:30</publishTime>
+      <publishTime>07/11/2016 11:04:41</publishTime>
     </File>
   </ItemGroup>
 </Project>

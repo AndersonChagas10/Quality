@@ -1,10 +1,6 @@
 ﻿using Dominio.Entities;
 using Dominio.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Repositories
 {
@@ -16,7 +12,6 @@ namespace Data.Repositories
         public UserRepository(DbContextSgq _db)
             :base (_db)
         {
-          //  _repoBase = repoBase;
         }
 
         public User Get(string Name)
