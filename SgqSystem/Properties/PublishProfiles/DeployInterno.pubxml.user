@@ -94,10 +94,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/01/2016 15:18:16</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>07/11/2016 11:18:24</publishTime>
+      <publishTime>07/11/2016 11:28:34</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>07/11/2016 11:18:23</publishTime>
+      <publishTime>07/11/2016 11:28:34</publishTime>
     </File>
     <File Include="bin/AutoMapper.dll">
       <publishTime>06/29/2016 13:15:15</publishTime>
@@ -262,10 +262,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2016 13:15:15</publishTime>
     </File>
     <File Include="bin/SgqSystem.dll">
-      <publishTime>07/11/2016 11:08:12</publishTime>
+      <publishTime>07/11/2016 11:28:23</publishTime>
     </File>
     <File Include="bin/SgqSystem.pdb">
-      <publishTime>07/11/2016 11:08:12</publishTime>
+      <publishTime>07/11/2016 11:28:23</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
       <publishTime>06/28/2016 18:02:36</publishTime>
@@ -352,7 +352,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/08/2016 15:45:58</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>07/11/2016 11:18:13</publishTime>
+      <publishTime>07/11/2016 11:28:24</publishTime>
     </File>
     <File Include="Scripts/ai.0.15.0-build58334.js">
       <publishTime>06/30/2016 08:35:08</publishTime>
@@ -532,7 +532,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/08/2016 15:45:58</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>07/11/2016 11:13:44</publishTime>
+      <publishTime>07/11/2016 11:28:09</publishTime>
     </File>
     <File Include="Views/RelatorioBeta/Index.cshtml">
       <publishTime>07/11/2016 08:31:00</publishTime>
@@ -553,7 +553,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/04/2016 11:40:35</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>07/11/2016 11:16:16</publishTime>
+      <publishTime>07/11/2016 11:27:39</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>06/29/2016 13:15:13</publishTime>
