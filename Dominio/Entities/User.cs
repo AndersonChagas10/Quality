@@ -29,7 +29,7 @@ namespace Dominio.Entities
         {
             //Verifica se ambos parametros estao nulos.
             if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(password))
-                throw new ExceptionHelper("Nome de Usuario e Senha devem ser informados.");
+                throw new ExceptionHelper("Username and Password are required.");
 
             SetName(name);
             SetPassword(password);
@@ -42,7 +42,8 @@ namespace Dominio.Entities
         /// <param name="name"> Nome do Usuário. </param>
         public void SetName(string name)
         {
-            Guard.NullOrEmptyValuesCheck(out name, "Nome", name, requerido: true, mensagem: "O Nome de Usuário é obrigatório");
+            Guard.ForNullOrEmpty(name, "The Username is required.");
+            Guard.NullOrEmptyValuesCheck(out name, "Username", name, requerido: true, mensagem: "The Username is required.");
             Name = name;
         }
 
@@ -52,8 +53,9 @@ namespace Dominio.Entities
         /// <param name="name"> Senha do Usuário. </param>
         public void SetPassword(string pass)
         {
-            Guard.VerificaEspacoString(pass, "A Senha não deve conter espaços.");
-            Guard.NullOrEmptyValuesCheck(out pass, "Senha" ,pass, mensagem: "O campo senha deve ser informado.", requerido: true);
+            Guard.ForNullOrEmpty(pass, "The Password is required.");
+            Guard.VerificaEspacoString(pass, "The Password field should not contains blank spaces."); //A Senha não deve conter espaços
+            Guard.NullOrEmptyValuesCheck(out pass, "Password", pass, mensagem: "The Password is required.", requerido: true); //O campo senha deve ser informado.
             Password = pass;
         }
 

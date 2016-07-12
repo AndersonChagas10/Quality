@@ -29,14 +29,14 @@ namespace Dominio.Services
         public GenericReturn<User> AuthenticationLogin(User user)
         {
             if (user.IsNull())
-                throw new ExceptionHelper("Nome de Usuario e Senha devem ser informados.");
+                throw new ExceptionHelper("Username and Password are required.");//Nome de Usuario e Senha devem ser informados
 
             var isUser = _userRepo.AuthenticationLogin(user);
 
             if (isUser.IsNotNull())
                 return new GenericReturn<User>(isUser);
             else
-                throw new ExceptionHelper("Usuario não encontrado, verifique e-mail e senha.");
+                throw new ExceptionHelper("User not found, please verify Username and Password.");//Usuario não encontrado, verifique e-mail e senha.
         }
 
     }

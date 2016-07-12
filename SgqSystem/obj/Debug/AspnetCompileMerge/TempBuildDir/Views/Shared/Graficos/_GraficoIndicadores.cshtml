@@ -10,7 +10,6 @@
     <div class="panel-heading"></div>
     <div class="panel-body" id="g1">
     </div>
-    *O Peso atribuído as Tarefas influenciam no resultado gráfico.
 </div>
 
 <script type="text/javascript">
@@ -43,7 +42,8 @@
                 if (r.Retorno != null)
                     console.log(r.Retorno)//Utilizar esta situação quando a ação retornar um OBJETO.
 
-                _GraficoIndicadoresJsControl.CriaGraficoOperacoes("plotPrincipal", "Nc Por Indicador", r.Retorno);
+                //Chart 1
+                _GraficoIndicadoresJsControl.CriaGraficoOperacoes("plotPrincipal", "Nc per Audit", r.Retorno);
 
                 r.Retorno.forEach(function (a, b) {
 
@@ -61,11 +61,15 @@
                     
                     divMonitoramento = DivManager.criaDiv(idDivPanelPorIndicador, b, "monitoramento");
                     $.get(urlMonitoramento, { idIndicador: a.Id }, function (Monitoramentos) {
-                        _GraficoIndicadoresJsControl.CriaGraficoMonitoramento(divMonitoramento, "Total NC por Indicador: " + a.Operacao, Monitoramentos.Retorno);
+
+                        //Chart2
+                        _GraficoIndicadoresJsControl.CriaGraficoMonitoramento(divMonitoramento,  a.Operacao, Monitoramentos.Retorno);
                         Monitoramentos.Retorno.forEach(function (c, d) {
                             divTarefa.push(DivManager.criaDiv(idDivPanelPorIndicador, b + d, "tarefaIndicador"));
                             $.get(urlTarefa, { indicadorId: a.Id, idMonitoramento: c.Id_Monitoramento }, function (Tarefas) {
-                                _GraficoIndicadoresJsControl.CriaGraficoTarefa(divTarefa[d], "Total NC Por Monitoramento: " + c.Monitoramento, Tarefas.Retorno);
+
+                                //Chart 3
+                                _GraficoIndicadoresJsControl.CriaGraficoTarefa(divTarefa[d], c.Monitoramento, Tarefas.Retorno);
                             });
                         });
                     });
@@ -82,32 +86,25 @@
             var serie2 = valoresFloat(obj, 'Evaluate');
             var serie0 = calculaProcemtagem(serie1, serie2);
             var serieX = valoresString(obj, 'Operacao');
+
             $('#' + idDiv).empty().highcharts({
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y',
+                    height: '350'
+                },
                 credits: Chart.Credits(),
                 title: Chart.Titulo(titulo),
                 xAxis: Chart.Xaxis(serieX),
                 tooltip: Chart.ToolTip(true, true),
                 legend: Chart.Legend(),
                 yAxis: Chart.yAxisPadrao(),
-                chart: {
-                    type: 'column',
-                    zoomType: 'x, y',
-                    height: '350'
-                },
-                zones: [{
-                    value: 69,
-                    color: '#FF6666'
-                }, {
-                    value: 80,
-                    color: 'Yellow'
-                }, {
-                    color: '#98FB98'
-                }],
+                zones: Chart.Zones(),
                 series: [
                     Chart.ProcNc(serie0, 0),
                     //Chart.Meta(valoresY.meta, true),
                     Chart.SimpleSerie(serie1, "Total NC", Chart.CorTotalNc(), true, 1),
-                    Chart.SimpleSerie(serie2, "Total Av", Chart.CorTotalAv(), true, 1)
+                    Chart.SimpleSerie(serie2, "Total Evaluated", Chart.CorTotalAv(), true, 1)
                 ],
             });
 
@@ -118,33 +115,25 @@
             var serie1 = valoresFloat(obj, 'NotConform');
             var serie2 = valoresFloat(obj, 'Evaluate');
             var serieX = valoresString(obj, 'Monitoramento');
-            var serie0 = calculaProcemtagem(serie1, serie2);
+            var serie0 = paretoCorreto(serie1, serie2);
 
             $('#' + idDiv).empty().highcharts({
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y',
+                    height: '350'
+                },
                 credits: Chart.Credits(),
                 title: Chart.Titulo(titulo),
                 xAxis: Chart.Xaxis(serieX),
                 tooltip: Chart.ToolTip(true, true),
                 legend: Chart.Legend(),
                 yAxis: Chart.yAxisPadrao(true, true),
-                chart: {
-                    type: 'column',
-                    zoomType: 'x, y',
-                    height: '350'
-                },
-                zones: [{
-                    value: 69,
-                    color: '#FF6666'
-                }, {
-                    value: 80,
-                    color: 'Yellow'
-                }, {
-                    color: '#98FB98'
-                }],
+                zones: Chart.Zones(),
                 series: [
                     //Chart.ProcNc(serie0, 1),
                     Chart.SimpleSerie(serie1, "Total NC", Chart.CorTotalNc(), true, 0),
-                    Chart.SimpleSerie(serie2, "Total Av", Chart.CorTotalAv(), false, 0),
+                    Chart.SimpleSerie(serie2, "Total Evaluated", Chart.CorTotalAv(), false, 0),
                     Chart.curvaPareto(serie0)
                 ],
             });
@@ -156,33 +145,25 @@
             var serie1 = valoresFloat(obj, 'NotConform');
             var serie2 = valoresFloat(obj, 'Evaluate');
             var serieX = valoresString(obj, 'Tarefa');
-            var serie0 = calculaProcemtagem(serie1, serie2);
+            var serie0 = paretoCorreto(serie1, serie2);
 
             $('#' + idDiv).empty().highcharts({
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y',
+                    height: '350'
+                },
                 credits: Chart.Credits(),
                 title: Chart.Titulo(titulo),
                 xAxis: Chart.Xaxis(serieX),
                 tooltip: Chart.ToolTip(true, true),
                 legend: Chart.Legend(),
                 yAxis: Chart.yAxisPadrao(true, true),
-                chart: {
-                    type: 'column',
-                    zoomType: 'x, y',
-                    height: '350'
-                },
-                zones: [{
-                    value: 69,
-                    color: '#FF6666'
-                }, {
-                    value: 80,
-                    color: 'Yellow'
-                }, {
-                    color: '#98FB98'
-                }],
+                zones: Chart.Zones(),
                 series: [
                     //Chart.ProcNc(serie0, 1),
                     Chart.SimpleSerie(serie1, "Total NC", Chart.CorTotalNc(), true, 0),
-                    Chart.SimpleSerie(serie2, "Total Av", Chart.CorTotalAv(), false, 0),
+                    Chart.SimpleSerie(serie2, "Total Evaluated", Chart.CorTotalAv(), false, 0),
                     Chart.curvaPareto(serie0)
                 ],
             });
@@ -214,11 +195,24 @@
     function calculaProcemtagem(param1, param2) {
         var percCalculado = [];
         $.each(param1, function (a, b) {
-            var calc = ((param1[a] / param2[a]) * 100);
+            var calc = ((param2[a] / param1[a]) * 100);
             percCalculado.push(calc > 100 ? 100 : calc);
         });
         return percCalculado;
     };
+
+    function paretoCorreto(dados)
+    {
+        var pareto = [];
+        var totalNC = 0;
+        var totalNC = dados.reduce(function (a, b) { return a + b; }, 0);
+        var porcentagemAcumuladaNC = 0;
+        dados.forEach(function (a) {
+            porcentagemAcumuladaNC += a / totalNC * 100;
+            pareto.push(Math.round(porcentagemAcumuladaNC, 0));
+        });
+        return pareto;
+    }
 
     function valoresFloat(obj, paramName) {
         var objReturn = [];
@@ -281,9 +275,15 @@
             }
         },
         Zones: function () {
-            return {
-                enabled: false
-            }
+            return [{
+                value: 69,
+                color: '#FF6666'
+            }, {
+                value: 80,
+                color: 'Yellow'
+            }, {
+                color: '#98FB98'
+            }];
         },
         Chart: function (tipo, zoon) {
             return {
@@ -306,7 +306,7 @@
                         }
                     },
                     title: {
-                        text: (pareto == undefined || pareto == false) ? '% NC' : 'Gráfico de Pareto',
+                        text: (pareto == undefined || pareto == false) ? '% NC' : '% Accumulated',
                         style: {
                             color: "Black"
                         }
@@ -315,7 +315,7 @@
                     allowDecimals: false,
                     gridLineWidth: 0,
                     title: {
-                        text: (totalNC == undefined || totalNC == false) ? 'Numero Amostras' : 'Total NC',
+                        text: (totalNC == undefined || totalNC == false) ? 'Samples' : 'Total NC',
                         style: {
                             color: "Black"
                         }
@@ -332,7 +332,7 @@
                 return [{ // Primary yAxis
                     gridLineWidth: 0,
                     title: {
-                        text: (totalNC == undefined || totalNC == false) ? 'Numero Amostras' : 'Total NC',
+                        text: (totalNC == undefined || totalNC == false) ? 'Samples' : 'Total NC',
                         style: {
                             color: "Black"
                         }
@@ -355,7 +355,7 @@
                         }
                     },
                     title: {
-                        text: (pareto == undefined || pareto == false) ? '% NC' : 'Gráfico de Pareto',
+                        text: (pareto == undefined || pareto == false) ? '% NC' : '% Accumulated',
                         style: {
                             color: "Black"
                         }
@@ -406,19 +406,13 @@
         },
         //Series com %
         curvaPareto: function (dados) {
-            var dadosPareto = [];
-            var totalNC = dados.reduce(function (a, b) { return a + b; }, 0);
-            var porcentagemAcumuladaNC = 0;
-            dados.forEach(function (a) {
-                porcentagemAcumuladaNC += a / totalNC * 100;
-                dadosPareto.push(Math.round(porcentagemAcumuladaNC, 0));
-            });
+           
             return {
                 type: 'line',
                 yAxis: 1,
-                name: 'Gráfico de Pareto',
+                name: 'Accumulated',
                 color: "Red",
-                data: dadosPareto,
+                data: dados,
                 tooltip: {
                     valueDecimals: 2,
                     valueSuffix: ' %'
