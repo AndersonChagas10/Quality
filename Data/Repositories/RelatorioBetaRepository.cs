@@ -3,6 +3,7 @@ using Dominio.Interfaces.Repositories;
 using System.Data.Entity;
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace Data.Repositories
 {
@@ -19,31 +20,31 @@ namespace Data.Repositories
         public List<ResultOld> GetNcPorIndicador(int indicadorId)
         {
 
-            var resultsList = db.Results
-                .Where(r => r.Evaluate > 0 && r.NotConform > 0
-                    //&& _Operacao.Any(z => z.Id == r.Id_Operacao)
-                    //&& _Monitoramento.Any(z => z.Id == r.Id_Monitoramento)
-                    //&& _Tarefa.Any(z => z.Id == r.Id_Tarefa)
-                    )
-                .GroupBy(x => x.Id_Operacao)
-                .ToList()
-                .Select(r => new ResultOld(
-                      id: r.Key,
-                      id_Tarefa: r.Select(y => y.Id_Tarefa).FirstOrDefault(),
-                      id_Monitoramento: r.Select(y => y.Id_Monitoramento).FirstOrDefault(),
-                      id_Operacao: r.Select(y => y.Id_Operacao).FirstOrDefault(),
-                      evaluate: r.Sum(y => y.Evaluate),
-                      notConform: r.Sum(y => y.NotConform))
-                {
-                    AddDate = r.Select(y => y.AddDate).FirstOrDefault(),
-                })
-            .OrderByDescending(r => (r.NotConform / r.Evaluate) * 100)
-                .ToList();
+            /*select 
+            id_operacao
+            , sum(Evaluate)"Evaluate"
+            , sum(NotConform) "NotConform"
+            from(
+            select id_operacao
+            , Case when sum(Evaluate) > 0 Then 1 ELSE 0 end "Evaluate"
+            , Case when sum(NotConform) > 0 Then 1 ELSE 0 end "NotConform" from ResultOld group by numero1
+            , numero2
+            , Id_Operacao
+            ) ind
+            group by 
+            Id_Operacao*/
 
-            AdicionaNomeAoResultadoDaQuery(resultsList);
+
+            var query = "select  id_operacao, sum(Evaluate)'Evaluate', sum(NotConform) 'NotConform' from( select id_operacao, Case when sum(Evaluate) > 0 Then 1 ELSE 0 end 'Evaluate' , Case when sum(NotConform) > 0 Then 1 ELSE 0 end 'NotConform' from ResultOld group by numero1, numero2, Id_Operacao) ind group by Id_Operacao";
+
+            var queryResult = db.Database.SqlQuery<RetornoQueryIndicadoresRelBate>(query).ToList();
+
+            List<ResultOld> resultsList = RetornoQueryIndicadoresRelBateToResultOld(queryResult);
 
             return resultsList;
         }
+
+       
 
         public List<ResultOld> GetNcPorMonitoramento(int indicadorId)
         {
@@ -60,7 +61,7 @@ namespace Data.Repositories
                  id_Operacao: r.Select(y => y.Id_Operacao).FirstOrDefault(),
                  evaluate: r.Sum(y => y.Evaluate),
                  notConform: r.Sum(y => y.NotConform)))
-            .OrderByDescending(r => (r.NotConform / r.Evaluate) * 100)
+            .OrderByDescending(r => r.NotConform)
             .ToList();
 
             AdicionaNomeAoResultadoDaQuery(resultsList);
@@ -83,7 +84,7 @@ namespace Data.Repositories
                  id_Operacao: r.Select(y => y.Id_Operacao).FirstOrDefault(),
                  evaluate: r.Sum(y => y.Evaluate),
                  notConform: r.Sum(y => y.NotConform)))
-            .OrderByDescending(r => (r.NotConform / r.Evaluate) * 100)
+            .OrderByDescending(r => r.NotConform)
             .ToList();
 
             AdicionaNomeAoResultadoDaQuery(resultsList);
@@ -93,16 +94,31 @@ namespace Data.Repositories
 
         #region Auxiliares
 
-        private void AdicionaNomeAoResultadoDaQuery(List<ResultOld> resultsList)
+        private void AdicionaNomeAoResultadoDaQuery<T>(T resultsList)
         {
-            foreach (var i in resultsList)
-            {
-                i.Operacao = _Operacao.Find(i.Id_Operacao).Name;
-                i.Monitoramento = _Monitoramento.Find(i.Id_Monitoramento).Name;
-                i.Tarefa = _Tarefa.Find(i.Id_Tarefa).Name;
-            }
+
+
         }
 
         #endregion
+
+        private List<ResultOld> RetornoQueryIndicadoresRelBateToResultOld(List<RetornoQueryIndicadoresRelBate> queryResult)
+        {
+            var resultsList = new List<ResultOld>();
+
+            foreach (var i in queryResult)
+            {
+                resultsList.Add(new ResultOld() { Evaluate = i.Evaluate, NotConform = i.NotConform, Id_Operacao = i.Id_operacao, Operacao = db.indicadores.Find(i.Id_operacao).Name });
+            }
+
+            return resultsList;
+        }
+    }
+
+    public class RetornoQueryIndicadoresRelBate
+    {
+        public int Id_operacao { get; set; }
+        public int Evaluate { get; set; }
+        public int NotConform { get; set; }
     }
 }

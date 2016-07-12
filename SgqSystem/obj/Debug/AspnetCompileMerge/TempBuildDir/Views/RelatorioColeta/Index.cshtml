@@ -10,12 +10,12 @@
 @Html.Grid(Model).Columns(columns =>
 {
     //columns.Add(c => c.Id).Titled("Id Resultado").Filterable(true);
-    columns.Add(c => c.Operacao).Titled("Indicator").Filterable(true);
+    columns.Add(c => c.Operacao).Titled("Audit").Filterable(true);
     columns.Add(c => c.Monitoramento).Titled("Monitoring").Filterable(true);
     columns.Add(c => c.Tarefa).Titled("Task").Filterable(true);
-    columns.Add(c => c.Evaluate).Titled("Evaluate").Filterable(true);
+    columns.Add(c => c.Evaluate).Titled("Evaluated").Filterable(true);
     columns.Add(c => c.NotConform)
-        .Titled("Not Conform")
+        .Titled("Non Conform")
         .Filterable(true)
         .SortInitialDirection(GridMvc.Sorting.GridSortDirection.Descending);
 

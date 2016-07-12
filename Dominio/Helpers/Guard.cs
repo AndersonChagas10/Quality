@@ -235,25 +235,25 @@ namespace Dominio.Helpers
         public static void ForNegative(int number, string propName)
         {
             if (number < 0)
-                throw new ExceptionHelper(propName + " não pode ser negativo!");
+                throw new ExceptionHelper(propName + " Should be positive number.!");
         }
 
         public static void ForNegative(decimal number, string propName)
         {
             if (number < 0)
-                throw new ExceptionHelper(propName + " não pode ser negativo!");
+                throw new ExceptionHelper(propName + " Should be positive number.!");
         }
 
         public static void ForNegative(double number, string propName)
         {
             if (number < 0)
-                throw new ExceptionHelper(propName + " não pode ser negativo!");
+                throw new ExceptionHelper(propName + " Should be positive number.!");
         }
 
         public static void ForNegative(float number, string propName)
         {
             if (number < 0)
-                throw new ExceptionHelper(propName + " não pode ser negativo!");
+                throw new ExceptionHelper(propName + " Should be positive number.!");
         }
 
         public static void ForMaiorQuer(int number, int number2, string propName, string propName2)

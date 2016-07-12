@@ -1,10 +1,10 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Beta Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Relatorio Beta</h2>
+<h2>@ViewBag.Title</h2>
 
 <input type="button" value="Update Chart." onclick="_GraficoIndicadoresJsControl.ajax_GraficoIndicadoresJsControl()"/>
 
