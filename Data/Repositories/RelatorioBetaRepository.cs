@@ -20,22 +20,22 @@ namespace Data.Repositories
         public List<ResultOld> GetNcPorIndicador(int indicadorId)
         {
 
-            /*select 
-            id_operacao
-            , sum(Evaluate)"Evaluate"
-            , sum(NotConform) "NotConform"
-            from(
-            select id_operacao
-            , Case when sum(Evaluate) > 0 Then 1 ELSE 0 end "Evaluate"
-            , Case when sum(NotConform) > 0 Then 1 ELSE 0 end "NotConform" from ResultOld group by numero1
-            , numero2
-            , Id_Operacao
-            ) ind
-            group by 
-            Id_Operacao*/
+            /*
+             
+            
+            
+             */
 
-
-            var query = "select  id_operacao, sum(Evaluate)'Evaluate', sum(NotConform) 'NotConform' from( select id_operacao, Case when sum(Evaluate) > 0 Then 1 ELSE 0 end 'Evaluate' , Case when sum(NotConform) > 0 Then 1 ELSE 0 end 'NotConform' from ResultOld group by numero1, numero2, Id_Operacao) ind group by Id_Operacao";
+            var query = "SELECT" +
+                " id_operacao, " +
+                " CONVERT(DECIMAL(16,4),SUM(Evaluate)) 'Evaluate', " +
+                " CONVERT(DECIMAL(16,4),SUM(NotConform)) 'NotConform' " +
+                " FROM( select id_operacao," +
+                " CASE WHEN SUM(Evaluate) > 0 THEN 1 ELSE 0 end 'Evaluate' , " +
+                " CASE WHEN SUM(NotConform) > 0 THEN 1 ELSE 0 end 'NotConform'" +
+                " FROM ResultOld " +
+                " WHERE NotConform > 0" +
+                " GROUP BY numero1, numero2, Id_Operacao) ind GROUP BY Id_Operacao";
 
             var queryResult = db.Database.SqlQuery<RetornoQueryIndicadoresRelBate>(query).ToList();
 
@@ -44,63 +44,74 @@ namespace Data.Repositories
             return resultsList;
         }
 
-       
-
         public List<ResultOld> GetNcPorMonitoramento(int indicadorId)
         {
-            var resultsList = db.Results.Where(r => r.Id_Operacao == indicadorId && r.Evaluate > 0 && r.NotConform > 0
-                    && _Operacao.Any(z => z.Id == r.Id_Operacao)
-                    && _Monitoramento.Any(z => z.Id == r.Id_Monitoramento)
-                    && _Tarefa.Any(z => z.Id == r.Id_Tarefa)
-                    )
-             .GroupBy(x => x.Id_Monitoramento)
-             .ToList()
-             .Select(r => new ResultOld(id: r.Key,
-                 id_Tarefa: r.Select(y => y.Id_Tarefa).FirstOrDefault(),
-                 id_Monitoramento: r.Select(y => y.Id_Monitoramento).FirstOrDefault(),
-                 id_Operacao: r.Select(y => y.Id_Operacao).FirstOrDefault(),
-                 evaluate: r.Sum(y => y.Evaluate),
-                 notConform: r.Sum(y => y.NotConform)))
-            .OrderByDescending(r => r.NotConform)
-            .ToList();
 
-            AdicionaNomeAoResultadoDaQuery(resultsList);
+            /*
+             
+           
+             
+             */
+
+            var query = string.Format("SELECT id_operacao," +
+                " Id_Monitoramento," +
+                " CONVERT(DECIMAL(16,4), sum(Evaluate)) 'Evaluate', " +
+                " CONVERT(DECIMAL(16,4), sum(NotConform)) 'NotConform' " +
+                " FROM(" +
+                " SELECT id_operacao, " +
+                " Id_Monitoramento, " +
+                " CASE WHEN SUM(Evaluate) > 0 THEN 1 ELSE 0 END 'Evaluate'," +
+                " CASE WHEN SUM(NotConform) > 0 THEN 1 ELSE 0 END 'NotConform' " +
+                " FROM ResultOld " +
+                " WHERE Id_Operacao = {0} " +
+                " AND NotConform > 0" +
+                " GROUP BY numero1, " +
+                " numero2, " +
+                " Id_Operacao, " +
+                " Id_Monitoramento)" +
+                " ind GROUP BY Id_Operacao," +
+                " Id_Monitoramento" +
+                " ORDER BY NotConform desc", indicadorId);
+
+
+            var queryResult = db.Database.SqlQuery<RetornoQueryIndicadoresRelBate>(query).ToList();
+
+            List<ResultOld> resultsList = RetornoQueryIndicadoresRelBateToResultOld(queryResult);
 
             return resultsList;
         }
 
         public List<ResultOld> GetNcPorTarefa(int indicadorId, int monitoramentoId)
         {
-            var resultsList = db.Results.Where(r => r.Id_Operacao == indicadorId && r.Id_Monitoramento == monitoramentoId && r.Evaluate > 0 && r.NotConform > 0
-                    && _Operacao.Any(z => z.Id == r.Id_Operacao)
-                    && _Monitoramento.Any(z => z.Id == r.Id_Monitoramento)
-                    && _Tarefa.Any(z => z.Id == r.Id_Tarefa)
-                    )
-             .GroupBy(x => x.Id_Tarefa)
-             .ToList()
-             .Select(r => new ResultOld(id: r.Key,
-                 id_Tarefa: r.Select(y => y.Id_Tarefa).FirstOrDefault(),
-                 id_Monitoramento: r.Select(y => y.Id_Monitoramento).FirstOrDefault(),
-                 id_Operacao: r.Select(y => y.Id_Operacao).FirstOrDefault(),
-                 evaluate: r.Sum(y => y.Evaluate),
-                 notConform: r.Sum(y => y.NotConform)))
-            .OrderByDescending(r => r.NotConform)
-            .ToList();
 
-            AdicionaNomeAoResultadoDaQuery(resultsList);
+            /*
+          
+
+            */
+
+            var query = string.Format("SELECT " +
+                                        "id_operacao" +
+                                        ", Id_Monitoramento " +
+                                        ", Id_Tarefa " +
+                                        ", CONVERT(DECIMAL(16,4), SUM(Evaluate)) AS 'Evaluate'" +
+                                        ", CONVERT(DECIMAL(16,4), SUM(NotConform)) AS 'NotConform'" +
+                                        " FROM ResultOld" +
+                                        " WHERE Id_Monitoramento = {0} AND Id_Operacao = {1}" +
+                                        " AND NotConform > 0" +
+                                        " GROUP BY" +
+                                        " id_operacao" +
+                                        ", Id_Monitoramento" +
+                                        ", Id_Tarefa" +
+                                        " ORDER BY NotConform desc", monitoramentoId, indicadorId);
+
+            var queryResult = db.Database.SqlQuery<RetornoQueryIndicadoresRelBate>(query).ToList();
+
+            List<ResultOld> resultsList = RetornoQueryIndicadoresRelBateToResultOld(queryResult);
 
             return resultsList;
         }
 
         #region Auxiliares
-
-        private void AdicionaNomeAoResultadoDaQuery<T>(T resultsList)
-        {
-
-
-        }
-
-        #endregion
 
         private List<ResultOld> RetornoQueryIndicadoresRelBateToResultOld(List<RetornoQueryIndicadoresRelBate> queryResult)
         {
@@ -108,17 +119,34 @@ namespace Data.Repositories
 
             foreach (var i in queryResult)
             {
-                resultsList.Add(new ResultOld() { Evaluate = i.Evaluate, NotConform = i.NotConform, Id_Operacao = i.Id_operacao, Operacao = db.indicadores.Find(i.Id_operacao).Name });
+
+                resultsList.Add(new ResultOld()
+                {
+                    Evaluate = i.Evaluate,
+                    NotConform = i.NotConform,
+                    Id_Operacao = i.Id_operacao,
+                    Id_Monitoramento = i.Id_Monitoramento,
+                    Id_Tarefa = i.Id_tarefa,
+                    Operacao = db.indicadores.FirstOrDefault(r => r.Id == i.Id_operacao).Name,
+                    Monitoramento = db.Monitoramentos.Where(r => r.Id == i.Id_Monitoramento).Select(r => r.Name ?? "").FirstOrDefault(),
+                    Tarefa = db.indicadores.Where(r => r.Id == i.Id_tarefa).Select(r => r.Name ?? "").FirstOrDefault()
+
+                });
             }
 
             return resultsList;
         }
+
+        #endregion
+
     }
 
     public class RetornoQueryIndicadoresRelBate
     {
         public int Id_operacao { get; set; }
-        public int Evaluate { get; set; }
-        public int NotConform { get; set; }
+        public int Id_Monitoramento { get; set; }
+        public int Id_tarefa { get; set; }
+        public decimal Evaluate { get; set; }
+        public decimal NotConform { get; set; }
     }
 }
