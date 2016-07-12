@@ -16,27 +16,27 @@ namespace Dominio.Services
             _relatorioBetaService = relatorioBetaService;
         }
 
-        public GenericReturn<List<ResultOld>> GetNcPorIndicador(int indicadorId)
+        public GenericReturn<List<ResultOld>> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd)
         {
-            var retornoRepositorio = _relatorioBetaService.GetNcPorIndicador(indicadorId);
+
+            var retornoRepositorio = _relatorioBetaService.GetNcPorIndicador(indicadorId, dateInit, dateEnd);
             if (retornoRepositorio.Count == 0)
                 throw new ExceptionHelper("No data.");
 
             var retorno = new GenericReturn<List<ResultOld>>(retornoRepositorio);
             return retorno;
-
         }
 
-        public GenericReturn<List<ResultOld>> GetNcPorMonitoramento(int indicadorId)
+        public GenericReturn<List<ResultOld>> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd)
         {
-            var retornoRepositorio = _relatorioBetaService.GetNcPorMonitoramento(indicadorId);
+            var retornoRepositorio = _relatorioBetaService.GetNcPorMonitoramento(indicadorId, dateInit, dateEnd);
             var retorno = new GenericReturn<List<ResultOld>>(retornoRepositorio);
             return retorno;
         }
 
-        public GenericReturn<List<ResultOld>> GetNcPorTarefa(int indicadorId, int monitoramentoId)
+        public GenericReturn<List<ResultOld>> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd)
         {
-            var retornoRepositorio = _relatorioBetaService.GetNcPorTarefa(indicadorId, monitoramentoId);
+            var retornoRepositorio = _relatorioBetaService.GetNcPorTarefa(indicadorId, monitoramentoId, dateInit, dateEnd);
             var retorno = new GenericReturn<List<ResultOld>>(retornoRepositorio);
             return retorno;
         }

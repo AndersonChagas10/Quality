@@ -5,8 +5,8 @@ namespace Dominio.Interfaces.Repositories
 {
     public interface IRelatorioBetaRepository
     {
-        List<ResultOld> GetNcPorIndicador(int indicadorId);
-        List<ResultOld> GetNcPorMonitoramento(int indicadorId);
-        List<ResultOld> GetNcPorTarefa(int indicadorId, int monitoramentoId);
+        List<ResultOld> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd);
+        List<ResultOld> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd);
+        List<ResultOld> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd);
     }
 }

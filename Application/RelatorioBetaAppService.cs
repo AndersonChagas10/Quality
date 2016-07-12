@@ -16,19 +16,19 @@ namespace Application
         }
 
 
-        public GenericReturn<List<ResultOld>> GetNcPorIndicador(int indicadorId)
+        public GenericReturn<List<ResultOld>> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd)
         {
-            return _relatorioBetaService.GetNcPorIndicador(indicadorId);
+            return _relatorioBetaService.GetNcPorIndicador(indicadorId, dateInit, dateEnd);
         }
 
-        public GenericReturn<List<ResultOld>> GetNcPorMonitoramento(int indicadorId)
+        public GenericReturn<List<ResultOld>> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd)
         {
-            return _relatorioBetaService.GetNcPorMonitoramento(indicadorId);
+            return _relatorioBetaService.GetNcPorMonitoramento(indicadorId, dateInit, dateEnd);
         }
 
-        public GenericReturn<List<ResultOld>> GetNcPorTarefa(int indicadorId, int monitoramentoId)
+        public GenericReturn<List<ResultOld>> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd)
         {
-            return _relatorioBetaService.GetNcPorTarefa(indicadorId, monitoramentoId);
+            return _relatorioBetaService.GetNcPorTarefa(indicadorId, monitoramentoId, dateInit, dateEnd);
         }
     }
 }

@@ -21,11 +21,11 @@ namespace SgqSystem.Controllers.Api
         }
 
         [Route("api/RelatorioBetaApi/GetNcPorIndicador")]
-        public GenericReturnViewModel<List<ResultOldViewModel>> GetNcPorIndicador(int idIndicador)
+        public GenericReturnViewModel<List<ResultOldViewModel>> GetNcPorIndicador(int idIndicador, string dateInit, string dateEnd)
         {
             try
             {
-                var queryResult = _relatorioBetaAppService.GetNcPorIndicador(idIndicador);
+                var queryResult = _relatorioBetaAppService.GetNcPorIndicador(idIndicador, dateInit, dateEnd);
                 var result = Mapper.Map<GenericReturn<List<ResultOld>>, GenericReturnViewModel<List<ResultOldViewModel>>>(queryResult);
                 return result;
             }
@@ -36,11 +36,11 @@ namespace SgqSystem.Controllers.Api
         }
 
         [Route("api/RelatorioBetaApi/GetNcPorMonitoramento")]
-        public GenericReturnViewModel<List<ResultOldViewModel>> GetNcPorMonitoramento(int idIndicador)
+        public GenericReturnViewModel<List<ResultOldViewModel>> GetNcPorMonitoramento(int idIndicador, string dateInit, string dateEnd)
         {
             try
             {
-                var queryResult = _relatorioBetaAppService.GetNcPorMonitoramento(idIndicador);
+                var queryResult = _relatorioBetaAppService.GetNcPorMonitoramento(idIndicador, dateInit, dateEnd);
                 var result = Mapper.Map<GenericReturn<List<ResultOld>>, GenericReturnViewModel<List<ResultOldViewModel>>>(queryResult);
                 return result;
             }
@@ -51,11 +51,11 @@ namespace SgqSystem.Controllers.Api
         }
 
         [Route("api/RelatorioBetaApi/GetNcPorTarefa")]
-        public GenericReturnViewModel<List<ResultOldViewModel>> GetNcPorTarefa(int indicadorId, int idMonitoramento)
+        public GenericReturnViewModel<List<ResultOldViewModel>> GetNcPorTarefa(int indicadorId, int idMonitoramento, string dateInit, string dateEnd)
         {
             try
             {
-                var queryResult = _relatorioBetaAppService.GetNcPorTarefa(indicadorId, idMonitoramento);
+                var queryResult = _relatorioBetaAppService.GetNcPorTarefa(indicadorId, idMonitoramento, dateInit, dateEnd);
                 var result = Mapper.Map<GenericReturn<List<ResultOld>>, GenericReturnViewModel<List<ResultOldViewModel>>>(queryResult);
                 return result;
             }

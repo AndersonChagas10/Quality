@@ -7,6 +7,27 @@
 <h2>@ViewBag.Title</h2>
 
 <input type="button" value="Update Chart." onclick="_GraficoIndicadoresJsControl.ajax_GraficoIndicadoresJsControl()"/>
-
+<table>
+    <tr>
+        <td class="dl-fake">
+            @Html.Label("Data: ", htmlAttributes: new { @class = "control-label col-md-2" })
+        </td>
+        <td style="margin-top:10px;">
+            <input type="date" id="dtIni"/>
+        </td>
+    </tr>
+    <tr>&nbsp;</tr>
+    <tr>
+        <td class="dl-fake">
+            @Html.Label("Data: ", htmlAttributes: new { @class = "control-label col-md-2" })
+        </td>
+        <td style="margin-top:10px;">
+            <input type="date" id="dtFim"/>
+        </td>
+        <td style="margin-top:10px; margin-left:15px;">
+            <button type="button" class="btn btn-default" onclick="_GraficoIndicadoresJsControl.ajax_GraficoIndicadoresJsControl()" id="btnCarregaGraficoDiario" >Update Chart</button>
+        </td>
+    </tr>
+</table>
 @Html.Partial("~/Views/Shared/Graficos/_GraficoIndicadores.cshtml")
 

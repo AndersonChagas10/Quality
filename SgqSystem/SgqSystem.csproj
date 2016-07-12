@@ -283,6 +283,7 @@
     <Compile Include="Controllers\Api\RelatorioBetaApiController.cs" />
     <Compile Include="Controllers\Api\ResultOldController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
+    <Compile Include="Controllers\GetIndiceColteaBetaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RelatorioBetaController.cs" />
     <Compile Include="Controllers\RelatorioColetaController.cs" />

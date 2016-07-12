@@ -78,7 +78,7 @@
                                     divTarefa.push(DivManager.criaDiv(idDivPanelPorIndicador, b + d, "tarefaIndicador"));
                                     $("#" + divTarefa).empty().html('loading').show();
                                     $.get(urlTarefa, { indicadorId: a.Id_Operacao, idMonitoramento: c.Id_Monitoramento }, function (Tarefas) {
-                                        $("#" + divTarefa).empty();
+                                        $("#" + divTarefa[d]).empty();
                                         _GraficoIndicadoresJsControl.CriaGraficoTarefa(divTarefa[d], c.Monitoramento, Tarefas.Retorno);
                                     });
                                 });

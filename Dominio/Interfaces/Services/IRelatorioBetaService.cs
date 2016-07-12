@@ -5,8 +5,8 @@ namespace Dominio.Interfaces.Services
 {
     public interface IRelatorioBetaService
     {
-        GenericReturn<List<ResultOld>> GetNcPorIndicador(int indicadorId);
-        GenericReturn<List<ResultOld>> GetNcPorMonitoramento(int indicadorId);
-        GenericReturn<List<ResultOld>> GetNcPorTarefa(int indicadorId, int monitoramentoId);
+        GenericReturn<List<ResultOld>> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd);
+        GenericReturn<List<ResultOld>> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd);
+        GenericReturn<List<ResultOld>> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd);
     }
 }

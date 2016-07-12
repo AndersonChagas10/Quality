@@ -17,14 +17,30 @@ namespace Data.Repositories
         private DbSet<Monitoramento> _Monitoramento { get { return db.Set<Monitoramento>(); } }
         private DbSet<Tarefa> _Tarefa { get { return db.Set<Tarefa>(); } }
 
-        public List<ResultOld> GetNcPorIndicador(int indicadorId)
+        public List<ResultOld> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd)
         {
 
             /*
              
+            SELECT 
+            id_operacao
+            , SUM(Evaluate)"Evaluate"
+            , SUM(NotConform) "NotConform"
+            FROM(
+            SELECT id_operacao
+            , Case when sum(Evaluate) > 0 Then 1 ELSE 0 end "Evaluate" 
+            , CASE WHEN SUM(NotConform) > 0 THEN 1 ELSE 0 END "NotConform" FROM ResultOld GROUP BY 
+            numero1,
+            Id_Monitoramento,
+            numero2,
+            Id_Operacao
+            ) ind
+            GROUP BY 
+            Id_Operacao
             
-            
-             */
+            */
+
+            //select CAST(getdate() as Date)
 
             var query = "SELECT" +
                 " id_operacao, " +
@@ -34,8 +50,12 @@ namespace Data.Repositories
                 " CASE WHEN SUM(Evaluate) > 0 THEN 1 ELSE 0 end 'Evaluate' , " +
                 " CASE WHEN SUM(NotConform) > 0 THEN 1 ELSE 0 end 'NotConform'" +
                 " FROM ResultOld " +
-                " WHERE NotConform > 0" +
-                " GROUP BY numero1, numero2, Id_Operacao) ind GROUP BY Id_Operacao";
+                //" WHERE " +
+                " GROUP BY " +
+                " numero1," +
+                " numero2," +
+                " Id_Monitoramento ," +
+                " Id_Operacao) ind GROUP BY Id_Operacao";
 
             var queryResult = db.Database.SqlQuery<RetornoQueryIndicadoresRelBate>(query).ToList();
 
@@ -44,7 +64,7 @@ namespace Data.Repositories
             return resultsList;
         }
 
-        public List<ResultOld> GetNcPorMonitoramento(int indicadorId)
+        public List<ResultOld> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd)
         {
 
             /*
@@ -81,7 +101,7 @@ namespace Data.Repositories
             return resultsList;
         }
 
-        public List<ResultOld> GetNcPorTarefa(int indicadorId, int monitoramentoId)
+        public List<ResultOld> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd)
         {
 
             /*
@@ -129,7 +149,7 @@ namespace Data.Repositories
                     Id_Tarefa = i.Id_tarefa,
                     Operacao = db.indicadores.FirstOrDefault(r => r.Id == i.Id_operacao).Name,
                     Monitoramento = db.Monitoramentos.Where(r => r.Id == i.Id_Monitoramento).Select(r => r.Name ?? "").FirstOrDefault(),
-                    Tarefa = db.indicadores.Where(r => r.Id == i.Id_tarefa).Select(r => r.Name ?? "").FirstOrDefault()
+                    Tarefa = db.Tarefas.Where(r => r.Id == i.Id_tarefa).Select(r => r.Name ?? "").FirstOrDefault()
 
                 });
             }
