@@ -2,7 +2,7 @@
 using Dominio.Entities;
 using Dominio.Interfaces.Services;
 
-namespace Application
+namespace Application.AppServiceClass
 {
     public class UserAppService :  IUserAppService
     {

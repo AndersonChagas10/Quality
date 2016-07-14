@@ -1,16 +1,64 @@
 ﻿using Dominio.Entities;
 using Dominio.Interfaces.Repositories;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace Data.Repositories
 {
-    public class RelatorioBetaRepository : RepositoryBase<ResultOld>, IRelatorioBetaRepository
+    public class BetaRepository : RepositoryBase<ResultOld>, IBetaRepository
     {
-        public RelatorioBetaRepository(DbContextSgq Db) : base(Db)
+
+        public BetaRepository(DbContextSgq _db)
+            : base(_db)
         {
         }
+
+        #region Coleta De Dados
+
+        public void Salvar(ResultOld r)
+        {
+            var op = db.Set<Operacao>().ToList();
+            var mon = db.Set<Monitoramento>().ToList();
+            var tar = db.Set<Tarefa>().ToList();
+
+            if (op.FirstOrDefault(z => z.Id == r.Id_Operacao) == null)
+                throw new ExceptionHelper("Id Invalido para Operação");
+
+            if (mon.FirstOrDefault(z => z.Id == r.Id_Monitoramento) == null)
+                throw new ExceptionHelper("Id Invalido para Monitoramento");
+
+            if (tar.FirstOrDefault(z => z.Id == r.Id_Tarefa) == null)
+                throw new ExceptionHelper("Id Invalido para Tarefa");
+
+            Add(r);
+        }
+
+        public void SalvarLista(List<ResultOld> list)
+        {
+            var op = db.Set<Operacao>().ToList();
+            var mon = db.Set<Monitoramento>().ToList();
+            var tar = db.Set<Tarefa>().ToList();
+            foreach (var i in list)
+            {
+                if (op.FirstOrDefault(r => r.Id == i.Id_Operacao) == null)
+                    throw new ExceptionHelper("Id Invalido para Operação");
+
+                if (mon.FirstOrDefault(r => r.Id == i.Id_Monitoramento) == null)
+                    throw new ExceptionHelper("Id Invalido para Monitoramento");
+
+                if (tar.FirstOrDefault(r => r.Id == i.Id_Tarefa) == null)
+                    throw new ExceptionHelper("Id Invalido para Tarefa");
+
+            }
+
+            AddAll(list);
+        }
+
+        #endregion
+
+        #region Busca de Dados
 
         private DbSet<Operacao> _Operacao { get { return db.Set<Operacao>(); } }
         private DbSet<Monitoramento> _Monitoramento { get { return db.Set<Monitoramento>(); } }
@@ -56,7 +104,7 @@ namespace Data.Repositories
                 " Id_Monitoramento ," +
                 " Id_Operacao) ind GROUP BY Id_Operacao", dateInit, dateEnd);
 
-            var queryResult = db.Database.SqlQuery<RetornoQueryIndicadoresRelBate>(query).OrderByDescending(r=>r.NotConform / r.Evaluate * 100).ToList();
+            var queryResult = db.Database.SqlQuery<RetornoQueryIndicadoresRelBate>(query).OrderByDescending(r => r.NotConform / r.Evaluate * 100).ToList();
 
             List<ResultOld> resultsList = RetornoQueryIndicadoresRelBateToResultOld(queryResult);
 
@@ -187,6 +235,8 @@ namespace Data.Repositories
 
             return resultsList;
         }
+
+        #endregion
 
         #region Auxiliares
 

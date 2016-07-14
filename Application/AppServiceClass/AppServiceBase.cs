@@ -6,7 +6,7 @@ using Dominio.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 
-namespace Application
+namespace Application.AppServiceClass
 {
     public class AppServiceBase<T> : IDisposable, IAppServiceBase<T> where T : EntityBase
     {

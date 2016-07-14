@@ -13,7 +13,7 @@ namespace Dominio.Controllers.Api.Tests
     {
 
         private readonly ResultOld _result ;
-        private readonly Mock<IResultOldRepository> _resultRepo;
+        private readonly Mock<IBetaRepository> _resultRepo;
 
         #region Testes dados negativo quantidade
 
@@ -102,7 +102,7 @@ namespace Dominio.Controllers.Api.Tests
         {
             var result = new ResultOld(100, 2, 2, 3, 0, 0);
             _resultRepo.Setup(r => r.Salvar(result)).Throws<ExceptionHelper>();
-            var service = new ResultOldService(_resultRepo.Object);
+            var service = new BetaService(_resultRepo.Object);
             service.Salvar(result);
             _resultRepo.Verify(r => r.Salvar(result), Times.Never);
         }
@@ -112,7 +112,7 @@ namespace Dominio.Controllers.Api.Tests
         {
             var result = new ResultOld(2, 100, 2, 3, 0, 0);
             _resultRepo.Setup(r => r.Salvar(result)).Throws<ExceptionHelper>();
-            var service = new ResultOldService(_resultRepo.Object);
+            var service = new BetaService(_resultRepo.Object);
             service.Salvar(result);
             _resultRepo.Verify(r => r.Salvar(result), Times.Never);
         }
@@ -122,7 +122,7 @@ namespace Dominio.Controllers.Api.Tests
         {
             var result = new ResultOld(2, 2, 100, 3, 0, 0);
             _resultRepo.Setup(r => r.Salvar(result)).Throws<ExceptionHelper>();
-            var service = new ResultOldService(_resultRepo.Object);
+            var service = new BetaService(_resultRepo.Object);
             service.Salvar(result);
             _resultRepo.Verify(r => r.Salvar(result), Times.Never);
         }
