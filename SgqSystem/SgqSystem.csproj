@@ -285,8 +285,6 @@
     <Compile Include="Controllers\GetIndiceColteaBetaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RelatorioBetaController.cs" />
-    <Compile Include="Controllers\RelatorioColetaController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
