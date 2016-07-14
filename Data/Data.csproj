@@ -61,8 +61,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\IndicadoresOperacoesMonitoramentoIntilizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\RelatorioBetaRepository.cs" />
-    <Compile Include="Repositories\ResultOldRepository.cs" />
+    <Compile Include="Repositories\BetaRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>

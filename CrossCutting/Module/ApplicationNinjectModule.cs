@@ -1,4 +1,4 @@
-﻿using Application;
+﻿using Application.AppServiceClass;
 using Application.Interface;
 using Ninject.Modules;
 
@@ -10,8 +10,7 @@ namespace CrossCutting.IOC.Module
         {
             Bind(typeof(IAppServiceBase<>)).To(typeof(AppServiceBase<>));
             Bind<IUserAppService>().To<UserAppService>();
-            Bind<IResultOldAppService>().To<ResultOldAppService>();
-            Bind<IRelatorioBetaAppService>().To<RelatorioBetaAppService>();
+            Bind<IBetaAppService>().To<BetaAppService>();
         }
     }
 }
