@@ -4,12 +4,10 @@ namespace SgqSystem.Controllers
 {
     public class RelatorioBetaController : Controller
     {
-
-        public ActionResult index()
+        // GET: RelatorioBeta
+        public ActionResult Index()
         {
             return View();
         }
-
-
     }
 }
