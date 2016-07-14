@@ -2,7 +2,7 @@
 
 namespace SgqSystem.Controllers
 {
-    public class RelatorioBetaController : Controller
+    public class GraficoBetaController : Controller
     {
         // GET: RelatorioBeta
         public ActionResult Index()

@@ -283,7 +283,7 @@
     <Compile Include="Controllers\Api\BetaController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\RelatorioBetaController.cs" />
+    <Compile Include="Controllers\GraficoBetaController.cs" />
     <Compile Include="Controllers\RelatorioColetaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -418,7 +418,7 @@
     <Content Include="Views\Shared\_GridPager.cshtml" />
     <Content Include="Views\Shared\_Grid.cshtml" />
     <Content Include="Views\Shared\Graficos\_GraficoIndicadores.cshtml" />
-    <Content Include="Views\RelatorioBeta\Index.cshtml" />
+    <Content Include="Views\GraficoBeta\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
