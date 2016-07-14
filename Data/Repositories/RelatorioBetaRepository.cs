@@ -3,7 +3,6 @@ using Dominio.Interfaces.Repositories;
 using System.Data.Entity;
 using System.Linq;
 using System.Collections.Generic;
-using System;
 
 namespace Data.Repositories
 {
