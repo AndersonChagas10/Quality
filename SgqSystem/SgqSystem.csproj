@@ -280,6 +280,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\ControleColetaController.cs" />
     <Compile Include="Controllers\Api\RelatorioBetaApiController.cs" />
     <Compile Include="Controllers\Api\ResultOldController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />

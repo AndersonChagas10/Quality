@@ -30,5 +30,10 @@ namespace Application
         {
             return _relatorioBetaService.GetNcPorTarefa(indicadorId, monitoramentoId, dateInit, dateEnd);
         }
+
+        public GenericReturn<List<ResultOld>> GetNcPorMonitoramentoJelsafa(int indicadorId, string dateInit, string dateEnd)
+        {
+            return _relatorioBetaService.GetNcPorMonitoramentoJelsafa(indicadorId, dateInit, dateEnd);
+        }
     }
 }

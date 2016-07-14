@@ -8,9 +8,9 @@ namespace SgqSystem.ViewModels
 
         public string Mensagem { get; set; }
         public string MensagemExcecao { get; set; }
-        public T Retorno { get; private set; }
+        public T Retorno { get; set; }
         //public List<T> ListRetorno { get; set; }
-        public string Inner { get; private set; }
+        public string Inner { get; set; }
 
         /// <summary>
         /// Construtor para o AutoMapper

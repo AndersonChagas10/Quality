@@ -40,5 +40,12 @@ namespace Dominio.Services
             var retorno = new GenericReturn<List<ResultOld>>(retornoRepositorio);
             return retorno;
         }
+
+        public GenericReturn<List<ResultOld>> GetNcPorMonitoramentoJelsafa(int indicadorId, string dateInit, string dateEnd)
+        {
+            var retornoRepositorio = _relatorioBetaService.GetNcPorMonitoramentoJelsafa(indicadorId, dateInit, dateEnd);
+            var retorno = new GenericReturn<List<ResultOld>>(retornoRepositorio);
+            return retorno;
+        }
     }
 }

@@ -29,10 +29,11 @@
     var _GraficoIndicadoresJsControl = {
 
         ajax_GraficoIndicadoresJsControl: function () {
-
+            var dt1 = $("#dtIni").val().replace(/-/gi, "")
+            var dt2 = $("#dtFim").val().replace(/-/gi, "")
             $("#loadingInicial").empty().html('loading').show();
             $("#plotPrincipal").empty();
-            $.get(urlIndicador, { idIndicador: 1 }, function (r) {
+            $.get(urlIndicador, { idIndicador: 1, dateInit: dt1, dateEnd: dt2 }, function (r) {
 
                 $("#loadingInicial").empty();
 
@@ -69,7 +70,7 @@
                         try {
                             divMonitoramento = DivManager.criaDiv(idDivPanelPorIndicador, b, "monitoramento");
                             $("#" + divMonitoramento).empty().html('loading').show();
-                            $.get(urlMonitoramento, { idIndicador: a.Id_Operacao }, function (Monitoramentos) {
+                            $.get(urlMonitoramento, { idIndicador: a.Id_Operacao, dateInit: dt1, dateEnd: dt2 }, function (Monitoramentos) {
                                 $("#" + divMonitoramento).empty();
                                 _GraficoIndicadoresJsControl.CriaGraficoMonitoramento(divMonitoramento, a.Operacao, Monitoramentos.Retorno);
 
@@ -77,7 +78,7 @@
                                 Monitoramentos.Retorno.forEach(function (c, d) {
                                     divTarefa.push(DivManager.criaDiv(idDivPanelPorIndicador, b + d, "tarefaIndicador"));
                                     $("#" + divTarefa).empty().html('loading').show();
-                                    $.get(urlTarefa, { indicadorId: a.Id_Operacao, idMonitoramento: c.Id_Monitoramento }, function (Tarefas) {
+                                    $.get(urlTarefa, { indicadorId: a.Id_Operacao, idMonitoramento: c.Id_Monitoramento, dateInit: dt1, dateEnd: dt2 }, function (Tarefas) {
                                         $("#" + divTarefa[d]).empty();
                                         _GraficoIndicadoresJsControl.CriaGraficoTarefa(divTarefa[d], c.Monitoramento, Tarefas.Retorno);
                                     });
