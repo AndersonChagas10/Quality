@@ -284,6 +284,7 @@
     <Compile Include="Controllers\Api\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RelatorioBetaController.cs" />
+    <Compile Include="Controllers\RelatorioColetaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
