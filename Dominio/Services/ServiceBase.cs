@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using Dominio.Interfaces.Repositories;
-using Dominio.Entities;
 using Dominio.Entities.BaseEntity;
+using DTO.Helpers;
 
 namespace Dominio.Services
 {

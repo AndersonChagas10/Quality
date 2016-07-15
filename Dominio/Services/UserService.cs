@@ -1,12 +1,14 @@
-﻿using Dominio.Entities;
-using Dominio.Helpers;
+﻿using AutoMapper;
+using Dominio.Entities;
 using Dominio.Interfaces.Repositories;
 using Dominio.Interfaces.Services;
+using DTO.DTO;
+using DTO.Helpers;
 using System;
 
 namespace Dominio.Services
 {
-    public class UserService :  IUserService
+    public class UserService : IUserService
     {
 
         private readonly IUserRepository _userRepo;
@@ -26,20 +28,29 @@ namespace Dominio.Services
         /// <param name="name"> Nome do Usuário. </param>
         /// <param name="password"> Senha do Usuário. </param>
         /// <returns> Retorna o Usuário caso exista, caso não exista retorna exceção com uma mensagem</returns>
-        public GenericReturn<User> AuthenticationLogin(User user)
+        public GenericReturn<UserDTO> AuthenticationLogin(UserDTO userDto)
         {
-            if (user.IsNull())
-                throw new ExceptionHelper("Username and Password are required.");//Nome de Usuario e Senha devem ser informados
+            try
+            {
+                if (userDto.IsNull())
+                    throw new ExceptionHelper("Username and Password are required.");
 
-            var isUser = _userRepo.AuthenticationLogin(user);
+                var user = Mapper.Map<UserDTO, UserSgq>(userDto);
+                var isUser = _userRepo.AuthenticationLogin(user);
 
-            if (isUser.IsNotNull())
-                return new GenericReturn<User>(isUser);
-            else
-                throw new ExceptionHelper("User not found, please verify Username and Password.");//Usuario não encontrado, verifique e-mail e senha.
+                if (!isUser.IsNotNull())
+                    throw new ExceptionHelper("User not found, please verify Username and Password.");
+
+                var retorno = Mapper.Map<UserSgq, UserDTO>(isUser);
+                return new GenericReturn<UserDTO>(retorno);
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<UserDTO>(e, "Ocorreu um erro ao buscar o Usuário.");
+            }
         }
 
     }
 
-    
+
 }

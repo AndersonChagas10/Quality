@@ -1,4 +1,5 @@
 ﻿using Dominio.Entities;
+using DTO.Helpers;
 using System.Collections.Generic;
 
 namespace Application.Interface

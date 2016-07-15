@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Dominio.Entities;
+using DTO.DTO;
+using DTO.Helpers;
 using SgqSystem.ViewModels;
 
 namespace SgqSystem.Mappers
@@ -8,12 +10,21 @@ namespace SgqSystem.Mappers
     {
         public ViewModelToDomainMappingProfile()
         {
-            CreateMap<GenericReturnViewModel<UserViewModel>, GenericReturn<User>>();
+            CreateMap<GenericReturnViewModel<UserViewModel>, GenericReturn<UserSgq>>();
 
-            CreateMap<UserViewModel, User>()
+            CreateMap<GenericReturnViewModel<UserViewModel>, GenericReturn<UserDTO>>();
+
+            CreateMap<UserViewModel, UserSgq>()
                 .ConstructUsing(src =>
-                    new User(name: src.Name, password: src.Password)
+                    new UserSgq(name: src.Name, password: src.Password)
                 );
+
+            CreateMap<UserDTO, UserSgq>()
+              .ConstructUsing(src =>
+                  new UserSgq(name: src.Name, password: src.Password)
+              );
+
+            CreateMap<UserViewModel, UserDTO>();
 
             CreateMap<ResultOldViewModel, ResultOld>()
                 .ConstructUsing(src =>

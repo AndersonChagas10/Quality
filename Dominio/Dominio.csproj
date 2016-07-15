@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dominio</RootNamespace>
     <AssemblyName>Dominio</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,16 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Entities\GenericReturn.cs" />
     <Compile Include="Entities\ResultOld.cs" />
     <Compile Include="Entities\Tarefa.cs" />
     <Compile Include="Entities\Operacao.cs" />
     <Compile Include="Entities\Monitoramento.cs" />
     <Compile Include="Entities\BaseEntity\DataCollectionBase.cs" />
     <Compile Include="Entities\BaseEntity\EntityBase.cs" />
-    <Compile Include="Helpers\ExceptionHelper.cs" />
-    <Compile Include="Helpers\Guard.cs" />
-    <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserSgq.cs" />
     <Compile Include="Interfaces\Repositories\IBetaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRepositoryBase.cs" />
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
@@ -52,11 +50,23 @@
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.0.2\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DTO\DTO.csproj">
+      <Project>{0ed5466d-2a8f-4e37-8d4a-c2f2760bd687}</Project>
+      <Name>DTO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

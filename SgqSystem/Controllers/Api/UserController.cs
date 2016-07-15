@@ -1,9 +1,8 @@
 ﻿using Application.Interface;
 using AutoMapper;
-using Dominio.Entities;
-using Dominio.Helpers;
+using DTO.DTO;
+using DTO.Helpers;
 using SgqSystem.ViewModels;
-using System;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -21,19 +20,11 @@ namespace SgqSystem.Controllers.Api
         }
 
         // POST: api/Teste
-        public GenericReturnViewModel<UserViewModel> Post([FromBody] UserViewModel user)
+        public GenericReturnViewModel<UserViewModel> Post([FromBody] UserViewModel userVm)
         {
-            try
-            {
-                var userModel = Mapper.Map<UserViewModel, User>(user);
-                var queryResult = _userAppService.AuthenticationLogin(userModel);
-                var userLogado = Mapper.Map<GenericReturn<User>, GenericReturnViewModel<UserViewModel>>(queryResult);
-                return userLogado;
-            }
-            catch (Exception e)
-            {
-                return new GenericReturnViewModel<UserViewModel>(e, "Ocorreu um erro ao buscar o Usuário.");
-            }
+            var queryResult = _userAppService.AuthenticationLogin(userVm);
+            var userLogado = Mapper.Map<GenericReturn<UserDTO>, GenericReturnViewModel<UserViewModel>>(queryResult);
+            return userLogado;
         }
 
         // PUT: api/Teste/5

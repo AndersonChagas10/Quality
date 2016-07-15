@@ -1,9 +1,10 @@
-﻿using Dominio.Entities;
+﻿using DTO.DTO;
+using DTO.Helpers;
 
 namespace Dominio.Interfaces.Services
 {
     public interface IUserService 
     {
-        GenericReturn<User> AuthenticationLogin(User user);
+        GenericReturn<UserDTO> AuthenticationLogin(UserDTO user);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Dominio.Entities;
 using Dominio.Interfaces.Repositories;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;

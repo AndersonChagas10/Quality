@@ -1,8 +1,7 @@
 ﻿using Application.Interface;
-using Dominio.Entities;
 using Dominio.Entities.BaseEntity;
-using Dominio.Helpers;
 using Dominio.Interfaces.Services;
+using DTO.Helpers;
 using System;
 using System.Collections.Generic;
 

@@ -23,3 +23,7 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket6\Dominio\bin\Debug\Dominio.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket6\Dominio\obj\Debug\Dominio.csprojResolveAssemblyReference.cache
 C:\Users\Celso\Source\Repos\ddd.bitbucket6\Dominio\obj\Debug\Dominio.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket6\Dominio\obj\Debug\Dominio.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket6\Dominio\bin\Debug\AutoMapper.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket6\Dominio\bin\Debug\DTO.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket6\Dominio\bin\Debug\DTO.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket6\Dominio\bin\Debug\AutoMapper.xml

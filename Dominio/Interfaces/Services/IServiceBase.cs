@@ -1,5 +1,5 @@
-﻿using Dominio.Entities;
-using Dominio.Entities.BaseEntity;
+﻿using Dominio.Entities.BaseEntity;
+using DTO.Helpers;
 using System.Collections.Generic;
 
 namespace Dominio.Interfaces.Services

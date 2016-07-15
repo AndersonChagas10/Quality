@@ -1,9 +1,9 @@
-﻿using Dominio.Entities.BaseEntity;
+﻿using DTO.Entities.BaseEntity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Dominio.Helpers
+namespace DTO.Helpers
 {
     public static class Guard
     {

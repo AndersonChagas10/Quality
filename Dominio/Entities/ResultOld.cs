@@ -1,6 +1,5 @@
 ﻿using Dominio.Entities.BaseEntity;
-using Dominio.Helpers;
-using System;
+using DTO.Helpers;
 
 namespace Dominio.Entities
 {

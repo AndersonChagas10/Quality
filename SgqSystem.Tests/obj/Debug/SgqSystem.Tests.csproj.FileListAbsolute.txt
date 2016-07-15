@@ -178,3 +178,6 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem.Tests\bin\Debug\Data.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem.Tests\obj\Debug\SgqSystem.Tests.csprojResolveAssemblyReference.cache
 C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem.Tests\obj\Debug\SgqSystem.Tests.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem.Tests\obj\Debug\SgqSystem.Tests.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem.Tests\bin\Debug\DTO.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem.Tests\bin\Debug\DTO.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem.Tests\bin\Debug\AutoMapper.xml

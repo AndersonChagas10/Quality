@@ -119,6 +119,10 @@
       <Project>{777D8E88-0D52-446A-BC77-2F50A7D936E5}</Project>
       <Name>Dominio</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DTO\DTO.csproj">
+      <Project>{0ed5466d-2a8f-4e37-8d4a-c2f2760bd687}</Project>
+      <Name>DTO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SgqSystem\SgqSystem.csproj">
       <Project>{EF4A17A1-123E-4FC4-A75E-35ABBC39DB21}</Project>
       <Name>SgqSystem</Name>

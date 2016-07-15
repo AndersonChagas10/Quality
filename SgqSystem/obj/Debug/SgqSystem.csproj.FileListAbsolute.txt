@@ -355,3 +355,6 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem\bin\Data.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem\obj\Debug\SgqSystem.csprojResolveAssemblyReference.cache
 C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem\obj\Debug\SgqSystem.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem\obj\Debug\SgqSystem.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem\bin\DTO.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem\bin\DTO.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket6\SgqSystem\bin\AutoMapper.xml

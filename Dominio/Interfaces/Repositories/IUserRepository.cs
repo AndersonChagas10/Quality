@@ -4,11 +4,11 @@ namespace Dominio.Interfaces.Repositories
 {
     public interface IUserRepository 
     {
-        User AuthenticationLogin(User user);
+        UserSgq AuthenticationLogin(UserSgq user);
 
-        void Salvar(User user);
+        void Salvar(UserSgq user);
 
-        User Get(string Name);
+        UserSgq Get(string Name);
 
         bool UserNameIsCadastrado(string Name, int id);
     }

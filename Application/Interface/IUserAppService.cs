@@ -1,14 +1,10 @@
-﻿using Dominio.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DTO.DTO;
+using DTO.Helpers;
 
 namespace Application.Interface
 {
     public interface IUserAppService 
     {
-        GenericReturn<User> AuthenticationLogin(User user);
+        GenericReturn<UserDTO> AuthenticationLogin(UserDTO user);
     }
 }

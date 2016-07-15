@@ -1,12 +1,10 @@
-﻿using SgqSystem.ViewModels.BaseEntityViewModel;
-using System;
+﻿using DTO.DTO;
+using SgqSystem.ViewModels.BaseEntityViewModel;
 
 namespace SgqSystem.ViewModels
 {
-    public class UserViewModel : EntityBaseViewModel
+    public class UserViewModel : UserDTO
     {
-        public string Name { get; set; }
-        public string Password { get; set; }
-        public DateTime AcessDate { get; set; }
+           
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Application.Interface;
 using AutoMapper;
 using Dominio.Entities;
+using DTO.Helpers;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;

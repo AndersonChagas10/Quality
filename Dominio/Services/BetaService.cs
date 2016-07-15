@@ -1,11 +1,8 @@
 ﻿using Dominio.Entities;
 using Dominio.Interfaces.Repositories;
 using Dominio.Interfaces.Services;
-using System;
+using DTO.Helpers;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dominio.Services
 {

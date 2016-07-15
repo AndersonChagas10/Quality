@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dominio.Entities;
 using Dominio.Interfaces.Services;
+using DTO.Helpers;
 
 namespace Application.AppServiceClass
 {

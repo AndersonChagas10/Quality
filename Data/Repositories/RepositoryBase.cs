@@ -1,6 +1,6 @@
 ﻿using Dominio.Entities.BaseEntity;
-using Dominio.Helpers;
 using Dominio.Interfaces.Repositories;
+using DTO.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Data.Repositories
 {
-    public class UserRepository :  RepositoryBase<User>, IUserRepository
+    public class UserRepository :  RepositoryBase<UserSgq>, IUserRepository
     {
         //private readonly IRepositoryBase<User> _repoBase;
         //private readonly DbContextSgq _db;
@@ -14,7 +14,7 @@ namespace Data.Repositories
         {
         }
 
-        public User Get(string Name)
+        public UserSgq Get(string Name)
         {
             return GetAll().FirstOrDefault(r => r.Name == Name);
         }
@@ -24,15 +24,15 @@ namespace Data.Repositories
             return GetAll().Any(x => x.Id != id && x.Name == Name);
         }
 
-        public void Salvar(User user)
+        public void Salvar(UserSgq user)
         {
             AddOrUpdate(user);
             Commit();
         }
 
-        public User AuthenticationLogin(User user)
+        public UserSgq AuthenticationLogin(UserSgq user)
         {
-            var result = db.Set<User>().FirstOrDefault(r => r.Name.Equals(user.Name) && r.Password.Equals(user.Password));
+            var result = db.Set<UserSgq>().FirstOrDefault(r => r.Name.Equals(user.Name) && r.Password.Equals(user.Password));
             return result;
         }
     }

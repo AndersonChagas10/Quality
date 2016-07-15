@@ -1,6 +1,7 @@
 ﻿using Application.Interface;
-using Dominio.Entities;
 using Dominio.Interfaces.Services;
+using DTO.DTO;
+using DTO.Helpers;
 
 namespace Application.AppServiceClass
 {
@@ -14,7 +15,7 @@ namespace Application.AppServiceClass
             _userService = userService;
         }
 
-        public GenericReturn<User> AuthenticationLogin(User user)
+        public GenericReturn<UserDTO> AuthenticationLogin(UserDTO user)
         {
             return _userService.AuthenticationLogin(user);
         }
