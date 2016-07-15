@@ -4,6 +4,6 @@ namespace Dominio.Interfaces.Services
 {
     public interface IUserService 
     {
-        GenericReturn<User> AuthenticationLogin(User user);
+        GenericReturn<UserSgq> AuthenticationLogin(UserSgq user);
     }
 }

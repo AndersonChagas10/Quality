@@ -4,7 +4,7 @@ using System;
 
 namespace Dominio.Entities
 {
-    public class User : EntityBase
+    public class UserSgq : EntityBase
     {
 
         public string Name { get; set; }
@@ -14,7 +14,7 @@ namespace Dominio.Entities
         /// <summary>
         /// Construtor para o EF.
         /// </summary>
-        public User()
+        public UserSgq()
         {
 
         }
@@ -25,7 +25,7 @@ namespace Dominio.Entities
         /// </summary>
         /// <param name="name"> Nome do Usuário. </param>
         /// <param name="password"> Senha do Usuário. </param>
-        public User(string name, string password)
+        public UserSgq(string name, string password)
         {
             //Verifica se ambos parametros estao nulos.
             if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(password))

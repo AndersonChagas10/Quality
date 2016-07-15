@@ -26,7 +26,7 @@ namespace Dominio.Services
         /// <param name="name"> Nome do Usuário. </param>
         /// <param name="password"> Senha do Usuário. </param>
         /// <returns> Retorna o Usuário caso exista, caso não exista retorna exceção com uma mensagem</returns>
-        public GenericReturn<User> AuthenticationLogin(User user)
+        public GenericReturn<UserSgq> AuthenticationLogin(UserSgq user)
         {
             if (user.IsNull())
                 throw new ExceptionHelper("Username and Password are required.");//Nome de Usuario e Senha devem ser informados
@@ -34,7 +34,7 @@ namespace Dominio.Services
             var isUser = _userRepo.AuthenticationLogin(user);
 
             if (isUser.IsNotNull())
-                return new GenericReturn<User>(isUser);
+                return new GenericReturn<UserSgq>(isUser);
             else
                 throw new ExceptionHelper("User not found, please verify Username and Password.");//Usuario não encontrado, verifique e-mail e senha.
         }

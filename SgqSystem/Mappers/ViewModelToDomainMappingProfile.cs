@@ -8,11 +8,11 @@ namespace SgqSystem.Mappers
     {
         public ViewModelToDomainMappingProfile()
         {
-            CreateMap<GenericReturnViewModel<UserViewModel>, GenericReturn<User>>();
+            CreateMap<GenericReturnViewModel<UserViewModel>, GenericReturn<UserSgq>>();
 
-            CreateMap<UserViewModel, User>()
+            CreateMap<UserViewModel, UserSgq>()
                 .ConstructUsing(src =>
-                    new User(name: src.Name, password: src.Password)
+                    new UserSgq(name: src.Name, password: src.Password)
                 );
 
             CreateMap<ResultOldViewModel, ResultOld>()

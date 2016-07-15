@@ -25,7 +25,7 @@ namespace Data
         /// <summary>
         /// Tabelas relacionadas no Entity Framework, para serem utilizadas pelo context, por ex. db.TabelaX.Where...
         /// </summary>
-        public DbSet<User> Usuarios { get; set; }
+        public DbSet<UserSgq> Usuarios { get; set; }
         public DbSet<ResultOld> Results { get; set; }
         public DbSet<Tarefa> Tarefas { get; set; }
         public DbSet<Operacao> indicadores { get; set; }

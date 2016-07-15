@@ -8,14 +8,14 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
-    public class RelatorioColetaController : Controller
+    public class RelatorioColetaBetaController : Controller
     {
         private readonly IAppServiceBase<ResultOld> _serviceAppBase;
         private readonly IAppServiceBase<Operacao> _opAppBase;
         private readonly IAppServiceBase<Monitoramento> _monAppBase;
         private readonly IAppServiceBase<Tarefa> _tarAppBase;
 
-        public RelatorioColetaController(IAppServiceBase<ResultOld> serviceAppBase,
+        public RelatorioColetaBetaController(IAppServiceBase<ResultOld> serviceAppBase,
             IAppServiceBase<Operacao> opAppBase,
             IAppServiceBase<Monitoramento> monAppBase,
             IAppServiceBase<Tarefa> tarAppBase

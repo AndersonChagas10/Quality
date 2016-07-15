@@ -39,7 +39,7 @@
     <Compile Include="Entities\BaseEntity\EntityBase.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\Guard.cs" />
-    <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserSgq.cs" />
     <Compile Include="Interfaces\Repositories\IBetaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRepositoryBase.cs" />
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />

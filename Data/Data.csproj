@@ -58,6 +58,10 @@
     <Compile Include="Migrations\201607091856447_Reset.Designer.cs">
       <DependentUpon>201607091856447_Reset.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607151739032_ModelChange1.cs" />
+    <Compile Include="Migrations\201607151739032_ModelChange1.Designer.cs">
+      <DependentUpon>201607151739032_ModelChange1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\IndicadoresOperacoesMonitoramentoIntilizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +82,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201607091856447_Reset.resx">
       <DependentUpon>201607091856447_Reset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607151739032_ModelChange1.resx">
+      <DependentUpon>201607151739032_ModelChange1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

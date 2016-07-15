@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Data.EntityConfig
 {
-    public class UserConfig : EntityTypeConfiguration<User>
+    public class UserConfig : EntityTypeConfiguration<UserSgq>
     {
 
         public UserConfig()

@@ -25,9 +25,9 @@ namespace SgqSystem.Controllers.Api
         {
             try
             {
-                var userModel = Mapper.Map<UserViewModel, User>(user);
+                var userModel = Mapper.Map<UserViewModel, UserSgq>(user);
                 var queryResult = _userAppService.AuthenticationLogin(userModel);
-                var userLogado = Mapper.Map<GenericReturn<User>, GenericReturnViewModel<UserViewModel>>(queryResult);
+                var userLogado = Mapper.Map<GenericReturn<UserSgq>, GenericReturnViewModel<UserViewModel>>(queryResult);
                 return userLogado;
             }
             catch (Exception e)

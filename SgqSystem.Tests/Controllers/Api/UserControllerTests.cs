@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers.Api.Tests
         [TestMethod]
         public void User_Login_Nao_Encontrado()
         {
-            _userApp.Setup(r => r.AuthenticationLogin(new User("wqewqewqeewqewq", "323132321wqewqewqe"))).Throws<ExceptionHelper>();
+            _userApp.Setup(r => r.AuthenticationLogin(new UserSgq("wqewqewqeewqewq", "323132321wqewqewqe"))).Throws<ExceptionHelper>();
         }
        
     }

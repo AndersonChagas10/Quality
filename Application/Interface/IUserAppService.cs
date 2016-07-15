@@ -9,6 +9,6 @@ namespace Application.Interface
 {
     public interface IUserAppService 
     {
-        GenericReturn<User> AuthenticationLogin(User user);
+        GenericReturn<UserSgq> AuthenticationLogin(UserSgq user);
     }
 }

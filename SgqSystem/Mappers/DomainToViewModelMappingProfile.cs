@@ -14,8 +14,8 @@ namespace SgqSystem.Mappers
 
         public DomainToViewModelMappingProfile()
         {
-            CreateMap<GenericReturn<User>, GenericReturnViewModel<UserViewModel>>();
-            CreateMap<User, UserViewModel>();
+            CreateMap<GenericReturn<UserSgq>, GenericReturnViewModel<UserViewModel>>();
+            CreateMap<UserSgq, UserViewModel>();
             CreateMap<ResultOld, ResultOldViewModel>();
         }
     }
