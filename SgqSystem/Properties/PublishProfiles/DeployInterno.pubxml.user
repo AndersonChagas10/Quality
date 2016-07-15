@@ -6,7 +6,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>\\SERVERGRT\SgqDevInterno</_PublishTargetUrl>
+    <_PublishTargetUrl>\\SERVERGRT\SgqDevInterno\Reports</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="ApplicationInsights.config">
@@ -85,19 +85,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2016 16:13:19</publishTime>
     </File>
     <File Include="bin/Application.dll">
-      <publishTime>07/14/2016 16:40:21</publishTime>
+      <publishTime>07/14/2016 17:02:17</publishTime>
     </File>
     <File Include="bin/Application.pdb">
-      <publishTime>07/14/2016 16:40:21</publishTime>
+      <publishTime>07/14/2016 17:02:17</publishTime>
     </File>
     <File Include="bin/ApplicationInsights.config">
       <publishTime>07/14/2016 16:13:22</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>07/14/2016 16:53:06</publishTime>
+      <publishTime>07/14/2016 17:59:42</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>07/14/2016 16:53:05</publishTime>
+      <publishTime>07/14/2016 17:59:41</publishTime>
     </File>
     <File Include="bin/AutoMapper.dll">
       <publishTime>07/14/2016 16:13:19</publishTime>
@@ -106,22 +106,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2016 16:13:19</publishTime>
     </File>
     <File Include="bin/CrossCutting.dll">
-      <publishTime>07/14/2016 16:41:20</publishTime>
+      <publishTime>07/14/2016 17:02:17</publishTime>
     </File>
     <File Include="bin/CrossCutting.pdb">
-      <publishTime>07/14/2016 16:41:20</publishTime>
+      <publishTime>07/14/2016 17:02:17</publishTime>
     </File>
     <File Include="bin/Data.dll">
-      <publishTime>07/14/2016 16:40:22</publishTime>
+      <publishTime>07/14/2016 17:02:17</publishTime>
     </File>
     <File Include="bin/Data.pdb">
-      <publishTime>07/14/2016 16:40:22</publishTime>
+      <publishTime>07/14/2016 17:02:17</publishTime>
     </File>
     <File Include="bin/Dominio.dll">
-      <publishTime>07/14/2016 16:40:21</publishTime>
+      <publishTime>07/14/2016 17:02:17</publishTime>
     </File>
     <File Include="bin/Dominio.pdb">
-      <publishTime>07/14/2016 16:40:21</publishTime>
+      <publishTime>07/14/2016 17:02:17</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>07/14/2016 16:13:19</publishTime>
@@ -262,10 +262,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2016 16:13:21</publishTime>
     </File>
     <File Include="bin/SgqSystem.dll">
-      <publishTime>07/14/2016 16:41:29</publishTime>
+      <publishTime>07/14/2016 17:45:41</publishTime>
     </File>
     <File Include="bin/SgqSystem.pdb">
-      <publishTime>07/14/2016 16:41:29</publishTime>
+      <publishTime>07/14/2016 17:45:41</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
       <publishTime>07/14/2016 16:13:20</publishTime>
@@ -361,7 +361,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/14/2016 16:13:27</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>07/14/2016 16:52:53</publishTime>
+      <publishTime>07/14/2016 17:59:31</publishTime>
     </File>
     <File Include="Scripts/ai.0.15.0-build58334.js">
       <publishTime>07/14/2016 16:13:27</publishTime>
@@ -540,8 +540,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/_references.js">
       <publishTime>07/14/2016 16:13:27</publishTime>
     </File>
+    <File Include="Views/GraficoBeta/Index.cshtml">
+      <publishTime>07/14/2016 17:01:56</publishTime>
+    </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>07/14/2016 16:13:27</publishTime>
+      <publishTime>07/14/2016 17:59:18</publishTime>
     </File>
     <File Include="Views/RelatorioBeta/Index.cshtml">
       <publishTime>07/14/2016 16:13:27</publishTime>
