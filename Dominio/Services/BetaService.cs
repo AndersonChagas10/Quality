@@ -1,69 +1,159 @@
-﻿using Dominio.Entities;
+﻿using AutoMapper;
+using Dominio.Entities;
 using Dominio.Interfaces.Repositories;
 using Dominio.Interfaces.Services;
+using DTO.DTO;
 using DTO.Helpers;
+using System;
 using System.Collections.Generic;
 
 namespace Dominio.Services
 {
-    public class BetaService : IBetaService
+    public class BetaService :  IBetaService
     {
-        private IBetaRepository _betaService;
+        private IBetaRepository _betaRepository;
+
+        public string falhaGeral { get { return "It was not possible retrieve any data."; } }
+        private string NaoInserido { get { return "It was not possible to insert data."; } }
+        private string inseridoOk { get {return "Your data has been successfully saved."; } }
 
         public BetaService(IBetaRepository relatorioBetaService)
         {
-            _betaService = relatorioBetaService;
+            _betaRepository = relatorioBetaService;
         }
 
-        #region Coleta de Dados
+        #region Coleta de Dados.
 
-        public GenericReturn<ResultOld> Salvar(ResultOld r)
+        public GenericReturn<ResultOldDTO> Salvar(ResultOldDTO result)
         {
-            _betaService.Salvar(r);
-            return new GenericReturn<ResultOld>("Your data has been successfully saved.");
+            try
+            {
+                if (result.IsNull())
+                    throw new ExceptionHelper(NaoInserido + " Theres is no data.");
+
+                var objTosave = Mapper.Map<ResultOldDTO, ResultOld>(result);
+
+                _betaRepository.ValidaFkResultado(objTosave);
+
+                _betaRepository.Salvar(objTosave);
+
+                return new GenericReturn<ResultOldDTO>(inseridoOk);
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<ResultOldDTO>(e, NaoInserido);
+            }
         }
 
-        public GenericReturn<ResultOld> SalvarLista(List<ResultOld> list)
+        public GenericReturn<ResultOldDTO> SalvarLista(List<ResultOldDTO> list)
         {
-            _betaService.SalvarLista(list);
-            return new GenericReturn<ResultOld>("Your data has been successfully saved.");
+            try
+            {
+                if (list.IsNull())
+                    throw new ExceptionHelper(NaoInserido + " Theres is no data.");
+
+                if (list.Count == 0 )
+                    throw new ExceptionHelper(NaoInserido + " Theres is no data.");
+
+                var listObjTosave = Mapper.Map<List<ResultOldDTO>, List<ResultOld>>(list);
+
+                foreach (var i in listObjTosave)
+                    _betaRepository.ValidaFkResultado(i);
+
+                _betaRepository.SalvarLista(listObjTosave);
+
+                return new GenericReturn<ResultOldDTO>(inseridoOk);
+
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<ResultOldDTO>(e, NaoInserido);
+            }
         }
 
         #endregion
 
-        #region Busca De Dados
+        #region Busca De Dados.
 
-        public GenericReturn<List<ResultOld>> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd)
+        public GenericReturn<List<ResultOldDTO>> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd)
         {
+            try
+            {
+                Guard.ForValidFk(indicadorId, "The Level 1 Id is null, " + falhaGeral);
 
-            var retornoRepositorio = _betaService.GetNcPorIndicador(indicadorId, dateInit, dateEnd);
-            if (retornoRepositorio.Count == 0)
-                throw new ExceptionHelper("No data.");
+                //VALIDAR AS DATAS AQUI E DEMAIS PARAMETROS
 
-            var retorno = new GenericReturn<List<ResultOld>>(retornoRepositorio);
-            return retorno;
+                var retornoRepositorio = _betaRepository.GetNcPorIndicador(indicadorId, dateInit, dateEnd);
+                if (retornoRepositorio.Count == 0)
+                    throw new ExceptionHelper("No data.");
+
+                var objToReturn = Mapper.Map<List<ResultOld>, List<ResultOldDTO>>(retornoRepositorio);
+                return new GenericReturn<List<ResultOldDTO>>(objToReturn);
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral);
+            }
         }
 
-        public GenericReturn<List<ResultOld>> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd)
+        public GenericReturn<List<ResultOldDTO>> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd)
         {
-            var retornoRepositorio = _betaService.GetNcPorMonitoramento(indicadorId, dateInit, dateEnd);
-            var retorno = new GenericReturn<List<ResultOld>>(retornoRepositorio);
-            return retorno;
+            try
+            {
+
+                Guard.ForValidFk(indicadorId, "The Level 1 Id is null, " + falhaGeral);
+
+                //VALIDAR AS DATAS AQUI E DEMAIS PARAMETROS
+
+                var retornoRepositorio = _betaRepository.GetNcPorMonitoramento(indicadorId, dateInit, dateEnd);
+
+                var objToReturn = Mapper.Map<List<ResultOld>, List<ResultOldDTO>>(retornoRepositorio);
+                return new GenericReturn<List<ResultOldDTO>>(objToReturn);
+
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral);
+            }
         }
 
-        public GenericReturn<List<ResultOld>> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd)
+        public GenericReturn<List<ResultOldDTO>> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd)
         {
-            var retornoRepositorio = _betaService.GetNcPorTarefa(indicadorId, monitoramentoId, dateInit, dateEnd);
-            var retorno = new GenericReturn<List<ResultOld>>(retornoRepositorio);
-            return retorno;
+            try
+            {
+                Guard.ForValidFk(indicadorId, "The Level 1 Id is null, " + falhaGeral);
+
+                //VALIDAR AS DATAS AQUI E DEMAIS PARAMETROS
+
+                var retornoRepositorio = _betaRepository.GetNcPorTarefa(indicadorId, monitoramentoId, dateInit, dateEnd);
+
+                var objToReturn = Mapper.Map<List<ResultOld>, List<ResultOldDTO>>(retornoRepositorio);
+                return new GenericReturn<List<ResultOldDTO>>(objToReturn);
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral);
+            }
         }
 
-        public GenericReturn<List<ResultOld>> GetNcPorMonitoramentoJelsafa(int indicadorId, string dateInit, string dateEnd)
+        public GenericReturn<List<ResultOldDTO>> GetNcPorMonitoramentoJelsafa(int indicadorId, string dateInit, string dateEnd)
         {
-            var retornoRepositorio = _betaService.GetNcPorMonitoramentoJelsafa(indicadorId, dateInit, dateEnd);
-            var retorno = new GenericReturn<List<ResultOld>>(retornoRepositorio);
-            return retorno;
-        } 
+            try
+            {
+                Guard.ForValidFk(indicadorId, "The Level 1 Id is null, " + falhaGeral);
+
+                //VALIDAR AS DATAS AQUI E DEMAIS PARAMETROS
+
+                var retornoRepositorio = _betaRepository.GetNcPorMonitoramentoJelsafa(indicadorId, dateInit, dateEnd);
+
+                var objToReturn = Mapper.Map<List<ResultOld>, List<ResultOldDTO>>(retornoRepositorio);
+                return new GenericReturn<List<ResultOldDTO>>(objToReturn);
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral);
+            }
+        }
 
         #endregion
 

@@ -1,29 +1,14 @@
-﻿using SgqSystem.ViewModels.BaseEntityViewModel;
+﻿using AutoMapper;
+using DTO.DTO;
+using DTO.Helpers;
+using System.Collections.Generic;
 
 namespace SgqSystem.ViewModels
 {
-    public class ResultOldViewModel : DataCollectionBaseViewModel
+    public class ResultOldViewModel : ResultOldDTO
     {
-        public int Id_Tarefa { get; set; }
-        public int Id_Operacao { get; set; }
-        public int Id_Monitoramento { get; set; }
-        public int numero1 { get; set; }
-        public int numero2 { get; set; }
-
-        /// <summary>
-        /// Ignoreds pelo Entity Framework.
-        /// </summary>
-        public string Operacao { get; set; }
-        public string Monitoramento { get; set; }
-        public string Tarefa { get; set; }
-
-        /// <summary>
-        /// Construtor para o Auto Mapper.
-        /// </summary>
-        public ResultOldViewModel()
-        {
-
-        }
-        
+        //public ResultOldDTO resultado { get; set; }
+        public List<ResultOldDTO> listaResultado { get; set; }
+      
     }
 }

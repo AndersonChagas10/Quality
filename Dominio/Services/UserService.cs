@@ -12,6 +12,7 @@ namespace Dominio.Services
     {
 
         private readonly IUserRepository _userRepo;
+        public string falhaGeral { get { return "It was not possible retrieve any data."; } }
 
         /// <summary>
         /// Construtor para Inversion of Control.
@@ -46,7 +47,7 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                return new GenericReturn<UserDTO>(e, "Ocorreu um erro ao buscar o Usuário.");
+                return new GenericReturn<UserDTO>(e, falhaGeral);
             }
         }
 

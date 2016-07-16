@@ -15,5 +15,6 @@ namespace Dominio.Interfaces.Repositories
         List<ResultOld> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd);
         List<ResultOld> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd);
         List<ResultOld> GetNcPorMonitoramentoJelsafa(int indicadorId, string dateInit, string dateEnd);
+        void ValidaFkResultado(ResultOld r);
     }
 }

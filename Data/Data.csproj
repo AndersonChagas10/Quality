@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComplexType\RetornoQueryIndicadoresRelBate.cs" />
     <Compile Include="DbContextSgq.cs" />
     <Compile Include="EntityConfig\OperacaoConfig.cs" />
     <Compile Include="EntityConfig\MonitoramentoConfig.cs" />

@@ -27,15 +27,6 @@ namespace SgqSystem.Controllers.Api
             return userLogado;
         }
 
-        // PUT: api/Teste/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/Teste/5
-        public void Delete(int id)
-        {
-        }
     }
 
 

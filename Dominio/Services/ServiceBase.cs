@@ -11,6 +11,10 @@ namespace Dominio.Services
     {
 
         private readonly IRepositoryBase<T> _repositoryBase;
+        private string inseridoOk { get { return "Data successfully saved."; } }
+        private string AlteradoOk { get { return "Data successfully changed."; } }
+        private string NaoInserido { get { return "It was not possible to insert data."; } }
+        private string emptyObj { get { return "It was not possible to insert data, object is empity."; } }
 
         public ServiceBase(IRepositoryBase<T> repo)
         {
@@ -27,14 +31,14 @@ namespace Dominio.Services
 
                 _repositoryBase.Add(obj);
                 if (obj.Id > 0)
-                    return new GenericReturn<T>("Registro alterado com sucesso!");
+                    return new GenericReturn<T>(AlteradoOk);
                 else
-                    return new GenericReturn<T>("Registro inserido com sucesso!");
+                    return new GenericReturn<T>(inseridoOk);
 
             }
             catch (ExceptionHelper ex)
             {
-                throw new ExceptionHelper("Erro ao inserir o registro.", ex);
+                throw new ExceptionHelper(NaoInserido, ex);
             }
         }
 
@@ -43,10 +47,10 @@ namespace Dominio.Services
             try
             {
                 if (!obj.GetEnumerator().MoveNext())
-                    throw new ExceptionHelper("Ocorreu um erro ao salvar a lista, a lista de dados está vazia.");
+                    throw new ExceptionHelper(emptyObj);
 
                 _repositoryBase.AddAll(obj);
-                return new GenericReturn<T>("Registro inserido com sucesso!");
+                return new GenericReturn<T>(inseridoOk);
             }
             catch (ExceptionHelper ex)
             {
@@ -60,9 +64,9 @@ namespace Dominio.Services
             {
                 _repositoryBase.AddOrUpdate(obj);
                 if (obj.Id > 0)
-                    return new GenericReturn<T>("Registro alterado com sucesso!");
+                    return new GenericReturn<T>(AlteradoOk);
                 else
-                    return new GenericReturn<T>("Registros inserido com sucesso!");
+                    return new GenericReturn<T>(inseridoOk);
             }
             catch (ExceptionHelper ex)
             {
@@ -76,7 +80,7 @@ namespace Dominio.Services
             {
 
                 _repositoryBase.Update(obj);
-                return new GenericReturn<T>("Registro alterado com sucesso!");
+                return new GenericReturn<T>(AlteradoOk);
 
             }
             catch (ExceptionHelper ex)

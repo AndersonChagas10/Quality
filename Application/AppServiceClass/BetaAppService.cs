@@ -1,12 +1,8 @@
 ﻿using Application.Interface;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dominio.Entities;
 using Dominio.Interfaces.Services;
 using DTO.Helpers;
+using DTO.DTO;
 
 namespace Application.AppServiceClass
 {
@@ -22,12 +18,12 @@ namespace Application.AppServiceClass
 
         #region Coleta De Dados
 
-        public GenericReturn<ResultOld> Salvar(ResultOld r)
+        public GenericReturn<ResultOldDTO> Salvar(ResultOldDTO r)
         {
             return _betaService.Salvar(r);
         }
 
-        public GenericReturn<ResultOld> SalvarLista(List<ResultOld> list)
+        public GenericReturn<ResultOldDTO> SalvarLista(List<ResultOldDTO> list)
         {
             return _betaService.SalvarLista(list);
         }
@@ -36,22 +32,22 @@ namespace Application.AppServiceClass
 
         #region Busca De Dados
 
-        public GenericReturn<List<ResultOld>> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd)
+        public GenericReturn<List<ResultOldDTO>> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd)
         {
             return _betaService.GetNcPorIndicador(indicadorId, dateInit, dateEnd);
         }
 
-        public GenericReturn<List<ResultOld>> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd)
+        public GenericReturn<List<ResultOldDTO>> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd)
         {
             return _betaService.GetNcPorMonitoramento(indicadorId, dateInit, dateEnd);
         }
 
-        public GenericReturn<List<ResultOld>> GetNcPorMonitoramentoJelsafa(int indicadorId, string dateInit, string dateEnd)
+        public GenericReturn<List<ResultOldDTO>> GetNcPorMonitoramentoJelsafa(int indicadorId, string dateInit, string dateEnd)
         {
             return _betaService.GetNcPorMonitoramentoJelsafa(indicadorId, dateInit, dateEnd);
         }
 
-        public GenericReturn<List<ResultOld>> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd)
+        public GenericReturn<List<ResultOldDTO>> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd)
         {
             return _betaService.GetNcPorTarefa(indicadorId, monitoramentoId, dateInit, dateEnd);
         }

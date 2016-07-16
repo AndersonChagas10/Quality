@@ -6,9 +6,7 @@ namespace Data.Repositories
 {
     public class UserRepository :  RepositoryBase<UserSgq>, IUserRepository
     {
-        //private readonly IRepositoryBase<User> _repoBase;
-        //private readonly DbContextSgq _db;
-
+        
         public UserRepository(DbContextSgq _db)
             :base (_db)
         {

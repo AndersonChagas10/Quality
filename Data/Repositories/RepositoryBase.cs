@@ -9,17 +9,30 @@ using System.Linq;
 
 namespace Data.Repositories
 {
+    /// <summary>
+    /// Repositório Base, classe de gerencia do Banco de Dados.
+    /// </summary>
+    /// <typeparam name="T">Object reconhecido pelo DataBase: EntityBase</typeparam>
     public class RepositoryBase<T> : IDisposable, IRepositoryBase<T> where T : EntityBase
     {
 
+        /// <summary>
+        /// Instancia do DataBase.
+        /// </summary>
         protected readonly DbContextSgq db;
 
+        /// <summary>
+        /// Construtor.
+        /// </summary>
+        /// <param name="Db"></param>
         public RepositoryBase(DbContextSgq Db)
         {
             db = Db;
         }
 
-        //Referencia no context a tabela referente o objeto.
+        /// <summary>
+        /// Objeto T em memória volátil pela chamada de sua Interface.
+        /// </summary>
         private DbSet<T> Entity { get { return db.Set<T>(); } }
 
         #region Adiciona e Atualiza
