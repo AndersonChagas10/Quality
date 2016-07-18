@@ -21,7 +21,7 @@
     var urlIndicador = '@Html.Raw(urlIndicadores)';
     var urlMonitoramento = '@Html.Raw(urlMonitoramentos)';
     var urlTarefa = '@Html.Raw(urlTarefas)';
-
+    var labelTotalNc = "Total Defects";
     var debug = {
 
     };
@@ -124,7 +124,7 @@
                 series: [
                     Chart.ProcNc(serie0, 0),
                     //Chart.Meta(valoresY.meta, true),
-                    Chart.SimpleSerie(serie1, "Total NC", Chart.CorTotalNc(), true, 1),
+                    Chart.SimpleSerie(serie1, labelTotalNc, Chart.CorTotalNc(), true, 1),
                     Chart.SimpleSerie(serie2, "Total Evaluated", Chart.CorTotalAv(), true, 1)
                 ],
             });
@@ -153,7 +153,7 @@
                 zones: Chart.Zones(),
                 series: [
                     //Chart.ProcNc(serie0, 1),
-                    Chart.SimpleSerie(serie1, "Total NC", Chart.CorTotalNc(), true, 0),
+                    Chart.SimpleSerie(serie1, labelTotalNc, Chart.CorTotalNc(), true, 0),
                     Chart.SimpleSerie(serie2, "Total Evaluated", Chart.CorTotalAv(), false, 0),
                     Chart.curvaPareto(serie0)
                 ],
@@ -183,7 +183,7 @@
                 zones: Chart.Zones(),
                 series: [
                     //Chart.ProcNc(serie0, 1),
-                    Chart.SimpleSerie(serie1, "Total NC", Chart.CorTotalNc(), true, 0),
+                    Chart.SimpleSerie(serie1, labelTotalNc, Chart.CorTotalNc(), true, 0),
                     Chart.SimpleSerie(serie2, "Total Evaluated", Chart.CorTotalAv(), false, 0),
                     Chart.curvaPareto(serie0)
                 ],
@@ -335,7 +335,7 @@
                     allowDecimals: false,
                     gridLineWidth: 0,
                     title: {
-                        text: (totalNC == undefined || totalNC == false) ? 'Samples' : 'Total NC',
+                        text: (totalNC == undefined || totalNC == false) ? 'Samples' : labelTotalNc,
                         style: {
                             color: "Black"
                         }
@@ -352,7 +352,7 @@
                 return [{ // Primary yAxis
                     gridLineWidth: 0,
                     title: {
-                        text: (totalNC == undefined || totalNC == false) ? 'Samples' : 'Total NC',
+                        text: (totalNC == undefined || totalNC == false) ? 'Samples' : labelTotalNc,
                         style: {
                             color: "Black"
                         }
