@@ -172,8 +172,8 @@ namespace Data.Repositories
                                         " WHERE Id_Monitoramento = {0} AND Id_Operacao = {1}" +
                                         " AND AddDate BETWEEN  '{2} 00:00:00' AND '{3} 23:59:59' " +
                                         " AND NotConform > 0" +
-                                        " AND  numero1 = (select MAX(numero1) from ResultOld where Id_Operacao = {1} AND Id_Monitoramento = {0} AND AddDate BETWEEN  '{2} 00:00:00' AND '{3} 23:59:59')" +
-                                        " AND numero2 = (select MAX(numero2) from ResultOld where Id_Operacao = {1} AND Id_Monitoramento = {0} AND AddDate BETWEEN  '{2} 00:00:00' AND '{3} 23:59:59')" +
+                                        //" AND  numero1 = (select MAX(numero1) from ResultOld where Id_Operacao = {1} AND Id_Monitoramento = {0} AND AddDate BETWEEN  '{2} 00:00:00' AND '{3} 23:59:59')" +
+                                        //" AND numero2 = (select MAX(numero2) from ResultOld where Id_Operacao = {1} AND Id_Monitoramento = {0} AND AddDate BETWEEN  '{2} 00:00:00' AND '{3} 23:59:59')" +
                                         " GROUP BY" +
                                         " id_operacao" +
                                         ", Id_Monitoramento" +
