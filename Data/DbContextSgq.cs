@@ -10,7 +10,7 @@ namespace Data
     {
 
         public DbContextSgq()
-            : base("DbContextSgq")
+            : base("DbContextSgqDev")
         {
             Configuration.LazyLoadingEnabled = false;
             Database.CreateIfNotExists();
