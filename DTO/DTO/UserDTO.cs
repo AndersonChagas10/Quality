@@ -6,5 +6,7 @@ namespace DTO.DTO
     {
         public string Name { get; set; }
         public string Password { get; set; }
+        public string Tste { get; private set; }
+
     }
 }

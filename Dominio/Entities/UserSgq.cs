@@ -9,6 +9,7 @@ namespace Dominio.Entities
 
         public string Name { get; set; }
         public string Password { get; private set; }
+        public string Tste { get; private set; }
         public DateTime? AcessDate { get; set; } = null;
 
         /// <summary>
