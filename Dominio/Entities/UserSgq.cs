@@ -20,7 +20,7 @@ namespace Dominio.Entities
 
         }
 
-
+         
         /// <summary>
         /// Construtor para validação de nome de Usuario e senha.
         /// </summary>
