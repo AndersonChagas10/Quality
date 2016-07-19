@@ -284,6 +284,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\GraficoBetaController.cs" />
     <Compile Include="Controllers\RelatorioColetaController.cs" />
+    <Compile Include="Controllers\WebServiceController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -526,6 +527,7 @@
     <Folder Include="Coleta\db\" />
     <Folder Include="Coleta\json\" />
     <Folder Include="Coleta\webservices\" />
+    <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
