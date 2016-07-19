@@ -15,7 +15,6 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using SgqSystem.ViewModels;
 using SgqSystem.Providers;
-using SgqSystem.Results;
 
 namespace SgqSystem.Controllers
 {
