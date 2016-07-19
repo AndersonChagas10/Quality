@@ -50,3 +50,16 @@ C:\Users\Celso\Source\Repos\ddd.bitbucket6\Application\bin\Debug\DTO.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket6\Application\bin\Debug\AutoMapper.dll
 C:\Users\Celso\Source\Repos\ddd.bitbucket6\Application\bin\Debug\DTO.pdb
 C:\Users\Celso\Source\Repos\ddd.bitbucket6\Application\bin\Debug\AutoMapper.xml
+C:\Users\Celso\Source\Repos\ddd.bitbucket7\Application\bin\Debug\Application.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket7\Application\bin\Debug\Application.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket7\Application\bin\Debug\Castle.Core.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket7\Application\bin\Debug\Dominio.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket7\Application\bin\Debug\DTO.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket7\Application\bin\Debug\AutoMapper.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket7\Application\bin\Debug\Dominio.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket7\Application\bin\Debug\DTO.pdb
+C:\Users\Celso\Source\Repos\ddd.bitbucket7\Application\bin\Debug\Castle.Core.xml
+C:\Users\Celso\Source\Repos\ddd.bitbucket7\Application\bin\Debug\AutoMapper.xml
+C:\Users\Celso\Source\Repos\ddd.bitbucket7\Application\obj\Debug\Application.csprojResolveAssemblyReference.cache
+C:\Users\Celso\Source\Repos\ddd.bitbucket7\Application\obj\Debug\Application.dll
+C:\Users\Celso\Source\Repos\ddd.bitbucket7\Application\obj\Debug\Application.pdb

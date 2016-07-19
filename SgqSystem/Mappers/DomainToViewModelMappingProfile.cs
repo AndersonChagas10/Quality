@@ -3,6 +3,7 @@ using Dominio.Entities;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
+using System.Collections.Generic;
 
 namespace SgqSystem.Mappers
 {
@@ -56,6 +57,7 @@ namespace SgqSystem.Mappers
 
             //ResultOldDTO para >>> ResultOldViewModel, ResultOld
             CreateMap<GenericReturn<ResultOldDTO>, GenericReturnViewModel<ResultOldViewModel>>();
+            CreateMap<GenericReturn<List<ResultOldDTO>>, GenericReturnViewModel<List<ResultOldViewModel>>>();
             CreateMap<ResultOldDTO, ResultOldViewModel>(); 
             CreateMap<GenericReturn<ResultOldDTO>, GenericReturnViewModel<ResultOld>>();
             CreateMap<ResultOldDTO, ResultOld>(); 

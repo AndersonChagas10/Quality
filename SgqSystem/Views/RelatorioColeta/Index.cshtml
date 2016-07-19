@@ -2,9 +2,11 @@
 @using GridMvc.Html
 @{
     ViewBag.Title = "Audit Reports";
+    var url = Url.Action("Index", "Home");
 }
 
 <h2>Audit Reports:</h2>
+<p><a href="@url" class="btn btn-primary btn-lg"><< Back</a></p>
 
 @*@Html.Grid(Model).AutoGenerateColumns()*@
 @Html.Grid(Model).Columns(columns =>

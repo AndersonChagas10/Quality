@@ -1,0 +1,1 @@
+var teste = new Usuario("Admin", "123");
