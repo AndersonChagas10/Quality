@@ -1,0 +1,534 @@
+﻿@{
+    var urlIndicadores = Url.Action("GetNcPorIndicador", "api/RelatorioBetaApi");
+    var urlMonitoramentos = Url.Action("GetNcPorMonitoramento", "api/RelatorioBetaApi");
+    var urlTarefas = Url.Action("GetNcPorTarefa", "api/RelatorioBetaApi");
+    ViewBag.Title = "_GraficoIndicadores";
+}
+
+<div id="loadingInicial"></div>
+<div id="plotPrincipal"></div>
+<div class="panel panel-info" id="PanelFull" style="display:none">
+    <div class="panel-heading"></div>
+    <div class="panel-body" id="g1">
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var divTemperatura = "";
+    var divMonitoramento = "";
+    var divTarefa = "";
+    var urlIndicador = '@Html.Raw(urlIndicadores)';
+    var urlMonitoramento = '@Html.Raw(urlMonitoramentos)';
+    var urlTarefa = '@Html.Raw(urlTarefas)';
+
+    var debug = {
+
+    };
+
+    var _GraficoIndicadoresJsControl = {
+
+        ajax_GraficoIndicadoresJsControl: function () {
+            var dt1 = $("#dtIni").val().replace(/-/gi, "")
+            var dt2 = $("#dtFim").val().replace(/-/gi, "")
+            $("#loadingInicial").empty().html('loading').show();
+            $("#plotPrincipal").empty();
+            $.get(urlIndicador, { idIndicador: 1, dateInit: dt1, dateEnd: dt2 }, function (r) {
+
+                $("#loadingInicial").empty();
+
+                if (r.Mensagem != null && r.MensagemExcecao == null)
+                    alert(r.Mensagem);// Exiber mensagem para o Usuario
+                else if (r.Mensagem != null && r.MensagemExcecao != null) {
+                    console.log(r.MensagemExcecao)// Quando ocorrer EXCECOES
+                    alert(r.Mensagem);// Exiber mensagem para o Usuario
+                }
+                if (r.Inner != null)
+                    console.log(r.Inner) //NAO EXISBIR ALEM DO CONSOLE ESTA LINHA.
+                if (r.Retorno != null) {
+                    //Utilizar esta situação quando a ação retornar um OBJETO.
+
+                    //Chart 1
+                    _GraficoIndicadoresJsControl.CriaGraficoOperacoes("plotPrincipal", "Nc per Audit", r.Retorno);
+
+                    r.Retorno.forEach(function (a, b) {
+
+                        var divTendencia = "";
+                        var divMonitoramento = "";
+                        var divTarefa = [];
+
+                        //Cria Panels para cada Indicador
+                        var divClonada = $('#PanelFull').clone();
+                        divClonada.attr('id', divClonada.attr('id') + b).show();
+                        divClonada.find('.panel-body').attr('id', divClonada.find('.panel-body').attr('id') + b);
+                        var idDivPanelPorIndicador = divClonada.find('.panel-body').attr('id');
+                        $('#plotPrincipal').append(divClonada);
+                        divClonada.find('.panel-heading').html(a.Operacao);
+                        // Fim Cria Panels para cada Indicador
+
+                        //Chart 2
+                        try {
+                            divMonitoramento = DivManager.criaDiv(idDivPanelPorIndicador, b, "monitoramento");
+                            $("#" + divMonitoramento).empty().html('loading').show();
+                            $.get(urlMonitoramento, { idIndicador: a.Id_Operacao, dateInit: dt1, dateEnd: dt2 }, function (Monitoramentos) {
+                                $("#" + divMonitoramento).empty();
+                                _GraficoIndicadoresJsControl.CriaGraficoMonitoramento(divMonitoramento, a.Operacao, Monitoramentos.Retorno);
+
+                                //Chart 3
+                                Monitoramentos.Retorno.forEach(function (c, d) {
+                                    divTarefa.push(DivManager.criaDiv(idDivPanelPorIndicador, b + d, "tarefaIndicador"));
+                                    $("#" + divTarefa).empty().html('loading').show();
+                                    $.get(urlTarefa, { indicadorId: a.Id_Operacao, idMonitoramento: c.Id_Monitoramento, dateInit: dt1, dateEnd: dt2 }, function (Tarefas) {
+                                        $("#" + divTarefa[d]).empty();
+                                        _GraficoIndicadoresJsControl.CriaGraficoTarefa(divTarefa[d], c.Monitoramento, Tarefas.Retorno);
+                                    });
+                                });
+                                //Fim Chart 3
+
+                            });
+                        } catch (err) {
+                            $("#" + divMonitoramento).empty();
+                            $("#" + divTarefa).empty();
+                            alert("Cannot load one or more Charts.")
+                            console.log(err);
+                        }
+                        //Fim Chart 2
+
+                    });
+                    //Fim Chart 1
+                }
+            });
+
+        },
+
+        CriaGraficoOperacoes: function (idDiv, titulo, obj) {
+
+            var serie1 = valoresFloat(obj, 'NotConform');
+            var serie2 = valoresFloat(obj, 'Evaluate');
+            var serie0 = calculaProcemtagem(serie1, serie2);
+            var serieX = valoresString(obj, 'Operacao');
+
+            $('#' + idDiv).empty().highcharts({
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y',
+                    height: '350'
+                },
+                credits: Chart.Credits(),
+                title: Chart.Titulo(titulo),
+                xAxis: Chart.Xaxis(serieX),
+                tooltip: Chart.ToolTip(true, true),
+                legend: Chart.Legend(),
+                yAxis: Chart.yAxisPadrao(),
+                zones: Chart.Zones(),
+                series: [
+                    Chart.ProcNc(serie0, 0),
+                    //Chart.Meta(valoresY.meta, true),
+                    Chart.SimpleSerie(serie1, "Total NC", Chart.CorTotalNc(), true, 1),
+                    Chart.SimpleSerie(serie2, "Total Evaluated", Chart.CorTotalAv(), true, 1)
+                ],
+            });
+
+        },
+
+        CriaGraficoMonitoramento: function (idDiv, titulo, obj) {
+
+            var serie1 = valoresFloat(obj, 'NotConform');
+            var serie2 = valoresFloat(obj, 'Evaluate');
+            var serieX = valoresString(obj, 'Monitoramento');
+            var serie0 = paretoCorreto(serie1, serie2);
+
+            $('#' + idDiv).empty().highcharts({
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y',
+                    height: '350'
+                },
+                credits: Chart.Credits(),
+                title: Chart.Titulo(titulo),
+                xAxis: Chart.Xaxis(serieX),
+                tooltip: Chart.ToolTip(true, true),
+                legend: Chart.Legend(),
+                yAxis: Chart.yAxisPadrao(true, true),
+                zones: Chart.Zones(),
+                series: [
+                    //Chart.ProcNc(serie0, 1),
+                    Chart.SimpleSerie(serie1, "Total NC", Chart.CorTotalNc(), true, 0),
+                    Chart.SimpleSerie(serie2, "Total Evaluated", Chart.CorTotalAv(), false, 0),
+                    Chart.curvaPareto(serie0)
+                ],
+            });
+
+        },
+
+        CriaGraficoTarefa: function (idDiv, titulo, obj) {
+
+            var serie1 = valoresFloat(obj, 'NotConform');
+            var serie2 = valoresFloat(obj, 'Evaluate');
+            var serieX = valoresString(obj, 'Tarefa');
+            var serie0 = paretoCorreto(serie1, serie2);
+
+            $('#' + idDiv).empty().highcharts({
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y',
+                    height: '350'
+                },
+                credits: Chart.Credits(),
+                title: Chart.Titulo(titulo),
+                xAxis: Chart.Xaxis(serieX),
+                tooltip: Chart.ToolTip(true, true),
+                legend: Chart.Legend(),
+                yAxis: Chart.yAxisPadrao(true, true),
+                zones: Chart.Zones(),
+                series: [
+                    //Chart.ProcNc(serie0, 1),
+                    Chart.SimpleSerie(serie1, "Total NC", Chart.CorTotalNc(), true, 0),
+                    Chart.SimpleSerie(serie2, "Total Evaluated", Chart.CorTotalAv(), false, 0),
+                    Chart.curvaPareto(serie0)
+                ],
+            });
+
+        },
+
+    };
+
+    var DivManager = {
+
+        //Cria div dentro de um elemento, retorna Id da div criada.
+        // Parans: idString: Id do elemento aonde sera adicionada a nova Div, por ex, uma div,
+        //         Contador: Numero sequencial concatenado ao Id da Div criada, por ex "IdNovo" + 1 = IdNovo1, Idnovo2, etc...,
+        //         Tag: Complemento concatenado ao IdNovo, este não é sequencial,
+        //         W: Width da div.
+        // Returns: Id da Div criada.
+        criaDiv: function (idString, contador, tag, w) {
+            var novoId = idString + contador + (tag != undefined ? tag : "");
+            document.getElementById(idString).appendChild(document.createElement("div"));
+            $("#" + idString).children().last().attr("id", novoId);
+            if (w != undefined)
+                $("#" + idString).children().last().width(w);
+            return $("#" + idString).children().last().attr("id");
+        },
+
+    }
+    /* Param1 NC
+    * Param2 TAV */
+    function calculaProcemtagem(param1, param2) {
+        var percCalculado = [];
+        $.each(param1, function (a, b) {
+            var calc = ((param1[a] / param2[a]) * 100);
+            percCalculado.push(calc > 100 ? 100 : calc);
+        });
+        return percCalculado;
+    };
+
+    function paretoCorreto(dados) {
+        var pareto = [];
+        var totalNC = 0;
+        var totalNC = dados.reduce(function (a, b) { return a + b; }, 0);
+        var porcentagemAcumuladaNC = 0;
+        dados.forEach(function (a) {
+            porcentagemAcumuladaNC += a / totalNC * 100;
+            pareto.push(Math.round(porcentagemAcumuladaNC, 0));
+        });
+        return pareto;
+    }
+
+    function valoresFloat(obj, paramName) {
+        var objReturn = [];
+        $.each(obj, function (a, b) {
+            for (var key in b) {
+                //console.log(' name=' + key + ' obj=' + b[key]);
+                if (key == paramName) {
+                    objReturn.push(parseFloat(b[key]));
+                    return;
+                }
+            }
+        })
+        return objReturn;
+    };
+
+    function valoresString(obj, paramName) {
+        var objReturn = [];
+        $.each(obj, function (a, b) {
+            for (var key in b) {
+                //console.log(' name=' + key + ' obj=' + b[key]);
+                if (key == paramName) {
+                    objReturn.push(b[key]);
+                    return;
+                }
+            }
+        })
+        return objReturn;
+    };
+
+    var Chart = {
+        CorTotalNc: function () { return '#F7BCB0' },
+        CorTotalAv: function () { return '#ccc' },
+        CorTotalPareto: function () { return '#900000' },
+        CorMeta: function () { return '#67D184' },
+        CorTotalProcNc: function () { return '#FF6347' },
+        Legend: function () {
+            return {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                borderWidth: 0
+            };
+        },
+        ToolTip: function (isShared, isCrosshairs) {
+            return {
+                //valueDecimals: 2,
+                shared: isShared,
+                crosshairs: isCrosshairs
+            }
+        },
+        Titulo: function (data) {
+            return {
+                text: data,
+                x: -20 //center
+            };
+        },
+        Credits: function () {
+            return {
+                enabled: false
+            }
+        },
+        Zones: function () {
+            return [{
+                value: 69,
+                color: '#FF6666'
+            }, {
+                value: 80,
+                color: 'Yellow'
+            }, {
+                color: '#98FB98'
+            }];
+        },
+        Chart: function (tipo, zoon) {
+            return {
+                type: tipo,
+                zoomType: zoon,
+                alignTicks: false
+            }
+        },
+        yAxisPadrao: function (inverso, pareto, totalNC) {
+            if (inverso == undefined) {
+                return [{ // Primary yAxis
+                    allowDecimals: false,
+                    min: 0,
+                    max: 120,
+                    tickInterval: 10,
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: "Black"
+                        }
+                    },
+                    title: {
+                        text: (pareto == undefined || pareto == false) ? '% NC' : '% Accumulated',
+                        style: {
+                            color: "Black"
+                        }
+                    },
+                }, { // Secondary yAxis
+                    allowDecimals: false,
+                    gridLineWidth: 0,
+                    title: {
+                        text: (totalNC == undefined || totalNC == false) ? 'Samples' : 'Total NC',
+                        style: {
+                            color: "Black"
+                        }
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: "Black"
+                        }
+                    },
+                    opposite: true,
+                }]
+            } else {
+                return [{ // Primary yAxis
+                    gridLineWidth: 0,
+                    title: {
+                        text: (totalNC == undefined || totalNC == false) ? 'Samples' : 'Total NC',
+                        style: {
+                            color: "Black"
+                        }
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: "Black"
+                        }
+                    },
+
+                }, { // Secondary yAxis
+                    min: 0,
+                    max: 120,
+                    tickInterval: 10,
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: "Black"
+                        }
+                    },
+                    title: {
+                        text: (pareto == undefined || pareto == false) ? '% NC' : '% Accumulated',
+                        style: {
+                            color: "Black"
+                        }
+                    },
+                    opposite: true
+                }]
+            }
+        },
+        Xaxis: function (dados) {
+            return [{
+                categories: dados
+            }];
+        },
+
+        //Series
+        SimpleSerie: function (data, name, color, isVisible, axy, toolTip, hasAlign, hasEventPoint, dadosFunc) {
+            return {
+                name: name,
+                data: data,
+                color: color,
+                yAxis: axy || 0,
+                visible: isVisible == undefined ? false : isVisible,
+                dataLabels: Chart.DataLabelPadrao(undefined, hasAlign),
+                //    {
+                //    format: '{y:.2f}',
+                //    enabled: true,
+                //    //rotation: -45,
+                //    //x: -5,
+                //    color: 'black', // color
+                //    align: hasAlign == undefined ? 'center' : hasAlign,
+                //    style: {
+                //        fontSize: '10px',
+                //    }
+                //},
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix: toolTip == undefined ? '' : toolTip,
+                },
+                point: {
+                    events: {
+                        click: function () {
+                            if (!!hasEventPoint)
+                                FTA.onFormAnomaliaClickedNC(dadosFunc[0], dadosFunc[1], dadosFunc[2]);
+                        }
+                    }
+                }
+            }
+        },
+        //Series com %
+        curvaPareto: function (dados) {
+
+            return {
+                type: 'line',
+                yAxis: 1,
+                name: 'Accumulated',
+                color: "Red",
+                data: dados,
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix: ' %'
+                },
+                zones: [{
+                    value: 80,
+                    color: 'Red'
+                }, {
+                    color: 'Black'
+                }],
+            }
+        },
+        ProcNc: function (data, axy, func, nome, id, funcParaAcumuladas) {
+            //$.each(data, function(a, b){
+            //    data[a] = parseFloat(b.toFixed(2));
+            //});
+            return {
+                name: '% NC',
+                color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
+                data: data,
+                yAxis: axy,
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix: ' %'
+                },
+                //pointPadding: 0.4,
+                //pointPlacement: -0.2,
+                dataLabels: Chart.DataLabelPadrao('%'),
+                point: {
+                    events: {
+                        click: function () {
+                            if (!!func)
+                                func(nome[this.x], id[this.x]);
+                            if (!!funcParaAcumuladas && id[this.x] != '0')
+                                funcParaAcumuladas(this.category, id[this.x]);
+                        }
+                    }
+                },
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix: ' % (NC * Peso)'
+                }
+            };
+
+        },
+        Meta: function (data, isVisible, func, nome, id, funcParaAcumuladas) {
+
+            return {
+                visible: !!isVisible,
+                name: '% Meta',
+                data: data,
+                color: Chart.CorMeta(),//'rgba(81,207,64,1)',
+                //pointPadding: 0.4,
+                //pointPlacement: 0.4,
+                yAxis: 0,
+                dataLabels: Chart.DataLabelPadrao('%'),
+                point: {
+                    events: {
+
+                        click: function () {
+                            if (!!func)
+                                func(nome[this.x], id[this.x]);
+                            if (!!funcParaAcumuladas && id[this.x] != '0')
+                                funcParaAcumuladas(this.category, id[this.x]);
+                        }
+                    }
+                },
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix: ' %'
+                }
+            };
+
+        },
+
+        DataLabelPadrao: function (affix, hasAlign) {
+
+            return {
+                format: !!affix ? '{y:.2f} ' + affix : '{y:.2f}',
+                enabled: true,
+                rotation: 270,
+                x: 2,
+                y: -25,
+                align: 'center',//!!hasAlign ? 'center' : hasAlign,
+                color: 'black',
+                align: 'center',
+                style: {
+                    fontSize: '10px',
+                    fontWeight: 'Arial'
+                }
+            };
+        },
+    };
+
+    $(document).ready(function () {
+
+
+    });
+</script>

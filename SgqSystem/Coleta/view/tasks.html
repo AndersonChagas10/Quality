@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Template Mobile</title>
+		<link href="../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="../plugins/float_button/css/kc.fab.css"/>
+		<link rel="stylesheet" href="../css/task.css"/>
+		<link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+	</head>
+	<body role="document">
+  
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="monitorings.html"> <i class="fa fa-chevron-left fa-3" aria-hidden="true"></i> </a>
+					<a id="monitoringName" class="navbar-brand" href="monitorings.html"></a>
+				</div>
+			</div>
+		</nav>
+	
+		<div class="container" role="main" style="margin-top: 64px;">
+		
+			<!--<div class="panel panel-default">
+			  <div class="panel-heading">Area 1</div>
+			</div>-->
+			
+			
+			<div class="panel panel-default" id="cffPanel">
+			  <div class="panel-body">
+				<div class="row">
+					<div class="col-xs-3">Set:</div>
+					<div id="sets" class="col-xs-3">1/4</div>
+					<div class="col-xs-3 total-sides-errors">Sides with errors:</div>	
+					<div id="side-errors" class="col-xs-3 total-sides-errors">0</div>				
+					<div class="col-xs-3">Sides:</div>
+					<div id="sides" class="col-xs-3">1/10</div>
+					<div class="col-xs-3 total-errors">Errors:</div>
+					<div class="col-xs-3 total-errors total-errors-label">0</div>
+				</div>	
+			  </div>
+			</div>
+
+			<div class="panel panel-default" id="htpPanel">
+			  <div class="panel-body">
+				<div class="row">
+					<div class="col-xs-3">CJL:</div>
+					<div id="numero1" class="col-xs-3">1/4</div>			
+					<div class="col-xs-3">Carcass:</div>
+					<div id="numero2" class="col-xs-3">1/10</div>
+				</div>	
+			  </div>
+			</div>
+
+			<div class="panel panel-default" id="carcassPanel">
+			  <div class="panel-body">
+				<div class="row">
+					<div class="col-xs-3 total-sides-errors">Total defects:</div>	
+					<div class="col-xs-3 total-sides-errors total-sides-errors-label">0</div>	
+					<div class="col-xs-3 total-sides-errors">Inspections:</div>	
+					<div id="inspections" class="col-xs-3 total-sides-errors">1/10</div>	
+					<div class="col-xs-3 total-errors">Defects:</div>
+					<div class="col-xs-3 total-errors total-errors-label">0</div>
+				</div>	
+			  </div>
+			</div>
+
+			<div id="showExpand" class="row">
+				<div class="col-xs-12">
+					<button class="btn btn-default button-expand pull-right" style="margin-bottom: 8px; margin-top: 8px; margin-left: 8px;"><i class="fa fa-expand" aria-hidden="true"></i> Expand All</button>
+					<button class="btn btn-default button-collapse pull-right" style="margin-bottom: 8px; margin-top: 8px; margin-left: 8px;"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>
+				</div>
+			</div>
+			
+			<div id="showNa" class="row">
+				<div class="col-xs-offset-10 col-xs-2 text-center">N/A</div>
+			</div>	
+			
+			<div class="monitoramentos list-group" style="margin-top: 16px;  margin-bottom: 70px;">
+
+                <div class="collection tasks">
+                    
+			</div>
+			<div class="kc_fab_wrapper" ></div><!--Save-->
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="helpModal" role="dialog">
+			<div class="modal-dialog">
+			
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title" style="text-align: center">Help</h4>
+					</div>
+					<div class="modal-body" style="text-align: center">		
+						<p style="font-size: 1em;" id="helpModal-content">
+						</p>
+					</div>
+				</div>			
+			</div>
+		</div>
+		
+		
+		<script src="../plugins/jquery/jquery.min.js"></script>
+		<script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+		<script src="../plugins/float_button/js/kc.fab.js"></script>
+
+		<script src="../utils/urlHelper.js"></script>
+		<script src="../models/TaskGroup.js"></script>
+        <script src="../models/Task.js"></script>
+		<script src="../models/Result.js"></script>
+		<script src="../components/taskgroup.js"></script>
+		<script src="../components/task.js"></script>
+		<script src="../components/save.js"></script>
+        <script src="../controllers/tasks.js"></script>
+		<script src="../tests/taskgroupsTest.js"></script>
+        <script src="../tests/tasksTest.js"></script>
+
+	</body>
+</html>
