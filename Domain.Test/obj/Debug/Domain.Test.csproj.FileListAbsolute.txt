@@ -1,8 +1,0 @@
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Domain.Test\bin\Debug\Domain.Test.dll
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Domain.Test\bin\Debug\Domain.Test.pdb
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Domain.Test\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Domain.Test\obj\Debug\Domain.Test.csprojResolveAssemblyReference.cache
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Domain.Test\obj\Debug\Domain.Test.dll
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Domain.Test\obj\Debug\Domain.Test.pdb
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Domain.Test\bin\Debug\Dominio.dll
-C:\Users\Celso\Source\Repos\ddd.bitbucket3\Domain.Test\bin\Debug\Dominio.pdb
