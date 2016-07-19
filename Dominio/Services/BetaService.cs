@@ -92,7 +92,7 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral);
+                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral + "(GetNcPorIndicador)");
             }
         }
 
@@ -113,7 +113,7 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral);
+                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral + "(GetNcPorMonitoramento)");
             }
         }
 
@@ -132,7 +132,7 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral);
+                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral + "(GetNcPorTarefa)");
             }
         }
 
@@ -151,7 +151,7 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral);
+                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral +"(GetNcPorMonitoramentoJelsafa)");
             }
         }
 
