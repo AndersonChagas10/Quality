@@ -34,6 +34,12 @@
     <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataCollection.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataCollectionResult.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DataCollection\DataCollection.cs" />
     <Compile Include="Entities\DataCollection\DataCollectionResult.cs" />
     <Compile Include="Entities\BaseEntity\DataCollectionBase.cs" />
@@ -44,6 +50,24 @@
     <Compile Include="Interfaces\Services\IBetaService.cs" />
     <Compile Include="Interfaces\Services\IServiceBase.cs" />
     <Compile Include="Interfaces\Services\IUserService.cs" />
+    <Compile Include="Level01.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Level01Consolidation.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Level02.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Level02Consolidation.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Level03.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Level03Consolidation.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Monitoramento.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

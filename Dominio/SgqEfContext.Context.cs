@@ -32,5 +32,13 @@ namespace Dominio
         public virtual DbSet<Tarefa> Tarefa { get; set; }
         public virtual DbSet<teste> teste { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
+        public virtual DbSet<DataCollection> DataCollection { get; set; }
+        public virtual DbSet<DataCollectionResult> DataCollectionResult { get; set; }
+        public virtual DbSet<Level01> Level01 { get; set; }
+        public virtual DbSet<Level01Consolidation> Level01Consolidation { get; set; }
+        public virtual DbSet<Level02> Level02 { get; set; }
+        public virtual DbSet<Level02Consolidation> Level02Consolidation { get; set; }
+        public virtual DbSet<Level03> Level03 { get; set; }
+        public virtual DbSet<Level03Consolidation> Level03Consolidation { get; set; }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="41481c9360bf485fb122760b8cb9857f" Name="Diagram1">
+      <Diagram DiagramId="41481c9360bf485fb122760b8cb9857f" Name="Diagram1" ZoomLevel="55">
         <EntityTypeShape EntityType="SgqDbModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SgqDbModel.Monitoramento" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SgqDbModel.Operacao" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
@@ -12,6 +12,22 @@
         <EntityTypeShape EntityType="SgqDbModel.Tarefa" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SgqDbModel.teste" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SgqDbModel.UserSgq" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SgqDbModel.DataCollection" Width="1.875" PointX="11.5" PointY="6.125" />
+        <EntityTypeShape EntityType="SgqDbModel.DataCollectionResult" Width="2.25" PointX="18" PointY="5.25" />
+        <EntityTypeShape EntityType="SgqDbModel.Level01" Width="1.5" PointX="4.125" PointY="11.75" />
+        <EntityTypeShape EntityType="SgqDbModel.Level01Consolidation" Width="2" PointX="4.875" PointY="6.25" />
+        <EntityTypeShape EntityType="SgqDbModel.Level02" Width="1.5" PointX="8" PointY="11.625" />
+        <EntityTypeShape EntityType="SgqDbModel.Level02Consolidation" Width="2.25" PointX="7.875" PointY="5.875" />
+        <EntityTypeShape EntityType="SgqDbModel.Level03" Width="1.5" PointX="14.875" PointY="11.875" />
+        <EntityTypeShape EntityType="SgqDbModel.Level03Consolidation" Width="2.625" PointX="14.375" PointY="5.875" />
+        <AssociationConnector Association="SgqDbModel.FK_DataCollection_Level02Consolidation" />
+        <AssociationConnector Association="SgqDbModel.FK_DataCollectionResult_DataCollection" />
+        <AssociationConnector Association="SgqDbModel.FK_DataCollectionResult_Level03" />
+        <AssociationConnector Association="SgqDbModel.FK_Level01Consolidation_Level01" />
+        <AssociationConnector Association="SgqDbModel.FK_Level02Consolidation_Level01Consolidation" />
+        <AssociationConnector Association="SgqDbModel.FK_Level02Consolidation_Level02" />
+        <AssociationConnector Association="SgqDbModel.FK_Level03Consolidation_Level02Consolidation" />
+        <AssociationConnector Association="SgqDbModel.FK_Level03Consolidation_Level03" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
