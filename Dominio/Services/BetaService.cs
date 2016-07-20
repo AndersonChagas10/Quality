@@ -31,6 +31,7 @@ namespace Dominio.Services
                 if (result.IsNull())
                     throw new ExceptionHelper(NaoInserido + " Theres is no data.");
 
+                result.ValidaResultOLd();
                 var objTosave = Mapper.Map<ResultOldDTO, ResultOld>(result);
 
                 _betaRepository.ValidaFkResultado(objTosave);
@@ -54,6 +55,9 @@ namespace Dominio.Services
 
                 if (list.Count == 0 )
                     throw new ExceptionHelper(NaoInserido + " Theres is no data.");
+
+                foreach (var i in list)
+                    i.ValidaResultOLd();
 
                 var listObjTosave = Mapper.Map<List<ResultOldDTO>, List<ResultOld>>(list);
 

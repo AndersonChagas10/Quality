@@ -32,3 +32,9 @@ function getIndicator(Id){
     }
 }
 
+//Poe na storage o valor default.
+storage.setItem("periodo", $('#selectPeriod').val());
+//Atribui a storage on click do select o value acima.
+$('#selectPeriod').on('change', function (e) {
+    storage.setItem("periodo", e.currentTarget.value);
+});
