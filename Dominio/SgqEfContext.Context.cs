@@ -26,12 +26,6 @@ namespace Dominio
         }
     
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
-        public virtual DbSet<Monitoramento> Monitoramento { get; set; }
-        public virtual DbSet<Operacao> Operacao { get; set; }
-        public virtual DbSet<ResultOld> ResultOld { get; set; }
-        public virtual DbSet<Tarefa> Tarefa { get; set; }
-        public virtual DbSet<teste> teste { get; set; }
-        public virtual DbSet<UserSgq> UserSgq { get; set; }
         public virtual DbSet<DataCollection> DataCollection { get; set; }
         public virtual DbSet<DataCollectionResult> DataCollectionResult { get; set; }
         public virtual DbSet<Level01> Level01 { get; set; }
@@ -40,5 +34,11 @@ namespace Dominio
         public virtual DbSet<Level02Consolidation> Level02Consolidation { get; set; }
         public virtual DbSet<Level03> Level03 { get; set; }
         public virtual DbSet<Level03Consolidation> Level03Consolidation { get; set; }
+        public virtual DbSet<Monitoramento> Monitoramento { get; set; }
+        public virtual DbSet<Operacao> Operacao { get; set; }
+        public virtual DbSet<ResultOld> ResultOld { get; set; }
+        public virtual DbSet<Tarefa> Tarefa { get; set; }
+        public virtual DbSet<teste> teste { get; set; }
+        public virtual DbSet<UserSgq> UserSgq { get; set; }
     }
 }

@@ -191,6 +191,9 @@
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="numero1" Type="int" Nullable="false" />
           <Property Name="numero2" Type="int" Nullable="false" />
+          <Property Name="Reaudit" Type="int" Nullable="false" />
+          <Property Name="Auditor" Type="int" Nullable="false" />
+          <Property Name="Period" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Tarefa">
           <Key>
@@ -369,85 +372,8 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SgqDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="C__MigrationHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-            <PropertyRef Name="ContextKey" />
-          </Key>
-          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
-          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Monitoramento">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="70" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="Operacao">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="70" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="ResultOld">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Id_Tarefa" Type="Int32" Nullable="false" />
-          <Property Name="Id_Operacao" Type="Int32" Nullable="false" />
-          <Property Name="Id_Monitoramento" Type="Int32" Nullable="false" />
-          <Property Name="Evaluate" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="NotConform" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="numero1" Type="Int32" Nullable="false" />
-          <Property Name="numero2" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Tarefa">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="teste">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="testename" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="UserSgq">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="AcessDate" Type="DateTime" Precision="3" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="Tste" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-        </EntityType>
         <EntityContainer Name="SgqDbDevEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
-          <EntitySet Name="Monitoramento" EntityType="Self.Monitoramento" />
-          <EntitySet Name="Operacao" EntityType="Self.Operacao" />
-          <EntitySet Name="ResultOld" EntityType="Self.ResultOld" />
-          <EntitySet Name="Tarefa" EntityType="Self.Tarefa" />
-          <EntitySet Name="teste" EntityType="Self.teste" />
-          <EntitySet Name="UserSgq" EntityType="Self.UserSgq" />
+          <EntitySet Name="C__MigrationHistory" EntityType="SgqDbModel.C__MigrationHistory" />
           <EntitySet Name="DataCollection" EntityType="SgqDbModel.DataCollection" />
           <EntitySet Name="DataCollectionResult" EntityType="SgqDbModel.DataCollectionResult" />
           <EntitySet Name="Level01" EntityType="SgqDbModel.Level01" />
@@ -456,6 +382,12 @@
           <EntitySet Name="Level02Consolidation" EntityType="SgqDbModel.Level02Consolidation" />
           <EntitySet Name="Level03" EntityType="SgqDbModel.Level03" />
           <EntitySet Name="Level03Consolidation" EntityType="SgqDbModel.Level03Consolidation" />
+          <EntitySet Name="Monitoramento" EntityType="SgqDbModel.Monitoramento" />
+          <EntitySet Name="Operacao" EntityType="SgqDbModel.Operacao" />
+          <EntitySet Name="ResultOld" EntityType="SgqDbModel.ResultOld" />
+          <EntitySet Name="Tarefa" EntityType="SgqDbModel.Tarefa" />
+          <EntitySet Name="teste" EntityType="SgqDbModel.teste" />
+          <EntitySet Name="UserSgq" EntityType="SgqDbModel.UserSgq" />
           <AssociationSet Name="FK_DataCollection_Level02Consolidation" Association="SgqDbModel.FK_DataCollection_Level02Consolidation">
             <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
             <End Role="DataCollection" EntitySet="DataCollection" />
@@ -489,6 +421,16 @@
             <End Role="Level03Consolidation" EntitySet="Level03Consolidation" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="DataCollection">
           <Key>
             <PropertyRef Name="Id" />
@@ -649,6 +591,70 @@
           <NavigationProperty Name="Level02Consolidation" Relationship="SgqDbModel.FK_Level03Consolidation_Level02Consolidation" FromRole="Level03Consolidation" ToRole="Level02Consolidation" />
           <NavigationProperty Name="Level03" Relationship="SgqDbModel.FK_Level03Consolidation_Level03" FromRole="Level03Consolidation" ToRole="Level03" />
         </EntityType>
+        <EntityType Name="Monitoramento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Operacao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ResultOld">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Tarefa" Type="Int32" Nullable="false" />
+          <Property Name="Id_Operacao" Type="Int32" Nullable="false" />
+          <Property Name="Id_Monitoramento" Type="Int32" Nullable="false" />
+          <Property Name="Evaluate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NotConform" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="numero1" Type="Int32" Nullable="false" />
+          <Property Name="numero2" Type="Int32" Nullable="false" />
+          <Property Name="Reaudit" Type="Int32" Nullable="false" />
+          <Property Name="Auditor" Type="Int32" Nullable="false" />
+          <Property Name="Period" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tarefa">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="teste">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="testename" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="UserSgq">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AcessDate" Type="DateTime" Precision="3" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="Tste" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
         <Association Name="FK_DataCollection_Level02Consolidation">
           <End Type="SgqDbModel.Level02Consolidation" Role="Level02Consolidation" Multiplicity="1" />
           <End Type="SgqDbModel.DataCollection" Role="DataCollection" Multiplicity="*" />
@@ -745,7 +751,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -754,77 +760,10 @@
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="SgqDbModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
-                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
-                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
                 <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Monitoramento">
-            <EntityTypeMapping TypeName="SgqDbModel.Monitoramento">
-              <MappingFragment StoreEntitySet="Monitoramento">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Operacao">
-            <EntityTypeMapping TypeName="SgqDbModel.Operacao">
-              <MappingFragment StoreEntitySet="Operacao">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ResultOld">
-            <EntityTypeMapping TypeName="SgqDbModel.ResultOld">
-              <MappingFragment StoreEntitySet="ResultOld">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Id_Tarefa" ColumnName="Id_Tarefa" />
-                <ScalarProperty Name="Id_Operacao" ColumnName="Id_Operacao" />
-                <ScalarProperty Name="Id_Monitoramento" ColumnName="Id_Monitoramento" />
-                <ScalarProperty Name="Evaluate" ColumnName="Evaluate" />
-                <ScalarProperty Name="NotConform" ColumnName="NotConform" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="numero1" ColumnName="numero1" />
-                <ScalarProperty Name="numero2" ColumnName="numero2" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Tarefa">
-            <EntityTypeMapping TypeName="SgqDbModel.Tarefa">
-              <MappingFragment StoreEntitySet="Tarefa">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="teste">
-            <EntityTypeMapping TypeName="SgqDbModel.teste">
-              <MappingFragment StoreEntitySet="teste">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="testename" ColumnName="testename" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserSgq">
-            <EntityTypeMapping TypeName="SgqDbModel.UserSgq">
-              <MappingFragment StoreEntitySet="UserSgq">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="AcessDate" ColumnName="AcessDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="Tste" ColumnName="Tste" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -976,6 +915,76 @@
                 <ScalarProperty Name="DateConsolidation" ColumnName="DateConsolidation" />
                 <ScalarProperty Name="Level03Id" ColumnName="Level03Id" />
                 <ScalarProperty Name="Level02ConsolidationId" ColumnName="Level02ConsolidationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Monitoramento">
+            <EntityTypeMapping TypeName="SgqDbModel.Monitoramento">
+              <MappingFragment StoreEntitySet="Monitoramento">
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Operacao">
+            <EntityTypeMapping TypeName="SgqDbModel.Operacao">
+              <MappingFragment StoreEntitySet="Operacao">
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResultOld">
+            <EntityTypeMapping TypeName="SgqDbModel.ResultOld">
+              <MappingFragment StoreEntitySet="ResultOld">
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
+                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
+                <ScalarProperty Name="numero2" ColumnName="numero2" />
+                <ScalarProperty Name="numero1" ColumnName="numero1" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="NotConform" ColumnName="NotConform" />
+                <ScalarProperty Name="Evaluate" ColumnName="Evaluate" />
+                <ScalarProperty Name="Id_Monitoramento" ColumnName="Id_Monitoramento" />
+                <ScalarProperty Name="Id_Operacao" ColumnName="Id_Operacao" />
+                <ScalarProperty Name="Id_Tarefa" ColumnName="Id_Tarefa" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tarefa">
+            <EntityTypeMapping TypeName="SgqDbModel.Tarefa">
+              <MappingFragment StoreEntitySet="Tarefa">
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="teste">
+            <EntityTypeMapping TypeName="SgqDbModel.teste">
+              <MappingFragment StoreEntitySet="teste">
+                <ScalarProperty Name="testename" ColumnName="testename" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserSgq">
+            <EntityTypeMapping TypeName="SgqDbModel.UserSgq">
+              <MappingFragment StoreEntitySet="UserSgq">
+                <ScalarProperty Name="Tste" ColumnName="Tste" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AcessDate" ColumnName="AcessDate" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
