@@ -64,18 +64,7 @@ namespace SgqSystem.Controllers
                             "</div>";
 
             return Json(html, JsonRequestBehavior.AllowGet);
-
         }
-
-
-
-
-
-
-
-
-
-
 
         protected override JsonResult Json(object data, string contentType, System.Text.Encoding contentEncoding, JsonRequestBehavior behavior)
         {
