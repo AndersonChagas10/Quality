@@ -1,5 +1,5 @@
 ﻿using Data.ComplexType;
-using Dominio.Entities;
+using Dominio;
 using Dominio.Interfaces.Repositories;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,7 +16,7 @@ namespace Data.Repositories
 
         #region Construtor e atributos privados
 
-        public BetaRepository(DbContextSgq _db)
+        public BetaRepository(SgqDbDevEntities _db)
             : base(_db)
         {
         }
@@ -252,10 +252,9 @@ namespace Data.Repositories
                     Id_Operacao = i.Id_operacao,
                     Id_Monitoramento = i.Id_Monitoramento,
                     Id_Tarefa = i.Id_tarefa,
-                    Operacao = db.indicadores.FirstOrDefault(r => r.Id == i.Id_operacao).Name,
-                    Monitoramento = db.Monitoramentos.Where(r => r.Id == i.Id_Monitoramento).Select(r => r.Name ?? "").FirstOrDefault(),
-                    Tarefa = db.Tarefas.Where(r => r.Id == i.Id_tarefa).Select(r => r.Name ?? "").FirstOrDefault()
-
+                    //Operacao = db.indicadores.FirstOrDefault(r => r.Id == i.Id_operacao).Name,
+                    //Monitoramento = db.Monitoramentos.Where(r => r.Id == i.Id_Monitoramento).Select(r => r.Name ?? "").FirstOrDefault(),
+                    //Tarefa = db.Tarefas.Where(r => r.Id == i.Id_tarefa).Select(r => r.Name ?? "").FirstOrDefault()
                 });
             }
 

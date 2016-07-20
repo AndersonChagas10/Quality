@@ -22,7 +22,7 @@ namespace Dominio.Controllers.Api.Tests
         public void ResultControllertTest_Total_Avalido_Negativo()
         {
             decimal valor1 = -1;
-            new ResultOld(0, 1, 2, 3, valor1, 0);
+            //new ResultOld(0, 1, 2, 3, valor1, 0);
 
         }
 
@@ -32,7 +32,7 @@ namespace Dominio.Controllers.Api.Tests
             try
             {
                 decimal naoConformidade = -1;
-                new ResultOld(0, 1, 2, 3, 0, naoConformidade);
+                //new ResultOld(0, 1, 2, 3, 0, naoConformidade);
                 Assert.Fail("Should throw here");
             }
             catch (Exception ex)
@@ -51,7 +51,7 @@ namespace Dominio.Controllers.Api.Tests
             try
             {
                 int idTarefa = -1;
-                new ResultOld(0, idTarefa, 2, 3, 0, 0);
+                //new ResultOld(0, idTarefa, 2, 3, 0, 0);
                 Assert.Fail("Should throw here");
             }
             catch (Exception ex)
@@ -66,7 +66,7 @@ namespace Dominio.Controllers.Api.Tests
             try
             {
                 int idMonitoramento = -1;
-                new ResultOld(0, 1, 1, idMonitoramento, 0, 0);
+                //new ResultOld(0, 1, 1, idMonitoramento, 0, 0);
                 Assert.Fail("Should throw here");
             }
             catch (Exception ex)
@@ -81,7 +81,7 @@ namespace Dominio.Controllers.Api.Tests
             try
             {
                 int idOperacao = -1;
-                new ResultOld(0, 1, 1, idOperacao, 0, 0);
+                //new ResultOld(0, 1, 1, idOperacao, 0, 0);
                 Assert.Fail("Should throw here");
             }
             catch (Exception ex)
@@ -94,7 +94,7 @@ namespace Dominio.Controllers.Api.Tests
         [ExpectedException(typeof(ExceptionHelper))]
         public void ResultControllertTest_Id_Invalido()
         {
-            new ResultOld(-10, 1, 2, 3, 0, 0);
+            //new ResultOld(-10, 1, 2, 3, 0, 0);
         }
 
         [TestMethod()]

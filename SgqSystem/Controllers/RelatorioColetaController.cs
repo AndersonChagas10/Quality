@@ -1,9 +1,5 @@
 ﻿using Application.Interface;
-using Dominio.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using Dominio;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
@@ -33,9 +29,9 @@ namespace SgqSystem.Controllers
 
             foreach (var i in resultadosLista)
             {
-                i.Operacao = _opAppBase.GetById(i.Id_Operacao).Name;
-                i.Monitoramento = _monAppBase.GetById(i.Id_Monitoramento).Name;
-                i.Tarefa = _tarAppBase.GetById(i.Id_Tarefa).Name;
+                //i.Operacao = _opAppBase.GetById(i.Id_Operacao).Name;
+                //i.Monitoramento = _monAppBase.GetById(i.Id_Monitoramento).Name;
+                //i.Tarefa = _tarAppBase.GetById(i.Id_Tarefa).Name;
             }
 
             return View(resultadosLista);

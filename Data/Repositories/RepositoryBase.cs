@@ -1,4 +1,4 @@
-﻿using Dominio.Entities.BaseEntity;
+﻿using Dominio;
 using Dominio.Interfaces.Repositories;
 using DTO.Helpers;
 using System;
@@ -13,19 +13,19 @@ namespace Data.Repositories
     /// Repositório Base, classe de gerencia do Banco de Dados.
     /// </summary>
     /// <typeparam name="T">Object reconhecido pelo DataBase: EntityBase</typeparam>
-    public class RepositoryBase<T> : IDisposable, IRepositoryBase<T> where T : EntityBase
+    public class RepositoryBase<T> : IDisposable, IRepositoryBase<T> where T : class
     {
 
         /// <summary>
         /// Instancia do DataBase.
         /// </summary>
-        protected readonly DbContextSgq db;
+        protected readonly SgqDbDevEntities db;
 
         /// <summary>
         /// Construtor.
         /// </summary>
         /// <param name="Db"></param>
-        public RepositoryBase(DbContextSgq Db)
+        public RepositoryBase(SgqDbDevEntities Db)
         {
             db = Db;
         }
@@ -54,8 +54,12 @@ namespace Data.Repositories
 
         public void Update(T obj)
         {
-            if (obj.AlterDate.IsNull())
-                obj.AlterDate = DateTime.Now;
+            if (obj.GetType().GetProperty("AlterDate") != null)
+            {
+                var alterDate = (DateTime) obj.GetType().GetProperty("AlterDate").GetValue(obj, null);
+                if (alterDate.IsNull())
+                    obj.GetType().GetProperty("AlterDate").SetValue(obj, DateTime.Now);
+            }
 
             db.Entry(obj).State = EntityState.Modified;
             Commit();
@@ -63,10 +67,14 @@ namespace Data.Repositories
 
         public void AddOrUpdate(T obj)
         {
-            if (obj.Id > 0)
-                Update(obj);
-            else
-                Add(obj);
+            if (obj.GetType().GetProperty("Id") != null)
+            {
+                var id = (int) obj.GetType().GetProperty("Id").GetValue(obj, null);
+                if (id > 0)
+                    Update(obj);
+                else
+                    Add(obj);
+            }
         }
 
         #endregion

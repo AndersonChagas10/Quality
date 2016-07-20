@@ -50,18 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComplexType\RetornoQueryIndicadoresRelBate.cs" />
-    <Compile Include="DbContextSgq.cs" />
-    <Compile Include="EntityConfig\OperacaoConfig.cs" />
-    <Compile Include="EntityConfig\MonitoramentoConfig.cs" />
-    <Compile Include="EntityConfig\ResultConfigOld.cs" />
-    <Compile Include="EntityConfig\TarefaConfig.cs" />
-    <Compile Include="EntityConfig\UserConfig.cs" />
-    <Compile Include="Migrations\201607091856447_Reset.cs" />
-    <Compile Include="Migrations\201607091856447_Reset.Designer.cs">
-      <DependentUpon>201607091856447_Reset.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Migrations\IndicadoresOperacoesMonitoramentoIntilizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BetaRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
@@ -80,11 +68,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201607091856447_Reset.resx">
-      <DependentUpon>201607091856447_Reset.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

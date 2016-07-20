@@ -1,4 +1,4 @@
-﻿using Dominio.Entities;
+﻿using Dominio;
 using Dominio.Interfaces.Repositories;
 using System.Linq;
 
@@ -7,7 +7,7 @@ namespace Data.Repositories
     public class UserRepository :  RepositoryBase<UserSgq>, IUserRepository
     {
         
-        public UserRepository(DbContextSgq _db)
+        public UserRepository(SgqDbDevEntities _db)
             :base (_db)
         {
         }

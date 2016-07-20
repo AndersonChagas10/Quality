@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Dominio.Entities;
+using Dominio;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;

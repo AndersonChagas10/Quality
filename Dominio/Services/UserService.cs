@@ -36,6 +36,8 @@ namespace Dominio.Services
                 if (userDto.IsNull())
                     throw new ExceptionHelper("Username and Password are required.");
 
+                userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
+
                 var user = Mapper.Map<UserDTO, UserSgq>(userDto);
                 var isUser = _userRepo.AuthenticationLogin(user);
 

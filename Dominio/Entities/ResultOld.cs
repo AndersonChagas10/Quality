@@ -52,7 +52,6 @@ namespace Dominio.Entities
             Evaluate = evaluate;
             NotConform = notConform;
         }
-
       
     }
 
