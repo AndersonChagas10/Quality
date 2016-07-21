@@ -311,6 +311,7 @@
     <Content Include="Coleta\components\save.js" />
     <Content Include="Coleta\components\task.js" />
     <Content Include="Coleta\components\taskgroup.js" />
+    <Content Include="Coleta\controllers\correctiveaction.js" />
     <Content Include="Coleta\controllers\indicators.js" />
     <Content Include="Coleta\controllers\login.js" />
     <Content Include="Coleta\controllers\monitorings.js" />
@@ -364,6 +365,7 @@
     <Content Include="Coleta\tests\taskgroupsTest.js" />
     <Content Include="Coleta\tests\tasksTest.js" />
     <Content Include="Coleta\utils\urlHelper.js" />
+    <Content Include="Coleta\view\correctiveaction.html" />
     <Content Include="Coleta\view\indicators.html" />
     <Content Include="Coleta\view\monitorings.html" />
     <Content Include="Coleta\view\tasks.html" />

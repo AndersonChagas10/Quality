@@ -198,6 +198,11 @@ $( "#btnCancel" ).mousedown(function() {
 	
 });
 
+$("#btnCorrectiveAction").click(function () {
+    $(location).attr('href', '../view/correctiveaction.html');
+});
+
+
 $( "#btnSave" ).mousedown(function() {
 
 
