@@ -1,6 +1,6 @@
 class Result
 {
-    constructor(Id_Tarefa, Id_Operacao, Id_Monitoramento, Evaluate, NotConform, Id, numero1, numero2) 
+    constructor(Id_Tarefa, Id_Operacao, Id_Monitoramento, Evaluate, NotConform, Id, numero1, numero2, Periodo, Reaudit, Auditor, UserID)
     {
         this.Id = Id;
         this.Id_Tarefa = Id_Tarefa;
@@ -11,7 +11,11 @@ class Result
         this.AddDate = new Date().toISOString(),
         this.AlterDate = new Date().toISOString(),
         this.numero1 = numero1,
-		this.numero2 = numero2
+		this.numero2 = numero2,
+        this.Period = Periodo,
+        this.Reaudit = Reaudit,
+        this.Auditor = Auditor
+        this.UserID = UserID
     }
 
     setId_Tarefa(value) {
@@ -32,6 +36,10 @@ class Result
         this.Evaluate = parseInt(value);
     }
 
+    setPeriod(value) {
+        this.Period = parseInt(value);
+    }
+
     setNotConform(value){
         this.NotConform = parseInt(value);
     }
@@ -48,6 +56,18 @@ class Result
         this.numero2 = value;
     }
 
+    setAuditor(value) {
+        this.Auditor = value;
+    }
+
+    setReaudit(value) {
+        this.Reaudit = value;
+    }
+
+    setUserID(value) {
+        this.UserID = value;
+    }
+
     getObject(){
         return { 'Id_Tarefa': this.Id_Tarefa,
             'Id_Operacao': this.Id_Operacao,
@@ -58,7 +78,11 @@ class Result
 		    'numero2': this.numero2,
             'Id': this.Id,
             'AddDate': this.AddDate,
-            'AlterDate': this.AlterDate
+            'AlterDate': this.AlterDate,
+            'Period': this.Period,
+            'Reaudit': this.Reaudit,
+            'Auditor': this.Auditor,
+            'UserID' : this.UserID
         };
     }
 

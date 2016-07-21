@@ -186,6 +186,11 @@ namespace DTO.Helpers
 
         #endregion
 
+        public static void forValueZero(int value, string msg)
+        {
+            if (value == 0)
+                throw new ExceptionHelper(msg);
+        }
         public static string RetornaInsersaoRegistro<T>(List<T> ids) where T : EntityBase
         {
             var acao = "inseridos";

@@ -222,6 +222,11 @@ $( "#btnSave" ).mousedown(function() {
 		result.setNumero1(numero1);
 		result.setNumero2(numero2);
 		result.setEvaluate(1);
+		result.setPeriod(storage.getItem("periodo"));
+		result.setReaudit();
+		result.setAuditor(storage.getItem("userId"));
+		var reauditValue = $('#reaudit').is(':checked') ? 1 : 0;
+		result.setReaudit(reauditValue);
 
 		if($($('.audit-item')[i]).length > 0){
 			if($($('.audit-item')[i]).hasClass('disabled'))

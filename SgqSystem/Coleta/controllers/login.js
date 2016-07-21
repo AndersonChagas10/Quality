@@ -1,3 +1,5 @@
+var storage = window.localStorage;
+
 var Geral = {
  exibirMensagemAlerta: function (mensagem, url, container) {
         var page = $("html, body");
@@ -77,7 +79,8 @@ function auth()
             if(!!data.MensagemExcecao){
                 Geral.exibirMensagemErro(data.MensagemExcecao);
             }
-            if(!!data.Retorno){
+            if (!!data.Retorno) {
+                storage.setItem("userId", data.Retorno.Id);
                 //Geral.exibirMensagemAlerta(data.Retorno);
                 $(location).attr('href', 'view/indicators.html');
             }

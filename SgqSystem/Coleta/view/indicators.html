@@ -1,61 +1,69 @@
-
+﻿
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Template Mobile</title>
-		<link href="../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="../plugins/float_button/css/kc.fab.css"/>
-		<link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
-	</head>
-	<body role="document">
-  
-		<nav class="navbar navbar-inverse navbar-fixed-top">
-			<div class="container">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="#">Audits</a>
-				</div>
-			</div>
-		</nav>
-	
-		<div class="container" role="main" style="margin-top: 64px;">
-					
-			<div class="monitoramentos list-group" style="margin-top: 16px;  padding-bottom: 70px;">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Template Mobile</title>
+    <link href="../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../plugins/float_button/css/kc.fab.css" />
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+</head>
+<body role="document">
 
-                <a class="monitoramento-item list-group-item">
-					<div class="row">
-						<div class="col-xs-12">
-							<h4 class="list-group-item-heading">Slaughter </h4>
-						</div>
-					</div>	
-				</a>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Audits</a>
+            </div>
+        </div>
+    </nav>
 
-                <div class="collection indicators"></div>
+    <div class="container" role="main" style="margin-top: 64px;">
 
-			</div>
-		</div>
-		
+        <div>Period:
+            <select id="selectPeriod">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        </div>
+        <div class="monitoramentos list-group" style="margin-top: 16px;  padding-bottom: 70px;">
 
-		<script src="../plugins/jquery/jquery.min.js"></script>
-		<script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+            <a class="monitoramento-item list-group-item">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h4 class="list-group-item-heading">Slaughter </h4>
+                    </div>
+                </div>
+            </a>
 
-		<!-- Helpers -->
-        <script type="text/javascript" src="../utils/urlHelper.js"></script>
+            <div class="collection indicators"></div>
 
-		<!-- Components -->
-        <script type="text/javascript" src="../components/indicator.js"></script>
-
-        <!-- Models -->
-        <script type="text/javascript" src="../models/indicator.js"></script>
-
-        <!-- Controllers -->
-        <script type="text/javascript" src="../controllers/indicators.js"></script>
-
-        <!-- Tests -->
-        <script type="text/javascript" src="../tests/indicatorsTest.js"></script>
+        </div>
+    </div>
 
 
-	</body>
+    <script src="../plugins/jquery/jquery.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Helpers -->
+    <script type="text/javascript" src="../utils/urlHelper.js"></script>
+
+    <!-- Components -->
+    <script type="text/javascript" src="../components/indicator.js"></script>
+
+    <!-- Models -->
+    <script type="text/javascript" src="../models/indicator.js"></script>
+
+    <!-- Controllers -->
+    <script type="text/javascript" src="../controllers/indicators.js"></script>
+
+    <!-- Tests -->
+    <script type="text/javascript" src="../tests/indicatorsTest.js"></script>
+
+
+</body>
 </html>

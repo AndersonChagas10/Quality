@@ -24,5 +24,8 @@ namespace Dominio
         public Nullable<System.DateTime> AlterDate { get; set; }
         public int numero1 { get; set; }
         public int numero2 { get; set; }
+        public int Reaudit { get; set; }
+        public int Auditor { get; set; }
+        public int Period { get; set; }
     }
 }
