@@ -11,11 +11,11 @@ namespace SgqSystem.Controllers.Api
 {
     public class SyncController : ApiController
     {
-        private readonly ISyncApp _coletaAppService;
+        private readonly ISyncApp _syncApp;
 
-        public SyncController(ISyncApp coletaAppService)
+        public SyncController(ISyncApp syncApp)
         {
-            _coletaAppService = coletaAppService;
+            _syncApp = syncApp;
         }
 
         #region Envia Dados Para Syncronizar a plataforma remota
@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers.Api
         [Route("api/Sync/GetData")]
         public GenericReturnViewModel<SyncViewModel> GetDataToSincyAudit()
         {
-            var queryDataToSync = _coletaAppService.GetDataToSincyAudit();
+            var queryDataToSync = _syncApp.GetDataToSincyAudit();
             var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncViewModel>>(queryDataToSync);
             return mappedToReturn;
         }
@@ -37,7 +37,8 @@ namespace SgqSystem.Controllers.Api
         [Route("api/Sync/SetData")]
         public GenericReturnViewModel<SyncViewModel> SetDataToSincyAudit([FromBody] SyncViewModel objToSync)
         {
-            var queryDataToSync = _coletaAppService.SetDataToSincyAudit(objToSync);
+            var queryDataToSync = _syncApp.SetDataToSincyAudit(objToSync);
+
             var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncViewModel>>(queryDataToSync);
             return mappedToReturn;
         }

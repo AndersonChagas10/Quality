@@ -67,16 +67,13 @@ namespace Dominio.Services
             {
                 foreach (var i in objToSync.Coleta)
                     i.ValidaColeta();
-
-                //foreach (var i in objToSync.CorrectiveAction)
-                //    i.ValidaCorrectiveAction();
-
-                var acoesCorretivas = Mapper.Map<List<CorrectiveAction>>(objToSync.CorrectiveAction);
-                _repoSyncCorrectiveAction.SalvaListaCorrectiveAction(acoesCorretivas);
-
+               
                 var coletas = Mapper.Map<List<ColetaDTO>, List<Coleta>>(objToSync.Coleta);
                 _repoSync.ValidaFkResultado(coletas);
                 _repoSync.SetDataToSincyAudit(coletas);
+
+                var acoesCorretivas = Mapper.Map<List<CorrectiveAction>>(objToSync.CorrectiveAction);
+                _repoSyncCorrectiveAction.SalvaListaCorrectiveAction(acoesCorretivas);
 
                 return new GenericReturn<SyncDTO>("Sucesso!!!!!!");
             }
