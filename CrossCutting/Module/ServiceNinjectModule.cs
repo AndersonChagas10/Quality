@@ -13,6 +13,7 @@ namespace CrossCutting.IOC.Module
             Bind<IBetaService>().To<BetaService>();
             Bind<ICorrectiveActionService>().To<CorrectiveActionService>();
             Bind<ISyncDomain>().To<SyncService>();
+            Bind<IRelatorioColetaDomain>().To<RelatorioColetaDomain>();
         }
     }
 }

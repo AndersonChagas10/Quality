@@ -13,7 +13,7 @@ namespace CrossCutting.IOC.Module
             Bind<IUserRepository>().To<UserRepository>();
             Bind<IBetaRepository>().To<BetaRepository>();
             Bind<ICorrectiveActionRepository>().To<CorrectiveActionRepository>();
-
+            Bind<IRelatorioColetaRepository>().To<RelatorioColetaRepository>();
         }
     }
 }

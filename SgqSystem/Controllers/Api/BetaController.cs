@@ -72,40 +72,5 @@ namespace SgqSystem.Controllers.Api
 
         #endregion
 
-        #region Retorno de dados, Tabelas Level1, 2 e 3
-
-        //[Route("api/RelatorioBetaApi/GetNcPorIndicador")]
-        //public GenericReturnViewModel<List<ColetaViewModel>> GetDadosLevel1(int idIndicador, string dateInit, string dateEnd)
-        //{
-        //    var queryResult = _betaAppService.GetDadosLevel1();
-        //}
-
-
-        //[Route("api/RelatorioBetaApi/GetDadosLevel2")]
-        //public GenericReturnViewModel<List<ColetaViewModel>> GetDadosLevel2(int idIndicador, string dateInit, string dateEnd)
-        //{
-        //    var queryResult = _betaAppService.GetDadosLevel2();
-        //}
-
-
-        //[Route("api/RelatorioBetaApi/GetDadosLevel3")]
-        //public GenericReturnViewModel<List<ColetaViewModel>> GetDadosLevel3(int idIndicador, string dateInit, string dateEnd)
-        //{
-        //    var queryResult = _betaAppService.GetDadosLevel3();
-        //}
-
-        #endregion
-
-        #region Recebe Dados para Syncronizar o banco de dados
-
-        //public GenericReturnViewModel<List<ColetaViewModel>> GetDadosLevel1(int idIndicador, string dateInit, string dateEnd)
-        //{
-        //    var queryResult = _betaAppService.GetDadosLevel1();
-        //}
-
-        #endregion
-
-       
-
     }
 }

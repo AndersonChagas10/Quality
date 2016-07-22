@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Dominio.Interfaces.Services
 {
-    public interface IServiceBase<T> where T : EntityBase
+    public interface IServiceBase<T> where T : class
     {
 
         GenericReturn<T> Add(T obj);

@@ -1,7 +1,4 @@
-﻿using Application;
-using Dominio.Entities;
-using Dominio.Interfaces.Repositories;
-using Dominio.Services;
+﻿using Dominio.Interfaces.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Application.AppServiceClass
 {
-    public class AppServiceBase<T> : IDisposable, IAppServiceBase<T> where T : EntityBase
+    public class AppServiceBase<T> : IDisposable, IAppServiceBase<T> where T : class
     {
 
         private readonly IServiceBase<T> _serviceBase;
