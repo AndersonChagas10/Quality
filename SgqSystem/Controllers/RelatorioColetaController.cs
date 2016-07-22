@@ -1,20 +1,20 @@
 ﻿using Application.Interface;
 using Dominio;
 using System.Web.Mvc;
-
+//Este controller não esta funcionando depois da migração de code first pra EDMX =)  Celso Géa 21 07 2016.
 namespace SgqSystem.Controllers
 {
     public class RelatorioColetaController : Controller
     {
-        private readonly IAppServiceBase<ResultOld> _serviceAppBase;
-        private readonly IAppServiceBase<Operacao> _opAppBase;
-        private readonly IAppServiceBase<Monitoramento> _monAppBase;
-        private readonly IAppServiceBase<Tarefa> _tarAppBase;
+        private readonly IAppServiceBase<Coleta> _serviceAppBase;
+        private readonly IAppServiceBase<Level1> _opAppBase;
+        private readonly IAppServiceBase<Level2> _monAppBase;
+        private readonly IAppServiceBase<Level3> _tarAppBase;
 
-        public RelatorioColetaController(IAppServiceBase<ResultOld> serviceAppBase,
-            IAppServiceBase<Operacao> opAppBase,
-            IAppServiceBase<Monitoramento> monAppBase,
-            IAppServiceBase<Tarefa> tarAppBase
+        public RelatorioColetaController(IAppServiceBase<Coleta> serviceAppBase,
+            IAppServiceBase<Level1> opAppBase,
+            IAppServiceBase<Level2> monAppBase,
+            IAppServiceBase<Level3> tarAppBase
             )
         {
             _serviceAppBase = serviceAppBase;
@@ -29,9 +29,9 @@ namespace SgqSystem.Controllers
 
             foreach (var i in resultadosLista)
             {
-                //i.Operacao = _opAppBase.GetById(i.Id_Operacao).Name;
-                //i.Monitoramento = _monAppBase.GetById(i.Id_Monitoramento).Name;
-                //i.Tarefa = _tarAppBase.GetById(i.Id_Tarefa).Name;
+                //i.Level1 = _opAppBase.GetById(i.Id_Level1).Name;
+                //i.Level2 = _monAppBase.GetById(i.Id_Level2).Name;
+                //i.Level3 = _tarAppBase.GetById(i.Id_Level3).Name;
             }
 
             return View(resultadosLista);

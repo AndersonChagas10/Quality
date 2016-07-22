@@ -11,7 +11,7 @@ namespace Data.Repositories
     /// <summary>
     /// BetaRepository é uma Classe criada para Sprint-1 do SgqGlobal, esta classe serve como exemplo para construção das demais sprints.
     /// </summary>
-    public class BetaRepository : RepositoryBase<ResultOld>, IBetaRepository
+    public class BetaRepository : RepositoryBase<Coleta>, IBetaRepository
     {
 
         #region Construtor e atributos privados
@@ -21,9 +21,9 @@ namespace Data.Repositories
         {
         }
 
-        private DbSet<Operacao> _Operacao { get { return db.Set<Operacao>(); } }
-        private DbSet<Monitoramento> _Monitoramento { get { return db.Set<Monitoramento>(); } }
-        private DbSet<Tarefa> _Tarefa { get { return db.Set<Tarefa>(); } }
+        private DbSet<Level1> _Level1 { get { return db.Set<Level1>(); } }
+        private DbSet<Level2> _Level2 { get { return db.Set<Level2>(); } }
+        private DbSet<Level3> _Level3 { get { return db.Set<Level3>(); } }
 
         #endregion
 
@@ -32,8 +32,8 @@ namespace Data.Repositories
         /// <summary>
         /// Salva o resultado de uma coleta de dados na tabela Result old.
         /// </summary>
-        /// <param name="r">ResultOld com os parametros validados.</param>
-        public void Salvar(ResultOld r)
+        /// <param name="r">Coleta com os parametros validados.</param>
+        public void Salvar(Coleta r)
         {
             Add(r);
         }
@@ -41,8 +41,8 @@ namespace Data.Repositories
         /// <summary>
         /// Salva uma lista de resultados de coletas de dados na tabela Result old recursivamente.
         /// </summary>
-        /// <param name="list">Lista de ResultOld com os parametros validados.</param>
-        public void SalvarLista(List<ResultOld> list)
+        /// <param name="list">Lista de Coleta com os parametros validados.</param>
+        public void SalvarLista(List<Coleta> list)
         {
             AddAll(list);
         }
@@ -58,49 +58,49 @@ namespace Data.Repositories
         /// <param name="dateInit"></param>
         /// <param name="dateEnd"></param>
         /// <returns></returns>
-        public List<ResultOld> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd)
+        public List<Coleta> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd)
         {
 
             /*
              
                 SELECT 
-                id_operacao
+                id_Level1
                 , SUM(Evaluate)"Evaluate"
                 , SUM(NotConform) "NotConform"
                 FROM(
-                SELECT id_operacao
+                SELECT id_Level1
                 , Case when sum(Evaluate) > 0 Then 1 ELSE 0 end "Evaluate" 
-                , CASE WHEN SUM(NotConform) > 0 THEN 1 ELSE 0 END "NotConform" FROM ResultOld GROUP BY 
+                , CASE WHEN SUM(NotConform) > 0 THEN 1 ELSE 0 END "NotConform" FROM Coleta GROUP BY 
                 numero1,
-                Id_Monitoramento,
+                Id_Level2,
                 numero2,
-                Id_Operacao
+                Id_Level1
                 ) ind
                 GROUP BY 
-                Id_Operacao
+                Id_Level1
             
             */
 
             //select CAST(getdate() as Date) >>> VERIFICAR PARA TRUNCAR DATA.
 
             var query = string.Format("SELECT" +
-                " id_operacao, " +
+                " id_Level1, " +
                 " CONVERT(DECIMAL(16,4),SUM(Evaluate)) 'Evaluate', " +
                 " CONVERT(DECIMAL(16,4),SUM(NotConform)) 'NotConform' " +
-                " FROM( select id_operacao," +
+                " FROM( select id_Level1," +
                 " CASE WHEN SUM(Evaluate) > 0 THEN 1 ELSE 0 end 'Evaluate' , " +
                 " CASE WHEN SUM(NotConform) > 0 THEN 1 ELSE 0 end 'NotConform'" +
-                " FROM ResultOld " +
+                " FROM Coleta " +
                 " WHERE AddDate BETWEEN  '{0} 00:00:00' AND '{1} 23:59:59' " +
                 " GROUP BY " +
                 " numero1," +
                 " numero2," +
-                " Id_Monitoramento ," +
-                " Id_Operacao) ind GROUP BY Id_Operacao", dateInit, dateEnd);
+                " Id_Level2 ," +
+                " Id_Level1) ind GROUP BY Id_Level1", dateInit, dateEnd);
 
             var queryResult = db.Database.SqlQuery<RetornoQueryIndicadoresRelBate>(query).OrderByDescending(r => r.NotConform / r.Evaluate * 100).ToList();
 
-            List<ResultOld> resultsList = RetornoQueryIndicadoresRelBateToResultOld(queryResult);
+            List<Coleta> resultsList = RetornoQueryIndicadoresRelBateToColeta(queryResult);
 
             return resultsList;
         }
@@ -112,38 +112,38 @@ namespace Data.Repositories
         /// <param name="dateInit"></param>
         /// <param name="dateEnd"></param>
         /// <returns></returns>
-        public List<ResultOld> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd)
+        public List<Coleta> GetNcPorLevel2(int indicadorId, string dateInit, string dateEnd)
         {
 
             /*
              */
 
-            var query = string.Format("SELECT id_operacao," +
-                " Id_Monitoramento," +
+            var query = string.Format("SELECT id_Level1," +
+                " Id_Level2," +
                 " CONVERT(DECIMAL(16,4), sum(Evaluate)) 'Evaluate', " +
                 " CONVERT(DECIMAL(16,4), sum(NotConform)) 'NotConform' " +
                 " FROM(" +
-                " SELECT id_operacao, " +
-                " Id_Monitoramento, " +
+                " SELECT id_Level1, " +
+                " Id_Level2, " +
                 " CASE WHEN SUM(Evaluate) > 0 THEN 1 ELSE 0 END 'Evaluate'," +
                 " CASE WHEN SUM(NotConform) > 0 THEN 1 ELSE 0 END 'NotConform' " +
-                " FROM ResultOld " +
-                " WHERE Id_Operacao = {0} " +
+                " FROM Coleta " +
+                " WHERE Id_Level1 = {0} " +
                 " AND AddDate BETWEEN  '{1} 00:00:00' AND '{2} 23:59:59' " +
                 " AND NotConform > 0" +
                 " GROUP BY numero1, " +
                 " numero2, " +
-                " Id_Operacao, " +
-                " Id_Monitoramento)" +
-                " ind GROUP BY Id_Operacao," +
-                " Id_Monitoramento" +
+                " Id_Level1, " +
+                " Id_Level2)" +
+                " ind GROUP BY Id_Level1," +
+                " Id_Level2" +
                 " ORDER BY NotConform desc"
                 , indicadorId, dateInit, dateEnd);
 
 
             var queryResult = db.Database.SqlQuery<RetornoQueryIndicadoresRelBate>(query).ToList();
 
-            List<ResultOld> resultsList = RetornoQueryIndicadoresRelBateToResultOld(queryResult);
+            List<Coleta> resultsList = RetornoQueryIndicadoresRelBateToColeta(queryResult);
 
             return resultsList;
         }
@@ -152,79 +152,79 @@ namespace Data.Repositories
         /// Busca quantidade de Não conformidades para Nivel3. No caso deste metodo, na Sprint-1 não foi contemplado Parametrização.
         /// </summary>
         /// <param name="indicadorId"></param>
-        /// <param name="monitoramentoId"></param>
+        /// <param name="Level2Id"></param>
         /// <param name="dateInit"></param>
         /// <param name="dateEnd"></param>
         /// <returns></returns>
-        public List<ResultOld> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd)
+        public List<Coleta> GetNcPorLevel3(int indicadorId, int Level2Id, string dateInit, string dateEnd)
         {
 
             /*
              */
 
             var query = string.Format("SELECT " +
-                                        "id_operacao" +
-                                        ", Id_Monitoramento " +
-                                        ", Id_Tarefa " +
+                                        "id_Level1" +
+                                        ", Id_Level2 " +
+                                        ", Id_Level3 " +
                                         ", CONVERT(DECIMAL(16,4), SUM(Evaluate)) AS 'Evaluate'" +
                                         ", CONVERT(DECIMAL(16,4), SUM(NotConform)) AS 'NotConform'" +
-                                        " FROM ResultOld" +
-                                        " WHERE Id_Monitoramento = {0} AND Id_Operacao = {1}" +
+                                        " FROM Coleta" +
+                                        " WHERE Id_Level2 = {0} AND Id_Level1 = {1}" +
                                         " AND AddDate BETWEEN  '{2} 00:00:00' AND '{3} 23:59:59' " +
                                         " AND NotConform > 0" +
-                                        //" AND  numero1 = (select MAX(numero1) from ResultOld where Id_Operacao = {1} AND Id_Monitoramento = {0} AND AddDate BETWEEN  '{2} 00:00:00' AND '{3} 23:59:59')" +
-                                        //" AND numero2 = (select MAX(numero2) from ResultOld where Id_Operacao = {1} AND Id_Monitoramento = {0} AND AddDate BETWEEN  '{2} 00:00:00' AND '{3} 23:59:59')" +
+                                        //" AND  numero1 = (select MAX(numero1) from Coleta where Id_Level1 = {1} AND Id_Level2 = {0} AND AddDate BETWEEN  '{2} 00:00:00' AND '{3} 23:59:59')" +
+                                        //" AND numero2 = (select MAX(numero2) from Coleta where Id_Level1 = {1} AND Id_Level2 = {0} AND AddDate BETWEEN  '{2} 00:00:00' AND '{3} 23:59:59')" +
                                         " GROUP BY" +
-                                        " id_operacao" +
-                                        ", Id_Monitoramento" +
-                                        ", Id_Tarefa" +
-                                        " ORDER BY NotConform desc", monitoramentoId, indicadorId, dateInit, dateEnd);
+                                        " id_Level1" +
+                                        ", Id_Level2" +
+                                        ", Id_Level3" +
+                                        " ORDER BY NotConform desc", Level2Id, indicadorId, dateInit, dateEnd);
 
             var queryResult = db.Database.SqlQuery<RetornoQueryIndicadoresRelBate>(query).ToList();
 
-            List<ResultOld> resultsList = RetornoQueryIndicadoresRelBateToResultOld(queryResult);
+            List<Coleta> resultsList = RetornoQueryIndicadoresRelBateToColeta(queryResult);
 
             return resultsList;
         }
 
         /// <summary>
-        /// Busca quantidade de Não conformidades para Nivel3 somente da ultima avaliação realizada de um indicador. No caso deste metodo, na Sprint-1 não foi contemplado Parametrização. Este método foi construido e depois modificado para a funcionalidade da tela de Coleta de dados > monitoramentos: coluna Defects.
+        /// Busca quantidade de Não conformidades para Nivel3 somente da ultima avaliação realizada de um indicador. No caso deste metodo, na Sprint-1 não foi contemplado Parametrização. Este método foi construido e depois modificado para a funcionalidade da tela de Coleta de dados > Level2s: coluna Defects.
         /// </summary>
         /// <param name="indicadorId"></param>
         /// <param name="dateInit"></param>
         /// <param name="dateEnd"></param>
         /// <returns></returns>
-        public List<ResultOld> GetNcPorMonitoramentoJelsafa(int indicadorId, string dateInit, string dateEnd)
+        public List<Coleta> GetNcPorLevel2Jelsafa(int indicadorId, string dateInit, string dateEnd)
         {
 
             /*
              */
 
-            var query = string.Format("SELECT id_operacao," +
-                " Id_Monitoramento," +
+            var query = string.Format("SELECT id_Level1," +
+                " Id_Level2," +
                 " CONVERT(DECIMAL(16,4), sum(Evaluate)) 'Evaluate', " +
                 " CONVERT(DECIMAL(16,4), sum(NotConform)) 'NotConform' " +
                 " FROM(" +
-                " SELECT id_operacao, " +
-                " Id_Monitoramento, " +
+                " SELECT id_Level1, " +
+                " Id_Level2, " +
                 " CASE WHEN SUM(Evaluate) > 0 THEN 1 ELSE 0 END 'Evaluate'," +
                 " CASE WHEN SUM(NotConform) > 0 THEN 1 ELSE 0 END 'NotConform' " +
-                " FROM ResultOld " +
-                " WHERE Id_Operacao = {0} " +
+                " FROM Coleta " +
+                " WHERE Id_Level1 = {0} " +
                 " AND AddDate BETWEEN  '{1} 00:00:00' AND '{2} 23:59:59' " +
                 //" AND NotConform > 0" +
                 " GROUP BY numero1, " +
                 " numero2, " +
-                " Id_Operacao, " +
-                " Id_Monitoramento)" +
-                " ind GROUP BY Id_Operacao," +
-                " Id_Monitoramento" +
+                " Id_Level1, " +
+                " Id_Level2)" +
+                " ind GROUP BY Id_Level1," +
+                " Id_Level2" +
                 " ORDER BY NotConform desc", indicadorId, dateInit, dateEnd);
 
 
             var queryResult = db.Database.SqlQuery<RetornoQueryIndicadoresRelBate>(query).ToList();
 
-            List<ResultOld> resultsList = RetornoQueryIndicadoresRelBateToResultOld(queryResult);
+            List<Coleta> resultsList = RetornoQueryIndicadoresRelBateToColeta(queryResult);
 
             return resultsList;
         }
@@ -236,25 +236,25 @@ namespace Data.Repositories
         /// <summary>
         /// Metodo que faz a conversão de uma complexType para Model, devido utilização de uma query distinta de Linq e Lambda, pela complexibilidade de query, foi necessário realizar o procedimento para reaproveitar a Classe ja definida.
         /// </summary>
-        /// <param name="queryResult">Resultado de uma query com headers compatíveis com: ResultOld</param>
+        /// <param name="queryResult">Resultado de uma query com headers compatíveis com: Coleta</param>
         /// <returns></returns>
-        private List<ResultOld> RetornoQueryIndicadoresRelBateToResultOld(List<RetornoQueryIndicadoresRelBate> queryResult)
+        private List<Coleta> RetornoQueryIndicadoresRelBateToColeta(List<RetornoQueryIndicadoresRelBate> queryResult)
         {
-            var resultsList = new List<ResultOld>();
+            var resultsList = new List<Coleta>();
 
             foreach (var i in queryResult)
             {
 
-                resultsList.Add(new ResultOld()
+                resultsList.Add(new Coleta()
                 {
                     Evaluate = i.Evaluate,
                     NotConform = i.NotConform,
-                    Id_Operacao = i.Id_operacao,
-                    Id_Monitoramento = i.Id_Monitoramento,
-                    Id_Tarefa = i.Id_tarefa,
-                    //Operacao = db.indicadores.FirstOrDefault(r => r.Id == i.Id_operacao).Name,
-                    //Monitoramento = db.Monitoramentos.Where(r => r.Id == i.Id_Monitoramento).Select(r => r.Name ?? "").FirstOrDefault(),
-                    //Tarefa = db.Tarefas.Where(r => r.Id == i.Id_tarefa).Select(r => r.Name ?? "").FirstOrDefault()
+                    Id_Level1 = i.Id_Level1,
+                    Id_Level2 = i.Id_Level2,
+                    Id_Level3 = i.Id_Level3,
+                    //Level1 = db.indicadores.FirstOrDefault(r => r.Id == i.Id_Level1).Name,
+                    //Level2 = db.Level2s.Where(r => r.Id == i.Id_Level2).Select(r => r.Name ?? "").FirstOrDefault(),
+                    //Level3 = db.Level3s.Where(r => r.Id == i.Id_Level3).Select(r => r.Name ?? "").FirstOrDefault()
                 });
             }
 
@@ -264,17 +264,17 @@ namespace Data.Repositories
         /// <summary>
         /// A tabela resultados não possui no momento relacionamentos externos de Foreingin Keys, foi necessário esta validação por como foi forçado relacionamento via INTEGER o banco não verifica automáticamente.
         /// </summary>
-        /// <param name="r">ResultOld Objeto.</param>
-        public void ValidaFkResultado(ResultOld r)
+        /// <param name="r">Coleta Objeto.</param>
+        public void ValidaFkResultado(Coleta r)
         {
-            if (_Operacao.FirstOrDefault(z => z.Id == r.Id_Operacao) == null)
+            if (_Level1.FirstOrDefault(z => z.Id == r.Id_Level1) == null)
                 throw new ExceptionHelper("Id Invalido para Operação");
 
-            if (_Monitoramento.FirstOrDefault(z => z.Id == r.Id_Monitoramento) == null)
-                throw new ExceptionHelper("Id Invalido para Monitoramento");
+            if (_Level2.FirstOrDefault(z => z.Id == r.Id_Level2) == null)
+                throw new ExceptionHelper("Id Invalido para Level2");
 
-            if (_Tarefa.FirstOrDefault(z => z.Id == r.Id_Tarefa) == null)
-                throw new ExceptionHelper("Id Invalido para Tarefa");
+            if (_Level3.FirstOrDefault(z => z.Id == r.Id_Level3) == null)
+                throw new ExceptionHelper("Id Invalido para Level3");
         }
 
         #endregion

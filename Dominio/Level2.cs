@@ -12,7 +12,7 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class Tarefa
+    public partial class Level2
     {
         public int Id { get; set; }
         public string Name { get; set; }

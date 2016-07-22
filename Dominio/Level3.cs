@@ -12,20 +12,11 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ResultOld
+    public partial class Level3
     {
         public int Id { get; set; }
-        public int Id_Tarefa { get; set; }
-        public int Id_Operacao { get; set; }
-        public int Id_Monitoramento { get; set; }
-        public Nullable<decimal> Evaluate { get; set; }
-        public Nullable<decimal> NotConform { get; set; }
+        public string Name { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public int numero1 { get; set; }
-        public int numero2 { get; set; }
-        public int Reaudit { get; set; }
-        public int Auditor { get; set; }
-        public int Period { get; set; }
     }
 }

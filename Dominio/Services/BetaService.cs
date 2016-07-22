@@ -24,29 +24,29 @@ namespace Dominio.Services
 
         #region Coleta de Dados.
 
-        public GenericReturn<ResultOldDTO> Salvar(ResultOldDTO result)
+        public GenericReturn<ColetaDTO> Salvar(ColetaDTO result)
         {
             try
             {
                 if (result.IsNull())
                     throw new ExceptionHelper(NaoInserido + " Theres is no data.");
 
-                result.ValidaResultOLd();
-                var objTosave = Mapper.Map<ResultOldDTO, ResultOld>(result);
+                result.ValidaColeta();
+                var objTosave = Mapper.Map<ColetaDTO, Coleta>(result);
 
                 _betaRepository.ValidaFkResultado(objTosave);
 
                 _betaRepository.Salvar(objTosave);
 
-                return new GenericReturn<ResultOldDTO>(inseridoOk);
+                return new GenericReturn<ColetaDTO>(inseridoOk);
             }
             catch (Exception e)
             {
-                return new GenericReturn<ResultOldDTO>(e, NaoInserido);
+                return new GenericReturn<ColetaDTO>(e, NaoInserido);
             }
         }
 
-        public GenericReturn<ResultOldDTO> SalvarLista(List<ResultOldDTO> list)
+        public GenericReturn<ColetaDTO> SalvarLista(List<ColetaDTO> list)
         {
             try
             {
@@ -57,21 +57,21 @@ namespace Dominio.Services
                     throw new ExceptionHelper(NaoInserido + " Theres is no data.");
 
                 foreach (var i in list)
-                    i.ValidaResultOLd();
+                    i.ValidaColeta();
 
-                var listObjTosave = Mapper.Map<List<ResultOldDTO>, List<ResultOld>>(list);
+                var listObjTosave = Mapper.Map<List<ColetaDTO>, List<Coleta>>(list);
 
                 foreach (var i in listObjTosave)
                     _betaRepository.ValidaFkResultado(i);
 
                 _betaRepository.SalvarLista(listObjTosave);
 
-                return new GenericReturn<ResultOldDTO>(inseridoOk);
+                return new GenericReturn<ColetaDTO>(inseridoOk);
 
             }
             catch (Exception e)
             {
-                return new GenericReturn<ResultOldDTO>(e, NaoInserido);
+                return new GenericReturn<ColetaDTO>(e, NaoInserido);
             }
         }
 
@@ -79,7 +79,7 @@ namespace Dominio.Services
 
         #region Busca De Dados.
 
-        public GenericReturn<List<ResultOldDTO>> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd)
+        public GenericReturn<List<ColetaDTO>> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd)
         {
             try
             {
@@ -91,16 +91,16 @@ namespace Dominio.Services
                 if (retornoRepositorio.Count == 0)
                     throw new ExceptionHelper("No data.");
 
-                var objToReturn = Mapper.Map<List<ResultOld>, List<ResultOldDTO>>(retornoRepositorio);
-                return new GenericReturn<List<ResultOldDTO>>(objToReturn);
+                var objToReturn = Mapper.Map<List<Coleta>, List<ColetaDTO>>(retornoRepositorio);
+                return new GenericReturn<List<ColetaDTO>>(objToReturn);
             }
             catch (Exception e)
             {
-                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral + "(GetNcPorIndicador)");
+                return new GenericReturn<List<ColetaDTO>>(e, falhaGeral + "(GetNcPorIndicador)");
             }
         }
 
-        public GenericReturn<List<ResultOldDTO>> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd)
+        public GenericReturn<List<ColetaDTO>> GetNcPorLevel2(int indicadorId, string dateInit, string dateEnd)
         {
             try
             {
@@ -109,19 +109,19 @@ namespace Dominio.Services
 
                 //VALIDAR AS DATAS AQUI E DEMAIS PARAMETROS
 
-                var retornoRepositorio = _betaRepository.GetNcPorMonitoramento(indicadorId, dateInit, dateEnd);
+                var retornoRepositorio = _betaRepository.GetNcPorLevel2(indicadorId, dateInit, dateEnd);
 
-                var objToReturn = Mapper.Map<List<ResultOld>, List<ResultOldDTO>>(retornoRepositorio);
-                return new GenericReturn<List<ResultOldDTO>>(objToReturn);
+                var objToReturn = Mapper.Map<List<Coleta>, List<ColetaDTO>>(retornoRepositorio);
+                return new GenericReturn<List<ColetaDTO>>(objToReturn);
 
             }
             catch (Exception e)
             {
-                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral + "(GetNcPorMonitoramento)");
+                return new GenericReturn<List<ColetaDTO>>(e, falhaGeral + "(GetNcPorLevel2)");
             }
         }
 
-        public GenericReturn<List<ResultOldDTO>> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd)
+        public GenericReturn<List<ColetaDTO>> GetNcPorLevel3(int indicadorId, int Level2Id, string dateInit, string dateEnd)
         {
             try
             {
@@ -129,18 +129,18 @@ namespace Dominio.Services
 
                 //VALIDAR AS DATAS AQUI E DEMAIS PARAMETROS
 
-                var retornoRepositorio = _betaRepository.GetNcPorTarefa(indicadorId, monitoramentoId, dateInit, dateEnd);
+                var retornoRepositorio = _betaRepository.GetNcPorLevel3(indicadorId, Level2Id, dateInit, dateEnd);
 
-                var objToReturn = Mapper.Map<List<ResultOld>, List<ResultOldDTO>>(retornoRepositorio);
-                return new GenericReturn<List<ResultOldDTO>>(objToReturn);
+                var objToReturn = Mapper.Map<List<Coleta>, List<ColetaDTO>>(retornoRepositorio);
+                return new GenericReturn<List<ColetaDTO>>(objToReturn);
             }
             catch (Exception e)
             {
-                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral + "(GetNcPorTarefa)");
+                return new GenericReturn<List<ColetaDTO>>(e, falhaGeral + "(GetNcPorLevel3)");
             }
         }
 
-        public GenericReturn<List<ResultOldDTO>> GetNcPorMonitoramentoJelsafa(int indicadorId, string dateInit, string dateEnd)
+        public GenericReturn<List<ColetaDTO>> GetNcPorLevel2Jelsafa(int indicadorId, string dateInit, string dateEnd)
         {
             try
             {
@@ -148,14 +148,14 @@ namespace Dominio.Services
 
                 //VALIDAR AS DATAS AQUI E DEMAIS PARAMETROS
 
-                var retornoRepositorio = _betaRepository.GetNcPorMonitoramentoJelsafa(indicadorId, dateInit, dateEnd);
+                var retornoRepositorio = _betaRepository.GetNcPorLevel2Jelsafa(indicadorId, dateInit, dateEnd);
 
-                var objToReturn = Mapper.Map<List<ResultOld>, List<ResultOldDTO>>(retornoRepositorio);
-                return new GenericReturn<List<ResultOldDTO>>(objToReturn);
+                var objToReturn = Mapper.Map<List<Coleta>, List<ColetaDTO>>(retornoRepositorio);
+                return new GenericReturn<List<ColetaDTO>>(objToReturn);
             }
             catch (Exception e)
             {
-                return new GenericReturn<List<ResultOldDTO>>(e, falhaGeral +"(GetNcPorMonitoramentoJelsafa)");
+                return new GenericReturn<List<ColetaDTO>>(e, falhaGeral +"(GetNcPorLevel2Jelsafa)");
             }
         }
 

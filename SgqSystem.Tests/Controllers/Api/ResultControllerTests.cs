@@ -12,7 +12,7 @@ namespace Dominio.Controllers.Api.Tests
     public class ResultControllerTests
     {
 
-        private readonly ResultOld _result ;
+        private readonly Coleta _result ;
         private readonly Mock<IBetaRepository> _resultRepo;
 
         #region Testes dados negativo quantidade
@@ -22,7 +22,7 @@ namespace Dominio.Controllers.Api.Tests
         public void ResultControllertTest_Total_Avalido_Negativo()
         {
             decimal valor1 = -1;
-            //new ResultOld(0, 1, 2, 3, valor1, 0);
+            //new Coleta(0, 1, 2, 3, valor1, 0);
 
         }
 
@@ -32,7 +32,7 @@ namespace Dominio.Controllers.Api.Tests
             try
             {
                 decimal naoConformidade = -1;
-                //new ResultOld(0, 1, 2, 3, 0, naoConformidade);
+                //new Coleta(0, 1, 2, 3, 0, naoConformidade);
                 Assert.Fail("Should throw here");
             }
             catch (Exception ex)
@@ -46,47 +46,47 @@ namespace Dominio.Controllers.Api.Tests
         #region Teste de Ids Fks e Pks
 
         [TestMethod()]
-        public void ResultControllertTest_Id_Tarefa_Invalido()
+        public void ResultControllertTest_Id_Level3_Invalido()
         {
             try
             {
-                int idTarefa = -1;
-                //new ResultOld(0, idTarefa, 2, 3, 0, 0);
+                int idLevel3 = -1;
+                //new Coleta(0, idLevel3, 2, 3, 0, 0);
                 Assert.Fail("Should throw here");
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(ex.Message, "O Id da Tarefa está em formato Inválido ou Nulo.");
+                Assert.AreEqual(ex.Message, "O Id da Level3 está em formato Inválido ou Nulo.");
             }
         }
 
         [TestMethod()]
-        public void ResultControllertTest_Id_Monitoramento_Invalido()
+        public void ResultControllertTest_Id_Level2_Invalido()
         {
             try
             {
-                int idMonitoramento = -1;
-                //new ResultOld(0, 1, 1, idMonitoramento, 0, 0);
+                int idLevel2 = -1;
+                //new Coleta(0, 1, 1, idLevel2, 0, 0);
                 Assert.Fail("Should throw here");
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(ex.Message, "O Id do Monitoramento está em formato Inválido ou Nulo.");
+                Assert.AreEqual(ex.Message, "O Id do Level2 está em formato Inválido ou Nulo.");
             }
         }
 
         [TestMethod()]
-        public void ResultControllertTest_Id_Operacao_Invalido()
+        public void ResultControllertTest_Id_Level1_Invalido()
         {
             try
             {
-                int idOperacao = -1;
-                //new ResultOld(0, 1, 1, idOperacao, 0, 0);
+                int idLevel1 = -1;
+                //new Coleta(0, 1, 1, idLevel1, 0, 0);
                 Assert.Fail("Should throw here");
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(ex.Message, "O Id do Monitoramento está em formato Inválido ou Nulo.");
+                Assert.AreEqual(ex.Message, "O Id do Level2 está em formato Inválido ou Nulo.");
             }
         }
 
@@ -94,13 +94,13 @@ namespace Dominio.Controllers.Api.Tests
         [ExpectedException(typeof(ExceptionHelper))]
         public void ResultControllertTest_Id_Invalido()
         {
-            //new ResultOld(-10, 1, 2, 3, 0, 0);
+            //new Coleta(-10, 1, 2, 3, 0, 0);
         }
 
         [TestMethod()]
-        public void ResultControllertTest_Id_Invalido_Operacao_Insercao_Banco_Dados()
+        public void ResultControllertTest_Id_Invalido_Level1_Insercao_Banco_Dados()
         {
-            //var result = new ResultOld(100, 2, 2, 3, 0, 0);
+            //var result = new Coleta(100, 2, 2, 3, 0, 0);
             //_resultRepo.Setup(r => r.Salvar(result)).Throws<ExceptionHelper>();
             //var service = new BetaService(_resultRepo.Object);
             //service.Salvar(result);
@@ -108,9 +108,9 @@ namespace Dominio.Controllers.Api.Tests
         }
 
         [TestMethod()]
-        public void ResultControllertTest_Id_Invalido_Monitoramento_Insercao_Banco_Dados()
+        public void ResultControllertTest_Id_Invalido_Level2_Insercao_Banco_Dados()
         {
-            //var result = new ResultOld(2, 100, 2, 3, 0, 0);
+            //var result = new Coleta(2, 100, 2, 3, 0, 0);
             //_resultRepo.Setup(r => r.Salvar(result)).Throws<ExceptionHelper>();
             //var service = new BetaService(_resultRepo.Object);
             //service.Salvar(result);
@@ -118,9 +118,9 @@ namespace Dominio.Controllers.Api.Tests
         }
 
         [TestMethod()]
-        public void ResultControllertTest_Id_Invalido_Tarefa_Insercao_Banco_Dados()
+        public void ResultControllertTest_Id_Invalido_Level3_Insercao_Banco_Dados()
         {
-            //var result = new ResultOld(2, 2, 100, 3, 0, 0);
+            //var result = new Coleta(2, 2, 100, 3, 0, 0);
             //_resultRepo.Setup(r => r.Salvar(result)).Throws<ExceptionHelper>();
             //var service = new BetaService(_resultRepo.Object);
             //service.Salvar(result);

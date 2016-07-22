@@ -1,11 +1,11 @@
 class Result
 {
-    constructor(Id_Tarefa, Id_Operacao, Id_Monitoramento, Evaluate, NotConform, Id, numero1, numero2, Periodo, Reaudit, Auditor, UserID)
+    constructor(Id_Level3, Id_Level1, Id_Level2, Evaluate, NotConform, Id, numero1, numero2, Periodo, Reaudit, Auditor, UserID)
     {
         this.Id = Id;
-        this.Id_Tarefa = Id_Tarefa;
-        this.Id_Operacao = Id_Operacao;
-        this.Id_Monitoramento  = Id_Monitoramento;
+        this.Id_Level3 = Id_Level3;
+        this.Id_Level1 = Id_Level1;
+        this.Id_Level2  = Id_Level2;
         this.Evaluate = Evaluate,
         this.NotConform = NotConform,
         this.AddDate = new Date().toISOString(),
@@ -18,18 +18,18 @@ class Result
         this.UserID = UserID
     }
 
-    setId_Tarefa(value) {
-        this.Id_Tarefa = parseInt(value);
+    setId_Level3(value) {
+        this.Id_Level3 = parseInt(value);
     }
 
 
-    setId_Operacao(value){
-        this.Id_Operacao = parseInt(value);
+    setId_Level1(value){
+        this.Id_Level1 = parseInt(value);
     }
 
 
-    setId_Monitoramento(value){
-        this.Id_Monitoramento = parseInt(value);
+    setId_Level2(value){
+        this.Id_Level2 = parseInt(value);
     }
 
     setEvaluate(value){
@@ -69,9 +69,9 @@ class Result
     }
 
     getObject(){
-        return { 'Id_Tarefa': this.Id_Tarefa,
-            'Id_Operacao': this.Id_Operacao,
-            'Id_Monitoramento': this.Id_Monitoramento,
+        return { 'Id_Level3': this.Id_Level3,
+            'Id_Level1': this.Id_Level1,
+            'Id_Level2': this.Id_Level2,
             'Evaluate': this.Evaluate,
             'NotConform': this.NotConform,
             'numero1': this.numero1,

@@ -129,9 +129,9 @@ function saveResult(results) {
 
 	var _source = [
         {
-        'Id_Tarefa': 13,
-        'Id_Operacao': 2,
-        'Id_Monitoramento': 2,
+        'Id_Level3': 13,
+        'Id_Level1': 2,
+        'Id_Level2': 2,
         'Evaluate': 2,
         'NotConform': 2,
 		'numero1': numero1,
@@ -140,9 +140,9 @@ function saveResult(results) {
         'AddDate': new Date().toISOString(),
         'AlterDate': new Date().toISOString(),
         },{
-        'Id_Tarefa': 14,
-        'Id_Operacao': 2,
-        'Id_Monitoramento': 2,
+        'Id_Level3': 14,
+        'Id_Level1': 2,
+        'Id_Level2': 2,
         'Evaluate': 2,
         'NotConform': 2,
 		'numero1': numero1,
@@ -208,11 +208,11 @@ $( "#btnSave" ).mousedown(function() {
 	for(var i = 0; i < currentTasks.length; i++){
 		var result = new Result();
 
-		result.setId_Tarefa(currentTasks[i].Id);
-		result.setId_Operacao(indicatorId);
-		result.setId_Monitoramento(monitoringId);
+		result.setId_Level3(currentTasks[i].Id);
+		result.setId_Level1(indicatorId);
+		result.setId_Level2(monitoringId);
 		if(indicatorId == '6')
-			result.setId_Monitoramento(currentTasks[i].Monitoring);
+			result.setId_Level2(currentTasks[i].Monitoring);
 		result.setId(0);
 		result.setNumero1(numero1);
 		result.setNumero2(numero2);

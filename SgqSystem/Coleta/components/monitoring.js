@@ -16,7 +16,7 @@ function lineMonitoring(monitoring, defect, inspection) {
 				cont2 = 0;
 				storage.setItem("inspections_"+monitoring.Indicator+"_"+monitoring.Id, 0);
 			}
-            out = "<a id="+monitoring.Id+" class='monitoramento-item list-group-item' onclick='openMonitoring("+monitoring.Id+")'>"+
+            out = "<a id="+monitoring.Id+" class='Level2-item list-group-item' onclick='openMonitoring("+monitoring.Id+")'>"+
 					"<div class='row'>"+
 						"<div class='col-xs-8'>"+
 							"<h4 class='list-group-item-heading'>"+monitoring.Name+" </h4>"+
@@ -44,7 +44,7 @@ function lineMonitoring(monitoring, defect, inspection) {
 				storage.setItem("cff_errors", 0);
 			}
 
-            out = "<a id="+monitoring.Id+" class='monitoramento-item list-group-item audit-item' onclick='openMonitoring("+monitoring.Id+")'>"+
+            out = "<a id="+monitoring.Id+" class='Level2-item list-group-item audit-item' onclick='openMonitoring("+monitoring.Id+")'>"+
 					"<div class='row'>"+
 						"<div class='col-xs-8'>"+
 							"<h4 class='list-group-item-heading audit-desc'>"+monitoring.Name+"</h4>"+
@@ -55,7 +55,7 @@ function lineMonitoring(monitoring, defect, inspection) {
 				"</a>";
             break;
 		case 2:
-            out = "<a id="+monitoring.Id+" class='monitoramento-item list-group-item audit-item' onclick='openMonitoring("+monitoring.Id+")'>"+
+            out = "<a id="+monitoring.Id+" class='Level2-item list-group-item audit-item' onclick='openMonitoring("+monitoring.Id+")'>"+
 					"<div class='row'>"+
 						"<div class='col-xs-8'>"+
 							"<h4 class='list-group-item-heading audit-desc'>"+monitoring.Name+"</h4>"+
@@ -64,7 +64,7 @@ function lineMonitoring(monitoring, defect, inspection) {
 				"</a>";
             break;
         default:
-            out = '<a class="monitoramento-item list-group-item"><div class="row">Invalid indicator type</div></a>';
+            out = '<a class="Level2-item list-group-item"><div class="row">Invalid indicator type</div></a>';
     }
     return out;
 }
@@ -74,18 +74,18 @@ function getDefect(p_indicator, p_monitoring, p_date){
 
 	var func = function(r){
 		var a =  r.Retorno.filter(function (n) {
-						return n.Id_Monitoramento == p_monitoring;
+						return n.Id_Level2 == p_monitoring;
 					});
 					return a.length
 	}
 
 	$.when(
 		/* AJAX requests */
-			$.get(urlMonitoramento, { idIndicador: p_indicator, dateInit: p_date, dateEnd: p_date }, func)
+			$.get(urlLevel2, { idIndicador: p_indicator, dateInit: p_date, dateEnd: p_date }, func)
 	).then(function(m) {
 		/* Run after all AJAX */
 		var a =  m.Retorno.filter(function (n) {
-						return n.Id_Monitoramento == p_monitoring;
+						return n.Id_Level2 == p_monitoring;
 					});
 			console.log(m.length);
 			//return a.length
