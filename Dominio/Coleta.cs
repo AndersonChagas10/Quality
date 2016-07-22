@@ -15,19 +15,22 @@ namespace Dominio
     public partial class Coleta
     {
         public int Id { get; set; }
-        public int Id_Level3 { get; set; }
         public int Id_Level1 { get; set; }
         public int Id_Level2 { get; set; }
+        public int Id_Level3 { get; set; }
         public Nullable<decimal> Evaluate { get; set; }
         public Nullable<decimal> NotConform { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public int Reaudit { get; set; }
-        public int Auditor { get; set; }
+        public bool Reaudit { get; set; }
+        public int UserIdInsercao { get; set; }
         public int Period { get; set; }
-        public int Cattle_Type { get; set; }
-        public int Chain_Speed { get; set; }
-        public int Lot { get; set; }
-        public int Mud_Score { get; set; }
+        public decimal Cattle_Type { get; set; }
+        public decimal Chain_Speed { get; set; }
+        public decimal Lot { get; set; }
+        public decimal Mud_Score { get; set; }
+        public decimal TotalDefectsLevel1 { get; set; }
+        public decimal TotalDefectsLevel2 { get; set; }
+        public decimal TotalDefectsLevel3 { get; set; }
     }
 }
