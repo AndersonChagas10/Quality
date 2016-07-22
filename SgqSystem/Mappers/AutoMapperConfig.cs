@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Dominio.Entities;
-using SgqSystem.ViewModels;
 
 namespace SgqSystem.Mappers
 {
@@ -14,6 +12,7 @@ namespace SgqSystem.Mappers
                 //    //x.CreateMap<GenericReturn<T>, GenericReturnViewModel<T>>();
                 x.AddProfile<DomainToViewModelMappingProfile>();
                 x.AddProfile<ViewModelToDomainMappingProfile>();
+                x.AddProfile<CorrectiveActionMappingProfile>();
             });
 
 

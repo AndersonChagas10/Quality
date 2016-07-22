@@ -280,7 +280,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\Api\BetaController.cs" />
+    <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
+    <Compile Include="Controllers\CorrectiveActionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\GraficoBetaController.cs" />
     <Compile Include="Controllers\RelatorioColetaController.cs" />
@@ -289,12 +291,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Mappers\AutoMapperConfig.cs" />
+    <Compile Include="Mappers\CorrectiveActionMappingProfile.cs" />
     <Compile Include="Mappers\DomainToViewModelMappingProfile.cs" />
     <Compile Include="Mappers\ViewModelToDomainMappingProfile.cs" />
     <Compile Include="ViewModels\AccountBindingModels.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\EntityBaseViewModel.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\DataCollectionBaseViewModel.cs" />
+    <Compile Include="ViewModels\CorrectiveActionViewModel.cs" />
     <Compile Include="ViewModels\GenericReturnViewModel.cs" />
     <Compile Include="ViewModels\IdentityModels.cs" />
     <Compile Include="ViewModels\ResultOldViewModel.cs" />
@@ -520,6 +524,7 @@
     <Content Include="Views\Shared\_Grid.cshtml" />
     <Content Include="Views\Shared\Graficos\_GraficoIndicadores.cshtml" />
     <Content Include="Views\GraficoBeta\Index.cshtml" />
+    <Content Include="Views\CorrectiveAction\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

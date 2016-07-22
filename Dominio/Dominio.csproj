@@ -34,7 +34,7 @@
     <Compile Include="Coleta.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="C__MigrationHistory.cs">
+    <Compile Include="CorrectiveAction.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DataCollection.cs">
@@ -48,8 +48,10 @@
     <Compile Include="Entities\BaseEntity\DataCollectionBase.cs" />
     <Compile Include="Entities\BaseEntity\EntityBase.cs" />
     <Compile Include="Interfaces\Repositories\IBetaRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ICorrectiveActionRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRepositoryBase.cs" />
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
+    <Compile Include="Interfaces\Services\ICorrectiveActionService.cs" />
     <Compile Include="Interfaces\Services\IBetaService.cs" />
     <Compile Include="Interfaces\Services\IServiceBase.cs" />
     <Compile Include="Interfaces\Services\IUserService.cs" />
@@ -82,6 +84,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BetaService.cs" />
+    <Compile Include="Services\CorrectiveActionService.cs" />
     <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="SgqEfContext.Context.cs">
