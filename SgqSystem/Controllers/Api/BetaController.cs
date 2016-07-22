@@ -16,25 +16,10 @@ namespace SgqSystem.Controllers.Api
     {
 
         private readonly IBetaAppService _betaAppService;
-        private readonly IAppServiceBase<Coleta> _AppServiceBaseCoelta;
-        private readonly IAppServiceBase<Level1> _AppServiceBaseLevel1;
-        private readonly IAppServiceBase<Level2> _AppServiceBaseLevel2;
-        private readonly IAppServiceBase<Level3> _AppServiceBaseLevel3;
-        private readonly IAppServiceBase<UserSgq> _AppServiceBaseUserSgq;
 
-        public BetaApiController(IBetaAppService betaAppService,
-            IAppServiceBase<Coleta> AppServiceBaseCoelta,
-            IAppServiceBase<Level1> AppServiceBaseLevel1,
-            IAppServiceBase<Level2> AppServiceBaseLevel2,
-            IAppServiceBase<Level3> AppServiceBaseLevel3,
-            IAppServiceBase<UserSgq> AppServiceBaseUserSgq)
+        public BetaApiController(IBetaAppService betaAppService)
         {
             _betaAppService = betaAppService;
-            _AppServiceBaseCoelta = AppServiceBaseCoelta;
-            _AppServiceBaseLevel1 = AppServiceBaseLevel1;
-            _AppServiceBaseLevel2 = AppServiceBaseLevel2;
-            _AppServiceBaseLevel3 = AppServiceBaseLevel3;
-            _AppServiceBaseUserSgq = AppServiceBaseUserSgq;
         }
 
         #region Coleta de Dados SP1 BEta
@@ -120,31 +105,7 @@ namespace SgqSystem.Controllers.Api
 
         #endregion
 
-        #region Envia Dados Para Syncronizar a plataforma remota
+       
 
-        public GenericReturnViewModel<SyncViewModel> GetDataToSincyAudit()
-        {
-            var objReturn = new GenericReturnViewModel<SyncViewModel>(GetSync);
-            return objReturn;
-        }
-
-        public SyncViewModel GetSync()
-        {
-            var resultColeta = Mapper.Map<List<Coleta>, List<ColetaDTO>>(_AppServiceBaseCoelta.GetAll().ToList());
-            var resultLevel1 = Mapper.Map<List<Level1>, List<Level1DTO>>(_AppServiceBaseLevel1.GetAll().ToList());
-            var resultLevel2 = Mapper.Map<List<Level2>, List<Level2DTO>>(_AppServiceBaseLevel2.GetAll().ToList());
-            var resultLevel3 = Mapper.Map<List<Level3>, List<Level3DTO>>(_AppServiceBaseLevel3.GetAll().ToList());
-            var resultUserSgq = Mapper.Map<List<UserSgq>, List<UserDTO>>(_AppServiceBaseUserSgq.GetAll().ToList());
-
-            return new SyncViewModel()
-            {
-                Coleta = resultColeta,
-                Level1 = resultLevel1,
-                Level2 = resultLevel2,
-                Level3 = resultLevel3,
-                UserSgq = resultUserSgq
-            };
-        }
-    #endregion
-}
+    }
 }
