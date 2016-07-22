@@ -30,5 +30,18 @@ namespace SgqSystem.Controllers.Api
         }
 
         #endregion
+
+        #region Recebe Dados Para Syncronizar o Db Interno e Web
+
+        [HttpPost]
+        [Route("api/Sync/SetData")]
+        public GenericReturnViewModel<SyncDTO> SetDataToSincyAudit([FromBody] SyncDTO objToSync)
+        {
+            var queryDataToSync = _coletaAppService.SetDataToSincyAudit(objToSync);
+            var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncDTO>>(queryDataToSync);
+            return mappedToReturn;
+        }
+
+        #endregion
     }
 }

@@ -2,6 +2,7 @@
 using Dominio.Interfaces.Services;
 using DTO.Helpers;
 using DTO.DTO;
+using System;
 
 namespace Application.AppServiceClass
 {
@@ -20,5 +21,9 @@ namespace Application.AppServiceClass
             return _coletaService.GetDataToSincyAudit();
         }
 
+        public GenericReturn<SyncDTO> SetDataToSincyAudit(SyncDTO objToSync)
+        {
+            return _coletaService.SetDataToSincyAudit(objToSync);
+        }
     }
 }
