@@ -16,10 +16,15 @@ namespace Data.Repositories
             //connection.Dispose();
         }
 
-        public void SetDataToSincyAudit(List<Coleta> coleta)
+        public void SetDataToSincyAudit(List<Coleta> coletas)
         {
-            new RepositoryBase<Coleta>(connection).AddAll(coleta);
+            new RepositoryBase<Coleta>(connection).AddAll(coletas);
         }
+
+        //public void SetDataToSincyCorrectiveAction(List<CorrectiveAction> correctiveActions)
+        //{
+        //    new RepositoryBase<CorrectiveAction>(connection).AddAll(correctiveActions);
+        //}
 
         /// <summary>
         /// A tabela resultados não possui no momento relacionamentos externos de Foreingin Keys, foi necessário esta validação por como foi forçado relacionamento via INTEGER o banco não verifica automáticamente.

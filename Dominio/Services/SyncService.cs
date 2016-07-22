@@ -46,6 +46,7 @@ namespace Dominio.Services
                     Level2 = Mapper.Map<List<Level2>, List<Level2DTO>>(queryParaLevel2),
                     Level3 = Mapper.Map<List<Level3>, List<Level3DTO>>(queryParaLevel3),
                     UserSgq = Mapper.Map<List<UserSgq>, List<UserDTO>>(queryParaUsuarios)
+                    //CorrectiveAction = Mapper.Map<List<CorrectiveAction>, List<CorrectiveActionDTO>>(queryParaUsuarios)
                 };
 
                 return new GenericReturn<SyncDTO>(retorno);
@@ -62,6 +63,9 @@ namespace Dominio.Services
             {
                 foreach (var i in objToSync.Coleta)
                     i.ValidaColeta();
+
+                //foreach (var i in objToSync.CorrectiveAction)
+                //    i.ValidaCorrectiveAction();
 
                 var coleta = Mapper.Map<List<ColetaDTO>, List<Coleta>>(objToSync.Coleta);
                 _repoSync.ValidaFkResultado(coleta);

@@ -22,10 +22,10 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("api/Sync/GetData")]
-        public GenericReturnViewModel<SyncDTO> GetDataToSincyAudit()
+        public GenericReturnViewModel<SyncViewModelDTO> GetDataToSincyAudit()
         {
             var queryDataToSync = _coletaAppService.GetDataToSincyAudit();
-            var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncDTO>>(queryDataToSync);
+            var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncViewModelDTO>>(queryDataToSync);
             return mappedToReturn;
         }
 
@@ -35,10 +35,10 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("api/Sync/SetData")]
-        public GenericReturnViewModel<SyncDTO> SetDataToSincyAudit([FromBody] SyncDTO objToSync)
+        public GenericReturnViewModel<SyncViewModelDTO> SetDataToSincyAudit([FromBody] SyncViewModelDTO objToSync)
         {
             var queryDataToSync = _coletaAppService.SetDataToSincyAudit(objToSync);
-            var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncDTO>>(queryDataToSync);
+            var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncViewModelDTO>>(queryDataToSync);
             return mappedToReturn;
         }
 

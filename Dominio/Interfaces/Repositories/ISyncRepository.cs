@@ -11,6 +11,6 @@ namespace Dominio.Interfaces.Repositories
         List<T> GetDataToSincyAudit();
         void SetDataToSincyAudit(List<Coleta> coleta);
         void ValidaFkResultado(List<Coleta> coleta);
-
+        //void SetDataToSincyCorrectiveAction(List<CorrectiveAction> correctiveActions);
     }
 }
