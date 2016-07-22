@@ -2,6 +2,7 @@
 using AutoMapper;
 using Dominio;
 using DTO.DTO;
+using DTO.Helpers;
 using SgqSystem.ViewModels;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -21,11 +22,11 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("api/Sync/GetData")]
-        public void GetDataToSincyAudit()
+        public GenericReturnViewModel<SyncDTO> GetDataToSincyAudit()
         {
-            //var objReturn = new GenericReturnViewModel<SyncViewModel>(GetSync);
-            _coletaAppService.GetDataToSincyAudit();
-            //return objReturn;
+            var queryDataToSync = _coletaAppService.GetDataToSincyAudit();
+            var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncDTO>>(queryDataToSync);
+            return mappedToReturn;
         }
 
         #endregion

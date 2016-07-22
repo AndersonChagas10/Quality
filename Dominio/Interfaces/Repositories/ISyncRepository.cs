@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Dominio.Interfaces.Repositories
 {
-    public interface ISyncRepository
+    public interface ISyncRepository<T> where T : class
     {
-        void GetDataToSincyAudit();
+        List<T> GetDataToSincyAudit();
     }
 }

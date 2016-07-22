@@ -1,11 +1,13 @@
-﻿using System;
-using Application.Interface;
+﻿using Application.Interface;
 using Dominio.Interfaces.Services;
+using DTO.Helpers;
+using DTO.DTO;
 
 namespace Application.AppServiceClass
 {
     public class SyncApp : ISyncApp
     {
+
         private readonly ISyncDomain _coletaService;
 
         public SyncApp(ISyncDomain coletaService)
@@ -13,9 +15,10 @@ namespace Application.AppServiceClass
             _coletaService = coletaService;
         }
 
-        public void GetDataToSincyAudit()
+        public GenericReturn<SyncDTO> GetDataToSincyAudit()
         {
-            _coletaService.GetDataToSincyAudit();
+            return _coletaService.GetDataToSincyAudit();
         }
+
     }
 }

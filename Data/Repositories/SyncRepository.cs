@@ -1,22 +1,18 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Repositories;
 using System.Linq;
-using System;
+using System.Collections.Generic;
 
 namespace Data.Repositories
 {
-    public class SyncRepository :  ISyncRepository
+    public class SyncRepository<T> :  ISyncRepository<T> where T : class
     {
+        private SgqDbDevEntities connection = new SgqDbDevEntities();
        
-        public void GetDataToSincyAudit()
+        public List<T> GetDataToSincyAudit()
         {
-            SgqDbDevEntities connection = new SgqDbDevEntities();
-            var Coleta = new RepositoryBase<Coleta>(connection).GetAll().ToList();
-            var Level1 = new RepositoryBase<Level1>(connection).GetAll().ToList();
-            var Level2 = new RepositoryBase<Level2>(connection).GetAll().ToList();
-            var Level3 = new RepositoryBase<Level3>(connection).GetAll().ToList();
-            var UserSgq = new RepositoryBase<UserSgq>(connection).GetAll().ToList();
-            connection.Dispose();
+            return new RepositoryBase<T>(connection).GetAll().ToList();
+            //connection.Dispose();
         }
     }
 }

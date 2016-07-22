@@ -9,9 +9,9 @@ namespace CrossCutting.IOC.Module
         public override void Load()
         {
             Bind(typeof(IRepositoryBase<>)).To(typeof(RepositoryBase<>));
+            Bind(typeof(ISyncRepository<>)).To(typeof(SyncRepository<>));
             Bind<IUserRepository>().To<UserRepository>();
             Bind<IBetaRepository>().To<BetaRepository>();
-            Bind<ISyncRepository>().To<SyncRepository>();
         }
     }
 }
