@@ -1,26 +1,36 @@
 ﻿using DTO.Entities.BaseEntity;
 using DTO.Helpers;
+using System;
+using System.Collections.Generic;
 
 namespace DTO.DTO
 {
     public class ColetaDTO : DataCollectionBase
     {
-        public int Id_Level3 { get; set; }
+        //public int numero1 { get; set; }
+        //public int numero2 { get; set; }
         public int Id_Level1 { get; set; }
         public int Id_Level2 { get; set; }
-        public int numero1 { get; set; }
-        public int numero2 { get; set; }
+        public int Id_Level3 { get; set; }
+        public bool Reaudit { get; set; }
+        public int UserIdInsercao { get; set; }
         public int Period { get; set; }
-        public int Reaudit { get; set; }
-        public int Auditor { get; set; }
+        public decimal Cattle_Type { get; set; }
+        public decimal Chain_Speed { get; set; }
+        public decimal Lot { get; set; }
+        public decimal Mud_Score { get; set; }
+        public decimal TotalDefectsLevel1 { get; set; }
+        public decimal TotalDefectsLevel2 { get; set; }
+        public decimal TotalDefectsLevel3 { get; set; }
 
         /// <summary>
         /// Ignoreds pelo Entity Framework.
         /// </summary>
-        public string Level1 { get; set; }
-        public string Level2 { get; set; }
-        public string Level3 { get; set; }
+        public string Level1Name { get; set; }
+        public string Level2Name { get; set; }
+        public string Level3Name { get; set; }
 
+       
 
         /// <summary>
         /// Constructor para nova avaliação.
@@ -36,8 +46,8 @@ namespace DTO.DTO
             Guard.ForNegative(Period, "The Period must be positive.");
             Guard.forValueZero(Period, "The Period must be diferent of zero.");
 
-            Guard.ForNegative(Auditor, "The Auditor Id must be positive.");
-            Guard.forValueZero(Auditor, "The Auditor Id must be diferent of zero.");
+            Guard.ForNegative(UserIdInsercao, "The Auditor Id must be positive.");
+            Guard.forValueZero(UserIdInsercao, "The Auditor Id must be diferent of zero.");
 
             Guard.ForValidFk(Id_Level2, "Cannot insert the data because: The level1 Identity Key is Invalid or Null.");//O Id do Level2 está em formato Inválido ou Nulo
             Guard.ForValidFk(Id_Level1, "Cannot insert the data because: The level2 Identity Key is Invalid or Null.");//O Id da Operação está em formato Inválido ou Nulo

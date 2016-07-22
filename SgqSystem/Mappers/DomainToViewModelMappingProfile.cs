@@ -36,7 +36,6 @@ namespace SgqSystem.Mappers
 
             //Modo 3 (preferencial)
             #region Coleta
-
             /**
              * Para evitar ausencia de auto mapper.
              * Como este processo não tem custo computacional significante, 
@@ -60,8 +59,23 @@ namespace SgqSystem.Mappers
             CreateMap<GenericReturn<List<ColetaDTO>>, GenericReturnViewModel<List<ColetaViewModel>>>();
             CreateMap<ColetaDTO, ColetaViewModel>(); 
             CreateMap<GenericReturn<ColetaDTO>, GenericReturnViewModel<Coleta>>();
-            CreateMap<ColetaDTO, Coleta>(); 
+            CreateMap<ColetaDTO, Coleta>();
+            #endregion
 
+            #region Level1
+            CreateMap<Level1, Level1DTO>();
+            #endregion
+
+            #region Level1
+            CreateMap<Level2, Level2DTO>();
+            #endregion
+
+            #region Level3
+            CreateMap<Level3, Level3DTO>();
+            #endregion
+
+            #region Sync
+            CreateMap<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncDTO>>();
             #endregion
         }
     }

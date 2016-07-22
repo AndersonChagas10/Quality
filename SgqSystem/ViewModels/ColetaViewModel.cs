@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using DTO.DTO;
-using DTO.Helpers;
+﻿using DTO.DTO;
 using System.Collections.Generic;
 
 namespace SgqSystem.ViewModels

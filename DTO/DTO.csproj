@@ -46,7 +46,11 @@
     <Compile Include="DTO\CorrectiveActionDTO.cs" />
     <Compile Include="DTO\DataCollectionResultDTO.cs" />
     <Compile Include="DTO\DataCollectionDTO.cs" />
-    <Compile Include="DTO\ResultOldDTO.cs" />
+    <Compile Include="DTO\ColetaDTO.cs" />
+    <Compile Include="DTO\Level1DTO.cs" />
+    <Compile Include="DTO\Level2DTO.cs" />
+    <Compile Include="DTO\Level3DTO.cs" />
+    <Compile Include="DTO\SyncDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="GenericReturn.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />

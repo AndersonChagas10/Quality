@@ -54,6 +54,7 @@
     <Compile Include="Repositories\BetaRepository.cs" />
     <Compile Include="Repositories\CorrectiveActionRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
+    <Compile Include="Repositories\SyncRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>

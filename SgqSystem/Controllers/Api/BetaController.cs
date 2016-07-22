@@ -1,9 +1,11 @@
 ﻿using Application.Interface;
 using AutoMapper;
+using Dominio;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -20,7 +22,7 @@ namespace SgqSystem.Controllers.Api
             _betaAppService = betaAppService;
         }
 
-        #region Coleta de Dados
+        #region Coleta de Dados SP1 BEta
 
         [Route("api/Result/Salvar")]
         public GenericReturnViewModel<ColetaViewModel> Post([FromBody] ColetaViewModel data)
@@ -44,7 +46,7 @@ namespace SgqSystem.Controllers.Api
         public GenericReturnViewModel<List<ColetaViewModel>> GetNcPorIndicador(int idIndicador, string dateInit, string dateEnd)
         {
             var queryResult = _betaAppService.GetNcPorIndicador(idIndicador, dateInit, dateEnd);
-            return  Mapper.Map<GenericReturn<List<ColetaDTO>>, GenericReturnViewModel<List<ColetaViewModel>>>(queryResult);
+            return Mapper.Map<GenericReturn<List<ColetaDTO>>, GenericReturnViewModel<List<ColetaViewModel>>>(queryResult);
         }
 
         [Route("api/RelatorioBetaApi/GetNcPorLevel2")]
@@ -103,13 +105,7 @@ namespace SgqSystem.Controllers.Api
 
         #endregion
 
-        #region Envia Dados Para Syncronizar a plataforma remota
+       
 
-        //public GenericReturnViewModel<List<ColetaViewModel>> GetDadosLevel1(int idIndicador, string dateInit, string dateEnd)
-        //{
-        //    var queryResult = _betaAppService.GetDadosLevel1();
-        //}
-
-        #endregion
     }
 }

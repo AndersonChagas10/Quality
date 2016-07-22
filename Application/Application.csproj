@@ -44,10 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppServiceClass\SyncApp.cs" />
     <Compile Include="AppServiceClass\AppServiceBase.cs" />
     <Compile Include="AppServiceClass\BetaAppService.cs" />
     <Compile Include="AppServiceClass\CorrectiveActionAppService.cs" />
     <Compile Include="Interface\ICorrectiveActionAppService.cs" />
+    <Compile Include="Interface\ISyncApp.cs" />
     <Compile Include="Interface\IAppServiceBase.cs" />
     <Compile Include="Interface\IBetaAppService.cs" />
     <Compile Include="Interface\IUserAppService.cs" />

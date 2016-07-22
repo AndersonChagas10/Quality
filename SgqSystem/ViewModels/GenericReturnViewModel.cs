@@ -19,6 +19,18 @@ namespace SgqSystem.ViewModels
 
         }
 
+        //public GenericReturnViewModel(Func<T> getSync)
+        //{
+        //    try
+        //    {
+        //        Retorno = getSync();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        SetMensagemExcecao(e, "Cannot complete action in Return of data.");
+        //    }
+        //}
+
         //public GenericReturnViewModel(Exception _ex, string mensagemPadrao = "")
         //{
         //    SetMensagemExcecao(_ex, mensagemPadrao);
