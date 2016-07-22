@@ -1,14 +1,14 @@
 ﻿using Application.Interface;
 using AutoMapper;
-using Dominio;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
-using System.Collections.Generic;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.Api
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SyncController : ApiController
     {
         private readonly ISyncApp _syncApp;
