@@ -281,7 +281,9 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\Api\BetaController.cs" />
     <Compile Include="Controllers\Api\SyncController.cs" />
+    <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
+    <Compile Include="Controllers\CorrectiveActionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\GraficoBetaController.cs" />
     <Compile Include="Controllers\RelatorioColetaController.cs" />
@@ -290,12 +292,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Mappers\AutoMapperConfig.cs" />
+    <Compile Include="Mappers\CorrectiveActionMappingProfile.cs" />
     <Compile Include="Mappers\DomainToViewModelMappingProfile.cs" />
     <Compile Include="Mappers\ViewModelToDomainMappingProfile.cs" />
     <Compile Include="ViewModels\AccountBindingModels.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\EntityBaseViewModel.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\DataCollectionBaseViewModel.cs" />
+    <Compile Include="ViewModels\CorrectiveActionViewModel.cs" />
     <Compile Include="ViewModels\GenericReturnViewModel.cs" />
     <Compile Include="ViewModels\IdentityModels.cs" />
     <Compile Include="ViewModels\ColetaViewModel.cs" />
@@ -380,6 +384,27 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="newColeta\Content\bootstrap.css" />
+    <Content Include="newColeta\Content\bootstrap.min.css" />
+    <Content Include="newColeta\Content\Geral.css" />
+    <Content Include="newColeta\Img\beef.jpg" />
+    <Content Include="newColeta\Img\fundoSGQ.jpg" />
+    <Content Include="newColeta\Img\GRTJBSLogo.png" />
+    <Content Include="newColeta\Img\login.png" />
+    <Content Include="newColeta\Img\sgq.jpg" />
+    <Content Include="newColeta\Img\SGQLogo01.png" />
+    <Content Include="newColeta\Index.html" />
+    <Content Include="newColeta\Plugins\float_button\css\kc.fab.css" />
+    <Content Include="newColeta\Plugins\float_button\js\kc.fab.js" />
+    <Content Include="newColeta\Plugins\float_button\js\kc.fab.min.js" />
+    <Content Include="newColeta\Plugins\font-awesome\css\font-awesome.css" />
+    <Content Include="newColeta\Plugins\font-awesome\css\font-awesome.min.css" />
+    <Content Include="newColeta\Plugins\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="newColeta\Plugins\font-awesome\HELP-US-OUT.txt" />
+    <Content Include="newColeta\Plugins\jquery\jquery.min.js" />
+    <Content Include="newColeta\Scripts\bootstrap.js" />
+    <Content Include="newColeta\Scripts\bootstrap.min.js" />
+    <Content Include="newColeta\Scripts\Methods.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
@@ -453,6 +478,39 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="newColeta\Plugins\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="newColeta\Plugins\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="newColeta\Plugins\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="newColeta\Plugins\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="newColeta\Plugins\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="newColeta\Plugins\font-awesome\less\animated.less" />
+    <Content Include="newColeta\Plugins\font-awesome\less\bordered-pulled.less" />
+    <Content Include="newColeta\Plugins\font-awesome\less\core.less" />
+    <Content Include="newColeta\Plugins\font-awesome\less\fixed-width.less" />
+    <Content Include="newColeta\Plugins\font-awesome\less\font-awesome.less" />
+    <Content Include="newColeta\Plugins\font-awesome\less\icons.less" />
+    <Content Include="newColeta\Plugins\font-awesome\less\larger.less" />
+    <Content Include="newColeta\Plugins\font-awesome\less\list.less" />
+    <Content Include="newColeta\Plugins\font-awesome\less\mixins.less" />
+    <Content Include="newColeta\Plugins\font-awesome\less\path.less" />
+    <Content Include="newColeta\Plugins\font-awesome\less\rotated-flipped.less" />
+    <Content Include="newColeta\Plugins\font-awesome\less\screen-reader.less" />
+    <Content Include="newColeta\Plugins\font-awesome\less\stacked.less" />
+    <Content Include="newColeta\Plugins\font-awesome\less\variables.less" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\font-awesome.scss" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\_animated.scss" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\_bordered-pulled.scss" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\_core.scss" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\_fixed-width.scss" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\_icons.scss" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\_larger.scss" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\_list.scss" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\_mixins.scss" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\_path.scss" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\_rotated-flipped.scss" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\_screen-reader.scss" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\_stacked.scss" />
+    <Content Include="newColeta\Plugins\font-awesome\scss\_variables.scss" />
     <None Include="Properties\PublishProfiles\DeployInterno.pubxml" />
     <None Include="Properties\PublishProfiles\DeploySgqInterno.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
@@ -535,6 +593,7 @@
     <Content Include="Views\Shared\_Grid.cshtml" />
     <Content Include="Views\Shared\Graficos\_GraficoIndicadores.cshtml" />
     <Content Include="Views\GraficoBeta\Index.cshtml" />
+    <Content Include="Views\CorrectiveAction\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -545,8 +604,12 @@
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj">

@@ -12,6 +12,8 @@ namespace CrossCutting.IOC.Module
             Bind(typeof(ISyncRepository<>)).To(typeof(SyncRepository<>));
             Bind<IUserRepository>().To<UserRepository>();
             Bind<IBetaRepository>().To<BetaRepository>();
+            Bind<ICorrectiveActionRepository>().To<CorrectiveActionRepository>();
+
         }
     }
 }
