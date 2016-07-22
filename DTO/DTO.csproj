@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="BaseEntity\DataCollectionBase.cs" />
     <Compile Include="BaseEntity\EntityBase.cs" />
+    <Compile Include="DTO\CorrectiveActionDTO.cs" />
     <Compile Include="DTO\DataCollectionResultDTO.cs" />
     <Compile Include="DTO\DataCollectionDTO.cs" />
     <Compile Include="DTO\ColetaDTO.cs" />

@@ -11,6 +11,7 @@ namespace CrossCutting.IOC.Module
             Bind(typeof(IServiceBase<>)).To(typeof(ServiceBase<>));
             Bind<IUserService>().To<UserService>();
             Bind<IBetaService>().To<BetaService>();
+            Bind<ICorrectiveActionService>().To<CorrectiveActionService>();
             Bind<ISyncDomain>().To<SyncService>();
         }
     }

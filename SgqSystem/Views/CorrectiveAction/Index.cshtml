@@ -1,0 +1,290 @@
+﻿@model SgqSystem.ViewModels.CorrectiveActionViewModel
+
+@{
+    ViewBag.Title = "Corrective Action";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var url = Url.Action("Index", "CorrectiveAction");
+}
+
+@section css
+{
+    <style type="text/css">
+    </style>
+}
+
+
+
+@using (Html.BeginForm("Post", "CorrectiveAction/Index", FormMethod.Post, new { @id = "formPrincipal" }))
+{
+    @Html.HiddenFor(m => m.CorrectiveAction.Id, new { id = "hiddenCodigo" })
+    @Html.HiddenFor(m => m.CorrectiveAction.Slaughter, new { id = "hiddenCodigoSlaughter" })
+    @Html.HiddenFor(m => m.CorrectiveAction.Techinical, new { id = "hiddenCodigoTechinical" })
+    @Html.HiddenFor(m => m.CorrectiveAction.Period, new { id = "hiddenPeriodo" })
+    @Html.HiddenFor(m => m.CorrectiveAction.Auditor, new { id = "hiddenAuditor" })
+    @Html.HiddenFor(m => m.CorrectiveAction.Shift, new { id = "hiddenShift" })
+    @Html.HiddenFor(m => m.CorrectiveAction.DateExecute, new { id = "hiddenDataExecute" })
+    @Html.HiddenFor(m => m.CorrectiveAction.StartTime, new { id = "hiddenDataStart" })
+    @Html.HiddenFor(m => m.CorrectiveAction.AuditLevel1, new { id = "hiddenAudit" })
+
+    <body role="document">
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Corrective Action</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container" role="main" style="margin-top: 64px;">
+
+            <div class="monitoramentos list-group" style="margin-top: 16px;  padding-bottom: 70px;">
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <b>Corrective Action Taken:<br /></b>
+                                Date/Time: <span id="datetime"></span><br />
+                                Auditor: <span id="auditor"></span><br />
+                                Shift: <span id="shift"></span><br />
+                            </div>
+                            <div class="col-xs-6">
+                                <b>Audit Information:<br /></b>
+                                Audit: <span id="auditText"></span><br />
+                                Start Time: <span id="starttime"></span><br />
+                                Period: <span id="period"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description of Failure:</label>
+                    @Html.TextAreaFor(m => m.CorrectiveAction.DescriptionFailure, new { @id = "DescriptionFailure", @style = "resize:none", @rows = "3", @class = "form-control custom-control" })
+                </div>
+                <div class="form-group">
+                    <label>Immediate Corrective Action:</label>
+                    @Html.TextAreaFor(m => m.CorrectiveAction.ImmediateCorrectiveAction, new { @id = "ImmediateCorrectiveAction", @style = "resize:none", @rows = "3", @class = "form-control custom-control" })
+                </div>
+                <div class="form-group">
+                    <label>Product Disposition:</label>
+                    @Html.TextAreaFor(m => m.CorrectiveAction.ProductDisposition, new { @id = "ProductDisposition", @style = "resize:none", @rows = "3", @class = "form-control custom-control" })
+                </div>
+                <div class="form-group">
+                    <label>Preventative Measure:</label>
+                    @Html.TextAreaFor(m => m.CorrectiveAction.PreventativeMeasure, new { @id = "PreventativeMeasure", @style = "resize:none", @rows = "3", @class = "form-control custom-control" })
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Slaughter:</label>
+                            <input type="text" class="form-control" id="slaughter" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Date/Time:</label>
+                            @Html.TextBoxFor(m => m.CorrectiveAction.DateTimeSlaughter, new { @class = "form-control", @id = "slaughterDatetime", @disabled = "disabled " })
+                            @*<input type="text" class="form-control" id="slaughterDatetime" disabled>*@
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Techinical Services:</label>
+                            <input type="text" class="form-control" id="techinical" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Date/Time:</label>
+                            @Html.TextBoxFor(m => m.CorrectiveAction.DateTimeSlaughter, new { @class = "form-control", @id = "techinicalDatetime", @disabled = "disabled " })
+                            @*<input type="text" class="form-control" id="techinicalDatetime" disabled>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Slaughter Signature:</label><br />
+                            <label>Login:</label>
+                            <input type="text" class="form-control" id="slaughterLogin">
+                        </div>
+                        <div class="form-group">
+                            <label>Password:</label>
+                            <input type="password" class="form-control" id="slaughterPassword">
+                        </div>
+                        <div class="form-group">
+                            <input type="button" class="btn btn-primary btn-lg" id="btnSlaughterLogin" onclick="AcaoCorretiva.logarUsuarioSlaughter();" value="Verify Login">
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Techinical Services Signature:</label><br />
+                            <label>Login:</label>
+                            <input type="text" class="form-control" id="techinicalLogin">
+                        </div>
+                        <div class="form-group">
+                            <label>Password:</label>
+                            <input type="password" class="form-control" id="techinicalPassword">
+                        </div>
+                        <div class="form-group">
+                            <input type="button" class="btn btn-primary btn-lg" id="btnTechinicalLogin" onclick="AcaoCorretiva.logarUsuarioTechnical();" value="Verify Login">
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <input type="button" class="btn btn-primary btn-lg" id="btnSendCorrectiveAction" onclick="AcaoCorretiva.enviarAcaoCorretiva();" value="Send">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kc_fab_wrapper"></div><!--Save-->
+        </div>
+
+    </body>
+}
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        if ($("#hiddenCodigo").val() == 0) {
+
+            var storage = window.localStorage;
+            $("#period").text(storage.getItem("periodo"));
+            $("#auditor").text(storage.getItem("userId"));
+            $("#datetime").text('@DateTime.Now.ToString("dd/MM/yyyy hh:mm")');
+            $("#starttime").text('@DateTime.Now.ToString("dd/MM/yyyy hh:mm")');
+            $("#shift").text('1');
+
+        }
+        else {
+
+            $("#datetime").text($("#hiddenDataExecute").val());
+            $("#auditor").text($("#hiddenAuditor").val());
+            $("#shift").text('1');
+            $("#starttime").text($("#hiddenDataStart").val());
+            $("#period").text($("#hiddenPeriodo").val());
+   
+        }
+
+        $("#auditText").text(storage.getItem("indicatorName"));
+
+        var AcaoCorretiva = {
+
+            logarUsuarioSlaughter: function () {
+
+                var obj = {
+                    SlaughterPassword: $("#slaughterPassword").val(),
+                    SlaughterLogin: $("#slaughterLogin").val()
+                };
+
+                $.ajax({
+                    data: obj,
+                    url: '@Url.Content("~")' + 'api/CorrectiveAction/LogarUsuarioSlaughter',
+                    type: 'POST',
+                    success: function (data) {
+
+                        $("#hiddenCodigoSlaughter").val(data.Id);
+                        $("#slaughter").val(data.Name);
+                        $("#slaughterDatetime").val('@DateTime.Now.ToString("dd/MM/yyyy hh:mm")');
+
+                    }
+                });
+
+            },
+
+            logarUsuarioTechnical: function () {
+
+                var obj = {
+                    TechnicalPassword: $("#techinicalPassword").val(),
+                    TechnicalLogin: $("#techinicalLogin").val()
+                };
+
+                $.ajax({
+                    data: obj,
+                    url: '@Url.Content("~")' + 'api/CorrectiveAction/LogarUsuarioTechnical',
+                    type: 'POST',
+                    success: function (data) {
+
+                        $("#hiddenCodigoTechinical").val(data.Id);
+                        $("#techinical").val(data.Name);
+                        $("#techinicalDatetime").val('@DateTime.Now.ToString("dd/MM/yyyy hh:mm")');
+
+                    }
+                });
+
+            },
+
+            enviarAcaoCorretiva: function () {
+
+
+                if ($("#hiddenCodigo").val() == 0) {
+
+                    var obj = {
+                        CorrectiveAction: {
+                            DateExecute: new Date().toUTCString(),
+                            Auditor: storage.getItem("userId"),
+                            Shift: 1,
+                            AuditLevel1: storage.getItem("indicatorId"),
+                            AuditLevel2: storage.getItem("indicatorId"),
+                            AuditLevel3: storage.getItem("indicatorId"),
+                            StartTime: new Date().toUTCString(),
+                            Period: storage.getItem("periodo"),
+                            DescriptionFailure: $("#DescriptionFailure").val(),
+                            ImmediateCorrectiveAction: $("#ImmediateCorrectiveAction").val(),
+                            ProductDisposition: $("#ProductDisposition").val(),
+                            PreventativeMeasure: $("#PreventativeMeasure").val(),
+                            Slaughter: $("#hiddenCodigoSlaughter").val(),
+                            DateTimeSlaughter: new Date().toUTCString(),
+                            Techinical: $("#hiddenCodigoTechinical").val(),
+                            DateTimeTechinical: new Date().toUTCString()
+                        }
+                    };
+
+                }
+                else {
+
+                    var obj = {
+                        CorrectiveAction: {
+                            DateExecute: $("#hiddenDataExecute").val(),
+                            Auditor: $("#hiddenAuditor").val(),
+                            Shift: 1,
+                            AuditLevel1: $("#hiddenAudit").val(),
+                            AuditLevel2: $("#hiddenAudit").val(),
+                            AuditLevel3: $("#hiddenAudit").val(),
+                            StartTime: $("#hiddenDataStart").val(),
+                            Period: $("#hiddenPeriodo").val(),
+                            DescriptionFailure: $("#DescriptionFailure").val(),
+                            ImmediateCorrectiveAction: $("#ImmediateCorrectiveAction").val(),
+                            ProductDisposition: $("#ProductDisposition").val(),
+                            PreventativeMeasure: $("#PreventativeMeasure").val(),
+                            Slaughter: $("#hiddenCodigoSlaughter").val(),
+                            DateTimeSlaughter: $("#slaughterDatetime").val(),
+                            Techinical: $("#hiddenCodigoTechinical").val(),
+                            DateTimeTechinical: $("#techinicalDatetime").val(),
+                        }
+                    };
+
+                }
+
+                $.ajax({
+                    data: obj,
+                    url: '@Url.Content("~")' + 'api/CorrectiveAction/SalvarAcaoCorretiva',
+                    type: 'POST',
+                    success: function (data) {
+                        alert(data);
+                    }
+                });
+
+            },
+
+        };
+
+
+
+
+    </script>
+
+}
+
