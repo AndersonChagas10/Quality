@@ -75,7 +75,12 @@ namespace SgqSystem.Mappers
             #endregion
 
             #region Sync
-            CreateMap<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncDTO>>();
+            CreateMap<SyncDTO, SyncViewModel>();
+            #endregion
+
+
+            #region Sync
+            CreateMap<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncViewModel>>();
             #endregion
         }
     }

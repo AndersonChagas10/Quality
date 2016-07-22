@@ -3,6 +3,7 @@ using Dominio.Interfaces.Repositories;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using DTO.DTO;
 
 namespace Data.Repositories
 {
@@ -16,9 +17,19 @@ namespace Data.Repositories
             //connection.Dispose();
         }
 
+        public void SalvaListaCorrectiveAction(List<CorrectiveAction> correctiveAction)
+        {
+            new RepositoryBase<CorrectiveAction>(connection).AddAll(correctiveAction);
+        }
+
         public void SetDataToSincyAudit(List<Coleta> coletas)
         {
             new RepositoryBase<Coleta>(connection).AddAll(coletas);
+        }
+
+        public void SetDataToSincyCorrectiveAction(List<CorrectiveAction> correctiveActions)
+        {
+            throw new NotImplementedException();
         }
 
         //public void SetDataToSincyCorrectiveAction(List<CorrectiveAction> correctiveActions)
