@@ -20,20 +20,23 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Id_Level3" Type="int" Nullable="false" />
           <Property Name="Id_Level1" Type="int" Nullable="false" />
           <Property Name="Id_Level2" Type="int" Nullable="false" />
+          <Property Name="Id_Level3" Type="int" Nullable="false" />
           <Property Name="Evaluate" Type="decimal" Precision="18" Scale="2" />
           <Property Name="NotConform" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
-          <Property Name="Reaudit" Type="int" Nullable="false" />
-          <Property Name="Auditor" Type="int" Nullable="false" />
+          <Property Name="Reaudit" Type="bit" Nullable="false" />
+          <Property Name="UserIdInsercao" Type="int" Nullable="false" />
           <Property Name="Period" Type="int" Nullable="false" />
-          <Property Name="Cattle_Type" Type="int" Nullable="false" />
-          <Property Name="Chain_Speed" Type="int" Nullable="false" />
-          <Property Name="Lot" Type="int" Nullable="false" />
-          <Property Name="Mud_Score" Type="int" Nullable="false" />
+          <Property Name="Cattle_Type" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Chain_Speed" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Lot" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Mud_Score" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="TotalDefectsLevel1" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="TotalDefectsLevel2" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="TotalDefectsLevel3" Type="decimal" Precision="18" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="DataCollection">
           <Key>
@@ -376,7 +379,6 @@
       <Schema Namespace="SgqDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SgqDbDevEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="SgqDbModel.C__MigrationHistory" />
-          <EntitySet Name="Coleta" EntityType="SgqDbModel.Coleta" />
           <EntitySet Name="DataCollection" EntityType="SgqDbModel.DataCollection" />
           <EntitySet Name="DataCollectionResult" EntityType="SgqDbModel.DataCollectionResult" />
           <EntitySet Name="Level01" EntityType="SgqDbModel.Level01" />
@@ -422,6 +424,7 @@
             <End Role="Level03" EntitySet="Level03" />
             <End Role="Level03Consolidation" EntitySet="Level03Consolidation" />
           </AssociationSet>
+          <EntitySet Name="Coleta" EntityType="SgqDbModel.Coleta" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -432,26 +435,6 @@
           <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="Coleta">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Id_Level3" Type="Int32" Nullable="false" />
-          <Property Name="Id_Level1" Type="Int32" Nullable="false" />
-          <Property Name="Id_Level2" Type="Int32" Nullable="false" />
-          <Property Name="Evaluate" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="NotConform" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="Reaudit" Type="Int32" Nullable="false" />
-          <Property Name="Auditor" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Cattle_Type" Type="Int32" Nullable="false" />
-          <Property Name="Chain_Speed" Type="Int32" Nullable="false" />
-          <Property Name="Lot" Type="Int32" Nullable="false" />
-          <Property Name="Mud_Score" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="DataCollection">
           <Key>
@@ -755,6 +738,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Coleta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Level1" Type="Int32" Nullable="false" />
+          <Property Name="Id_Level2" Type="Int32" Nullable="false" />
+          <Property Name="Id_Level3" Type="Int32" Nullable="false" />
+          <Property Name="Evaluate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NotConform" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="Reaudit" Type="Boolean" Nullable="false" />
+          <Property Name="UserIdInsercao" Type="Int32" Nullable="false" />
+          <Property Name="Period" Type="Int32" Nullable="false" />
+          <Property Name="Cattle_Type" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Chain_Speed" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Lot" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Mud_Score" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="TotalDefectsLevel1" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="TotalDefectsLevel2" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="TotalDefectsLevel3" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -768,27 +774,6 @@
                 <ScalarProperty Name="Model" ColumnName="Model" />
                 <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
                 <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Coleta">
-            <EntityTypeMapping TypeName="SgqDbModel.Coleta">
-              <MappingFragment StoreEntitySet="Coleta">
-                <ScalarProperty Name="Mud_Score" ColumnName="Mud_Score" />
-                <ScalarProperty Name="Lot" ColumnName="Lot" />
-                <ScalarProperty Name="Chain_Speed" ColumnName="Chain_Speed" />
-                <ScalarProperty Name="Cattle_Type" ColumnName="Cattle_Type" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="NotConform" ColumnName="NotConform" />
-                <ScalarProperty Name="Evaluate" ColumnName="Evaluate" />
-                <ScalarProperty Name="Id_Level2" ColumnName="Id_Level2" />
-                <ScalarProperty Name="Id_Level1" ColumnName="Id_Level1" />
-                <ScalarProperty Name="Id_Level3" ColumnName="Id_Level3" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -991,6 +976,30 @@
                 <ScalarProperty Name="AcessDate" ColumnName="AcessDate" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Coleta">
+            <EntityTypeMapping TypeName="SgqDbModel.Coleta">
+              <MappingFragment StoreEntitySet="Coleta">
+                <ScalarProperty Name="TotalDefectsLevel3" ColumnName="TotalDefectsLevel3" />
+                <ScalarProperty Name="TotalDefectsLevel2" ColumnName="TotalDefectsLevel2" />
+                <ScalarProperty Name="TotalDefectsLevel1" ColumnName="TotalDefectsLevel1" />
+                <ScalarProperty Name="Mud_Score" ColumnName="Mud_Score" />
+                <ScalarProperty Name="Lot" ColumnName="Lot" />
+                <ScalarProperty Name="Chain_Speed" ColumnName="Chain_Speed" />
+                <ScalarProperty Name="Cattle_Type" ColumnName="Cattle_Type" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="UserIdInsercao" ColumnName="UserIdInsercao" />
+                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="NotConform" ColumnName="NotConform" />
+                <ScalarProperty Name="Evaluate" ColumnName="Evaluate" />
+                <ScalarProperty Name="Id_Level3" ColumnName="Id_Level3" />
+                <ScalarProperty Name="Id_Level2" ColumnName="Id_Level2" />
+                <ScalarProperty Name="Id_Level1" ColumnName="Id_Level1" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

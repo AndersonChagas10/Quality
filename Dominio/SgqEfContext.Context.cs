@@ -26,7 +26,6 @@ namespace Dominio
         }
     
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
-        public virtual DbSet<Coleta> Coleta { get; set; }
         public virtual DbSet<DataCollection> DataCollection { get; set; }
         public virtual DbSet<DataCollectionResult> DataCollectionResult { get; set; }
         public virtual DbSet<Level01> Level01 { get; set; }
@@ -40,5 +39,6 @@ namespace Dominio
         public virtual DbSet<Level3> Level3 { get; set; }
         public virtual DbSet<teste> teste { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
+        public virtual DbSet<Coleta> Coleta { get; set; }
     }
 }
