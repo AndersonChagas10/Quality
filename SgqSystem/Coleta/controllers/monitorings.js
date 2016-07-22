@@ -32,22 +32,22 @@ $(function() {
 			break;
 	}
 
-    $('.monitoramento-item').children('.row').children('.defects').text('0')
+    $('.Level2-item').children('.row').children('.defects').text('0')
 
-    $.each($('.monitoramento-item'), function(e, d){
+    $.each($('.Level2-item'), function(e, d){
 
-        $.get(urlTarefa, { indicadorId: indicatorId, idMonitoramento: $(d).attr("Id"), dateInit: yyyymmdd, dateEnd: yyyymmdd}, function (r) { 
+        $.get(urlLevel3, { indicadorId: indicatorId, idLevel2: $(d).attr("Id"), dateInit: yyyymmdd, dateEnd: yyyymmdd}, function (r) { 
  
-                $.each($('.monitoramento-item'), function(e, d){
+                $.each($('.Level2-item'), function(e, d){
                     storage.setItem("defects_"+indicatorId+"_"+d.id, 0);
-                    var totalDoMonitoramento = 0;
+                    var totalDoLevel2 = 0;
                     
                     $.each(r.Retorno,function(a,b){ 
-                        if(b.Id_Monitoramento == d.id){
-                            totalDoMonitoramento += b.NotConform;
+                        if(b.Id_Level2 == d.id){
+                            totalDoLevel2 += b.NotConform;
                             
-                            $('#'+b.Id_Monitoramento).children('.row').children('.defects').text(totalDoMonitoramento.toString())
-                            var defects = storage.setItem("defects_"+indicatorId+"_"+d.id, totalDoMonitoramento);
+                            $('#'+b.Id_Level2).children('.row').children('.defects').text(totalDoLevel2.toString())
+                            var defects = storage.setItem("defects_"+indicatorId+"_"+d.id, totalDoLevel2);
                         }
                     });
                     
@@ -66,16 +66,16 @@ $(function() {
     //pegar menores avaliacoes e zera defects
     //fazer a conta do total defects
 
-    $.get(urlNcMonitoramento , { idIndicador: indicatorId, dateInit: yyyymmdd, dateEnd: yyyymmdd}, function(r){
+    $.get(urlNcLevel2 , { idIndicador: indicatorId, dateInit: yyyymmdd, dateEnd: yyyymmdd}, function(r){
 
   //  var totalDefects = 0;
 
-    $('.monitoramento-item').children('.row').children('.inspections').children('.actualInspection').text('0')
-    $.each($('.monitoramento-item'), function(e, d){
+    $('.Level2-item').children('.row').children('.inspections').children('.actualInspection').text('0')
+    $.each($('.Level2-item'), function(e, d){
             storage.setItem("inspections_"+indicatorId+"_"+d.id, '0/10');
             $.each(r.Retorno,function(a,b){ 
 
-                if(b.Id_Monitoramento == d.id){
+                if(b.Id_Level2 == d.id){
                   
                     /*
                     if(b.Evaluate >= maior){
@@ -87,18 +87,18 @@ $(function() {
                     }
                     */
 
-                    $('#'+b.Id_Monitoramento).children('.row').children('.inspections').children('.actualInspection').text((b.Evaluate%10)).attr('atInsp', b.Evaluate%10)
-                    storage.setItem("inspections_"+indicatorId+"_"+b.Id_Monitoramento, (b.Evaluate%10)+'/10');
+                    $('#'+b.Id_Level2).children('.row').children('.inspections').children('.actualInspection').text((b.Evaluate%10)).attr('atInsp', b.Evaluate%10)
+                    storage.setItem("inspections_"+indicatorId+"_"+b.Id_Level2, (b.Evaluate%10)+'/10');
                 }
             });
         });
         
         /*
-        $('.actualInspection[atinsp="' + maior +  '"]').parents('.monitoramento-item').addClass('disabled')
-        $('.actualInspection[atinsp="' + menor +  '"]').parents('.monitoramento-item').children('.row').children('.defects').text('0');
-        if($('.actualInspection[atinsp="' + maior +  '"]').length == $('.monitoramento-item').length )
+        $('.actualInspection[atinsp="' + maior +  '"]').parents('.Level2-item').addClass('disabled')
+        $('.actualInspection[atinsp="' + menor +  '"]').parents('.Level2-item').children('.row').children('.defects').text('0');
+        if($('.actualInspection[atinsp="' + maior +  '"]').length == $('.Level2-item').length )
         {
-            $('.actualInspection[atinsp="' + maior +  '"]').parents('.monitoramento-item').removeClass('disabled');
+            $('.actualInspection[atinsp="' + maior +  '"]').parents('.Level2-item').removeClass('disabled');
         }
         */
 
@@ -114,16 +114,16 @@ $(function() {
      
 
 
-    // var url =  "/SGQDevInterno/api/RelatorioBetaApi/GetNcPorMonitoramentoJelsafa"
+    // var url =  "/SGQDevInterno/api/RelatorioBetaApi/GetNcPorLevel2Jelsafa"
     // $.get(url , { idIndicador: 3, dateInit: '20160712', dateEnd: '20160712'}, function(r){
 
-    // $('.monitoramento-item').children('.row').children('.inspections').text('0/10')
-    // $.each($('.monitoramento-item'), function(e, d){
+    // $('.Level2-item').children('.row').children('.inspections').text('0/10')
+    // $.each($('.Level2-item'), function(e, d){
 
     //         $.each(r.Retorno,function(a,b){ 
 
-    //             if(b.Id_Monitoramento == d.id)
-    //                 $('#'+b.Id_Monitoramento).children('.row').children('.inspections').text(b.Evaluate.toString()+'/10')
+    //             if(b.Id_Level2 == d.id)
+    //                 $('#'+b.Id_Level2).children('.row').children('.inspections').text(b.Evaluate.toString()+'/10')
     //         });
     //     });
     // });
@@ -172,8 +172,8 @@ function getCurrentMonitorings(monitorings){
 
 function getNotConformMonitorings(){
     
-    $.get(urlMonitoramento, { idIndicador: 3, dateInit: '20160712', dateEnd: '20160712' }, function (Monitoramentos) { 
-        ms = Monitoramentos.Retorno;
+    $.get(urlLevel2, { idIndicador: 3, dateInit: '20160712', dateEnd: '20160712' }, function (Level2s) { 
+        ms = Level2s.Retorno;
     });
 }
 

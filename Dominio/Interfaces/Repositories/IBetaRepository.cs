@@ -9,12 +9,12 @@ namespace Dominio.Interfaces.Repositories
 {
     public interface IBetaRepository
     {
-        void Salvar(ResultOld r);
-        void SalvarLista(List<ResultOld> list);
-        List<ResultOld> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd);
-        List<ResultOld> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd);
-        List<ResultOld> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd);
-        List<ResultOld> GetNcPorMonitoramentoJelsafa(int indicadorId, string dateInit, string dateEnd);
-        void ValidaFkResultado(ResultOld r);
+        void Salvar(Coleta r);
+        void SalvarLista(List<Coleta> list);
+        List<Coleta> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd);
+        List<Coleta> GetNcPorLevel2(int indicadorId, string dateInit, string dateEnd);
+        List<Coleta> GetNcPorLevel3(int indicadorId, int Level2Id, string dateInit, string dateEnd);
+        List<Coleta> GetNcPorLevel2Jelsafa(int indicadorId, string dateInit, string dateEnd);
+        void ValidaFkResultado(Coleta r);
     }
 }

@@ -35,7 +35,7 @@ namespace SgqSystem.Mappers
             #endregion
 
             //Modo 3 (preferencial)
-            #region ResultOld
+            #region Coleta
 
             /**
              * Para evitar ausencia de auto mapper.
@@ -43,24 +43,24 @@ namespace SgqSystem.Mappers
              * podemos criar o auto mapper profile para todas as possiblidades disponíveis, 
              * independente de usarmos ela neste momento ou não.
              * */
-            //ResultOld para >>> ResultOldViewModel, ResultOldDTO
-            CreateMap<GenericReturn<ResultOld>, GenericReturnViewModel<ResultOldViewModel>>();
-            CreateMap<ResultOld, ResultOldViewModel>();
-            CreateMap<GenericReturn<ResultOld>, GenericReturnViewModel<ResultOldDTO>>();
-            CreateMap<ResultOld, ResultOldDTO>(); 
+            //Coleta para >>> ColetaViewModel, ColetaDTO
+            CreateMap<GenericReturn<Coleta>, GenericReturnViewModel<ColetaViewModel>>();
+            CreateMap<Coleta, ColetaViewModel>();
+            CreateMap<GenericReturn<Coleta>, GenericReturnViewModel<ColetaDTO>>();
+            CreateMap<Coleta, ColetaDTO>(); 
 
-            //ResultOldViewModel para >>> ResultOld, ResultOldDTO
-            CreateMap<GenericReturn<ResultOldViewModel>, GenericReturnViewModel<ResultOld>>();
-            CreateMap<ResultOldViewModel, ResultOld>(); 
-            CreateMap<GenericReturn<ResultOldViewModel>, GenericReturnViewModel<ResultOldDTO>>();
-            CreateMap<ResultOldViewModel, ResultOldDTO>(); 
+            //ColetaViewModel para >>> Coleta, ColetaDTO
+            CreateMap<GenericReturn<ColetaViewModel>, GenericReturnViewModel<Coleta>>();
+            CreateMap<ColetaViewModel, Coleta>(); 
+            CreateMap<GenericReturn<ColetaViewModel>, GenericReturnViewModel<ColetaDTO>>();
+            CreateMap<ColetaViewModel, ColetaDTO>(); 
 
-            //ResultOldDTO para >>> ResultOldViewModel, ResultOld
-            CreateMap<GenericReturn<ResultOldDTO>, GenericReturnViewModel<ResultOldViewModel>>();
-            CreateMap<GenericReturn<List<ResultOldDTO>>, GenericReturnViewModel<List<ResultOldViewModel>>>();
-            CreateMap<ResultOldDTO, ResultOldViewModel>(); 
-            CreateMap<GenericReturn<ResultOldDTO>, GenericReturnViewModel<ResultOld>>();
-            CreateMap<ResultOldDTO, ResultOld>(); 
+            //ColetaDTO para >>> ColetaViewModel, Coleta
+            CreateMap<GenericReturn<ColetaDTO>, GenericReturnViewModel<ColetaViewModel>>();
+            CreateMap<GenericReturn<List<ColetaDTO>>, GenericReturnViewModel<List<ColetaViewModel>>>();
+            CreateMap<ColetaDTO, ColetaViewModel>(); 
+            CreateMap<GenericReturn<ColetaDTO>, GenericReturnViewModel<Coleta>>();
+            CreateMap<ColetaDTO, Coleta>(); 
 
             #endregion
         }

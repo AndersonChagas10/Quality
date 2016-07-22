@@ -5,6 +5,6 @@ const urlSaveResultList = host+'../api/Result/SalvarLista';
 const urlSaveResult = host+'../api/Result/Salvar';
 
 const urlIndicador = host+"../api/RelatorioBetaApi/GetNcPorIndicador";
-const urlMonitoramento = host+"../api/RelatorioBetaApi/GetNcPorMonitoramento";
-const urlTarefa = host+"../api/RelatorioBetaApi/GetNcPorTarefa";
-const urlNcMonitoramento = host+"../api/RelatorioBetaApi/GetNcPorMonitoramentoJelsafa";
+const urlLevel2 = host+"../api/RelatorioBetaApi/GetNcPorLevel2";
+const urlLevel3 = host+"../api/RelatorioBetaApi/GetNcPorLevel3";
+const urlNcLevel2 = host+"../api/RelatorioBetaApi/GetNcPorLevel2Jelsafa";

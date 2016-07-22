@@ -12,11 +12,22 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class Monitoramento
+    public partial class Coleta
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public int Id_Level3 { get; set; }
+        public int Id_Level1 { get; set; }
+        public int Id_Level2 { get; set; }
+        public Nullable<decimal> Evaluate { get; set; }
+        public Nullable<decimal> NotConform { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
+        public int Reaudit { get; set; }
+        public int Auditor { get; set; }
+        public int Period { get; set; }
+        public int Cattle_Type { get; set; }
+        public int Chain_Speed { get; set; }
+        public int Lot { get; set; }
+        public int Mud_Score { get; set; }
     }
 }

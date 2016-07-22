@@ -18,12 +18,12 @@ namespace Application.AppServiceClass
 
         #region Coleta De Dados
 
-        public GenericReturn<ResultOldDTO> Salvar(ResultOldDTO r)
+        public GenericReturn<ColetaDTO> Salvar(ColetaDTO r)
         {
             return _betaService.Salvar(r);
         }
 
-        public GenericReturn<ResultOldDTO> SalvarLista(List<ResultOldDTO> list)
+        public GenericReturn<ColetaDTO> SalvarLista(List<ColetaDTO> list)
         {
             return _betaService.SalvarLista(list);
         }
@@ -32,24 +32,24 @@ namespace Application.AppServiceClass
 
         #region Busca De Dados
 
-        public GenericReturn<List<ResultOldDTO>> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd)
+        public GenericReturn<List<ColetaDTO>> GetNcPorIndicador(int indicadorId, string dateInit, string dateEnd)
         {
             return _betaService.GetNcPorIndicador(indicadorId, dateInit, dateEnd);
         }
 
-        public GenericReturn<List<ResultOldDTO>> GetNcPorMonitoramento(int indicadorId, string dateInit, string dateEnd)
+        public GenericReturn<List<ColetaDTO>> GetNcPorLevel2(int indicadorId, string dateInit, string dateEnd)
         {
-            return _betaService.GetNcPorMonitoramento(indicadorId, dateInit, dateEnd);
+            return _betaService.GetNcPorLevel2(indicadorId, dateInit, dateEnd);
         }
 
-        public GenericReturn<List<ResultOldDTO>> GetNcPorMonitoramentoJelsafa(int indicadorId, string dateInit, string dateEnd)
+        public GenericReturn<List<ColetaDTO>> GetNcPorLevel2Jelsafa(int indicadorId, string dateInit, string dateEnd)
         {
-            return _betaService.GetNcPorMonitoramentoJelsafa(indicadorId, dateInit, dateEnd);
+            return _betaService.GetNcPorLevel2Jelsafa(indicadorId, dateInit, dateEnd);
         }
 
-        public GenericReturn<List<ResultOldDTO>> GetNcPorTarefa(int indicadorId, int monitoramentoId, string dateInit, string dateEnd)
+        public GenericReturn<List<ColetaDTO>> GetNcPorLevel3(int indicadorId, int Level2Id, string dateInit, string dateEnd)
         {
-            return _betaService.GetNcPorTarefa(indicadorId, monitoramentoId, dateInit, dateEnd);
+            return _betaService.GetNcPorLevel3(indicadorId, Level2Id, dateInit, dateEnd);
         }
 
         #endregion

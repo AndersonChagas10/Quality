@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace SgqSystem.ViewModels
 {
-    public class ResultOldViewModel : ResultOldDTO
+    public class ColetaViewModel : ColetaDTO
     {
-        //public ResultOldDTO resultado { get; set; }
-        public List<ResultOldDTO> listaResultado { get; set; }
+        //public ColetaDTO resultado { get; set; }
+        public List<ColetaDTO> listaResultado { get; set; }
       
     }
 }

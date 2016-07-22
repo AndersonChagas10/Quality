@@ -15,6 +15,26 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <EntityType Name="Coleta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Level3" Type="int" Nullable="false" />
+          <Property Name="Id_Level1" Type="int" Nullable="false" />
+          <Property Name="Id_Level2" Type="int" Nullable="false" />
+          <Property Name="Evaluate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="NotConform" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="AddDate" Type="datetime" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime" />
+          <Property Name="Reaudit" Type="int" Nullable="false" />
+          <Property Name="Auditor" Type="int" Nullable="false" />
+          <Property Name="Period" Type="int" Nullable="false" />
+          <Property Name="Cattle_Type" Type="int" Nullable="false" />
+          <Property Name="Chain_Speed" Type="int" Nullable="false" />
+          <Property Name="Lot" Type="int" Nullable="false" />
+          <Property Name="Mud_Score" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="DataCollection">
           <Key>
             <PropertyRef Name="Id" />
@@ -159,7 +179,7 @@
           <Property Name="TotalNotConformSharedWeight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
           <Property Name="Shared" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="Monitoramento">
+        <EntityType Name="Level1">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -168,7 +188,7 @@
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="Operacao">
+        <EntityType Name="Level2">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -177,25 +197,7 @@
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="ResultOld">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Id_Tarefa" Type="int" Nullable="false" />
-          <Property Name="Id_Operacao" Type="int" Nullable="false" />
-          <Property Name="Id_Monitoramento" Type="int" Nullable="false" />
-          <Property Name="Evaluate" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="NotConform" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="AddDate" Type="datetime" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime" />
-          <Property Name="numero1" Type="int" Nullable="false" />
-          <Property Name="numero2" Type="int" Nullable="false" />
-          <Property Name="Reaudit" Type="int" Nullable="false" />
-          <Property Name="Auditor" Type="int" Nullable="false" />
-          <Property Name="Period" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Tarefa">
+        <EntityType Name="Level3">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -321,6 +323,7 @@
         </Association>
         <EntityContainer Name="SgqDbModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Coleta" EntityType="Self.Coleta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DataCollection" EntityType="Self.DataCollection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DataCollectionResult" EntityType="Self.DataCollectionResult" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level01" EntityType="Self.Level01" Schema="dbo" store:Type="Tables" />
@@ -329,10 +332,9 @@
           <EntitySet Name="Level02Consolidation" EntityType="Self.Level02Consolidation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level03" EntityType="Self.Level03" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level03Consolidation" EntityType="Self.Level03Consolidation" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Monitoramento" EntityType="Self.Monitoramento" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Operacao" EntityType="Self.Operacao" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ResultOld" EntityType="Self.ResultOld" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Tarefa" EntityType="Self.Tarefa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Level1" EntityType="Self.Level1" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Level2" EntityType="Self.Level2" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Level3" EntityType="Self.Level3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="teste" EntityType="Self.teste" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSgq" EntityType="Self.UserSgq" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_DataCollection_Level02Consolidation" Association="Self.FK_DataCollection_Level02Consolidation">
@@ -374,6 +376,7 @@
       <Schema Namespace="SgqDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SgqDbDevEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="SgqDbModel.C__MigrationHistory" />
+          <EntitySet Name="Coleta" EntityType="SgqDbModel.Coleta" />
           <EntitySet Name="DataCollection" EntityType="SgqDbModel.DataCollection" />
           <EntitySet Name="DataCollectionResult" EntityType="SgqDbModel.DataCollectionResult" />
           <EntitySet Name="Level01" EntityType="SgqDbModel.Level01" />
@@ -382,10 +385,9 @@
           <EntitySet Name="Level02Consolidation" EntityType="SgqDbModel.Level02Consolidation" />
           <EntitySet Name="Level03" EntityType="SgqDbModel.Level03" />
           <EntitySet Name="Level03Consolidation" EntityType="SgqDbModel.Level03Consolidation" />
-          <EntitySet Name="Monitoramento" EntityType="SgqDbModel.Monitoramento" />
-          <EntitySet Name="Operacao" EntityType="SgqDbModel.Operacao" />
-          <EntitySet Name="ResultOld" EntityType="SgqDbModel.ResultOld" />
-          <EntitySet Name="Tarefa" EntityType="SgqDbModel.Tarefa" />
+          <EntitySet Name="Level1" EntityType="SgqDbModel.Level1" />
+          <EntitySet Name="Level2" EntityType="SgqDbModel.Level2" />
+          <EntitySet Name="Level3" EntityType="SgqDbModel.Level3" />
           <EntitySet Name="teste" EntityType="SgqDbModel.teste" />
           <EntitySet Name="UserSgq" EntityType="SgqDbModel.UserSgq" />
           <AssociationSet Name="FK_DataCollection_Level02Consolidation" Association="SgqDbModel.FK_DataCollection_Level02Consolidation">
@@ -430,6 +432,26 @@
           <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Coleta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Level3" Type="Int32" Nullable="false" />
+          <Property Name="Id_Level1" Type="Int32" Nullable="false" />
+          <Property Name="Id_Level2" Type="Int32" Nullable="false" />
+          <Property Name="Evaluate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NotConform" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="Reaudit" Type="Int32" Nullable="false" />
+          <Property Name="Auditor" Type="Int32" Nullable="false" />
+          <Property Name="Period" Type="Int32" Nullable="false" />
+          <Property Name="Cattle_Type" Type="Int32" Nullable="false" />
+          <Property Name="Chain_Speed" Type="Int32" Nullable="false" />
+          <Property Name="Lot" Type="Int32" Nullable="false" />
+          <Property Name="Mud_Score" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="DataCollection">
           <Key>
@@ -591,7 +613,7 @@
           <NavigationProperty Name="Level02Consolidation" Relationship="SgqDbModel.FK_Level03Consolidation_Level02Consolidation" FromRole="Level03Consolidation" ToRole="Level02Consolidation" />
           <NavigationProperty Name="Level03" Relationship="SgqDbModel.FK_Level03Consolidation_Level03" FromRole="Level03Consolidation" ToRole="Level03" />
         </EntityType>
-        <EntityType Name="Monitoramento">
+        <EntityType Name="Level1">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -600,7 +622,7 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="Operacao">
+        <EntityType Name="Level2">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -609,25 +631,7 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="ResultOld">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Id_Tarefa" Type="Int32" Nullable="false" />
-          <Property Name="Id_Operacao" Type="Int32" Nullable="false" />
-          <Property Name="Id_Monitoramento" Type="Int32" Nullable="false" />
-          <Property Name="Evaluate" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="NotConform" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="numero1" Type="Int32" Nullable="false" />
-          <Property Name="numero2" Type="Int32" Nullable="false" />
-          <Property Name="Reaudit" Type="Int32" Nullable="false" />
-          <Property Name="Auditor" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Tarefa">
+        <EntityType Name="Level3">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -764,6 +768,27 @@
                 <ScalarProperty Name="Model" ColumnName="Model" />
                 <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
                 <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Coleta">
+            <EntityTypeMapping TypeName="SgqDbModel.Coleta">
+              <MappingFragment StoreEntitySet="Coleta">
+                <ScalarProperty Name="Mud_Score" ColumnName="Mud_Score" />
+                <ScalarProperty Name="Lot" ColumnName="Lot" />
+                <ScalarProperty Name="Chain_Speed" ColumnName="Chain_Speed" />
+                <ScalarProperty Name="Cattle_Type" ColumnName="Cattle_Type" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
+                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="NotConform" ColumnName="NotConform" />
+                <ScalarProperty Name="Evaluate" ColumnName="Evaluate" />
+                <ScalarProperty Name="Id_Level2" ColumnName="Id_Level2" />
+                <ScalarProperty Name="Id_Level1" ColumnName="Id_Level1" />
+                <ScalarProperty Name="Id_Level3" ColumnName="Id_Level3" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -919,9 +944,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Monitoramento">
-            <EntityTypeMapping TypeName="SgqDbModel.Monitoramento">
-              <MappingFragment StoreEntitySet="Monitoramento">
+          <EntitySetMapping Name="Level1">
+            <EntityTypeMapping TypeName="SgqDbModel.Level1">
+              <MappingFragment StoreEntitySet="Level1">
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -929,9 +954,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Operacao">
-            <EntityTypeMapping TypeName="SgqDbModel.Operacao">
-              <MappingFragment StoreEntitySet="Operacao">
+          <EntitySetMapping Name="Level2">
+            <EntityTypeMapping TypeName="SgqDbModel.Level2">
+              <MappingFragment StoreEntitySet="Level2">
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -939,28 +964,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ResultOld">
-            <EntityTypeMapping TypeName="SgqDbModel.ResultOld">
-              <MappingFragment StoreEntitySet="ResultOld">
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="numero2" ColumnName="numero2" />
-                <ScalarProperty Name="numero1" ColumnName="numero1" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="NotConform" ColumnName="NotConform" />
-                <ScalarProperty Name="Evaluate" ColumnName="Evaluate" />
-                <ScalarProperty Name="Id_Monitoramento" ColumnName="Id_Monitoramento" />
-                <ScalarProperty Name="Id_Operacao" ColumnName="Id_Operacao" />
-                <ScalarProperty Name="Id_Tarefa" ColumnName="Id_Tarefa" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Tarefa">
-            <EntityTypeMapping TypeName="SgqDbModel.Tarefa">
-              <MappingFragment StoreEntitySet="Tarefa">
+          <EntitySetMapping Name="Level3">
+            <EntityTypeMapping TypeName="SgqDbModel.Level3">
+              <MappingFragment StoreEntitySet="Level3">
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

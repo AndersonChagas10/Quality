@@ -20,9 +20,9 @@ namespace SgqSystem.Controllers
                             "<!--cabecalho do indicador-->" +
                             "<div class='level01Head head fontSize24 bgColorHead'>Carcass Contamination</div>" +
                             "<div class='level02Head painel bgColorPainel fontSize24'>Painel</div>" +
-                            "<!--lista dos monitoramentos do indicador-->" +
+                            "<!--lista dos Level2s do indicador-->" +
                             "<div class='level02List' level01ID='3'>" +
-                            "<!--monitoramento-->" +
+                            "<!--Level2-->" +
                             "<div id = '22' class='level02 cursorPointer fontSize28'>" +
                             "<div class='row'>" +
                             "<div class='col-md-7 col-xs-7 level02Name hover01'>Area 01</div>" +

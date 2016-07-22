@@ -23,17 +23,17 @@ namespace SgqSystem.Controllers.Api
         #region Coleta de Dados
 
         [Route("api/Result/Salvar")]
-        public GenericReturnViewModel<ResultOldViewModel> Post([FromBody] ResultOldViewModel data)
+        public GenericReturnViewModel<ColetaViewModel> Post([FromBody] ColetaViewModel data)
         {
             var queryResult = _betaAppService.Salvar(data);
-            return Mapper.Map<GenericReturn<ResultOldDTO>, GenericReturnViewModel<ResultOldViewModel>>(queryResult);
+            return Mapper.Map<GenericReturn<ColetaDTO>, GenericReturnViewModel<ColetaViewModel>>(queryResult);
         }
 
         [Route("api/Result/SalvarLista")]
-        public GenericReturnViewModel<ResultOldViewModel> SalvarLista([FromBody] ResultOldViewModel data)
+        public GenericReturnViewModel<ColetaViewModel> SalvarLista([FromBody] ColetaViewModel data)
         {
             var queryResult = _betaAppService.SalvarLista(data.listaResultado);
-            return Mapper.Map<GenericReturn<ResultOldDTO>, GenericReturnViewModel<ResultOldViewModel>>(queryResult);
+            return Mapper.Map<GenericReturn<ColetaDTO>, GenericReturnViewModel<ColetaViewModel>>(queryResult);
         }
 
         #endregion
@@ -41,34 +41,75 @@ namespace SgqSystem.Controllers.Api
         #region Retorno de Dados
 
         [Route("api/RelatorioBetaApi/GetNcPorIndicador")]
-        public GenericReturnViewModel<List<ResultOldViewModel>> GetNcPorIndicador(int idIndicador, string dateInit, string dateEnd)
+        public GenericReturnViewModel<List<ColetaViewModel>> GetNcPorIndicador(int idIndicador, string dateInit, string dateEnd)
         {
             var queryResult = _betaAppService.GetNcPorIndicador(idIndicador, dateInit, dateEnd);
-            return  Mapper.Map<GenericReturn<List<ResultOldDTO>>, GenericReturnViewModel<List<ResultOldViewModel>>>(queryResult);
+            return  Mapper.Map<GenericReturn<List<ColetaDTO>>, GenericReturnViewModel<List<ColetaViewModel>>>(queryResult);
         }
 
-        [Route("api/RelatorioBetaApi/GetNcPorMonitoramento")]
-        public GenericReturnViewModel<List<ResultOldViewModel>> GetNcPorMonitoramento(int idIndicador, string dateInit, string dateEnd)
+        [Route("api/RelatorioBetaApi/GetNcPorLevel2")]
+        public GenericReturnViewModel<List<ColetaViewModel>> GetNcPorLevel2(int idIndicador, string dateInit, string dateEnd)
         {
-            var queryResult = _betaAppService.GetNcPorMonitoramento(idIndicador, dateInit, dateEnd);
-            return Mapper.Map<GenericReturn<List<ResultOldDTO>>, GenericReturnViewModel<List<ResultOldViewModel>>>(queryResult);
+            var queryResult = _betaAppService.GetNcPorLevel2(idIndicador, dateInit, dateEnd);
+            return Mapper.Map<GenericReturn<List<ColetaDTO>>, GenericReturnViewModel<List<ColetaViewModel>>>(queryResult);
         }
 
-        [Route("api/RelatorioBetaApi/GetNcPorMonitoramentoJelsafa")]
-        public GenericReturnViewModel<List<ResultOldViewModel>> GetNcPorMonitoramentoJelsafa(int idIndicador, string dateInit, string dateEnd)
+        [Route("api/RelatorioBetaApi/GetNcPorLevel2Jelsafa")]
+        public GenericReturnViewModel<List<ColetaViewModel>> GetNcPorLevel2Jelsafa(int idIndicador, string dateInit, string dateEnd)
         {
-            var queryResult = _betaAppService.GetNcPorMonitoramentoJelsafa(idIndicador, dateInit, dateEnd);
-            return Mapper.Map<GenericReturn<List<ResultOldDTO>>, GenericReturnViewModel<List<ResultOldViewModel>>>(queryResult);
+            var queryResult = _betaAppService.GetNcPorLevel2Jelsafa(idIndicador, dateInit, dateEnd);
+            return Mapper.Map<GenericReturn<List<ColetaDTO>>, GenericReturnViewModel<List<ColetaViewModel>>>(queryResult);
         }
 
-        [Route("api/RelatorioBetaApi/GetNcPorTarefa")]
-        public GenericReturnViewModel<List<ResultOldViewModel>> GetNcPorTarefa(int indicadorId, int idMonitoramento, string dateInit, string dateEnd)
+        [Route("api/RelatorioBetaApi/GetNcPorLevel3")]
+        public GenericReturnViewModel<List<ColetaViewModel>> GetNcPorLevel3(int indicadorId, int idLevel2, string dateInit, string dateEnd)
         {
-            var queryResult = _betaAppService.GetNcPorTarefa(indicadorId, idMonitoramento, dateInit, dateEnd);
-            return Mapper.Map<GenericReturn<List<ResultOldDTO>>, GenericReturnViewModel<List<ResultOldViewModel>>>(queryResult);
+            var queryResult = _betaAppService.GetNcPorLevel3(indicadorId, idLevel2, dateInit, dateEnd);
+            return Mapper.Map<GenericReturn<List<ColetaDTO>>, GenericReturnViewModel<List<ColetaViewModel>>>(queryResult);
         }
 
         #endregion
 
+        #region Retorno de dados, Tabelas Level1, 2 e 3
+
+        //[Route("api/RelatorioBetaApi/GetNcPorIndicador")]
+        //public GenericReturnViewModel<List<ColetaViewModel>> GetDadosLevel1(int idIndicador, string dateInit, string dateEnd)
+        //{
+        //    var queryResult = _betaAppService.GetDadosLevel1();
+        //}
+
+
+        //[Route("api/RelatorioBetaApi/GetDadosLevel2")]
+        //public GenericReturnViewModel<List<ColetaViewModel>> GetDadosLevel2(int idIndicador, string dateInit, string dateEnd)
+        //{
+        //    var queryResult = _betaAppService.GetDadosLevel2();
+        //}
+
+
+        //[Route("api/RelatorioBetaApi/GetDadosLevel3")]
+        //public GenericReturnViewModel<List<ColetaViewModel>> GetDadosLevel3(int idIndicador, string dateInit, string dateEnd)
+        //{
+        //    var queryResult = _betaAppService.GetDadosLevel3();
+        //}
+
+        #endregion
+
+        #region Recebe Dados para Syncronizar o banco de dados
+
+        //public GenericReturnViewModel<List<ColetaViewModel>> GetDadosLevel1(int idIndicador, string dateInit, string dateEnd)
+        //{
+        //    var queryResult = _betaAppService.GetDadosLevel1();
+        //}
+
+        #endregion
+
+        #region Envia Dados Para Syncronizar a plataforma remota
+
+        //public GenericReturnViewModel<List<ColetaViewModel>> GetDadosLevel1(int idIndicador, string dateInit, string dateEnd)
+        //{
+        //    var queryResult = _betaAppService.GetDadosLevel1();
+        //}
+
+        #endregion
     }
 }

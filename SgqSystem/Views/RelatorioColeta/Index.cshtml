@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Dominio.Entities.ResultOld>
+﻿@model IEnumerable<Dominio.Entities.Coleta>
 @using GridMvc.Html
 @{
     ViewBag.Title = "Audit Reports";
@@ -12,9 +12,9 @@
 @Html.Grid(Model).Columns(columns =>
 {
     //columns.Add(c => c.Id).Titled("Id Resultado").Filterable(true);
-    columns.Add(c => c.Operacao).Titled("Audit").Filterable(true);
-    columns.Add(c => c.Monitoramento).Titled("Monitoring").Filterable(true);
-    columns.Add(c => c.Tarefa).Titled("Task").Filterable(true);
+    columns.Add(c => c.Level1).Titled("Audit").Filterable(true);
+    columns.Add(c => c.Level2).Titled("Monitoring").Filterable(true);
+    columns.Add(c => c.Level3).Titled("Task").Filterable(true);
     columns.Add(c => c.Evaluate).Titled("Evaluated").Filterable(true);
     columns.Add(c => c.NotConform)
         .Titled("Non Conform")

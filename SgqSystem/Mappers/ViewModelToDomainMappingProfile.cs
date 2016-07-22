@@ -28,9 +28,9 @@ namespace SgqSystem.Mappers
             #endregion
 
             //Não utiliza mais pois o model extende o DTO.
-            #region ResultOldViewModel 
+            #region ColetaViewModel 
 
-            CreateMap<ResultOldViewModel, ResultOld>();
+            CreateMap<ColetaViewModel, Coleta>();
            
 
             #endregion

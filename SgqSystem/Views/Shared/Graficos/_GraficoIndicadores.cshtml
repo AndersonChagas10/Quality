@@ -1,7 +1,7 @@
 ﻿@{
     var urlIndicadores = Url.Action("GetNcPorIndicador", "api/RelatorioBetaApi");
-    var urlMonitoramentos = Url.Action("GetNcPorMonitoramento", "api/RelatorioBetaApi");
-    var urlTarefas = Url.Action("GetNcPorTarefa", "api/RelatorioBetaApi");
+    var urlLevel2s = Url.Action("GetNcPorLevel2", "api/RelatorioBetaApi");
+    var urlLevel3s = Url.Action("GetNcPorLevel3", "api/RelatorioBetaApi");
     ViewBag.Title = "_GraficoIndicadores";
 }
 
@@ -16,11 +16,11 @@
 <script type="text/javascript">
 
     var divTemperatura = "";
-    var divMonitoramento = "";
-    var divTarefa = "";
+    var divLevel2 = "";
+    var divLevel3 = "";
     var urlIndicador = '@Html.Raw(urlIndicadores)';
-    var urlMonitoramento = '@Html.Raw(urlMonitoramentos)';
-    var urlTarefa = '@Html.Raw(urlTarefas)';
+    var urlLevel2 = '@Html.Raw(urlLevel2s)';
+    var urlLevel3 = '@Html.Raw(urlLevel3s)';
 
     var debug = {
 
@@ -54,8 +54,8 @@
                     r.Retorno.forEach(function (a, b) {
 
                         var divTendencia = "";
-                        var divMonitoramento = "";
-                        var divTarefa = [];
+                        var divLevel2 = "";
+                        var divLevel3 = [];
 
                         //Cria Panels para cada Indicador
                         var divClonada = $('#PanelFull').clone();
@@ -63,32 +63,32 @@
                         divClonada.find('.panel-body').attr('id', divClonada.find('.panel-body').attr('id') + b);
                         var idDivPanelPorIndicador = divClonada.find('.panel-body').attr('id');
                         $('#plotPrincipal').append(divClonada);
-                        divClonada.find('.panel-heading').html(a.Operacao);
+                        divClonada.find('.panel-heading').html(a.Level1);
                         // Fim Cria Panels para cada Indicador
 
                         //Chart 2
                         try {
-                            divMonitoramento = DivManager.criaDiv(idDivPanelPorIndicador, b, "monitoramento");
-                            $("#" + divMonitoramento).empty().html('loading').show();
-                            $.get(urlMonitoramento, { idIndicador: a.Id_Operacao, dateInit: dt1, dateEnd: dt2 }, function (Monitoramentos) {
-                                $("#" + divMonitoramento).empty();
-                                _GraficoIndicadoresJsControl.CriaGraficoMonitoramento(divMonitoramento, a.Operacao, Monitoramentos.Retorno);
+                            divLevel2 = DivManager.criaDiv(idDivPanelPorIndicador, b, "Level2");
+                            $("#" + divLevel2).empty().html('loading').show();
+                            $.get(urlLevel2, { idIndicador: a.Id_Level1, dateInit: dt1, dateEnd: dt2 }, function (Level2s) {
+                                $("#" + divLevel2).empty();
+                                _GraficoIndicadoresJsControl.CriaGraficoLevel2(divLevel2, a.Level1, Level2s.Retorno);
 
                                 //Chart 3
-                                Monitoramentos.Retorno.forEach(function (c, d) {
-                                    divTarefa.push(DivManager.criaDiv(idDivPanelPorIndicador, b + d, "tarefaIndicador"));
-                                    $("#" + divTarefa).empty().html('loading').show();
-                                    $.get(urlTarefa, { indicadorId: a.Id_Operacao, idMonitoramento: c.Id_Monitoramento, dateInit: dt1, dateEnd: dt2 }, function (Tarefas) {
-                                        $("#" + divTarefa[d]).empty();
-                                        _GraficoIndicadoresJsControl.CriaGraficoTarefa(divTarefa[d], c.Monitoramento, Tarefas.Retorno);
+                                Level2s.Retorno.forEach(function (c, d) {
+                                    divLevel3.push(DivManager.criaDiv(idDivPanelPorIndicador, b + d, "Level3Indicador"));
+                                    $("#" + divLevel3).empty().html('loading').show();
+                                    $.get(urlLevel3, { indicadorId: a.Id_Level1, idLevel2: c.Id_Level2, dateInit: dt1, dateEnd: dt2 }, function (Level3s) {
+                                        $("#" + divLevel3[d]).empty();
+                                        _GraficoIndicadoresJsControl.CriaGraficoLevel3(divLevel3[d], c.Level2, Level3s.Retorno);
                                     });
                                 });
                                 //Fim Chart 3
 
                             });
                         } catch (err) {
-                            $("#" + divMonitoramento).empty();
-                            $("#" + divTarefa).empty();
+                            $("#" + divLevel2).empty();
+                            $("#" + divLevel3).empty();
                             alert("Cannot load one or more Charts.")
                             console.log(err);
                         }
@@ -106,7 +106,7 @@
             var serie1 = valoresFloat(obj, 'NotConform');
             var serie2 = valoresFloat(obj, 'Evaluate');
             var serie0 = calculaProcemtagem(serie1, serie2);
-            var serieX = valoresString(obj, 'Operacao');
+            var serieX = valoresString(obj, 'Level1');
 
             $('#' + idDiv).empty().highcharts({
                 chart: {
@@ -131,11 +131,11 @@
 
         },
 
-        CriaGraficoMonitoramento: function (idDiv, titulo, obj) {
+        CriaGraficoLevel2: function (idDiv, titulo, obj) {
 
             var serie1 = valoresFloat(obj, 'NotConform');
             var serie2 = valoresFloat(obj, 'Evaluate');
-            var serieX = valoresString(obj, 'Monitoramento');
+            var serieX = valoresString(obj, 'Level2');
             var serie0 = paretoCorreto(serie1, serie2);
 
             $('#' + idDiv).empty().highcharts({
@@ -161,11 +161,11 @@
 
         },
 
-        CriaGraficoTarefa: function (idDiv, titulo, obj) {
+        CriaGraficoLevel3: function (idDiv, titulo, obj) {
 
             var serie1 = valoresFloat(obj, 'NotConform');
             var serie2 = valoresFloat(obj, 'Evaluate');
-            var serieX = valoresString(obj, 'Tarefa');
+            var serieX = valoresString(obj, 'Level3');
             var serie0 = paretoCorreto(serie1, serie2);
 
             $('#' + idDiv).empty().highcharts({

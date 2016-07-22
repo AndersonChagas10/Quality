@@ -78,7 +78,7 @@ function lineTask(task, taskgroups) {
 					"</div>";
 			break;
         default:
-            out = '<a class="monitoramento-item list-group-item"><div class="row">Invalid indicator type</div></a>';
+            out = '<a class="Level2-item list-group-item"><div class="row">Invalid indicator type</div></a>';
     }
     return out;
 }

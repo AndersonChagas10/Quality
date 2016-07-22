@@ -8,9 +8,9 @@ namespace Data.ComplexType
 {
     public class RetornoQueryIndicadoresRelBate
     {
-        public int Id_operacao { get; set; }
-        public int Id_Monitoramento { get; set; }
-        public int Id_tarefa { get; set; }
+        public int Id_Level1 { get; set; }
+        public int Id_Level2 { get; set; }
+        public int Id_Level3 { get; set; }
         public decimal Evaluate { get; set; }
         public decimal NotConform { get; set; }
     }
