@@ -23,9 +23,9 @@ namespace SgqSystem.Controllers.Api
         public string SalvarAcaoCorretiva([FromBody]CorrectiveActionViewModel model)
         {
 
-            //var result = _correctiveActionAppService.SalvarAcaoCorretiva(model.CorrectiveAction);
+           // var result = _correctiveActionAppService.SalvarAcaoCorretiva(model.CorrectiveAction);
 
-            return "8y877y78y";
+            return "123";
         }
 
 

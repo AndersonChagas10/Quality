@@ -4,6 +4,7 @@
 /// <reference path="../coleta/components/save.js" />
 /// <reference path="../coleta/components/task.js" />
 /// <reference path="../coleta/components/taskgroup.js" />
+/// <reference path="../coleta/controllers/correctiveaction.js" />
 /// <reference path="../coleta/controllers/indicators.js" />
 /// <reference path="../coleta/controllers/login.js" />
 /// <reference path="../coleta/controllers/monitorings.js" />

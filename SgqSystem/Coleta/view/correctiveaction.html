@@ -35,8 +35,8 @@
                             </div>
                             <div class="col-xs-6">
                                 <b>Audit Information:<br /></b>
-                                Audit: Carcass Contamination Audit<br>
-                                Start Time: <span id="perior"></span><br />
+                                Audit: <span id="auditText"></span><br />
+                                Start Time: <span id="starttime"></span><br />
                                 Period: <span id="period"></span>
                             </div>
                         </div>
@@ -62,21 +62,21 @@
                    <div class="col-xs-6">
                        <div class="form-group">
                            <label>Slaughter:</label>
-                           <input type="text" class="form-control" id="exampleInputName2">
+                           <input type="text" class="form-control" id="slaughter" disabled>
                        </div>
                        <div class="form-group">
                            <label>Date/Time:</label>
-                           <input type="date" class="form-control" id="exampleInputName2">
+                           <input type="date" class="form-control" id="slaughterDatetime" disabled>
                        </div>
                    </div>
                    <div class="col-xs-6">
                        <div class="form-group">
                            <label>Techinical Services:</label>
-                           <input type="text" class="form-control" id="exampleInputName2">
+                           <input type="text" class="form-control" id="techinical" disabled>
                        </div>
                        <div class="form-group">
                            <label>Date/Time:</label>
-                           <input type="date" class="form-control" id="exampleInputName2">
+                           <input type="date" class="form-control" id="techinicalDatetime" disabled>
                        </div>
                    </div>
                 </div>
@@ -85,22 +85,36 @@
                         <div class="form-group">
                             <label>Slaughter Signature:</label><br />
                             <label>Login:</label>
-                            <input type="text" class="form-control" id="exampleInputName2">
+                            <input type="text" class="form-control" id="slaughterLogin">
                         </div>
                         <div class="form-group">
                             <label>Password:</label>
-                            <input type="password" class="form-control" id="exampleInputName2">
+                            <input type="password" class="form-control" id="slaughterPassword">
+                        </div>
+                        <div class="form-group">
+                            <input type="button" class="btn btn-primary btn-lg" id="btnSlaughterLogin" onclick="AcaoCorretiva.logarUsuarioSlaughter();" value="Verify Login">
                         </div>
                     </div>
                     <div class="col-xs-6">
                         <div class="form-group">
                             <label>Techinical Services Signature:</label><br />
                             <label>Login:</label>
-                            <input type="text" class="form-control" id="exampleInputName2">
+                            <input type="text" class="form-control" id="techinicalLogin">
                         </div>
                         <div class="form-group">
                             <label>Password:</label>
-                            <input type="password" class="form-control" id="exampleInputName2">
+                            <input type="password" class="form-control" id="techinicalPassword">
+                        </div>
+                        <div class="form-group">
+                            <input type="button" class="btn btn-primary btn-lg" id="btnTechinicalLogin" onclick="AcaoCorretiva.logarUsuarioTechnical();" value="Verify Login">
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <input type="button" class="btn btn-primary btn-lg" id="btnSendCorrectiveAction" onclick="AcaoCorretiva.enviarAcaoCorretiva();" value="Send">
                         </div>
                     </div>
                 </div>
