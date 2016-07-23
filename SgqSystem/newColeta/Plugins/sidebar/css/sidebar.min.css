@@ -1,0 +1,64 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+* {
+  margin: 0;
+  padding: 0
+}
+
+.control-sidebar{
+	text-color: #0000;
+}
+
+.main {
+  margin: 0 auto;
+  text-align: center
+}
+
+.sidebar {
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 9990;
+  background: #ffffff;
+  color:#fff;
+  box-sizing: border-box;
+  box-shadow: 10px 0 30px rgba(0,0,0,0.15);
+  transform: translateX(-120%);
+  transition: all 0.3s cubic-bezier(0.35, 0.38, 0.07, 0.83);
+  overflow: auto
+}
+
+.sidebar .close .btn-close {
+  float: right;
+  text-color: #000;
+}
+
+.sidebar .close::after {
+  content: "";
+  display: block;
+  clear: both;
+  visibility: hidden
+}
+
+.sidebar.right {
+  left: initial;
+  right: 0;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+  transform: translateX(120%)
+}
+
+.sidebar.right .close .btn-close {
+	float: left ;
+}
+
+.sidebar.active { transform: translateX(0) }
+
+.sidebar .content { padding: 0px }
+
+.sidebar .content {
+  line-height: 1.5;
+  font-size: 0.875em
+}
+
+.sidebar .content ul, .sidebar .content ol { margin: 20px 0 20px 20px }/*# sourceMappingURL=sidebar.css.map */

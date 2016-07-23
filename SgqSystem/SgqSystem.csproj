@@ -401,6 +401,9 @@
     <Content Include="newColeta\Plugins\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="newColeta\Plugins\font-awesome\HELP-US-OUT.txt" />
     <Content Include="newColeta\Plugins\jquery\jquery.min.js" />
+    <Content Include="newColeta\Plugins\sidebar\css\sidebar.min.css" />
+    <Content Include="newColeta\Plugins\sidebar\js\sidebar.js" />
+    <Content Include="newColeta\Plugins\sidebar\ts\sidebar.js" />
     <Content Include="newColeta\Scripts\bootstrap.js" />
     <Content Include="newColeta\Scripts\bootstrap.min.js" />
     <Content Include="newColeta\Scripts\Methods.js" />
@@ -510,6 +513,7 @@
     <Content Include="newColeta\Plugins\font-awesome\scss\_screen-reader.scss" />
     <Content Include="newColeta\Plugins\font-awesome\scss\_stacked.scss" />
     <Content Include="newColeta\Plugins\font-awesome\scss\_variables.scss" />
+    <Content Include="newColeta\Plugins\sidebar\scss\sidebar.scss" />
     <None Include="Properties\PublishProfiles\DeployInterno.pubxml" />
     <None Include="Properties\PublishProfiles\DeploySgqInterno.pubxml" />
     <Content Include="Scripts\bootstrap.js" />

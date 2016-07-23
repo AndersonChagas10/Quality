@@ -22,7 +22,7 @@ body > .App > div.container {
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
-    height:200px;
+    height:220px;
 }
 .login > .foot
 {
@@ -35,8 +35,69 @@ body > .App > div.container {
 }
 .form-signin {
 
-    max-width: 330px;
+    max-width: 320px;
     padding: 15px;
     margin: 0 auto;
     background-color: #f8f9fd;
 }
+.painel
+{
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    min-height:45px;
+}
+.padding10
+{
+    padding:10px;
+}
+.height50
+{
+   height: 50px !important;
+
+}
+.height100
+{
+   height: 100px !important;
+}
+
+.container-full {
+  margin: 0 auto;
+  width: 100%;
+}
+.width100
+{
+    width: 100px !important;
+}
+.width200
+{
+    width: 200px !important;
+}
+.level03Group .panel-group .level03
+{
+    padding-bottom: 10px;
+}
+.level03Group .panel-group .level03
+{
+    padding-bottom: 10px;
+}
+.level03 span.response
+{
+    font-size:16px;
+}
+.marginTop10
+{
+    margin-top:10px;
+}
+.marginRight20
+{
+    margin-right:20px;
+}
+.marginRight30
+{
+    margin-right:30px;
+}
+/*#txtOthers
+{
+    width:100%;
+    border:0;
+}*/
