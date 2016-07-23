@@ -15,18 +15,21 @@ namespace Dominio.Services
         private ISyncRepository<Level2> _repoSyncLevel2;
         private ISyncRepository<Level3> _repoSyncLevel3;
         private ISyncRepository<UserSgq> _repoSyncUserSgq;
+        private ISyncRepository<CorrectiveAction> _repoSyncCorrectiveAction;
 
         public SyncService(ISyncRepository<Coleta> repoSync,
                             ISyncRepository<Level1> repoSyncLevel1,
                             ISyncRepository<Level2> repoSyncLevel2,
                             ISyncRepository<Level3> repoSyncLevel3,
-                            ISyncRepository<UserSgq> repoSyncUserSgq)
+                            ISyncRepository<UserSgq> repoSyncUserSgq,
+                            ISyncRepository<CorrectiveAction> repoSyncCorrectiveAction)
         {
             _repoSync = repoSync;
             _repoSyncLevel1 = repoSyncLevel1;
             _repoSyncLevel2 = repoSyncLevel2;
             _repoSyncLevel3 = repoSyncLevel3;
             _repoSyncUserSgq = repoSyncUserSgq;
+            _repoSyncCorrectiveAction = repoSyncCorrectiveAction;
         }
 
         public GenericReturn<SyncDTO> GetDataToSincyAudit()
@@ -38,6 +41,7 @@ namespace Dominio.Services
                 var queryParaLevel2 = _repoSyncLevel2.GetDataToSincyAudit();
                 var queryParaLevel3 = _repoSyncLevel3.GetDataToSincyAudit();
                 var queryParaUsuarios = _repoSyncUserSgq.GetDataToSincyAudit();
+                var queryParaCorrectiveAction = _repoSyncCorrectiveAction.GetDataToSincyAudit();
 
                 var retorno = new SyncDTO()
                 {
@@ -45,7 +49,8 @@ namespace Dominio.Services
                     Level1 = Mapper.Map<List<Level1>, List<Level1DTO>>(queryParaLevel1),
                     Level2 = Mapper.Map<List<Level2>, List<Level2DTO>>(queryParaLevel2),
                     Level3 = Mapper.Map<List<Level3>, List<Level3DTO>>(queryParaLevel3),
-                    UserSgq = Mapper.Map<List<UserSgq>, List<UserDTO>>(queryParaUsuarios)
+                    UserSgq = Mapper.Map<List<UserSgq>, List<UserDTO>>(queryParaUsuarios),
+                    CorrectiveAction = Mapper.Map<List<CorrectiveAction>, List<CorrectiveActionDTO>>(queryParaCorrectiveAction)
                 };
 
                 return new GenericReturn<SyncDTO>(retorno);
@@ -62,10 +67,13 @@ namespace Dominio.Services
             {
                 foreach (var i in objToSync.Coleta)
                     i.ValidaColeta();
+               
+                var coletas = Mapper.Map<List<ColetaDTO>, List<Coleta>>(objToSync.Coleta);
+                _repoSync.ValidaFkResultado(coletas);
+                _repoSync.SetDataToSincyAudit(coletas);
 
-                var coleta = Mapper.Map<List<ColetaDTO>, List<Coleta>>(objToSync.Coleta);
-                _repoSync.ValidaFkResultado(coleta);
-                _repoSync.SetDataToSincyAudit(coleta);
+                var acoesCorretivas = Mapper.Map<List<CorrectiveAction>>(objToSync.CorrectiveAction);
+                _repoSyncCorrectiveAction.SalvaListaCorrectiveAction(acoesCorretivas);
 
                 return new GenericReturn<SyncDTO>("Sucesso!!!!!!");
             }

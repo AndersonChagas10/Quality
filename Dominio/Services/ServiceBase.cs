@@ -7,7 +7,7 @@ using DTO.Helpers;
 
 namespace Dominio.Services
 {
-    public class ServiceBase<T> : IDisposable, IServiceBase<T> where T : EntityBase
+    public class ServiceBase<T> : IDisposable, IServiceBase<T> where T : class
     {
 
         private readonly IRepositoryBase<T> _repositoryBase;
@@ -28,13 +28,19 @@ namespace Dominio.Services
         {
             try
             {
-
-                _repositoryBase.Add(obj);
-                if (obj.Id > 0)
-                    return new GenericReturn<T>(AlteradoOk);
+                if (obj.GetType().GetProperty("Id") != null)
+                {
+                    _repositoryBase.Add(obj);
+                    var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
+                    if (id > 0)
+                        return new GenericReturn<T>(AlteradoOk);
+                    else
+                        return new GenericReturn<T>(inseridoOk);
+                }
                 else
-                    return new GenericReturn<T>(inseridoOk);
-
+                {
+                    throw new ExceptionHelper("Object must extend entity base.");
+                }
             }
             catch (ExceptionHelper ex)
             {
@@ -62,11 +68,19 @@ namespace Dominio.Services
         {
             try
             {
-                _repositoryBase.AddOrUpdate(obj);
-                if (obj.Id > 0)
-                    return new GenericReturn<T>(AlteradoOk);
+                if (obj.GetType().GetProperty("Id") != null)
+                {
+                    _repositoryBase.AddOrUpdate(obj);
+                    var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
+                    if (id > 0)
+                        return new GenericReturn<T>(AlteradoOk);
+                    else
+                        return new GenericReturn<T>(inseridoOk);
+                }
                 else
-                    return new GenericReturn<T>(inseridoOk);
+                {
+                    throw new ExceptionHelper("Object must extend entity base.");
+                }
             }
             catch (ExceptionHelper ex)
             {

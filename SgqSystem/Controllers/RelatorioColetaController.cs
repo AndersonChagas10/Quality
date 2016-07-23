@@ -6,35 +6,18 @@ namespace SgqSystem.Controllers
 {
     public class RelatorioColetaController : Controller
     {
-        private readonly IAppServiceBase<Coleta> _serviceAppBase;
-        private readonly IAppServiceBase<Level1> _opAppBase;
-        private readonly IAppServiceBase<Level2> _monAppBase;
-        private readonly IAppServiceBase<Level3> _tarAppBase;
 
-        public RelatorioColetaController(IAppServiceBase<Coleta> serviceAppBase,
-            IAppServiceBase<Level1> opAppBase,
-            IAppServiceBase<Level2> monAppBase,
-            IAppServiceBase<Level3> tarAppBase
-            )
+        private readonly IRelatorioColetaApp _relatorioColetaApp;
+        public RelatorioColetaController(IRelatorioColetaApp relatorioColetaApp)
         {
-            _serviceAppBase = serviceAppBase;
-            _opAppBase = opAppBase;
-            _monAppBase = monAppBase;
-            _tarAppBase = tarAppBase;
+            _relatorioColetaApp = relatorioColetaApp;
         }
+
         // GET: RelatorioColeta
         public ActionResult Index()
         {
-            var resultadosLista = _serviceAppBase.GetAll();
-
-            foreach (var i in resultadosLista)
-            {
-                //i.Level1 = _opAppBase.GetById(i.Id_Level1).Name;
-                //i.Level2 = _monAppBase.GetById(i.Id_Level2).Name;
-                //i.Level3 = _tarAppBase.GetById(i.Id_Level3).Name;
-            }
-
-            return View(resultadosLista);
+            var resultadosLista = _relatorioColetaApp.GetColetas();
+            return View(resultadosLista.Retorno);
         }
     }
 }

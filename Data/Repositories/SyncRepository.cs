@@ -3,6 +3,7 @@ using Dominio.Interfaces.Repositories;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using DTO.DTO;
 
 namespace Data.Repositories
 {
@@ -16,10 +17,25 @@ namespace Data.Repositories
             //connection.Dispose();
         }
 
-        public void SetDataToSincyAudit(List<Coleta> coleta)
+        public void SalvaListaCorrectiveAction(List<CorrectiveAction> correctiveAction)
         {
-            new RepositoryBase<Coleta>(connection).AddAll(coleta);
+            new RepositoryBase<CorrectiveAction>(connection).AddAll(correctiveAction);
         }
+
+        public void SetDataToSincyAudit(List<Coleta> coletas)
+        {
+            new RepositoryBase<Coleta>(connection).AddAll(coletas);
+        }
+
+        public void SetDataToSincyCorrectiveAction(List<CorrectiveAction> correctiveActions)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public void SetDataToSincyCorrectiveAction(List<CorrectiveAction> correctiveActions)
+        //{
+        //    new RepositoryBase<CorrectiveAction>(connection).AddAll(correctiveActions);
+        //}
 
         /// <summary>
         /// A tabela resultados não possui no momento relacionamentos externos de Foreingin Keys, foi necessário esta validação por como foi forçado relacionamento via INTEGER o banco não verifica automáticamente.

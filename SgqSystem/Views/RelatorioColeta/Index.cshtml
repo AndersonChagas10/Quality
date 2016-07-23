@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Dominio.Entities.Coleta>
+﻿@model IEnumerable<DTO.DTO.ColetaDTO>
 @using GridMvc.Html
 @{
     ViewBag.Title = "Audit Reports";
@@ -12,15 +12,19 @@
 @Html.Grid(Model).Columns(columns =>
 {
     //columns.Add(c => c.Id).Titled("Id Resultado").Filterable(true);
-    columns.Add(c => c.Level1).Titled("Audit").Filterable(true);
-    columns.Add(c => c.Level2).Titled("Monitoring").Filterable(true);
-    columns.Add(c => c.Level3).Titled("Task").Filterable(true);
+    columns.Add(c => c.Level1Name).Titled("Level1").Filterable(true);
+    columns.Add(c => c.Level2Name).Titled("Monitoring").Filterable(true);
+    columns.Add(c => c.Level3Name).Titled("Task").Filterable(true);
     columns.Add(c => c.Evaluate).Titled("Evaluated").Filterable(true);
     columns.Add(c => c.NotConform)
         .Titled("Non Conform")
         .Filterable(true)
         .SortInitialDirection(GridMvc.Sorting.GridSortDirection.Descending);
-
+    columns.Add(c => c.Reaudit).Titled("Reaudit").Filterable(true);
+    columns.Add(c => c.Period).Titled("Period").Filterable(true);
+    columns.Add(c => c.TotalDefectsLevel1).Titled("Defects Level1").Filterable(true);
+    columns.Add(c => c.TotalDefectsLevel2).Titled("Defects Level2").Filterable(true);
+    columns.Add(c => c.TotalDefectsLevel3).Titled("Defects Level3").Filterable(true);
     columns.Add(c => c.AddDate).Titled("Add Date").Filterable(true);
 
     //columns.Add()

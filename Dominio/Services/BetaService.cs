@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Dominio.Entities;
 using Dominio.Interfaces.Repositories;
 using Dominio.Interfaces.Services;
 using DTO.DTO;

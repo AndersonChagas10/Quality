@@ -1,31 +1,31 @@
 ﻿using Application.Interface;
 using AutoMapper;
-using Dominio;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
-using System.Collections.Generic;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.Api
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SyncController : ApiController
     {
-        private readonly ISyncApp _coletaAppService;
+        private readonly ISyncApp _syncApp;
 
-        public SyncController(ISyncApp coletaAppService)
+        public SyncController(ISyncApp syncApp)
         {
-            _coletaAppService = coletaAppService;
+            _syncApp = syncApp;
         }
 
         #region Envia Dados Para Syncronizar a plataforma remota
 
         [HttpPost]
         [Route("api/Sync/GetData")]
-        public GenericReturnViewModel<SyncDTO> GetDataToSincyAudit()
+        public GenericReturnViewModel<SyncViewModel> GetDataToSincyAudit()
         {
-            var queryDataToSync = _coletaAppService.GetDataToSincyAudit();
-            var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncDTO>>(queryDataToSync);
+            var queryDataToSync = _syncApp.GetDataToSincyAudit();
+            var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncViewModel>>(queryDataToSync);
             return mappedToReturn;
         }
 
@@ -35,10 +35,11 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("api/Sync/SetData")]
-        public GenericReturnViewModel<SyncDTO> SetDataToSincyAudit([FromBody] SyncDTO objToSync)
+        public GenericReturnViewModel<SyncViewModel> SetDataToSincyAudit([FromBody] SyncViewModel objToSync)
         {
-            var queryDataToSync = _coletaAppService.SetDataToSincyAudit(objToSync);
-            var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncDTO>>(queryDataToSync);
+            var queryDataToSync = _syncApp.SetDataToSincyAudit(objToSync);
+
+            var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncViewModel>>(queryDataToSync);
             return mappedToReturn;
         }
 

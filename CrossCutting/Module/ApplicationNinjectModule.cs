@@ -12,7 +12,7 @@ namespace CrossCutting.IOC.Module
             Bind<IUserAppService>().To<UserAppService>();
             Bind<IBetaAppService>().To<BetaAppService>();
             Bind<ICorrectiveActionAppService>().To<CorrectiveActionAppService>();
-
+            Bind<IRelatorioColetaApp>().To<RelatorioColetaApp>();
             Bind<ISyncApp>().To<SyncApp>();
         }
     }
