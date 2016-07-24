@@ -8,6 +8,8 @@ namespace Dominio.Interfaces.Services
 
         GenericReturn<CorrectiveActionDTO> SalvarAcaoCorretiva(CorrectiveActionDTO dto);
 
+        GenericReturn<CorrectiveActionDTO> VerificarAcaoCorretivaIncompleta(CorrectiveActionDTO dto);
+
     }
 
 }

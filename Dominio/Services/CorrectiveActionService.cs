@@ -34,5 +34,19 @@ namespace Dominio.Services
             }
         }
 
+        public GenericReturn<CorrectiveActionDTO> VerificarAcaoCorretivaIncompleta(CorrectiveActionDTO dto)
+        {
+            try
+            {
+                var entitie = Mapper.Map<CorrectiveAction>(dto);
+                entitie = _correctiveActionRepository.VerificarAcaoCorretivaIncompleta(entitie);
+                return new GenericReturn<CorrectiveActionDTO>(dto);
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<CorrectiveActionDTO>(e, falhaGeral);
+            }
+        }
+
     }
 }

@@ -23,7 +23,7 @@ namespace SgqSystem.Controllers.Api
         public string SalvarAcaoCorretiva([FromBody]CorrectiveActionViewModel model)
         {
 
-           // var result = _correctiveActionAppService.SalvarAcaoCorretiva(model.CorrectiveAction);
+            // var result = _correctiveActionAppService.SalvarAcaoCorretiva(model.CorrectiveAction);
 
             return "123";
         }
@@ -60,6 +60,17 @@ namespace SgqSystem.Controllers.Api
             return result.Retorno;
 
         }
+
+        [Route("VerificarAcaoCorretivaIncompleta")]
+        [HttpPost]
+        public CorrectiveActionDTO VerificarAcaoCorretivaIncompleta([FromBody]CorrectiveActionViewModel model)
+        {
+            var result = _correctiveActionAppService.VerificarAcaoCorretivaIncompleta(model.CorrectiveAction);
+
+            return result.Retorno;
+        }
+
+
 
     }
 }

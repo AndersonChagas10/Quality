@@ -104,4 +104,32 @@ var AcaoCorretiva = {
 
     },
 
+    verificarAcaoCorretivaIncompleta: function () {
+
+        var obj = {
+            CorrectiveAction: {
+                Auditor: storage.getItem("userId"),
+                Shift: 1,
+                AuditLevel1: storage.getItem("indicatorId"),
+                AuditLevel2: storage.getItem("indicatorId"),
+                AuditLevel3: storage.getItem("indicatorId"),
+                Period: storage.getItem("periodo")
+            }
+        };
+
+        $.ajax({
+            data: obj,
+            url: '../' + '../api/CorrectiveAction/VerificarAcaoCorretivaIncompleta',
+            type: 'POST',
+            success: function (data) {
+                alert("implementar retorno");
+                alert("implementar tratamento de erro");
+            }
+        });
+
+    },
+
 };
+
+
+AcaoCorretiva.verificarAcaoCorretivaIncompleta();

@@ -21,5 +21,10 @@ namespace Application.AppServiceClass
             return _correctiveActionService.SalvarAcaoCorretiva(dto);
         }
 
+        public GenericReturn<CorrectiveActionDTO> VerificarAcaoCorretivaIncompleta(CorrectiveActionDTO dto)
+        {
+            return _correctiveActionService.VerificarAcaoCorretivaIncompleta(dto);
+        }
+
     }
 }

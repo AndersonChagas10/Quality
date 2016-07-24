@@ -7,5 +7,7 @@ namespace Application.Interface
     {
         GenericReturn<CorrectiveActionDTO> SalvarAcaoCorretiva(CorrectiveActionDTO dto);
 
+        GenericReturn<CorrectiveActionDTO> VerificarAcaoCorretivaIncompleta(CorrectiveActionDTO dto);
+
     }
 }
