@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Runtime.Serialization;
 
 namespace DTO.DTO
@@ -41,5 +42,53 @@ namespace DTO.DTO
         public Nullable<int> Techinical { get; set; }
         [DataMember]
         public Nullable<System.DateTime> DateTimeTechinical { get; set; }
+        [DataMember]
+        public string NameTechinical { get; set; }
+        [DataMember]
+        public string NameSlaughter { get; set; }
+
+
+        [DataMember]
+        public string DateExecuteFarmatado
+        {
+            get { return DateExecute.ToString("dd/MM/yyyy hh:mm:ss"); }
+            set
+            {
+                DateExecute = DateTime.ParseExact(value.ToString(), "dd/MM/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
+            }
+        }
+        [DataMember]
+        public string StartTimeFarmatado
+        {
+            get { return StartTime.ToString("dd/MM/yyyy hh:mm:ss"); }
+            set
+            {
+                StartTime = DateTime.ParseExact(value.ToString(), "dd/MM/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
+            }
+        }
+        [DataMember]
+        public string DateTimeSlaughterFarmatado
+        {
+            get { return DateTimeSlaughter != null ? DateTimeSlaughter.Value.ToString("dd/MM/yyyy hh:mm:ss") : string.Empty; }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    DateTimeSlaughter = DateTime.ParseExact(value.ToString(), "dd/MM/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
+                }
+            }
+        }
+        [DataMember]
+        public string DateTimeTechinicalFarmatado
+        {
+            get { return DateTimeTechinical != null ? DateTimeTechinical.Value.ToString("dd/MM/yyyy hh:mm:ss") : string.Empty; }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    DateTimeTechinical = DateTime.ParseExact(value.ToString(), "dd/MM/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
+                }
+            }
+        }
     }
 }

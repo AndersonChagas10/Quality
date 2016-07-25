@@ -31,5 +31,7 @@ namespace Dominio
         public Nullable<System.DateTime> DateTimeSlaughter { get; set; }
         public Nullable<int> Techinical { get; set; }
         public Nullable<System.DateTime> DateTimeTechinical { get; set; }
+        public string NameTechinical { get; set; }
+        public string NameSlaughter { get; set; }
     }
 }
