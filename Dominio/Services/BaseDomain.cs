@@ -7,16 +7,16 @@ using DTO.Helpers;
 
 namespace Dominio.Services
 {
-    public class ServiceBase<T> : IDisposable, IServiceBase<T> where T : class
+    public class BaseDomain<T> : IDisposable, IBaseDomain<T> where T : class
     {
 
-        private readonly IRepositoryBase<T> _repositoryBase;
+        private readonly IBaseRepository<T> _repositoryBase;
         private string inseridoOk { get { return "Data successfully saved."; } }
         private string AlteradoOk { get { return "Data successfully changed."; } }
         private string NaoInserido { get { return "It was not possible to insert data."; } }
         private string emptyObj { get { return "It was not possible to insert data, object is empity."; } }
 
-        public ServiceBase(IRepositoryBase<T> repo)
+        public BaseDomain(IBaseRepository<T> repo)
         {
 
             _repositoryBase = repo;

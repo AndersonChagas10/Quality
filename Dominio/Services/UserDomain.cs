@@ -8,7 +8,7 @@ using System;
 
 namespace Dominio.Services
 {
-    public class UserService : IUserService
+    public class UserDomain : IUserDomain
     {
 
         private readonly IUserRepository _userRepo;
@@ -18,7 +18,7 @@ namespace Dominio.Services
         /// Construtor para Inversion of Control.
         /// </summary>
         /// <param name="userRepo"> Repositório de Usuario, interface de comunicação com Data. </param>
-        public UserService(IUserRepository userRepo)
+        public UserDomain(IUserRepository userRepo)
         {
             _userRepo = userRepo;
         }

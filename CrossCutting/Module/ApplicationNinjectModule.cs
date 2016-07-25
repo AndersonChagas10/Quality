@@ -8,12 +8,13 @@ namespace CrossCutting.IOC.Module
     {
         public override void Load()
         {
-            Bind(typeof(IAppServiceBase<>)).To(typeof(AppServiceBase<>));
-            Bind<IUserAppService>().To<UserAppService>();
-            Bind<IBetaAppService>().To<BetaAppService>();
+            Bind(typeof(IBaseApp<>)).To(typeof(AppServiceBase<>));
+            Bind<IUserApp>().To<UserApp>();
+            //Bind<IBetaAppService>().To<BetaAppService>();
             Bind<ICorrectiveActionAppService>().To<CorrectiveActionAppService>();
             Bind<IRelatorioColetaApp>().To<RelatorioColetaApp>();
             Bind<ISyncApp>().To<SyncApp>();
+            Bind<IColetaApp>().To<ColetaApp>();
         }
     }
 }

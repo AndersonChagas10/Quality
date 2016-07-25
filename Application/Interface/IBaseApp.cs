@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Application.Interface
 {
-    public interface IAppServiceBase<T> where T : class
+    public interface IBaseApp<T> where T : class
     {
 
         GenericReturn<T> Add(T obj);

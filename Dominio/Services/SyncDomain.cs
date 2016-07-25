@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Dominio.Services
 {
-    public class SyncService : ISyncDomain
+    public class SyncDomain : ISyncDomain
     {
         private ISyncRepository<Coleta> _repoSync;
         private ISyncRepository<Level1> _repoSyncLevel1;
@@ -17,7 +17,7 @@ namespace Dominio.Services
         private ISyncRepository<UserSgq> _repoSyncUserSgq;
         private ISyncRepository<CorrectiveAction> _repoSyncCorrectiveAction;
 
-        public SyncService(ISyncRepository<Coleta> repoSync,
+        public SyncDomain(ISyncRepository<Coleta> repoSync,
                             ISyncRepository<Level1> repoSyncLevel1,
                             ISyncRepository<Level2> repoSyncLevel2,
                             ISyncRepository<Level3> repoSyncLevel3,
@@ -61,26 +61,6 @@ namespace Dominio.Services
             }
         }
 
-        public GenericReturn<SyncDTO> SetDataToSincyAudit(SyncDTO objToSync)
-        {
-            try
-            {
-                foreach (var i in objToSync.Coleta)
-                    i.ValidaColeta();
-               
-                var coletas = Mapper.Map<List<ColetaDTO>, List<Coleta>>(objToSync.Coleta);
-                _repoSync.ValidaFkResultado(coletas);
-                _repoSync.SetDataToSincyAudit(coletas);
-
-                var acoesCorretivas = Mapper.Map<List<CorrectiveAction>>(objToSync.CorrectiveAction);
-                _repoSyncCorrectiveAction.SalvaListaCorrectiveAction(acoesCorretivas);
-
-                return new GenericReturn<SyncDTO>("Sucesso!!!!!!");
-            }
-            catch (Exception e)
-            {
-                return new GenericReturn<SyncDTO>(e, "Cannot get data to sync.");
-            }
-        }
+      
     }
 }

@@ -12,9 +12,9 @@ namespace SgqSystem.Controllers.Api
     public class UserController : ApiController
     {
 
-        private readonly IUserAppService _userAppService;
+        private readonly IUserApp _userAppService;
 
-        public UserController(IUserAppService userAppService)
+        public UserController(IUserApp userAppService)
         {
             _userAppService = userAppService;
         }

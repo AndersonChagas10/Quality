@@ -74,7 +74,7 @@ namespace SgqSystem.App_Start
             //kernel.Bind(typeof(IServiceBase<>)).To(typeof(ServiceBase<>));
             //kernel.Bind<IUserService>().To<UserService>();
 
-            //kernel.Bind(typeof(IRepositoryBase<>)).To(typeof(RepositoryBase<>));
+            //kernel.Bind(typeof(IBaseRepository<>)).To(typeof(RepositoryBase<>));
             //kernel.Bind<IUserRepository>().To<UserRepository>();
         }
     }

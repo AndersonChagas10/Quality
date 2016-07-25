@@ -8,11 +8,11 @@ namespace SgqSystem.Controllers.Api.Tests
     [TestClass()]
     public class UserControllerTests
     {
-        private readonly Mock<IUserAppService> _userApp;
+        private readonly Mock<IUserApp> _userApp;
 
         public UserControllerTests()
         {
-            _userApp = new Mock<IUserAppService>();
+            _userApp = new Mock<IUserApp>();
         }
 
         [TestMethod]

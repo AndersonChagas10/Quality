@@ -24,19 +24,7 @@ namespace SgqSystem.Controllers.Api
 
         #region Coleta de Dados SP1 BEta
 
-        [Route("api/Result/Salvar")]
-        public GenericReturnViewModel<ColetaViewModel> Post([FromBody] ColetaViewModel data)
-        {
-            var queryResult = _betaAppService.Salvar(data);
-            return Mapper.Map<GenericReturn<ColetaDTO>, GenericReturnViewModel<ColetaViewModel>>(queryResult);
-        }
-
-        [Route("api/Result/SalvarLista")]
-        public GenericReturnViewModel<ColetaViewModel> SalvarLista([FromBody] ColetaViewModel data)
-        {
-            var queryResult = _betaAppService.SalvarLista(data.listaResultado);
-            return Mapper.Map<GenericReturn<ColetaDTO>, GenericReturnViewModel<ColetaViewModel>>(queryResult);
-        }
+    
 
         #endregion
 

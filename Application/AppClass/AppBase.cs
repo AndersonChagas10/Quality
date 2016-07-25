@@ -7,73 +7,73 @@ using System.Collections.Generic;
 
 namespace Application.AppServiceClass
 {
-    public class AppServiceBase<T> : IDisposable, IAppServiceBase<T> where T : class
+    public class AppServiceBase<T> : IDisposable, IBaseApp<T> where T : class
     {
 
-        private readonly IServiceBase<T> _serviceBase;
+        private readonly IBaseDomain<T> _serviceDomain;
 
-        public AppServiceBase(IServiceBase<T> serviceBase)
+        public AppServiceBase(IBaseDomain<T> serviceDomain)
         {
-            _serviceBase = serviceBase;
+            _serviceDomain = serviceDomain;
         }
 
         #region Salvar
 
         public GenericReturn<T> Add(T obj)
         {
-            return _serviceBase.Add(obj);
+            return _serviceDomain.Add(obj);
         }
 
         public GenericReturn<T> AddAll(IEnumerable<T> obj)
         {
-            return _serviceBase.AddAll(obj);
+            return _serviceDomain.AddAll(obj);
         }
 
         public GenericReturn<T> AddOrUpdate(T obj)
         {
-            return _serviceBase.AddOrUpdate(obj);
+            return _serviceDomain.AddOrUpdate(obj);
         }
 
         public GenericReturn<T> Update(T obj)
         {
-            return _serviceBase.Update(obj);
+            return _serviceDomain.Update(obj);
         }
 
         #endregion
 
         public T GetById(int id)
         {
-            return _serviceBase.GetById(id);
+            return _serviceDomain.GetById(id);
         }
 
         public IEnumerable<T> GetAll()
         {
-            return _serviceBase.GetAll();
+            return _serviceDomain.GetAll();
         }
 
         public void Remove(T obj)
         {
-            _serviceBase.Remove(obj);
+            _serviceDomain.Remove(obj);
         }
 
         public void Dispose()
         {
-            _serviceBase.Dispose();
+            _serviceDomain.Dispose();
         }
 
         public void Delete(int id)
         {
-            _serviceBase.Delete(id);
+            _serviceDomain.Delete(id);
         }
 
         public void RemoveAll(IEnumerable<T> obj)
         {
-            _serviceBase.RemoveAll(obj);
+            _serviceDomain.RemoveAll(obj);
         }
 
         public T First()
         {
-            return _serviceBase.First();
+            return _serviceDomain.First();
         }
 
     }

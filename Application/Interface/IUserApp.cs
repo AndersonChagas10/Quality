@@ -3,7 +3,7 @@ using DTO.Helpers;
 
 namespace Application.Interface
 {
-    public interface IUserAppService 
+    public interface IUserApp 
     {
         GenericReturn<UserDTO> AuthenticationLogin(UserDTO user);
     }

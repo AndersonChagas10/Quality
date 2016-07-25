@@ -44,19 +44,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppServiceClass\RelatorioColetaApp.cs" />
-    <Compile Include="AppServiceClass\SyncApp.cs" />
-    <Compile Include="AppServiceClass\AppServiceBase.cs" />
-    <Compile Include="AppServiceClass\BetaAppService.cs" />
-    <Compile Include="AppServiceClass\CorrectiveActionAppService.cs" />
+    <Compile Include="AppClass\ColetaApp.cs" />
+    <Compile Include="AppClass\RelatorioColetaApp.cs" />
+    <Compile Include="AppClass\SyncApp.cs" />
+    <Compile Include="AppClass\AppBase.cs" />
+    <Compile Include="AppClass\CorrectiveActionAppService.cs" />
+    <Compile Include="Interface\IColetaApp.cs" />
     <Compile Include="Interface\ICorrectiveActionAppService.cs" />
     <Compile Include="Interface\IRelatorioColetaApp.cs" />
     <Compile Include="Interface\ISyncApp.cs" />
-    <Compile Include="Interface\IAppServiceBase.cs" />
-    <Compile Include="Interface\IBetaAppService.cs" />
-    <Compile Include="Interface\IUserAppService.cs" />
+    <Compile Include="Interface\IBaseApp.cs" />
+    <Compile Include="Interface\IUserApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AppServiceClass\UserAppService.cs" />
+    <Compile Include="AppClass\UserApp.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dominio\Dominio.csproj">
