@@ -1,5 +1,6 @@
 ﻿using Application.Interface;
 using DTO.DTO;
+using DTO.Helpers;
 using SgqSystem.ViewModels;
 using System.Web.Http;
 
@@ -20,12 +21,12 @@ namespace SgqSystem.Controllers.Api
 
         [Route("SalvarAcaoCorretiva")]
         [HttpPost]
-        public string SalvarAcaoCorretiva([FromBody]CorrectiveActionViewModel model)
+        public GenericReturn<CorrectiveActionDTO> SalvarAcaoCorretiva([FromBody]CorrectiveActionViewModel model)
         {
 
-            // var result = _correctiveActionAppService.SalvarAcaoCorretiva(model.CorrectiveAction);
+            var result = _correctiveActionAppService.SalvarAcaoCorretiva(model.CorrectiveAction);
 
-            return "123";
+            return result;
         }
 
 

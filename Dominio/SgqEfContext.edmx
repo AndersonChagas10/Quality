@@ -49,6 +49,8 @@
           <Property Name="DateTimeSlaughter" Type="datetime2" Precision="7" />
           <Property Name="Techinical" Type="int" />
           <Property Name="DateTimeTechinical" Type="datetime2" Precision="7" />
+          <Property Name="NameTechinical" Type="nvarchar" MaxLength="100" />
+          <Property Name="NameSlaughter" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="DataCollection">
           <Key>
@@ -784,6 +786,8 @@
           <Property Name="DateTimeSlaughter" Type="DateTime" Precision="7" />
           <Property Name="Techinical" Type="Int32" />
           <Property Name="DateTimeTechinical" Type="DateTime" Precision="7" />
+          <Property Name="NameTechinical" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NameSlaughter" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1021,6 +1025,8 @@
           <EntitySetMapping Name="CorrectiveAction">
             <EntityTypeMapping TypeName="SgqDbModel.CorrectiveAction">
               <MappingFragment StoreEntitySet="CorrectiveAction">
+                <ScalarProperty Name="NameSlaughter" ColumnName="NameSlaughter" />
+                <ScalarProperty Name="NameTechinical" ColumnName="NameTechinical" />
                 <ScalarProperty Name="DateTimeTechinical" ColumnName="DateTimeTechinical" />
                 <ScalarProperty Name="Techinical" ColumnName="Techinical" />
                 <ScalarProperty Name="DateTimeSlaughter" ColumnName="DateTimeSlaughter" />

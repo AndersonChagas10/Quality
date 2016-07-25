@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Repositories;
+using System.Linq;
 
 namespace Data.Repositories
 {
@@ -11,8 +12,6 @@ namespace Data.Repositories
         {
         }
 
-        public SgqDbDevEntities db = new SgqDbDevEntities();
-
         public void SalvarAcaoCorretiva(CorrectiveAction entitie)
         {
             AddOrUpdate(entitie);
@@ -20,19 +19,33 @@ namespace Data.Repositories
 
         public CorrectiveAction VerificarAcaoCorretivaIncompleta(CorrectiveAction entitie)
         {
-            //var result = (from x in db.CorrectiveAction.AsNoTracking()
-            //              where x.Slaughter == 0 &&
-            //              x.Techinical == 0 &&
-            //              x.AuditLevel1 == entitie.AuditLevel1 &&
-            //              x.AuditLevel2 == entitie.AuditLevel2 &&
-            //              x.AuditLevel3 == entitie.AuditLevel3 &&
-            //              //  x.Auditor == entitie.Auditor &&
-            //              x.Shift == entitie.Shift &&
-            //              x.Period == entitie.Period
-            //              select x).FirstOrDefault();
-            //return result;
 
-            return new CorrectiveAction();
+            var result = db.CorrectiveAction.AsNoTracking().FirstOrDefault(x =>
+                          (x.Slaughter == 0 ||
+                          x.Techinical == 0) &&
+                          x.AuditLevel1 == entitie.AuditLevel1 &&
+                          x.AuditLevel2 == entitie.AuditLevel2 &&
+                          x.AuditLevel3 == entitie.AuditLevel3 &&
+                          //  x.Auditor == entitie.Auditor &&
+                          x.Shift == entitie.Shift &&
+                          x.Period == entitie.Period);
+
+            if (result != null)
+            {
+                if (result.Slaughter != 0)
+                {
+                    result.NameSlaughter = db.UserSgq.AsNoTracking().FirstOrDefault(x =>
+                          x.Id == result.Slaughter).Name;
+                }
+
+                if (result.Techinical != 0)
+                {
+                    result.NameTechinical = db.UserSgq.AsNoTracking().FirstOrDefault(x =>
+                          x.Id == result.Techinical).Name;
+                }
+            }
+
+            return result;
         }
 
     }
