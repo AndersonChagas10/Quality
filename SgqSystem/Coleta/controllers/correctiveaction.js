@@ -108,7 +108,7 @@ var AcaoCorretiva = {
             url: '../' + '../api/CorrectiveAction/SalvarAcaoCorretiva',
             type: 'POST',
             success: function (data) {
-                alert(data);
+                window.location.href = '/Coleta/view/indicators.html';
             }
         });
 
