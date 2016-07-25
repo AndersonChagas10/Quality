@@ -24,17 +24,15 @@ namespace SgqSystem.Api.Controllers
         #region Salvar
 
         [Route("api/Result/Salvar")]
-        public GenericReturnViewModel<ColetaViewModel> Salvar([FromBody] ColetaViewModel data)
+        public GenericReturn<ColetaDTO> Salvar([FromBody] ColetaViewModel data)
         {
-            var queryResult = _coletaApp.Salvar(data);
-            return Mapper.Map<GenericReturn<ColetaDTO>, GenericReturnViewModel<ColetaViewModel>>(queryResult);
+            return _coletaApp.Salvar(data);
         }
 
         [Route("api/Result/SalvarLista")]
-        public GenericReturnViewModel<ColetaViewModel> SalvarLista([FromBody] ColetaViewModel data)
+        public GenericReturn<ColetaDTO> SalvarLista([FromBody] ColetaViewModel data)
         {
-            var queryResult = _coletaApp.SalvarLista(data.listaResultado);
-            return Mapper.Map<GenericReturn<ColetaDTO>, GenericReturnViewModel<ColetaViewModel>>(queryResult);
+            return _coletaApp.SalvarLista(data.listaResultado);
         } 
 
         #endregion

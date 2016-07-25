@@ -42,11 +42,9 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("api/Sync/SetDataAudit")]
-        public GenericReturnViewModel<ColetaViewModel> SetDataToSincyAudit([FromBody] SyncViewModel objToSync)
+        public GenericReturn<ColetaDTO> SetDataToSincyAudit([FromBody] SyncViewModel objToSync)
         {
-            var queryDataToSync = _coletaApp.SalvarLista(objToSync.Coleta);
-            var mappedToReturn = Mapper.Map<GenericReturn<ColetaDTO>, GenericReturnViewModel<ColetaViewModel>>(queryDataToSync);
-            return mappedToReturn;
+            return _coletaApp.SalvarLista(objToSync.Coleta);
         }
 
         //[HttpPost]

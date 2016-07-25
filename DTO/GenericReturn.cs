@@ -2,9 +2,9 @@
 
 namespace DTO.Helpers
 {
-    public class GenericReturn<T> : ExceptionHelper
+    public class GenericReturn<T> 
     {
-
+        //public ExceptionHelper exception { get; set; }
         public string Mensagem { get; set; }
         public string MensagemExcecao { get; set; }
         public T Retorno { get; private set; }

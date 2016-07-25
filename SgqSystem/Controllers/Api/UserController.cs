@@ -20,11 +20,9 @@ namespace SgqSystem.Controllers.Api
         }
 
         // POST: api/Teste
-        public GenericReturnViewModel<UserViewModel> Post([FromBody] UserViewModel userVm)
+        public GenericReturn<UserDTO> Post([FromBody] UserViewModel userVm)
         {
-            var queryResult = _userAppService.AuthenticationLogin(userVm);
-            var userLogado = Mapper.Map<GenericReturn<UserDTO>, GenericReturnViewModel<UserViewModel>>(queryResult);
-            return userLogado;
+            return _userAppService.AuthenticationLogin(userVm);
         }
 
     }
