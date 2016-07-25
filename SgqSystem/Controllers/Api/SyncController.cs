@@ -15,10 +15,12 @@ namespace SgqSystem.Controllers.Api
         #region Construtor e atributos
 
         private readonly ISyncApp _syncApp;
+        private readonly IColetaApp _coletaApp;
 
-        public SyncController(ISyncApp syncApp)
+        public SyncController(ISyncApp syncApp, IColetaApp coletaApp)
         {
             _syncApp = syncApp;
+            _coletaApp = coletaApp;
         }
 
         #endregion
@@ -39,15 +41,22 @@ namespace SgqSystem.Controllers.Api
         #region Recebe Dados Para Syncronizar o Db Interno e Web
 
         [HttpPost]
-        [Route("api/Sync/SetData")]
-        public GenericReturnViewModel<SyncViewModel> SetDataToSincyAudit([FromBody] SyncViewModel objToSync)
+        [Route("api/Sync/SetDataAudit")]
+        public GenericReturnViewModel<ColetaViewModel> SetDataToSincyAudit([FromBody] SyncViewModel objToSync)
         {
-            var queryDataToSync = _syncApp.SetDataToSincyAudit(objToSync);
-
-            var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncViewModel>>(queryDataToSync);
+            var queryDataToSync = _coletaApp.SalvarLista(objToSync.Coleta);
+            var mappedToReturn = Mapper.Map<GenericReturn<ColetaDTO>, GenericReturnViewModel<ColetaViewModel>>(queryDataToSync);
             return mappedToReturn;
         }
 
+        //[HttpPost]
+        //[Route("api/Sync/SetDataCorrectiveAction")]
+        //public GenericReturnViewModel<ColetaViewModel> SetDataToSincyCorrectiveAction([FromBody] SyncViewModel objToSync)
+        //{
+        //    var queryDataToSync = _coletaApp.SalvarLista(objToSync.Coleta);
+        //    var mappedToReturn = Mapper.Map<GenericReturn<ColetaDTO>, GenericReturnViewModel<ColetaViewModel>>(queryDataToSync);
+        //    return mappedToReturn;
+        //}
         #endregion
 
     }

@@ -17,49 +17,5 @@ namespace Data.Repositories
             //connection.Dispose();
         }
 
-        public void SalvaListaCorrectiveAction(List<CorrectiveAction> correctiveAction)
-        {
-            new RepositoryBase<CorrectiveAction>(connection).AddAll(correctiveAction);
-        }
-
-        public void SetDataToSincyAudit(List<Coleta> coletas)
-        {
-            new RepositoryBase<Coleta>(connection).AddAll(coletas);
-        }
-
-        public void SetDataToSincyCorrectiveAction(List<CorrectiveAction> correctiveActions)
-        {
-            throw new NotImplementedException();
-        }
-
-        //public void SetDataToSincyCorrectiveAction(List<CorrectiveAction> correctiveActions)
-        //{
-        //    new RepositoryBase<CorrectiveAction>(connection).AddAll(correctiveActions);
-        //}
-
-        /// <summary>
-        /// A tabela resultados não possui no momento relacionamentos externos de Foreingin Keys, foi necessário esta validação por como foi forçado relacionamento via INTEGER o banco não verifica automáticamente.
-        /// </summary>
-        /// <param name="r">Coleta Objeto.</param>
-        public void ValidaFkResultado(List<Coleta> coleta)
-        {
-            var level1 = new RepositoryBase<Level1>(connection).GetAll();
-            var level2 = new RepositoryBase<Level2>(connection).GetAll();
-            var level3 = new RepositoryBase<Level3>(connection).GetAll();
-            foreach (var i in coleta)
-            {
-                var existisL1 = level1.FirstOrDefault(r => r.Id == i.Id_Level1);
-                var existisL2 = level2.FirstOrDefault(r => r.Id == i.Id_Level2);
-                var existisL3 = level3.FirstOrDefault(r => r.Id == i.Id_Level3);
-                if (existisL1 == null)
-                    throw new ExceptionHelper("Invalida Primary Key for Level1");
-
-                if (existisL2 == null)
-                    throw new ExceptionHelper("Invalida Primary Key for Level2");
-
-                if (existisL3 == null)
-                    throw new ExceptionHelper("Invalida Primary Key for Level3");
-            }
-        }
     }
 }

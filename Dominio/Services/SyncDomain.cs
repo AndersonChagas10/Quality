@@ -61,26 +61,6 @@ namespace Dominio.Services
             }
         }
 
-        public GenericReturn<SyncDTO> SetDataToSincyAudit(SyncDTO objToSync)
-        {
-            try
-            {
-                foreach (var i in objToSync.Coleta)
-                    i.ValidaColeta();
-               
-                var coletas = Mapper.Map<List<ColetaDTO>, List<Coleta>>(objToSync.Coleta);
-                _repoSync.ValidaFkResultado(coletas);
-                _repoSync.SetDataToSincyAudit(coletas);
-
-                var acoesCorretivas = Mapper.Map<List<CorrectiveAction>>(objToSync.CorrectiveAction);
-                _repoSyncCorrectiveAction.SalvaListaCorrectiveAction(acoesCorretivas);
-
-                return new GenericReturn<SyncDTO>("Sucesso!!!!!!");
-            }
-            catch (Exception e)
-            {
-                return new GenericReturn<SyncDTO>(e, "Cannot get data to sync.");
-            }
-        }
+      
     }
 }

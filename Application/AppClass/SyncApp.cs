@@ -21,9 +21,6 @@ namespace Application.AppServiceClass
             return _coletaService.GetDataToSincyAudit();
         }
 
-        public GenericReturn<SyncDTO> SetDataToSincyAudit(SyncDTO objToSync)
-        {
-            return _coletaService.SetDataToSincyAudit(objToSync);
-        }
+       
     }
 }
