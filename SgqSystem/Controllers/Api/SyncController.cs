@@ -11,12 +11,17 @@ namespace SgqSystem.Controllers.Api
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SyncController : ApiController
     {
+
+        #region Construtor e atributos
+
         private readonly ISyncApp _syncApp;
 
         public SyncController(ISyncApp syncApp)
         {
             _syncApp = syncApp;
         }
+
+        #endregion
 
         #region Envia Dados Para Syncronizar a plataforma remota
 
@@ -44,5 +49,6 @@ namespace SgqSystem.Controllers.Api
         }
 
         #endregion
+
     }
 }

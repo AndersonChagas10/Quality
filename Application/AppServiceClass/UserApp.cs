@@ -5,12 +5,12 @@ using DTO.Helpers;
 
 namespace Application.AppServiceClass
 {
-    public class UserAppService :  IUserAppService
+    public class UserApp :  IUserApp
     {
         
-        private readonly IUserService _userService;
+        private readonly IUserDomain _userService;
         
-        public UserAppService(IUserService userService)
+        public UserApp(IUserDomain userService)
         {
             _userService = userService;
         }

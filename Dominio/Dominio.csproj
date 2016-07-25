@@ -47,18 +47,18 @@
     <Compile Include="Entities\DataCollection\DataCollectionResult.cs" />
     <Compile Include="Entities\BaseEntity\DataCollectionBase.cs" />
     <Compile Include="Entities\BaseEntity\EntityBase.cs" />
-    <Compile Include="Interfaces\Repositories\IBetaRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICorrectiveActionRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IColetaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRelatorioColetaRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IRepositoryBase.cs" />
+    <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
     <Compile Include="Interfaces\Repositories\ISyncRepository.cs" />
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
+    <Compile Include="Interfaces\Services\IColetaDomain.cs" />
     <Compile Include="Interfaces\Services\ICorrectiveActionService.cs" />
-    <Compile Include="Interfaces\Services\IBetaService.cs" />
     <Compile Include="Interfaces\Services\IRelatorioColetaDomain.cs" />
     <Compile Include="Interfaces\Services\ISyncDomain.cs" />
-    <Compile Include="Interfaces\Services\IServiceBase.cs" />
-    <Compile Include="Interfaces\Services\IUserService.cs" />
+    <Compile Include="Interfaces\Services\IBaseDomain.cs" />
+    <Compile Include="Interfaces\Services\IUserDomain.cs" />
     <Compile Include="Level01.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -87,12 +87,12 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\BetaService.cs" />
+    <Compile Include="Services\ColetaDomain.cs" />
     <Compile Include="Services\CorrectiveActionService.cs" />
     <Compile Include="Services\RelatorioColetaDomain.cs" />
-    <Compile Include="Services\SyncService.cs" />
-    <Compile Include="Services\ServiceBase.cs" />
-    <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\SyncDomain.cs" />
+    <Compile Include="Services\BaseDomain.cs" />
+    <Compile Include="Services\UserDomain.cs" />
     <Compile Include="SgqEfContext.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

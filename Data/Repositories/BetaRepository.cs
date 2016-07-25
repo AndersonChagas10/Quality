@@ -27,27 +27,7 @@ namespace Data.Repositories
 
         #endregion
 
-        #region Coleta De Dados
-
-        /// <summary>
-        /// Salva o resultado de uma coleta de dados na tabela Result old.
-        /// </summary>
-        /// <param name="r">Coleta com os parametros validados.</param>
-        public void Salvar(Coleta r)
-        {
-            Add(r);
-        }
-
-        /// <summary>
-        /// Salva uma lista de resultados de coletas de dados na tabela Result old recursivamente.
-        /// </summary>
-        /// <param name="list">Lista de Coleta com os parametros validados.</param>
-        public void SalvarLista(List<Coleta> list)
-        {
-            AddAll(list);
-        }
-
-        #endregion
+    
 
         #region Busca de Dados
 
@@ -259,22 +239,6 @@ namespace Data.Repositories
             }
 
             return resultsList;
-        }
-
-        /// <summary>
-        /// A tabela resultados não possui no momento relacionamentos externos de Foreingin Keys, foi necessário esta validação por como foi forçado relacionamento via INTEGER o banco não verifica automáticamente.
-        /// </summary>
-        /// <param name="r">Coleta Objeto.</param>
-        public void ValidaFkResultado(Coleta r)
-        {
-            if (_Level1.FirstOrDefault(z => z.Id == r.Id_Level1) == null)
-                throw new ExceptionHelper("Id Invalido para Operação");
-
-            if (_Level2.FirstOrDefault(z => z.Id == r.Id_Level2) == null)
-                throw new ExceptionHelper("Id Invalido para Level2");
-
-            if (_Level3.FirstOrDefault(z => z.Id == r.Id_Level3) == null)
-                throw new ExceptionHelper("Id Invalido para Level3");
         }
 
         #endregion

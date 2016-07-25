@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Dominio.Services
 {
-    public class SyncService : ISyncDomain
+    public class SyncDomain : ISyncDomain
     {
         private ISyncRepository<Coleta> _repoSync;
         private ISyncRepository<Level1> _repoSyncLevel1;
@@ -17,7 +17,7 @@ namespace Dominio.Services
         private ISyncRepository<UserSgq> _repoSyncUserSgq;
         private ISyncRepository<CorrectiveAction> _repoSyncCorrectiveAction;
 
-        public SyncService(ISyncRepository<Coleta> repoSync,
+        public SyncDomain(ISyncRepository<Coleta> repoSync,
                             ISyncRepository<Level1> repoSyncLevel1,
                             ISyncRepository<Level2> repoSyncLevel2,
                             ISyncRepository<Level3> repoSyncLevel3,

@@ -9,8 +9,8 @@ namespace Dominio.Controllers.Api.Tests
     public class ResultControllerTests
     {
 
-        private readonly Coleta _result ;
-        private readonly Mock<IBetaRepository> _resultRepo;
+        //private readonly Coleta _result ;
+        //private readonly Mock<IBetaRepository> _resultRepo;
 
         #region Testes dados negativo quantidade
 
@@ -18,7 +18,7 @@ namespace Dominio.Controllers.Api.Tests
         [ExpectedException(typeof(ExceptionHelper))]
         public void ResultControllertTest_Total_Avalido_Negativo()
         {
-            decimal valor1 = -1;
+            //decimal valor1 = -1;
             //new Coleta(0, 1, 2, 3, valor1, 0);
 
         }
@@ -28,7 +28,7 @@ namespace Dominio.Controllers.Api.Tests
         {
             try
             {
-                decimal naoConformidade = -1;
+                //decimal naoConformidade = -1;
                 //new Coleta(0, 1, 2, 3, 0, naoConformidade);
                 Assert.Fail("Should throw here");
             }
@@ -47,7 +47,7 @@ namespace Dominio.Controllers.Api.Tests
         {
             try
             {
-                int idLevel3 = -1;
+                //int idLevel3 = -1;
                 //new Coleta(0, idLevel3, 2, 3, 0, 0);
                 Assert.Fail("Should throw here");
             }
@@ -62,7 +62,7 @@ namespace Dominio.Controllers.Api.Tests
         {
             try
             {
-                int idLevel2 = -1;
+                //int idLevel2 = -1;
                 //new Coleta(0, 1, 1, idLevel2, 0, 0);
                 Assert.Fail("Should throw here");
             }
@@ -77,7 +77,7 @@ namespace Dominio.Controllers.Api.Tests
         {
             try
             {
-                int idLevel1 = -1;
+                //int idLevel1 = -1;
                 //new Coleta(0, 1, 1, idLevel1, 0, 0);
                 Assert.Fail("Should throw here");
             }

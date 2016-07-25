@@ -10,9 +10,9 @@ namespace SgqSystem.Controllers.Api
     {
 
         private readonly ICorrectiveActionAppService _correctiveActionAppService;
-        private readonly IUserAppService _userAppService;
+        private readonly IUserApp _userAppService;
 
-        public CorrectiveActionController(ICorrectiveActionAppService correctiveActionAppService, IUserAppService userAppService)
+        public CorrectiveActionController(ICorrectiveActionAppService correctiveActionAppService, IUserApp userAppService)
         {
             _correctiveActionAppService = correctiveActionAppService;
             _userAppService = userAppService;

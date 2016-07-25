@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Dominio.Services
 {
-    public class BetaService :  IBetaService
+    public class BetaDomain :  IBetaService
     {
         private IBetaRepository _betaRepository;
 
@@ -16,65 +16,12 @@ namespace Dominio.Services
         private string NaoInserido { get { return "It was not possible to insert data."; } }
         private string inseridoOk { get {return "Your data has been successfully saved."; } }
 
-        public BetaService(IBetaRepository relatorioBetaService)
+        public BetaDomain(IBetaRepository relatorioBetaService)
         {
             _betaRepository = relatorioBetaService;
         }
 
-        #region Coleta de Dados.
-
-        public GenericReturn<ColetaDTO> Salvar(ColetaDTO result)
-        {
-            try
-            {
-                if (result.IsNull())
-                    throw new ExceptionHelper(NaoInserido + " Theres is no data.");
-
-                result.ValidaColeta();
-                var objTosave = Mapper.Map<ColetaDTO, Coleta>(result);
-
-                _betaRepository.ValidaFkResultado(objTosave);
-
-                _betaRepository.Salvar(objTosave);
-
-                return new GenericReturn<ColetaDTO>(inseridoOk);
-            }
-            catch (Exception e)
-            {
-                return new GenericReturn<ColetaDTO>(e, NaoInserido);
-            }
-        }
-
-        public GenericReturn<ColetaDTO> SalvarLista(List<ColetaDTO> list)
-        {
-            try
-            {
-                if (list.IsNull())
-                    throw new ExceptionHelper(NaoInserido + " Theres is no data.");
-
-                if (list.Count == 0 )
-                    throw new ExceptionHelper(NaoInserido + " Theres is no data.");
-
-                foreach (var i in list)
-                    i.ValidaColeta();
-
-                var listObjTosave = Mapper.Map<List<ColetaDTO>, List<Coleta>>(list);
-
-                foreach (var i in listObjTosave)
-                    _betaRepository.ValidaFkResultado(i);
-
-                _betaRepository.SalvarLista(listObjTosave);
-
-                return new GenericReturn<ColetaDTO>(inseridoOk);
-
-            }
-            catch (Exception e)
-            {
-                return new GenericReturn<ColetaDTO>(e, NaoInserido);
-            }
-        }
-
-        #endregion
+      
 
         #region Busca De Dados.
 

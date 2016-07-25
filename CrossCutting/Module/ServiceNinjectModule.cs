@@ -8,12 +8,13 @@ namespace CrossCutting.IOC.Module
     {
         public override void Load()
         {
-            Bind(typeof(IServiceBase<>)).To(typeof(ServiceBase<>));
-            Bind<IUserService>().To<UserService>();
-            Bind<IBetaService>().To<BetaService>();
+            Bind(typeof(IBaseDomain<>)).To(typeof(BaseDomain<>));
+            Bind<IUserDomain>().To<UserDomain>();
+            //Bind<IBetaService>().To<BetaService>();
             Bind<ICorrectiveActionService>().To<CorrectiveActionService>();
-            Bind<ISyncDomain>().To<SyncService>();
+            Bind<ISyncDomain>().To<SyncDomain>();
             Bind<IRelatorioColetaDomain>().To<RelatorioColetaDomain>();
+            Bind<IColetaDomain>().To<ColetaDomain>();
         }
     }
 }

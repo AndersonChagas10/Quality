@@ -2,7 +2,7 @@
 
 namespace Dominio.Interfaces.Repositories
 {
-    public interface IRepositoryBase<T> where T : class
+    public interface IBaseRepository<T> where T : class
     {
         
         void Add(T obj);

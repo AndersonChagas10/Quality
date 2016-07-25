@@ -13,7 +13,7 @@ namespace Data.Repositories
     /// Repositório Base, classe de gerencia do Banco de Dados.
     /// </summary>
     /// <typeparam name="T">Object reconhecido pelo DataBase: EntityBase</typeparam>
-    public class RepositoryBase<T> : IDisposable, IRepositoryBase<T> where T : class
+    public class RepositoryBase<T> : IDisposable, IBaseRepository<T> where T : class
     {
 
         /// <summary>
