@@ -48,7 +48,7 @@ namespace DTO.DTO
 
             #endregion
 
-            #region PeopleCreateId:  Não pode ser Zero, não pode ser negativo.
+            #region PeopleCreateId: (FK)  Não pode ser Zero, não pode ser negativo.
             Guard.ForNegative(PeopleCreateId, "PeopleCreateId");
             Guard.forValueZero(PeopleCreateId, "PeopleCreateId");
             #endregion

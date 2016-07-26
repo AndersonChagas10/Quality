@@ -48,10 +48,10 @@ namespace DTO.DTO
 
             ValidaBaseEntity();
 
-            #region CenterResultId 
+            #region CenterResultId (FK) 
             #endregion
 
-            #region Level01Id 
+            #region Level01Id: (FK) 
             #endregion
 
             #region DateConsolidation 

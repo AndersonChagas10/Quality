@@ -9,6 +9,7 @@ namespace DTO.DTO
 
         public void ValidaLevel2DTO(bool isAlter)
         {
+            ValidaBaseEntity();
 
             #region Name
             string NameValue;

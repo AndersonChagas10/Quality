@@ -38,7 +38,9 @@ namespace Dominio
         public virtual DbSet<Level3> Level3 { get; set; }
         public virtual DbSet<teste> teste { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
-        public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
         public virtual DbSet<Level03> Level03 { get; set; }
+        public virtual DbSet<Period> Period { get; set; }
+        public virtual DbSet<Shift> Shift { get; set; }
+        public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
     }
 }

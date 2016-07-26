@@ -8,6 +8,7 @@ namespace DTO.DTO
         public string Name { get; set; }
         public void ValidaLeve3DTO(bool isAlter)
         {
+            ValidaBaseEntity();
 
             #region Name
             string NameValue;

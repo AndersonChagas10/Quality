@@ -36,12 +36,12 @@ namespace DTO.DTO
 
             ValidaBaseEntity();
 
-            #region DataCollectionId: Não pdoe ser Zero, não pode ser negativo.
+            #region DataCollectionId: (FK) Não pdoe ser Zero, não pode ser negativo.
             Guard.ForNegative(DataCollectionId, "DataCollectionId");
             Guard.forValueZero(DataCollectionId, "DataCollectionId");
             #endregion
 
-            #region Level03Id: Se existir, não pdoe ser Zero, não pode ser negativo.
+            #region Level03Id: (FK) Se existir, não pdoe ser Zero, não pode ser negativo.
             if (Level03Id.IsNotNull())
             {
                 Guard.ForNegative(Level03Id.Value, "Level03Id");
@@ -69,13 +69,6 @@ namespace DTO.DTO
             Guard.ForNegative(TotalEvaluated, "TotalEvaluated");
             #endregion
 
-            #region DataCollection
-
-            #endregion
-
-            #region Level03
-
-            #endregion
 
         }
 

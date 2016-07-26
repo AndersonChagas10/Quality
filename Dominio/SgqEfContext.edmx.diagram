@@ -24,10 +24,12 @@
         <AssociationConnector Association="SgqDbModel.FK_Level02Consolidation_Level01Consolidation" />
         <AssociationConnector Association="SgqDbModel.FK_Level02Consolidation_Level02" />
         <AssociationConnector Association="SgqDbModel.FK_Level03Consolidation_Level02Consolidation" />
-        <EntityTypeShape EntityType="SgqDbModel.CorrectiveAction" Width="1.5" PointX="12.375" PointY="8.75" />
         <EntityTypeShape EntityType="SgqDbModel.Level03" Width="1.5" PointX="7.125" PointY="0.5" />
         <AssociationConnector Association="SgqDbModel.FK_DataCollectionResult_Level03" />
         <AssociationConnector Association="SgqDbModel.FK_Level03Consolidation_Level03" />
+        <EntityTypeShape EntityType="SgqDbModel.Period" Width="1.5" PointX="0.75" PointY="13.75" />
+        <EntityTypeShape EntityType="SgqDbModel.Shift" Width="1.5" PointX="2.75" PointY="13.75" />
+        <EntityTypeShape EntityType="SgqDbModel.CorrectiveAction" Width="1.5" PointX="12.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

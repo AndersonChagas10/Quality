@@ -12,19 +12,19 @@ namespace DTO.DTO
         [DataMember]
         public System.DateTime DateExecute { get; set; }
         [DataMember]
-        public int Auditor { get; set; }
+        public int AuditorId { get; set; }
         [DataMember]
-        public int Shift { get; set; }
+        public int ShiftId { get; set; }
         [DataMember]
-        public int AuditLevel1 { get; set; }
+        public int AuditLevel1Id { get; set; }
         [DataMember]
-        public int AuditLevel2 { get; set; }
+        public int AuditLevel2Id { get; set; }
         [DataMember]
-        public int AuditLevel3 { get; set; }
+        public int AuditLevel3Id { get; set; }
         [DataMember]
         public System.DateTime StartTime { get; set; }
         [DataMember]
-        public int Period { get; set; }
+        public int PeriodId { get; set; }
         [DataMember]
         public string DescriptionFailure { get; set; }
         [DataMember]
@@ -34,11 +34,11 @@ namespace DTO.DTO
         [DataMember]
         public string PreventativeMeasure { get; set; }
         [DataMember]
-        public Nullable<int> Slaughter { get; set; }
+        public Nullable<int> SlaughterId { get; set; }
         [DataMember]
         public Nullable<System.DateTime> DateTimeSlaughter { get; set; }
         [DataMember]
-        public Nullable<int> Techinical { get; set; }
+        public Nullable<int> TechinicalId { get; set; }
         [DataMember]
         public Nullable<System.DateTime> DateTimeTechinical { get; set; }
         [DataMember]
@@ -102,46 +102,46 @@ namespace DTO.DTO
             #region DateExecute
             #endregion
 
-            #region Auditor
+            #region Auditor (FK) 
             #endregion
 
-            #region Shift
+            #region Shift (FK)
             #endregion
 
-            #region AuditLevel1
+            #region AuditLevel1 (FK) 
             #endregion
-            
-            #region AuditLevel2
+
+            #region AuditLevel2 (FK) 
             #endregion
-            
-            #region AuditLevel3
+
+            #region AuditLevel3 (FK) 
             #endregion
-            
+
             #region StartTime
             #endregion
-            
-            #region Period
+
+            #region Period (FK)
             #endregion
-            
+
             #region DescriptionFailure
             #endregion
-            
+
             #region ImmediateCorrectiveAction
             #endregion
-            
+
             #region ProductDisposition
             #endregion
 
             #region PreventativeMeasure
             #endregion
 
-            #region Slaughter
+            #region Slaughter (FK) 
             #endregion
 
             #region DateTimeSlaughter
             #endregion
 
-            #region Techinical
+            #region Techinical (FK) 
             #endregion
 
             #region DateTimeTechinical
