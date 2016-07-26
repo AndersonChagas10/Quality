@@ -68,10 +68,10 @@
                     color_style = (base.links[i].color)? "color:"+base.links[i].color+";" : "";
                     bg_color_style = (base.links[i].bgcolor)? "background-color:"+base.links[i].bgcolor+";" : "";
 
-                    sub_fab_btns_dom += "<div><button id='"+base.links[i].id+"' data-link-title='"+base.links[i].title+"' data-link-href='"+(base.links[i].url?base.links[i].url:"")+"' data-link-target='"+((base.links[i].target)?base.links[i].target:"")+"' class='sub_fab_btn' style='"+bg_color_style+"'><span style='"+color_style+"'>"+base.links[i].icon+"</span></button></div>";
+                    sub_fab_btns_dom += "<div class='sub_fab_btns_wrapper kc_fab_wrapper_" + base.links[i].position+ "'><div><button id='" + base.links[i].id + "' data-link-title='" + base.links[i].title + "' data-link-href='" + (base.links[i].url ? base.links[i].url : "") + "' data-link-target='" + ((base.links[i].target) ? base.links[i].target : "") + "' class='sub_fab_btn' style='" + bg_color_style + "'><span style='" + color_style + "'>" + base.links[i].icon + "</span></button></div></div>";
                     
                 };
-                sub_fab_btns_dom = "<div class='sub_fab_btns_wrapper'>"+sub_fab_btns_dom+"</div>";
+                //sub_fab_btns_dom = "" + sub_fab_btns_dom + "";
                 base.$el.append(sub_fab_btns_dom).append(main_btn_dom);
 
             }else{

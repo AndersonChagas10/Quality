@@ -17,9 +17,11 @@
   bottom:0px;
   pointer-events:none;
 }
-.sub_fab_btns_wrapper{
+.kc_fab_wrapper_up{
   right:0;
-  bottom:75px;
+  bottom:100px;
+}
+.sub_fab_btns_wrapper{
   position:absolute;
   display:none;
   opacity: 0;
@@ -49,12 +51,12 @@
   opacity: 1;
 }
 .sub_fab_btns_wrapper button{
-  width:40px;
-  height:40px;
-  border-radius:100%;
+  width:60px;
+  height:60px;
+  border-radius:100% !important;
   background:#F44336;
   margin-bottom:12px;
-  margin-right:26px;
+  margin-right:19px;
   padding:0;
   border:none;
   outline:none;
@@ -68,7 +70,7 @@ button.kc_fab_main_btn{
   background-color:#F44336;
   width:60px;
   height:60px;
-  border-radius:100%;
+  border-radius:100% !important;
   background:#F44336;
   right:16px;
   bottom:16px;
