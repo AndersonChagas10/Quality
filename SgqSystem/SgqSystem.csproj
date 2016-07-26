@@ -384,8 +384,10 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="newColeta\Content\bootstrap-modal-bs3patch.css" />
     <Content Include="newColeta\Content\bootstrap.css" />
     <Content Include="newColeta\Content\bootstrap.min.css" />
+    <Content Include="newColeta\Content\bootstrap-modal.css" />
     <Content Include="newColeta\Content\Geral.css" />
     <Content Include="newColeta\Img\beef.jpg" />
     <Content Include="newColeta\Img\fundoSGQ.jpg" />
@@ -393,6 +395,7 @@
     <Content Include="newColeta\Img\login.png" />
     <Content Include="newColeta\Img\sgq.jpg" />
     <Content Include="newColeta\Img\SGQLogo01.png" />
+    <Content Include="newColeta\Img\ui-bg_diagonal-maze_75_ddd_10x10.png" />
     <Content Include="newColeta\Index.html" />
     <Content Include="newColeta\Plugins\float_button\css\kc.fab.css" />
     <Content Include="newColeta\Plugins\float_button\js\kc.fab.js" />
@@ -405,9 +408,12 @@
     <Content Include="newColeta\Plugins\sidebar\css\sidebar.min.css" />
     <Content Include="newColeta\Plugins\sidebar\js\sidebar.js" />
     <Content Include="newColeta\Plugins\sidebar\ts\sidebar.js" />
+    <Content Include="newColeta\Scripts\bootstrap-modal.js" />
+    <Content Include="newColeta\Scripts\bootstrap-modalmanager.js" />
     <Content Include="newColeta\Scripts\bootstrap.js" />
     <Content Include="newColeta\Scripts\bootstrap.min.js" />
     <Content Include="newColeta\Scripts\Methods.js" />
+    <Content Include="newColeta\views\CorrectiveAction.html" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />

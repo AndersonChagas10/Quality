@@ -13,13 +13,19 @@ $(document).on('click', '.level02List .level02', function (e) {
 });
 
 $(document).on('click', '.btnCA', function (e) {
-    $('.level01List').addClass('hide').hide();
-    $('.level02List').addClass('hide').hide();
-    $('.level03List').addClass('hide').hide();
-    $('.breadcrumb').addClass('hide').hide();
+  //  $('.level01List').addClass('hide').hide();
+   // $('.level02List').addClass('hide').hide();
+   // $('.level03List').addClass('hide').hide();
+   // $('.breadcrumb').addClass('hide').hide();
 
     $('.correctiveaction').removeClass('hide').show();
-    $(this).addClass('hide');
+    //$(this).addClass('hide');
+
+    var $modal = $('#correctiveActionModal');
+
+    $modal.modal();
+
+
 });
 
 function auth() {

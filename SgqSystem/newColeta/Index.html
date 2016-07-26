@@ -8,6 +8,8 @@
     <link href="Plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="Plugins/float_button/css/kc.fab.css" rel="stylesheet" />
     <link href="Plugins/sidebar/css/sidebar.min.css" rel="stylesheet" />
+    <link href="Content/bootstrap-modal-bs3patch.css" rel="stylesheet" />
+    <link href="Content/bootstrap-modal.css" rel="stylesheet" />
 </head>
 <body>
     <div class="login">
@@ -1407,115 +1409,140 @@
 
                 </div>
             </div>
+
+
+
+            <!--<link rel="import" href="../newColeta/views/CorrectiveAction.html">-->
+
             <div class="correctiveaction hide list-group" style="margin-top: 16px;  padding-bottom: 70px;">
 
-                <div class="panel panel-default">
-                    <div class="panel-body">
+                <div id="correctiveActionModal" class="modal fade" tabindex="10050" data-width="800" style="display: none;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Corrective Action</h4>
+                    </div>
+                    <div class="modal-body" style="overflow:hidden">
                         <div class="row">
-                            <div class="col-xs-6">
-                                <b>Corrective Action Taken:<br /></b>
-                                Date/Time: <span id="datetime"></span><br />
-                                Auditor: <span id="auditor"></span><br />
-                                Shift: <span id="shift"></span><br />
+
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <b>Corrective Action Taken:<br /></b>
+                                            Date/Time: <span id="datetime"></span><br />
+                                            Auditor: <span id="auditor"></span><br />
+                                            Shift: <span id="shift"></span><br />
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <b>Audit Information:<br /></b>
+                                            Audit: <span id="auditText"></span><br />
+                                            Start Time: <span id="starttime"></span><br />
+                                            Period: <span id="period"></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-xs-6">
-                                <b>Audit Information:<br /></b>
-                                Audit: <span id="auditText"></span><br />
-                                Start Time: <span id="starttime"></span><br />
-                                Period: <span id="period"></span>
+                            <div class="form-group">
+                                <label>Description of Failure:</label>
+                                <textarea id="DescriptionFailure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
                             </div>
+                            <div class="form-group">
+                                <label>Immediate Corrective Action:</label>
+                                <textarea id="ImmediateCorrectiveAction" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Product Disposition:</label>
+                                <textarea id="ProductDisposition" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Preventative Measure:</label>
+                                <textarea id="PreventativeMeasure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label>Slaughter:</label>
+                                        <input type="text" class="form-control" id="slaughter" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Date/Time:</label>
+                                        <input type="text" class="form-control" id="slaughterDatetime" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label>Techinical Services:</label>
+                                        <input type="text" class="form-control" id="techinical" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Date/Time:</label>
+                                        <input type="text" class="form-control" id="techinicalDatetime" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label>Slaughter Signature:</label><br />
+                                        <label>Login:</label>
+                                        <input type="text" class="form-control" id="slaughterLogin">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Password:</label>
+                                        <input type="password" class="form-control" id="slaughterPassword">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="button" class="btn btn-primary btn-lg" id="btnSlaughterLogin" onclick="AcaoCorretiva.logarUsuarioSlaughter();" value="Verify Login">
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label>Techinical Services Signature:</label><br />
+                                        <label>Login:</label>
+                                        <input type="text" class="form-control" id="techinicalLogin">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Password:</label>
+                                        <input type="password" class="form-control" id="techinicalPassword">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="button" class="btn btn-primary btn-lg" id="btnTechinicalLogin" onclick="AcaoCorretiva.logarUsuarioTechnical();" value="Verify Login">
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <!--<div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <input type="button" class="btn btn-primary btn-lg" id="btnSendCorrectiveAction" onclick="AcaoCorretiva.enviarAcaoCorretiva();" value="Send">
+                                    </div>
+                                </div>
+                            </div>-->
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Description of Failure:</label>
-                    <textarea id="DescriptionFailure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Immediate Corrective Action:</label>
-                    <textarea id="ImmediateCorrectiveAction" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Product Disposition:</label>
-                    <textarea id="ProductDisposition" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Preventative Measure:</label>
-                    <textarea id="PreventativeMeasure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="form-group">
-                            <label>Slaughter:</label>
-                            <input type="text" class="form-control" id="slaughter" disabled>
-                        </div>
-                        <div class="form-group">
-                            <label>Date/Time:</label>
-                            <input type="text" class="form-control" id="slaughterDatetime" disabled>
-                        </div>
-                    </div>
-                    <div class="col-xs-6">
-                        <div class="form-group">
-                            <label>Techinical Services:</label>
-                            <input type="text" class="form-control" id="techinical" disabled>
-                        </div>
-                        <div class="form-group">
-                            <label>Date/Time:</label>
-                            <input type="text" class="form-control" id="techinicalDatetime" disabled>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="form-group">
-                            <label>Slaughter Signature:</label><br />
-                            <label>Login:</label>
-                            <input type="text" class="form-control" id="slaughterLogin">
-                        </div>
-                        <div class="form-group">
-                            <label>Password:</label>
-                            <input type="password" class="form-control" id="slaughterPassword">
-                        </div>
-                        <div class="form-group">
-                            <input type="button" class="btn btn-primary btn-lg" id="btnSlaughterLogin" onclick="AcaoCorretiva.logarUsuarioSlaughter();" value="Verify Login">
-                        </div>
-                    </div>
-                    <div class="col-xs-6">
-                        <div class="form-group">
-                            <label>Techinical Services Signature:</label><br />
-                            <label>Login:</label>
-                            <input type="text" class="form-control" id="techinicalLogin">
-                        </div>
-                        <div class="form-group">
-                            <label>Password:</label>
-                            <input type="password" class="form-control" id="techinicalPassword">
-                        </div>
-                        <div class="form-group">
-                            <input type="button" class="btn btn-primary btn-lg" id="btnTechinicalLogin" onclick="AcaoCorretiva.logarUsuarioTechnical();" value="Verify Login">
-                        </div>
-                    </div>
-                </div>
-                <br />
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="form-group">
-                            <input type="button" class="btn btn-primary btn-lg" id="btnSendCorrectiveAction" onclick="AcaoCorretiva.enviarAcaoCorretiva();" value="Send">
-                        </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-primary btn-lg" id="btnSendCorrectiveAction" onclick="AcaoCorretiva.enviarAcaoCorretiva();" value="Send">
                     </div>
                 </div>
             </div>
+
+
+
+
+
         </div>
-    </div>
 
-    <div class="kc_fab_wrapper btnSave hide"></div><!--Save-->
+        <div class="kc_fab_wrapper btnSave hide"></div><!--Save-->
 
-    <button class="btn btn-lg btn-danger btnCA hide">Corrective Action</button><!--Corrective Action-->
+        <button class="btn btn-lg btn-danger btnCA hide">Corrective Action</button><!--Corrective Action-->
 
 
-    <script src="Plugins/jquery/jquery.min.js"></script>
-    <script src="Scripts/bootstrap.js"></script>
-    <script src="Plugins/float_button/js/kc.fab.js"></script>
-    <script src="Plugins/sidebar/js/sidebar.js"></script>
-    <script src="Scripts/Methods.js"></script>
+        <script src="Plugins/jquery/jquery.min.js"></script>
+        <script src="Scripts/bootstrap.js"></script>
+        <script src="Plugins/float_button/js/kc.fab.js"></script>
+        <script src="Plugins/sidebar/js/sidebar.js"></script>
+        <script src="Scripts/Methods.js"></script>
+        <script src="Scripts/bootstrap-modal.js"></script>
+        <script src="Scripts/bootstrap-modalmanager.js"></script>
 </body>
 </html>
