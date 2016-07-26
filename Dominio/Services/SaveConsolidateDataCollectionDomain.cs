@@ -19,11 +19,13 @@ namespace Dominio.Services
         private IBaseRepository<DataCollection> _baseRepoDataCollection;
         private IBaseRepository<DataCollectionResult> _baseRepoDataCollectionResult;
 
-        public SaveConsolidateDataCollectionDomain(IBaseRepository<Level01Consolidation> baseRepoLevel1Consolidation,
-                    IBaseRepository<Level02Consolidation> baseRepoLevel2Consolidation,
-                    IBaseRepository<Level03Consolidation> baseRepoLevel3Consolidation,
-                    IBaseRepository<DataCollection> baseRepoDataCollection,
-                    IBaseRepository<DataCollectionResult> baseRepoDataCollectionResult)
+        public SaveConsolidateDataCollectionDomain(
+            IBaseRepository<Level01Consolidation> baseRepoLevel1Consolidation,
+            IBaseRepository<Level02Consolidation> baseRepoLevel2Consolidation,
+            IBaseRepository<Level03Consolidation> baseRepoLevel3Consolidation,
+            IBaseRepository<DataCollection> baseRepoDataCollection,
+            IBaseRepository<DataCollectionResult> baseRepoDataCollectionResult
+            )
         {
             _baseRepoLevel1Consolidation = baseRepoLevel1Consolidation;
             _baseRepoLevel2Consolidation = baseRepoLevel2Consolidation;
