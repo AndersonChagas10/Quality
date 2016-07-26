@@ -1,7 +1,5 @@
-﻿using DTO.Entities.BaseEntity;
+﻿using DTO.BaseEntity;
 using DTO.Helpers;
-using System;
-using System.Collections.Generic;
 
 namespace DTO.DTO
 {
@@ -41,27 +39,16 @@ namespace DTO.DTO
         /// <param name="id_Level2"></param>
         /// <param name="evaluate"></param>
         /// <param name="notConform"></param>
-        public void ValidaColeta()
+        public void ValidaColeta(bool isAlter = false)
         {
-            Guard.ForNegative(Period, "The Period must be positive.");
-            Guard.forValueZero(Period, "The Period must be diferent of zero.");
+            ValidaBaseEntity(isAlter);
+            ValidaDataCollectionBase();
 
             Guard.ForNegative(UserIdInsercao, "The Auditor Id must be positive.");
             Guard.forValueZero(UserIdInsercao, "The Auditor Id must be diferent of zero.");
-
             Guard.ForValidFk(Id_Level2, "Cannot insert the data because: The level1 Identity Key is Invalid or Null.");//O Id do Level2 está em formato Inválido ou Nulo
             Guard.ForValidFk(Id_Level1, "Cannot insert the data because: The level2 Identity Key is Invalid or Null.");//O Id da Operação está em formato Inválido ou Nulo
             Guard.ForValidFk(Id_Level3, "Cannot insert the data because: The level3 Identity Key is Invalid or Null.");//O Id da Level3 está em formato Inválido ou Nulo
-            Guard.ForNegative(Id, "Cannot insert the data because: The level1 Identity Key is Negative. Please verify a positive value for Save data.");
-            Guard.ForNegative(Evaluate, "Evaluate");
-            Guard.ForNegative(NotConform, "Not Conform");
-
-            //Id = id;
-            //Id_Level3 = id_Level3;
-            //Id_Level1 = id_Level1;
-            //Id_Level2 = id_Level2;
-            //Evaluate = evaluate;
-            //NotConform = notConform;
         }
     }
 }

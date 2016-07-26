@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DTO.BaseEntity;
+using DTO.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -6,20 +8,16 @@ namespace DTO.DTO
 {
     [DataContract]
     [Serializable]
-    public class Level03DTO
+    public class Level03DTO : EntityBase
     {
-        [DataMember]
-        public int Id { get; set; }
         [DataMember]
         public string Name { get; set; }
         [DataMember]
         public string Alias { get; set; }
         [DataMember]
         public string ClientSpecification { get; set; }
-        [DataMember]
+        [DataMember] //MOCK ERRADO NO DB.
         public System.DateTime AddedDate { get; set; }
-        [DataMember]
-        public Nullable<System.DateTime> AlterDate { get; set; }
         [DataMember]
         public bool Active { get; set; }
         [DataMember]
@@ -31,5 +29,37 @@ namespace DTO.DTO
         public List<DataCollectionResultDTO> DataCollectionResult { get; set; }
         [DataMember]
         public List<Level03ConsolidationDTO> Level03Consolidation { get; set; }
+
+        public void ValidaLeve03DTO(bool isAlter)
+        {
+
+            #region Name
+            string NameValue;
+            Guard.NullOrEmptyValuesCheck(retorno: out NameValue, propName: "Name", value: Name, requerido: true);
+            Name = NameValue;
+            #endregion
+
+            #region Alias
+
+            #endregion
+
+            #region ClientSpecification
+
+            #endregion
+
+            #region Active
+
+            #endregion
+
+            #region PeopleCreateId:  Não pode ser Zero, não pode ser negativo.
+            Guard.ForNegative(PeopleCreateId, "PeopleCreateId");
+            Guard.forValueZero(PeopleCreateId, "PeopleCreateId");
+            #endregion
+
+            #region Ordering:
+
+            #endregion
+
+        }
     }
 }
