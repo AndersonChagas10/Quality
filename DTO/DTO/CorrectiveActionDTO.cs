@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO.BaseEntity;
+using System;
 using System.Globalization;
 using System.Runtime.Serialization;
 
@@ -6,10 +7,8 @@ namespace DTO.DTO
 {
     [DataContract]
     [Serializable]
-    public class CorrectiveActionDTO
+    public class CorrectiveActionDTO : EntityBase
     {
-        [DataMember]
-        public int Id { get; set; }
         [DataMember]
         public System.DateTime DateExecute { get; set; }
         [DataMember]
@@ -90,5 +89,71 @@ namespace DTO.DTO
                 }
             }
         }
+
+        /// <summary>
+        /// Valida Entidade CorrectiveActionDTO para integridade do Banco de dados.
+        /// </summary>
+        /// <param name="isAlter"></param>
+        public void ValidaDataCorrectiveActionDTO(bool isAlter = false)
+        {
+
+            ValidaBaseEntity(isAlter);
+
+            #region DateExecute
+            #endregion
+
+            #region Auditor
+            #endregion
+
+            #region Shift
+            #endregion
+
+            #region AuditLevel1
+            #endregion
+            
+            #region AuditLevel2
+            #endregion
+            
+            #region AuditLevel3
+            #endregion
+            
+            #region StartTime
+            #endregion
+            
+            #region Period
+            #endregion
+            
+            #region DescriptionFailure
+            #endregion
+            
+            #region ImmediateCorrectiveAction
+            #endregion
+            
+            #region ProductDisposition
+            #endregion
+
+            #region PreventativeMeasure
+            #endregion
+
+            #region Slaughter
+            #endregion
+
+            #region DateTimeSlaughter
+            #endregion
+
+            #region Techinical
+            #endregion
+
+            #region DateTimeTechinical
+            #endregion
+
+            #region NameTechinical
+            #endregion
+
+            #region NameSlaughter
+            #endregion
+
+        }
+
     }
 }

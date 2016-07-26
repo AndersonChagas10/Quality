@@ -1,4 +1,4 @@
-﻿using DTO.Entities.BaseEntity;
+﻿using DTO.BaseEntity;
 using DTO.Helpers;
 
 namespace DTO.DTO

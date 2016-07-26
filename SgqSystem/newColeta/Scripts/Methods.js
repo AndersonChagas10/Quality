@@ -195,7 +195,12 @@ function showLevel02(level01) {
         var level02 = $('.level02List');
         level02.removeClass('hide').show();
         $('.level02Group').addClass('hide');
-        level02.children('.level02Group[level01id=' + level01.attr('id') + ']').removeClass('hide');
+
+        var level02Group = level02.children('.level02Group[level01id=' + level01.attr('id') + ']');
+
+        level02Group.removeClass('hide');
+        
+        level02ButtonSave(level02Group);
 
         $('.level02').parents('li').children('.row').children('.userInfo').children('div').children('.areaComplete, .areaNotComplete').addClass('hide').siblings('.areaNotComplete').removeClass('hide');
         $('.level02[completed]').parents('li').children('.row').children('.userInfo').children('div').children('.areaComplete').removeClass('hide').siblings('.areaNotComplete, .na').addClass('hide').siblings('.btnAreaSave').addClass('hide');
@@ -293,6 +298,7 @@ function rightMenuShow() {
     $(".rightMenu").animate({
         right: "0px"
     }, "fast", function () {
+        $('.overlay').removeClass('hide');
         $(this).addClass('visible');
     });
 }
@@ -300,6 +306,7 @@ function imageShow() {
     $(".cffImage").animate({
         left: "0px"
     }, "fast", function () {
+        $('.overlay').removeClass('hide');
         $(this).addClass('visible');
     });
 }
@@ -314,12 +321,16 @@ $(document).on('click', '#btnLogout', function (e) {
 });
 function rightMenuHide() {
     if ($('.rightMenu').hasClass('visible')) {
-        $(".rightMenu").removeClass('visible').animate({ "right": "-151px" }, "fast");
+        $(".rightMenu").removeClass('visible').animate({ "right": "-151px" }, "fast", function (e) {
+            $('.overlay').addClass('hide');
+        });
     }
 }
 function imageHide() {
     if ($('.cffImage').hasClass('visible')) {
-        $(".cffImage").removeClass('visible').animate({ "left": "-256px" }, "fast");
+        $(".cffImage").removeClass('visible').animate({ "left": "-256px" }, "fast", function (e) {
+            $('.overlay').addClass('hide');
+        });
     }
 }
 function initializeApp() {
@@ -556,6 +567,9 @@ $(document).on('click', '.btnAreaSave', function (e) {
 function level02Complete(level02) {
     level02.attr('completed', 'completed');
     level02.parents('li').addClass('bgCompleted');
+
+   
+
     var botaoNa = level02.parents('.row').children('.userInfo').children('div').children('.na');
     var botaoSalvarLevel02 = level02.parents('.row').children('.userInfo').children('div').children('.btnAreaSave');
     var iconCompleto = level02.parents('.row').children('.userInfo').children('div').children('.areaComplete');
@@ -565,22 +579,26 @@ function level02Complete(level02) {
     botaoNa.addClass('hide');
     botaoSalvarLevel02.addClass('hide');
     $('.btnSave').addClass('hide');
-
-
+    level02ButtonSave(level02.parents('.level02Group'));
+   
     //fazer uma funcao para melhorar
-
     var defectsLevel02 = parseInt($('.painelLevel03 .defects').text());
     var defectsLimit = parseInt(level02.attr('levelerrorlimit'));
-
     if (defectsLevel02 > defectsLimit) {
         $('.btnCA').removeClass('hide');
-
     }
     else if ($('.level02[limitexceeded]').length == 0) {
         $('.btnCA').addClass('hide');
-
     }
+}
+function level02ButtonSave(level02Group) {
+    var level01 = $('.level01[id=' + level02Group.attr('level01id') + ']');
 
+    //level01.attr('saveLevel02') && level02Group.children('.row').children('.level02[complete]')
+    if(level01.attr('saveLevel02') && level02Group.children('li').children('.row').children('.level02[completed!=completed]').length ==  0)
+    {
+        $('.btnSave').removeClass('hide');
+    }
 
 }
 function level03AlertAdd(input) {
@@ -708,6 +726,9 @@ $(document).on('input', 'input#mudScore', function (e) {
 });
 $(document).on('change', 'select#biasedUnbiased', function (e) {
     $('span.biasedUnbiased').html($("select#biasedUnbiased :selected").text());
+});
+$(document).on('click', '#btnSalvarLevel02CCA', function (e) {
+    alert('salvar level02 completo');
 });
 
 
