@@ -15,14 +15,14 @@ namespace Application.AppServiceClass
             _coletaService = coletaService;
         }
 
-        public GenericReturn<ColetaDTO> Salvar(ColetaDTO r)
+        public GenericReturn<ColetaDTO> SalvarColeta(ColetaDTO r)
         {
-            return _coletaService.Salvar(r);
+            return _coletaService.SalvarColeta(r);
         }
 
-        public GenericReturn<ColetaDTO> SalvarLista(List<ColetaDTO> list)
+        public GenericReturn<ColetaDTO> SalvarListaColeta(List<ColetaDTO> list)
         {
-            return _coletaService.SalvarLista(list);
+            return _coletaService.SalvarListaColeta(list);
         }
     }
 }

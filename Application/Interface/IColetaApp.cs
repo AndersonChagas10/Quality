@@ -6,7 +6,7 @@ namespace Application.Interface
 {
     public interface IColetaApp
     {
-        GenericReturn<ColetaDTO> Salvar(ColetaDTO r);
-        GenericReturn<ColetaDTO> SalvarLista(List<ColetaDTO> list);
+        GenericReturn<ColetaDTO> SalvarColeta(ColetaDTO r);
+        GenericReturn<ColetaDTO> SalvarListaColeta(List<ColetaDTO> list);
     }
 }
