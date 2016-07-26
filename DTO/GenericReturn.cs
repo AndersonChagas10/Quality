@@ -4,11 +4,9 @@ namespace DTO.Helpers
 {
     public class GenericReturn<T> 
     {
-        //public ExceptionHelper exception { get; set; }
         public string Mensagem { get; set; }
         public string MensagemExcecao { get; set; }
         public T Retorno { get; private set; }
-        //public List<T> ListRetorno { get; set; }
         public string Inner { get; private set; }
 
         public GenericReturn()
@@ -19,11 +17,6 @@ namespace DTO.Helpers
         {
              SetRetorno(obj);
         }
-
-        //public GenericReturn(List<T> listObj)
-        //{
-        //    SetListRetorno(listObj);
-        //}
 
         public GenericReturn(string _mensagem)
         {
@@ -38,15 +31,6 @@ namespace DTO.Helpers
 
             Retorno = obj;
         }
-
-        //public void SetListRetorno(List<T> obj)
-        //{
-        //    if (obj.IsNull())
-        //        throw new ExceptionHelper("Objetos não encontrados.");
-
-        //        ListRetorno = obj;
-
-        //}
 
         public GenericReturn(Exception _ex, string mensagemPadrao = "")
         {
