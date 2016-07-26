@@ -2,7 +2,7 @@
 <html>
 <head>
     <title></title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
     <link href="Content/Geral.css" rel="stylesheet" />
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <link href="Plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
@@ -14,53 +14,79 @@
         <div class="head"></div>
         <form class="form-signin">
             <h2 class="form-signin-heading">Please sign in</h2>
-            <label for="inputEmail" class="sr-only">Username</label>
-            <input type="text" id="inputUserName" class="form-control" placeholder="Username" required="" autofocus="">
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
             <select class="form-control" id="shift">
-                <option>Select the shift</option>
+                <option value="0">Select the shift</option>
                 <option value="1">Shift A</option>
                 <option value="2">Shift B</option>
             </select>
-            <button class="btn btn-lg btn-primary btn-block marginTop10" type="submit" id="btnLogin">Sign in</button>
+            <label for="inputUserName" class="sr-only">Username</label>
+            <input type="text" id="inputUserName" class="form-control" placeholder="Username" required="" autofocus="" disabled>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" disabled>
+
+            <button class="btn btn-lg btn-primary btn-block marginTop10" type="submit" id="btnLogin" disabled>Sign in</button>
+            <div id="messageError" class="alert alert-danger hide" role="alert">
+                <span class="icon-remove-sign"></span>    <strong>Erro! </strong><span id="mensagemErro"> </span>
+            </div>
+            <div id="messageAlert" class="alert alert-info hide" role="alert">
+                <span id="mensagemAlerta" class="icon-info-sign"></span>
+            </div>
+            <div id="messageSuccess" class="alert alert-success hide" role="alert">
+                <span id="mensagemSucesso" class="icon-ok-circle"></span>
+            </div>
         </form>
         <div class="foot"></div>
     </div>
-    <div class="App hide" userId="" loginTime="" shift="">
-      <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Data Collection</a>
+    <div class="App hide" userId="" userName="" loginTime="" shift="" shiftName="" breadMainLevel="Slaugther">
+        <div class="rightMenu">
+            <div class="list-group list-group-inverse rightMenuList">
+                <a href="#" id="btnSync" class="list-group-item">Sync</a>
+                <a href="#" id="btnLogout" class="list-group-item">Logout</a>
+            </div>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Logout</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </div>
-        
-      <div class="container">
-            <ol class="breadcrumb">
-            </ol>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" id="SGQName" href="#"><i class="fa fa-chevron-left hide iconReturn" aria-hidden="true"></i> Data Collection</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav hide buttonMenu" level01Id="3">
+                        <li>
+                            <a id="btnShowImage" href="#" role="button" title="More" class="font16">Show Image</a>
+
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a id="btnMore" href="#" role="button" title="More" class="font16">...</a>
+                            <!--  <ul class="dropdown-menu">
+                              <li><a href="#">Logout</a></li>
+                            </ul> -->
+                        </li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+        <div class="container">
+            <div class="cffImage">
+
+
+            </div>
+            <ol class="breadcrumb"></ol>
 
             <div class="level01List">
                 <div class="painel padding10">
                     <div class="row">
-                        <div class="col-xs-6 atualDate">99/99/9999 00:00</div>
-                        <div class="col-xs-6 shift">Shift A</div>
+                        <div class="col-xs-12 shift">
+                            <span class="atualDate">05/25/2015</span> /
+                            <span class="shift">Shift A</span>
+                        </div>
                     </div>
                 </div>
                 <div class="list-group">
@@ -71,87 +97,690 @@
 
             </div>
             <div class="level02List hide">
-                <div class="painel padding10">
+                <div class="painel painelLevel02 padding10">
                     <div class="row">
-                        <div class="atualDate col-xs-4">99/99/9999 00:00</div>
-                        <div class="shift col-xs-4">Shift A</div>
-                        <div class="period col-xs-4">period</div>
-                        <div class="reaudit col-xs-4">audit/readit</div>
-                        <div class="cattleType hide labelPainel" level01Id="3">cattleType</div>
-                        <div class="chainSpedy hide labelPainel" level01Id="3">chainSpedy</div>
-                        <div class="Lot hide labelPainel col-xs-4" level01Id="3">Lot</div>
-                        <div class="mudScore hide labelPainel col-xs-4" level01Id="3">mudScore</div>
-                        <div class="baisedUnbaised hide labelPainel col-xs-4" level01Id="2">baisedUnbaised</div>
-                        <div class="totalDefects hide labelPainel col-xs-4" level01Id="3">totalDefects</div>
-                        <div class="totalErros hide labelPainel col-xs-4" level01Id="6">totalErros</div>
-                        <div class="totalSideErros hide labelPainel col-xs-4" level01Id="6">totalSideErros</div>
-                        <div class="setAtualSetTotal hide labelPainel col-xs-4" level01Id="6">setAtualSetTotal</div>
-                        <div class="sideAtualSideTotal hide labelPainel col-xs-4" level01Id="6">sideAtualSideTotal</div>
+                        <div class="col-xs-3">
+                            <div>
+                                <span class="atualDate">05/25/2015</span> /
+                                <span class="shift">Shift A</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="3">
+                                <strong>Total Defects:</strong> <span class="totalDefects">0</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="6">
+                                <span class="setsDone"><strong>Sets Done:</strong> 0</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="labelPainel hide" level01Id="3">
+                                <select class="form-control" id="reaudit">
+                                    <option value="0">Audir or Reaudit</option>
+                                    <option value="1">Audit</option>
+                                    <option value="2">Reaudit</option>
+                                </select>
+                            </div>
+                            <div class="labelPainel hide" level01Id="6">
+                                <select class="form-control" id="reaudit">
+                                    <option value="0">Audir or Reaudit</option>
+                                    <option value="1">Audit</option>
+                                    <option value="2">Reaudit</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select class="form-control" id="period">
+                                    <option value="0">Select period</option>
+                                    <option value="1">Period 1</option>
+                                    <option value="2">Period 2</option>
+                                    <option value="3">Period 3</option>
+                                    <option value="4">Period 4</option>
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="labelPainel hide" level01Id="3">
+                                <select class="form-control" id="cattleType">
+                                    <option value="0">Select cattle type</option>
+                                    <option value="1">Cow</option>
+                                    <option value="2">Steer</option>
+                                </select>
+                            </div>
+                            <div class="labelPainel hide" level01Id="3">
+                                <input type="number" id="chainSpedy" class="form-control" placeholder="Chain Speed (%)" />
+                            </div>
+                            <div class="labelPainel hide" level01Id="2">
+                                <select class="form-control" id="biasedUnbiased">
+                                    <option value="0">Select Unbiased/Biased...</option>
+                                    <option value="1">Unbiased</option>
+                                    <option value="2">Biased</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="labelPainel hide" level01Id="3">
+                                <input type="number" id="lotNumber" class="form-control" placeholder="Lot #" />
+                            </div>
+                            <div class="labelPainel hide" level01Id="3">
+                                <input type="number" id="mudScore" class="form-control" placeholder="Mud Score" />
+                            </div>
+                            <div class="labelPainel hide" level01Id="6">
+                                <span class="sideWithErrors">0 s</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="6">
+                                <span class="more3Defecets">0 m</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="list-group levelGroup02 hide" level01id="3">
-                    <a href="#" id="22" class="list-group-item level02">Area 1</a>
-                    <a href="#" id="23" class="list-group-item level02">Area 2</a>
-                    <a href="#" id="24" class="list-group-item level02">Area 3</a>
-                    <a href="#" id="25" class="list-group-item level02">Area 4</a>
-                    <a href="#" id="26" class="list-group-item level02">Area 5</a>
-                    <a href="#" id="27" class="list-group-item level02">Area 6</a>
-                    <a href="#" id="28" class="list-group-item level02">Area 7</a>
-                    <a href="#" id="29" class="list-group-item level02">Area 8</a>
-                    <a href="#" id="30" class="list-group-item level02">Area 9</a>
-                    <a href="#" id="31" class="list-group-item level02">Area 10</a>
-                    <a href="#" id="32" class="list-group-item level02">Area 11</a>
-                    <a href="#" id="33" class="list-group-item level02">Area 12</a>
-                    <a href="#" id="34" class="list-group-item level02">Area 13</a>
-                    <a href="#" id="35" class="list-group-item level02">Area 14</a>
-                    <a href="#" id="36" class="list-group-item level02">Area 15</a>
-                    <a href="#" id="37" class="list-group-item level02">Area 16</a>
-                    <a href="#" id="38" class="list-group-item level02">Area 17</a>
-                    <a href="#" id="39" class="list-group-item level02">Area 18</a>
+                <div class="list-group level02Group hide" level01id="3">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="22" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 1</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="23" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 2</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="23" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 3</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="25" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 4</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="26" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 5</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="27" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 6</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="28" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 7</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="29" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 8</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="30" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 9</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="31" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="2"><span>Area 10</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="32" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 11</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="33" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="2"><span>Area 12</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="34" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 13</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="35" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="3"><span>Area 14</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="36" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 15</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="37" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 16</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="38" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 17</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="39" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 18</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                 </div>
-                <div class="list-group levelGroup02 hide" level01id="6">
-                    <a href="#" id="47" class="list-group-item level02">CFF</a>
+                <div class="list-group level02Group hide" level01id="6">
+                    <a href="#" id="47" class="list-group-item level02"><span>CFF</span></a>
                 </div>
-                <div class="list-group levelGroup02 hide" level01id="2">
-                    <a href="#" id="1" class="list-group-item level02">Open Hide Sticker</a>
-                    <a href="#" id="2" class="list-group-item level02">Stick and Bleed</a>
-                    <a href="#" id="3" class="list-group-item level02">Mark Pattern</a>
-                    <a href="#" id="4" class="list-group-item level02">Cap Bung</a>
-                    <a href="#" id="5" class="list-group-item level02">Remove Udder</a>
-                    <a href="#" id="6" class="list-group-item level02">1st Legger</a>
-                    <a href="#" id="7" class="list-group-item level02">2nd Legger</a>
-                    <a href="#" id="8" class="list-group-item level02">Rumper</a>
-                    <a href="#" id="9" class="list-group-item level02">Inside Butter</a>
-                    <a href="#" id="10" class="list-group-item level02">Outside Butter</a>
-                    <a href="#" id="11" class="list-group-item level02">Belly Ripper</a>
-                    <a href="#" id="12" class="list-group-item level02">Flanker</a>
-                    <a href="#" id="13" class="list-group-item level02">Rimover</a>
-                    <a href="#" id="14" class="list-group-item level02">Low Backer</a>
-                    <a href="#" id="15" class="list-group-item level02">Open Necks</a>
-                    <a href="#" id="16" class="list-group-item level02">Gullet Raiser</a>
-                    <a href="#" id="17" class="list-group-item level02">Weasand Rodder</a>
-                    <a href="#" id="18" class="list-group-item level02">Bung Dropper</a>
-                    <a href="#" id="19" class="list-group-item level02">Pre-gutter</a>
-                    <a href="#" id="20" class="list-group-item level02">Gutter</a>
-                    <a href="#" id="21" class="list-group-item level02">Clip Weasand</a>
+                <div class="list-group level02Group hide" level01id="2">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="1" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Open Hide Sticker</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="2" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Stick and Bleed</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="3" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Mark Pattern</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="4" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Cap Bung</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="5" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Remove Udder</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="6" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>1st Legger</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="7" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>2nd Legger</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="8" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Rumper</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="9" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Inside Butter</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="10" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Outside Butter</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="11" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Belly Ripper</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="12" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Flanker</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="13" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Rimover</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="14" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Low Backer</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="15" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Open Necks</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="16" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Gullet Raiser</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="17" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Weasand Rodder</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="18" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Bung Dropper</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="19" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Pre-gutter</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="20" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Gutter</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="21" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Clip Weasand</span></a>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                 </div>
-            
-                
+
+
             </div>
             <div class="level03List hide">
-                <div class="painel">
+                <div class="painel painelLevel03 padding10">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <div>
+                                <span class="atualDate">05/25/2015</span> /
+                                <span class="shift">Shift A</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="3">
+                                <strong>Total Defects:</strong> <span class="totalDefects">0</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="3">
+                                <strong>Defects:</strong> <span class="defects">0</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="6">
+                                <span class="setsDone">Sets Done: 0</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div>
+                                <span class="auditReaudit">Audit/Reaudit</span>
+                            </div>
+                            <div>
+                                <span class="period">Period</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="2">
+                                <span class="biasedUnbiased">biasedUnbiased</span>
+                            </div>
 
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="labelPainel hide" level01Id="3">
+                                <span class="cattleType">CattleType</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="3">
+                                <span class="chainSpedy">chainSpedy</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="6">
+                                <span class="sideWithErrors">0 swe</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="6">
+                                <span class="more3Defects">0 m3d</span>
+                            </div>
 
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="labelPainel hide" level01Id="3">
+                                <span class="lotNumber">lotNumber</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="3">
+                                <span class="mudScore">mudScore</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="6">
+                                <span class="setAtual">0 set atual</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="6">
+                                <span class="sideAtual">0 side atual</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="cca level03Group hide" level01id="3">
+
                     <ul class="list-group">
-                        <li id="1"  class="list-group-item level03">
+                        <li id="1" class="list-group-item level03">
                             <div class="row">
                                 <div class="col-xs-6">Specks</div>
                                 <div class="col-xs-6 text-center">
                                     <div class="input-group input-group-sm width200 pull-right">
-                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span></div>
+                                        <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -161,7 +790,7 @@
                                 <div class="col-xs-6">Dressing</div>
                                 <div class="col-xs-6 text-center">
                                     <div class="input-group input-group-sm width200 pull-right">
-                                        <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                        <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                     </div>
                                 </div>
                             </div>
@@ -172,7 +801,7 @@
                                 <div class="col-xs-6">Single Hairs</div>
                                 <div class="col-xs-6 text-center">
                                     <div class="input-group input-group-sm width200 pull-right">
-                                        <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                        <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                     </div>
                                 </div>
                             </div>
@@ -183,7 +812,7 @@
                                 <div class="col-xs-6">Clusters</div>
                                 <div class="col-xs-6 text-center">
                                     <div class="input-group input-group-sm width200 pull-right">
-                                        <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                        <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                     </div>
                                 </div>
                             </div>
@@ -194,15 +823,20 @@
                                 <div class="col-xs-6">Hide</div>
                                 <div class="col-xs-6 text-center">
                                     <div class="input-group input-group-sm width200 pull-right">
-                                        <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                        <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                     </div>
                                 </div>
                             </div>
 
                         </li>
                     </ul>
+                    <button id="btnSalvarCCA" class="btn btn-default level03Confirm hide">Salvar</button>
                 </div>
                 <div class="cff level03Group hide" level01id="6">
+                    <div class="marginBottom10">
+                        <button class="btn btn-default button-expand marginRight10"><i class="fa fa-expand" aria-hidden="true"></i> Expand All</button>
+                        <button class="btn btn-default button-collapse"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>
+                    </div>
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="40">
@@ -219,7 +853,7 @@
                                             <div class="col-xs-6">Cuts</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -230,7 +864,7 @@
                                             <div class="col-xs-6">Folds and Flaps</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -241,7 +875,7 @@
                                             <div class="col-xs-6">Puncture</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -268,7 +902,7 @@
                                             <div class="col-xs-6">Cuts</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -279,7 +913,7 @@
                                             <div class="col-xs-6">Folds and Flaps</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -290,7 +924,7 @@
                                             <div class="col-xs-6">Puncture</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -317,7 +951,7 @@
                                             <div class="col-xs-6">Cuts</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -328,7 +962,7 @@
                                             <div class="col-xs-6">Folds and Flaps</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -339,7 +973,7 @@
                                             <div class="col-xs-6">Puncture</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -366,7 +1000,7 @@
                                             <div class="col-xs-6">Cuts</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -377,7 +1011,7 @@
                                             <div class="col-xs-6">Folds and Flaps</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -388,7 +1022,7 @@
                                             <div class="col-xs-6">Puncture</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -415,7 +1049,7 @@
                                             <div class="col-xs-6">Cuts</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -426,7 +1060,7 @@
                                             <div class="col-xs-6">Folds and Flaps</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -437,7 +1071,7 @@
                                             <div class="col-xs-6">Puncture</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -464,7 +1098,7 @@
                                             <div class="col-xs-6">Cuts</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -475,7 +1109,7 @@
                                             <div class="col-xs-6">Folds and Flaps</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -486,7 +1120,7 @@
                                             <div class="col-xs-6">Puncture</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -513,7 +1147,7 @@
                                             <div class="col-xs-6">Cuts</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -524,7 +1158,7 @@
                                             <div class="col-xs-6">Folds and Flaps</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -535,7 +1169,7 @@
                                             <div class="col-xs-6">Puncture</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -562,7 +1196,7 @@
                                             <div class="col-xs-6">Cuts</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -573,7 +1207,7 @@
                                             <div class="col-xs-6">Folds and Flaps</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -584,7 +1218,7 @@
                                             <div class="col-xs-6">Puncture</div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
-                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn"><button class="btn btn-default btn-plus" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -595,8 +1229,15 @@
                             </div>
                         </div>
                     </div>
-                    </div>
+                    <button id="btnSalvarCFF" class="btn btn-default level03Confirm hide">Salvar</button>
+
+                </div>
                 <div class="htp level03Group hide" level01id="2">
+                    <div class="marginBottom10">
+                        <button class="btn btn-default button-expand marginRight10"><i class="fa fa-expand" aria-hidden="true"></i> Expand All</button>
+                        <button class="btn btn-default button-collapse"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>
+                    </div>
+
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="40">
@@ -608,7 +1249,7 @@
                             </div>
                             <div id="collapsehOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    <div id="6" class="level03">
+                                    <div id="13" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Rinse hands with the chlorine spray between each carcass.</div>
                                             <div class="col-xs-3 text-center">
@@ -617,7 +1258,7 @@
                                         </div>
 
                                     </div>
-                                    <div id="7" class="level03">
+                                    <div id="14" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Knives are to be steeled prior to placing in the sterilizer.</div>
                                             <div class="col-xs-3 text-center">
@@ -641,7 +1282,7 @@
                             </div>
                             <div id="collapsehTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    <div id="6" class="level03">
+                                    <div id="15" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Two knives are to be used in a knife rotation system.</div>
                                             <div class="col-xs-3 text-center">
@@ -650,7 +1291,7 @@
                                         </div>
 
                                     </div>
-                                    <div id="7" class="level03">
+                                    <div id="16" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Knives are to be changed (rotated) between each individual carcass.</div>
                                             <div class="col-xs-3 text-center">
@@ -659,7 +1300,7 @@
                                         </div>
 
                                     </div>
-                                    <div id="7" class="level03">
+                                    <div id="17" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">All hide pattern openings done with one continuous cut.</div>
                                             <div class="col-xs-3 text-center">
@@ -668,7 +1309,7 @@
                                         </div>
 
                                     </div>
-                                    <div id="7" class="level03">
+                                    <div id="18" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">All hide pattern openings trimmed as close to the initial job of opening. The piece of carcass removed as a continuous portion.</div>
                                             <div class="col-xs-3 text-center">
@@ -692,7 +1333,7 @@
                             </div>
                             <div id="collapsehThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    <div id="6" class="level03">
+                                    <div id="19" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Sanitized by dipping in the 180°F sterilizer while running the blade for one (1) second between each carcass.</div>
                                             <div class="col-xs-3 text-center">
@@ -701,7 +1342,7 @@
                                         </div>
 
                                     </div>
-                                    <div id="7" class="level03">
+                                    <div id="20" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Hoses for the air knives secured in a manner that does not contact the exposed carcass surface.</div>
                                             <div class="col-xs-3 text-center">
@@ -726,7 +1367,7 @@
                             </div>
                             <div id="collapsehFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    <div id="6" class="level03">
+                                    <div id="21" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Knives are to be changed (rotated) between each individual carcass.</div>
                                             <div class="col-xs-3 text-center">
@@ -752,24 +1393,125 @@
                             </div>
                             <div id="collapsehFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    <textarea id="txtOthers"  class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                                    <textarea id="txtOthers" class="form-control custom-control" rows="3" style="resize:none"></textarea>
 
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-             </div>
-          <div class="kc_fab_wrapper"></div><!--Save-->
-         </div>
-        
-      </div>
+                    <button id="btnSalvarHTP" class="btn btn-default level03Confirm hide">Salvar</button>
 
-    
+                </div>
+            </div>
+            <div class="correctiveaction hide list-group" style="margin-top: 16px;  padding-bottom: 70px;">
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <b>Corrective Action Taken:<br /></b>
+                                Date/Time: <span id="datetime"></span><br />
+                                Auditor: <span id="auditor"></span><br />
+                                Shift: <span id="shift"></span><br />
+                            </div>
+                            <div class="col-xs-6">
+                                <b>Audit Information:<br /></b>
+                                Audit: <span id="auditText"></span><br />
+                                Start Time: <span id="starttime"></span><br />
+                                Period: <span id="period"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description of Failure:</label>
+                    <textarea id="DescriptionFailure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Immediate Corrective Action:</label>
+                    <textarea id="ImmediateCorrectiveAction" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Product Disposition:</label>
+                    <textarea id="ProductDisposition" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Preventative Measure:</label>
+                    <textarea id="PreventativeMeasure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Slaughter:</label>
+                            <input type="text" class="form-control" id="slaughter" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Date/Time:</label>
+                            <input type="text" class="form-control" id="slaughterDatetime" disabled>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Techinical Services:</label>
+                            <input type="text" class="form-control" id="techinical" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Date/Time:</label>
+                            <input type="text" class="form-control" id="techinicalDatetime" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Slaughter Signature:</label><br />
+                            <label>Login:</label>
+                            <input type="text" class="form-control" id="slaughterLogin">
+                        </div>
+                        <div class="form-group">
+                            <label>Password:</label>
+                            <input type="password" class="form-control" id="slaughterPassword">
+                        </div>
+                        <div class="form-group">
+                            <input type="button" class="btn btn-primary btn-lg" id="btnSlaughterLogin" onclick="AcaoCorretiva.logarUsuarioSlaughter();" value="Verify Login">
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Techinical Services Signature:</label><br />
+                            <label>Login:</label>
+                            <input type="text" class="form-control" id="techinicalLogin">
+                        </div>
+                        <div class="form-group">
+                            <label>Password:</label>
+                            <input type="password" class="form-control" id="techinicalPassword">
+                        </div>
+                        <div class="form-group">
+                            <input type="button" class="btn btn-primary btn-lg" id="btnTechinicalLogin" onclick="AcaoCorretiva.logarUsuarioTechnical();" value="Verify Login">
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <input type="button" class="btn btn-primary btn-lg" id="btnSendCorrectiveAction" onclick="AcaoCorretiva.enviarAcaoCorretiva();" value="Send">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kc_fab_wrapper btnSave hide"></div><!--Save-->
+
+    <button class="btn btn-lg btn-danger btnCA hide">Corrective Action</button><!--Corrective Action-->
+
+
     <script src="Plugins/jquery/jquery.min.js"></script>
     <script src="Scripts/bootstrap.js"></script>
-    <script src="Scripts/Methods.js"></script>
-    <script src="Plugins/float_button/js/kc.fab.min.js"></script>
+    <script src="Plugins/float_button/js/kc.fab.js"></script>
     <script src="Plugins/sidebar/js/sidebar.js"></script>
+    <script src="Scripts/Methods.js"></script>
 </body>
 </html>
