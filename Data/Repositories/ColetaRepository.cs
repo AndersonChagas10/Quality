@@ -31,7 +31,7 @@ namespace Data.Repositories
         /// Salva o resultado de uma coleta de dados na tabela Result old.
         /// </summary>
         /// <param name="r">Coleta com os parametros validados.</param>
-        public void Salvar(Coleta r)
+        public void SalvarColeta(Coleta r)
         {
             Add(r);
         }
@@ -40,7 +40,7 @@ namespace Data.Repositories
         /// Salva uma lista de resultados de coletas de dados na tabela Result old recursivamente.
         /// </summary>
         /// <param name="list">Lista de Coleta com os parametros validados.</param>
-        public void SalvarLista(List<Coleta> list)
+        public void SalvarListaColeta(List<Coleta> list)
         {
             AddAll(list);
         }
@@ -54,7 +54,7 @@ namespace Data.Repositories
         /// A tabela resultados não possui no momento relacionamentos externos de Foreingin Keys, foi necessário esta validação por como foi forçado relacionamento via INTEGER o banco não verifica automáticamente.
         /// </summary>
         /// <param name="r">Coleta Objeto.</param>
-        public void ValidaFkResultado(Coleta r)
+        public void ValidaFkColeta(Coleta r)
         {
             if (_Level1.FirstOrDefault(z => z.Id == r.Id_Level1) == null)
                 throw new ExceptionHelper("Id Invalido para Operação");

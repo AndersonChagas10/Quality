@@ -1,5 +1,4 @@
 ﻿using Application.Interface;
-using AutoMapper;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
@@ -29,11 +28,9 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("api/Sync/GetData")]
-        public GenericReturnViewModel<SyncViewModel> GetDataToSincyAudit()
+        public GenericReturn<SyncDTO> GetDataToSincyAudit()
         {
-            var queryDataToSync = _syncApp.GetDataToSincyAudit();
-            var mappedToReturn = Mapper.Map<GenericReturn<SyncDTO>, GenericReturnViewModel<SyncViewModel>>(queryDataToSync);
-            return mappedToReturn;
+            return _syncApp.GetDataToSincyAudit();
         }
 
         #endregion
@@ -44,17 +41,16 @@ namespace SgqSystem.Controllers.Api
         [Route("api/Sync/SetDataAudit")]
         public GenericReturn<ColetaDTO> SetDataToSincyAudit([FromBody] SyncViewModel objToSync)
         {
-            return _coletaApp.SalvarLista(objToSync.Coleta);
+            return _coletaApp.SalvarListaColeta(objToSync.Coleta);
         }
 
         //[HttpPost]
-        //[Route("api/Sync/SetDataCorrectiveAction")]
-        //public GenericReturnViewModel<ColetaViewModel> SetDataToSincyCorrectiveAction([FromBody] SyncViewModel objToSync)
+        //[Route("api/Sync/SetDataAudit")]
+        //public GenericReturn<ColetaDTO> SetDataToSincyCorrectiveAcction([FromBody] SyncViewModel objTo    Sync)
         //{
-        //    var queryDataToSync = _coletaApp.SalvarLista(objToSync.Coleta);
-        //    var mappedToReturn = Mapper.Map<GenericReturn<ColetaDTO>, GenericReturnViewModel<ColetaViewModel>>(queryDataToSync);
-        //    return mappedToReturn;
+        //    return _correctiveActionApp.SalvarLista(objToSync.Coleta);
         //}
+
         #endregion
 
     }

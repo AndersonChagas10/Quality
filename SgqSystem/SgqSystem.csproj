@@ -282,7 +282,6 @@
     <Compile Include="Controllers\Api\SyncController.cs" />
     <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
-    <Compile Include="Controllers\Api\ColetaController.cs" />
     <Compile Include="Controllers\CorrectiveActionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\GraficoBetaController.cs" />
