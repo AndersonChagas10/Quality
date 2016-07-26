@@ -26,7 +26,7 @@ namespace DTO.DTO
         [DataMember]
         public List<Level02ConsolidationDTO> Level02Consolidation { get; set; }
 
-        public void ValidaLeve02DTO()
+        public void ValidaLevel02DTO()
         {
             ValidaBaseEntity();
 

@@ -1,16 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DTO.BaseEntity;
+using DTO.Helpers;
 
 namespace DTO.DTO
 {
-    public class Level1DTO
+    public class Level1DTO : EntityBase
     {
-        public int Id { get; set; }
         public string Name { get; set; }
-        public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
+
+        public void ValidaLevel1DTO()
+        {
+            ValidaBaseEntity();
+
+            #region Name
+            string NameValue;
+            Guard.NullOrEmptyValuesCheck(retorno: out NameValue, propName: "Name", value: Name, requerido: true);
+            Name = NameValue;
+            #endregion
+        }
     }
 }
