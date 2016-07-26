@@ -40,6 +40,11 @@ namespace DTO.DTO
         [DataMember]
         public List<DataCollectionResultDTO> DataCollectionResult { get; set; }
 
+        public void ConsolidationDataCollectionDTO()
+        {
+
+        }
+
         public void ValidaDataCollectionDTO()
         {
 

@@ -21,27 +21,27 @@ namespace Data.Repositories
         {
 
             var result = db.CorrectiveAction.AsNoTracking().FirstOrDefault(x =>
-                          (x.Slaughter == 0 ||
-                          x.Techinical == 0) &&
-                          x.AuditLevel1 == entitie.AuditLevel1 &&
-                          x.AuditLevel2 == entitie.AuditLevel2 &&
-                          x.AuditLevel3 == entitie.AuditLevel3 &&
+                          (x.SlaughterId == 0 ||
+                          x.TechinicalId == 0) &&
+                          x.AuditLevel1Id  == entitie.AuditLevel1Id &&
+                          x.AuditLevel2Id == entitie.AuditLevel2Id &&
+                          x.AuditLevel3Id == entitie.AuditLevel3Id &&
                           //  x.Auditor == entitie.Auditor &&
-                          x.Shift == entitie.Shift &&
-                          x.Period == entitie.Period);
+                          x.ShiftId == entitie.ShiftId &&
+                          x.PeriodId == entitie.PeriodId);
 
             if (result != null)
             {
-                if (result.Slaughter != 0)
+                if (result.SlaughterId != 0)
                 {
                     result.NameSlaughter = db.UserSgq.AsNoTracking().FirstOrDefault(x =>
-                          x.Id == result.Slaughter).Name;
+                          x.Id == result.SlaughterId).Name;
                 }
 
-                if (result.Techinical != 0)
+                if (result.TechinicalId != 0)
                 {
                     result.NameTechinical = db.UserSgq.AsNoTracking().FirstOrDefault(x =>
-                          x.Id == result.Techinical).Name;
+                          x.Id == result.TechinicalId).Name;
                 }
             }
 

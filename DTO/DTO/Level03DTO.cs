@@ -28,7 +28,7 @@ namespace DTO.DTO
         [DataMember]
         public List<Level03ConsolidationDTO> Level03Consolidation { get; set; }
 
-        public void ValidaLeve03DTO(bool isAlter)
+        public void ValidaLeve03DTO()
         {
             ValidaBaseEntity();
 

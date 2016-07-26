@@ -53,6 +53,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ColetaRepository.cs" />
     <Compile Include="Repositories\CorrectiveActionRepository.cs" />
+    <Compile Include="Repositories\DataCollectionRepo\DataCollectionHeadRepository.cs" />
+    <Compile Include="Repositories\DataCollectionRepo\DataCollectionResultRepository.cs" />
+    <Compile Include="Repositories\DataCollectionRepo\Level01Consolidation.cs" />
     <Compile Include="Repositories\RelatorioColetaRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\SyncRepository.cs" />
