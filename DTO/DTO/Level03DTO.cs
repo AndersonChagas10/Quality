@@ -16,8 +16,6 @@ namespace DTO.DTO
         public string Alias { get; set; }
         [DataMember]
         public string ClientSpecification { get; set; }
-        [DataMember] //MOCK ERRADO NO DB.
-        public System.DateTime AddedDate { get; set; }
         [DataMember]
         public bool Active { get; set; }
         [DataMember]

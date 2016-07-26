@@ -32,7 +32,6 @@ namespace Dominio
         public virtual DbSet<Level01Consolidation> Level01Consolidation { get; set; }
         public virtual DbSet<Level02> Level02 { get; set; }
         public virtual DbSet<Level02Consolidation> Level02Consolidation { get; set; }
-        public virtual DbSet<Level03> Level03 { get; set; }
         public virtual DbSet<Level03Consolidation> Level03Consolidation { get; set; }
         public virtual DbSet<Level1> Level1 { get; set; }
         public virtual DbSet<Level2> Level2 { get; set; }
@@ -40,5 +39,6 @@ namespace Dominio
         public virtual DbSet<teste> teste { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
         public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
+        public virtual DbSet<Level03> Level03 { get; set; }
     }
 }
