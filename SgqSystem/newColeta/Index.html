@@ -43,7 +43,11 @@
                 <a href="#" id="btnSync" class="list-group-item">Sync</a>
                 <a href="#" id="btnLogout" class="list-group-item">Logout</a>
             </div>
+        </div>  
+        <div class="cffImage">
+
         </div>
+        <div class="overlay hide"></div>
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -74,10 +78,7 @@
             </div>
         </div>
         <div class="container">
-            <div class="cffImage">
-
-
-            </div>
+           
             <ol class="breadcrumb"></ol>
 
             <div class="level01List">
@@ -90,7 +91,7 @@
                     </div>
                 </div>
                 <div class="list-group">
-                    <a href="#" id="3" class="list-group-item level01">Carcass Contamination Audit</a>
+                    <a href="#" id="3" class="list-group-item level01" saveLevel02="saveLevel02">Carcass Contamination Audit</a>
                     <a href="#" id="6" class="list-group-item level01">CFF (Cut, Fold and Flaps) Audit</a>
                     <a href="#" id="2" class="list-group-item level01">HTP (Harvest Task Procedure) Audit</a>
                 </div>
@@ -428,6 +429,7 @@
                             </div>
                         </div>
                     </li>
+                    <button id="btnSalvarLevel02CCA" class="btn btn-default level02Confirm">Salvar</button>
                 </div>
                 <div class="list-group level02Group hide" level01id="6">
                     <a href="#" id="47" class="list-group-item level02"><span>CFF</span></a>
@@ -837,7 +839,7 @@
                         <button class="btn btn-default button-expand marginRight10"><i class="fa fa-expand" aria-hidden="true"></i> Expand All</button>
                         <button class="btn btn-default button-collapse"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>
                     </div>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="40">
                                 <h4 class="panel-title">
@@ -886,6 +888,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="41">
@@ -935,6 +938,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="42">
