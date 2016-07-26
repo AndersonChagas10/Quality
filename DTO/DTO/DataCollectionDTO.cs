@@ -40,10 +40,10 @@ namespace DTO.DTO
         [DataMember]
         public List<DataCollectionResultDTO> DataCollectionResult { get; set; }
 
-        public void ValidaDataCollectionDTO(bool isAlter = false)
+        public void ValidaDataCollectionDTO()
         {
 
-            ValidaBaseEntity(isAlter);
+            ValidaBaseEntity();
 
             #region Level02ConsolidationId: Não pode ser Zero, não pode ser negativo.
             Guard.ForNegative(Level02ConsolidationId, "Level02ConsolidationId");

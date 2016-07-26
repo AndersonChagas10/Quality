@@ -13,20 +13,11 @@ namespace DTO.BaseEntity
         [DataMember]
         public DateTime? AlterDate { get; set; } = null;
 
-        public void ValidaBaseEntity(bool isAlter)
+        public void ValidaBaseEntity()
         {
-            #region Id: Não pode ser negativo, se alteração não pdoe ser Zero.
-            Guard.ForValidId(Id, "Primary Key", "LEvel01", isAlter);
+            #region Id: Não pode ser negativo
+            Guard.ForNegative(Id, "Please verify a positive value for Primary Key to Save the data.");
             #endregion
-
-            #region AddData: Se nulo utilizar a data atual.
-            Guard.AutoFillDateWithDateNow(AddDate);
-            #endregion
-
-            #region AlterDate: Se for alteração, e for nulo, utilizar a data atual.
-            if (isAlter)
-                Guard.AutoFillDateWithDateNow(AlterDate);
-            #endregion 
         }
     }
 }

@@ -43,10 +43,10 @@ namespace DTO.DTO
         [DataMember]
         public List<Level02ConsolidationDTO> Level02Consolidation { get; set; }
 
-        public void ValidaLevel01ConsolidationDTO(bool isAlter = false)
+        public void ValidaLevel01ConsolidationDTO()
         {
 
-            ValidaBaseEntity(isAlter);
+            ValidaBaseEntity();
 
             #region CenterResultId 
             #endregion

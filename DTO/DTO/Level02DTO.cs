@@ -26,9 +26,9 @@ namespace DTO.DTO
         [DataMember]
         public List<Level02ConsolidationDTO> Level02Consolidation { get; set; }
 
-        public void ValidaLeve02DTO(bool isAlter = false)
+        public void ValidaLeve02DTO()
         {
-            ValidaBaseEntity(isAlter);
+            ValidaBaseEntity();
 
             #region Name
             string NameValue;

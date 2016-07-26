@@ -39,9 +39,9 @@ namespace DTO.DTO
         /// <param name="id_Level2"></param>
         /// <param name="evaluate"></param>
         /// <param name="notConform"></param>
-        public void ValidaColeta(bool isAlter = false)
+        public void ValidaColeta()
         {
-            ValidaBaseEntity(isAlter);
+            ValidaBaseEntity();
             ValidaDataCollectionBase();
 
             Guard.ForNegative(UserIdInsercao, "The Auditor Id must be positive.");

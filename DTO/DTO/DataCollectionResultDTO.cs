@@ -31,10 +31,10 @@ namespace DTO.DTO
         [DataMember]
         public Level03DTO Level03 { get; set; }
 
-        public void ValidaDataCollectionResultDTO(bool isAlter = false)
+        public void ValidaDataCollectionResultDTO()
         {
 
-            ValidaBaseEntity(isAlter);
+            ValidaBaseEntity();
 
             #region DataCollectionId: Não pdoe ser Zero, não pode ser negativo.
             Guard.ForNegative(DataCollectionId, "DataCollectionId");

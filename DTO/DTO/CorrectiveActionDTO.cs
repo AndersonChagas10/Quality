@@ -94,10 +94,10 @@ namespace DTO.DTO
         /// Valida Entidade CorrectiveActionDTO para integridade do Banco de dados.
         /// </summary>
         /// <param name="isAlter"></param>
-        public void ValidaDataCorrectiveActionDTO(bool isAlter = false)
+        public void ValidaDataCorrectiveActionDTO()
         {
 
-            ValidaBaseEntity(isAlter);
+            ValidaBaseEntity();
 
             #region DateExecute
             #endregion
