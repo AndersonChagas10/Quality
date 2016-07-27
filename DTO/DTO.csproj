@@ -51,6 +51,7 @@
     <Compile Include="DTO\Level1DTO.cs" />
     <Compile Include="DTO\Level2DTO.cs" />
     <Compile Include="DTO\Level3DTO.cs" />
+    <Compile Include="DTO\ObjectConsildationDTO.cs" />
     <Compile Include="DTO\PeriodDTO.cs" />
     <Compile Include="DTO\ShiftDTO.cs" />
     <Compile Include="DTO\SyncDTO.cs" />

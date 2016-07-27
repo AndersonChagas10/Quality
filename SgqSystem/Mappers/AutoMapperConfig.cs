@@ -9,12 +9,11 @@ namespace SgqSystem.Mappers
 
             Mapper.Initialize(x =>
             {
-                //    //x.CreateMap<GenericReturn<T>, GenericReturnViewModel<T>>();
                 x.AddProfile<DomainToViewModelMappingProfile>();
-                x.AddProfile<ViewModelToDomainMappingProfile>();
                 x.AddProfile<CorrectiveActionMappingProfile>();
+                x.AddProfile<UserMappingProfile>();
+                x.AddProfile<ColetaMappingProfile>();
             });
-
 
         }
 
