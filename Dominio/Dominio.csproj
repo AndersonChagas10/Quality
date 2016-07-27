@@ -47,9 +47,6 @@
     <Compile Include="Entities\DataCollection\DataCollectionResult.cs" />
     <Compile Include="Entities\BaseEntity\DataCollectionBase.cs" />
     <Compile Include="Entities\BaseEntity\EntityBase.cs" />
-    <Compile Include="Interfaces\Repositories\DataCollectionDomainRepositorie\IDataCollectionHeadRepository.cs" />
-    <Compile Include="Interfaces\Repositories\DataCollectionDomainRepositorie\IDataCollectionResultRepository.cs" />
-    <Compile Include="Interfaces\Repositories\DataCollectionDomainRepositorie\ILevel01ConsolidationRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICorrectiveActionRepository.cs" />
     <Compile Include="Interfaces\Repositories\IColetaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRelatorioColetaRepository.cs" />

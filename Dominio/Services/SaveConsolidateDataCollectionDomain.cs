@@ -50,6 +50,18 @@ namespace Dominio.Services
 
                 #endregion
 
+                #region Cria objeto para consolidações level3
+
+
+
+                #endregion
+
+                #region Cria objeto para consolidações level2
+
+
+
+                #endregion
+
                 #region Cria objeto para consolidações level1
 
                 //Cria Consolidação Level3
@@ -82,18 +94,6 @@ namespace Dominio.Services
                     }
 
                 }
-
-
-
-                #endregion
-
-                #region Cria objeto para consolidações level2
-
-
-
-                #endregion
-
-                #region Cria objeto para consolidações level3
 
 
 
