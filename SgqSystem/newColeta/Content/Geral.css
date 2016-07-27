@@ -282,3 +282,20 @@ body > .App > div.container {
 .panel-body .level03{
     padding: 10px !important;
 }
+
+#correctiveActionModal .modal-body
+{
+    padding-top: 0!important;
+}
+#correctiveActionModal .modal-body > .row
+{
+    padding: 10px !important;
+    height: 574px;
+    overflow-y:auto;
+    overflow-x:hidden;
+
+}
+#correctiveActionModal .modal-body > .row .row
+{
+    padding: 10px;
+}

@@ -417,6 +417,7 @@
     <Content Include="newColeta\Scripts\bootstrap-modalmanager.js" />
     <Content Include="newColeta\Scripts\bootstrap.js" />
     <Content Include="newColeta\Scripts\bootstrap.min.js" />
+    <Content Include="newColeta\Scripts\correctiveaction.js" />
     <Content Include="newColeta\Scripts\Methods.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />

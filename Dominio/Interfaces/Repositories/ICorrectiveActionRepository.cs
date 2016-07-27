@@ -2,7 +2,9 @@
 {
     public interface ICorrectiveActionRepository
     {
-        void SalvarAcaoCorretiva(CorrectiveAction entitie);
+        CorrectiveAction SalvarAcaoCorretiva(CorrectiveAction entitie);
+
+        CorrectiveActionLevels SalvarAcaoCorretivaLevels(CorrectiveActionLevels entitie);
 
         CorrectiveAction VerificarAcaoCorretivaIncompleta(CorrectiveAction entitie);
 

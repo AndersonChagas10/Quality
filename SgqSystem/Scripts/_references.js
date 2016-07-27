@@ -38,6 +38,7 @@
 /// <reference path="../newcoleta/scripts/bootstrap.js" />
 /// <reference path="../newcoleta/scripts/bootstrap-modal.js" />
 /// <reference path="../newcoleta/scripts/bootstrap-modalmanager.js" />
+/// <reference path="../newcoleta/scripts/correctiveaction.js" />
 /// <reference path="../newcoleta/scripts/Methods.js" />
 /// <reference path="ai.0.15.0-build58334.min.js" />
 /// <reference path="bootstrap.min.js" />
