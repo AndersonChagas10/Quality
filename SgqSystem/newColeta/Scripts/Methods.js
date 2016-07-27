@@ -403,19 +403,86 @@ $(document).on('click', '.btn-minus', function (e) {
     input.trigger('input');
 
 });
-// $(document).on('click', '.level03Group[level01id=3] .btn-plus', function (e) {
-// inputChangesUpdate($(this).siblings('input'));
 
-// });
-// $(document).on('click', '.level03Group[level01id=3] .btn-minus', function (e) {
-// inputChangesUpdate($(this).siblings('input'));
-
-// });
 $(document).on('input', '.level03Group[level01id=3] input', function (e) {
     inputChangesUpdate($(this));
     level03AlertAdd($(this));
 });
+$(document).on('input', '.level03Group[level01id=6] input', function (e) {
+    inputChangesUpdate2($(this));
+    level03AlertAdd($(this));
+});
 
+function inputChangesUpdate2(input)
+{
+    var level02 = $('.level02.selected');
+    var level03 = input.parents('.level03');
+
+    var valorInput = input.val();
+    if (valorInput == "") {
+        valorInput = "0";
+    }
+
+    var valorInputDefects = parseInt(valorInput);
+    
+    var level02Defects = 0;
+    $('.level03Group:visible .level03 input').each(function (e) {
+
+        var valor = $(this).val();
+        if (valor == "") {
+            valor = "0";
+        }
+        level02Defects = level02Defects + parseInt(valor);
+    });
+    var level02Group = $('.level03Group:visible');
+    var sidesWithErros = parseInt($('.painelLevel02 .sideWithErrors').text());
+
+    if (level02Defects == 0 && level02Group.attr('firstErrorSide'))
+    {
+        sidesWithErros = sidesWithErros - 1;
+        level02Group.removeAttr('firstErrorSide');
+
+    }
+    else if (level02Defects > 0 && !level02Group.attr('firstErrorSide'))
+    {
+        
+        sidesWithErros = sidesWithErros + 1;
+        level02Group.attr('firstErrorSide', 'firstErrorSide');
+    }
+
+    $('.sideWithErrors').text(sidesWithErros);
+    if (sidesWithErros > 5) {
+        $('.sideWithErrors').parents('.labelPainel').addClass('red');
+    }
+    else {
+        $('.sideWithErrors').parents('.labelPainel').removeClass('red');
+    }
+    var sidesWith3ErrosMore = parseInt($('.painelLevel02 .more3Defects').text());
+
+    if (level02Defects < 3 && level02Group.attr('Error3MoreSide')) {
+        sidesWith3ErrosMore = sidesWith3ErrosMore - 1;
+        level02Group.removeAttr('Error3MoreSide');
+        $('.sideErros').parents('.labelPainel').removeClass('red');
+
+    }
+    else if (level02Defects > 2 && !level02Group.attr('Error3MoreSide')) {
+        sidesWith3ErrosMore = sidesWith3ErrosMore + 1;
+        level02Group.attr('Error3MoreSide', 'Error3MoreSide');
+        $('.sideErros').parents('.labelPainel').addClass('red');
+    }
+    
+    $('.more3Defects').parents('.labelPainel').removeClass('red');
+    if (sidesWith3ErrosMore > 0)
+    {
+        $('.more3Defects').parents('.labelPainel').addClass('red');
+    }
+
+    $('.painel .more3Defects').text(sidesWith3ErrosMore);
+
+
+    level02.attr('defects', level02Defects);
+    $('.painel .sideErros').text(level02Defects);
+}
 function inputChangesUpdate(input) {
     var level02 = $('.level02.selected');
     var level03 = input.parents('.level03');
@@ -471,7 +538,7 @@ function defectLimitCheck() {
         defects.addClass('red');
         level02.attr('limitExceeded', 'limitExceeded');
         level02.parents('li').addClass('bgLimitExceeded');
-        $('.btnCA').removeClass('hide');
+       // $('.btnCA').removeClass('hide');
         btnNA.addClass('hide');
 
     }
@@ -479,12 +546,12 @@ function defectLimitCheck() {
         defects.removeClass('red');
         level02.removeAttr('limitExceeded');
         level02.parents('li').removeClass('bgLimitExceeded');
-        if (!$('.level02[limitexceeded]')) {
-            $('.btnCA').addClass('hide');
-        }
-        if (!level02.attr('completed')) {
-            btnNA.removeClass('hide');
-        }
+        //if (!$('.level02[limitexceeded]')) {
+        //    $('.btnCA').addClass('hide');
+        //}
+        //if (!level02.attr('completed')) {
+        //    btnNA.removeClass('hide');
+        //}
     }
 }
 
@@ -498,12 +565,18 @@ $(document).on('click', '.button-collapse', function (e) {
 $(document).on('click', '.level03Group[level01id=2] .level03', function (e) {
 
     var level02 = $('.level02.selected');
+
     var level03 = $(this);
+
     var response = level03.children('.row').children('div').children('span.response');
     //acho que demvemos fazer um atrivuto direto no level03 para nao ficar tentando executar para todos
     if (response.length) {
+
         if (response.attr('value') == '0') {
             response.text('Yes').attr('value', '1');
+
+            //verificar se exite mais level03 excedido
+            //se nao existir remove a regra de limite execido do level02 e zero os deveitos
             level03.removeClass('lightred').removeAttr('notconform');
             if ($('.level03Group[level01id=2] .level03[notConform]').length == 0) {
                 level02.removeAttr('limitexceeded').parents('li').removeClass('bgLimitExceeded');
@@ -578,12 +651,14 @@ function level02Complete(level02) {
     //fazer uma funcao para melhorar
     var defectsLevel02 = parseInt($('.painelLevel03 .defects').text());
     var defectsLimit = parseInt(level02.attr('levelerrorlimit'));
-    if (defectsLevel02 > defectsLimit) {
+    
+    if ($('.level02[limitexceeded]').length) {
         $('.btnCA').removeClass('hide');
     }
-    else if ($('.level02[limitexceeded]').length == 0) {
+    else if (!$('.level02[limitexceeded]')) {
         $('.btnCA').addClass('hide');
     }
+    
 }
 function level02ButtonSave(level02Group) {
     var level01 = $('.level01[id=' + level02Group.attr('level01id') + ']');
@@ -598,10 +673,10 @@ function level02ButtonSave(level02Group) {
 function level03AlertAdd(input) {
     var valor = parseInt(input.val());
     if (valor > 0) {
-        input.parents('li').addClass('bgAlert');
+        input.parents('li, div.level03').addClass('bgAlert');
     }
     else {
-        input.parents('li').removeClass('bgAlert');
+        input.parents('li, div.level03').removeClass('bgAlert');
     }
 }
 $(document).on('click', '.level02Group[level01id=3] .level02', function (e) {
@@ -655,8 +730,59 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
     }
 });
 $(document).on('click', '#btnSalvarCFF', function (e) {
+
+    var level02 = $('.level02.selected');
+    var level02Group = $('.level03Group:visible');
+
+    var currentSet = parseInt($('.painelLevel03 .setAtual').text());
+    var currentSide = parseInt($('.painelLevel03 .sideAtual').text());
+
+    var totalsets = parseInt(level02.attr('totalsets'));
+    var totalsides = parseInt(level02.attr('totalsides'));
+    var sidesperset = parseInt(level02.attr('sidesperset'));
+
+    var returnlevel02endset = level02.attr('returnlevel02endset');
+
+    var setsDone = parseInt($('.painelLevel02 .setsDone').text());
+
+    currentSide = currentSide + 1;
+    level02Group.removeAttr('firstErrorSide');
+    level02Group.removeAttr('Error3MoreSide');
+
+
+    if ($('.painelLevel02 .sideWithErrors').parents('.labelPainel').hasClass('red') || $('.painelLevel03 .sideErros').parents('.labelPainel').hasClass('red'))
+    {
+        $('.btnCA').removeClass('hide');
+    }
+
+    if (currentSide > sidesperset)
+    {
+        currentSet = currentSet + 1;
+        setsDone = setsDone + 1;
+        $('.painelLevel03 .setAtual').text(currentSet);
+        $('.setsDone').text(setsDone);
+        //aumentar o set
+        level02Return();
+        $('.painelLevel03 .sideAtual').text("1");
+
+    }
+    else
+    {
+        $('.sideErros').text('0').parents('.labelPainel').removeClass('red');
+        $('.level03Group:visible input').val(0).parents('.level03').removeClass('bgAlert');
+        $('.painelLevel03 .sideAtual').text(currentSide);
+    }
+
+    //verificar o side atual 
+    //adicionar + 1
+    //verificar se ele é o ultimo
+    //se ele for o o ultimo verifica se ele volta o level ou se atualiza o site
+
+
+
     $(this).parents('.level03Group').children('div').children('.button-collapse').click();
     $(document).scrollTop(0);
+
     //se o side dor igual o ultimo side..retorna
 });
 $(document).on('click', '#btnSalvarHTP', function (e) {
