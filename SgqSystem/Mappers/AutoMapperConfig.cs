@@ -13,6 +13,11 @@ namespace SgqSystem.Mappers
                 x.AddProfile<CorrectiveActionMappingProfile>();
                 x.AddProfile<UserMappingProfile>();
                 x.AddProfile<ColetaMappingProfile>();
+                x.AddProfile<DataCollectionMapperProfile>();
+                x.AddProfile<DataCollectionResultMapperProfile>();
+                x.AddProfile<Level03ConsolidationMapperProfile>();
+                x.AddProfile<Level02ConsolidationMapperProfile>();
+                x.AddProfile<Level01ConsolidationMapperProfile>();
             });
 
         }

@@ -47,15 +47,15 @@ namespace DTO.DTO
         {
             ValidaBaseEntity();
 
-            #region Level02ConsolidationId: (FK) Não pode ser Zero, não pode ser negativo.
-            Guard.ForNegative(Level02ConsolidationId, "Level02ConsolidationId");
-            Guard.forValueZero(Level02ConsolidationId, "Level02ConsolidationId");
-            #endregion
+            //#region Level02ConsolidationId: (FK) Não pode ser Zero, não pode ser negativo.
+            //Guard.ForNegative(Level02ConsolidationId, "Level02ConsolidationId");
+            //Guard.forValueZero(Level02ConsolidationId, "Level02ConsolidationId");
+            //#endregion
 
-            #region Level03Id: (FK) Não pode ser Zero, não pode ser negativo.
-            Guard.ForNegative(Level03Id, "Level03Id");
-            Guard.forValueZero(Level03Id, "Level03Id");
-            #endregion
+            //#region Level03Id: (FK) Não pode ser Zero, não pode ser negativo.
+            //Guard.ForNegative(Level03Id, "Level03Id");
+            //Guard.forValueZero(Level03Id, "Level03Id");
+            //#endregion
 
         }
     }

@@ -10,5 +10,7 @@ namespace DTO.DTO
         public List<Level3DTO> Level3 { get; set; }
         public List<UserDTO> UserSgq { get; set; }
         public List<CorrectiveActionDTO> CorrectiveAction { get; set; }
+        public ObjectConsildationDTO syncConsolidado { get; set; }
+
     }
 }

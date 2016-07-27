@@ -21,7 +21,7 @@ namespace Dominio.Services
             _coletaRepository = coletaRepository;
         }
 
-        #region Coleta de Dados.
+        #region Coleta de Dados. (Antigo)
 
         public GenericReturn<ColetaDTO> SalvarColeta(ColetaDTO result)
         {
@@ -75,5 +75,7 @@ namespace Dominio.Services
         }
 
         #endregion
+
+
     }
 }

@@ -36,38 +36,38 @@ namespace DTO.DTO
 
             ValidaBaseEntity();
 
-            #region DataCollectionId: (FK) Não pdoe ser Zero, não pode ser negativo.
-            Guard.ForNegative(DataCollectionId, "DataCollectionId");
-            Guard.forValueZero(DataCollectionId, "DataCollectionId");
-            #endregion
+            //#region DataCollectionId: (FK) Não pdoe ser Zero, não pode ser negativo.
+            //Guard.ForNegative(DataCollectionId, "DataCollectionId");
+            //Guard.forValueZero(DataCollectionId, "DataCollectionId");
+            //#endregion
 
-            #region Level03Id: (FK) Se existir, não pdoe ser Zero, não pode ser negativo.
-            if (Level03Id.IsNotNull())
-            {
-                Guard.ForNegative(Level03Id.Value, "Level03Id");
-                Guard.forValueZero(Level03Id.Value, "Level03Id");
-            }
-            #endregion
+            //#region Level03Id: (FK) Se existir, não pdoe ser Zero, não pode ser negativo.
+            //if (Level03Id.IsNotNull())
+            //{
+            //    Guard.ForNegative(Level03Id.Value, "Level03Id");
+            //    Guard.forValueZero(Level03Id.Value, "Level03Id");
+            //}
+            //#endregion
 
-            #region TotalEvaluated: Não pode ser negativo.
-            Guard.ForNegative(TotalEvaluated, "TotalEvaluated");
-            #endregion
+            //#region TotalEvaluated: Não pode ser negativo.
+            //Guard.ForNegative(TotalEvaluated, "TotalEvaluated");
+            //#endregion
 
-            #region Repeated
+            //#region Repeated
 
-            #endregion
+            //#endregion
 
-            #region DataCollectionValue
+            //#region DataCollectionValue
 
-            #endregion
+            //#endregion
 
-            #region DataCollectionValueText
+            //#region DataCollectionValueText
 
-            #endregion
+            //#endregion
 
-            #region Weight: Não pode ser negativo.
-            Guard.ForNegative(TotalEvaluated, "TotalEvaluated");
-            #endregion
+            //#region Weight: Não pode ser negativo.
+            //Guard.ForNegative(TotalEvaluated, "TotalEvaluated");
+            //#endregion
 
 
         }

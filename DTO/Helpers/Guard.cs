@@ -227,19 +227,6 @@ namespace DTO.Helpers
             }
         }
 
-        public static void ForInvalidPKAndFks(int pk, string pkName, List<int> fk, List<string> fkName, string className)
-        {
-            ForValidId(pk, pkName, className);
-
-            var counter = 0;
-            foreach (var i in fk)
-            {
-                ForValidFk(fkName[counter], i);
-                counter++;
-            }
-
-        }
-
 
         /// <summary>
         /// Não pode ser negativo, se alteração não pdoe ser Zero.
@@ -249,14 +236,10 @@ namespace DTO.Helpers
         /// <param name="paramName"></param>
         /// <param name="className"></param>
         /// <param name="isAlter"></param>
-        public static void ForValidId(int id, string paramName, string className, bool isAlter = false)
+        public static void ForValidId(int id, string callerMethod)
         {
-            if (isAlter)
-                if(!(id > 0))
-                    throw new ExceptionHelper("Invalid key for: " + paramName + " in: " + className);
-
             if (!(id >= 0))
-                throw new ExceptionHelper("Invalid key for: " + paramName + " in: " + className);
+                throw new ExceptionHelper("Invalid primary key detected in: " + callerMethod);
         }
 
         /// <summary>

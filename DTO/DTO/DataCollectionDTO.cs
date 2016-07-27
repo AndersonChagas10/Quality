@@ -50,17 +50,17 @@ namespace DTO.DTO
 
             ValidaBaseEntity();
 
-            #region Level02ConsolidationId: (FK) Não pode ser Zero, não pode ser negativo.
-            Guard.ForNegative(Level02ConsolidationId, "Level02ConsolidationId");
-            Guard.forValueZero(Level02ConsolidationId, "Level02ConsolidationId");
+            #region Level02ConsolidationId: (FK)
+            //Guard.ForNegative(Level02ConsolidationId, "Level02ConsolidationId");
+            //Guard.forValueZero(Level02ConsolidationId, "Level02ConsolidationId");
             #endregion
 
-            #region EvaluationNumber: Não pode ser negativo.m
+            #region EvaluationNumber: Não pode ser negativo.
             Guard.ForNegative(EvaluationNumber, "EvaluationNumber");
             #endregion
 
-            #region SampleNumber: Não pode ser negativo.
-            Guard.ForNegative(SampleNumber, "SampleNumber");
+            #region SampleNumber:  Não pode ser negativo. NAO IMPLEMENTADO
+            //Guard.ForNegative(SampleNumber, "SampleNumber");
             #endregion
 
             #region MonitorId: Não pdoe ser Zero, não pode ser negativo.
@@ -68,34 +68,36 @@ namespace DTO.DTO
             Guard.forValueZero(MonitorId, "Monitor Identification");
             #endregion
 
-            #region CollectionDate: 
+            #region CollectionDate:  Se nulo, utiliza data de hoje.
+            if (CollectionDate.IsNull() || CollectionDate == DateTime.MinValue)
+                CollectionDate = DateTime.Now;
             #endregion
 
-            #region ProductId: Se existir, não pode ser negativo.
-            if(ProductId.IsNotNull())
-                Guard.ForNegative(ProductId.Value, "ProductId");
+            #region ProductId: Se existir, não pode ser negativo. NAO IMPLEMENTADO
+            //if(ProductId.IsNotNull())
+            //    Guard.ForNegative(ProductId.Value, "ProductId");
             #endregion
 
             #region Access:
             #endregion
 
-            #region Sets: Se existir, não pode ser negativo.
-            if (Sets.IsNotNull())
-                Guard.ForNegative(Sets.Value, "Sets");
+            #region Sets: Se existir, não pode ser negativo.  NAO IMPLEMENTADO
+            //if (Sets.IsNotNull())
+            //    Guard.ForNegative(Sets.Value, "Sets");
             #endregion
 
-            #region Side: Se existir, não pode ser negativo.
-            if (Side.IsNotNull())
-                Guard.ForNegative(Side.Value, "Side");
+            #region Side: Se existir, não pode ser negativo.  NAO IMPLEMENTADO
+            //if (Side.IsNotNull())
+            //    Guard.ForNegative(Side.Value, "Side");
             #endregion
 
-            #region Shared:
+            #region Shared:  NAO IMPLEMENTADO
             #endregion
 
-            #region Plataform:
+            #region Plataform:  NAO IMPLEMENTADO
             #endregion
 
-            #region Processed:
+            #region Processed:  NAO IMPLEMENTADO
             #endregion
 
         }

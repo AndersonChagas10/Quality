@@ -1,5 +1,6 @@
 ﻿using DTO.Helpers;
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 namespace DTO.BaseEntity
@@ -13,10 +14,10 @@ namespace DTO.BaseEntity
         [DataMember]
         public DateTime? AlterDate { get; set; } = null;
 
-        public void ValidaBaseEntity()
+        public void ValidaBaseEntity([CallerMemberName] string callerName = "")
         {
             #region Id: Não pode ser negativo
-            Guard.ForNegative(Id, "Please verify a positive value for Primary Key to Save the data.");
+            Guard.ForValidId(Id, callerName);
             #endregion
         }
     }

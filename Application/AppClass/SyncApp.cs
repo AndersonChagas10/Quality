@@ -9,18 +9,24 @@ namespace Application.AppServiceClass
     public class SyncApp : ISyncApp
     {
 
-        private readonly ISyncDomain _coletaService;
+        private readonly ISyncDomain _syncDomain;
+        private readonly ISaveConsolidateDataCollectionDomain _saveConsolidateDataCollectionDomain;
 
-        public SyncApp(ISyncDomain coletaService)
+        public SyncApp(ISyncDomain syncDomain,
+            ISaveConsolidateDataCollectionDomain saveConsolidateDataCollectionDomain)
         {
-            _coletaService = coletaService;
+            _syncDomain = syncDomain;
+            _saveConsolidateDataCollectionDomain = saveConsolidateDataCollectionDomain;
         }
 
         public GenericReturn<SyncDTO> GetDataToSincyAudit()
         {
-            return _coletaService.GetDataToSincyAudit();
+            return _syncDomain.GetDataToSincyAudit();
         }
 
-       
+        public GenericReturn<ObjectConsildationDTO> SetDataToSincyAuditConsolidated(ObjectConsildationDTO syncConsolidado)
+        {
+            return _saveConsolidateDataCollectionDomain.SetDataToSincyAuditConsolidated(syncConsolidado);
+        }
     }
 }

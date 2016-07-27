@@ -293,7 +293,12 @@
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\ColetaMappingProfile.cs" />
     <Compile Include="Mappers\CorrectiveActionMappingProfile.cs" />
+    <Compile Include="Mappers\DataCollectionMapperProfile.cs" />
+    <Compile Include="Mappers\DataCollectionResultMapperProfile.cs" />
     <Compile Include="Mappers\DomainToViewModelMappingProfile.cs" />
+    <Compile Include="Mappers\Level01ConsolidationMapperProfile.cs" />
+    <Compile Include="Mappers\Level02ConsolidationMapperProfile.cs" />
+    <Compile Include="Mappers\Level03ConsolidationMapperProfile.cs" />
     <Compile Include="Mappers\UserMappingProfile.cs" />
     <Compile Include="ViewModels\AccountBindingModels.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />

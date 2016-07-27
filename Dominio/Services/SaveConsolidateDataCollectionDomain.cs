@@ -36,104 +36,59 @@ namespace Dominio.Services
 
 
 
-        public void RecieveData(ObjectConsildationDTO obj)
+        public GenericReturn<ObjectConsildationDTO> SetDataToSincyAuditConsolidated(ObjectConsildationDTO obj)
         {
+
             try
             {
                 #region Valida as 2 tabelas principais de inserção de dados, cabeçalho e corpo da Coleta
 
+                obj.level01ConsolidationDTO.ValidaLevel01ConsolidationDTO();
+
+                foreach (var i in obj.level02ConsolidationDTO)
+                    i.ValidaLevel02ConsolidationDTO();
+
                 foreach (var i in obj.dataCollectionDTO)
                     i.ValidaDataCollectionDTO();
+
+                foreach (var i in obj.level03ConsolidationDTO)
+                    i.ValidaLevel03ConsolidationDTO();
 
                 foreach (var i in obj.dataCollectionResultDTO)
                     i.ValidaDataCollectionResultDTO();
 
                 #endregion
 
-                #region Cria objeto para consolidações level3
+                #region Cria Level2Consolidation e level1
 
 
-
-                #endregion
-
-                #region Cria objeto para consolidações level2
-
-
-
-                #endregion
-
-                #region Cria objeto para consolidações level1
-
-                //Cria Consolidação Level3
-                //foreach (var i in obj.dataCollectionResultDTO)
+                //if (obj.dataCollectionDTO.Level02ConsolidationId == 0)
                 //{
-                //    if(i.Level03)
+
+                //    if (obj.dataCollectionDTO.Level02Consolidation.Level01ConsolidationId == 0)
+                //    {
+
+                //    }
                 //}
-
-                //Cria Consolidação Level2
-                foreach (var i in obj.dataCollectionDTO)
-                {
-
-                    if (i.Level02ConsolidationId > 0)
-                    {
-                        i.Level02Consolidation = Mapper.Map<Level02ConsolidationDTO>(_baseRepoLevel2Consolidation.GetById(i.Level02ConsolidationId));
-                    }
-                    else
-                    {
-                        i.Level02Consolidation = new Level02ConsolidationDTO();   //Implmentar validação de level 2 aqui.
-                    }
-
-                    //Cria Consolidação Level1
-                    if (i.Level02Consolidation.Level01ConsolidationId > 0)
-                    {
-                        i.Level02Consolidation.Level01Consolidation = Mapper.Map<Level01ConsolidationDTO>(_baseRepoLevel1Consolidation.GetById(i.Level02Consolidation.Level01ConsolidationId));
-                    }
-                    else
-                    {
-                        i.Level02Consolidation.Level01Consolidation = new Level01ConsolidationDTO(); //Implmentar validação de level 2 aqui.
-                    }
-
-                }
-
-
-
-                #endregion
-
-                #region Validações para Objetos consolidados.
-
-                //Valida Objeto Level01Consolidation
-                foreach (var i in obj.dataCollectionDTO)
-                    i.Level02Consolidation.Level01Consolidation.ValidaLevel01ConsolidationDTO();
-
-                //Valida Objeto Level02Consolidation
-                foreach (var i in obj.dataCollectionDTO)
-                    i.Level02Consolidation.ValidaLevel02ConsolidationDTO();
-
-                ////Valida Objeto Level03
-                //foreach (var i in obj.dataCollectionResultDTO)
-                //    i.Level03.ValidaLeve03DTO();
 
                 #endregion
 
                 #region Salvando os 5 objetos em Banco de Dados.
-
-                //Salva Objeto Level1
-                foreach (var i in obj.dataCollectionDTO)
-                    _baseRepoLevel1Consolidation.AddOrUpdate(Mapper.Map<Level01Consolidation>(i.Level02Consolidation.Level01Consolidation));
                 
-                //Salva Objeto Level2
-                foreach (var i in obj.dataCollectionDTO)
-                    _baseRepoLevel2Consolidation.AddOrUpdate(Mapper.Map<Level02Consolidation>(i.Level02Consolidation));
+                _baseRepoLevel1Consolidation.AddOrUpdate(Mapper.Map<Level01Consolidation>(obj.level01ConsolidationDTO));
 
-                //Salva Objeto Level3
-                //foreach (var i in obj.level03ConsolidationDTO)
-                //    _baseRepoLevel3Consolidation.AddOrUpdate(Mapper.Map<Level03Consolidation>(i));
+                foreach (var i in obj.level02ConsolidationDTO)
+                {
+                    i.Level01ConsolidationId = obj.level01ConsolidationDTO.Id;
+                    _baseRepoLevel2Consolidation.AddOrUpdate(Mapper.Map<Level02Consolidation>(i));
+                }
 
-                //Salva Objeto Header Coleta
                 foreach (var i in obj.dataCollectionDTO)
                     _baseRepoDataCollection.AddOrUpdate(Mapper.Map<DataCollection>(i));
 
-                //Salva Objeto Coleta
+                foreach(var i in obj.level03ConsolidationDTO)
+                    _baseRepoLevel3Consolidation.AddOrUpdate(Mapper.Map<Level03Consolidation>(i));
+
                 foreach (var i in obj.dataCollectionResultDTO)
                     _baseRepoDataCollectionResult.AddOrUpdate(Mapper.Map<DataCollectionResult>(i));
 
@@ -141,11 +96,15 @@ namespace Dominio.Services
 
                 #region Feedback
 
+                return new GenericReturn<ObjectConsildationDTO>("Susscess!!!");
+
                 #endregion
             }
             catch (Exception e)
             {
                 #region Trata Exceção de forma Geral.
+
+                return new GenericReturn<ObjectConsildationDTO>(e, "Cannot sync.");
 
                 #endregion
             }
