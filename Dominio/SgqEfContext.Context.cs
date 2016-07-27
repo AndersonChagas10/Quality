@@ -42,5 +42,6 @@ namespace Dominio
         public virtual DbSet<Period> Period { get; set; }
         public virtual DbSet<Shift> Shift { get; set; }
         public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
+        public virtual DbSet<CorrectiveActionLevels> CorrectiveActionLevels { get; set; }
     }
 }

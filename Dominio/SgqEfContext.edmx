@@ -36,9 +36,6 @@
           <Property Name="DateExecute" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AuditorId" Type="int" Nullable="false" />
           <Property Name="ShiftId" Type="int" Nullable="false" />
-          <Property Name="AuditLevel1Id" Type="int" Nullable="false" />
-          <Property Name="AuditLevel2Id" Type="int" Nullable="false" />
-          <Property Name="AuditLevel3Id" Type="int" Nullable="false" />
           <Property Name="StartTime" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="PeriodId" Type="int" Nullable="false" />
           <Property Name="DescriptionFailure" Type="nvarchar" MaxLength="200" />
@@ -53,6 +50,18 @@
           <Property Name="NameSlaughter" Type="nvarchar" MaxLength="100" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="AuditLevel01Id" Type="int" />
+        </EntityType>
+        <EntityType Name="CorrectiveActionLevels">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CorrectiveActionId" Type="int" Nullable="false" />
+          <Property Name="AuditLevel01Id" Type="int" Nullable="false" />
+          <Property Name="AuditLevel02Id" Type="int" Nullable="false" />
+          <Property Name="AuditLevel03Id" Type="int" Nullable="false" />
+          <Property Name="Defects" Type="int" />
         </EntityType>
         <EntityType Name="DataCollection">
           <Key>
@@ -262,6 +271,18 @@
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="Tste" Type="nchar" MaxLength="10" />
         </EntityType>
+        <Association Name="FK_CorrectiveActionLevels_CorrectiveAction">
+          <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="1" />
+          <End Role="CorrectiveActionLevels" Type="Self.CorrectiveActionLevels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorrectiveAction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveActionLevels">
+              <PropertyRef Name="CorrectiveActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DataCollection_Level02Consolidation">
           <End Role="Level02Consolidation" Type="Self.Level02Consolidation" Multiplicity="1" />
           <End Role="DataCollection" Type="Self.DataCollection" Multiplicity="*" />
@@ -361,6 +382,7 @@
         <EntityContainer Name="SgqDbModelStoreContainer">
           <EntitySet Name="Coleta" EntityType="Self.Coleta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CorrectiveAction" EntityType="Self.CorrectiveAction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CorrectiveActionLevels" EntityType="Self.CorrectiveActionLevels" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DataCollection" EntityType="Self.DataCollection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DataCollectionResult" EntityType="Self.DataCollectionResult" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level01" EntityType="Self.Level01" Schema="dbo" store:Type="Tables" />
@@ -376,6 +398,10 @@
           <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="teste" EntityType="Self.teste" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSgq" EntityType="Self.UserSgq" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CorrectiveActionLevels_CorrectiveAction" Association="Self.FK_CorrectiveActionLevels_CorrectiveAction">
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+            <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
+          </AssociationSet>
           <AssociationSet Name="FK_DataCollection_Level02Consolidation" Association="Self.FK_DataCollection_Level02Consolidation">
             <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
             <End Role="DataCollection" EntitySet="DataCollection" />
@@ -463,6 +489,11 @@
           <EntitySet Name="Period" EntityType="SgqDbModel.Period" />
           <EntitySet Name="Shift" EntityType="SgqDbModel.Shift" />
           <EntitySet Name="CorrectiveAction" EntityType="SgqDbModel.CorrectiveAction" />
+          <EntitySet Name="CorrectiveActionLevels" EntityType="SgqDbModel.CorrectiveActionLevels" />
+          <AssociationSet Name="FK_CorrectiveActionLevels_CorrectiveAction" Association="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction">
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+            <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Coleta">
           <Key>
@@ -815,9 +846,6 @@
           <Property Name="DateExecute" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AuditorId" Type="Int32" Nullable="false" />
           <Property Name="ShiftId" Type="Int32" Nullable="false" />
-          <Property Name="AuditLevel1Id" Type="Int32" Nullable="false" />
-          <Property Name="AuditLevel2Id" Type="Int32" Nullable="false" />
-          <Property Name="AuditLevel3Id" Type="Int32" Nullable="false" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="PeriodId" Type="Int32" Nullable="false" />
           <Property Name="DescriptionFailure" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -832,7 +860,33 @@
           <Property Name="NameSlaughter" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="AuditLevel01Id" Type="Int32" />
+          <NavigationProperty Name="CorrectiveActionLevels" Relationship="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction" FromRole="CorrectiveAction" ToRole="CorrectiveActionLevels" />
         </EntityType>
+        <EntityType Name="CorrectiveActionLevels">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CorrectiveActionId" Type="Int32" Nullable="false" />
+          <Property Name="AuditLevel01Id" Type="Int32" Nullable="false" />
+          <Property Name="AuditLevel02Id" Type="Int32" Nullable="false" />
+          <Property Name="AuditLevel03Id" Type="Int32" Nullable="false" />
+          <Property Name="Defects" Type="Int32" />
+          <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction" FromRole="CorrectiveActionLevels" ToRole="CorrectiveAction" />
+        </EntityType>
+        <Association Name="FK_CorrectiveActionLevels_CorrectiveAction">
+          <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="1" />
+          <End Type="SgqDbModel.CorrectiveActionLevels" Role="CorrectiveActionLevels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorrectiveAction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveActionLevels">
+              <PropertyRef Name="CorrectiveActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1089,6 +1143,7 @@
           <EntitySetMapping Name="CorrectiveAction">
             <EntityTypeMapping TypeName="SgqDbModel.CorrectiveAction">
               <MappingFragment StoreEntitySet="CorrectiveAction">
+                <ScalarProperty Name="AuditLevel01Id" ColumnName="AuditLevel01Id" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="NameSlaughter" ColumnName="NameSlaughter" />
@@ -1103,9 +1158,6 @@
                 <ScalarProperty Name="DescriptionFailure" ColumnName="DescriptionFailure" />
                 <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="AuditLevel3Id" ColumnName="AuditLevel3Id" />
-                <ScalarProperty Name="AuditLevel2Id" ColumnName="AuditLevel2Id" />
-                <ScalarProperty Name="AuditLevel1Id" ColumnName="AuditLevel1Id" />
                 <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
                 <ScalarProperty Name="AuditorId" ColumnName="AuditorId" />
                 <ScalarProperty Name="DateExecute" ColumnName="DateExecute" />
@@ -1113,7 +1165,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="CorrectiveActionLevels">
+            <EntityTypeMapping TypeName="SgqDbModel.CorrectiveActionLevels">
+              <MappingFragment StoreEntitySet="CorrectiveActionLevels">
+                <ScalarProperty Name="Defects" ColumnName="Defects" />
+                <ScalarProperty Name="AuditLevel03Id" ColumnName="AuditLevel03Id" />
+                <ScalarProperty Name="AuditLevel02Id" ColumnName="AuditLevel02Id" />
+                <ScalarProperty Name="AuditLevel01Id" ColumnName="AuditLevel01Id" />
+                <ScalarProperty Name="CorrectiveActionId" ColumnName="CorrectiveActionId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

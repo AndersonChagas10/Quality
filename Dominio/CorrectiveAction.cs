@@ -14,13 +14,16 @@ namespace Dominio
     
     public partial class CorrectiveAction
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CorrectiveAction()
+        {
+            this.CorrectiveActionLevels = new HashSet<CorrectiveActionLevels>();
+        }
+    
         public int Id { get; set; }
         public System.DateTime DateExecute { get; set; }
         public int AuditorId { get; set; }
         public int ShiftId { get; set; }
-        public int AuditLevel1Id { get; set; }
-        public int AuditLevel2Id { get; set; }
-        public int AuditLevel3Id { get; set; }
         public System.DateTime StartTime { get; set; }
         public int PeriodId { get; set; }
         public string DescriptionFailure { get; set; }
@@ -35,5 +38,9 @@ namespace Dominio
         public string NameSlaughter { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
+        public Nullable<int> AuditLevel01Id { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CorrectiveActionLevels> CorrectiveActionLevels { get; set; }
     }
 }

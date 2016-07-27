@@ -4,6 +4,7 @@ using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
 using System;
+using System.Collections.Generic;
 
 namespace Dominio.Services
 {
@@ -24,8 +25,20 @@ namespace Dominio.Services
         {
             try
             {
+                var correctiveActionLevels = dto.CorrectiveActionLevels;
+                dto.CorrectiveActionLevels = new List<CorrectiveActionLevelsDTO>();
+
                 var entitie = Mapper.Map<CorrectiveAction>(dto);
-                _correctiveActionRepository.SalvarAcaoCorretiva(entitie);
+                entitie = _correctiveActionRepository.SalvarAcaoCorretiva(entitie);
+
+
+                foreach (var item in correctiveActionLevels)
+                {
+                    item.CorrectiveActionId = entitie.Id;
+                    var entitieLevels = Mapper.Map<CorrectiveActionLevels>(item);
+                    entitieLevels = _correctiveActionRepository.SalvarAcaoCorretivaLevels(entitieLevels);
+                }
+
                 return new GenericReturn<CorrectiveActionDTO>(dto);
             }
             catch (Exception e)

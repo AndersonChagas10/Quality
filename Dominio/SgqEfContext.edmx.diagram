@@ -29,7 +29,9 @@
         <AssociationConnector Association="SgqDbModel.FK_Level03Consolidation_Level03" />
         <EntityTypeShape EntityType="SgqDbModel.Period" Width="1.5" PointX="0.75" PointY="13.75" />
         <EntityTypeShape EntityType="SgqDbModel.Shift" Width="1.5" PointX="2.75" PointY="13.75" />
-        <EntityTypeShape EntityType="SgqDbModel.CorrectiveAction" Width="1.5" PointX="12.375" PointY="8.75" />
+        <EntityTypeShape EntityType="SgqDbModel.CorrectiveAction" Width="1.5" PointX="12.375" PointY="9.125" />
+        <EntityTypeShape EntityType="SgqDbModel.CorrectiveActionLevels" Width="1.5" PointX="14.625" PointY="10.375" />
+        <AssociationConnector Association="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
