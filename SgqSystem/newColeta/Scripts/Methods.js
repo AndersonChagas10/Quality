@@ -91,7 +91,7 @@ function auth() {
                     $('.shift').text($('.App').attr('shiftName'));
                     $('.atualDate').text(dateTimeFormat());
                     $('.userName').text(data.Retorno.Name);
-                    Geral.esconderMensagem();
+                    Geral.esconderMensagem(container);
                     showLevel01();
 
                 } else {
@@ -156,26 +156,26 @@ $('.kc_fab_wrapper.btnSave').kc_fab(saveBtn);
 var Geral = {
     exibirMensagemAlerta: function (mensagem, url, container) {
         var page = $("html, body");
-        Geral.esconderMensagem();
-        $('#messageAlert').hide().find('span').text('');
+        Geral.esconderMensagem(container);
+        $('#messageAlert').find('span').text('');
         if (url == undefined || url.length == 0) {
             container = container || '';
-            var $divMensagem = $(container + '#messageAlert');
-            $divMensagem.find('span').text(mensagem);
-            $divMensagem.show();
+            var $divMensagem = $(container + ' #messageAlert');
+            $divMensagem.find('#mensagemAlerta').text(mensagem);
+            $divMensagem.removeClass('hide');
         } else {
-            //alert(mensagem);
-            //location.href = url;
+            alert(mensagem);
+            location.href = url;
         }
         $('html,body').animate({ scrollTop: 0 }, 'slow');
     },
 
     exibirMensagemErro: function (mensagem, url, container) {
-        Geral.esconderMensagem();
+        Geral.esconderMensagem(container);
         $('#messageError').find('span').text('');
         if (url == undefined || url.length == 0) {
             container = container || '';
-            var $divMensagem = $(container + '#messageError');
+            var $divMensagem = $(container + ' #messageError');
             $divMensagem.find('#mensagemErro').text(mensagem);
             $divMensagem.removeClass('hide');
         } else {
@@ -185,15 +185,16 @@ var Geral = {
         $('html,body').animate({ scrollTop: 0 }, 'slow');
     },
 
-    esconderMensagem: function () {
-        $('#messageError').addClass('hide');
-        $('#messageAlert').addClass('hide');
-        $('#messageSuccess').addClass('hide');
+    esconderMensagem: function (container) {
+        container = container || '';
+        $(container + ' #messageError').addClass('hide');
+        $(container + ' #messageAlert').addClass('hide');
+        $(container + ' #messageSuccess').addClass('hide');
     },
 
     exibirMensagemSucesso: function (mensagem, url, container) {
         if (mensagem == undefined || mensagem.length == 0) {
-            Geral.esconderMensagem();
+            Geral.esconderMensagem(container);
         } else {
             $('#messageSuccess').hide().find('span').text('');
             if (url == undefined || url.length == 0) {

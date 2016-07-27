@@ -46,6 +46,8 @@ var AcaoCorretiva = {
 
     logarUsuarioSlaughter: function () {
 
+        Geral.esconderMensagem("#modalLoginSlaughter");
+
         var obj = {
             SlaughterPassword: $("#slaughterPassword").val(),
             SlaughterLogin: $("#slaughterLogin").val()
@@ -56,18 +58,26 @@ var AcaoCorretiva = {
             url: '../' + '../api/CorrectiveAction/LogarUsuarioSlaughter',
             type: 'POST',
             success: function (data) {
-                idSlaughterLogado = data.Id
-                $("#slaughter").val(data.Name);
-                $("#slaughterDatetime").val(Utils.GerarData());
-                timeSlaughterLogado = Utils.GerarData();
-                var $temp = $('#modalLoginSlaughter');
-                $temp.modal('hide');
+                if (data.Mensagem != null) {
+                    Geral.exibirMensagemAlerta(data.Mensagem, "", "#modalLoginSlaughter");
+                }
+                else {
+                    idSlaughterLogado = data.Retorno.Id
+                    $("#slaughter").val(data.Retorno.Name);
+                    $("#slaughterDatetime").val(Utils.GerarData());
+                    timeSlaughterLogado = Utils.GerarData();
+                    var $temp = $('#modalLoginSlaughter');
+                    $temp.modal('hide');
+
+                }
             }
         });
 
     },
 
     logarUsuarioTechnical: function () {
+
+        Geral.esconderMensagem("#modalLoginTechinical");
 
         var obj = {
             TechnicalPassword: $("#techinicalPassword").val(),
@@ -79,12 +89,17 @@ var AcaoCorretiva = {
             url: '../' + '../api/CorrectiveAction/LogarUsuarioTechnical',
             type: 'POST',
             success: function (data) {
-                idTechinicalLogado = data.Id;
-                $("#techinical").val(data.Name);
-                $("#techinicalDatetime").val(Utils.GerarData());
-                timeTechinicalLogado = Utils.GerarData();
-                var $temp = $('#modalLoginTechinical');
-                $temp.modal('hide');
+                if (data.Mensagem != null) {
+                    Geral.exibirMensagemAlerta(data.Mensagem, "", "#modalLoginTechinical");
+                }
+                else {
+                    idTechinicalLogado = data.Retorno.Id;
+                    $("#techinical").val(data.Retorno.Name);
+                    $("#techinicalDatetime").val(Utils.GerarData());
+                    timeTechinicalLogado = Utils.GerarData();
+                    var $temp = $('#modalLoginTechinical');
+                    $temp.modal('hide');
+                }
             }
         });
 
@@ -92,6 +107,8 @@ var AcaoCorretiva = {
 
     enviarAcaoCorretiva: function () {
 
+        Geral.esconderMensagem("#correctiveActionModal");
+        
         var listDefects = new Array();
 
         var level01Id = parseInt($('.level01.selected').attr('id'));
@@ -159,7 +176,12 @@ var AcaoCorretiva = {
             url: '../' + '../api/CorrectiveAction/SalvarAcaoCorretiva',
             type: 'POST',
             success: function (data) {
-                window.location.href = '/newColeta/Index.html';
+                if (data.Mensagem != null) {
+                    Geral.exibirMensagemAlerta(data.Mensagem, "", "#correctiveActionModal");
+                }
+                else {
+                    window.location.href = '/newColeta/Index.html';
+                }
             }
         });
 

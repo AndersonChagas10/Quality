@@ -32,7 +32,7 @@ namespace SgqSystem.Controllers.Api
 
         [Route("LogarUsuarioSlaughter")]
         [HttpPost]
-        public UserDTO LogarUsuarioSlaughter([FromBody]CorrectiveActionViewModel model)
+        public GenericReturn<UserDTO> LogarUsuarioSlaughter([FromBody]CorrectiveActionViewModel model)
         {
             var user = new UserDTO()
             {
@@ -42,13 +42,13 @@ namespace SgqSystem.Controllers.Api
 
             var result = _userAppService.AuthenticationLogin(user);
 
-            return result.Retorno;
+            return result;
         }
 
 
         [Route("LogarUsuarioTechnical")]
         [HttpPost]
-        public UserDTO LogarUsuarioTechnical([FromBody]CorrectiveActionViewModel model)
+        public GenericReturn<UserDTO> LogarUsuarioTechnical([FromBody]CorrectiveActionViewModel model)
         {
             var user = new UserDTO()
             {
@@ -58,17 +58,17 @@ namespace SgqSystem.Controllers.Api
 
             var result = _userAppService.AuthenticationLogin(user);
 
-            return result.Retorno;
+            return result;
 
         }
 
         [Route("VerificarAcaoCorretivaIncompleta")]
         [HttpPost]
-        public CorrectiveActionDTO VerificarAcaoCorretivaIncompleta([FromBody]CorrectiveActionViewModel model)
+        public GenericReturn<CorrectiveActionDTO> VerificarAcaoCorretivaIncompleta([FromBody]CorrectiveActionViewModel model)
         {
             var result = _correctiveActionAppService.VerificarAcaoCorretivaIncompleta(model.CorrectiveAction);
 
-            return result.Retorno;
+            return result;
         }
 
 
