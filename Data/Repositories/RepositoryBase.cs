@@ -61,6 +61,8 @@ namespace Data.Repositories
                     obj.GetType().GetProperty("AlterDate").SetValue(obj, DateTime.Now);
             }
 
+            //Entity.Attach(obj);
+
             db.Entry(obj).State = EntityState.Modified;
             Commit();
         }

@@ -29,7 +29,7 @@
 
             <button class="btn btn-lg btn-primary btn-block marginTop10" type="submit" id="btnLogin" disabled>Sign in</button>
             <div id="messageError" class="alert alert-danger hide" role="alert">
-                <span class="icon-remove-sign"></span>    <strong>Erro! </strong><span id="mensagemErro"> </span>
+                <span class="icon-remove-sign"></span>    <strong>Error! </strong><span id="mensagemErro"> </span>
             </div>
             <div id="messageAlert" class="alert alert-info hide" role="alert">
                 <span id="mensagemAlerta" class="icon-info-sign"></span>
@@ -46,7 +46,7 @@
                 <a href="#" id="btnSync" class="list-group-item">Sync</a>
                 <a href="#" id="btnLogout" class="list-group-item">Logout</a>
             </div>
-        </div>  
+        </div>
         <div class="cffImage">
             <a>
                 <img id="Image-Maps-Com-image-maps-2016-06-27-112056" src="Img/beef.jpg" border="0" width="255" height="522" orgWidth="255" orgHeight="522" usemap="#image-maps-2016-06-27-112056" alt="" />
@@ -103,7 +103,7 @@
             </div>
         </div>
         <div class="container">
-           
+
             <ol class="breadcrumb"></ol>
 
             <div class="level01List">
@@ -1523,12 +1523,13 @@
 
                 </div>
             </div>
+
             <!--Começo Ação Corretiva-->
             <div class="correctiveaction hide list-group" style="margin-top: 16px;  padding-bottom: 70px;">
                 <div id="correctiveActionModal" class="modal container fade" style="display: none;">
                     <!--<div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>-->
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>-->
                     <div class="modal-body" style="overflow:hidden">
                         <h2>Corrective Action</h2>
                         <div id="messageAlert" class="alert alert-info hide" role="alert">
@@ -1606,72 +1607,78 @@
                         </span>
 
                         <button class="btn btn-danger" data-dismiss="modal" onclick="defectLimitCheck();">Close</button>
-                        <button class="btn btn-primary" data-dismiss="modal" id="btnSendCorrectiveAction">Send</button>
+                        <button class="btn btn-primary" id="btnSendCorrectiveAction" onclick="AcaoCorretiva.enviarAcaoCorretiva();">Send</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div id="modalLoginSlaughter" class="modal container fade" data-width="400">
-        <div class="modal-header">
-            <h2>Slaughter Signature</h2>
-            <div id="messageAlert" class="alert alert-info hide" role="alert">
-                <span id="mensagemAlerta" class="icon-info-sign"></span>
-            </div>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="form-group">
-                        <label>Login:</label>
-                        <input type="text" class="form-control" id="slaughterLogin">
-                    </div>
-                    <div class="form-group">
-                        <label>Password:</label>
-                        <input type="password" class="form-control" id="slaughterPassword">
+
+
+            <div id="modalLoginSlaughter" class="modal container fade" data-width="400">
+                <div class="modal-header">
+                    <h2>Slaughter Signature</h2>
+                    <div id="messageAlert" class="alert alert-info hide" role="alert">
+                        <span id="mensagemAlerta" class="icon-info-sign"></span>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="btnSlaughterLogin" onclick="AcaoCorretiva.logarUsuarioSlaughter();">Login</button>
-        </div>
-    </div>
-
-
-
-    <div id="modalLoginTechinical" class="modal container fade" data-width="400">
-        <div class="modal-header">
-            <h2>Techinical Services Signature</h2>
-            <div id="messageAlert" class="alert alert-info hide" role="alert">
-                <span id="mensagemAlerta" class="icon-info-sign"></span>
-            </div>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="form-group">
-                        <label>Login:</label>
-                        <input type="text" class="form-control" id="techinicalLogin">
-                    </div>
-                    <div class="form-group">
-                        <label>Password:</label>
-                        <input type="password" class="form-control" id="techinicalPassword">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label>Login:</label>
+                                <input type="text" class="form-control" id="slaughterLogin">
+                            </div>
+                            <div class="form-group">
+                                <label>Password:</label>
+                                <input type="password" class="form-control" id="slaughterPassword">
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnSlaughterLogin" onclick="AcaoCorretiva.logarUsuarioSlaughter();" >Login</button>
+                </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="btnTechinicalLogin" onclick="AcaoCorretiva.logarUsuarioTechnical();">Login</button>
-        </div>
-    </div>
 
-    <div class="kc_fab_wrapper btnSave hide"></div><!--Save-->
 
-    <button class="btn btn-lg btn-danger btnCA hide">Corrective Action</button><!--Corrective Action-->
+
+            <div id="modalLoginTechinical" class="modal container fade" data-width="400">
+                <div class="modal-header">
+                    <h2>Techinical Services Signature</h2>
+                    <div id="messageAlert" class="alert alert-info hide" role="alert">
+                        <span id="mensagemAlerta" class="icon-info-sign"></span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label>Login:</label>
+                                <input type="text" class="form-control" id="techinicalLogin">
+                            </div>
+                            <div class="form-group">
+                                <label>Password:</label>
+                                <input type="password" class="form-control" id="techinicalPassword">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnTechinicalLogin" onclick="AcaoCorretiva.logarUsuarioTechnical();">Login</button>
+                </div>
+            </div>
+
+            <!--Fim Ação Corretiva-->
+
+
+
+        </div>
+
+        <div class="kc_fab_wrapper btnSave hide"></div><!--Save-->
+
+        <button class="btn btn-lg btn-danger btnCA hide">Corrective Action</button><!--Corrective Action-->
 
 
     <script src="Plugins/jquery/jquery.min.js"></script>

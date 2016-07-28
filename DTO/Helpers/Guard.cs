@@ -1,4 +1,4 @@
-﻿using DTO.Entities.BaseEntity;
+﻿using DTO.BaseEntity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -186,11 +186,23 @@ namespace DTO.Helpers
 
         #endregion
 
+        /// <summary>
+        /// Não pode ser Zero.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="msg"></param>
         public static void forValueZero(int value, string msg)
         {
             if (value == 0)
                 throw new ExceptionHelper(msg);
         }
+
+        public static void forValueZeroPredefinedMessage(int value, string paramName)
+        {
+            if (value == 0)
+                throw new ExceptionHelper(paramName + " Must be different of Zero.");
+        }
+
         public static string RetornaInsersaoRegistro<T>(List<T> ids) where T : EntityBase
         {
             var acao = "inseridos";
@@ -215,20 +227,35 @@ namespace DTO.Helpers
             }
         }
 
-        public static void ForValidId(string propName, string id)
-        {
-            ForValidId(int.Parse(id), propName + "Id Inválido!");
-        }
 
-        public static void ForValidId(int id, string mensagemErro)
+        /// <summary>
+        /// Não pode ser negativo, se alteração não pdoe ser Zero.
+        /// Throw message "Invalid key for: paramName  in:  className"
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="paramName"></param>
+        /// <param name="className"></param>
+        /// <param name="isAlter"></param>
+        public static void ForValidId(int id, string callerMethod)
         {
             if (!(id >= 0))
-                throw new ExceptionHelper(mensagemErro);
+                throw new ExceptionHelper("Invalid primary key detected in: " + callerMethod);
         }
 
-        public static void ForValidFk(string propName, string id)
+        /// <summary>
+        ///  Se nulo utilizar a data atual.
+        /// </summary>
+        /// <param name="date"></param>
+        public static void AutoFillDateWithDateNow(DateTime? date)
         {
-            ForValidFk(int.Parse(id), propName + "Id Inválido!");
+            if (date.IsNull())
+                date = DateTime.Now;
+        }
+
+
+        public static void ForValidFk(string propName, int id)
+        {
+            ForValidFk(id, propName + "Id Inválido!");
         }
 
         public static void ForValidFk(int id, string mensagemErro)
@@ -237,6 +264,11 @@ namespace DTO.Helpers
                 throw new ExceptionHelper(mensagemErro);
         }
 
+        /// <summary>
+        /// Não pode ser negativo.
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="propName"></param>
         public static void ForNegative(int number, string propName)
         {
             if (number < 0)

@@ -22,10 +22,10 @@ $(document).on('click', '.level02List .level02', function (e) {
 //    $(this).addClass('hide');
 //});
 $(document).on('click', '.btnCA', function (e) {
-    //  $('.level01List').addClass('hide').hide();
-    // $('.level02List').addClass('hide').hide();
-    // $('.level03List').addClass('hide').hide();
-    // $('.breadcrumb').addClass('hide').hide();
+  //  $('.level01List').addClass('hide').hide();
+   // $('.level02List').addClass('hide').hide();
+   // $('.level03List').addClass('hide').hide();
+   // $('.breadcrumb').addClass('hide').hide();
 
     $('.correctiveaction').removeClass('hide').show();
     $(this).addClass('hide');
@@ -51,13 +51,13 @@ $(document).on('click', '.btnCA', function (e) {
         $('.level03Group[level01id=' + level01Id + '] .level03').each(function (e) {
 
             var level03 = $(this);
-
+            
             var level03Defects = level02.attr('level03' + level03.attr('id'));
             var level03Id = parseInt(level03.attr('id'));
             var level03Name = level03.children('.row').children('div').html();
 
             if (level03Defects > level02errorlimit) {
-
+           
                 description = description + "\n" + level03Name + ": " + level03Defects + " Defects";
             }
         });
@@ -69,6 +69,7 @@ $(document).on('click', '.btnCA', function (e) {
     $("#DescriptionFailure").val(description);
 
 });
+
 function auth() {
     var userTest = { Name: $("#inputUserName").val(), Password: $("#inputPassword").val() };
     var urlGetUser = '../api/User';
@@ -99,7 +100,7 @@ function auth() {
                     $('.shift').text($('.App').attr('shiftName'));
                     $('.atualDate').text(dateTimeFormat());
                     $('.userName').text(data.Retorno.Name);
-                    Geral.esconderMensagem();
+                    Geral.esconderMensagem(container);
                     showLevel01();
 
                 } else {
@@ -164,26 +165,26 @@ $('.kc_fab_wrapper.btnSave').kc_fab(saveBtn);
 var Geral = {
     exibirMensagemAlerta: function (mensagem, url, container) {
         var page = $("html, body");
-        Geral.esconderMensagem();
-        $('#messageAlert').hide().find('span').text('');
+        Geral.esconderMensagem(container);
+        $('#messageAlert').find('span').text('');
         if (url == undefined || url.length == 0) {
             container = container || '';
-            var $divMensagem = $(container + '#messageAlert');
-            $divMensagem.find('span').text(mensagem);
-            $divMensagem.show();
+            var $divMensagem = $(container + ' #messageAlert');
+            $divMensagem.find('#mensagemAlerta').text(mensagem);
+            $divMensagem.removeClass('hide');
         } else {
-            //alert(mensagem);
-            //location.href = url;
+            alert(mensagem);
+            location.href = url;
         }
         $('html,body').animate({ scrollTop: 0 }, 'slow');
     },
 
     exibirMensagemErro: function (mensagem, url, container) {
-        Geral.esconderMensagem();
+        Geral.esconderMensagem(container);
         $('#messageError').find('span').text('');
         if (url == undefined || url.length == 0) {
             container = container || '';
-            var $divMensagem = $(container + '#messageError');
+            var $divMensagem = $(container + ' #messageError');
             $divMensagem.find('#mensagemErro').text(mensagem);
             $divMensagem.removeClass('hide');
         } else {
@@ -193,15 +194,16 @@ var Geral = {
         $('html,body').animate({ scrollTop: 0 }, 'slow');
     },
 
-    esconderMensagem: function () {
-        $('#messageError').addClass('hide');
-        $('#messageAlert').addClass('hide');
-        $('#messageSuccess').addClass('hide');
+    esconderMensagem: function (container) {
+        container = container || '';
+        $(container + ' #messageError').addClass('hide');
+        $(container + ' #messageAlert').addClass('hide');
+        $(container + ' #messageSuccess').addClass('hide');
     },
 
     exibirMensagemSucesso: function (mensagem, url, container) {
         if (mensagem == undefined || mensagem.length == 0) {
-            Geral.esconderMensagem();
+            Geral.esconderMensagem(container);
         } else {
             $('#messageSuccess').hide().find('span').text('');
             if (url == undefined || url.length == 0) {
@@ -1008,22 +1010,6 @@ $(document).on('mousedown', '#btnSave', function (e) {
 });
 
 
-
-//Ação corretiva
-
-var Utils = {
-    GerarData: function () {
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-        var minutes = date.getMinutes();
-        var seconds = date.getSeconds();
-        var hours = date.getHours();
-        var yyyymmddhhmm = ("0" + day).slice(-2) + "/" + ("0" + month).slice(-2) + "/" + year + " " + ("0" + hours).slice(-2) + ":" + ("0" + minutes).slice(-2) + ":" + ("0" + seconds).slice(-2);
-        return yyyymmddhhmm;
-    },
-};
 $(document).on('change', 'select#reaudit:visible', function (e) {
     $('span.auditReaudit').html($("select#reaudit:visible :selected").text());
 });

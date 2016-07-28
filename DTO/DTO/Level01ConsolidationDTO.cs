@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO.BaseEntity;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -6,10 +7,8 @@ namespace DTO.DTO
 {
     [DataContract]
     [Serializable]
-    public class Level01ConsolidationDTO
+    public class Level01ConsolidationDTO : EntityBase
     {
-        [DataMember]
-        public int Id { get; set; }
         [DataMember]
         public int CenterResultId { get; set; }
         [DataMember]
@@ -17,11 +16,7 @@ namespace DTO.DTO
         [DataMember]
         public System.DateTime DateConsolidation { get; set; }
         [DataMember]
-        public System.DateTime AddDate { get; set; }
-        [DataMember]
         public int TotalLevel02 { get; set; }
-        [DataMember]
-        public Nullable<System.DateTime> AlterDate { get; set; }
         [DataMember]
         public decimal TotalLevel02Weight { get; set; }
         [DataMember]
@@ -47,5 +42,54 @@ namespace DTO.DTO
         public Level01DTO Level01 { get; set; }
         [DataMember]
         public List<Level02ConsolidationDTO> Level02Consolidation { get; set; }
+
+        public void ValidaLevel01ConsolidationDTO()
+        {
+
+            ValidaBaseEntity();
+
+            #region CenterResultId (FK) 
+            #endregion
+
+            #region Level01Id: (FK) 
+            #endregion
+
+            #region DateConsolidation 
+            #endregion
+
+            #region TotalLevel02 
+            #endregion
+
+            #region TotalLevel02Weight 
+            #endregion 
+
+            #region TotalEvaluated 
+            #endregion 
+
+            #region TotalEvaluatedWeight 
+            #endregion 
+
+            #region TotalEvaluatedShared 
+            #endregion 
+
+            #region TotalEvaluatedSharedWeight 
+            #endregion 
+
+            #region TotalNotConform 
+            #endregion 
+
+            #region TotalNotConformWeight 
+            #endregion 
+
+            #region TotalNotConformShared 
+            #endregion 
+
+            #region TotalNotConformShared_Weight 
+            #endregion 
+
+            #region Shared
+            #endregion 
+        }
+
     }
 }

@@ -14,24 +14,33 @@ namespace Dominio
     
     public partial class CorrectiveAction
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CorrectiveAction()
+        {
+            this.CorrectiveActionLevels = new HashSet<CorrectiveActionLevels>();
+        }
+    
         public int Id { get; set; }
         public System.DateTime DateExecute { get; set; }
-        public int Auditor { get; set; }
-        public int Shift { get; set; }
-        public int AuditLevel1 { get; set; }
-        public int AuditLevel2 { get; set; }
-        public int AuditLevel3 { get; set; }
+        public int AuditorId { get; set; }
+        public int ShiftId { get; set; }
         public System.DateTime StartTime { get; set; }
-        public int Period { get; set; }
+        public int PeriodId { get; set; }
         public string DescriptionFailure { get; set; }
         public string ImmediateCorrectiveAction { get; set; }
         public string ProductDisposition { get; set; }
         public string PreventativeMeasure { get; set; }
-        public Nullable<int> Slaughter { get; set; }
+        public Nullable<int> SlaughterId { get; set; }
         public Nullable<System.DateTime> DateTimeSlaughter { get; set; }
-        public Nullable<int> Techinical { get; set; }
+        public Nullable<int> TechinicalId { get; set; }
         public Nullable<System.DateTime> DateTimeTechinical { get; set; }
         public string NameTechinical { get; set; }
         public string NameSlaughter { get; set; }
+        public System.DateTime AddDate { get; set; }
+        public Nullable<System.DateTime> AlterDate { get; set; }
+        public Nullable<int> AuditLevel01Id { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CorrectiveActionLevels> CorrectiveActionLevels { get; set; }
     }
 }

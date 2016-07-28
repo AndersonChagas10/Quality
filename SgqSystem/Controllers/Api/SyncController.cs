@@ -44,6 +44,14 @@ namespace SgqSystem.Controllers.Api
             return _coletaApp.SalvarListaColeta(objToSync.Coleta);
         }
 
+        [HttpPost]
+        [Route("api/Sync/SetDataAuditConsolidated")]
+        public GenericReturn<ObjectConsildationDTO> SetDataToSincyAuditConsolidated([FromBody] SyncViewModel objToSync)
+        {
+            return _syncApp.SetDataToSincyAuditConsolidated(objToSync.syncConsolidado);
+        }
+
+
         //[HttpPost]
         //[Route("api/Sync/SetDataAudit")]
         //public GenericReturn<ColetaDTO> SetDataToSincyCorrectiveAcction([FromBody] SyncViewModel objTo    Sync)

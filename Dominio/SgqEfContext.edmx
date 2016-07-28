@@ -34,23 +34,34 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DateExecute" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Auditor" Type="int" Nullable="false" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="AuditLevel1" Type="int" Nullable="false" />
-          <Property Name="AuditLevel2" Type="int" Nullable="false" />
-          <Property Name="AuditLevel3" Type="int" Nullable="false" />
+          <Property Name="AuditorId" Type="int" Nullable="false" />
+          <Property Name="ShiftId" Type="int" Nullable="false" />
           <Property Name="StartTime" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Period" Type="int" Nullable="false" />
+          <Property Name="PeriodId" Type="int" Nullable="false" />
           <Property Name="DescriptionFailure" Type="nvarchar" MaxLength="200" />
           <Property Name="ImmediateCorrectiveAction" Type="nvarchar" MaxLength="200" />
           <Property Name="ProductDisposition" Type="nvarchar" MaxLength="200" />
           <Property Name="PreventativeMeasure" Type="nvarchar" MaxLength="200" />
-          <Property Name="Slaughter" Type="int" />
+          <Property Name="SlaughterId" Type="int" />
           <Property Name="DateTimeSlaughter" Type="datetime2" Precision="7" />
-          <Property Name="Techinical" Type="int" />
+          <Property Name="TechinicalId" Type="int" />
           <Property Name="DateTimeTechinical" Type="datetime2" Precision="7" />
           <Property Name="NameTechinical" Type="nvarchar" MaxLength="100" />
           <Property Name="NameSlaughter" Type="nvarchar" MaxLength="100" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="AuditLevel01Id" Type="int" />
+        </EntityType>
+        <EntityType Name="CorrectiveActionLevels">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CorrectiveActionId" Type="int" Nullable="false" />
+          <Property Name="AuditLevel01Id" Type="int" Nullable="false" />
+          <Property Name="AuditLevel02Id" Type="int" Nullable="false" />
+          <Property Name="AuditLevel03Id" Type="int" Nullable="false" />
+          <Property Name="Defects" Type="int" />
         </EntityType>
         <EntityType Name="DataCollection">
           <Key>
@@ -106,7 +117,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CenterResultId" Type="int" Nullable="false" />
           <Property Name="Level01Id" Type="int" Nullable="false" />
           <Property Name="DateConsolidation" Type="datetime2" Precision="7" Nullable="false" />
@@ -168,7 +179,7 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Alias" Type="varchar" MaxLength="25" />
           <Property Name="ClientSpecification" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="AddedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="PeopleCreateId" Type="int" Nullable="false" />
@@ -223,11 +234,29 @@
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="Period">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Shift">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterTime" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
         <EntityType Name="teste">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="testename" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="UserSgq">
@@ -242,6 +271,18 @@
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="Tste" Type="nchar" MaxLength="10" />
         </EntityType>
+        <Association Name="FK_CorrectiveActionLevels_CorrectiveAction">
+          <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="1" />
+          <End Role="CorrectiveActionLevels" Type="Self.CorrectiveActionLevels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorrectiveAction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveActionLevels">
+              <PropertyRef Name="CorrectiveActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DataCollection_Level02Consolidation">
           <End Role="Level02Consolidation" Type="Self.Level02Consolidation" Multiplicity="1" />
           <End Role="DataCollection" Type="Self.DataCollection" Multiplicity="*" />
@@ -341,6 +382,7 @@
         <EntityContainer Name="SgqDbModelStoreContainer">
           <EntitySet Name="Coleta" EntityType="Self.Coleta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CorrectiveAction" EntityType="Self.CorrectiveAction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CorrectiveActionLevels" EntityType="Self.CorrectiveActionLevels" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DataCollection" EntityType="Self.DataCollection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DataCollectionResult" EntityType="Self.DataCollectionResult" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level01" EntityType="Self.Level01" Schema="dbo" store:Type="Tables" />
@@ -352,8 +394,14 @@
           <EntitySet Name="Level1" EntityType="Self.Level1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level2" EntityType="Self.Level2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level3" EntityType="Self.Level3" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Period" EntityType="Self.Period" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="teste" EntityType="Self.teste" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSgq" EntityType="Self.UserSgq" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CorrectiveActionLevels_CorrectiveAction" Association="Self.FK_CorrectiveActionLevels_CorrectiveAction">
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+            <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
+          </AssociationSet>
           <AssociationSet Name="FK_DataCollection_Level02Consolidation" Association="Self.FK_DataCollection_Level02Consolidation">
             <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
             <End Role="DataCollection" EntitySet="DataCollection" />
@@ -393,6 +441,8 @@
       <Schema Namespace="SgqDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SgqDbDevEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Coleta" EntityType="SgqDbModel.Coleta" />
+          <EntitySet Name="CorrectiveAction" EntityType="SgqDbModel.CorrectiveAction" />
+          <EntitySet Name="CorrectiveActionLevels" EntityType="SgqDbModel.CorrectiveActionLevels" />
           <EntitySet Name="DataCollection" EntityType="SgqDbModel.DataCollection" />
           <EntitySet Name="DataCollectionResult" EntityType="SgqDbModel.DataCollectionResult" />
           <EntitySet Name="Level01" EntityType="SgqDbModel.Level01" />
@@ -404,8 +454,14 @@
           <EntitySet Name="Level1" EntityType="SgqDbModel.Level1" />
           <EntitySet Name="Level2" EntityType="SgqDbModel.Level2" />
           <EntitySet Name="Level3" EntityType="SgqDbModel.Level3" />
+          <EntitySet Name="Period" EntityType="SgqDbModel.Period" />
+          <EntitySet Name="Shift" EntityType="SgqDbModel.Shift" />
           <EntitySet Name="teste" EntityType="SgqDbModel.teste" />
           <EntitySet Name="UserSgq" EntityType="SgqDbModel.UserSgq" />
+          <AssociationSet Name="FK_CorrectiveActionLevels_CorrectiveAction" Association="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction">
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+            <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
+          </AssociationSet>
           <AssociationSet Name="FK_DataCollection_Level02Consolidation" Association="SgqDbModel.FK_DataCollection_Level02Consolidation">
             <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
             <End Role="DataCollection" EntitySet="DataCollection" />
@@ -438,7 +494,6 @@
             <End Role="Level03" EntitySet="Level03" />
             <End Role="Level03Consolidation" EntitySet="Level03Consolidation" />
           </AssociationSet>
-          <EntitySet Name="CorrectiveAction" EntityType="SgqDbModel.CorrectiveAction" />
         </EntityContainer>
         <EntityType Name="Coleta">
           <Key>
@@ -462,6 +517,43 @@
           <Property Name="TotalDefectsLevel1" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
           <Property Name="TotalDefectsLevel2" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
           <Property Name="TotalDefectsLevel3" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="CorrectiveAction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateExecute" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AuditorId" Type="Int32" Nullable="false" />
+          <Property Name="ShiftId" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="PeriodId" Type="Int32" Nullable="false" />
+          <Property Name="DescriptionFailure" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ImmediateCorrectiveAction" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ProductDisposition" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PreventativeMeasure" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SlaughterId" Type="Int32" />
+          <Property Name="DateTimeSlaughter" Type="DateTime" Precision="7" />
+          <Property Name="TechinicalId" Type="Int32" />
+          <Property Name="DateTimeTechinical" Type="DateTime" Precision="7" />
+          <Property Name="NameTechinical" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NameSlaughter" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="AuditLevel01Id" Type="Int32" />
+          <NavigationProperty Name="CorrectiveActionLevels" Relationship="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction" FromRole="CorrectiveAction" ToRole="CorrectiveActionLevels" />
+        </EntityType>
+        <EntityType Name="CorrectiveActionLevels">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CorrectiveActionId" Type="Int32" Nullable="false" />
+          <Property Name="AuditLevel01Id" Type="Int32" Nullable="false" />
+          <Property Name="AuditLevel02Id" Type="Int32" Nullable="false" />
+          <Property Name="AuditLevel03Id" Type="Int32" Nullable="false" />
+          <Property Name="Defects" Type="Int32" />
+          <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction" FromRole="CorrectiveActionLevels" ToRole="CorrectiveAction" />
         </EntityType>
         <EntityType Name="DataCollection">
           <Key>
@@ -522,7 +614,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CenterResultId" Type="Int32" Nullable="false" />
           <Property Name="Level01Id" Type="Int32" Nullable="false" />
           <Property Name="DateConsolidation" Type="DateTime" Nullable="false" Precision="7" />
@@ -591,7 +683,7 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Alias" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="ClientSpecification" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="AddedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="PeopleCreateId" Type="Int32" Nullable="false" />
@@ -650,11 +742,29 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="Period">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="Shift">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterTime" Type="DateTime" Nullable="false" Precision="7" />
+        </EntityType>
         <EntityType Name="teste">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="testename" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="UserSgq">
@@ -669,6 +779,18 @@
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="Tste" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
         </EntityType>
+        <Association Name="FK_CorrectiveActionLevels_CorrectiveAction">
+          <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="1" />
+          <End Type="SgqDbModel.CorrectiveActionLevels" Role="CorrectiveActionLevels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorrectiveAction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveActionLevels">
+              <PropertyRef Name="CorrectiveActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DataCollection_Level02Consolidation">
           <End Type="SgqDbModel.Level02Consolidation" Role="Level02Consolidation" Multiplicity="1" />
           <End Type="SgqDbModel.DataCollection" Role="DataCollection" Multiplicity="*" />
@@ -765,30 +887,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CorrectiveAction">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DateExecute" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Auditor" Type="Int32" Nullable="false" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="AuditLevel1" Type="Int32" Nullable="false" />
-          <Property Name="AuditLevel2" Type="Int32" Nullable="false" />
-          <Property Name="AuditLevel3" Type="Int32" Nullable="false" />
-          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="DescriptionFailure" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="ImmediateCorrectiveAction" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="ProductDisposition" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PreventativeMeasure" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Slaughter" Type="Int32" />
-          <Property Name="DateTimeSlaughter" Type="DateTime" Precision="7" />
-          <Property Name="Techinical" Type="Int32" />
-          <Property Name="DateTimeTechinical" Type="DateTime" Precision="7" />
-          <Property Name="NameTechinical" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="NameSlaughter" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -815,6 +913,43 @@
                 <ScalarProperty Name="Id_Level3" ColumnName="Id_Level3" />
                 <ScalarProperty Name="Id_Level2" ColumnName="Id_Level2" />
                 <ScalarProperty Name="Id_Level1" ColumnName="Id_Level1" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CorrectiveAction">
+            <EntityTypeMapping TypeName="SgqDbModel.CorrectiveAction">
+              <MappingFragment StoreEntitySet="CorrectiveAction">
+                <ScalarProperty Name="AuditLevel01Id" ColumnName="AuditLevel01Id" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="NameSlaughter" ColumnName="NameSlaughter" />
+                <ScalarProperty Name="NameTechinical" ColumnName="NameTechinical" />
+                <ScalarProperty Name="DateTimeTechinical" ColumnName="DateTimeTechinical" />
+                <ScalarProperty Name="TechinicalId" ColumnName="TechinicalId" />
+                <ScalarProperty Name="DateTimeSlaughter" ColumnName="DateTimeSlaughter" />
+                <ScalarProperty Name="SlaughterId" ColumnName="SlaughterId" />
+                <ScalarProperty Name="PreventativeMeasure" ColumnName="PreventativeMeasure" />
+                <ScalarProperty Name="ProductDisposition" ColumnName="ProductDisposition" />
+                <ScalarProperty Name="ImmediateCorrectiveAction" ColumnName="ImmediateCorrectiveAction" />
+                <ScalarProperty Name="DescriptionFailure" ColumnName="DescriptionFailure" />
+                <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
+                <ScalarProperty Name="AuditorId" ColumnName="AuditorId" />
+                <ScalarProperty Name="DateExecute" ColumnName="DateExecute" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CorrectiveActionLevels">
+            <EntityTypeMapping TypeName="SgqDbModel.CorrectiveActionLevels">
+              <MappingFragment StoreEntitySet="CorrectiveActionLevels">
+                <ScalarProperty Name="Defects" ColumnName="Defects" />
+                <ScalarProperty Name="AuditLevel03Id" ColumnName="AuditLevel03Id" />
+                <ScalarProperty Name="AuditLevel02Id" ColumnName="AuditLevel02Id" />
+                <ScalarProperty Name="AuditLevel01Id" ColumnName="AuditLevel01Id" />
+                <ScalarProperty Name="CorrectiveActionId" ColumnName="CorrectiveActionId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -940,7 +1075,7 @@
                 <ScalarProperty Name="PeopleCreateId" ColumnName="PeopleCreateId" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="ClientSpecification" ColumnName="ClientSpecification" />
                 <ScalarProperty Name="Alias" ColumnName="Alias" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -1001,6 +1136,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Period">
+            <EntityTypeMapping TypeName="SgqDbModel.Period">
+              <MappingFragment StoreEntitySet="Period">
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shift">
+            <EntityTypeMapping TypeName="SgqDbModel.Shift">
+              <MappingFragment StoreEntitySet="Shift">
+                <ScalarProperty Name="AlterTime" ColumnName="AlterTime" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="teste">
             <EntityTypeMapping TypeName="SgqDbModel.teste">
               <MappingFragment StoreEntitySet="teste">
@@ -1018,31 +1173,6 @@
                 <ScalarProperty Name="AcessDate" ColumnName="AcessDate" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CorrectiveAction">
-            <EntityTypeMapping TypeName="SgqDbModel.CorrectiveAction">
-              <MappingFragment StoreEntitySet="CorrectiveAction">
-                <ScalarProperty Name="NameSlaughter" ColumnName="NameSlaughter" />
-                <ScalarProperty Name="NameTechinical" ColumnName="NameTechinical" />
-                <ScalarProperty Name="DateTimeTechinical" ColumnName="DateTimeTechinical" />
-                <ScalarProperty Name="Techinical" ColumnName="Techinical" />
-                <ScalarProperty Name="DateTimeSlaughter" ColumnName="DateTimeSlaughter" />
-                <ScalarProperty Name="Slaughter" ColumnName="Slaughter" />
-                <ScalarProperty Name="PreventativeMeasure" ColumnName="PreventativeMeasure" />
-                <ScalarProperty Name="ProductDisposition" ColumnName="ProductDisposition" />
-                <ScalarProperty Name="ImmediateCorrectiveAction" ColumnName="ImmediateCorrectiveAction" />
-                <ScalarProperty Name="DescriptionFailure" ColumnName="DescriptionFailure" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="AuditLevel3" ColumnName="AuditLevel3" />
-                <ScalarProperty Name="AuditLevel2" ColumnName="AuditLevel2" />
-                <ScalarProperty Name="AuditLevel1" ColumnName="AuditLevel1" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="DateExecute" ColumnName="DateExecute" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

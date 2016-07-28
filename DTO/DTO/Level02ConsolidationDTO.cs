@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO.BaseEntity;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -6,20 +7,14 @@ namespace DTO.DTO
 {
     [DataContract]
     [Serializable]
-    public class Level02ConsolidationDTO
+    public class Level02ConsolidationDTO : EntityBase
     {
-        [DataMember]
-        public int Id { get; set; }
         [DataMember]
         public int Level02Id { get; set; }
         [DataMember]
         public int Level01ConsolidationId { get; set; }
         [DataMember]
         public System.DateTime DateConsolidation { get; set; }
-        [DataMember]
-        public System.DateTime AddDate { get; set; }
-        [DataMember]
-        public Nullable<System.DateTime> AlterDate { get; set; }
         [DataMember]
         public decimal TotalLevel03 { get; set; }
         [DataMember]
@@ -51,5 +46,11 @@ namespace DTO.DTO
         public Level02DTO Level02 { get; set; }
         [DataMember]
         public List<Level03ConsolidationDTO> Level03Consolidation { get; set; }
+
+        public void ValidaLevel02ConsolidationDTO()
+        {
+            ValidaBaseEntity();
+        }
+
     }
 }

@@ -291,15 +291,20 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Mappers\AutoMapperConfig.cs" />
+    <Compile Include="Mappers\ColetaMappingProfile.cs" />
     <Compile Include="Mappers\CorrectiveActionMappingProfile.cs" />
+    <Compile Include="Mappers\DataCollectionMapperProfile.cs" />
+    <Compile Include="Mappers\DataCollectionResultMapperProfile.cs" />
     <Compile Include="Mappers\DomainToViewModelMappingProfile.cs" />
-    <Compile Include="Mappers\ViewModelToDomainMappingProfile.cs" />
+    <Compile Include="Mappers\Level01ConsolidationMapperProfile.cs" />
+    <Compile Include="Mappers\Level02ConsolidationMapperProfile.cs" />
+    <Compile Include="Mappers\Level03ConsolidationMapperProfile.cs" />
+    <Compile Include="Mappers\UserMappingProfile.cs" />
     <Compile Include="ViewModels\AccountBindingModels.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\EntityBaseViewModel.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\DataCollectionBaseViewModel.cs" />
     <Compile Include="ViewModels\CorrectiveActionViewModel.cs" />
-    <Compile Include="ViewModels\GenericReturnViewModel.cs" />
     <Compile Include="ViewModels\IdentityModels.cs" />
     <Compile Include="ViewModels\ColetaViewModel.cs" />
     <Compile Include="ViewModels\SyncViewModel.cs" />
@@ -384,8 +389,10 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="newColeta\Content\bootstrap-modal-bs3patch.css" />
     <Content Include="newColeta\Content\bootstrap.css" />
     <Content Include="newColeta\Content\bootstrap.min.css" />
+    <Content Include="newColeta\Content\bootstrap-modal.css" />
     <Content Include="newColeta\Content\Geral.css" />
     <Content Include="newColeta\Img\beef.jpg" />
     <Content Include="newColeta\Img\fundoSGQ.jpg" />
@@ -393,6 +400,7 @@
     <Content Include="newColeta\Img\login.png" />
     <Content Include="newColeta\Img\sgq.jpg" />
     <Content Include="newColeta\Img\SGQLogo01.png" />
+    <Content Include="newColeta\Img\ui-bg_diagonal-maze_75_ddd_10x10.png" />
     <Content Include="newColeta\Index.html" />
     <Content Include="newColeta\Plugins\float_button\css\kc.fab.css" />
     <Content Include="newColeta\Plugins\float_button\js\kc.fab.js" />
@@ -405,8 +413,11 @@
     <Content Include="newColeta\Plugins\sidebar\css\sidebar.min.css" />
     <Content Include="newColeta\Plugins\sidebar\js\sidebar.js" />
     <Content Include="newColeta\Plugins\sidebar\ts\sidebar.js" />
+    <Content Include="newColeta\Scripts\bootstrap-modal.js" />
+    <Content Include="newColeta\Scripts\bootstrap-modalmanager.js" />
     <Content Include="newColeta\Scripts\bootstrap.js" />
     <Content Include="newColeta\Scripts\bootstrap.min.js" />
+    <Content Include="newColeta\Scripts\correctiveaction.js" />
     <Content Include="newColeta\Scripts\Methods.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />

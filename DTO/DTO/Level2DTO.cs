@@ -1,12 +1,22 @@
-﻿using System;
+﻿using DTO.BaseEntity;
+using DTO.Helpers;
 
 namespace DTO.DTO
 {
-    public class Level2DTO
+    public class Level2DTO : EntityBase
     {
-        public int Id { get; set; }
         public string Name { get; set; }
-        public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
+
+        public void ValidaLevel2DTO(bool isAlter)
+        {
+            ValidaBaseEntity();
+
+            #region Name
+            string NameValue;
+            Guard.NullOrEmptyValuesCheck(retorno: out NameValue, propName: "Name", value: Name, requerido: true);
+            Name = NameValue;
+            #endregion
+
+        }
     }
 }
