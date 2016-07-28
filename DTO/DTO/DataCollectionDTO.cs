@@ -34,6 +34,8 @@ namespace DTO.DTO
         public int Plataform { get; set; }
         [DataMember]
         public bool Processed { get; set; }
+        [DataMember]
+        public int Control { get; set; }
 
         [DataMember]
         public Level02ConsolidationDTO Level02Consolidation { get; set; }

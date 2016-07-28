@@ -37,6 +37,43 @@ namespace Data.Repositories
 
         #region Adiciona e Atualiza
 
+        public void AddNotCommit(T obj)
+        {
+            Entity.Add(obj);
+        }
+
+        public void AddAllNotCommit(IEnumerable<T> obj)
+        {
+            foreach (var i in obj)
+            {
+                Entity.Add(i);
+            }
+        }
+
+        public void UpdateNotCommit(T obj)
+        {
+            if (obj.GetType().GetProperty("AlterDate") != null)
+            {
+                var alterDate = (DateTime)obj.GetType().GetProperty("AlterDate").GetValue(obj, null);
+                if (alterDate.IsNull())
+                    obj.GetType().GetProperty("AlterDate").SetValue(obj, DateTime.Now);
+            }
+
+            db.Entry(obj).State = EntityState.Modified;
+        }
+
+        public void AddOrUpdateNotCommit(T obj)
+        {
+            if (obj.GetType().GetProperty("Id") != null)
+            {
+                var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
+                if (id > 0)
+                    UpdateNotCommit(obj);
+                else
+                    AddNotCommit(obj);
+            }
+        }
+
         public void Add(T obj)
         {
             Entity.Add(obj);
@@ -149,6 +186,6 @@ namespace Data.Repositories
             db.Dispose();
         }
 
-       
+        
     }
 }

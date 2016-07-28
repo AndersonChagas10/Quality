@@ -65,6 +65,14 @@ if (!loader.IsLazyLoadingEnabled(container))
         this.Configuration.LazyLoadingEnabled = false;
 <#
 }
+#>
+
+
+this.Database.CommandTimeout = 9600;
+this.Database.Log = s => System.Diagnostics.Debug.Write(s);
+
+
+<#
 
 foreach (var entitySet in container.BaseEntitySets.OfType<EntitySet>())
 {

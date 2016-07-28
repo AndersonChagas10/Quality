@@ -447,7 +447,6 @@
           <EntitySet Name="DataCollectionResult" EntityType="SgqDbModel.DataCollectionResult" />
           <EntitySet Name="Level01" EntityType="SgqDbModel.Level01" />
           <EntitySet Name="Level01Consolidation" EntityType="SgqDbModel.Level01Consolidation" />
-          <EntitySet Name="Level02" EntityType="SgqDbModel.Level02" />
           <EntitySet Name="Level02Consolidation" EntityType="SgqDbModel.Level02Consolidation" />
           <EntitySet Name="Level03" EntityType="SgqDbModel.Level03" />
           <EntitySet Name="Level03Consolidation" EntityType="SgqDbModel.Level03Consolidation" />
@@ -482,10 +481,6 @@
             <End Role="Level01Consolidation" EntitySet="Level01Consolidation" />
             <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
           </AssociationSet>
-          <AssociationSet Name="FK_Level02Consolidation_Level02" Association="SgqDbModel.FK_Level02Consolidation_Level02">
-            <End Role="Level02" EntitySet="Level02" />
-            <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
-          </AssociationSet>
           <AssociationSet Name="FK_Level03Consolidation_Level02Consolidation" Association="SgqDbModel.FK_Level03Consolidation_Level02Consolidation">
             <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
             <End Role="Level03Consolidation" EntitySet="Level03Consolidation" />
@@ -493,6 +488,11 @@
           <AssociationSet Name="FK_Level03Consolidation_Level03" Association="SgqDbModel.FK_Level03Consolidation_Level03">
             <End Role="Level03" EntitySet="Level03" />
             <End Role="Level03Consolidation" EntitySet="Level03Consolidation" />
+          </AssociationSet>
+          <EntitySet Name="Level02" EntityType="SgqDbModel.Level02" />
+          <AssociationSet Name="FK_Level02Consolidation_Level02" Association="SgqDbModel.FK_Level02Consolidation_Level02">
+            <End Role="Level02" EntitySet="Level02" />
+            <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Coleta">
@@ -634,21 +634,6 @@
           <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_Level01Consolidation_Level01" FromRole="Level01Consolidation" ToRole="Level01" />
           <NavigationProperty Name="Level02Consolidation" Relationship="SgqDbModel.FK_Level02Consolidation_Level01Consolidation" FromRole="Level01Consolidation" ToRole="Level02Consolidation" />
         </EntityType>
-        <EntityType Name="Level02">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Alias" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="ClientSpecification" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="PeopleCreateId" Type="Int32" Nullable="false" />
-          <Property Name="Ordering" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Level02Consolidation" Relationship="SgqDbModel.FK_Level02Consolidation_Level02" FromRole="Level02" ToRole="Level02Consolidation" />
-        </EntityType>
         <EntityType Name="Level02Consolidation">
           <Key>
             <PropertyRef Name="Id" />
@@ -672,8 +657,8 @@
           <Property Name="Shared" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DataCollection" Relationship="SgqDbModel.FK_DataCollection_Level02Consolidation" FromRole="Level02Consolidation" ToRole="DataCollection" />
           <NavigationProperty Name="Level01Consolidation" Relationship="SgqDbModel.FK_Level02Consolidation_Level01Consolidation" FromRole="Level02Consolidation" ToRole="Level01Consolidation" />
-          <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_Level02Consolidation_Level02" FromRole="Level02Consolidation" ToRole="Level02" />
           <NavigationProperty Name="Level03Consolidation" Relationship="SgqDbModel.FK_Level03Consolidation_Level02Consolidation" FromRole="Level02Consolidation" ToRole="Level03Consolidation" />
+          <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_Level02Consolidation_Level02" FromRole="Level02Consolidation" ToRole="Level02" />
         </EntityType>
         <EntityType Name="Level03">
           <Key>
@@ -851,18 +836,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Level02Consolidation_Level02">
-          <End Type="SgqDbModel.Level02" Role="Level02" Multiplicity="1" />
-          <End Type="SgqDbModel.Level02Consolidation" Role="Level02Consolidation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level02">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Level02Consolidation">
-              <PropertyRef Name="Level02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Level03Consolidation_Level02Consolidation">
           <End Type="SgqDbModel.Level02Consolidation" Role="Level02Consolidation" Multiplicity="1" />
           <End Type="SgqDbModel.Level03Consolidation" Role="Level03Consolidation" Multiplicity="*" />
@@ -884,6 +857,33 @@
             </Principal>
             <Dependent Role="Level03Consolidation">
               <PropertyRef Name="Level03Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Level02">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Alias" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ClientSpecification" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="PeopleCreateId" Type="Int32" Nullable="false" />
+          <Property Name="Ordering" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Level02Consolidation" Relationship="SgqDbModel.FK_Level02Consolidation_Level02" FromRole="Level02" ToRole="Level02Consolidation" />
+        </EntityType>
+        <Association Name="FK_Level02Consolidation_Level02">
+          <End Type="SgqDbModel.Level02" Role="Level02" Multiplicity="1" />
+          <End Type="SgqDbModel.Level02Consolidation" Role="Level02Consolidation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level02">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Level02Consolidation">
+              <PropertyRef Name="Level02Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1030,21 +1030,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Level02">
-            <EntityTypeMapping TypeName="SgqDbModel.Level02">
-              <MappingFragment StoreEntitySet="Level02">
-                <ScalarProperty Name="Ordering" ColumnName="Ordering" />
-                <ScalarProperty Name="PeopleCreateId" ColumnName="PeopleCreateId" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ClientSpecification" ColumnName="ClientSpecification" />
-                <ScalarProperty Name="Alias" ColumnName="Alias" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Level02Consolidation">
             <EntityTypeMapping TypeName="SgqDbModel.Level02Consolidation">
               <MappingFragment StoreEntitySet="Level02Consolidation">
@@ -1172,6 +1157,21 @@
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="AcessDate" ColumnName="AcessDate" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Level02">
+            <EntityTypeMapping TypeName="SgqDbModel.Level02">
+              <MappingFragment StoreEntitySet="Level02">
+                <ScalarProperty Name="Ordering" ColumnName="Ordering" />
+                <ScalarProperty Name="PeopleCreateId" ColumnName="PeopleCreateId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="ClientSpecification" ColumnName="ClientSpecification" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

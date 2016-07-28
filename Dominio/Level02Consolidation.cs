@@ -42,8 +42,8 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DataCollection> DataCollection { get; set; }
         public virtual Level01Consolidation Level01Consolidation { get; set; }
-        public virtual Level02 Level02 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Level03Consolidation> Level03Consolidation { get; set; }
+        public virtual Level02 Level02 { get; set; }
     }
 }

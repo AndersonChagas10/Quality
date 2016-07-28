@@ -14,7 +14,7 @@ namespace DTO.DTO
         [DataMember]
         public int Level01ConsolidationId { get; set; }
         [DataMember]
-        public System.DateTime DateConsolidation { get; set; }
+        public System.DateTime DateConsolidation { get; set; } = DateTime.Now;
         [DataMember]
         public decimal TotalLevel03 { get; set; }
         [DataMember]
@@ -37,6 +37,8 @@ namespace DTO.DTO
         public decimal TotalNotConformSharedWeight { get; set; }
         [DataMember]
         public bool Shared { get; set; }
+        [DataMember]
+        public int Control { get; set; }
 
         [DataMember]
         public List<DataCollectionDTO> DataCollection { get; set; }
@@ -50,6 +52,11 @@ namespace DTO.DTO
         public void ValidaLevel02ConsolidationDTO()
         {
             ValidaBaseEntity();
+
+            #region DateConsolidation
+            
+            #endregion
+
         }
 
     }

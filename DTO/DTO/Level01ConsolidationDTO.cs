@@ -14,7 +14,7 @@ namespace DTO.DTO
         [DataMember]
         public int Level01Id { get; set; }
         [DataMember]
-        public System.DateTime DateConsolidation { get; set; }
+        public System.DateTime DateConsolidation { get; set; } = DateTime.Now;
         [DataMember]
         public int TotalLevel02 { get; set; }
         [DataMember]

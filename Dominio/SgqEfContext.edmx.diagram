@@ -12,7 +12,6 @@
         <EntityTypeShape EntityType="SgqDbModel.DataCollectionResult" Width="1.5" PointX="9.75" PointY="5.5" />
         <EntityTypeShape EntityType="SgqDbModel.Level01" Width="1.5" PointX="0.75" PointY="5.875" />
         <EntityTypeShape EntityType="SgqDbModel.Level01Consolidation" Width="1.5" PointX="3" PointY="5" />
-        <EntityTypeShape EntityType="SgqDbModel.Level02" Width="1.5" PointX="3" PointY="0.875" />
         <EntityTypeShape EntityType="SgqDbModel.Level02Consolidation" Width="1.5" PointX="5.25" PointY="4.75" />
         <EntityTypeShape EntityType="SgqDbModel.Level03" Width="1.5" PointX="7.5" PointY="0.75" />
         <EntityTypeShape EntityType="SgqDbModel.Level03Consolidation" Width="1.5" PointX="12.5" PointY="5" />
@@ -29,9 +28,10 @@
         <AssociationConnector Association="SgqDbModel.FK_DataCollectionResult_Level03" />
         <AssociationConnector Association="SgqDbModel.FK_Level01Consolidation_Level01" />
         <AssociationConnector Association="SgqDbModel.FK_Level02Consolidation_Level01Consolidation" />
-        <AssociationConnector Association="SgqDbModel.FK_Level02Consolidation_Level02" />
         <AssociationConnector Association="SgqDbModel.FK_Level03Consolidation_Level02Consolidation" />
         <AssociationConnector Association="SgqDbModel.FK_Level03Consolidation_Level03" />
+        <EntityTypeShape EntityType="SgqDbModel.Level02" Width="1.5" PointX="0.75" PointY="1" />
+        <AssociationConnector Association="SgqDbModel.FK_Level02Consolidation_Level02" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
