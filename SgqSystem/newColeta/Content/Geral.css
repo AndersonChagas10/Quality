@@ -1,5 +1,7 @@
 ﻿* {
-  border-radius: 0 !important;
+    font-family: Arial, Verdana, Tahoma;
+    font-size:16px;
+    border-radius: 0 !important;
 }
 html, body
 {
@@ -26,6 +28,10 @@ body > .App > div.container {
   padding-left:15px;
   padding-right: 15px;
 
+}
+.iconMoreMenu *
+{
+    font-size: 28px !important;
 }
 .font16{
 	font-size: 16px !important;
@@ -78,8 +84,6 @@ body > .App > div.container {
 	position:fixed;
 	border: 1px solid #fff;
 	border-right: 0;
-
-    background-image: url("../Img/beef.jpg");
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
@@ -224,9 +228,12 @@ body > .App > div.container {
 {
 	color: #ccc;
 	padding:10px;
-	cursor: pointer;
 }	FFFF99
 
+.cursorPointer
+{
+	cursor: pointer;
+}
 .naSelected
 {
 	color: #0000cc !important;
@@ -235,7 +242,6 @@ body > .App > div.container {
 .btnAreaSave
 {
 	color: #ffcc00;
-	cursor: pointer;
 }
 .disabled
 {
@@ -245,7 +251,6 @@ body > .App > div.container {
 .completed
 {
 	color: #0099ff;
-	cursor: pointer;
 }
 .bgCompleted
 {
@@ -281,4 +286,27 @@ body > .App > div.container {
 }
 .panel-body .level03{
     padding: 10px !important;
+}
+.btnSave *
+{
+    font-size:32px !important;
+}
+.level02Group{
+    margin-bottom: 80px !important;
+}
+#correctiveActionModal .modal-body
+{
+    padding-top: 0!important;
+}
+#correctiveActionModal .modal-body > .row
+{
+    padding: 10px !important;
+    height: 574px;
+    overflow-y:auto;
+    overflow-x:hidden;
+
+}
+#correctiveActionModal .modal-body > .row .row
+{
+    padding: 10px;
 }
