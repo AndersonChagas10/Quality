@@ -1,4 +1,8 @@
-﻿function CreateCCAObject() {
+﻿
+/*
+    Metodo trabalha de forma estática, porem pode ser fácilmente modificado para trabalhar de forma dinâmica. Celso Géa 28 07 2016.
+*/
+function CreateCCAObject() {
 
     var Level03ConsolidationDTO = [];
     var DataCollectionResultDTO = [];
