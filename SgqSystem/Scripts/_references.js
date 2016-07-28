@@ -40,6 +40,7 @@
 /// <reference path="../newcoleta/scripts/bootstrap-modalmanager.js" />
 /// <reference path="../newcoleta/scripts/correctiveaction.js" />
 /// <reference path="../newcoleta/scripts/Methods.js" />
+/// <reference path="../newcoleta/syncdata.js" />
 /// <reference path="ai.0.15.0-build58334.min.js" />
 /// <reference path="bootstrap.min.js" />
 /// <reference path="bootstrap-datepicker.js" />

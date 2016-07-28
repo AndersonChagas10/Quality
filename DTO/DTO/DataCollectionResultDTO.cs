@@ -25,6 +25,8 @@ namespace DTO.DTO
         public string DataCollectionValueText { get; set; }
         [DataMember]
         public decimal Weight { get; set; }
+        [DataMember]
+        public int Control { get; set; }
 
         [DataMember]
         public DataCollectionDTO DataCollection { get; set; }

@@ -19,6 +19,11 @@ namespace DTO.BaseEntity
             #region Id: Não pode ser negativo
             Guard.ForValidId(Id, callerName);
             #endregion
+
+            #region AddDate
+            if (AddDate.IsNull() || AddDate == DateTime.MinValue)
+                AddDate = DateTime.Now;
+            #endregion
         }
     }
 }

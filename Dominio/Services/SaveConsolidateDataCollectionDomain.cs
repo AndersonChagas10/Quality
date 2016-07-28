@@ -5,6 +5,7 @@ using DTO.DTO;
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,30 +74,53 @@ namespace Dominio.Services
 
                 #endregion
 
+
                 #region Salvando os 5 objetos em Banco de Dados.
-                
-                _baseRepoLevel1Consolidation.AddOrUpdate(Mapper.Map<Level01Consolidation>(obj.level01ConsolidationDTO));
+
+                var watch = Stopwatch.StartNew();
+
+                var level01ConsolidateSaved = Mapper.Map<Level01Consolidation>(obj.level01ConsolidationDTO);
+                _baseRepoLevel1Consolidation.Add(level01ConsolidateSaved);
 
                 foreach (var i in obj.level02ConsolidationDTO)
                 {
-                    i.Level01ConsolidationId = obj.level01ConsolidationDTO.Id;
-                    _baseRepoLevel2Consolidation.AddOrUpdate(Mapper.Map<Level02Consolidation>(i));
+
+                    i.Level01ConsolidationId = level01ConsolidateSaved.Id;
+                    var level02ConsolidateSaved = Mapper.Map<Level02Consolidation>(i);
+                    _baseRepoLevel2Consolidation.Add(level02ConsolidateSaved); //Save
+
+                    var listOfdataCollectionDTO = obj.dataCollectionDTO.Where(r => r.Control == i.Control).ToList();
+                    foreach (var x in listOfdataCollectionDTO)
+                    {
+                        x.Level02ConsolidationId = level02ConsolidateSaved.Id;
+                        var dataCollectionDTOSaved = Mapper.Map<DataCollection>(x);
+                        _baseRepoDataCollection.Add(dataCollectionDTOSaved); //Save
+
+                        var listOfdataCollectionResultDTO = obj.dataCollectionResultDTO.Where(r => r.Control == x.Control).ToList();
+                        foreach (var w in listOfdataCollectionResultDTO)
+                            w.DataCollectionId = dataCollectionDTOSaved.Id;
+
+                        var dataCollectionResultSaved = Mapper.Map<List<DataCollectionResult>>(listOfdataCollectionResultDTO);
+                        _baseRepoDataCollectionResult.AddAll(dataCollectionResultSaved); //Save
+                    }
+
+                    var listOflevel03ConsolidationDTO = obj.level03ConsolidationDTO.Where(r => r.Control == i.Control).ToList();
+                    foreach (var y in listOflevel03ConsolidationDTO)
+                        y.Level02ConsolidationId = level02ConsolidateSaved.Id;
+
+                    var level03ConsolidationSaved = Mapper.Map<List<Level03Consolidation>>(listOflevel03ConsolidationDTO);
+                    _baseRepoLevel3Consolidation.AddAll(level03ConsolidationSaved); // Save
+
                 }
 
-                foreach (var i in obj.dataCollectionDTO)
-                    _baseRepoDataCollection.AddOrUpdate(Mapper.Map<DataCollection>(i));
-
-                foreach(var i in obj.level03ConsolidationDTO)
-                    _baseRepoLevel3Consolidation.AddOrUpdate(Mapper.Map<Level03Consolidation>(i));
-
-                foreach (var i in obj.dataCollectionResultDTO)
-                    _baseRepoDataCollectionResult.AddOrUpdate(Mapper.Map<DataCollectionResult>(i));
+                watch.Stop();
+                var elapsedMs = watch.ElapsedMilliseconds;
 
                 #endregion
 
                 #region Feedback
 
-                return new GenericReturn<ObjectConsildationDTO>("Susscess!!!");
+                return new GenericReturn<ObjectConsildationDTO>("Susscess! All Data Saved in: " + elapsedMs + " ms.");
 
                 #endregion
             }
