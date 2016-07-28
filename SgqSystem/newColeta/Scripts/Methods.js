@@ -34,8 +34,13 @@ $(document).on('click', '.btnCA', function (e) {
 
     $modal.modal();
 
-
     var level01Id = parseInt($('.level01.selected').attr('id'));
+
+    if (!$('.level01.selected').length)
+    {
+    
+        level01Id = parseInt($('.btnCorrectiveAction.selected').parents('.row').children('.level01').attr('id'));
+    }
 
     var description = "";
 
@@ -56,7 +61,16 @@ $(document).on('click', '.btnCA', function (e) {
             var level03Id = parseInt(level03.attr('id'));
             var level03Name = level03.children('.row').children('div').html();
 
-            if (level03Defects > level02errorlimit) {
+            if (level03.children('.row').children('div').children('span.response').length) {
+                if (level03Defects == 1) {
+                    level03Defects = 0
+                }
+                else {
+                    level03Defects = 1;
+                }
+            }
+
+            if (level03Defects >= level02errorlimit && level03Defects > 0) {
            
                 description = description + "\n" + level03Name + ": " + level03Defects + " Defects";
             }
@@ -1013,8 +1027,8 @@ $(document).on('mousedown', '#btnSave', function (e) {
 $(document).on('change', 'select#reaudit:visible', function (e) {
     $('span.auditReaudit').html($("select#reaudit:visible :selected").text());
 });
-$(document).on('change', 'select#period:visible', function (e) {
-    $('span.period').html($("select#period:visible :selected").text());
+$(document).on('change', 'select#selectPeriod:visible', function (e) {
+    $('span.period').html($("select#selectPeriod:visible :selected").text());
 });
 $(document).on('change', 'select#cattleType', function (e) {
     $('span.cattleType').html("<strong>Cattle Type:</strong>" + $("select#cattleType :selected").text());
@@ -1167,9 +1181,13 @@ $(document).on('click', '.level02Group .btnReaudit', function (e) {
 
 
 $(document).on('click', '.btnCorrectiveAction', function (e) {
+    $('.btnCorrectiveAction').removeClass('selected');
+    $(this).addClass('selected');
     var level01 = $(this).parents('.row').children('.level01');
     $(this).addClass('hide');
+
     level01.removeAttr('correctivaction');
+
     $('.btnCA').click();
 });
 function areaImage(id) {

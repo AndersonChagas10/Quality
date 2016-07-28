@@ -113,6 +113,11 @@ var AcaoCorretiva = {
 
         var level01Id = parseInt($('.level01.selected').attr('id'));
 
+        if (!$('.level01.selected').length) {
+
+            level01Id = parseInt($('.btnCorrectiveAction.selected').parents('.row').children('.level01').attr('id'));
+        }
+
         $('.level02List .level02Group[level01id=' + level01Id + '] .level02[limitexceeded]').each(function (e) {
 
             var level02 = $(this);
@@ -127,7 +132,17 @@ var AcaoCorretiva = {
                 var level03Id = parseInt(level03.attr('id'));
                 var level03Name = level03.children('.row').children('div').html();
 
-                if (level03Defects > level02errorlimit) {
+
+                if (level03.children('.row').children('div').children('span.response').length) {
+                    if (level03Defects == 1) {
+                        level03Defects = 0
+                    }
+                    else {
+                        level03Defects = 1;
+                    }
+                }
+
+                if (level03Defects >= level02errorlimit && level03Defects > 0) {
 
                     var tempDefects = {
                         CorrectiveActionId: 0,
