@@ -291,7 +291,7 @@ body > .App > div.container {
 {
     font-size:32px !important;
 }
-.level02Group{
+.level02Group , .level03Group{
     margin-bottom: 80px !important;
 }
 #correctiveActionModal .modal-body

@@ -749,7 +749,7 @@ function level02Reset(level02) {
     $('.painel .labelPainel[level01id=' + level02Group.attr('level01id') + '] .totalDefects').text('0');
     $('.painel .labelPainel[level01id=' + level02Group.attr('level01id') + '] .defects').text('0');
     $('.painel .labelPainel[level01id=' + level02Group.attr('level01id') + '] #cattleType').val('0');
-    $('.painel .labelPainel[level01id=' + level02Group.attr('level01id') + '] #chainSpedy, .level02Group[level01id=' + level02Group.attr('level01id') + '] #lotNumber, .level02Group[level01id=' + level02Group.attr('level01id') + '] #mudScore').val("");
+    $('.painel .labelPainel[level01id=' + level02Group.attr('level01id') + '] #chainSpeed, .level02Group[level01id=' + level02Group.attr('level01id') + '] #lotNumber, .level02Group[level01id=' + level02Group.attr('level01id') + '] #mudScore').val("");
 
     //CFF
     $('.painel .labelPainel[level01id=' + level02Group.attr('level01id') + '] .setsDone').text('0');
@@ -1019,8 +1019,8 @@ $(document).on('change', 'select#period:visible', function (e) {
 $(document).on('change', 'select#cattleType', function (e) {
     $('span.cattleType').html("<strong>Cattle Type:</strong>" + $("select#cattleType :selected").text());
 });
-$(document).on('input', 'input#chainSpedy', function (e) {
-    $('span.chainSpedy').html("<strong>Chain Speedy:</strong>" + $(this).val());
+$(document).on('input', 'input#chainSpeed', function (e) {
+    $('span.chainSpeed').html("<strong>Chain Speedy:</strong>" + $(this).val());
 });
 $(document).on('input', 'input#lotNumber', function (e) {
     $('span.lotNumber').html("<strong>Lot #:</strong>" + $(this).val());
