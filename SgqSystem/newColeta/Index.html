@@ -10,6 +10,7 @@
     <link href="Plugins/sidebar/css/sidebar.min.css" rel="stylesheet" />
     <link href="Content/bootstrap-modal-bs3patch.css" rel="stylesheet" />
     <link href="Content/bootstrap-modal.css" rel="stylesheet" />
+
 </head>
 <body>
     <div class="login">
@@ -47,7 +48,29 @@
             </div>
         </div>
         <div class="cffImage">
-
+            <a>
+                <img id="Image-Maps-Com-image-maps-2016-06-27-112056" src="Img/beef.jpg" border="0" width="255" height="522" orgWidth="255" orgHeight="522" usemap="#image-maps-2016-06-27-112056" alt="" />
+                <map name="image-maps-2016-06-27-112056" id="ImageMapsCom-image-maps-2016-06-27-112056">
+                    <area alt="" title="" onclick='areaImage(34)' shape="rect" coords="1,108,77,333" style="outline:none;" target="_self" /><!--Area 8-->
+                    <area alt="" title="" onclick='areaImage(31)' shape="rect" coords="76,131,188,188" style="outline:none;" target="_self" /><!--Area 8-->
+                    <area alt="" title="" onclick='areaImage(32)' shape="rect" coords="76,185,188,251" style="outline:none;" target="_self" /><!--Area 11-->
+                    <area alt="" title="" onclick='areaImage(33)' shape="rect" coords="186,107,255,340" style="outline:none;" target="_self" /><!--Area 12-->
+                    <area alt="" title="" onclick='areaImage(35)' shape="rect" coords="76,255,186,369" style="outline:none;" target="_self" /><!--Area 14-->
+                    <area alt="" title="" onclick='areaImage(37)' shape="rect" coords="187,332,255,388" style="outline:none;" target="_self" /><!--Area 16-->
+                    <area alt="" title="" onclick='areaImage(36)' shape="rect" coords="0,336,68,392" style="outline:none;" target="_self" /><!--Area 15-->
+                    <area alt="" title="" onclick='areaImage(38)' shape="rect" coords="0,389,124,522" style="outline:none;" target="_self" /><!--Area 17-->
+                    <area alt="" title="" onclick='areaImage(39)' shape="rect" coords="133,393,255,522" style="outline:none;" target="_self" /><!--Area 18-->
+                    <area alt="" title="" onclick='areaImage(30)' shape="rect" coords="111,86,163,131" style="outline:none;" target="_self" /><!--Area 9-->
+                    <area alt="" title="" onclick='areaImage(26)' shape="rect" coords="82,58,134,103" style="outline:none;" target="_self" /><!--Area 5-->
+                    <area alt="" title="" onclick='areaImage(27)' shape="rect" coords="142,58,194,103" style="outline:none;" target="_self" /><!--Area 6-->
+                    <area shape="rect" coords="253,520,255,522" alt="Image Map" style="outline:none;" title="Image Map" href="http://www.image-maps.com/index.php?aff=mapped_users_0" />
+                    <area alt="" title="" onclick='areaImage(23)' shape="poly" coords="203,36,231,44,238,20,230,11,215,13" style="outline:none;" target="_self" /><!--Area 2-->
+                    <area alt="" title="" onclick='areaImage(22)' shape="poly" coords="91,36,54,37,48,12,61,3,81,9" style="outline:none;" target="_self" /><!--Area 1-->
+                    <area alt="" title="" onclick='areaImage(24)' shape="poly" coords="50,40,94,44,91,69,44,68" style="outline:none;" target="_self" /><!--Area 3-->
+                    <area alt="" title="" onclick='areaImage(25)' shape="poly" coords="194,51,227,72,233,50,201,38" style="outline:none;" target="_self" /><!--Area 4-->
+                    <area alt="" title="" onclick='areaImage(29)' shape="poly" coords="201,54,204,110,247,108,251,79" style="outline:none;" target="_self" /><!--Area 8-->
+                    <area alt="" title="" onclick='areaImage(28)' shape="poly" coords="15,76,17,105,66,111,83,62" style="outline:none;" target="_self" />
+            </a>        
         </div>
         <div class="overlay hide"></div>
         <div class="navbar navbar-inverse navbar-fixed-top">
@@ -69,8 +92,8 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a id="btnMore" href="#" role="button" title="More" class="font16">...</a>
+                        <li  class="dropdown iconMoreMenu">
+                            <a id="btnMore" href="#" role="button" title="More" class="iconMoreMenu">...</a>
                             <!--  <ul class="dropdown-menu">
                               <li><a href="#">Logout</a></li>
                             </ul> -->
@@ -87,15 +110,52 @@
                 <div class="painel padding10">
                     <div class="row">
                         <div class="col-xs-12 shift">
-                            <span class="atualDate">05/25/2015</span> /
+                            <span class="atualDate">05/25/2015 00:00</span> /
                             <span class="shift">Shift A</span>
                         </div>
                     </div>
                 </div>
                 <div class="list-group">
-                    <a href="#" id="3" class="list-group-item level01" saveLevel02="saveLevel02">Carcass Contamination Audit</a>
-                    <a href="#" id="6" class="list-group-item level01">CFF (Cut, Fold and Flaps) Audit</a>
-                    <a href="#" id="2" class="list-group-item level01">HTP (Harvest Task Procedure) Audit</a>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="3" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02"><span>Carcass Contamination Audit</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+                                    <span class="btnCorrectiveAction iconsArea font22 marginLeft30 hide red">Corrective Action</span>
+                                    <span class="btnReaudit cursorPointer iconsArea font22 marginLeft30 hide">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i>
+                                </div>
+                            </div>
+                        </div>
+                     </li>
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="6" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02"><span>CFF (Cut, Fold and Flaps) Audit</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+                                    <span class="btnCorrectiveAction iconsArea font22 marginLeft30 hide red">Corrective Action</span>
+                                    <span class="btnReaudit cursorPointer iconsArea font22 marginLeft30 hide">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                                    <i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="2" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02"><span>HTP (Harvest Task Procedure) Audit</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+                                    <span class="btnCorrectiveAction iconsArea font22 marginLeft30 hide red">Corrective Action</span>
+                                    <!--<span class="btnReaudit cursorPointer iconsArea font22 marginLeft30 hide">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>-->
+                                    <i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                 </div>
 
             </div>
@@ -104,33 +164,22 @@
                     <div class="row">
                         <div class="col-xs-3">
                             <div>
-                                <span class="atualDate">05/25/2015</span> /
+                                <span class="atualDate">05/25/2015 00:00 </span> /
                                 <span class="shift">Shift A</span>
                             </div>
                             <div class="labelPainel hide" level01Id="3">
                                 <strong>Total Defects:</strong> <span class="totalDefects">0</span>
                             </div>
                             <div class="labelPainel hide" level01Id="6">
-                                <span class="setsDone"><strong>Sets Done:</strong> 0</span>
+                                <strong>Sets Done: </strong><span class="setsDone">0</span>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="labelPainel hide" level01Id="3">
-                                <select class="form-control" id="reaudit">
-                                    <option value="0">Audir or Reaudit</option>
-                                    <option value="1">Audit</option>
-                                    <option value="2">Reaudit</option>
-                                </select>
-                            </div>
-                            <div class="labelPainel hide" level01Id="6">
-                                <select class="form-control" id="reaudit">
-                                    <option value="0">Audir or Reaudit</option>
-                                    <option value="1">Audit</option>
-                                    <option value="2">Reaudit</option>
-                                </select>
+                            <div>
+                              <span class="auditReaudit">Audit</span>
                             </div>
                             <div>
-                                <select class="form-control" id="period">
+                                <select class="form-control" id="selectPeriod">
                                     <option value="0">Select period</option>
                                     <option value="1">Period 1</option>
                                     <option value="2">Period 2</option>
@@ -150,7 +199,7 @@
                                 </select>
                             </div>
                             <div class="labelPainel hide" level01Id="3">
-                                <input type="number" id="chainSpedy" class="form-control" placeholder="Chain Speed (%)" />
+                                <input type="number" id="chainSpeed" class="form-control" placeholder="Chain Speed" />
                             </div>
                             <div class="labelPainel hide" level01Id="2">
                                 <select class="form-control" id="biasedUnbiased">
@@ -169,10 +218,10 @@
                                 <input type="number" id="mudScore" class="form-control" placeholder="Mud Score" />
                             </div>
                             <div class="labelPainel hide" level01Id="6">
-                                <span class="sideWithErrors">0 s</span>
+                                <strong>Sides With Erros: </strong><span class="sideWithErrors">0</span>
                             </div>
                             <div class="labelPainel hide" level01Id="6">
-                                <span class="more3Defecets">0 m</span>
+                                <strong>3 or More Erros: </strong><span class="more3Defects">0</span>
                             </div>
                         </div>
                     </div>
@@ -181,535 +230,592 @@
                 <div class="list-group level02Group hide" level01id="3">
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="22" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 1</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="22" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 1</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="23" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 2</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="23" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 2</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="23" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 3</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="23" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 3</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="25" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 4</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="25" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 4</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="26" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 5</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="26" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 5</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="27" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 6</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="27" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 6</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="28" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 7</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="28" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 7</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="29" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 8</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="29" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 8</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="30" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 9</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="30" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 9</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="31" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="2"><span>Area 10</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="31" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="2"><span>Area 10</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="32" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 11</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="32" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 11</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="33" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="2"><span>Area 12</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="33" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="2"><span>Area 12</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="34" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 13</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="34" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 13</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="35" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="3"><span>Area 14</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="35" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="3"><span>Area 14</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="36" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 15</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="36" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 15</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="37" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 16</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="37" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 16</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="38" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 17</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="38" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 17</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="39" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="1"><span>Area 18</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="39" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 18</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
-                    <button id="btnSalvarLevel02CCA" class="btn btn-default level02Confirm">Salvar</button>
+                    <button id="btnSalvarLevel02CCA" class="btn btn-default level02Confirm hide">Salvar</button>
                 </div>
                 <div class="list-group level02Group hide" level01id="6">
-                    <a href="#" id="47" class="list-group-item level02"><span>CFF</span></a>
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="47" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" totalsets="5" totalsides="50" sidesperset="10" returnLevel02EndSet="returnLevel02EndSet" levelerrorlimit="0"><span>CFF</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <button id="btnSalvarLevel02CFF" class="btn btn-default level02Confirm hide">Salvar</button>
+
                 </div>
                 <div class="list-group level02Group hide" level01id="2">
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="1" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Open Hide Sticker</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="1" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8"  levelErrorLimit="0" reauditLevel02="reauditLevel02" totalReaudit="3"><span>Open Hide Sticker</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>                                     
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="2" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Stick and Bleed</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="2" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Stick and Bleed</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="3" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Mark Pattern</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="3" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Mark Pattern</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="4" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Cap Bung</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="4" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Cap Bung</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="5" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Remove Udder</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="5" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Remove Udder</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="6" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>1st Legger</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="6" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>1st Legger</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="7" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>2nd Legger</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="7" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>2nd Legger</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="8" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Rumper</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="8" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Rumper</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="9" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Inside Butter</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="9" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Inside Butter</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="10" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Outside Butter</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="10" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Outside Butter</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="11" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Belly Ripper</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="11" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Belly Ripper</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="12" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Flanker</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="12" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Flanker</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="13" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Rimover</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="13" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Rimover</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="14" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Low Backer</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="14" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Low Backer</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="15" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Open Necks</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="15" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Open Necks</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="16" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Gullet Raiser</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="16" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Gullet Raiser</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="17" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Weasand Rodder</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="17" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Weasand Rodder</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="18" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Bung Dropper</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="18" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Bung Dropper</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="19" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Pre-gutter</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="19" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Pre-gutter</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="20" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Gutter</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="20" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Gutter</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="21" class="level02 col-xs-9 col-sm-9 col-md-9 col-lg-10" levelErrorLimit="0"><span>Clip Weasand</span></a>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 userInfo">
+                            <a href="#" id="21" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Clip Weasand</span></a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
+                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable iconsArea font22 na marginLeft30">N/A</span>
+                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
                                 </div>
                             </div>
                         </div>
                     </li>
+                    <button id="btnSalvarLevel02HTP" class="btn btn-default level02Confirm hide">Salvar</button>
+
                 </div>
 
 
@@ -719,7 +825,7 @@
                     <div class="row">
                         <div class="col-xs-3">
                             <div>
-                                <span class="atualDate">05/25/2015</span> /
+                                <span class="atualDate">05/25/2015 00:00</span> /
                                 <span class="shift">Shift A</span>
                             </div>
                             <div class="labelPainel hide" level01Id="3">
@@ -729,15 +835,21 @@
                                 <strong>Defects:</strong> <span class="defects">0</span>
                             </div>
                             <div class="labelPainel hide" level01Id="6">
-                                <span class="setsDone">Sets Done: 0</span>
+                                <strong>Sets Done: </strong> <span class="setsDone">0</span>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div>
-                                <span class="auditReaudit">Audit/Reaudit</span>
+                            <div class="labelPainel hide" level01Id="3">
+                                <span class="auditReaudit">Audit</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="6">
+                                <span class="auditReaudit">Audit</span>
                             </div>
                             <div>
                                 <span class="period">Period</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="2">
+                                <span class="auditReaudit">Audit</span>
                             </div>
                             <div class="labelPainel hide" level01Id="2">
                                 <span class="biasedUnbiased">biasedUnbiased</span>
@@ -749,15 +861,17 @@
                                 <span class="cattleType">CattleType</span>
                             </div>
                             <div class="labelPainel hide" level01Id="3">
-                                <span class="chainSpedy">chainSpedy</span>
+                                <span class="chainSpeed">chainSpeed</span>
                             </div>
                             <div class="labelPainel hide" level01Id="6">
-                                <span class="sideWithErrors">0 swe</span>
+                                <strong>Sides With Errors: </strong><span class="sideWithErrors">0</span>
                             </div>
                             <div class="labelPainel hide" level01Id="6">
-                                <span class="more3Defects">0 m3d</span>
+                               <strong>3 or More Errors :</strong> <span class="more3Defects">0</span>
                             </div>
-
+                            <div class="labelPainel hide" level01Id="6">
+                                <strong>Errors :</strong> <span class="sideErros">0</span>
+                            </div>
                         </div>
                         <div class="col-xs-3">
                             <div class="labelPainel hide" level01Id="3">
@@ -767,10 +881,10 @@
                                 <span class="mudScore">mudScore</span>
                             </div>
                             <div class="labelPainel hide" level01Id="6">
-                                <span class="setAtual">0 set atual</span>
+                                <strong>Current Set: </strong> <span class="setAtual">1</span>
                             </div>
                             <div class="labelPainel hide" level01Id="6">
-                                <span class="sideAtual">0 side atual</span>
+                                <strong>Current Side: </strong> <span class="sideAtual">1</span>
                             </div>
                         </div>
                     </div>
@@ -841,11 +955,11 @@
                         <button class="btn btn-default button-expand marginRight10"><i class="fa fa-expand" aria-hidden="true"></i> Expand All</button>
                         <button class="btn btn-default button-collapse"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>
                     </div>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                      <div class="panel-group" id="accordion40" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="40">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion40" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                         External Round
                                     </a>
                                 </h4>
@@ -891,11 +1005,11 @@
                         </div>
                     </div>
 
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group" id="accordion41" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="41">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion41" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                                         Internal Round
                                     </a>
                                 </h4>
@@ -941,11 +1055,11 @@
                         </div>
                     </div>
 
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group" id="accordion42" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="42">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion42" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                                         External Loin
                                     </a>
                                 </h4>
@@ -990,11 +1104,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group" id="accordion43" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="43">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion43" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
                                         Internal Loin
                                     </a>
                                 </h4>
@@ -1039,11 +1153,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group" id="accordion44" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="44">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion44" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
                                         External Rib
                                     </a>
                                 </h4>
@@ -1088,11 +1202,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group" id="accordion45" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="45">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion45" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
                                         Internal Rib
                                     </a>
                                 </h4>
@@ -1137,11 +1251,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group" id="accordion46" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="46">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion46" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
                                         External Chuck
                                     </a>
                                 </h4>
@@ -1186,11 +1300,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group" id="accordion47" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="1002">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion47" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
                                         Internal Chuck
                                     </a>
                                 </h4>
@@ -1244,11 +1358,11 @@
                         <button class="btn btn-default button-collapse"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>
                     </div>
 
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group" id="accordion40" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="40">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsehOne" aria-expanded="true" aria-controls="collapsehOne">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion40" href="#collapsehOne" aria-expanded="true" aria-controls="collapsehOne">
                                         General Provisions
                                     </a>
                                 </h4>
@@ -1277,11 +1391,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group" id="accordion41" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="41">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsehTwo" aria-expanded="true" aria-controls="collapsehTwo">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion41" href="#collapsehTwo" aria-expanded="true" aria-controls="collapsehTwo">
                                         Hide Removal/Opening Jobs
                                     </a>
                                 </h4>
@@ -1328,11 +1442,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group" id="accordion42" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="42">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsehThree" aria-expanded="true" aria-controls="collapsehThree">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion42" href="#collapsehThree" aria-expanded="true" aria-controls="collapsehThree">
                                         Air Knives
                                     </a>
                                 </h4>
@@ -1362,11 +1476,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group" id="accordion43" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="43">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsehFour" aria-expanded="true" aria-controls="collapsehFour">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion43" href="#collapsehFour" aria-expanded="true" aria-controls="collapsehFour">
                                         Evisceration Knives (bungers, gullet raisers, gutters)
                                     </a>
                                 </h4>
@@ -1388,11 +1502,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group" id="accordion44" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="44">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsehFive" aria-expanded="true" aria-controls="collapsehFive">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion44" href="#collapsehFive" aria-expanded="true" aria-controls="collapsehFive">
                                         Other
                                     </a>
                                 </h4>
@@ -1436,7 +1550,7 @@
                                             <b>Audit Information:<br /></b>
                                             Audit: <span id="auditText"></span><br />
                                             Start Time: <span id="starttime"></span><br />
-                                            Period: <span id="period"></span>
+                                            Period: <span id="correctivePeriod"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -1567,13 +1681,14 @@
         <button class="btn btn-lg btn-danger btnCA hide">Corrective Action</button><!--Corrective Action-->
 
 
-        <script src="Plugins/jquery/jquery.min.js"></script>
-        <script src="Scripts/bootstrap.js"></script>
-        <script src="Plugins/float_button/js/kc.fab.js"></script>
-        <script src="Plugins/sidebar/js/sidebar.js"></script>
-        <script src="Scripts/Methods.js"></script>
-        <script src="Scripts/correctiveaction.js"></script>
-        <script src="Scripts/bootstrap-modal.js"></script>
-        <script src="Scripts/bootstrap-modalmanager.js"></script>
+    <script src="Plugins/jquery/jquery.min.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Plugins/float_button/js/kc.fab.js"></script>
+    <script src="Plugins/sidebar/js/sidebar.js"></script>
+    <script src="Scripts/Methods.js"></script>
+    <script src="Scripts/correctiveaction.js"></script>
+    <script src="Scripts/bootstrap-modal.js"></script>
+    <script src="Scripts/bootstrap-modalmanager.js"></script>
+
 </body>
 </html>
