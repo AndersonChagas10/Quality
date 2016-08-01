@@ -1,15 +1,16 @@
-﻿var Level03ConsolidationDTO = [];
-var DataCollectionResultDTO = [];
-var Level02ConsolidationDTO = [];
-var DataCollectionDTO = [];
-
-var Level01ConsolidationDTO;
-
+﻿
+/*
+    Metodo trabalha de forma estática, porem pode ser fácilmente modificado para trabalhar de forma dinâmica. Celso Géa 28 07 2016.
+*/
 function CreateCCAObject() {
 
-    var counter = 0;
+    var Level03ConsolidationDTO = [];
+    var DataCollectionResultDTO = [];
+    var Level02ConsolidationDTO = [];
+    var DataCollectionDTO = [];
+    var Level01ConsolidationDTO;
+      
     $('.level02List .level02Group[level01id="3"] .level02').each(function (a, b) {
-
 
         var totalNotEvaluated = $('.level02List .level02Group[level01id="3"] .level02[notavaliable="notavaliable"]').length;
         var evaluationNumber = $('.level02List .level02Group[level01id="3"] .level02').length - totalNotEvaluated;
@@ -36,7 +37,7 @@ function CreateCCAObject() {
             Reaudit: 0,
             TotalNotEvaluated: totalNotEvaluated,
             TotalEvaluated: evaluationNumber,
-            Control: counter
+            Control: a
         });
 
         Level02ConsolidationDTO.push({
@@ -53,8 +54,28 @@ function CreateCCAObject() {
             TotalNotConformWeight: b.getAttribute("defects"),
             //DateConsolidation : ,
             Shared: false,
-            Control: counter
+            Control: a
         });
+
+        var level2Total = $('.level02List .level02Group[level01id="3"] .level02').length;
+        var totalNotConformLevel2 = $('.level02List .level02Group[level01id="3"] .level02[limitexceeded="limitExceeded"]').length;
+
+        Level01ConsolidationDTO = {
+            CenterResultId: 1,
+            Level01Id: $('.level01').prop("id"),
+            //DateConsolidation : DateTime.Now, 
+            TotalLevel02: level2Total,
+            TotalLevel02Weight: level2Total,
+            TotalEvaluated: 1,
+            TotalEvaluatedWeight: 1,
+            TotalEvaluatedShared: 1,
+            TotalEvaluatedSharedWeight: 1,
+            TotalNotConform: totalNotConformLevel2 > 0 ? 1 : 0,
+            TotalNotConformWeight: totalNotConformLevel2 > 0 ? 1 : 0,
+            TotalNotConformShared: totalNotConformLevel2 > 0 ? 1 : 0,
+            TotalNotConformShared_Weight: totalNotConformLevel2 > 0 ? 1 : 0,
+            Shared: false,
+        }
 
         var level3List = [];
 
@@ -67,7 +88,6 @@ function CreateCCAObject() {
         var totalnNotAvaliatedLevel3 = $.grep(level3List, function (a) { return a.notAvaliated == true }).length;
         var totalConformLevel3 = $.grep(level3List, function (a) { return a.conform == true }).length;
         var totalNotConformLevel3 = $.grep(level3List, function (a) { return a.exceded == true }).length;
-
         var totalEvaluatedLevel3 = totalnNotAvaliatedLevel3 + totalConformLevel3 + totalNotConformLevel3;
 
         $.each(level3List, function (x, z) {
@@ -90,7 +110,7 @@ function CreateCCAObject() {
                 TotalNotConformShared: b.getAttribute("defects"),
                 TotalNotConformSharedWeight: b.getAttribute("defects"),
                 Shared: true,
-                Control: counter
+                Control: a
             });
 
             DataCollectionResultDTO.push({
@@ -105,45 +125,31 @@ function CreateCCAObject() {
                 DataCollectionValue: z.defects,
                 DataCollectionValueText: z.defects.toString(),
                 Weight: 1,
-                Control: counter
+                Control: a
             });
+
         });
-        counter++;
+
     });
 
-    var level2Total = $('.level02List .level02Group[level01id="3"] .level02').length;
-    var totalNotConformLevel2 = $('.level02List .level02Group[level01id="3"] .level02[limitexceeded="limitExceeded"]').length;
-
-    Level01ConsolidationDTO = {
-        CenterResultId: 1,
-        Level01Id: $('.level01').prop("id"),
-        //DateConsolidation : DateTime.Now, 
-        TotalLevel02: level2Total,
-        TotalLevel02Weight: level2Total,
-        TotalEvaluated: 1,
-        TotalEvaluatedWeight: 1,
-        TotalEvaluatedShared: 1,
-        TotalEvaluatedSharedWeight: 1,
-        TotalNotConform: totalNotConformLevel2 > 0 ? 1 : 0,
-        TotalNotConformWeight: totalNotConformLevel2 > 0 ? 1 : 0,
-        TotalNotConformShared: totalNotConformLevel2 > 0 ? 1 : 0,
-        TotalNotConformShared_Weight: totalNotConformLevel2 > 0 ? 1 : 0,
-        Shared: false,
-    }
-
-}
-
-CreateCCAObject();
-
-var enviar = {
-    syncConsolidado: {
-        level01ConsolidationDTO: Level01ConsolidationDTO,
-        level02ConsolidationDTO: Level02ConsolidationDTO,
-        dataCollectionDTO: DataCollectionDTO,
-        level03ConsolidationDTO: Level03ConsolidationDTO,
-        dataCollectionResultDTO: DataCollectionResultDTO
+    return  {
+        syncConsolidado: {
+            level01ConsolidationDTO: Level01ConsolidationDTO,
+            level02ConsolidationDTO: Level02ConsolidationDTO,
+            dataCollectionDTO: DataCollectionDTO,
+            level03ConsolidationDTO: Level03ConsolidationDTO,
+            dataCollectionResultDTO: DataCollectionResultDTO
+        }
     }
 }
 
+function ConsildateCarcass() {
+   
+    var enviar = CreateCCAObject();
 
-$.post("http://localhost:63128/api/Sync/SetDataAuditConsolidated", enviar, function (r) { console.log(r) })
+    $.post("http://192.168.25.200/SgqMaster/api/Sync/SetDataAuditConsolidated", enviar,
+    function (r) {//Callback.
+        console.log(r);
+    });
+
+}
