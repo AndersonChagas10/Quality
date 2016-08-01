@@ -23,10 +23,15 @@ namespace SgqSystem.Controllers.Api
         [HttpPost]
         public GenericReturn<CorrectiveActionDTO> SalvarAcaoCorretiva([FromBody]CorrectiveActionViewModel model)
         {
-
-            var result = _correctiveActionAppService.SalvarAcaoCorretiva(model.CorrectiveAction);
-
-            return result;
+            if (model.Conectado)
+            {
+                var result = _correctiveActionAppService.SalvarAcaoCorretiva(model.CorrectiveAction);
+                return result;
+            }
+            else
+            {
+                return null;
+            }
         }
 
 

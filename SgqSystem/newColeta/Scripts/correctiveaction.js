@@ -108,7 +108,7 @@ var AcaoCorretiva = {
     enviarAcaoCorretiva: function () {
 
         Geral.esconderMensagem("#correctiveActionModal");
-        
+
         var listDefects = new Array();
 
         var level01Id = parseInt($('.level01.selected').attr('id'));
@@ -162,6 +162,7 @@ var AcaoCorretiva = {
 
 
         var obj = {
+            Conectado: navigator.onLine, 
             CorrectiveAction: {
                 Id: idAcaoCorretiva,
                 DateExecuteFarmatado: dateExecute,
@@ -184,7 +185,7 @@ var AcaoCorretiva = {
             }
         };
 
-       // console.log(obj);
+        // console.log(obj);
 
         $.ajax({
             data: obj,
@@ -221,7 +222,7 @@ var AcaoCorretiva = {
             type: 'POST',
             success: function (data) {
 
-               // console.log(data);
+                // console.log(data);
 
                 if (data != null) {
 

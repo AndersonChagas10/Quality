@@ -23,5 +23,8 @@ namespace SgqSystem.ViewModels
 
         public string TechnicalPassword { get; set; }
         public string TechnicalLogin { get; set; }
+
+        public bool Conectado { get; set; }
+
     }
 }
