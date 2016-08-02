@@ -20,5 +20,13 @@ namespace DTO.DTO
         public Nullable<int> Defects { get; set; }
         //[DataMember]
         //public CorrectiveActionDTO CorrectiveAction { get; set; }
+
+        public void ValidaCoccectiveAction()
+        {
+            ValidaBaseEntity();
+
+
+
+        }
     }
 }

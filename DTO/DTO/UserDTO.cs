@@ -7,7 +7,9 @@ namespace DTO.DTO
     {
         public string Name { get; set; }
         public string Password { get; set; }
-        public string Tste { get; set; }
+        public bool Conectado { get; set; }
+        public bool isTechnical { get; set; }
+        public bool isSlaugther { get; set; }
 
         /// <summary>
         /// Construtor Padrão

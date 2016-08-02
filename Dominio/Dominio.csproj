@@ -57,7 +57,7 @@
     <Compile Include="Interfaces\Repositories\ISyncRepository.cs" />
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
     <Compile Include="Interfaces\Services\IColetaDomain.cs" />
-    <Compile Include="Interfaces\Services\ICorrectiveActionService.cs" />
+    <Compile Include="Interfaces\Services\ICorrectiveActionDomain.cs" />
     <Compile Include="Interfaces\Services\IRelatorioColetaDomain.cs" />
     <Compile Include="Interfaces\Services\ISaveConsolidateDataCollectionDomain.cs" />
     <Compile Include="Interfaces\Services\ISyncDomain.cs" />
@@ -95,7 +95,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ColetaDomain.cs" />
-    <Compile Include="Services\CorrectiveActionService.cs" />
+    <Compile Include="Services\CorrectiveActionDomain.cs" />
     <Compile Include="Services\RelatorioColetaDomain.cs" />
     <Compile Include="Services\SaveConsolidateDataCollectionDomain.cs" />
     <Compile Include="Services\SyncDomain.cs" />

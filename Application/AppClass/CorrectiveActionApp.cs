@@ -5,12 +5,12 @@ using DTO.Helpers;
 
 namespace Application.AppServiceClass
 {
-    public class CorrectiveActionAppService : ICorrectiveActionAppService
+    public class CorrectiveActionApp : ICorrectiveActionApp
     {
         #region Contrutor
-        private readonly ICorrectiveActionService _correctiveActionService;
+        private readonly ICorrectiveActionDomain _correctiveActionService;
 
-        public CorrectiveActionAppService(ICorrectiveActionService correctiveActionService)
+        public CorrectiveActionApp(ICorrectiveActionDomain correctiveActionService)
         {
             _correctiveActionService = correctiveActionService;
         }

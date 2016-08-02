@@ -8,12 +8,12 @@ using System.Collections.Generic;
 
 namespace Dominio.Services
 {
-    public class CorrectiveActionService : ICorrectiveActionService
+    public class CorrectiveActionDomain : ICorrectiveActionDomain
     {
         #region Construtor
         private ICorrectiveActionRepository _correctiveActionRepository;
 
-        public CorrectiveActionService(ICorrectiveActionRepository correctiveActionRepository)
+        public CorrectiveActionDomain(ICorrectiveActionRepository correctiveActionRepository)
         {
             _correctiveActionRepository = correctiveActionRepository;
         }
@@ -25,6 +25,7 @@ namespace Dominio.Services
         {
             try
             {
+                dto.ValidaDataCorrectiveActionDTO();
                 var correctiveActionLevels = dto.CorrectiveActionLevels;
                 dto.CorrectiveActionLevels = new List<CorrectiveActionLevelsDTO>();
 
@@ -34,6 +35,7 @@ namespace Dominio.Services
 
                 foreach (var item in correctiveActionLevels)
                 {
+                    item.ValidaCoccectiveAction();
                     item.CorrectiveActionId = entitie.Id;
                     var entitieLevels = Mapper.Map<CorrectiveActionLevels>(item);
                     entitieLevels = _correctiveActionRepository.SalvarAcaoCorretivaLevels(entitieLevels);

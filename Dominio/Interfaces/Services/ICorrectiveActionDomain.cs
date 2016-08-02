@@ -3,7 +3,7 @@ using DTO.Helpers;
 
 namespace Dominio.Interfaces.Services
 {
-    public interface ICorrectiveActionService
+    public interface ICorrectiveActionDomain
     {
 
         GenericReturn<CorrectiveActionDTO> SalvarAcaoCorretiva(CorrectiveActionDTO dto);

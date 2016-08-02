@@ -3,7 +3,7 @@ using DTO.Helpers;
 
 namespace Application.Interface
 {
-    public interface ICorrectiveActionAppService
+    public interface ICorrectiveActionApp
     {
         GenericReturn<CorrectiveActionDTO> SalvarAcaoCorretiva(CorrectiveActionDTO dto);
 

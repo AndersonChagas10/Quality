@@ -11,7 +11,7 @@ namespace CrossCutting.IOC.Module
             Bind(typeof(IBaseDomain<>)).To(typeof(BaseDomain<>));
             Bind<IUserDomain>().To<UserDomain>();
             //Bind<IBetaService>().To<BetaService>();
-            Bind<ICorrectiveActionService>().To<CorrectiveActionService>();
+            Bind<ICorrectiveActionDomain>().To<CorrectiveActionDomain>();
             Bind<ISyncDomain>().To<SyncDomain>();
             Bind<IRelatorioColetaDomain>().To<RelatorioColetaDomain>();
             Bind<IColetaDomain>().To<ColetaDomain>();

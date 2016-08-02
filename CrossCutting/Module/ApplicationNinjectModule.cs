@@ -11,7 +11,7 @@ namespace CrossCutting.IOC.Module
             Bind(typeof(IBaseApp<>)).To(typeof(AppServiceBase<>));
             Bind<IUserApp>().To<UserApp>();
             //Bind<IBetaAppService>().To<BetaAppService>();
-            Bind<ICorrectiveActionAppService>().To<CorrectiveActionAppService>();
+            Bind<ICorrectiveActionApp>().To<CorrectiveActionApp>();
             Bind<IRelatorioColetaApp>().To<RelatorioColetaApp>();
             Bind<ISyncApp>().To<SyncApp>();
             Bind<IColetaApp>().To<ColetaApp>();
