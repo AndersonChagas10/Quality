@@ -8,12 +8,14 @@ namespace Application.AppServiceClass
     public class CorrectiveActionApp : ICorrectiveActionApp
     {
         #region Contrutor
+
         private readonly ICorrectiveActionDomain _correctiveActionService;
 
         public CorrectiveActionApp(ICorrectiveActionDomain correctiveActionService)
         {
             _correctiveActionService = correctiveActionService;
         }
+
         #endregion
 
         public GenericReturn<CorrectiveActionDTO> SalvarAcaoCorretiva(CorrectiveActionDTO dto)
