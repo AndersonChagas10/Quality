@@ -48,23 +48,14 @@ var AcaoCorretiva = {
 
         Geral.esconderMensagem("#modalLoginSlaughter");
 
-
         var obj = {
-            Name: $("#slaughterLogin").val(),
-            Password: $("#slaughterPassword").val(),
-            isTechnical: false,
-            isSlaugther: true,
-            Conectado: navigator.onLine
+            SlaughterPassword: $("#slaughterPassword").val(),
+            SlaughterLogin: $("#slaughterLogin").val()
         };
-
-        //var obj = {
-        //    SlaughterPassword: $("#slaughterPassword").val(),
-        //    SlaughterLogin: $("#slaughterLogin").val()
-        //};
 
         $.ajax({
             data: obj,
-            url: '../' + '../api/CorrectiveAction/LoginSlaughterTechinical',
+            url: '../' + '../api/CorrectiveAction/LogarUsuarioSlaughter',
             type: 'POST',
             success: function (data) {
                 if (data.Mensagem != null) {
@@ -89,21 +80,13 @@ var AcaoCorretiva = {
         Geral.esconderMensagem("#modalLoginTechinical");
 
         var obj = {
-            Name: $("#techinicalLogin").val(),
-            Password: $("#techinicalPassword").val(),
-            isTechnical: true,
-            isSlaugther: false,
-            Conectado: navigator.onLine
+            TechnicalPassword: $("#techinicalPassword").val(),
+            TechnicalLogin: $("#techinicalLogin").val()
         };
-
-        //var obj = {
-        //    TechnicalPassword: $("#techinicalPassword").val(),
-        //    TechnicalLogin: $("#techinicalLogin").val()
-        //};
 
         $.ajax({
             data: obj,
-            url: '../' + '../api/CorrectiveAction/LoginSlaughterTechinical',
+            url: '../' + '../api/CorrectiveAction/LogarUsuarioTechnical',
             type: 'POST',
             success: function (data) {
                 if (data.Mensagem != null) {
@@ -125,7 +108,7 @@ var AcaoCorretiva = {
     enviarAcaoCorretiva: function () {
 
         Geral.esconderMensagem("#correctiveActionModal");
-
+        
         var listDefects = new Array();
 
         var level01Id = parseInt($('.level01.selected').attr('id'));
@@ -139,7 +122,7 @@ var AcaoCorretiva = {
 
             var level02 = $(this);
             var level02Id = parseInt(level02.attr('id'));
-            var level02Name = level02.children('span').text();
+            var level02Name = level02.children('span.lavelName').text();
 
             $('.level03Group[level01id=' + level01Id + '] .level03').each(function (e) {
 
@@ -179,8 +162,7 @@ var AcaoCorretiva = {
 
 
         var obj = {
-            Conectado: navigator.onLine, 
-            //CorrectiveAction: {
+            CorrectiveAction: {
                 Id: idAcaoCorretiva,
                 DateExecuteFarmatado: dateExecute,
                 AuditorId: 2,
@@ -199,10 +181,10 @@ var AcaoCorretiva = {
                 NameTechinical: $("#techinical").val(),
                 DateTimeTechinicalFarmatado: timeTechinicalLogado,
                 CorrectiveActionLevels: listDefects
-            //}
+            }
         };
 
-        // console.log(obj);
+       // console.log(obj);
 
         $.ajax({
             data: obj,
@@ -239,7 +221,7 @@ var AcaoCorretiva = {
             type: 'POST',
             success: function (data) {
 
-                // console.log(data);
+               // console.log(data);
 
                 if (data != null) {
 

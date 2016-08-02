@@ -3,7 +3,9 @@
     showLevel01();
     //auth();
 });
-
+$(window).bind('beforeunload', function () {
+    return "Warning! If you proceed you will loose information";
+});
 $(document).on('click', '.level01List .level01', function (e) {
     showLevel02($(this));
 });
@@ -11,7 +13,7 @@ $(document).on('click', '.level01List .level01', function (e) {
 $(document).on('click', '.level02List .level02', function (e) {
     showLevel03($(this));
 });
-
+//
 //$(document).on('click', '.btnCA', function (e) {
 //    $('.level01List').addClass('hide').hide();
 //    $('.level02List').addClass('hide').hide();
@@ -48,7 +50,7 @@ $(document).on('click', '.btnCA', function (e) {
 
         var level02 = $(this);
         var level02Id = parseInt(level02.attr('id'));
-        var level02Name = level02.children('span').text();
+        var level02Name = level02.children('span.lavelName').text();
         var level02errorlimit = parseInt(level02.attr('levelerrorlimit'));
 
         description = description + level02Name + " error limit = " + level02errorlimit;
@@ -106,12 +108,12 @@ function auth() {
             if (!!data.Retorno) {
 
                 if ($('#shift').val() > parseInt('0')) {
-                    $('.App').attr('userId', data.Retorno.Id);
-                    $('.App').attr('userName', data.Retorno.Name);
-                    $('.App').attr('loginTime', dateTimeFormat());
+                    $('.App').attr('userid', data.Retorno.Id);
+                    //$('.App').attr('userName', data.Retorno.Name);
+                    $('.App').attr('logintime', dateTimeFormat());
                     $('.App').attr('shift', $('#shift').val());
-                    $('.App').attr('shiftName', $('#shift option:selected').text());
-                    $('.shift').text($('.App').attr('shiftName'));
+                    $('.App').attr('shiftname', $('#shift option:selected').text());
+                    $('.shift').text($('.App').attr('shiftname'));
                     $('.atualDate').text(dateTimeFormat());
                     $('.userName').text(data.Retorno.Name);
                     Geral.esconderMensagem(container);
@@ -236,6 +238,13 @@ var Geral = {
 function showLevel01() {
     $('.login').fadeOut("fast", function (e) {
         $('.login').addClass('hide');
+
+        //implementar no login
+        var loginTime = new Date();
+        $('.App').attr('shift', $('#shift option:selected').val()).attr('userid', '1');
+        $('.App').attr('logintime', dateTimeFormat());
+        $('.atualDate').text($('.App').attr('logintime'));
+
         configureLevel01();
         $('.App').removeClass('hide').show();
         breadCrumb();
@@ -248,19 +257,26 @@ function configureLevel01() {
 
     //resetLevel
 
-    $('.level01').parents('.row').children('.userInfo').children('div').children('.areaComplete').addClass('hide');
+    $('.level01').children('.icons').children('.areaComplete').addClass('hide');
     $('.level01').parents('li').removeClass('bgCompleted');
 
     $('.level01').parents('.row').children('.userInfo').children('div').children('.btnCorrectiveAction').addClass('hide');
 
-    $('.level01').parents('.row').children('.userInfo').children('div').children('.btnReaudit').addClass('hide');
-    $('.level01, .level01').parents('li').removeClass('bgLimitExceeded')
+    // $('.level01').parents('.row').children('.userInfo').children('div').children('.btnReaudit').addClass('hide');
+   
+    $('.level01, .level01').parents('li').removeClass('bgLimitExceeded');
 
-    $('.level01').parents('.row').children('.userInfo').children('div').children('.reauditCount').text($('.level01[reauditNumber]').attr('reauditCount')).addClass('hide');
 
+    var reauditCount = $('.reauditCount[count!=0]');
 
+    reauditCount.children('button').text(reauditCount.attr('count'));
+    $('.level01').parents('.row').children('.userInfo').children('div').children('.reauditCount').removeClass('hide');
+
+    //$('.level01').parents('.row').children('.userInfo').children('div').children('.reauditCount[count!=0]').removeClass('hide').children('button').text();
+   // $('.level01').parents('.row').children('.userInfo').children('div').children('.reauditCount').text($('.level01[reauditNumber]').attr('reauditCount')).addClass('hide');
+    
     //configureLevel
-    $('.level01[completed]').parents('.row').children('.userInfo').children('div').children('.areaComplete').removeClass('hide');
+    $('.level01[completed]').children('.icons').children('.areaComplete').removeClass('hide');
     $('.level01[completed]').parents('li').addClass('bgCompleted');
 
     $('.level01[correctivaction]').parents('.row').children('.userInfo').children('div').children('.btnCorrectiveAction').removeClass('hide');
@@ -268,8 +284,6 @@ function configureLevel01() {
     $('.level01[reaudit]').parents('.row').children('.userInfo').children('div').children('.btnReaudit').removeClass('hide');
     $('.level01[reaudit]').parents('li').removeClass('bgLimitExceeded').addClass('bgCompleted');
     $('.level01[correctivaction]').parents('li').addClass('bgLimitExceeded').removeClass('bgCompleted');
-
-
 
     $('.level01[reauditNumber]').parents('.row').children('.userInfo').children('div').children('.reauditCount').text($('.level01[reauditNumber]').attr('reauditCount')).removeClass('hide');
 }
@@ -292,9 +306,18 @@ function showLevel02(level01) {
         
         level02ButtonSave(level02Group);
 
-        $('.level02').parents('li').children('.row').children('.userInfo').children('div').children('.areaComplete, .areaNotComplete').addClass('hide').siblings('.areaNotComplete').removeClass('hide');
-        $('.level02[completed]').parents('li').children('.row').children('.userInfo').children('div').children('.areaComplete').removeClass('hide').siblings('.areaNotComplete, .na').addClass('hide').siblings('.btnAreaSave').addClass('hide');
-        $('.level02[notavaliable]').parents('li').children('.row').children('.userInfo').children('div').children('.areaComplete').removeClass('hide').siblings('.na').addClass('naSelected').siblings('.areaNotComplete, .na').addClass('hide').siblings('.btnAreaSave').addClass('disabled');
+        $('.level02').parents('li').children('.row').children('.level02').children('.icons').children('.areaComplete, .areaNotComplete').addClass('hide').siblings('.areaNotComplete').removeClass('hide');
+
+
+
+        //var level02Complete = $()
+        $('.level02[completed]').parents('li').children('.row').children('.level02').children('.icons').children('.areaComplete').removeClass('hide').siblings('.areaNotComplete').addClass('hide');
+        $('.level02[completed]').parents('li').children('.row').children('.userInfo').children('div').children('.na').addClass('hide').siblings('.btnAreaSave').addClass('hide');
+
+
+        // $('.level02[completed]').parents('li').children('.row').children('.userInfo').children('div').children('.areaComplete').removeClass('hide').siblings('.areaNotComplete, .na').addClass('hide').siblings('.btnAreaSave').addClass('hide');
+        $('.level02[notavaliable]').parents('li').children('.row').children('.level02').children('.icons').children('.areaComplete').removeClass('hide').siblings('.areaNotComplete').addClass('hide');
+        $('.level02[notavaliable]').parents('li').children('.row').children('.userInfo').children('div').children('.na').addClass('naSelected').addClass('hide').siblings('.btnAreaSave').addClass('disabled');
 
         btnCorrectiveAction();
 
@@ -340,7 +363,7 @@ function showLevel03(level02) {
 
         level03.children('.level03Group[level01id=' + $('.level01.selected').attr('id') + ']').removeClass('hide');
 
-        breadCrumb($('.level01List .selected').text(), $('.level02List .level02.selected span:first').text());
+        breadCrumb($('.level01List .selected').text(), $('.level02List .level02.selected span.lavelName').text());
         $('.btnSave').removeClass('hide');
 
     });
@@ -375,14 +398,34 @@ function breadCrumb(level01, level02) {
 
 
 }
+//$(document).on('click', '.breadcrumb', function (e) {
+//    $('#messageContent').text('ppppppppp');
+//    var $modal = $('#modalMessage');
+//    $modal.modal();
+//});
 $(document).on('click', '#btnMore', function (e) {
     rightMenuShow();
 });
 $(document).on('click', function (e) {
+  //  confirmButtonLevel02Hide();
     rightMenuHide();
     imageHide();
 });
-
+$(document).on('click', '.overlay', function (e) {
+    if ($('.btnAreaSaveConfirm:visible').length)
+    {
+        $(this).addClass('hide');
+        $('.btnAreaSaveConfirm:visible').addClass('hide').siblings('.btnAreaSave').removeAttr('disabled');
+    }
+    $('.defects').removeClass('hide');
+});
+function confirmButtonLevel02Hide() {
+    if ($('.btnAreaSaveConfirm').is(':visible'))
+    {
+        $('.overlay').addClass('hide');
+        $('.btnAreaSaveConfirm').addClass('hide').siblings('.btnAreaSave').removeClass('hide');
+    }
+}
 $(document).on('click', '#btnShowImage', function (e) {
     imageShow();
 });
@@ -653,21 +696,26 @@ function defectLimitCheck() {
 
     var defectsLevel02 = parseInt(level02.attr('defects'));
     var defectsLimit = parseInt(level02.attr('levelerrorlimit'));
-    var defects = $('.painelLevel03 .defects').parent('div');
-    defects.removeClass('red');
+
+    var defectsDiv = $('.painelLevel03 .defects').parent('div');
+    defectsDiv.removeClass('red');
     var btnNA = level02.siblings('.userInfo').children('div').children('.na');
+    btnNA.addClass('hide');
+
     if (defectsLevel02 > defectsLimit) {
-        defects.addClass('red');
+        defectsDiv.addClass('red');
         level02.attr('limitExceeded', 'limitExceeded');
         level02.parents('li').addClass('bgLimitExceeded');
-       // $('.btnCA').removeClass('hide');
-        btnNA.addClass('hide');
-
+        $('.btnCA').removeClass('hide');
     }
     else {
-        defects.removeClass('red');
+        defectsDiv.removeClass('red');
         level02.removeAttr('limitExceeded');
         level02.parents('li').removeClass('bgLimitExceeded');
+        if(defectsLevel02 == 0)
+        {
+            btnNA.removeClass('hide');
+        }
         //if (!$('.level02[limitexceeded]')) {
         //    $('.btnCA').addClass('hide');
         //}
@@ -722,8 +770,8 @@ $(document).on('click', '.level03Group[level01id=2] .level03', function (e) {
 $(document).on('click', '.na', function (e) {
 
     var botaoSalvar = $(this).siblings('.btnAreaSave');
-    var iconCompleto = $(this).siblings('.areaComplete');
-    var iconNaoCompleto = $(this).siblings('.areaNotComplete');
+    var iconCompleto =    $(this).parents('li').children('.row').children('.level02').children('.icons').children('.areaComplete');
+    var iconNaoCompleto = $(this).parents('li').children('.row').children('.level02').children('.icons').children('.areaNotComplete');
     var level02 = $(this).parents('li').children('.row').children('.level02');
     if ($(this).hasClass('naSelected')) {
         $(this).removeClass('naSelected');
@@ -743,6 +791,19 @@ $(document).on('click', '.na', function (e) {
     }
 });
 $(document).on('click', '.btnAreaSave', function (e) {
+    
+    $('.overlay').removeClass('hide');
+    $(this).siblings('.btnAreaSaveConfirm').removeClass('hide');
+    $(this).attr('disabled', 'disabled');
+    $(this).siblings('.defects').addClass('hide');
+
+    //$(this).addClass('disabled', function (e) {
+    //    alert('mae');
+    //});
+    //$(this).parents('button').addClass('hide');
+
+});
+$(document).on('click', '.btnAreaSaveConfirm', function (e) {
 
     if ($(this).hasClass('disabled')) {
         return false;
@@ -750,7 +811,8 @@ $(document).on('click', '.btnAreaSave', function (e) {
     var level02 = $(this).parents('li').children('.row').children('.level02');
     level02.addClass('selected');
     $('.level03Group[level01id=' + level02.parents('.level02Group').attr('level01id') + ']').children('.level03Confirm').click();
-    //level02Complete(level02);
+    $('.overlay').addClass('hide');
+    $(this).siblings('.defects').removeClass('hide');
 
 });
 function level02Reset(level02) {
@@ -783,8 +845,8 @@ function level02Reset(level02) {
 
     var botaoNa = level02.parents('.row').children('.userInfo').children('div').children('.na');
     var botaoSalvarLevel02 = level02.parents('.row').children('.userInfo').children('div').children('.btnAreaSave');
-    var iconCompleto = level02.parents('.row').children('.userInfo').children('div').children('.areaComplete');
-    var iconNaoCompleto = level02.parents('.row').children('.userInfo').children('div').children('.areaNotComplete');
+    var iconCompleto = level02.children('.icons').children('.areaComplete');
+    var iconNaoCompleto = level02.children('.icons').children('.areaNotComplete');
  
     botaoNa.removeClass('hide');
     botaoSalvarLevel02.removeClass('hide');
@@ -817,13 +879,16 @@ function level02Complete(level02) {
 
         var botaoNa = level.parents('.row').children('.userInfo').children('div').children('.na');
         var botaoSalvarLevel02 = level.parents('.row').children('.userInfo').children('div').children('.btnAreaSave');
-        var iconCompleto = level.parents('.row').children('.userInfo').children('div').children('.areaComplete');
-        var iconNaoCompleto = level.parents('.row').children('.userInfo').children('div').children('.areaNotComplete');
+        var btnSalvarLevel02Confirm = level.parents('.row').children('.userInfo').children('div').children('.btnAreaSaveConfirm');
+        var iconCompleto = level.parents('.row').children('.level02').children('.icons').children('.areaComplete');
+        var iconNaoCompleto = level.parents('.row').children('.level02').children('.icons').children('.areaNotComplete');
+
 
         iconCompleto.removeClass('hide');
         iconNaoCompleto.addClass('hide');
         botaoNa.addClass('hide');
-        botaoSalvarLevel02.addClass('hide');
+        botaoSalvarLevel02.addClass('hide').removeAttr('disabled');
+        btnSalvarLevel02Confirm.addClass('hide');
         $('.btnSave').addClass('hide');
         level02ButtonSave(level.parents('.level02Group'));
 
@@ -901,27 +966,92 @@ function btnCorrectiveAction() {
     }
 }
 $(document).on('click', '#btnSalvarCCA', function (e) {
+
     var level01 = $('.level01.selected');
     var level02 = $('.level02.selected');
 
-    $('.level03Group[level01id=3] .level03 input[value=0]').each(function (e) {
-
-        var level03 = $(this).parents('.level03');
-        level02.attr('level03' + level03.attr('id'), $(this).val());
-
-    });
+    
     
     if (level01.attr('completed'))
     {
         level01.attr('update', 'update');
     }
     $('.level03Group[level01id=3] .level03 input').val('0').parents('li').removeClass('bgAlert');
+
+
+    var level02Save =
+                $(saveLevel02(
+                              level01.attr('id'),
+                              level02.attr('id'),
+                              dateTimeFormat(),
+                              $('.App').attr('auditorid'),
+                              $('.App').attr('shit'),
+                              $('.App').attr('period'),
+                              null,
+                              null,
+                              level02.attr('reaudit'),
+                              level02.attr('defects')
+                           ));
+
+    $('.level03Group[level01id=3] .level03 input').each(function (e) {
+
+        var level03 = $(this).parents('.level03');
+        level02.attr('level03' + level03.attr('id'), $(this).val());
+
+        //verificar para saber quando tem conformidade e nao conformidade
+
+        var conform = true;
+        if(parseInt($(this).val()) > 0)
+        {
+            conform = false;
+        }
+
+        var level03Save = $(saveLevel03(
+                                       level03.attr('id'),
+                                       $(this).val(),
+                                       conform,
+                                       $('.App').attr('auditorid'),
+                                       null
+                                     ));
+
+        level02Save.append(level03Save);
+
+
+    });
+
+    level02.parents('.level02Group').append(
+            
+        level02Save
+        );
+
+    
+
     level02Complete(level02);
+
+
     if ($('.breadcrumb li a').length > 1) {
         $('.breadcrumb li a:last').click();
     }
 });
+
+
+
+//function saveLevel01(Level01Id, date, shift, period, totalSets, totalSides, atualSet, atualSide, totalErros) {
+//    return "<div class='level01Result' level01Id='" + Level01Id + "' date='" + date + "' shift='" + shift + "' period='" + period + "' totalSets='" + totalSets + "' totalSides='" + totalSide + "' atualSet='" + atualSet + "' atualSide='" + atualSide + "' totalerros='" + totalErros + "'></div>";
+//}
+function saveLevel02(Level01Id, Level02Id, date, auditorId, shift, period, evaluate, sample, reaudit, totalErros) {
+    return "<div class='level02Result' level01Id='" + Level01Id + "' level02Id='" + Level02Id + "' date='" + date  + "' auditorId='" + auditorId + "' shift='" + shift + "' period='" + period + "' reaudit='" + reaudit + "' evaluate='" + evaluate + "' sample='" + sample + "' totalerros='" + totalErros + "'></div>";
+}
+function saveLevel03(Level03Id, value, conform, auditorId, totalError, date) {
+    return "<div class='level03Result' level03id='" + Level03Id + "' date='" + dateTimeFormat() + "' value='" + value + "' conform='" + conform + "' auditorId='" + auditorId + "' totalerror='" + totalError + "'></div>";
+}
+
+
 $(document).on('click', '#btnSalvarCFF', function (e) {
+
+    //para saber a consolidacao do level01
+
+
 
     var level02 = $('.level02.selected');
     var level02Group = $('.level03Group:visible');
@@ -940,12 +1070,6 @@ $(document).on('click', '#btnSalvarCFF', function (e) {
     currentSide = currentSide + 1;
     level02Group.removeAttr('firstErrorSide');
     level02Group.removeAttr('Error3MoreSide');
-
-
-    //if ($('.painelLevel02 .sideWithErrors').parents('.labelPainel').hasClass('red') || $('.painelLevel03 .sideErros').parents('.labelPainel').hasClass('red'))
-    //{
-    //    $('.btnCA').removeClass('hide');
-    //}
 
     if (currentSide > sidesperset)
     {
@@ -1028,6 +1152,7 @@ $(document).on('change', 'select#reaudit:visible', function (e) {
     $('span.auditReaudit').html($("select#reaudit:visible :selected").text());
 });
 $(document).on('change', 'select#selectPeriod:visible', function (e) {
+    $('.App').attr('period', $('#selectPeriod option:selectedc').val());
     $('span.period').html($("select#selectPeriod:visible :selected").text());
 });
 $(document).on('change', 'select#cattleType', function (e) {
@@ -1141,15 +1266,16 @@ $(document).on('click', '#btnSalvarLevel02HTP', function (e) {
     level01Return();
     //alert('salvar level02 completo');
 });
-
-
 $(document).on('click', '.level01List .btnReaudit', function (e) {
     
     var level01 = $(this).parents('.row').children('.level01');
 
     if (level01.attr('correctivaction'))
     {
-        alert('Open Corrective Action');
+        //alert('Open Corrective Action');
+        var title = "Warning";
+        var content = "Fill the Corrective Action first.";
+        openMessageModal(title, content);
         return true;
     }
 
@@ -1190,8 +1316,17 @@ $(document).on('click', '.btnCorrectiveAction', function (e) {
 
     $('.btnCA').click();
 });
+$(document).on('click', '#btnMessageOk', function (e) {
+    $('#modalMessage').modal('hide');
+}); 
 function areaImage(id) {
     showLevel03($("#" + id + ".level02"));
+}
+function openMessageModal(title, content) {
+    var $modal = $('#modalMessage');
+    $modal.children('.modal-header').children('h3').text(title);
+    $modal.children('.modal-body').children('.row').find('.content').text(content);
+    $modal.modal();
 }
 //var storage = window.localStorage;
 
