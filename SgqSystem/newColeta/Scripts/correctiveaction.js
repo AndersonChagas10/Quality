@@ -48,14 +48,23 @@ var AcaoCorretiva = {
 
         Geral.esconderMensagem("#modalLoginSlaughter");
 
+
         var obj = {
-            SlaughterPassword: $("#slaughterPassword").val(),
-            SlaughterLogin: $("#slaughterLogin").val()
+            Name: $("#slaughterLogin").val(),
+            Password: $("#slaughterPassword").val(),
+            isTechnical: false,
+            isSlaugther: true,
+            Conectado: navigator.onLine
         };
+
+        //var obj = {
+        //    SlaughterPassword: $("#slaughterPassword").val(),
+        //    SlaughterLogin: $("#slaughterLogin").val()
+        //};
 
         $.ajax({
             data: obj,
-            url: '../' + '../api/CorrectiveAction/LogarUsuarioSlaughter',
+            url: '../' + '../api/CorrectiveAction/LoginSlaughterTechinical',
             type: 'POST',
             success: function (data) {
                 if (data.Mensagem != null) {
@@ -80,13 +89,21 @@ var AcaoCorretiva = {
         Geral.esconderMensagem("#modalLoginTechinical");
 
         var obj = {
-            TechnicalPassword: $("#techinicalPassword").val(),
-            TechnicalLogin: $("#techinicalLogin").val()
+            Name: $("#techinicalLogin").val(),
+            Password: $("#techinicalPassword").val(),
+            isTechnical: true,
+            isSlaugther: false,
+            Conectado: navigator.onLine
         };
+
+        //var obj = {
+        //    TechnicalPassword: $("#techinicalPassword").val(),
+        //    TechnicalLogin: $("#techinicalLogin").val()
+        //};
 
         $.ajax({
             data: obj,
-            url: '../' + '../api/CorrectiveAction/LogarUsuarioTechnical',
+            url: '../' + '../api/CorrectiveAction/LoginSlaughterTechinical',
             type: 'POST',
             success: function (data) {
                 if (data.Mensagem != null) {
@@ -163,7 +180,7 @@ var AcaoCorretiva = {
 
         var obj = {
             Conectado: navigator.onLine, 
-            CorrectiveAction: {
+            //CorrectiveAction: {
                 Id: idAcaoCorretiva,
                 DateExecuteFarmatado: dateExecute,
                 AuditorId: 2,
@@ -182,7 +199,7 @@ var AcaoCorretiva = {
                 NameTechinical: $("#techinical").val(),
                 DateTimeTechinicalFarmatado: timeTechinicalLogado,
                 CorrectiveActionLevels: listDefects
-            }
+            //}
         };
 
         // console.log(obj);

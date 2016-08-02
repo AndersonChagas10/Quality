@@ -35,7 +35,7 @@ namespace Dominio.Services
 
                 foreach (var item in correctiveActionLevels)
                 {
-                    item.ValidaCoccectiveAction();
+                    item.ValidaCorrectiveActionLevels();
                     item.CorrectiveActionId = entitie.Id;
                     var entitieLevels = Mapper.Map<CorrectiveActionLevels>(item);
                     entitieLevels = _correctiveActionRepository.SalvarAcaoCorretivaLevels(entitieLevels);
