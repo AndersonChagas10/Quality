@@ -36,7 +36,7 @@ namespace SgqSystem.Controllers.Api
 
         [Route("LoginSlaughterTechinical")]
         [HttpPost]
-        public GenericReturn<UserDTO> LogarUsuarioSlaughter([FromBody]UserViewModel model)
+        public GenericReturn<UserDTO> LoginSlaughterTechinical([FromBody]UserViewModel model)
         {
             //var user = new UserDTO()
             //{

@@ -13,6 +13,8 @@ namespace DTO.BaseEntity
         public DateTime AddDate { get; set; } = DateTime.Now;
         [DataMember]
         public DateTime? AlterDate { get; set; } = null;
+        [DataMember]
+        public Nullable<bool> Conectado { get; set; }
 
         public void ValidaBaseEntity([CallerMemberName] string callerName = "")
         {

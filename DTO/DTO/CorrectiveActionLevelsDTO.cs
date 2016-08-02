@@ -21,7 +21,7 @@ namespace DTO.DTO
         //[DataMember]
         //public CorrectiveActionDTO CorrectiveAction { get; set; }
 
-        public void ValidaCoccectiveAction()
+        public void ValidaCorrectiveActionLevels()
         {
             ValidaBaseEntity();
 
