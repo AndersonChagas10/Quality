@@ -90,7 +90,7 @@
     <Compile Include="Level3.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Log\LoggerNLog.cs" />
+    <Compile Include="LogService\LoggerNLog.cs" />
     <Compile Include="Period.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

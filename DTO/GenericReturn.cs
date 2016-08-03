@@ -63,10 +63,10 @@ namespace DTO.Helpers
 
             if (!isExceptionHelper)
             {
-                Logger logger = LogManager.GetCurrentClassLogger();
+                Logger logger = LogManager.GetLogger("dataBaseLogger");
                 logger.Error(_ex, Mensagem, null);
-                //logger.Trace(_ex, Mensagem, null);
             }
+
         }
 
     }
