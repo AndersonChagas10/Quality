@@ -138,7 +138,7 @@ body > .App > div.container {
 }
 .padding10
 {
-    padding:10px;
+    padding:10px !important;
 }
 .height50
 {
@@ -346,22 +346,4 @@ body > .App > div.container {
     position: relative;
     z-index:9999;
     right: 0px !important;
-}
-#modalMessage{
-    padding: 0px !important;
-}
-
-#modalMessage > .modal-body{
-    padding: 5px !important;
-    margin: 0px !important;
-}
-
-#modalMessage > .modal-header{
-    padding: 5px !important;
-    margin: 0px !important;
-}
-
-#modalMessage > .modal-footer{
-    padding: 5px !important;
-    margin: 0px !important;
 }
