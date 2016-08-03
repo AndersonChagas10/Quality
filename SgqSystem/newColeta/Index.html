@@ -40,7 +40,7 @@
         </form>
         <div class="foot"></div>
     </div>
-    <div class="App hide" userId="" userName="" loginTime="" shift="" shiftName="" breadMainLevel="Slaugther">
+    <div class="App hide" breadMainLevel="Slaugther">
         <div class="rightMenu">
             <div class="list-group list-group-inverse rightMenuList">
                 <a href="#" id="btnSync" class="list-group-item">Sync</a>
@@ -118,13 +118,16 @@
                 <div class="list-group">
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="3" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02"><span>Carcass Contamination Audit</span></a>
+                            <a href="#" id="3" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02">
+                                 <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>      
+                                 <span class="levelName">Carcass Contamination Audit</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-                                    <span class="btnCorrectiveAction iconsArea font22 marginLeft30 hide red">Corrective Action</span>
-                                    <span class="btnReaudit cursorPointer iconsArea font22 marginLeft30 hide">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i>
+                                    <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>
+                                    <span class="btnReaudit cursorPointer iconsArea font22"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="1"><button class="btn btn-default">0</button></span>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -135,10 +138,10 @@
                             <a href="#" id="6" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02"><span>CFF (Cut, Fold and Flaps) Audit</span></a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-                                    <span class="btnCorrectiveAction iconsArea font22 marginLeft30 hide red">Corrective Action</span>
-                                    <span class="btnReaudit cursorPointer iconsArea font22 marginLeft30 hide">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i>
+                                    <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>
+                                    <span class="btnReaudit cursorPointer iconsArea font22"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
                                 </div>
                             </div>
                         </div>
@@ -148,8 +151,8 @@
                             <a href="#" id="2" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02"><span>HTP (Harvest Task Procedure) Audit</span></a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-                                    <span class="btnCorrectiveAction iconsArea font22 marginLeft30 hide red">Corrective Action</span>
-                                    <!--<span class="btnReaudit cursorPointer iconsArea font22 marginLeft30 hide">Reaudit</span>
+                                    <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>
+                                    <!--<span class="btnReaudit cursorPointer iconsArea font22 marginLeft30 hide"><button class="btn btn-default">Reaudit</button></span>
                                     <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>-->
                                     <i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i>
                                 </div>
@@ -218,10 +221,10 @@
                                 <input type="number" id="mudScore" class="form-control" placeholder="Mud Score" />
                             </div>
                             <div class="labelPainel hide" level01Id="6">
-                                <strong>Sides With Errors: </strong><span class="sideWithErrors">0</span>
+                                <strong>Sides With Erros: </strong><span class="sideWithErrors">0</span>
                             </div>
                             <div class="labelPainel hide" level01Id="6">
-                                <strong>3 or More Errors: </strong><span class="more3Defects">0</span>
+                                <strong>3 or More Erros: </strong><span class="more3Defects">0</span>
                             </div>
                         </div>
                     </div>
@@ -230,252 +233,451 @@
                 <div class="list-group level02Group hide" level01id="3">
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="22" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 1</span></a>
+                       
+                            <a href="#" id="22" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>        
+                                    <span class="lavelName">Area 1</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="23" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 2</span></a>
+                            <a href="#" id="23" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 2</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="23" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 3</span></a>
+                            <a href="#" id="24" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 3</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="25" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 4</span></a>
+                            <a href="#" id="25" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 4</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="26" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 5</span></a>
+                            <a href="#" id="26" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 5</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="27" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 6</span></a>
+                            <a href="#" id="27" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 6</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="28" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 7</span></a>
+                            <a href="#" id="28" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 7</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="29" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 8</span></a>
+                            <a href="#" id="29" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 8</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="30" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 9</span></a>
+                            <a href="#" id="30" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 9</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="31" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="2"><span>Area 10</span></a>
+                            <a href="#" id="31" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 10</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="32" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 11</span></a>
+                            <a href="#" id="32" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 11</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="33" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="2"><span>Area 12</span></a>
+                            <a href="#" id="33" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 12</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="34" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 13</span></a>
+                            <a href="#" id="34" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 13</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="35" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="3"><span>Area 14</span></a>
+                            <a href="#" id="35" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 14</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="36" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 15</span></a>
+                            <a href="#" id="36" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 15</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="37" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 16</span></a>
+                            <a href="#" id="37" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 16</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="38" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 17</span></a>
+                            <a href="#" id="38" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 17</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="39" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1"><span>Area 18</span></a>
+                            <a href="#" id="39" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="lavelName">Area 18</span>
+                            </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <a href="#" class="defects iconsArea font22 marginRight30">0</a>
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1524,6 +1726,27 @@
                 </div>
             </div>
 
+            <div id="modalMessage" class="modal container fade" data-width="400">
+                <div class="modal-header">
+                    <h3 class="title"></h3>
+                    <div id="messageAlert" class="alert alert-info hide" role="alert">
+                        <span id="mensagemAlerta" class="icon-info-sign"></span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <p class="content"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnMessageOk">OK</button>
+                </div>
+            </div>
+
             <!--Começo Ação Corretiva-->
             <div class="correctiveaction hide list-group" style="margin-top: 16px;  padding-bottom: 70px;">
                 <div id="correctiveActionModal" class="modal container fade" style="display: none;">
@@ -1679,8 +1902,12 @@
         <div class="kc_fab_wrapper btnSave hide"></div><!--Save-->
 
         <button class="btn btn-lg btn-danger btnCA hide">Corrective Action</button><!--Corrective Action-->
-
-
+        <footer class="footer">
+            <div class="container">
+                <p>text here</p>
+            </div>
+        </footer>
+    </div>
     <script src="Plugins/jquery/jquery.min.js"></script>
     <script src="Scripts/bootstrap.js"></script>
     <script src="Plugins/float_button/js/kc.fab.js"></script>
