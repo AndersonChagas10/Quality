@@ -50,7 +50,7 @@ $(document).on('click', '.btnCA', function (e) {
 
         var level02 = $(this);
         var level02Id = parseInt(level02.attr('id'));
-        var level02Name = level02.children('span.lavelName').text();
+        var level02Name = level02.children('span.levelName').text();
         var level02errorlimit = parseInt(level02.attr('levelerrorlimit'));
 
         description = description + level02Name + " error limit = " + level02errorlimit;
@@ -363,7 +363,7 @@ function showLevel03(level02) {
 
         level03.children('.level03Group[level01id=' + $('.level01.selected').attr('id') + ']').removeClass('hide');
 
-        breadCrumb($('.level01List .selected').text(), $('.level02List .level02.selected span.lavelName').text());
+        breadCrumb($('.level01List .selected').text(), $('.level02List .level02.selected span.levelName').text());
         $('.btnSave').removeClass('hide');
 
     });
@@ -1019,12 +1019,7 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
 
     });
 
-    level02.parents('.level02Group').append(
-            
-        level02Save
-        );
-
-    
+    level02.parents('.level02Group').append(level02Save);
 
     level02Complete(level02);
 
@@ -1048,40 +1043,93 @@ function saveLevel03(Level03Id, value, conform, auditorId, totalError, date) {
 
 
 $(document).on('click', '#btnSalvarCFF', function (e) {
-
-    //para saber a consolidacao do level01
-
-
-
-    var level02 = $('.level02.selected');
+    var level01 = $('.level01.selected');
     var level02Group = $('.level03Group:visible');
+
+    var level02Head = $('.level02.selected');
 
     var currentSet = parseInt($('.painelLevel03 .setAtual').text());
     var currentSide = parseInt($('.painelLevel03 .sideAtual').text());
 
-    var totalsets = parseInt(level02.attr('totalsets'));
-    var totalsides = parseInt(level02.attr('totalsides'));
-    var sidesperset = parseInt(level02.attr('sidesperset'));
+    var totalsets = parseInt(level02Head.attr('totalsets'));
+    var totalsides = parseInt(level02Head.attr('totalsides'));
+    var sidesperset = parseInt(level02Head.attr('sidesperset'));
 
-    var returnlevel02endset = level02.attr('returnlevel02endset');
+    var returnlevel02endset = level02Head.attr('returnlevel02endset');
 
     var setsDone = parseInt($('.painelLevel02 .setsDone').text());
 
-    currentSide = currentSide + 1;
     level02Group.removeAttr('firstErrorSide');
-    level02Group.removeAttr('Error3MoreSide');
+    level02Group.removeAttr('Error3MoreSide');    
 
-    if (currentSide > sidesperset)
-    {
+ 
+
+    $('.level03Group[level01id=6] .level02').each(function (e) {
+
+        var level02 = $(this);
+
+        var level02Save =
+                $(saveLevel02(
+                              level01.attr('id'),
+                              level02.attr('level02id'),
+                              dateTimeFormat(),
+                              $('.App').attr('auditorid'),
+                              $('.App').attr('shit'),
+                              $('.App').attr('period'),
+                              currentSet,
+                              currentSide,
+                              level02.attr('reaudit'),
+                              level02.attr('defects')
+                           ));
+
+                             level02.parents('.panel').children('div').children('.panel-body').children('.level03').each(function (e) {
+
+                                var level03 = $(this);
+                                var input = level03.children('.row').children('div').children('div').children('input');
+
+                                 //level02.attr('level03' + level03.attr('id'), $(this).val());
+
+                                //verificar para saber quando tem conformidade e nao conformidade
+                                        
+                                var conform = true;
+                                if (parseInt($(this).val()) > 0) {
+                                    conform = false;
+                                }
+
+                                var level03Save = $(saveLevel03(
+                                                               level03.attr('id'),
+                                                               input.val(),
+                                                               conform,
+                                                               $('.App').attr('auditorid'),
+                                                               null
+                                                             ));
+
+                                level02Save.append(level03Save);
+
+
+
+                                    
+                             });
+                             level02Head.parents('.level02Group').append(level02Save);
+
+    });
+
+
+    level02Complete(level02Head);
+
+    currentSide = currentSide + 1;
+
+    $('.sideErros').text('0').parents('.labelPainel').removeClass('red');
+    $('.level03Group:visible input').val(0).parents('.level03').removeClass('bgAlert');
+    $('.painelLevel03 .sideAtual').text(currentSide);
+
+    if (currentSide > sidesperset) {
         currentSet = currentSet + 1;
         setsDone = setsDone + 1;
-        
-        
-        if (setsDone == totalsets)
-        {
-            level02.attr('completed', 'completed');
-            level02Complete(level02);
 
+        if (setsDone == totalsets) {
+            level02Head.attr('completed', 'completed');
+            level02Complete(level02Head);
         }
         $('.painelLevel03 .setAtual').text(currentSet);
         $('.setsDone').text(setsDone);
@@ -1089,26 +1137,9 @@ $(document).on('click', '#btnSalvarCFF', function (e) {
         defectLimitCheck();
         level02Return();
         $('.painelLevel03 .sideAtual').text("1");
-
     }
-    else
-    {
-        $('.sideErros').text('0').parents('.labelPainel').removeClass('red');
-        $('.level03Group:visible input').val(0).parents('.level03').removeClass('bgAlert');
-        $('.painelLevel03 .sideAtual').text(currentSide);
-    }
-
-    //verificar o side atual 
-    //adicionar + 1
-    //verificar se ele é o ultimo
-    //se ele for o o ultimo verifica se ele volta o level ou se atualiza o site
-
-
-
     $(this).parents('.level03Group').children('div').children('.button-collapse').click();
-    $(document).scrollTop(0);
-
-    //se o side dor igual o ultimo side..retorna
+    $(document).scrollTop(0);   
 });
 $(document).on('click', '#btnSalvarHTP', function (e) {
 

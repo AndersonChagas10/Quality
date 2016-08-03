@@ -122,7 +122,7 @@ var AcaoCorretiva = {
 
             var level02 = $(this);
             var level02Id = parseInt(level02.attr('id'));
-            var level02Name = level02.children('span.lavelName').text();
+            var level02Name = level02.children('span.levelName').text();
 
             $('.level03Group[level01id=' + level01Id + '] .level03').each(function (e) {
 
