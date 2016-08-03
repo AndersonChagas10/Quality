@@ -1,5 +1,4 @@
-﻿
-/*
+﻿/*
     Metodo trabalha de forma estática, porem pode ser fácilmente modificado para trabalhar de forma dinâmica. Celso Géa 28 07 2016.
 */
 function CreateCCAObject() {
@@ -9,7 +8,7 @@ function CreateCCAObject() {
     var Level02ConsolidationDTO = [];
     var DataCollectionDTO = [];
     var Level01ConsolidationDTO;
-      
+
     $('.level02List .level02Group[level01id="3"] .level02').each(function (a, b) {
 
         var totalNotEvaluated = $('.level02List .level02Group[level01id="3"] .level02[notavaliable="notavaliable"]').length;
@@ -132,7 +131,7 @@ function CreateCCAObject() {
 
     });
 
-    return  {
+    return {
         syncConsolidado: {
             level01ConsolidationDTO: Level01ConsolidationDTO,
             level02ConsolidationDTO: Level02ConsolidationDTO,
@@ -144,7 +143,7 @@ function CreateCCAObject() {
 }
 
 function ConsildateCarcass() {
-   
+
     var enviar = CreateCCAObject();
 
     $.post("http://192.168.25.200/SgqMaster/api/Sync/SetDataAuditConsolidated", enviar,

@@ -12,17 +12,17 @@ namespace SgqSystem.Controllers.Api
     public class UserController : ApiController
     {
 
-        private readonly IUserApp _userAppService;
+        private readonly IUserApp _userApp;
 
-        public UserController(IUserApp userAppService)
+        public UserController(IUserApp userApp)
         {
-            _userAppService = userAppService;
+            _userApp = userApp;
         }
 
         // POST: api/Teste
         public GenericReturn<UserDTO> Post([FromBody] UserViewModel userVm)
         {
-            return _userAppService.AuthenticationLogin(userVm);
+            return _userApp.AuthenticationLogin(userVm);
         }
 
     }
