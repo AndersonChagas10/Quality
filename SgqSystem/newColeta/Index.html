@@ -70,7 +70,7 @@
                     <area alt="" title="" onclick='areaImage(25)' shape="poly" coords="194,51,227,72,233,50,201,38" style="outline:none;" target="_self" /><!--Area 4-->
                     <area alt="" title="" onclick='areaImage(29)' shape="poly" coords="201,54,204,110,247,108,251,79" style="outline:none;" target="_self" /><!--Area 8-->
                     <area alt="" title="" onclick='areaImage(28)' shape="poly" coords="15,76,17,105,66,111,83,62" style="outline:none;" target="_self" />
-            </a>        
+            </a>
         </div>
         <div class="overlay hide"></div>
         <div class="navbar navbar-inverse navbar-fixed-top">
@@ -92,7 +92,7 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li  class="dropdown iconMoreMenu">
+                        <li class="dropdown iconMoreMenu">
                             <a id="btnMore" href="#" role="button" title="More" class="iconMoreMenu">...</a>
                             <!--  <ul class="dropdown-menu">
                               <li><a href="#">Logout</a></li>
@@ -109,9 +109,20 @@
             <div class="level01List">
                 <div class="painel padding10">
                     <div class="row">
-                        <div class="col-xs-12 shift">
+                        <div class="col-xs-3">
                             <span class="atualDate">05/25/2015 00:00</span> /
                             <span class="shift">Shift A</span>
+                        </div>
+                        <div class="col-xs-9 shift">
+                            <div>
+                                <select class="form-control" id="selectPeriod">
+                                    <option value="0">Select period</option>
+                                    <option value="1">Period 1</option>
+                                    <option value="2">Period 2</option>
+                                    <option value="3">Period 3</option>
+                                    <option value="4">Period 4</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -119,19 +130,19 @@
                     <li class="list-group-item">
                         <div class="row">
                             <a href="#" id="3" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02">
-                                 <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>      
-                                 <span class="levelName">Carcass Contamination Audit</span>
+                                <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>
+                                <span class="levelName">Carcass Contamination Audit</span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>
-                                    <span class="btnReaudit cursorPointer iconsArea font22"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
                                     <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
-                                   
+
                                 </div>
                             </div>
                         </div>
-                     </li>
+                    </li>
 
                     <li class="list-group-item">
                         <div class="row">
@@ -139,7 +150,7 @@
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>
-                                    <span class="btnReaudit cursorPointer iconsArea font22"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
                                     <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
                                 </div>
@@ -178,31 +189,26 @@
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div>
-                              <span class="auditReaudit">Audit</span>
+                            <div class="labelPainel hide" level01Id="3">
+                                <span class="auditReaudit">Audit</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="6">
+                                <span class="auditReaudit">Audit</span>
                             </div>
                             <div>
-                                <select class="form-control" id="selectPeriod">
-                                    <option value="0">Select period</option>
-                                    <option value="1">Period 1</option>
-                                    <option value="2">Period 2</option>
-                                    <option value="3">Period 3</option>
-                                    <option value="4">Period 4</option>
-                                </select>
+                                <span class="period">Period</span>
                             </div>
-
-
                         </div>
                         <div class="col-xs-3">
                             <div class="labelPainel hide" level01Id="3">
-                                <select class="form-control" id="cattleType">
+                                <select class="form-control" id="selectCattleType">
                                     <option value="0">Select cattle type</option>
                                     <option value="1">Cow</option>
                                     <option value="2">Steer</option>
                                 </select>
                             </div>
                             <div class="labelPainel hide" level01Id="3">
-                                <input type="number" id="chainSpeed" class="form-control" placeholder="Chain Speed" />
+                                <input type="number" id="inputChainSpeed" class="form-control" placeholder="Chain Speed" />
                             </div>
                             <div class="labelPainel hide" level01Id="2">
                                 <select class="form-control" id="biasedUnbiased">
@@ -215,10 +221,10 @@
                         </div>
                         <div class="col-xs-3">
                             <div class="labelPainel hide" level01Id="3">
-                                <input type="number" id="lotNumber" class="form-control" placeholder="Lot #" />
+                                <input type="number" id="inputLotNumber" class="form-control" placeholder="Lot #" />
                             </div>
                             <div class="labelPainel hide" level01Id="3">
-                                <input type="number" id="mudScore" class="form-control" placeholder="Mud Score" />
+                                <input type="number" id="inputMudScore" class="form-control" placeholder="Mud Score" />
                             </div>
                             <div class="labelPainel hide" level01Id="6">
                                 <strong>Sides With Erros: </strong><span class="sideWithErrors">0</span>
@@ -233,12 +239,12 @@
                 <div class="list-group level02Group hide" level01id="3">
                     <li class="list-group-item">
                         <div class="row">
-                       
+
                             <a href="#" id="22" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="1">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                </span>        
+                                </span>
                                 <span class="levelName">Area 1</span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
@@ -703,18 +709,20 @@
                 <div class="list-group level02Group hide" level01id="2">
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="1" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8"  levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                            <a href="#" id="1" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                </span>    
+                                </span>
                                 <span class="levelName">Open Hide Sticker</span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
 
-                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-                                      
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20">
+                                        <button class="btn btn-primary">Phase <span class="atualPhase">0</span></button>
+                                    </span>
+
                                     <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
                                     <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
@@ -735,300 +743,640 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="2" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Stick and Bleed</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="2" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span class="levelName">Stick and Bleed</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="3" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Mark Pattern</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="3" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Mark Pattern</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="4" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Cap Bung</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="4" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Cap Bung</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="5" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Remove Udder</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="5" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Remove Udder</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="6" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>1st Legger</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="6" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>1st Legger</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="7" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>2nd Legger</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="7" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>2nd Legger</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="8" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Rumper</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="8" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Rumper</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="9" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Inside Butter</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="9" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Inside Butter</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="10" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Outside Butter</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="10" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Outside Butter</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="11" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Belly Ripper</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="11" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Belly Ripper</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="12" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Flanker</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="12" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Flanker</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="13" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Rimover</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="13" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Rimover</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="14" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Low Backer</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="14" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Low Backer</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="15" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Open Necks</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="15" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Open Necks</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="16" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Gullet Raiser</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="16" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Gullet Raiser</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="17" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Weasand Rodder</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="17" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Weasand Rodder</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="18" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Bung Dropper</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="18" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Bung Dropper</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="19" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Pre-gutter</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="19" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Pre-gutter</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="20" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Gutter</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="20" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Gutter</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="21" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02"><span>Clip Weasand</span></a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide marginLeft30">Reaudit</span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>
+                            <a href="#" id="21" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases" startPhaseDate reauditnumber>
+                                <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                    <span class="btnAreaSave cursorPointer iconsArea marginLeft30"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    <span class="btnNotAvaliable cursorPointer iconsArea font22 na marginLeft30">N/A</span>
+                                </span>
+                                <span>Clip Weasand</span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+                                    <span class="labelPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+
+                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
+                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
@@ -1067,8 +1415,8 @@
                             <div>
                                 <span class="period">Period</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="2">
-                                <span class="auditReaudit">Audit</span>
+                            <div class="labelPainel hide">
+                                Phase <span class="labelPhase"></span>
                             </div>
                             <div class="labelPainel hide" level01Id="2">
                                 <span class="biasedUnbiased">biasedUnbiased</span>
@@ -1086,7 +1434,7 @@
                                 <strong>Sides With Errors: </strong><span class="sideWithErrors">0</span>
                             </div>
                             <div class="labelPainel hide" level01Id="6">
-                               <strong>3 or More Errors :</strong> <span class="more3Defects">0</span>
+                                <strong>3 or More Errors :</strong> <span class="more3Defects">0</span>
                             </div>
                             <div class="labelPainel hide" level01Id="6">
                                 <strong>Errors :</strong> <span class="sideErros">0</span>
@@ -1174,7 +1522,7 @@
                         <button class="btn btn-default button-expand marginRight10"><i class="fa fa-expand" aria-hidden="true"></i> Expand All</button>
                         <button class="btn btn-default button-collapse"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>
                     </div>
-                      <div class="panel-group" id="accordion40" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group" id="accordion40" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="40">
                                 <h4 class="panel-title">
@@ -1743,21 +2091,13 @@
                 </div>
             </div>
 
-            <div id="modalMessage" class="modal container fade" data-width="400">
+            <div id="modalMessage" class="modal fade">
                 <div class="modal-header">
-                    <h3 class="title"></h3>
-                    <div id="messageAlert" class="alert alert-info hide" role="alert">
-                        <span id="mensagemAlerta" class="icon-info-sign"></span>
-                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title messageHeader"></h4>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="form-group">
-                                <p class="content"></p>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="message"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="btnMessageOk">OK</button>
@@ -1877,7 +2217,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btnSlaughterLogin" onclick="AcaoCorretiva.logarUsuarioSlaughter();" >Login</button>
+                    <button type="button" class="btn btn-primary" id="btnSlaughterLogin" onclick="AcaoCorretiva.logarUsuarioSlaughter();">Login</button>
                 </div>
             </div>
 
@@ -1933,6 +2273,7 @@
     <script src="Scripts/correctiveaction.js"></script>
     <script src="Scripts/bootstrap-modal.js"></script>
     <script src="Scripts/bootstrap-modalmanager.js"></script>
+    <script src="Scripts/DataBase.js"></script>
 
 </body>
 </html>
