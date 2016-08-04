@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 
 namespace DTO.Helpers
 {
@@ -59,6 +60,13 @@ namespace DTO.Helpers
             Mensagem = isExceptionHelper ? _ex.Message : mensagemPadrao;
             MensagemExcecao = _ex.Message;
             Inner = innerMessage;
+
+            if (!isExceptionHelper)
+            {
+                Logger logger = LogManager.GetLogger("dataBaseLogger");
+                logger.Error(_ex, Mensagem, null);
+            }
+
         }
 
     }
