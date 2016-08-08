@@ -201,6 +201,18 @@ body > .App > div.container {
 {
     margin-right:30px;
 }
+.marginRight50
+{
+    margin-right: 50px;
+}
+.marginRight80
+{
+    margin-right: 80px;
+}
+.marginRight100
+{
+    margin-right: 100px;
+}
 .btnCA{
     
     z-index: 9999;
@@ -350,4 +362,18 @@ body > .App > div.container {
 #selectPeriod
 {
     width: 150px;
+}
+.headDescription
+{
+    height:30px;
+}
+.headDescription span
+{
+    font-size:16px;
+    font-weight: bold;
+    margin-right:20px;
+}
+.headGroup
+{
+    margin-right: 120px;
 }

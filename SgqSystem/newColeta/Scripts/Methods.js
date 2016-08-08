@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    //PeriodHTMLDAO.createTable();
+    PeriodHTMLDAO.createTable();
     //PeriodHTMLDAO.selectTable(list);
 });
 
@@ -178,25 +178,6 @@ function dateTimeFormat() {
     return mmddyyyyhhmm;
 }
 
-$('body').css("font-family", "Gotham");
-
-var saveBtn = [
-    {
-        "bgcolor": "orange",
-        "icon": "<i class='fa fa-save'></i>"
-    },
-    {
-        "id": "btnSave",
-        "position": "up",
-        "url": "",
-        "bgcolor": "blue",
-        "color": "white",
-        "icon": "<i class='fa fa-check'></i>",
-        "title": "Save"
-    }
-]
-$('.kc_fab_wrapper.btnSave').kc_fab(saveBtn);
-
 var Geral = {
     exibirMensagemAlerta: function (mensagem, url, container) {
         var page = $("html, body");
@@ -270,6 +251,9 @@ function showLevel01() {
         level02Reset($('.level02List .level02Group .level02'));
         $('.App').removeClass('hide').show();
         breadCrumb();
+
+        PeriodHTMLDAO.appendHTML();
+
     });
 }
 function configureLevel01() {
@@ -335,7 +319,7 @@ function showLevel02(level01) {
         //var level02Complete = $()
         $('.level02[completed]').parents('li').children('.row').children('.level02').children('.icons').children('.areaComplete').removeClass('hide').siblings('.areaNotComplete').addClass('hide');
         $('.level02[completed]').parents('li').children('.row').children('.userInfo').children('div').children('.na').addClass('hide').siblings('.btnAreaSave').addClass('hide');
-
+        //$('.level02[update]').removeAttr('update');
 
         // $('.level02[completed]').parents('li').children('.row').children('.userInfo').children('div').children('.areaComplete').removeClass('hide').siblings('.areaNotComplete, .na').addClass('hide').siblings('.btnAreaSave').addClass('hide');
         $('.level02[notavaliable]').parents('li').children('.row').children('.level02').children('.icons').children('.areaComplete').removeClass('hide').siblings('.areaNotComplete').addClass('hide');
@@ -416,9 +400,17 @@ function showLevel03(level02) {
     $('.level02').removeClass('selected');
 
     level02.addClass('selected');
+    //if (level02.attr('completed'))
+    //{
+    //    level02.attr('update', 'update');
+    //}
 
     if (!level02.attr('defects')) {
         level02.attr('defects', '0');
+    }
+    if (level02.attr('consecutivefailure'))
+    {
+        $('.painelLevel03 .consecutiveFailure').text(level02.attr('consecutivefailure'));
     }
     $('.level02List').fadeOut("fast", function (e) {
         level02.parents('.level02List').addClass('hide');
@@ -432,7 +424,7 @@ function showLevel03(level02) {
         level03.children('.level03Group[level01id=' + $('.level01.selected').attr('id') + ']').removeClass('hide');
 
         breadCrumb($('.level01List .selected').text(), $('.level02List .level02.selected span.levelName').text());
-        $('.btnSave').removeClass('hide');
+        $('#btnSave').removeClass('hide');
 
     });
 }
@@ -556,7 +548,7 @@ function level01Return() {
         buttonsLevel02Hide();
         configureLevel01();
         $('.level01').removeClass('selected');
-        $('.btnSave').addClass('hide');
+        $('#btnSave').addClass('hide');
         $('.level01List').removeClass('hide').show();
         $('.iconReturn').addClass('hide');
         breadCrumb();
@@ -568,8 +560,9 @@ function level01Return() {
 function level02Return() {
     $('.level03List').fadeOut("fast", function (e) {
         $(this).addClass('hide');
-        $('.btnSave').addClass('hide');
+        $('#btnSave').addClass('hide');
         $('.level02').removeClass('selected');
+        $('.level02[update]').removeAttr('update');
         $('.level02List').removeClass('hide').show();
         btnCorrectiveAction();
         buttonsLevel02Show($('.level01.selected'));
@@ -769,6 +762,8 @@ function defectLimitCheck() {
     defectsDiv.removeClass('red');
     var btnNA = level02.siblings('.userInfo').children('div').children('.na');
     btnNA.addClass('hide');
+   
+
 
     if (defectsLevel02 > defectsLimit) {
         defectsDiv.addClass('red');
@@ -788,6 +783,7 @@ function defectLimitCheck() {
             btnNA.removeClass('hide');
         }
     }
+
 }
 
 $(document).on('click', '.button-expand', function (e) {
@@ -947,7 +943,7 @@ function level02Reset(level02) {
     botaoSalvarLevel02.removeClass('hide');
     iconCompleto.addClass('hide');
     iconNaoCompleto.removeClass('hide');
-    $('.btnSave, .btnCA').addClass('hide');
+    $('#btnSave, .btnCA').addClass('hide');
 
 
 }
@@ -982,7 +978,7 @@ function level02Complete(level02) {
         botaoNa.addClass('hide');
         botaoSalvarLevel02.addClass('hide').removeAttr('disabled');
         btnSalvarLevel02Confirm.addClass('hide');
-        $('.btnSave').addClass('hide');
+        $('#btnSave').addClass('hide');
         level02ButtonSave(level.parents('.level02Group'));
 
         //nao precisamos verificar os defeitos se o limitexceeded estiver 
@@ -998,7 +994,7 @@ function level02ButtonSave(level02Group) {
     //activ button save - fazer uma regra
     if(level01.attr('saveLevel02') && level02Group.is(':visible') && (level02Group.children('li').children('.row').children('.level02[completed!=completed]').length ==  0 || (level01.attr('update') && level01.attr('completed'))))
     {
-        $('.btnSave').removeClass('hide');
+        $('#btnSave').removeClass('hide');
     }
 }
 $(document).on('click', '.level02Group[level01id=3] .level02', function (e) {
@@ -1061,23 +1057,82 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
 
     var level01 = $('.level01.selected');
     var level02 = $('.level02.selected');
-    
-    
-    if (level01.attr('completed'))
+
+    if ($('.painelLevel03 .consecutiveFailure:visible').length)
     {
-        level01.attr('update', 'update');
+        var consectiveFailureLevel = 0;
+        var consecFailureTotal = 0;
+
+        if (level02.attr('consecutivefailurelevel')) {
+            consectiveFailureLevel = parseInt(level02.attr('consecutivefailurelevel'));
+        }
+
+        if (level02.attr('consecutivefailuretotal')) {
+            consecFailureTotal = parseInt(level02.attr('consecutivefailuretotal'));
+        }
+
+        var defects = parseInt(level02.attr('defects'));
+        var defectsLimit = parseInt(level02.attr('levelerrorlimit'));
+
+
+        
+        if (level02.attr('completed'))
+        {
+            if(defects > defectsLimit)
+            {   
+                if(consectiveFailureLevel == 0)
+                {
+                    consectiveFailureLevel = 1;
+                    var level02Last = $('.level02Result[level01id=' + level01.attr('id') + '][level02id=' + level02.attr('id') + '][shift=' + $('.App').attr('shift') + '][period!=' + $('.App').attr('period') + ']:last');
+
+                    var consecFailureLast = 0;
+                    if (level02Last.attr('consecutivefailuretotal')) {
+                        consecFailureLast = parseInt(level02Last.attr('consecutivefailuretotal'));
+                    }
+                    consecFailureTotal = consectiveFailureLevel + consecFailureLast;
+
+                }
+              
+            }
+            else if(defects <= defectsLimit)
+            {
+                consectiveFailureLevel = 0;
+                consecFailureTotal = 0;
+            }
+            //se eu alterei e continua com mais defeitos nao faço nada
+            //se eu alterei e nao tem defeitos irei zerar o contador ottal
+            //se eu alterei e nao tem total de defeitos e estouruo os defietos
+                //vreifica o numero de defeitos anterior e icremento mais 1 no defeitos total e 1 no defeito da areax   
+        }
+        else if (defects > defectsLimit && !level02.attr('completed')) {
+            consectiveFailureLevel  = 1
+            consecFailureTotal++
+        }
+        else {
+            consecFailureTotal = 0;
+            consectiveFailureLevel = 0;
+        }
+
+        $('.painelLevel03 .consecutiveFailure').text(consecFailureTotal);
+        level02.attr('consecutivefailurelevel', consectiveFailureLevel);
+        level02.attr('consecutivefailuretotal', consecFailureTotal);
+        level02.parents('.row').children('.userInfo').children('div').children('.consecutiveFailure').text(consecFailureTotal);
     }
 
     var level01Save = $('.level01Result[level01Id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']');
 
-    if(!level01Save.length)
-    {
+    if (!level01Save.length) {
         level01Save = $(
                             saveLevel01(level01.attr('id'), $('.App').attr('date'), $('.App').attr('shift'), $('.App').attr('period'))
                         );
     }
 
-    var level02Save =
+    var level02Save = $('.level02Result[level01id=' + level01.attr('id') + '][level02id=' + level02.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']')
+    if (level02Save.length)
+    {
+        level02Save.remove();
+    }
+    level02Save =
                 $(saveLevel02(
                               level01.attr('id'),
                               level02.attr('id'),
@@ -1096,8 +1151,9 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
                               $('#selectCattleType').val(),
                               $('#inputChainSpeed').val(),
                               $('#inputLotNumber').val(),
-                              $('#inputMudScore').val()
-                              
+                              $('#inputMudScore').val(),
+                              level02.attr('consecutivefailurelevel'),
+                              level02.attr('consecutivefailuretotal')
                            ));
 
     $('.level03Group[level01id=3] .level03 input').each(function (e) {
@@ -1108,8 +1164,7 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
         //verificar para saber quando tem conformidade e nao conformidade
 
         var conform = true;
-        if(parseInt($(this).val()) > 0)
-        {
+        if (parseInt($(this).val()) > 0) {
             conform = false;
         }
         var level03Save = $(saveLevel03(
@@ -1128,7 +1183,7 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
     level01Save.append(level02Save);
 
     level02.parents('.level02Group').append(level01Save);
-    
+
     level02Complete(level02);
     level02.removeClass('selected');
 
@@ -1136,7 +1191,10 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
         $('.breadcrumb li a:last').click();
     }
 
-    //PeriodHTMLDAO.insertHTML();
+
+    //if (level01.attr('completed')) {
+    //    level01.attr('update', 'update');
+    //}
 });
 
 
@@ -1148,11 +1206,11 @@ function saveLevel01(Level01Id, date, shift, period) {
     return "<div class='level01Result' level01Id='" + Level01Id + "' date='" + $('.App').attr('date') + "' dateTime='" + dateTimeFormat() + "' shift='" + shift + "' period='" + period + "'></div>";
 }
 function saveLevel02(Level01Id, Level02Id, date, dateTime, auditorId, shift, period, evaluate, sample, defects, reaudit, reauditNumber, phase, startPhaseDate, cattleType,
-                     chainSpeed, lotNumber, mudScore) {
+                     chainSpeed, lotNumber, mudScore, consecutivefailureLevel, consecutivefailureTotal) {
     return "<div class='level02Result' level01Id='" + Level01Id + "' level02Id='" + Level02Id + "' date='" + date + "' dateTime='" + dateTime + "' auditorId='" + auditorId
             + "' shift='" + shift + "' period='" + period + "' defects='" + defects + "' reaudit='" + reaudit + "' evaluate='" + evaluate + "' sample='" + sample
             + "' reauditNumber='" + reauditNumber + "' phase='" + phase + "' startPhaseDate='" + startPhaseDate + "' cattletype='" + cattleType + "' chainspeed='" + chainSpeed
-            + "' lotNumber='" + lotNumber + "' mudScore='" + mudScore + "'></div>";
+            + "' lotNumber='" + lotNumber + "' mudScore='" + mudScore + "' consecutivefailurelevel='" + consecutivefailureLevel + "' consecutivefailuretotal='" + consecutivefailureTotal + "'></div>";
 }
 function saveLevel03(Level03Id, value, conform, auditorId, totalError) {
     return "<div class='level03Result' level03id='" + Level03Id + "' date='" + dateTimeFormat() + "' value='" + value + "' conform='" + conform + "' auditorId='" + auditorId + "' totalerror='" + totalError + "'></div>";

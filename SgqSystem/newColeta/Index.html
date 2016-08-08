@@ -6,7 +6,6 @@
     <link href="Content/Geral.css" rel="stylesheet" />
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <link href="Plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="Plugins/float_button/css/kc.fab.css" rel="stylesheet" />
     <link href="Plugins/sidebar/css/sidebar.min.css" rel="stylesheet" />
     <link href="Content/bootstrap-modal-bs3patch.css" rel="stylesheet" />
     <link href="Content/bootstrap-modal.css" rel="stylesheet" />
@@ -237,6 +236,12 @@
                 </div>
 
                 <div class="list-group level02Group hide" level01id="3">
+                    <div class="headDescription">
+                        <div class="pull-right headGroup">
+                            <span>Consec Failures</span>
+                            <span>Defects</span>
+                        </div>
+                    </div>
                     <li class="list-group-item">
                         <div class="row">
 
@@ -249,7 +254,8 @@
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-                                    <a href="#" class="defects iconsArea font22 marginRight30">0</a>
+                                    <a href="#" class="consecutiveFailure iconsArea font22 marginRight30 marginRight80">0</a>
+                                    <a href="#" class="defects iconsArea font22 marginRight30 marginLeft20">0</a>
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
                                         <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
                                     </button>
@@ -1399,6 +1405,9 @@
                                 <strong>Total Defects:</strong> <span class="totalDefects">0</span>
                             </div>
                             <div class="labelPainel hide" level01Id="3">
+                                <strong>Consec Failures in Area:</strong> <span class="consecutiveFailure">0</span>
+                            </div>
+                            <div class="labelPainel hide" level01Id="3">
                                 <strong>Defects:</strong> <span class="defects">0</span>
                             </div>
                             <div class="labelPainel hide" level01Id="6">
@@ -2256,7 +2265,7 @@
 
         </div>
 
-        <div class="kc_fab_wrapper btnSave hide"></div><!--Save-->
+        <button id="btnSave" class="btn btn-lg btnSave btnRounded btn-warning hide"><i class='fa fa-save'></i></button><!--Save-->
 
         <button class="btn btn-lg btn-danger btnCA hide">Corrective Action</button><!--Corrective Action-->
         <footer class="footer">
@@ -2267,7 +2276,6 @@
     </div>
     <script src="Plugins/jquery/jquery.min.js"></script>
     <script src="Scripts/bootstrap.js"></script>
-    <script src="Plugins/float_button/js/kc.fab.js"></script>
     <script src="Plugins/sidebar/js/sidebar.js"></script>
     <script src="Scripts/Methods.js"></script>
     <script src="Scripts/correctiveaction.js"></script>
