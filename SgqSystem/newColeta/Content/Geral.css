@@ -377,3 +377,17 @@ body > .App > div.container {
 {
     margin-right: 120px;
 }
+.btnRounded{
+    height: 75px !important;
+    width: 75px !important;
+    z-index: 9999;
+    position:fixed;
+    right:15px;
+    bottom:20px;
+    margin-right:0;
+    border-radius: 50% !important;
+}
+
+.btnConfirm{    
+    margin-bottom:90px !important;
+}
