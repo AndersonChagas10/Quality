@@ -138,7 +138,7 @@ body > .App > div.container {
 }
 .padding10
 {
-    padding:10px;
+    padding:10px !important;
 }
 .height50
 {
