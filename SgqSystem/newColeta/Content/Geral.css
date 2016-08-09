@@ -189,6 +189,22 @@ body > .App > div.container {
 {
 	margin-left:30px;
 }
+.marginLeft50
+{
+	margin-left:50px;
+}
+.marginLeft70
+{
+	margin-left:70px;
+}
+.marginLeft80
+{
+	margin-left:80px;
+}
+.marginLeft90
+{
+	margin-left:90px;
+}
 .marginRight10
 {
     margin-right:10px !important;
