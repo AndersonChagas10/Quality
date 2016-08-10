@@ -16,6 +16,12 @@ $(document).on('click', '.level01List .level01', function (e) {
     if (itensOk == false) {
         return false;
     }
+    if ($(this).attr('reaudit') && !$(this).attr('reaudit'))
+    {
+        openMessageModal("Pending re-audit", 'Please, complete re-audit prior to move to next audit');
+        return false;
+    }
+
     showLevel02($(this));
 });
 
@@ -300,6 +306,12 @@ function showLevel02(level01) {
 
     $('.level01List').fadeOut("fast", function (e) {
         level01.parents('.level01List').addClass('hide');
+
+        $('span.auditReaudit').text('Audit');
+        if (level01.attr('startreaudit'))
+        {
+            $('span.auditReaudit').text('Re-audit');
+        }
 
         var level02 = $('.level02List');
         level02.removeClass('hide').show();
@@ -1090,6 +1102,7 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
 
         var defects = parseInt(level02.attr('defects'));
         var defectsLimit = parseInt(level02.attr('levelerrorlimit'));
+        
 
 
         
@@ -1136,20 +1149,39 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
         level02.parents('.row').children('.userInfo').children('div').children('.consecutiveFailure').text(consecFailureTotal);
     }
 
-    var level01Save = $('.level01Result[level01Id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']');
+    var attrReaudit = "";
+    var attrReauditNumber = "";
+
+
+    var reauditNumber = 0;
+    var reaudit = level01.attr('reaudit');
+    if (reaudit == "reaudit") {
+
+        if (level01.attr('reauditnumber')) {
+            reauditNumber = parseInt(level01.attr('reauditnumber'));
+            reauditNumber++;
+        }
+
+        attrReaudit = "[reaudit=reaudit]";
+        attrReauditNumber = "[reauditnumber=0]";
+    }
+
+    var level01Save = $('.level01Result[level01Id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']' + attrReaudit + attrReauditNumber);
 
     if (!level01Save.length) {
         level01Save = $(
-                            saveLevel01(level01.attr('id'), $('.App').attr('date'), $('.App').attr('shift'), $('.App').attr('period'))
+                            saveLevel01(level01.attr('id'), $('.App').attr('date'), $('.App').attr('shift'), $('.App').attr('period'), reaudit, reauditNumber)
                         );
     }
 
-    var level02Save = $('.level02Result[level01id=' + level01.attr('id') + '][level02id=' + level02.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']')
+    var level02Save = $('.level02Result[level01id=' + level01.attr('id') + '][level02id=' + level02.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']' + attrReaudit + attrReauditNumber)
     if (level02Save.length)
     {
         level02Save.remove();
     }
-    level02Save =
+
+   
+    level02Save = 
                 $(saveLevel02(
                               level01.attr('id'),
                               level02.attr('id'),
@@ -1161,8 +1193,8 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
                               null,
                               null,
                               level02.attr('defects'),
-                              level02.attr('reaudit'),
-                              null,
+                              reaudit,
+                              reauditNumber,
                               null,
                               null,
                               $('#selectCattleType').val(),
@@ -1230,8 +1262,22 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
 //function saveLevel01(Level01Id, date, shift, period, totalSets, totalSides, atualSet, atualSide, totalErros) {
 //    return "<div class='level01Result' level01Id='" + Level01Id + "' date='" + date + "' shift='" + shift + "' period='" + period + "' totalSets='" + totalSets + "' totalSides='" + totalSide + "' atualSet='" + atualSet + "' atualSide='" + atualSide + "' totalerros='" + totalErros + "'></div>";
 //}
-function saveLevel01(Level01Id, date, shift, period) {
-    return "<div class='level01Result' level01Id='" + Level01Id + "' date='" + $('.App').attr('date') + "' dateTime='" + dateTimeFormat() + "' shift='" + shift + "' period='" + period + "'></div>";
+function saveLevel01(Level01Id, date, shift, period, reaudit, reauditNumber) {
+
+    if (reaudit == "reaudit")
+    {
+        reaudit = true
+    }
+    else
+    {
+        reaudit = false;
+    }
+    if (reauditNumber == null)
+    {
+        reauditNumber = 0;
+    }
+    
+    return "<div class='level01Result' level01Id='" + Level01Id + "' date='" + $('.App').attr('date') + "' dateTime='" + dateTimeFormat() + "' shift='" + shift + "' period='" + period + "' reaudit='" + reaudit + "' reauditNumber='" + reauditNumber + "'></div>";
 }
 function saveLevel02(Level01Id, Level02Id, date, dateTime, auditorId, shift, period, evaluate, sample, defects, reaudit, reauditNumber, phase, startPhaseDate, cattleType,
                      chainSpeed, lotNumber, mudScore, consecutivefailureLevel, consecutivefailureTotal, notAvaliabled) {
@@ -1244,6 +1290,18 @@ function saveLevel02(Level01Id, Level02Id, date, dateTime, auditorId, shift, per
     {
         notAvaliabled = false
     }
+
+    if (reaudit == "reaudit") {
+        reaudit = true
+    }
+    else {
+        reaudit = false;
+    }
+    if (reauditNumber == null) {
+        reauditNumber = 0;
+    }
+
+
     return "<div class='level02Result' level01Id='" + Level01Id + "' level02Id='" + Level02Id + "' date='" + date + "' dateTime='" + dateTime + "' auditorId='" + auditorId
             + "' shift='" + shift + "' period='" + period + "' defects='" + defects + "' reaudit='" + reaudit + "' evaluate='" + evaluate + "' sample='" + sample
             + "' reauditNumber='" + reauditNumber + "' phase='" + phase + "' startPhaseDate='" + startPhaseDate + "' cattletype='" + cattleType + "' chainspeed='" + chainSpeed
@@ -1572,9 +1630,8 @@ function reauditCount(level) {
 $(document).on('click', '#btnSalvarLevel02CCA', function (e) {
 
     var level01 = $('.level01.selected');
-    //colocar regra de audit e reaudit igual em uma funcao...ela se repete para salvar do level 02
-
     var reauditNumber = reauditCount(level01);
+
     level01.attr('completed', 'completed');
 
     if (level01.attr('reaudit')) {
@@ -1584,9 +1641,27 @@ $(document).on('click', '#btnSalvarLevel02CCA', function (e) {
         level01.removeAttr('correctivaction').removeAttr('reaudit').removeAttr('reauditNumber');
     }
 
-    if ($('.level02Group[level01id=' + level01.attr('id') + '] .level02[limitexceeded]').length) {
+    var totalDefects = parseInt($('.painelLevel02 .totalDefects').text());
+    var haveConsecutiveFailures = false
+
+    var levels02 = $('.level02Group[level01id=' + level01.attr('id') + '] .level02[consecutivefailuretotal]');
+    
+    
+        levels02.each(function (e) {
+        
+        var consectiveFailure = parseInt($(this).attr('consecutivefailuretotal'));
+
+        if(consectiveFailure > 2)
+        {
+            haveConsecutiveFailures = true;
+        }
+    });
+
+    if(totalDefects > 22 || haveConsecutiveFailures == true)
+    {
         level01.attr('correctivaction', 'correctivaction').attr('reaudit', 'reaudit').attr('reauditNumber', reauditNumber);
     }
+
     if (level01.attr('startreaudit')) {
         level01.attr('reaudit', 'reaudit').attr('reauditNumber', reauditNumber).removeAttr('startreaudit');
         level01.parents('.row').children('.userInfo').children('div').children('.reauditCount').children('button').text(reauditNumber);
@@ -1594,10 +1669,10 @@ $(document).on('click', '#btnSalvarLevel02CCA', function (e) {
 
     var level01Result = $('.level01Result[level01id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']');
     level01Result.attr('completed', 'completed');
-
     level01Return();
-    //PeriodHTMLDAO.insertHTML();
-    //alert('salvar level02 completo');
+
+
+
 });
 $(document).on('click', '#btnSalvarLevel02CFF', function (e) {
 
@@ -1717,6 +1792,7 @@ $(document).on('click', '.btnCorrectiveAction', function (e) {
 });
 $(document).on('click', '#btnMessageOk', function (e) {
     $('#modalMessage').modal('hide');
+
 });
 function areaImage(id) {
     showLevel03($("#" + id + ".level02"));
