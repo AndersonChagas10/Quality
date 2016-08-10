@@ -189,6 +189,22 @@ body > .App > div.container {
 {
 	margin-left:30px;
 }
+.marginLeft50
+{
+	margin-left:50px;
+}
+.marginLeft70
+{
+	margin-left:70px;
+}
+.marginLeft80
+{
+	margin-left:80px;
+}
+.marginLeft90
+{
+	margin-left:90px;
+}
 .marginRight10
 {
     margin-right:10px !important;
@@ -376,4 +392,18 @@ body > .App > div.container {
 .headGroup
 {
     margin-right: 120px;
+}
+.btnRounded{
+    height: 75px !important;
+    width: 75px !important;
+    z-index: 9999;
+    position:fixed;
+    right:15px;
+    bottom:20px;
+    margin-right:0;
+    border-radius: 50% !important;
+}
+
+.btnConfirm{    
+    margin-bottom:90px !important;
 }
