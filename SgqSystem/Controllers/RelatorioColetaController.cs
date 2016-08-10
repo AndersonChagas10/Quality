@@ -1,4 +1,6 @@
 ﻿using Application.Interface;
+using NLog;
+using System;
 using System.Web.Mvc;
 namespace SgqSystem.Controllers
 {
@@ -14,6 +16,8 @@ namespace SgqSystem.Controllers
         // GET: RelatorioColeta
         public ActionResult Index()
         {
+            //Logger logger = LogManager.GetLogger("dataBaseLogger");
+            //logger.Error(new Exception("teste"), "teste", null);
             var resultadosLista = _relatorioColetaApp.GetColetas();
             return View(resultadosLista.Retorno);
         }
