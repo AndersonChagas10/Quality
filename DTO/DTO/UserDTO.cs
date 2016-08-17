@@ -1,14 +1,25 @@
 ﻿using DTO.BaseEntity;
 using DTO.Helpers;
+using System.ComponentModel.DataAnnotations;
 
 namespace DTO.DTO
 {
     public class UserDTO : EntityBase
     {
+        //[Required]
+        [StringLength(150)]
+        [Display(Name = "Username: ")]
         public string Name { get; set; }
+
+        //[Required]
+        [StringLength(20, MinimumLength = 3)]
+        [Display(Name = "Password: ")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+
         public bool isTechnical { get; set; }
         public bool isSlaugther { get; set; }
+        public string[] Roles { get; set; }
 
         /// <summary>
         /// Construtor Padrão

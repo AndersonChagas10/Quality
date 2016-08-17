@@ -1,0 +1,36 @@
+﻿@model SgqSystem.ViewModels.UserViewModel
+@{
+    ViewBag.Title = "Register User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+
+    @Html.ValidationSummary(true, "Registratrion failed. Check your Register details.")
+
+    <div>
+        <fieldset>
+
+            <legend>Registratrion Form</legend>
+
+            <div>@Html.LabelFor(r => r.Name)</div>
+            <div>
+                @Html.TextBoxFor(r => r.Name)
+                @Html.ValidationMessageFor(r => r.Name)
+            </div>
+
+            <div>@Html.LabelFor(r => r.Password)</div>
+            <div>
+                @Html.PasswordFor(r => r.Password)
+                @Html.ValidationMessageFor(r => r.Password)
+            </div>
+
+            <input type="submit" value="Log In">
+
+        </fieldset>
+
+    </div>
+}

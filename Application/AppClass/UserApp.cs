@@ -20,6 +20,10 @@ namespace Application.AppServiceClass
             return _userService.AuthenticationLogin(user);
         }
 
+        public GenericReturn<UserDTO> GetByName(string username)
+        {
+            return _userService.GetByName(username);
+        }
     }
 
 }

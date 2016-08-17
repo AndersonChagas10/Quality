@@ -14,17 +14,17 @@ namespace Dominio.Services
     public class RelatorioColetaDomain : IRelatorioColetaDomain
     {
         #region Construtor
-        private IRelatorioColetaRepository _relatorioColetaRepository;
-        private IBaseRepository<Level1> _repoLevel1;
-        private IBaseRepository<Level2> _repoLevel2;
-        private IBaseRepository<Level3> _repoLevel3;
+        //private IRelatorioColetaRepository _relatorioColetaRepository;
+        private IBaseRepository<Level01> _repoLevel1;
+        private IBaseRepository<Level02> _repoLevel2;
+        private IBaseRepository<Level03> _repoLevel3;
 
-        public RelatorioColetaDomain(IRelatorioColetaRepository relatorioColetaRepository,
-            IBaseRepository<Level1> repoLevel1,
-            IBaseRepository<Level2> repoLevel2,
-            IBaseRepository<Level3> repoLevel3)
+        public RelatorioColetaDomain(
+            IBaseRepository<Level01> repoLevel1,
+            IBaseRepository<Level02> repoLevel2,
+            IBaseRepository<Level03> repoLevel3)
         {
-            _relatorioColetaRepository = relatorioColetaRepository;
+            //_relatorioColetaRepository = relatorioColetaRepository;
             _repoLevel1 = repoLevel1;
             _repoLevel2 = repoLevel2;
             _repoLevel3 = repoLevel3;

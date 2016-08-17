@@ -14,7 +14,7 @@ namespace CrossCutting.IOC.Module
             Bind<ICorrectiveActionApp>().To<CorrectiveActionApp>();
             Bind<IRelatorioColetaApp>().To<RelatorioColetaApp>();
             Bind<ISyncApp>().To<SyncApp>();
-            Bind<IColetaApp>().To<ColetaApp>();
+            //Bind<IColetaApp>().To<ColetaApp>();
         }
     }
 }

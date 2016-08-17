@@ -12,7 +12,7 @@ namespace Data.Repositories
         {
         }
 
-        public UserSgq Get(string Name)
+        public UserSgq GetByName(string Name)
         {
             return GetAll().FirstOrDefault(r => r.Name == Name);
         }

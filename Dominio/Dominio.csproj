@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Coleta.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="CorrectiveAction.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -51,16 +48,11 @@
     <Compile Include="Entities\BaseEntity\DataCollectionBase.cs" />
     <Compile Include="Entities\BaseEntity\EntityBase.cs" />
     <Compile Include="Interfaces\Repositories\ICorrectiveActionRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IColetaRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IRelatorioColetaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
-    <Compile Include="Interfaces\Repositories\ISyncRepository.cs" />
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
-    <Compile Include="Interfaces\Services\IColetaDomain.cs" />
     <Compile Include="Interfaces\Services\ICorrectiveActionDomain.cs" />
     <Compile Include="Interfaces\Services\IRelatorioColetaDomain.cs" />
     <Compile Include="Interfaces\Services\ISaveConsolidateDataCollectionDomain.cs" />
-    <Compile Include="Interfaces\Services\ISyncDomain.cs" />
     <Compile Include="Interfaces\Services\IBaseDomain.cs" />
     <Compile Include="Interfaces\Services\IUserDomain.cs" />
     <Compile Include="Level01.cs">
@@ -84,22 +76,13 @@
     <Compile Include="Level1.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Level2.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Level3.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="LogService\LoggerNLog.cs" />
     <Compile Include="Period.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ColetaDomain.cs" />
     <Compile Include="Services\CorrectiveActionDomain.cs" />
-    <Compile Include="Services\RelatorioColetaDomain.cs" />
     <Compile Include="Services\SaveConsolidateDataCollectionDomain.cs" />
-    <Compile Include="Services\SyncDomain.cs" />
     <Compile Include="Services\BaseDomain.cs" />
     <Compile Include="Services\UserDomain.cs" />
     <Compile Include="SgqEfContext.Context.cs">
@@ -118,9 +101,6 @@
       <DependentUpon>SgqEfContext.edmx</DependentUpon>
     </Compile>
     <Compile Include="Shift.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="teste.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="UserSgq.cs">

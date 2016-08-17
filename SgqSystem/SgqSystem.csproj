@@ -291,10 +291,11 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\AccerDeniedController.cs" />
+    <Compile Include="Controllers\UserAuthenticationController.cs" />
     <Compile Include="Controllers\Api\SyncController.cs" />
     <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
-    <Compile Include="Controllers\CorrectiveActionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\GraficoBetaController.cs" />
     <Compile Include="Controllers\RelatorioColetaController.cs" />
@@ -312,6 +313,9 @@
     <Compile Include="Mappers\Level02ConsolidationMapperProfile.cs" />
     <Compile Include="Mappers\Level03ConsolidationMapperProfile.cs" />
     <Compile Include="Mappers\UserMappingProfile.cs" />
+    <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Secirity\CustomPrincipal.cs" />
+    <Compile Include="Secirity\SessionPersister.cs" />
     <Compile Include="ViewModels\AccountBindingModels.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\EntityBaseViewModel.cs" />
@@ -630,6 +634,9 @@
     <Content Include="Views\Shared\Graficos\_GraficoIndicadores.cshtml" />
     <Content Include="Views\GraficoBeta\Index.cshtml" />
     <Content Include="Views\CorrectiveAction\Index.cshtml" />
+    <Content Include="Views\UserAuthentication\LogIn.cshtml" />
+    <Content Include="Views\UserAuthentication\Register.cshtml" />
+    <Content Include="Views\AccerDenied\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

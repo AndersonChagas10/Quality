@@ -6,5 +6,6 @@ namespace Dominio.Interfaces.Services
     public interface IUserDomain 
     {
         GenericReturn<UserDTO> AuthenticationLogin(UserDTO user);
+        GenericReturn<UserDTO> GetByName(string username);
     }
 }

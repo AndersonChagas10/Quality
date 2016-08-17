@@ -1,0 +1,36 @@
+﻿@model SgqSystem.ViewModels.UserViewModel
+@{
+    ViewBag.Title = "Log In";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+
+    @Html.ValidationSummary(true, "Log in failed. Check your login details.")
+
+    <div>
+        <fieldset>
+
+            <legend>Login Form</legend>
+
+            <div>@Html.LabelFor(r => r.Name)</div>
+            <div>
+                @Html.TextBoxFor(r => r.Name)
+                @Html.ValidationMessageFor(r => r.Name)
+            </div>
+
+            <div>@Html.LabelFor(r => r.Password)</div>
+            <div>
+                @Html.PasswordFor(r => r.Password)
+                @Html.ValidationMessageFor(r => r.Password)
+            </div>
+
+            <input type="submit" value="Log In">
+
+        </fieldset>
+
+    </div>
+}
