@@ -1,4 +1,67 @@
-﻿/*
+﻿
+function teste() {
+    var objectsToSync = {};
+    objectsToSync['level1'] = []
+    $.each($('.level01Result'), function (counter, object) {
+        var temp = {};
+        var el = $('.level01Result')[0];
+        for (var i = 0, atts = el.attributes, n = atts.length, arr = []; i < n; i++) {
+            var name = atts[i].nodeName;
+            var value = atts[i].nodeValue;
+            temp[atts[i].nodeName] = atts[i].nodeValue
+        }
+        objectsToSync.level1.push(temp);
+    });
+    objectsToSync
+}
+
+
+
+
+
+//level1 = {
+//    props....
+//    listaLevel2 = {
+//        level2 = {
+//            props...
+//            listaLevel3 = {
+//                props...
+//            }
+//        },
+//        level2 = {
+//            props...
+//            listaLevel3 = {
+//                props...
+//            }
+//        }....
+//    }
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
     Metodo trabalha de forma estática, porem pode ser fácilmente modificado para trabalhar de forma dinâmica. Celso Géa 28 07 2016.
 */
 function CreateCCAObject() {

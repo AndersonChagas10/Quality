@@ -12,7 +12,7 @@ namespace SgqSystem.Secirity
         {
 
             if (string.IsNullOrEmpty(SessionPersister.Username))
-                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Authentication", action = "LogIn" }));
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "UserAuthentication", action = "LogIn" }));
             else
             {
                 CustomPrincipal cp = new CustomPrincipal(SessionPersister.Username);
