@@ -1,9 +1,4 @@
-﻿using Application.AppServiceClass;
-using Application.Interface;
-using Dominio.Interfaces.Services;
-using DTO.DTO;
-using SgqSystem.Controllers.Api;
-using SgqSystem.ViewModels;
+﻿using DTO.DTO;
 using System.Linq;
 using System.Security.Principal;
 
