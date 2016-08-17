@@ -14,24 +14,24 @@ namespace SgqSystem.Controllers.Api
         #region Construtor e atributos
 
         private readonly ISyncApp _syncApp;
-        private readonly IColetaApp _coletaApp;
+        //private readonly IColetaApp _coletaApp;
 
-        public SyncController(ISyncApp syncApp, IColetaApp coletaApp)
+        public SyncController(ISyncApp syncApp/*, IColetaApp coletaApp*/)
         {
             _syncApp = syncApp;
-            _coletaApp = coletaApp;
+            //_coletaApp = coletaApp;
         }
 
         #endregion
 
         #region Envia Dados Para Syncronizar a plataforma remota
 
-        [HttpPost]
-        [Route("api/Sync/GetData")]
-        public GenericReturn<SyncDTO> GetDataToSincyAudit()
-        {
-            return _syncApp.GetDataToSincyAudit();
-        }
+        //[HttpPost]
+        //[Route("api/Sync/GetData")]
+        //public GenericReturn<SyncDTO> GetDataToSincyAudit()
+        //{
+        //    return _syncApp.GetDataToSincyAudit();
+        //}
 
         #endregion
 

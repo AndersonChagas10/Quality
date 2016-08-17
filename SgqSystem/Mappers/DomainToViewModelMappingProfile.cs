@@ -18,25 +18,25 @@ namespace SgqSystem.Mappers
         public DomainToViewModelMappingProfile()
         {
           
-            #region Level1
-            CreateMap<Level1, Level1DTO>();
-            #endregion
+            //#region Level1
+            //CreateMap<Level1, Level1DTO>();
+            //#endregion
 
-            #region Level1
-            CreateMap<Level2, Level2DTO>();
-            #endregion
+            //#region Level1
+            //CreateMap<Level2, Level2DTO>();
+            //#endregion
 
-            #region Level3
-            CreateMap<Level3, Level3DTO>();
-            #endregion
+            //#region Level3
+            //CreateMap<Level3, Level3DTO>();
+            //#endregion
 
-            #region Sync
-            CreateMap<SyncDTO, SyncViewModel>();
-            #endregion
+            //#region Sync
+            //CreateMap<SyncDTO, SyncViewModel>();
+            //#endregion
 
-            #region Sync
-            CreateMap<GenericReturn<SyncDTO>, GenericReturn<SyncViewModel>>();
-            #endregion
+            //#region Sync
+            //CreateMap<GenericReturn<SyncDTO>, GenericReturn<SyncViewModel>>();
+            //#endregion
         }
     }
 }
