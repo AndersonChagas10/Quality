@@ -91,7 +91,7 @@ $(document).on('click', '.level01List .level01', function (e) {
         resultsLevel01.each(function (e) {
 
             var level01Result = $(this);
-            var results = level01Result.children('.level02Result');
+            var results = level01Result.children('.level02Result:last');
             if (level01Result.attr('biasedunbiased'))
             {
                 $('#biasedUnbiased').val(level01Result.attr('biasedunbiased'));
@@ -125,7 +125,10 @@ $(document).on('click', '.level01List .level01', function (e) {
                 $('.totalDefects').text(totalDefects);
                 level02.addClass('selected');
                 defectLimitCheck();
-                level02Complete(level02);
+                if (!level02.attr('havephases'))
+                {
+                    level02Complete(level02);
+                }
                 level02.removeClass('selected');
             });
 
@@ -469,6 +472,8 @@ function showLevel02(level01) {
 
         //$('.level02[notavaliable]').parents('li').children('.row').children('.userInfo').children('div').children('.btnAreaSave').addClass('hide').siblings('.btnNotAvaliable').addClass('hide').siblings('.btnReaudit').addClass('hide')
         $('.level02[reaudit]').parents('li').children('.row').children('.userInfo').children('div').children('.na').addClass('hide');
+
+        $('.level02[startphasedate]').parents('li').children('.row').children('.userInfo').children('div').children('.na').removeClass('hide').siblings('.btnAreaSave').removeClass('hide');;
 
         btnCorrectiveAction();
 
@@ -1022,6 +1027,12 @@ $(document).on('click', '.btnAreaSaveConfirm', function (e) {
     }
     var level02 = $(this).parents('li').children('.row').children('.level02');
     level02.addClass('selected');
+    //buscar pelo atributo e nao pelo botao
+    if (level02.siblings('.userInfo').children('div').children('.btnPhase').is(':visible'))
+    {
+
+    }
+
     $('.level03Group[level01id=' + level02.parents('.level02Group').attr('level01id') + ']').children('.level03Confirm').click();
     $('.overlay').addClass('hide');
     $(this).siblings('.defects').removeClass('hide');
@@ -1126,6 +1137,14 @@ function level02Complete(level02) {
         btnSalvarLevel02Confirm.addClass('hide');
         $('#btnSave').addClass('hide');
         level02ButtonSave(level.parents('.level02Group'));
+        if (level02.attr('havephases'))
+        {
+            if(level02.attr('completed') && level02.attr('limitexceeded'))
+            {
+                botaoSalvarLevel02.removeClass('hide');
+                botaoNa.removeClass('hide');
+            }
+        }
 
         //nao precisamos verificar os defeitos se o limitexceeded estiver 
         var defectsLevel02 = parseInt($('.painelLevel03 .defects').text());
@@ -1741,7 +1760,6 @@ $(document).on('click', '#btnSalvarHTP', function (e) {
         level02.parents('.row').children('.userInfo').children('div').children('.reauditCount').children('button').text(reauditNumber);
     }
 
-    level02.attr('phase', phase);
 
     var btnPhase = level02.parents('.row').children('.userInfo').children('div').children('.btnPhase');
     if (phase > 0) {
@@ -1750,6 +1768,8 @@ $(document).on('click', '#btnSalvarHTP', function (e) {
         btnPhase.removeClass('hide');
         btnPhase.children('button').children('.atualPhase').text(phase);
        
+        var countPhase = level02.siblings('.userInfo').children('div').children('.reauditCount');
+
         var phaseConfiguation = $('.phasesreaudits .phase[number=' + phase + ']');
 
         if (phaseConfiguation.attr('reaudits') == "0" || phaseConfiguation.attr('reaudits') == "")
@@ -1758,13 +1778,34 @@ $(document).on('click', '#btnSalvarHTP', function (e) {
         }
         else
         {
-            if(parseInt($('.level0')))
+            if(parseInt(level02.attr('phase')) != phase)
+            {
+                reauditNumber = 0;
+                btnPhase.siblings('.btnAreaSave').removeClass('hide').siblings('.btnNotAvaliable').removeClass('hide');
+            }
+
+            if (reauditNumber == parseInt(phaseConfiguation.attr('reaudits')) && !level02.attr('limitexceeded'))
+            {
+                openMessageModal('Phase Completed', level02.children('.levelName').text() + " returned to phase 0");
+                //reauditNumber = 0;
+                phase = 0;
+                level02.removeAttr('phase');
+                btnPhase.addClass('hide');
+                countPhase.addClass('hide');
+            }
+            else
+            {
+                countPhase.removeClass('hide').children('button').text(reauditNumber + '/' + phaseConfiguation.attr('reaudits'));
+
+            }
             //verificar em qual faze estou
             //verificar se ja tem uma contagem de pahse e colocar o vsalor total dela no label
 
-            level02.siblings('.userInfo').children('div').children('.reauditCount').removeClass('hide').children('button').text(reauditNumber + '/' + phaseConfiguation.attr('reaudits'));
         }
+        level02.attr('reauditnumber', reauditNumber);
+
     }
+    level02.attr('phase', phase);
 
     if (level02.attr('prevphasexceeded')) {
         level02.removeAttr('prevphasexceeded').attr('limitexceeded', 'limitexceeded').parents('li').addClass('bgLimitExceeded');
@@ -1943,7 +1984,7 @@ $(document).on('click', '#btnSalvarLevel02CCA', function (e) {
         level01.attr('reaudit', 'reaudit').attr('reauditNumber', reauditNumber).removeAttr('startreaudit');
 
         var resultStarReaudit = $('.level01Result[level01id=' + level01.attr('id') + '][shift=' + $('.App').attr('shift') + '][reaudit=false][havereaudit]');
-        resultStarReaudit.attr('reauditNumber', reauditNumber);
+        resultStarReaudit.attr('totalreaudits', reauditNumber);
 
         //if (reauditNumber == level01.attr('minreauditnumber')) {
         //}
@@ -2154,21 +2195,23 @@ $(document).on('click', '.level02Group .btnReaudit', function (e) {
 $(document).on('click', '.level02Group .btnPhase', function (e) {
 
     var level02 = $(this).parents('.row').children('.level02');
+    startReauditOrPhases(level02);
+    //nao é o 
+    //level02Complete($('.level02List .level02Group[level01id=' + level01.attr('id') +'] .level02'));
+    level02.click();
+});
+function startReauditOrPhases(level02) {
     level02.attr('reaudit', 'reaudit').attr('startReaudit', 'startReaudit').removeAttr('completed');
     level02.attr('defects', '0');
     $('.painelLevel03 .labelPhase').parents('.labelPainel').removeClass('hide');
 
-    
+
     $('.painelLevel03 .labelPhase').text(level02.attr('phase'));
 
     //$('.level02List .level02Group[level01id=' + level01.attr('id') + '] .level02').removeAttr('completed').removeAttr('limitexceeded').removeAttr('notavaliable');
     //level02Reset($('.level02List .level02Group[level01id=' + level01.attr('id') + '] .level02'));
     level02Level03Reset(level02.parents('.level02Group'));
-    //nao é o 
-    //level02Complete($('.level02List .level02Group[level01id=' + level01.attr('id') +'] .level02'));
-    level02.click();
-});
-
+}
 $(document).on('click', '.btnCorrectiveAction', function (e) {
     $('.btnCorrectiveAction').removeClass('selected');
     $(this).addClass('selected');
