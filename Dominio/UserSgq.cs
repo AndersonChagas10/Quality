@@ -20,6 +20,6 @@ namespace Dominio
         public Nullable<System.DateTime> AcessDate { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public string Tste { get; set; }
+        public string Role { get; set; }
     }
 }

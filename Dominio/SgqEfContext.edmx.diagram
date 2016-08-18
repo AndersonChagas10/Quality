@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="41481c9360bf485fb122760b8cb9857f" Name="Diagram1" ZoomLevel="77">
-        <EntityTypeShape EntityType="SgqDbModel.Coleta" Width="1.5" PointX="5.75" PointY="10.875" />
         <EntityTypeShape EntityType="SgqDbModel.CorrectiveAction" Width="1.5" PointX="0.75" PointY="11.25" />
         <EntityTypeShape EntityType="SgqDbModel.CorrectiveActionLevels" Width="1.5" PointX="3" PointY="12.5" />
         <EntityTypeShape EntityType="SgqDbModel.DataCollection" Width="1.5" PointX="7.5" PointY="5.125" />
@@ -16,12 +15,8 @@
         <EntityTypeShape EntityType="SgqDbModel.Level03" Width="1.5" PointX="7.5" PointY="0.75" />
         <EntityTypeShape EntityType="SgqDbModel.Level03Consolidation" Width="1.5" PointX="12.5" PointY="5" />
         <EntityTypeShape EntityType="SgqDbModel.Level1" Width="1.5" PointX="9.75" PointY="1.875" />
-        <EntityTypeShape EntityType="SgqDbModel.Level2" Width="1.5" PointX="7.75" PointY="10.875" />
-        <EntityTypeShape EntityType="SgqDbModel.Level3" Width="1.5" PointX="9.75" PointY="9.875" />
         <EntityTypeShape EntityType="SgqDbModel.Period" Width="1.5" PointX="11.75" PointY="1.875" />
         <EntityTypeShape EntityType="SgqDbModel.Shift" Width="1.5" PointX="11.75" PointY="10.875" />
-        <EntityTypeShape EntityType="SgqDbModel.teste" Width="1.5" PointX="7.75" PointY="13.875" />
-        <EntityTypeShape EntityType="SgqDbModel.UserSgq" Width="1.5" PointX="9.75" PointY="13.875" />
         <AssociationConnector Association="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction" />
         <AssociationConnector Association="SgqDbModel.FK_DataCollection_Level02Consolidation" />
         <AssociationConnector Association="SgqDbModel.FK_DataCollectionResult_DataCollection" />
@@ -32,6 +27,7 @@
         <AssociationConnector Association="SgqDbModel.FK_Level03Consolidation_Level03" />
         <EntityTypeShape EntityType="SgqDbModel.Level02" Width="1.5" PointX="0.75" PointY="1" />
         <AssociationConnector Association="SgqDbModel.FK_Level02Consolidation_Level02" />
+        <EntityTypeShape EntityType="SgqDbModel.UserSgq" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Dominio.Entities;
 using Dominio.Interfaces.Repositories;
 using Dominio.Interfaces.Services;
 using DTO.DTO;
@@ -10,7 +9,6 @@ namespace Dominio.Services
 {
     public class UserDomain : IUserDomain
     {
-
         private readonly IUserRepository _userRepo;
         public string falhaGeral { get { return "It was not possible retrieve any data."; } }
 
@@ -53,6 +51,18 @@ namespace Dominio.Services
             }
         }
 
+        public GenericReturn<UserDTO> GetByName(string username)
+        {
+            try
+            {
+                var queryResult = _userRepo.GetByName(username);
+                return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(queryResult));
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<UserDTO>(e, "CAnnot get user by name.");
+            }
+        }
     }
 
 
