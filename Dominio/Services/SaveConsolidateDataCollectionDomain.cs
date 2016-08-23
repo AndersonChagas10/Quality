@@ -58,25 +58,30 @@ namespace Dominio.Services
                     var level01Consolidation = Mapper.Map<ConsolidationLevel01>(i);
                     _baseRepoConsolidationL1.Add(level01Consolidation);
 
-                    var level02Consolidation = Mapper.Map<ConsolidationLevel02>(i.consolidationLevel02DTO);
-                    level02Consolidation.Level01Consolidation_Id = level01Consolidation.Id;
-                    _baseRepoConsolidationL2.Add(level02Consolidation);
-
-                    foreach (var x in i.collectionLevel02DTO)
+                    ConsolidationLevel02 level02Consolidation;
+                    foreach (var j in i.consolidationLevel02DTO)
                     {
+                        j.Level01Consolidation_Id = level01Consolidation.Id;
+                        level02Consolidation = Mapper.Map<ConsolidationLevel02>(j);
+                        _baseRepoConsolidationL2.Add(level02Consolidation);
 
-                        x.Level01_Id = level01Consolidation.Level01_Id;
-                        x.ConsolidationLevel02_Id = level02Consolidation.Id;
-
-                        var collectionLevel02 = Mapper.Map<CollectionLevel02>(x);
-                        _baseRepoCollectionL2.AddNotCommit(collectionLevel02);
-                        foreach (var y in i.collectionLevel03DTO)
+                        foreach (var x in i.collectionLevel02DTO)
                         {
-                            y.CollectionLevel02_ID = collectionLevel02.Id;
-                            _baseRepoCollectionL3.AddNotCommit(Mapper.Map<CollectionLevel03>(y));
-                        }
 
+                            x.Level01_Id = level01Consolidation.Level01_Id;
+                            x.ConsolidationLevel02_Id = level02Consolidation.Id;
+
+                            var collectionLevel02 = Mapper.Map<CollectionLevel02>(x);
+                            _baseRepoCollectionL2.AddNotCommit(collectionLevel02);
+                            foreach (var y in i.collectionLevel03DTO)
+                            {
+                                y.CollectionLevel02_ID = collectionLevel02.Id;
+                                _baseRepoCollectionL3.AddNotCommit(Mapper.Map<CollectionLevel03>(y));
+                            }
+
+                        }
                     }
+
                     _baseRepoCollectionL2.Commit();
                     _baseRepoCollectionL3.Commit();
                 }

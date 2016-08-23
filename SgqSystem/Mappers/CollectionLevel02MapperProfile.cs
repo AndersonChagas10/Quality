@@ -5,11 +5,11 @@ using DTO.Helpers;
 
 namespace SgqSystem.Mappers
 {
-    public class DataCollectionMapperProfile : Profile
+    public class CollectionLevel02MapperProfile : Profile
     {
-        public DataCollectionMapperProfile()
+        public CollectionLevel02MapperProfile()
         {
-            //CreateMap<DataCollectionDTO, DataCollection>()
+            CreateMap<CollectionLevel02DTO, CollectionLevel02>();
             //    .ForMember(x => x.Level02Consolidation, opt => opt.Ignore())
             //    .ForMember(x => x.DataCollectionResult, opt => opt.Ignore());
 

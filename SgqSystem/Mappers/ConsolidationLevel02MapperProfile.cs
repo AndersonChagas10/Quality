@@ -2,15 +2,17 @@
 using Dominio;
 using DTO.DTO;
 using DTO.Helpers;
+using System.Collections.Generic;
 
 namespace SgqSystem.Mappers
 {
-    public class Level02ConsolidationMapperProfile : Profile
+    public class ConsolidationLevel02MapperProfile : Profile
     {
-        public Level02ConsolidationMapperProfile()
+        public ConsolidationLevel02MapperProfile()
         {
 
-            //CreateMap<Level02Consolidation, Level02ConsolidationDTO>()
+            CreateMap<ConsolidationLevel02DTO, ConsolidationLevel02>();
+            CreateMap<List<ConsolidationLevel02DTO>, List<ConsolidationLevel02>>();
             //    .ForMember(x => x.DataCollection, opt => opt.Ignore())
             //    .ForMember(x => x.Level01Consolidation, opt => opt.Ignore())
             //    .ForMember(x => x.Level02, opt => opt.Ignore())

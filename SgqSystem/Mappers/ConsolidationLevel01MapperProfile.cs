@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using Dominio;
 using DTO.DTO;
-using DTO.Helpers;
 
 namespace SgqSystem.Mappers
 {
-    public class Level01ConsolidationMapperProfile : Profile
+    public class ConsolidationLevel01MapperProfile : Profile
     {
-        public Level01ConsolidationMapperProfile()
+        public ConsolidationLevel01MapperProfile()
         {
-            //CreateMap<Level01Consolidation, Level01ConsolidationDTO>()
+            CreateMap<ConsolidationLevel01DTO, ConsolidationLevel01>();
             //    .ForMember(x => x.Level01, opt => opt.Ignore())
             //    .ForMember(x => x.Level02Consolidation, opt => opt.Ignore());
 
