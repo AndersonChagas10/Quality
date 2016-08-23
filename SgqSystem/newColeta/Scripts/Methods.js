@@ -5,12 +5,22 @@
 
 $(document).on('click', '#btnLogin', function (e) {
     e.preventDefault();
-    if ($('#inputUserName').val() == "Admin" && $('#inputPassword').val() == "123") {
-        showLevel01();
-    }
-    else {
-        Geral.exibirMensagemErro("Username or password is invalid");
-    }
+
+    $.ajax({
+        method: "POST",
+        url: "/api/User/AuthenticationLogin",
+        data: { Name: $('#inputUserName').val(), Password: $('#inputPassword').val() }
+    })
+  .success(function (msg) {
+      showLevel01();
+  });
+
+    //if ($('#inputUserName').val() == "Admin" && $('#inputPassword').val() == "123") {
+    //    showLevel01();
+    //}
+    //else {
+    //    Geral.exibirMensagemErro("Username or password is invalid");
+    //}
     //auth();
 });
 $(window).bind('beforeunload', function () {
