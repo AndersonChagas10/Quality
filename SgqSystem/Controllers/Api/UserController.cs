@@ -1,5 +1,4 @@
 ﻿using Application.Interface;
-using AutoMapper;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
@@ -9,6 +8,7 @@ using System.Web.Http.Cors;
 namespace SgqSystem.Controllers.Api
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [RoutePrefix("api/User")]
     public class UserController : ApiController
     {
 
@@ -24,6 +24,14 @@ namespace SgqSystem.Controllers.Api
         {
             return _userApp.AuthenticationLogin(userVm);
         }
+
+        [Route("AuthenticationLogin")]
+        [HttpPost]
+        public GenericReturn<UserDTO> AuthenticationLogin([FromBody] UserViewModel userVm)
+        {
+            return _userApp.AuthenticationLogin(userVm);
+        }
+
 
     }
 

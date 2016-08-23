@@ -4,12 +4,18 @@ using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
 using System;
+using System.DirectoryServices.AccountManagement;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Dominio.Services
 {
     public class UserDomain : IUserDomain
     {
         private readonly IUserRepository _userRepo;
+
         public string falhaGeral { get { return "It was not possible retrieve any data."; } }
 
         /// <summary>
@@ -31,12 +37,18 @@ namespace Dominio.Services
         {
             try
             {
+
                 if (userDto.IsNull())
                     throw new ExceptionHelper("Username and Password are required.");
 
                 userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
 
                 var user = Mapper.Map<UserDTO, UserSgq>(userDto);
+
+                //Demonstração Funcionando
+                //  CheckUserInAD("servidoradteste.com", "Administrador", "1qaz!QAZ", "eduardo.maia");
+                var boolResultadoAd = CheckUserInAD("servidoradteste.com", "celso.gea", "1qaz!QAZ");
+
                 var isUser = _userRepo.AuthenticationLogin(user);
 
                 if (!isUser.IsNotNull())
@@ -63,7 +75,238 @@ namespace Dominio.Services
                 return new GenericReturn<UserDTO>(e, "CAnnot get user by name.");
             }
         }
-    }
 
+
+        public static bool CheckUserInAD(string domain, string username, string password, string userVerific)
+        {
+            try
+            {
+                using (var domainContext = new PrincipalContext(ContextType.Domain, domain, username, password))
+                {
+                    using (var user = new UserPrincipal(domainContext))
+                    {
+                        user.SamAccountName = userVerific;
+
+                        using (var pS = new PrincipalSearcher())
+                        {
+                            pS.QueryFilter = user;
+
+                            using (PrincipalSearchResult<Principal> results = pS.FindAll())
+                            {
+                                if (results != null && results.Count() > 0)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public static bool CheckUserInAD(string domain, string username, string password)
+        {
+            try
+            {
+                using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, domain))
+                {
+                    var userValid = pc.ValidateCredentials(username, password);
+                    return userValid;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
+        #region Constantes para Criptografar
+
+        /// <summary>     
+        /// Representação de valor em base 64 (Chave Interna)    
+        /// O Valor representa a transformação para base64 de     
+        /// um conjunto de 32 caracteres (8 * 32 = 256bits)      
+        /// </summary>     
+        const string cryptoKey = "%#dfgh%$$%FGNH3532FGNFGD456@#%GF";
+
+        /// <summary>     
+        /// Vetor de bytes utilizados para a criptografia (Chave Externa)     
+        /// </summary>     
+        static byte[] bIV =
+        { 0x50, 0x08, 0xF1, 0xDD, 0xDE, 0x3C, 0xF2, 0x18,
+        0x44, 0x74, 0x19, 0x2C, 0x53, 0x49, 0xAB, 0xBC };
+
+        #endregion
+
+        #region Criptografia 3DES
+
+        public static string Criptografar3DES(string Message)
+        {
+            byte[] Results = null;
+            System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
+            MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
+            byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey));
+            TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
+            TDESAlgorithm.Key = TDESKey;
+            TDESAlgorithm.Mode = CipherMode.ECB;
+            TDESAlgorithm.Padding = PaddingMode.PKCS7;
+            byte[] DataToEncrypt = UTF8.GetBytes(Message);
+            try
+            {
+                ICryptoTransform Encryptor = TDESAlgorithm.CreateEncryptor();
+                Results = Encryptor.TransformFinalBlock(DataToEncrypt, 0, DataToEncrypt.Length);
+            }
+            finally
+            {
+                TDESAlgorithm.Clear();
+                HashProvider.Clear();
+            }
+            return Convert.ToBase64String(Results);
+        }
+
+        public static string Descriptografar3DES(string Message)
+        {
+            byte[] Results = null;
+            System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
+            MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
+            byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey));
+            TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
+            TDESAlgorithm.Key = TDESKey;
+            TDESAlgorithm.Mode = CipherMode.ECB;
+            TDESAlgorithm.Padding = PaddingMode.PKCS7;
+            byte[] DataToDecrypt = Convert.FromBase64String(Message);
+            try
+            {
+                ICryptoTransform Decryptor = TDESAlgorithm.CreateDecryptor();
+                Results = Decryptor.TransformFinalBlock(DataToDecrypt, 0, DataToDecrypt.Length);
+            }
+            finally
+            {
+                TDESAlgorithm.Clear();
+                HashProvider.Clear();
+            }
+            return UTF8.GetString(Results);
+        }
+
+        #endregion
+
+        #region Criptografia AES
+
+        /// <summary>     
+        /// Metodo de criptografia de valor     
+        /// </summary>     
+        /// <param name="text">valor a ser criptografado</param>     
+        /// <returns>valor criptografado</returns>
+        public static string CriptografarAES(string text)
+        {
+            try
+            {
+                // Se a string não está vazia, executa a criptografia
+                if (!string.IsNullOrEmpty(text))
+                {
+                    // Cria instancias de vetores de bytes com as chaves                
+                    byte[] bKey = Convert.FromBase64String(cryptoKey);
+                    byte[] bText = new UTF8Encoding().GetBytes(text);
+
+                    // Instancia a classe de criptografia Rijndael
+                    Rijndael rijndael = new RijndaelManaged();
+
+                    // Define o tamanho da chave "256 = 8 * 32"                
+                    // Lembre-se: chaves possíves:                
+                    // 128 (16 caracteres), 192 (24 caracteres) e 256 (32 caracteres)                
+                    rijndael.KeySize = 256;
+
+                    // Cria o espaço de memória para guardar o valor criptografado:                
+                    MemoryStream mStream = new MemoryStream();
+                    // Instancia o encriptador                 
+                    CryptoStream encryptor = new CryptoStream(
+                        mStream,
+                        rijndael.CreateEncryptor(bKey, bIV),
+                        CryptoStreamMode.Write);
+
+                    // Faz a escrita dos dados criptografados no espaço de memória
+                    encryptor.Write(bText, 0, bText.Length);
+                    // Despeja toda a memória.                
+                    encryptor.FlushFinalBlock();
+                    // Pega o vetor de bytes da memória e gera a string criptografada                
+                    return Convert.ToBase64String(mStream.ToArray());
+                }
+                else
+                {
+                    // Se a string for vazia retorna nulo                
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Se algum erro ocorrer, dispara a exceção            
+                throw new ApplicationException("Erro ao criptografar", ex);
+            }
+        }
+
+        /// <summary>     
+        /// Pega um valor previamente criptografado e retorna o valor inicial 
+        /// </summary>     
+        /// <param name="text">texto criptografado</param>     
+        /// <returns>valor descriptografado</returns>     
+        public static string DescriptografarAES(string text)
+        {
+            try
+            {
+                // Se a string não está vazia, executa a criptografia           
+                if (!string.IsNullOrEmpty(text))
+                {
+                    // Cria instancias de vetores de bytes com as chaves                
+                    byte[] bKey = Convert.FromBase64String(cryptoKey);
+                    byte[] bText = Convert.FromBase64String(text);
+
+                    // Instancia a classe de criptografia Rijndael                
+                    Rijndael rijndael = new RijndaelManaged();
+
+                    // Define o tamanho da chave "256 = 8 * 32"                
+                    // Lembre-se: chaves possíves:                
+                    // 128 (16 caracteres), 192 (24 caracteres) e 256 (32 caracteres)                
+                    rijndael.KeySize = 256;
+
+                    // Cria o espaço de memória para guardar o valor DEScriptografado:               
+                    MemoryStream mStream = new MemoryStream();
+
+                    // Instancia o Decriptador                 
+                    CryptoStream decryptor = new CryptoStream(
+                        mStream,
+                        rijndael.CreateDecryptor(bKey, bIV),
+                        CryptoStreamMode.Write);
+
+                    // Faz a escrita dos dados criptografados no espaço de memória   
+                    decryptor.Write(bText, 0, bText.Length);
+                    // Despeja toda a memória.                
+                    decryptor.FlushFinalBlock();
+                    // Instancia a classe de codificação para que a string venha de forma correta         
+                    UTF8Encoding utf8 = new UTF8Encoding();
+                    // Com o vetor de bytes da memória, gera a string descritografada em UTF8       
+                    return utf8.GetString(mStream.ToArray());
+                }
+                else
+                {
+                    // Se a string for vazia retorna nulo                
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Se algum erro ocorrer, dispara a exceção            
+                throw new ApplicationException("Erro ao descriptografar", ex);
+            }
+        }
+
+        #endregion
+
+    }
 
 }
