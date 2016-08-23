@@ -9,17 +9,17 @@ namespace SgqSystem.Mappers
     {
         public DataCollectionMapperProfile()
         {
-            CreateMap<DataCollectionDTO, DataCollection>()
-                .ForMember(x => x.Level02Consolidation, opt => opt.Ignore())
-                .ForMember(x => x.DataCollectionResult, opt => opt.Ignore());
+            //CreateMap<DataCollectionDTO, DataCollection>()
+            //    .ForMember(x => x.Level02Consolidation, opt => opt.Ignore())
+            //    .ForMember(x => x.DataCollectionResult, opt => opt.Ignore());
 
-            CreateMap<DataCollection, DataCollectionDTO>()
-                 .ForMember(x => x.Level02Consolidation, opt => opt.Ignore())
-                 .ForMember(x => x.DataCollectionResult, opt => opt.Ignore());
+            //CreateMap<DataCollection, DataCollectionDTO>()
+            //     .ForMember(x => x.Level02Consolidation, opt => opt.Ignore())
+            //     .ForMember(x => x.DataCollectionResult, opt => opt.Ignore());
 
-            CreateMap<GenericReturn<DataCollection>, GenericReturn<DataCollectionDTO>>();
+            //CreateMap<GenericReturn<DataCollection>, GenericReturn<DataCollectionDTO>>();
 
-            CreateMap<GenericReturn<DataCollectionDTO>, GenericReturn<DataCollection>>();
+            //CreateMap<GenericReturn<DataCollectionDTO>, GenericReturn<DataCollection>>();
             
                 
         }

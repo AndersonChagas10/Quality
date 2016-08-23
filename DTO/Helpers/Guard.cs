@@ -69,6 +69,11 @@ namespace DTO.Helpers
             }
         }
 
+        public static bool VerifyStringNullValue(string verify)
+        {
+            return verify != null && !verify.Equals("null");
+        }
+
         public static DateTime AsDateTime(this object valor)
         {
             try
@@ -91,6 +96,13 @@ namespace DTO.Helpers
             {
                 return valorPadrao;
             }
+        }
+
+        public static void VerifyIfIsBool(bool isIAmBool, string propName)
+        {
+            if (isIAmBool.GetType() != typeof(bool))
+                throw new Exception("The property: " + propName + " is not a bool.");
+
         }
 
         public static DateTime AsDateTime(this object valor, DateTime valorPadrao, IFormatProvider formato)

@@ -1,7 +1,11 @@
 ﻿using Application.Interface;
 using DTO.DTO;
 using DTO.Helpers;
+using Newtonsoft.Json;
 using SgqSystem.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -39,9 +43,9 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("api/Sync/SetDataAuditConsolidated")]
-        public GenericReturn<ObjectConsildationDTO> SetDataToSincyAuditConsolidated([FromBody] SyncViewModel objToSync)
+        public GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated([FromBody] SyncViewModel objToSync)
         {
-            return _syncApp.SetDataToSincyAuditConsolidated(objToSync.syncConsolidado);
+            return _syncApp.SetDataToSincyAuditConsolidated(objToSync);
         }
 
         //[HttpPost]

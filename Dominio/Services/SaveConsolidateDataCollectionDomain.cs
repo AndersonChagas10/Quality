@@ -14,103 +14,71 @@ namespace Dominio.Services
 {
     public class SaveConsolidateDataCollectionDomain : ISaveConsolidateDataCollectionDomain
     {
-        private IBaseRepository<Level01Consolidation> _baseRepoLevel1Consolidation;
-        private IBaseRepository<Level02Consolidation> _baseRepoLevel2Consolidation;
-        private IBaseRepository<Level03Consolidation> _baseRepoLevel3Consolidation;
-        private IBaseRepository<DataCollection> _baseRepoDataCollection;
-        private IBaseRepository<DataCollectionResult> _baseRepoDataCollectionResult;
+        private IBaseRepository<ConsolidationLevel01> _baseRepoConsolidationL1;
+        private IBaseRepository<ConsolidationLevel02> _baseRepoConsolidationL2;
+        private IBaseRepository<CollectionLevel02> _baseRepoCollectionL2;
+        private IBaseRepository<CollectionLevel03> _baseRepoCollectionL3;
 
         public SaveConsolidateDataCollectionDomain(
-            IBaseRepository<Level01Consolidation> baseRepoLevel1Consolidation,
-            IBaseRepository<Level02Consolidation> baseRepoLevel2Consolidation,
-            IBaseRepository<Level03Consolidation> baseRepoLevel3Consolidation,
-            IBaseRepository<DataCollection> baseRepoDataCollection,
-            IBaseRepository<DataCollectionResult> baseRepoDataCollectionResult
+            IBaseRepository<ConsolidationLevel01> baseRepoConsolidationL1,
+            IBaseRepository<ConsolidationLevel02> baseRepoConsolidationL2,
+            IBaseRepository<CollectionLevel02> baseRepoCollectionL2,
+            IBaseRepository<CollectionLevel03> baseRepoCollectionL3
             )
         {
-            _baseRepoLevel1Consolidation = baseRepoLevel1Consolidation;
-            _baseRepoLevel2Consolidation = baseRepoLevel2Consolidation;
-            _baseRepoLevel3Consolidation = baseRepoLevel3Consolidation;
-            _baseRepoDataCollection = baseRepoDataCollection;
-            _baseRepoDataCollectionResult = baseRepoDataCollectionResult;
+            _baseRepoConsolidationL1 = baseRepoConsolidationL1;
+            _baseRepoConsolidationL2 = baseRepoConsolidationL2;
+            _baseRepoCollectionL2 = baseRepoCollectionL2;
+            _baseRepoCollectionL3 = baseRepoCollectionL3;
         }
 
-
-
-        public GenericReturn<ObjectConsildationDTO> SetDataToSincyAuditConsolidated(ObjectConsildationDTO obj)
+        public GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated(SyncDTO obj)
         {
 
             try
             {
-                #region Valida as 2 tabelas principais de inserção de dados, cabeçalho e corpo da Coleta
+                #region Validação e criação de objetos.
 
-                obj.level01ConsolidationDTO.ValidaLevel01ConsolidationDTO();
+                if (obj.Root.Count == 0)
+                    throw new ExceptionHelper("Impossible to Sync data. The Sync list is empty.");
 
-                foreach (var i in obj.level02ConsolidationDTO)
-                    i.ValidaLevel02ConsolidationDTO();
-
-                foreach (var i in obj.dataCollectionDTO)
-                    i.ValidaDataCollectionDTO();
-
-                foreach (var i in obj.level03ConsolidationDTO)
-                    i.ValidaLevel03ConsolidationDTO();
-
-                foreach (var i in obj.dataCollectionResultDTO)
-                    i.ValidaDataCollectionResultDTO();
+                var ListToSave = new List<ConsolidationLevel01DTO>();
+                obj.Root.ForEach(x => ListToSave.Add(x.ValidateAndCreateDtoConsolidationLevel01DTO()));
 
                 #endregion
 
-                #region Cria Level2Consolidation e level1
-
-
-                //if (obj.dataCollectionDTO.Level02ConsolidationId == 0)
-                //{
-
-                //    if (obj.dataCollectionDTO.Level02Consolidation.Level01ConsolidationId == 0)
-                //    {
-
-                //    }
-                //}
-
-                #endregion
 
 
                 #region Salvando os 5 objetos em Banco de Dados.
 
                 var watch = Stopwatch.StartNew();
 
-                var level01ConsolidateSaved = Mapper.Map<Level01Consolidation>(obj.level01ConsolidationDTO);
-                _baseRepoLevel1Consolidation.Add(level01ConsolidateSaved);
-
-                foreach (var i in obj.level02ConsolidationDTO)
+                foreach (var i in ListToSave)
                 {
+                    var level01Consolidation = Mapper.Map<ConsolidationLevel01>(i);
+                    _baseRepoConsolidationL1.Add(level01Consolidation);
 
-                    i.Level01ConsolidationId = level01ConsolidateSaved.Id;
-                    var level02ConsolidateSaved = Mapper.Map<Level02Consolidation>(i);
-                    _baseRepoLevel2Consolidation.Add(level02ConsolidateSaved); //Save
+                    var level02Consolidation = Mapper.Map<ConsolidationLevel02>(i.consolidationLevel02DTO);
+                    level02Consolidation.Level01Consolidation_Id = level01Consolidation.Id;
+                    _baseRepoConsolidationL2.Add(level02Consolidation);
 
-                    var listOfdataCollectionDTO = obj.dataCollectionDTO.Where(r => r.Control == i.Control).ToList();
-                    foreach (var x in listOfdataCollectionDTO)
+                    foreach (var x in i.collectionLevel02DTO)
                     {
-                        x.Level02ConsolidationId = level02ConsolidateSaved.Id;
-                        var dataCollectionDTOSaved = Mapper.Map<DataCollection>(x);
-                        _baseRepoDataCollection.Add(dataCollectionDTOSaved); //Save
 
-                        var listOfdataCollectionResultDTO = obj.dataCollectionResultDTO.Where(r => r.Control == x.Control).ToList();
-                        foreach (var w in listOfdataCollectionResultDTO)
-                            w.DataCollectionId = dataCollectionDTOSaved.Id;
+                        x.Level01_Id = level01Consolidation.Level01_Id;
+                        x.ConsolidationLevel02_Id = level02Consolidation.Id;
 
-                        var dataCollectionResultSaved = Mapper.Map<List<DataCollectionResult>>(listOfdataCollectionResultDTO);
-                        _baseRepoDataCollectionResult.AddAll(dataCollectionResultSaved); //Save
+                        var collectionLevel02 = Mapper.Map<CollectionLevel02>(x);
+                        _baseRepoCollectionL2.AddNotCommit(collectionLevel02);
+                        foreach (var y in i.collectionLevel03DTO)
+                        {
+                            y.CollectionLevel02_ID = collectionLevel02.Id;
+                            _baseRepoCollectionL3.AddNotCommit(Mapper.Map<CollectionLevel03>(y));
+                        }
+
                     }
-
-                    var listOflevel03ConsolidationDTO = obj.level03ConsolidationDTO.Where(r => r.Control == i.Control).ToList();
-                    foreach (var y in listOflevel03ConsolidationDTO)
-                        y.Level02ConsolidationId = level02ConsolidateSaved.Id;
-
-                    var level03ConsolidationSaved = Mapper.Map<List<Level03Consolidation>>(listOflevel03ConsolidationDTO);
-                    _baseRepoLevel3Consolidation.AddAll(level03ConsolidationSaved); // Save
-
+                    _baseRepoCollectionL2.Commit();
+                    _baseRepoCollectionL3.Commit();
                 }
 
                 watch.Stop();
@@ -120,7 +88,7 @@ namespace Dominio.Services
 
                 #region Feedback
 
-                return new GenericReturn<ObjectConsildationDTO>("Susscess! All Data Saved in: " + elapsedMs + " ms.");
+                return new GenericReturn<SyncDTO>("Susscess! All Data Saved in: " + elapsedMs + " ms.");
 
                 #endregion
             }
@@ -128,7 +96,7 @@ namespace Dominio.Services
             {
                 #region Trata Exceção de forma Geral.
 
-                return new GenericReturn<ObjectConsildationDTO>(e, "Cannot sync.");
+                return new GenericReturn<SyncDTO>(e, "Cannot sync.");
 
                 #endregion
             }
@@ -141,9 +109,9 @@ namespace Dominio.Services
 
         }
 
-        public ObjectConsildationDTO SendData()
-        {
-            throw new NotImplementedException();
-        }
+        //public ObjectConsildationDTO SendData()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

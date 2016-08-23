@@ -6,7 +6,7 @@ namespace Dominio.Interfaces.Services
 {
     public interface ISaveConsolidateDataCollectionDomain
     {
-        ObjectConsildationDTO SendData();
-        GenericReturn<ObjectConsildationDTO> SetDataToSincyAuditConsolidated(ObjectConsildationDTO syncConsolidado);
+        //ObjectConsildationDTO SendData();
+        GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated(SyncDTO syncConsolidado);
     }
 }
