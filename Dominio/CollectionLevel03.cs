@@ -12,16 +12,16 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class Level02
+    public partial class CollectionLevel03
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Alias { get; set; }
-        public string ClientSpecification { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool Active { get; set; }
-        public int PeopleCreateId { get; set; }
-        public int Ordering { get; set; }
+        public int CollectionLevel02_ID { get; set; }
+        public Nullable<int> Level03_Id { get; set; }
+        public decimal TotalError { get; set; }
+        public bool ConformedIs { get; set; }
+        public decimal Value { get; set; }
+        public string ValueText { get; set; }
     }
 }

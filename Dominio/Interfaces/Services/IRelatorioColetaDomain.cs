@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DTO.DTO;
+﻿using System.Collections.Generic;
 using DTO.Helpers;
+using DTO.DTO;
 
 namespace Dominio.Interfaces.Services
 {

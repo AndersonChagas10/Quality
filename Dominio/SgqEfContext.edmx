@@ -5,6 +5,70 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="SgqDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CollectionLevel02">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="ConsolidationLevel02_Id" Type="int" Nullable="false" />
+          <Property Name="Auditor_Id" Type="int" Nullable="false" />
+          <Property Name="CattleType_Id" Type="int" Nullable="false" />
+          <Property Name="Level01_Id" Type="int" Nullable="false" />
+          <Property Name="Level02_Id" Type="int" Nullable="false" />
+          <Property Name="Unit_Id" Type="int" Nullable="false" />
+          <Property Name="Chainspeed" Type="decimal" Precision="10" Scale="5" Nullable="false" />
+          <Property Name="ConsecutiveFailureIs" Type="bit" Nullable="false" />
+          <Property Name="ConsecutiveFailureTotal" Type="int" Nullable="false" />
+          <Property Name="LotNumber" Type="decimal" Precision="10" Scale="5" Nullable="false" />
+          <Property Name="Mudscore" Type="decimal" Precision="10" Scale="5" Nullable="false" />
+          <Property Name="Period" Type="int" Nullable="false" />
+          <Property Name="Phase" Type="int" Nullable="false" />
+          <Property Name="ReauditIs" Type="bit" Nullable="false" />
+          <Property Name="ReauditNumber" Type="int" Nullable="false" />
+          <Property Name="NotEvaluatedIs" Type="bit" Nullable="false" />
+          <Property Name="Sample" Type="int" Nullable="false" />
+          <Property Name="Shift" Type="int" Nullable="false" />
+          <Property Name="StartPhaseDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CollectionLevel03">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="CollectionLevel02_ID" Type="int" Nullable="false" />
+          <Property Name="Level03_Id" Type="int" />
+          <Property Name="TotalError" Type="decimal" Precision="10" Scale="5" Nullable="false" />
+          <Property Name="ConformedIs" Type="bit" Nullable="false" />
+          <Property Name="Value" Type="decimal" Precision="10" Scale="5" Nullable="false" />
+          <Property Name="ValueText" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ConsolidationLevel01">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="ConsolidationDate" Type="datetime2" Precision="7" />
+          <Property Name="Unit_Id" Type="int" Nullable="false" />
+          <Property Name="Department_Id" Type="int" Nullable="false" />
+          <Property Name="Level01_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ConsolidationLevel02">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="ConsolidationDate" Type="datetime2" Precision="7" />
+          <Property Name="Level01Consolidation_Id" Type="int" Nullable="false" />
+          <Property Name="Level02_Id" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="CorrectiveAction">
           <Key>
             <PropertyRef Name="Id" />
@@ -40,41 +104,14 @@
           <Property Name="AuditLevel03Id" Type="int" Nullable="false" />
           <Property Name="Defects" Type="int" />
         </EntityType>
-        <EntityType Name="DataCollection">
+        <EntityType Name="Department">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Level02ConsolidationId" Type="int" Nullable="false" />
-          <Property Name="EvaluationNumber" Type="int" Nullable="false" />
-          <Property Name="SampleNumber" Type="int" Nullable="false" />
-          <Property Name="MonitorId" Type="int" Nullable="false" />
-          <Property Name="CollectionDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AddData" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="ProductId" Type="int" />
-          <Property Name="Access" Type="int" />
-          <Property Name="Sets" Type="int" />
-          <Property Name="Side" Type="int" />
-          <Property Name="Shared" Type="bit" Nullable="false" />
-          <Property Name="Plataform" Type="int" Nullable="false" />
-          <Property Name="Processed" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="DataCollectionResult">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DataCollectionId" Type="int" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Level03Id" Type="int" />
-          <Property Name="TotalEvaluated" Type="int" Nullable="false" />
-          <Property Name="Conformed" Type="bit" Nullable="false" />
-          <Property Name="Repeated" Type="bit" Nullable="false" />
-          <Property Name="DataCollectionValue" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="DataCollectionValueText" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="Weight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="AddDate" Type="datetime" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime" />
+          <Property Name="Name" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Level01">
           <Key>
@@ -90,28 +127,6 @@
           <Property Name="PeopleCreateId" Type="int" Nullable="false" />
           <Property Name="Ordering" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Level01Consolidation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CenterResultId" Type="int" Nullable="false" />
-          <Property Name="Level01Id" Type="int" Nullable="false" />
-          <Property Name="DateConsolidation" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="TotalLevel02" Type="int" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="TotalLevel02Weight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalEvaluated" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalEvaluatedWeight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalEvaluatedShared" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalEvaluatedSharedWeight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalNotConform" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalNotConformWeight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalNotConformShared" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalNotConformShared Weight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="Shared" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="Level02">
           <Key>
             <PropertyRef Name="Id" />
@@ -126,28 +141,6 @@
           <Property Name="PeopleCreateId" Type="int" Nullable="false" />
           <Property Name="Ordering" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Level02Consolidation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Level02Id" Type="int" Nullable="false" />
-          <Property Name="Level01ConsolidationId" Type="int" Nullable="false" />
-          <Property Name="DateConsolidation" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="TotalLevel03" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalLevel03Weight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalEvaluated" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalEvaluatedWeight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalEvaluatedShared" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalEvaluatedSharedWeight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalNotConform" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalNotConformWeight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalNotConformShared" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalNotConformSharedWeight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="Shared" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="Level03">
           <Key>
             <PropertyRef Name="Id" />
@@ -161,37 +154,6 @@
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="PeopleCreateId" Type="int" Nullable="false" />
           <Property Name="Ordering" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Level03Consolidation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Level02ConsolidationId" Type="int" Nullable="false" />
-          <Property Name="Level03Id" Type="int" Nullable="false" />
-          <Property Name="DateConsolidation" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="TotalLevel03" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalLevel03Weight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalEvaluated" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="totalEvaluatedWeight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalEvaluatedShared" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalEvaluatedSharedWeight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalNotConform" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalNotConformWeight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalNotConformShared" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="TotalNotConformSharedWeight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="Shared" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Level1">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="70" Nullable="false" />
-          <Property Name="AddDate" Type="datetime" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Period">
           <Key>
@@ -211,17 +173,26 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterTime" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
+        <EntityType Name="Unit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varbinary(max)" Nullable="false" />
+          <Property Name="AddDate" Type="datetime" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="UserSgq">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
           <Property Name="AcessDate" Type="datetime" />
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
-          <Property Name="Role" Type="varchar" MaxLength="50" />
+          <Property Name="Role" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK_CorrectiveActionLevels_CorrectiveAction">
           <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="1" />
@@ -235,152 +206,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DataCollection_Level02Consolidation">
-          <End Role="Level02Consolidation" Type="Self.Level02Consolidation" Multiplicity="1" />
-          <End Role="DataCollection" Type="Self.DataCollection" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level02Consolidation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DataCollection">
-              <PropertyRef Name="Level02ConsolidationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DataCollectionResult_DataCollection">
-          <End Role="DataCollection" Type="Self.DataCollection" Multiplicity="1" />
-          <End Role="DataCollectionResult" Type="Self.DataCollectionResult" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DataCollection">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DataCollectionResult">
-              <PropertyRef Name="DataCollectionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DataCollectionResult_Level03">
-          <End Role="Level03" Type="Self.Level03" Multiplicity="0..1" />
-          <End Role="DataCollectionResult" Type="Self.DataCollectionResult" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level03">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DataCollectionResult">
-              <PropertyRef Name="Level03Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Level01Consolidation_Level01">
-          <End Role="Level01" Type="Self.Level01" Multiplicity="1" />
-          <End Role="Level01Consolidation" Type="Self.Level01Consolidation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level01">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Level01Consolidation">
-              <PropertyRef Name="Level01Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Level02Consolidation_Level01Consolidation">
-          <End Role="Level01Consolidation" Type="Self.Level01Consolidation" Multiplicity="1" />
-          <End Role="Level02Consolidation" Type="Self.Level02Consolidation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level01Consolidation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Level02Consolidation">
-              <PropertyRef Name="Level01ConsolidationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Level02Consolidation_Level02">
-          <End Role="Level02" Type="Self.Level02" Multiplicity="1" />
-          <End Role="Level02Consolidation" Type="Self.Level02Consolidation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level02">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Level02Consolidation">
-              <PropertyRef Name="Level02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Level03Consolidation_Level02Consolidation">
-          <End Role="Level02Consolidation" Type="Self.Level02Consolidation" Multiplicity="1" />
-          <End Role="Level03Consolidation" Type="Self.Level03Consolidation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level02Consolidation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Level03Consolidation">
-              <PropertyRef Name="Level02ConsolidationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Level03Consolidation_Level03">
-          <End Role="Level03" Type="Self.Level03" Multiplicity="1" />
-          <End Role="Level03Consolidation" Type="Self.Level03Consolidation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level03">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Level03Consolidation">
-              <PropertyRef Name="Level03Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="SgqDbModelStoreContainer">
+          <EntitySet Name="CollectionLevel02" EntityType="Self.CollectionLevel02" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CollectionLevel03" EntityType="Self.CollectionLevel03" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConsolidationLevel01" EntityType="Self.ConsolidationLevel01" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConsolidationLevel02" EntityType="Self.ConsolidationLevel02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CorrectiveAction" EntityType="Self.CorrectiveAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CorrectiveActionLevels" EntityType="Self.CorrectiveActionLevels" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DataCollection" EntityType="Self.DataCollection" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DataCollectionResult" EntityType="Self.DataCollectionResult" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level01" EntityType="Self.Level01" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Level01Consolidation" EntityType="Self.Level01Consolidation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level02" EntityType="Self.Level02" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Level02Consolidation" EntityType="Self.Level02Consolidation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level03" EntityType="Self.Level03" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Level03Consolidation" EntityType="Self.Level03Consolidation" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Level1" EntityType="Self.Level1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Period" EntityType="Self.Period" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSgq" EntityType="Self.UserSgq" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_CorrectiveActionLevels_CorrectiveAction" Association="Self.FK_CorrectiveActionLevels_CorrectiveAction">
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
             <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DataCollection_Level02Consolidation" Association="Self.FK_DataCollection_Level02Consolidation">
-            <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
-            <End Role="DataCollection" EntitySet="DataCollection" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DataCollectionResult_DataCollection" Association="Self.FK_DataCollectionResult_DataCollection">
-            <End Role="DataCollection" EntitySet="DataCollection" />
-            <End Role="DataCollectionResult" EntitySet="DataCollectionResult" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DataCollectionResult_Level03" Association="Self.FK_DataCollectionResult_Level03">
-            <End Role="Level03" EntitySet="Level03" />
-            <End Role="DataCollectionResult" EntitySet="DataCollectionResult" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Level01Consolidation_Level01" Association="Self.FK_Level01Consolidation_Level01">
-            <End Role="Level01" EntitySet="Level01" />
-            <End Role="Level01Consolidation" EntitySet="Level01Consolidation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Level02Consolidation_Level01Consolidation" Association="Self.FK_Level02Consolidation_Level01Consolidation">
-            <End Role="Level01Consolidation" EntitySet="Level01Consolidation" />
-            <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Level02Consolidation_Level02" Association="Self.FK_Level02Consolidation_Level02">
-            <End Role="Level02" EntitySet="Level02" />
-            <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Level03Consolidation_Level02Consolidation" Association="Self.FK_Level03Consolidation_Level02Consolidation">
-            <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
-            <End Role="Level03Consolidation" EntitySet="Level03Consolidation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Level03Consolidation_Level03" Association="Self.FK_Level03Consolidation_Level03">
-            <End Role="Level03" EntitySet="Level03" />
-            <End Role="Level03Consolidation" EntitySet="Level03Consolidation" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -390,54 +233,22 @@
         <EntityContainer Name="SgqDbDevEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CorrectiveAction" EntityType="SgqDbModel.CorrectiveAction" />
           <EntitySet Name="CorrectiveActionLevels" EntityType="SgqDbModel.CorrectiveActionLevels" />
-          <EntitySet Name="DataCollection" EntityType="SgqDbModel.DataCollection" />
-          <EntitySet Name="DataCollectionResult" EntityType="SgqDbModel.DataCollectionResult" />
           <EntitySet Name="Level01" EntityType="SgqDbModel.Level01" />
-          <EntitySet Name="Level01Consolidation" EntityType="SgqDbModel.Level01Consolidation" />
-          <EntitySet Name="Level02Consolidation" EntityType="SgqDbModel.Level02Consolidation" />
           <EntitySet Name="Level03" EntityType="SgqDbModel.Level03" />
-          <EntitySet Name="Level03Consolidation" EntityType="SgqDbModel.Level03Consolidation" />
-          <EntitySet Name="Level1" EntityType="SgqDbModel.Level1" />
           <EntitySet Name="Period" EntityType="SgqDbModel.Period" />
           <EntitySet Name="Shift" EntityType="SgqDbModel.Shift" />
           <AssociationSet Name="FK_CorrectiveActionLevels_CorrectiveAction" Association="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction">
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
             <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
           </AssociationSet>
-          <AssociationSet Name="FK_DataCollection_Level02Consolidation" Association="SgqDbModel.FK_DataCollection_Level02Consolidation">
-            <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
-            <End Role="DataCollection" EntitySet="DataCollection" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DataCollectionResult_DataCollection" Association="SgqDbModel.FK_DataCollectionResult_DataCollection">
-            <End Role="DataCollection" EntitySet="DataCollection" />
-            <End Role="DataCollectionResult" EntitySet="DataCollectionResult" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DataCollectionResult_Level03" Association="SgqDbModel.FK_DataCollectionResult_Level03">
-            <End Role="Level03" EntitySet="Level03" />
-            <End Role="DataCollectionResult" EntitySet="DataCollectionResult" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Level01Consolidation_Level01" Association="SgqDbModel.FK_Level01Consolidation_Level01">
-            <End Role="Level01" EntitySet="Level01" />
-            <End Role="Level01Consolidation" EntitySet="Level01Consolidation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Level02Consolidation_Level01Consolidation" Association="SgqDbModel.FK_Level02Consolidation_Level01Consolidation">
-            <End Role="Level01Consolidation" EntitySet="Level01Consolidation" />
-            <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Level03Consolidation_Level02Consolidation" Association="SgqDbModel.FK_Level03Consolidation_Level02Consolidation">
-            <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
-            <End Role="Level03Consolidation" EntitySet="Level03Consolidation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Level03Consolidation_Level03" Association="SgqDbModel.FK_Level03Consolidation_Level03">
-            <End Role="Level03" EntitySet="Level03" />
-            <End Role="Level03Consolidation" EntitySet="Level03Consolidation" />
-          </AssociationSet>
           <EntitySet Name="Level02" EntityType="SgqDbModel.Level02" />
-          <AssociationSet Name="FK_Level02Consolidation_Level02" Association="SgqDbModel.FK_Level02Consolidation_Level02">
-            <End Role="Level02" EntitySet="Level02" />
-            <End Role="Level02Consolidation" EntitySet="Level02Consolidation" />
-          </AssociationSet>
           <EntitySet Name="UserSgq" EntityType="SgqDbModel.UserSgq" />
+          <EntitySet Name="ConsolidationLevel01" EntityType="SgqDbModel.ConsolidationLevel01" />
+          <EntitySet Name="ConsolidationLevel02" EntityType="SgqDbModel.ConsolidationLevel02" />
+          <EntitySet Name="Department" EntityType="SgqDbModel.Department" />
+          <EntitySet Name="Unit" EntityType="SgqDbModel.Unit" />
+          <EntitySet Name="CollectionLevel02" EntityType="SgqDbModel.CollectionLevel02" />
+          <EntitySet Name="CollectionLevel03" EntityType="SgqDbModel.CollectionLevel03" />
         </EntityContainer>
         <EntityType Name="CorrectiveAction">
           <Key>
@@ -476,46 +287,6 @@
           <Property Name="Defects" Type="Int32" />
           <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction" FromRole="CorrectiveActionLevels" ToRole="CorrectiveAction" />
         </EntityType>
-        <EntityType Name="DataCollection">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Level02ConsolidationId" Type="Int32" Nullable="false" />
-          <Property Name="EvaluationNumber" Type="Int32" Nullable="false" />
-          <Property Name="SampleNumber" Type="Int32" Nullable="false" />
-          <Property Name="MonitorId" Type="Int32" Nullable="false" />
-          <Property Name="CollectionDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AddData" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="ProductId" Type="Int32" />
-          <Property Name="Access" Type="Int32" />
-          <Property Name="Sets" Type="Int32" />
-          <Property Name="Side" Type="Int32" />
-          <Property Name="Shared" Type="Boolean" Nullable="false" />
-          <Property Name="Plataform" Type="Int32" Nullable="false" />
-          <Property Name="Processed" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Level02Consolidation" Relationship="SgqDbModel.FK_DataCollection_Level02Consolidation" FromRole="DataCollection" ToRole="Level02Consolidation" />
-          <NavigationProperty Name="DataCollectionResult" Relationship="SgqDbModel.FK_DataCollectionResult_DataCollection" FromRole="DataCollection" ToRole="DataCollectionResult" />
-        </EntityType>
-        <EntityType Name="DataCollectionResult">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DataCollectionId" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Level03Id" Type="Int32" />
-          <Property Name="TotalEvaluated" Type="Int32" Nullable="false" />
-          <Property Name="Conformed" Type="Boolean" Nullable="false" />
-          <Property Name="Repeated" Type="Boolean" Nullable="false" />
-          <Property Name="DataCollectionValue" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="DataCollectionValueText" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="Weight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <NavigationProperty Name="DataCollection" Relationship="SgqDbModel.FK_DataCollectionResult_DataCollection" FromRole="DataCollectionResult" ToRole="DataCollection" />
-          <NavigationProperty Name="Level03" Relationship="SgqDbModel.FK_DataCollectionResult_Level03" FromRole="DataCollectionResult" ToRole="Level03" />
-        </EntityType>
         <EntityType Name="Level01">
           <Key>
             <PropertyRef Name="Id" />
@@ -529,57 +300,6 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="PeopleCreateId" Type="Int32" Nullable="false" />
           <Property Name="Ordering" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Level01Consolidation" Relationship="SgqDbModel.FK_Level01Consolidation_Level01" FromRole="Level01" ToRole="Level01Consolidation" />
-        </EntityType>
-        <EntityType Name="Level01Consolidation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CenterResultId" Type="Int32" Nullable="false" />
-          <Property Name="Level01Id" Type="Int32" Nullable="false" />
-          <Property Name="DateConsolidation" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="TotalLevel02" Type="Int32" Nullable="false" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="TotalLevel02Weight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalEvaluated" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalEvaluatedWeight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalEvaluatedShared" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalEvaluatedSharedWeight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalNotConform" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalNotConformWeight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalNotConformShared" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalNotConformShared_Weight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="Shared" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_Level01Consolidation_Level01" FromRole="Level01Consolidation" ToRole="Level01" />
-          <NavigationProperty Name="Level02Consolidation" Relationship="SgqDbModel.FK_Level02Consolidation_Level01Consolidation" FromRole="Level01Consolidation" ToRole="Level02Consolidation" />
-        </EntityType>
-        <EntityType Name="Level02Consolidation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Level02Id" Type="Int32" Nullable="false" />
-          <Property Name="Level01ConsolidationId" Type="Int32" Nullable="false" />
-          <Property Name="DateConsolidation" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="TotalLevel03" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalLevel03Weight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalEvaluated" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalEvaluatedWeight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalEvaluatedShared" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalEvaluatedSharedWeight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalNotConform" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalNotConformWeight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalNotConformShared" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalNotConformSharedWeight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="Shared" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="DataCollection" Relationship="SgqDbModel.FK_DataCollection_Level02Consolidation" FromRole="Level02Consolidation" ToRole="DataCollection" />
-          <NavigationProperty Name="Level01Consolidation" Relationship="SgqDbModel.FK_Level02Consolidation_Level01Consolidation" FromRole="Level02Consolidation" ToRole="Level01Consolidation" />
-          <NavigationProperty Name="Level03Consolidation" Relationship="SgqDbModel.FK_Level03Consolidation_Level02Consolidation" FromRole="Level02Consolidation" ToRole="Level03Consolidation" />
-          <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_Level02Consolidation_Level02" FromRole="Level02Consolidation" ToRole="Level02" />
         </EntityType>
         <EntityType Name="Level03">
           <Key>
@@ -594,41 +314,6 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="PeopleCreateId" Type="Int32" Nullable="false" />
           <Property Name="Ordering" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="DataCollectionResult" Relationship="SgqDbModel.FK_DataCollectionResult_Level03" FromRole="Level03" ToRole="DataCollectionResult" />
-          <NavigationProperty Name="Level03Consolidation" Relationship="SgqDbModel.FK_Level03Consolidation_Level03" FromRole="Level03" ToRole="Level03Consolidation" />
-        </EntityType>
-        <EntityType Name="Level03Consolidation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Level02ConsolidationId" Type="Int32" Nullable="false" />
-          <Property Name="Level03Id" Type="Int32" Nullable="false" />
-          <Property Name="DateConsolidation" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="TotalLevel03" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalLevel03Weight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalEvaluated" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="totalEvaluatedWeight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalEvaluatedShared" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalEvaluatedSharedWeight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalNotConform" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalNotConformWeight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalNotConformShared" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="TotalNotConformSharedWeight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="Shared" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Level02Consolidation" Relationship="SgqDbModel.FK_Level03Consolidation_Level02Consolidation" FromRole="Level03Consolidation" ToRole="Level02Consolidation" />
-          <NavigationProperty Name="Level03" Relationship="SgqDbModel.FK_Level03Consolidation_Level03" FromRole="Level03Consolidation" ToRole="Level03" />
-        </EntityType>
-        <EntityType Name="Level1">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="70" FixedLength="false" Unicode="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Period">
           <Key>
@@ -660,90 +345,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DataCollection_Level02Consolidation">
-          <End Type="SgqDbModel.Level02Consolidation" Role="Level02Consolidation" Multiplicity="1" />
-          <End Type="SgqDbModel.DataCollection" Role="DataCollection" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level02Consolidation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DataCollection">
-              <PropertyRef Name="Level02ConsolidationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DataCollectionResult_DataCollection">
-          <End Type="SgqDbModel.DataCollection" Role="DataCollection" Multiplicity="1" />
-          <End Type="SgqDbModel.DataCollectionResult" Role="DataCollectionResult" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DataCollection">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DataCollectionResult">
-              <PropertyRef Name="DataCollectionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DataCollectionResult_Level03">
-          <End Type="SgqDbModel.Level03" Role="Level03" Multiplicity="0..1" />
-          <End Type="SgqDbModel.DataCollectionResult" Role="DataCollectionResult" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level03">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DataCollectionResult">
-              <PropertyRef Name="Level03Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Level01Consolidation_Level01">
-          <End Type="SgqDbModel.Level01" Role="Level01" Multiplicity="1" />
-          <End Type="SgqDbModel.Level01Consolidation" Role="Level01Consolidation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level01">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Level01Consolidation">
-              <PropertyRef Name="Level01Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Level02Consolidation_Level01Consolidation">
-          <End Type="SgqDbModel.Level01Consolidation" Role="Level01Consolidation" Multiplicity="1" />
-          <End Type="SgqDbModel.Level02Consolidation" Role="Level02Consolidation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level01Consolidation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Level02Consolidation">
-              <PropertyRef Name="Level01ConsolidationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Level03Consolidation_Level02Consolidation">
-          <End Type="SgqDbModel.Level02Consolidation" Role="Level02Consolidation" Multiplicity="1" />
-          <End Type="SgqDbModel.Level03Consolidation" Role="Level03Consolidation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level02Consolidation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Level03Consolidation">
-              <PropertyRef Name="Level02ConsolidationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Level03Consolidation_Level03">
-          <End Type="SgqDbModel.Level03" Role="Level03" Multiplicity="1" />
-          <End Type="SgqDbModel.Level03Consolidation" Role="Level03Consolidation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level03">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Level03Consolidation">
-              <PropertyRef Name="Level03Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Level02">
           <Key>
             <PropertyRef Name="Id" />
@@ -757,31 +358,100 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="PeopleCreateId" Type="Int32" Nullable="false" />
           <Property Name="Ordering" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Level02Consolidation" Relationship="SgqDbModel.FK_Level02Consolidation_Level02" FromRole="Level02" ToRole="Level02Consolidation" />
         </EntityType>
-        <Association Name="FK_Level02Consolidation_Level02">
-          <End Type="SgqDbModel.Level02" Role="Level02" Multiplicity="1" />
-          <End Type="SgqDbModel.Level02Consolidation" Role="Level02Consolidation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level02">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Level02Consolidation">
-              <PropertyRef Name="Level02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="UserSgq">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AcessDate" Type="DateTime" Precision="3" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ConsolidationLevel01">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="ConsolidationDate" Type="DateTime" Precision="7" />
+          <Property Name="Unit_Id" Type="Int32" Nullable="false" />
+          <Property Name="Department_Id" Type="Int32" Nullable="false" />
+          <Property Name="Level01_Id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ConsolidationLevel02">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="ConsolidationDate" Type="DateTime" Precision="7" />
+          <Property Name="Level01Consolidation_Id" Type="Int32" Nullable="false" />
+          <Property Name="Level02_Id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Unit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="CollectionLevel02">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="ConsolidationLevel02_Id" Type="Int32" Nullable="false" />
+          <Property Name="Auditor_Id" Type="Int32" Nullable="false" />
+          <Property Name="CattleType_Id" Type="Int32" Nullable="false" />
+          <Property Name="Level01_Id" Type="Int32" Nullable="false" />
+          <Property Name="Level02_Id" Type="Int32" Nullable="false" />
+          <Property Name="Unit_Id" Type="Int32" Nullable="false" />
+          <Property Name="Chainspeed" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
+          <Property Name="ConsecutiveFailureIs" Type="Boolean" Nullable="false" />
+          <Property Name="ConsecutiveFailureTotal" Type="Int32" Nullable="false" />
+          <Property Name="LotNumber" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
+          <Property Name="Mudscore" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
+          <Property Name="Period" Type="Int32" Nullable="false" />
+          <Property Name="Phase" Type="Int32" Nullable="false" />
+          <Property Name="ReauditIs" Type="Boolean" Nullable="false" />
+          <Property Name="ReauditNumber" Type="Int32" Nullable="false" />
+          <Property Name="NotEvaluatedIs" Type="Boolean" Nullable="false" />
+          <Property Name="Sample" Type="Int32" Nullable="false" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="StartPhaseDate" Type="DateTime" Nullable="false" Precision="7" />
+        </EntityType>
+        <EntityType Name="CollectionLevel03">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="CollectionLevel02_ID" Type="Int32" Nullable="false" />
+          <Property Name="Level03_Id" Type="Int32" />
+          <Property Name="TotalError" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
+          <Property Name="ConformedIs" Type="Boolean" Nullable="false" />
+          <Property Name="Value" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
+          <Property Name="ValueText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -826,44 +496,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DataCollection">
-            <EntityTypeMapping TypeName="SgqDbModel.DataCollection">
-              <MappingFragment StoreEntitySet="DataCollection">
-                <ScalarProperty Name="Processed" ColumnName="Processed" />
-                <ScalarProperty Name="Plataform" ColumnName="Plataform" />
-                <ScalarProperty Name="Shared" ColumnName="Shared" />
-                <ScalarProperty Name="Side" ColumnName="Side" />
-                <ScalarProperty Name="Sets" ColumnName="Sets" />
-                <ScalarProperty Name="Access" ColumnName="Access" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddData" ColumnName="AddData" />
-                <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
-                <ScalarProperty Name="MonitorId" ColumnName="MonitorId" />
-                <ScalarProperty Name="SampleNumber" ColumnName="SampleNumber" />
-                <ScalarProperty Name="EvaluationNumber" ColumnName="EvaluationNumber" />
-                <ScalarProperty Name="Level02ConsolidationId" ColumnName="Level02ConsolidationId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DataCollectionResult">
-            <EntityTypeMapping TypeName="SgqDbModel.DataCollectionResult">
-              <MappingFragment StoreEntitySet="DataCollectionResult">
-                <ScalarProperty Name="Weight" ColumnName="Weight" />
-                <ScalarProperty Name="DataCollectionValueText" ColumnName="DataCollectionValueText" />
-                <ScalarProperty Name="DataCollectionValue" ColumnName="DataCollectionValue" />
-                <ScalarProperty Name="Repeated" ColumnName="Repeated" />
-                <ScalarProperty Name="Conformed" ColumnName="Conformed" />
-                <ScalarProperty Name="TotalEvaluated" ColumnName="TotalEvaluated" />
-                <ScalarProperty Name="Level03Id" ColumnName="Level03Id" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="DataCollectionId" ColumnName="DataCollectionId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Level01">
             <EntityTypeMapping TypeName="SgqDbModel.Level01">
               <MappingFragment StoreEntitySet="Level01">
@@ -879,52 +511,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Level01Consolidation">
-            <EntityTypeMapping TypeName="SgqDbModel.Level01Consolidation">
-              <MappingFragment StoreEntitySet="Level01Consolidation">
-                <ScalarProperty Name="Shared" ColumnName="Shared" />
-                <ScalarProperty Name="TotalNotConformShared_Weight" ColumnName="TotalNotConformShared Weight" />
-                <ScalarProperty Name="TotalNotConformShared" ColumnName="TotalNotConformShared" />
-                <ScalarProperty Name="TotalNotConformWeight" ColumnName="TotalNotConformWeight" />
-                <ScalarProperty Name="TotalNotConform" ColumnName="TotalNotConform" />
-                <ScalarProperty Name="TotalEvaluatedSharedWeight" ColumnName="TotalEvaluatedSharedWeight" />
-                <ScalarProperty Name="TotalEvaluatedShared" ColumnName="TotalEvaluatedShared" />
-                <ScalarProperty Name="TotalEvaluatedWeight" ColumnName="TotalEvaluatedWeight" />
-                <ScalarProperty Name="TotalEvaluated" ColumnName="TotalEvaluated" />
-                <ScalarProperty Name="TotalLevel02Weight" ColumnName="TotalLevel02Weight" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="TotalLevel02" ColumnName="TotalLevel02" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="DateConsolidation" ColumnName="DateConsolidation" />
-                <ScalarProperty Name="Level01Id" ColumnName="Level01Id" />
-                <ScalarProperty Name="CenterResultId" ColumnName="CenterResultId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Level02Consolidation">
-            <EntityTypeMapping TypeName="SgqDbModel.Level02Consolidation">
-              <MappingFragment StoreEntitySet="Level02Consolidation">
-                <ScalarProperty Name="Shared" ColumnName="Shared" />
-                <ScalarProperty Name="TotalNotConformSharedWeight" ColumnName="TotalNotConformSharedWeight" />
-                <ScalarProperty Name="TotalNotConformShared" ColumnName="TotalNotConformShared" />
-                <ScalarProperty Name="TotalNotConformWeight" ColumnName="TotalNotConformWeight" />
-                <ScalarProperty Name="TotalNotConform" ColumnName="TotalNotConform" />
-                <ScalarProperty Name="TotalEvaluatedSharedWeight" ColumnName="TotalEvaluatedSharedWeight" />
-                <ScalarProperty Name="TotalEvaluatedShared" ColumnName="TotalEvaluatedShared" />
-                <ScalarProperty Name="TotalEvaluatedWeight" ColumnName="TotalEvaluatedWeight" />
-                <ScalarProperty Name="TotalEvaluated" ColumnName="TotalEvaluated" />
-                <ScalarProperty Name="TotalLevel03Weight" ColumnName="TotalLevel03Weight" />
-                <ScalarProperty Name="TotalLevel03" ColumnName="TotalLevel03" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="DateConsolidation" ColumnName="DateConsolidation" />
-                <ScalarProperty Name="Level01ConsolidationId" ColumnName="Level01ConsolidationId" />
-                <ScalarProperty Name="Level02Id" ColumnName="Level02Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Level03">
             <EntityTypeMapping TypeName="SgqDbModel.Level03">
               <MappingFragment StoreEntitySet="Level03">
@@ -935,39 +521,6 @@
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="ClientSpecification" ColumnName="ClientSpecification" />
                 <ScalarProperty Name="Alias" ColumnName="Alias" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Level03Consolidation">
-            <EntityTypeMapping TypeName="SgqDbModel.Level03Consolidation">
-              <MappingFragment StoreEntitySet="Level03Consolidation">
-                <ScalarProperty Name="Shared" ColumnName="Shared" />
-                <ScalarProperty Name="TotalNotConformSharedWeight" ColumnName="TotalNotConformSharedWeight" />
-                <ScalarProperty Name="TotalNotConformShared" ColumnName="TotalNotConformShared" />
-                <ScalarProperty Name="TotalNotConformWeight" ColumnName="TotalNotConformWeight" />
-                <ScalarProperty Name="TotalNotConform" ColumnName="TotalNotConform" />
-                <ScalarProperty Name="TotalEvaluatedSharedWeight" ColumnName="TotalEvaluatedSharedWeight" />
-                <ScalarProperty Name="TotalEvaluatedShared" ColumnName="TotalEvaluatedShared" />
-                <ScalarProperty Name="totalEvaluatedWeight" ColumnName="totalEvaluatedWeight" />
-                <ScalarProperty Name="TotalEvaluated" ColumnName="TotalEvaluated" />
-                <ScalarProperty Name="TotalLevel03Weight" ColumnName="TotalLevel03Weight" />
-                <ScalarProperty Name="TotalLevel03" ColumnName="TotalLevel03" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="DateConsolidation" ColumnName="DateConsolidation" />
-                <ScalarProperty Name="Level03Id" ColumnName="Level03Id" />
-                <ScalarProperty Name="Level02ConsolidationId" ColumnName="Level02ConsolidationId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Level1">
-            <EntityTypeMapping TypeName="SgqDbModel.Level1">
-              <MappingFragment StoreEntitySet="Level1">
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -1017,6 +570,94 @@
                 <ScalarProperty Name="AcessDate" ColumnName="AcessDate" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConsolidationLevel01">
+            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel01">
+              <MappingFragment StoreEntitySet="ConsolidationLevel01">
+                <ScalarProperty Name="Level01_Id" ColumnName="Level01_Id" />
+                <ScalarProperty Name="Department_Id" ColumnName="Department_Id" />
+                <ScalarProperty Name="Unit_Id" ColumnName="Unit_Id" />
+                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConsolidationLevel02">
+            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel02">
+              <MappingFragment StoreEntitySet="ConsolidationLevel02">
+                <ScalarProperty Name="Level02_Id" ColumnName="Level02_Id" />
+                <ScalarProperty Name="Level01Consolidation_Id" ColumnName="Level01Consolidation_Id" />
+                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Department">
+            <EntityTypeMapping TypeName="SgqDbModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Unit">
+            <EntityTypeMapping TypeName="SgqDbModel.Unit">
+              <MappingFragment StoreEntitySet="Unit">
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CollectionLevel02">
+            <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel02">
+              <MappingFragment StoreEntitySet="CollectionLevel02">
+                <ScalarProperty Name="StartPhaseDate" ColumnName="StartPhaseDate" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="Sample" ColumnName="Sample" />
+                <ScalarProperty Name="NotEvaluatedIs" ColumnName="NotEvaluatedIs" />
+                <ScalarProperty Name="ReauditNumber" ColumnName="ReauditNumber" />
+                <ScalarProperty Name="ReauditIs" ColumnName="ReauditIs" />
+                <ScalarProperty Name="Phase" ColumnName="Phase" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Mudscore" ColumnName="Mudscore" />
+                <ScalarProperty Name="LotNumber" ColumnName="LotNumber" />
+                <ScalarProperty Name="ConsecutiveFailureTotal" ColumnName="ConsecutiveFailureTotal" />
+                <ScalarProperty Name="ConsecutiveFailureIs" ColumnName="ConsecutiveFailureIs" />
+                <ScalarProperty Name="Chainspeed" ColumnName="Chainspeed" />
+                <ScalarProperty Name="Unit_Id" ColumnName="Unit_Id" />
+                <ScalarProperty Name="Level02_Id" ColumnName="Level02_Id" />
+                <ScalarProperty Name="Level01_Id" ColumnName="Level01_Id" />
+                <ScalarProperty Name="CattleType_Id" ColumnName="CattleType_Id" />
+                <ScalarProperty Name="Auditor_Id" ColumnName="Auditor_Id" />
+                <ScalarProperty Name="ConsolidationLevel02_Id" ColumnName="ConsolidationLevel02_Id" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CollectionLevel03">
+            <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel03">
+              <MappingFragment StoreEntitySet="CollectionLevel03">
+                <ScalarProperty Name="ValueText" ColumnName="ValueText" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="ConformedIs" ColumnName="ConformedIs" />
+                <ScalarProperty Name="TotalError" ColumnName="TotalError" />
+                <ScalarProperty Name="Level03_Id" ColumnName="Level03_Id" />
+                <ScalarProperty Name="CollectionLevel02_ID" ColumnName="CollectionLevel02_ID" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

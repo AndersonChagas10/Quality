@@ -12,21 +12,11 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class DataCollectionResult
+    public partial class Department
     {
         public int Id { get; set; }
-        public int DataCollectionId { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public Nullable<int> Level03Id { get; set; }
-        public int TotalEvaluated { get; set; }
-        public bool Conformed { get; set; }
-        public bool Repeated { get; set; }
-        public decimal DataCollectionValue { get; set; }
-        public string DataCollectionValueText { get; set; }
-        public decimal Weight { get; set; }
-    
-        public virtual DataCollection DataCollection { get; set; }
-        public virtual Level03 Level03 { get; set; }
+        public string Name { get; set; }
     }
 }

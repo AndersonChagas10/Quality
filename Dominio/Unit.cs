@@ -12,10 +12,10 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class Level1
+    public partial class Unit
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public byte[] Name { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
     }

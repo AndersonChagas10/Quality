@@ -49,15 +49,13 @@
   <ItemGroup>
     <Compile Include="BaseEntity\DataCollectionBase.cs" />
     <Compile Include="BaseEntity\EntityBase.cs" />
+    <Compile Include="DTO\ConsolidationLevel02DTO.cs" />
+    <Compile Include="DTO\ColetaDTO.cs" />
+    <Compile Include="DTO\CollectionLevel02DTO.cs" />
+    <Compile Include="DTO\CollectionLevel03DTO.cs" />
+    <Compile Include="DTO\ConsolidationLevel01DTO.cs" />
     <Compile Include="DTO\CorrectiveActionLevelsDTO.cs" />
     <Compile Include="DTO\CorrectiveActionDTO.cs" />
-    <Compile Include="DTO\DataCollectionResultDTO.cs" />
-    <Compile Include="DTO\DataCollectionDTO.cs" />
-    <Compile Include="DTO\ColetaDTO.cs" />
-    <Compile Include="DTO\Level1DTO.cs" />
-    <Compile Include="DTO\Level2DTO.cs" />
-    <Compile Include="DTO\Level3DTO.cs" />
-    <Compile Include="DTO\ObjectConsildationDTO.cs" />
     <Compile Include="DTO\PeriodDTO.cs" />
     <Compile Include="DTO\ShiftDTO.cs" />
     <Compile Include="DTO\SyncDTO.cs" />
@@ -65,12 +63,6 @@
     <Compile Include="GenericReturn.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\Guard.cs" />
-    <Compile Include="DTO\Level02ConsolidationDTO.cs" />
-    <Compile Include="DTO\Level01ConsolidationDTO.cs" />
-    <Compile Include="DTO\Level02DTO.cs" />
-    <Compile Include="DTO\Level03ConsolidationDTO.cs" />
-    <Compile Include="DTO\Level01DTO.cs" />
-    <Compile Include="DTO\Level03DTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -24,7 +24,7 @@ namespace Application.AppServiceClass
         //    return _syncDomain.GetDataToSincyAudit();
         //}
 
-        public GenericReturn<ObjectConsildationDTO> SetDataToSincyAuditConsolidated(ObjectConsildationDTO syncConsolidado)
+        public GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated(SyncDTO syncConsolidado)
         {
             return _saveConsolidateDataCollectionDomain.SetDataToSincyAuditConsolidated(syncConsolidado);
         }
