@@ -437,6 +437,7 @@
     <Content Include="newColeta\Scripts\bootstrap.min.js" />
     <Content Include="newColeta\Scripts\correctiveaction.js" />
     <Content Include="newColeta\Scripts\Methods.js" />
+    <Content Include="Scripts\aes.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
@@ -554,6 +555,10 @@
     <None Include="Properties\PublishProfiles\DeploySgqInterno.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\cipher-core.js" />
+    <Content Include="Scripts\core.js" />
+    <Content Include="Scripts\enc-base64.js" />
+    <Content Include="Scripts\enc-utf16.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
     <Content Include="Scripts\gridmvc.min.js" />
@@ -610,9 +615,13 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\lib-typedarrays.js" />
+    <Content Include="Scripts\md5.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\tripledes.js" />
+    <Content Include="Scripts\x64-core.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
