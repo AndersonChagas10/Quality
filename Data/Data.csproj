@@ -52,6 +52,7 @@
     <Compile Include="ComplexType\RetornoQueryIndicadoresRelBate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CorrectiveActionRepository.cs" />
+    <Compile Include="Repositories\GetDataResultRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>

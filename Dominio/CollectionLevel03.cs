@@ -19,7 +19,6 @@ namespace Dominio
         public Nullable<System.DateTime> AlterDate { get; set; }
         public int CollectionLevel02_ID { get; set; }
         public Nullable<int> Level03_Id { get; set; }
-        public decimal TotalError { get; set; }
         public bool ConformedIs { get; set; }
         public decimal Value { get; set; }
         public string ValueText { get; set; }

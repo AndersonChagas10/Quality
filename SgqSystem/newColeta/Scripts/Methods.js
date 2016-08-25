@@ -5,10 +5,12 @@
 
 $(document).on('click', '#btnLogin', function (e) {
     e.preventDefault();
-
+    var _url = "/api/User/AuthenticationLogin";
+    if (window.location.href.indexOf('Master') > 0)
+        _url = 'http://192.168.25.200/SgqMaster/api/User/AuthenticationLogin';
     $.ajax({
         method: "POST",
-        url: "/api/User/AuthenticationLogin",
+        url: _url,
         data: { Name: $('#inputUserName').val(), Password: $('#inputPassword').val() }
     })
   .success(function (msg) {
@@ -26,132 +28,133 @@ $(document).on('click', '#btnLogin', function (e) {
 $(window).bind('beforeunload', function () {
     return "Warning! If you proceed you will loose information";
 });
+
 $(document).on('click', '.level01List .level01', function (e) {
 
-    var level01 = $(this);
-    var itensOk = checkInputsSelect();
-    if (itensOk == false) {
-        return false;
-    }
-    if (!$(this).attr('completed') && $(this).attr('reaudit') && !$(this).attr('startreaudit'))
-    {
-        openMessageModal("Pending re-audit", 'Please, complete re-audit prior to move to next audit');
-        return false;
-    }
-    var totalDefects = 0;
+        var level01 = $(this);
+        var itensOk = checkInputsSelect();
+        if (itensOk == false) {
+            return false;
+        }
+        if (!$(this).attr('completed') && $(this).attr('reaudit') && !$(this).attr('startreaudit'))
+        {
+            openMessageModal("Pending re-audit", 'Please, complete re-audit prior to move to next audit');
+            return false;
+        }
+        var totalDefects = 0;
 
-    var attrReaudit = "[reaudit=false]";
-    var attrReauditNumber = "";
+        var attrReaudit = "[reaudit=false]";
+        var attrReauditNumber = "";
 
-    var reauditNumber = 0;
-    var reaudit = level01.attr('reaudit');
-    if (reaudit == "reaudit") {
-        if (level01.attr('reauditnumber')) {
-            reauditNumber = parseInt(level01.attr('reauditnumber'));
-            if (level01.attr('startreaudit')) {
-                reauditNumber++;
+        var reauditNumber = 0;
+        var reaudit = level01.attr('reaudit');
+        if (reaudit == "reaudit") {
+            if (level01.attr('reauditnumber')) {
+                reauditNumber = parseInt(level01.attr('reauditnumber'));
+                if (level01.attr('startreaudit')) {
+                    reauditNumber++;
+                }
+                if(reauditNumber > 0)
+                {
+                    attrReaudit = "[reaudit=true]";
+                    attrReauditNumber = "[reauditnumber=" + reauditNumber + "]";
+                }
             }
-            if(reauditNumber > 0)
-            {
-                attrReaudit = "[reaudit=true]";
-                attrReauditNumber = "[reauditnumber=" + reauditNumber + "]";
-            }
+
         }
 
-    }
+        var resultsLevel01 = $('.level01Result[date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][level01id=' + level01.attr('id') + ']' + attrReaudit + attrReauditNumber + ':last');
 
-    var resultsLevel01 = $('.level01Result[date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][level01id=' + level01.attr('id') + ']' + attrReaudit + attrReauditNumber);
+        level02Reset($('.level02Group[level01id=' + level01.attr('id') + '] .level02'));
 
-    level02Reset($('.level02Group[level01id=' + level01.attr('id') + '] .level02'));
-
-    if (level01.attr('getresultlevel01')) {
+        if (level01.attr('getresultlevel01')) {
 
 
-        $("span.setsDone").text((resultsLevel01.attr('totalevaluate')) ? resultsLevel01.attr('totalevaluate') : "0");
+            $("span.setsDone").text((resultsLevel01.attr('totalevaluate')) ? resultsLevel01.attr('totalevaluate') : "0");
 
        
-        $("span.sideWithErrors").text((resultsLevel01.attr('sidewitherros')) ? resultsLevel01.attr('sidewitherros') : "0").parents('.labelPainel').removeClass('red');
-        $("span.more3Defects").text((resultsLevel01.attr('more3Defects')) ? resultsLevel01.attr('more3Defects') : "0").parents('.labelPainel').removeClass('red');
-        $("span.setAtual").text((resultsLevel01.attr('lastevaluate')) ? resultsLevel01.attr('lastevaluate') : "1");
-        $("span.sideAtual").text((resultsLevel01.attr('lastsample')) ? resultsLevel01.attr('lastsample') : "1");
+            $("span.sideWithErrors").text((resultsLevel01.attr('sidewitherros')) ? resultsLevel01.attr('sidewitherros') : "0").parents('.labelPainel').removeClass('red');
+            $("span.more3Defects").text((resultsLevel01.attr('more3Defects')) ? resultsLevel01.attr('more3Defects') : "0").parents('.labelPainel').removeClass('red');
+            $("span.setAtual").text((resultsLevel01.attr('lastevaluate')) ? resultsLevel01.attr('lastevaluate') : "1");
+            $("span.sideAtual").text((resultsLevel01.attr('lastsample')) ? resultsLevel01.attr('lastsample') : "1");
 
-        var sideWithErros = parseInt($("span.sideWithErrors:first").text());
-        if (sideWithErros > 5)
-        {
-            $("span.sideWithErrors").parents('.lavelPainel').addClass('red');
-        }
-        var more3Defects = parseInt($("span.more3Defects:first").text());
-        if (more3Defects > 0)
-        {
-            $("span.more3Defects").parents('.labelPainel').addClass('red');
-        }
-
-        var level02 = $('.level02Group[level01id=' + level01.attr('id') + '] .level02');
-
-        //level02.removeAttr('completed').parents('li').removeClass('bgCompleted');
-        if(resultsLevel01.attr('completed'))
-        {
-            level02.attr('completed', 'completed');
-            level02Complete(level02);
-        }
-    }
-    else
-    {
-
-        resultsLevel01.each(function (e) {
-
-            var level01Result = $(this);
-            var results = level01Result.children('.level02Result:last');
-            if (level01Result.attr('biasedunbiased'))
+            var sideWithErros = parseInt($("span.sideWithErrors:first").text());
+            if (sideWithErros > 5)
             {
-                $('#biasedUnbiased').val(level01Result.attr('biasedunbiased'));
+                $("span.sideWithErrors").parents('.lavelPainel').addClass('red');
+            }
+            var more3Defects = parseInt($("span.more3Defects:first").text());
+            if (more3Defects > 0)
+            {
+                $("span.more3Defects").parents('.labelPainel').addClass('red');
             }
 
-            results.each(function (e) {
+            var level02 = $('.level02Group[level01id=' + level01.attr('id') + '] .level02');
 
-                var result = $(this);
-                var level02 = $('.level02Group[level01id=' + results.attr('level01id') + '] .level02[id=' + result.attr('level02id') + ']');
-                level02.attr('defects', result.attr('defects')).attr('completed', 'completed');
-                level02.parents('.row').children('.userInfo').children('div').children('.defects').text(level02.attr('defects'));
-                totalDefects = totalDefects + parseInt(level02.attr('defects'));
-                //esses results podem ficar no level01
-                if (result.attr('cattletype')) {
-                    $('#selectCattleType').val(result.attr('cattletype'));
-                }
-                if (result.attr('chainspeed')) {
-                    $('#inputChainSpeed').val(result.attr('chainspeed'));
-                }
-                if (result.attr('lotnumber')) {
-                    $('#inputLotNumber').val(result.attr('lotnumber'));
-                }
-                if (result.attr('mudscore')) {
-                    $('#inputMudScore').val(result.attr('mudscore'));
+            //level02.removeAttr('completed').parents('li').removeClass('bgCompleted');
+            if(resultsLevel01.attr('completed'))
+            {
+                level02.attr('completed', 'completed');
+                level02Complete(level02);
+            }
+        }
+        else
+        {
+
+            resultsLevel01.each(function (e) {
+
+                var level01Result = $(this);
+                var results = level01Result.children('.level02Result');
+                if (level01Result.attr('biasedunbiased'))
+                {
+                    $('#biasedUnbiased').val(level01Result.attr('biasedunbiased'));
                 }
 
-                result.children('.level03Result').each(function (e) {
-                    level02.attr('level03' + $(this).attr('id'), $(this).attr('value'))
+                results.each(function (e) {
+
+                    var result = $(this);
+                    var level02 = $('.level02Group[level01id=' + results.attr('level01id') + '] .level02[id=' + result.attr('level02id') + ']');
+                    level02.attr('defects', result.attr('defects')).attr('completed', 'completed');
+                    level02.parents('.row').children('.userInfo').children('div').children('.defects').text(level02.attr('defects'));
+                    totalDefects = totalDefects + parseInt(level02.attr('defects'));
+                    //esses results podem ficar no level01
+                    if (result.attr('cattletype')) {
+                        $('#selectCattleType').val(result.attr('cattletype'));
+                    }
+                    if (result.attr('chainspeed')) {
+                        $('#inputChainSpeed').val(result.attr('chainspeed'));
+                    }
+                    if (result.attr('lotnumber')) {
+                        $('#inputLotNumber').val(result.attr('lotnumber'));
+                    }
+                    if (result.attr('mudscore')) {
+                        $('#inputMudScore').val(result.attr('mudscore'));
+                    }
+
+                    result.children('.level03Result').each(function (e) {
+                        level02.attr('level03' + $(this).attr('id'), $(this).attr('value'))
+                    });
+
+                    $('.totalDefects').text(totalDefects);
+                    level02.addClass('selected');
+                    defectLimitCheck();
+                    if (!level02.attr('havephases'))
+                    {
+                        level02Complete(level02);
+                    }
+                    level02.removeClass('selected');
                 });
 
-                $('.totalDefects').text(totalDefects);
-                level02.addClass('selected');
-                defectLimitCheck();
-                if (!level02.attr('havephases'))
-                {
-                    level02Complete(level02);
-                }
-                level02.removeClass('selected');
+                //var level01 = $('.level01[id=' + level01Result.attr('level01id') + ']');
+                //if (level01Result.attr('completed')) {
+                //    level01.addClass('selected');
+                //    $('.level02Group[level01id=' + level01Result.attr('level01id') + '] .level02Confirm').click();
+                //}
             });
+        }
 
-            //var level01 = $('.level01[id=' + level01Result.attr('level01id') + ']');
-            //if (level01Result.attr('completed')) {
-            //    level01.addClass('selected');
-            //    $('.level02Group[level01id=' + level01Result.attr('level01id') + '] .level02Confirm').click();
-            //}
-        });
-    }
-
-    showLevel02($(this));
-});
+        showLevel02($(this));
+    });
 
 $(document).on('click', '.level02List .level02', function (e) {
     showLevel03($(this));
@@ -1459,14 +1462,12 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
 //    return "<div class='level01Result' level01Id='" + Level01Id + "' date='" + date + "' shift='" + shift + "' period='" + period + "' totalSets='" + totalSets + "' totalSides='" + totalSide + "' atualSet='" + atualSet + "' atualSide='" + atualSide + "' totalerros='" + totalErros + "'></div>";
 //}
 function saveLevel01(Level01Id, date, unidadeId, shift, period, reaudit, reauditNumber
-                    , totalEvaluate, sidesWithErros, more3Defects, lastEvaluate, lastSample, biasedUnbiased) {
+                        , totalEvaluate, sidesWithErros, more3Defects, lastEvaluate, lastSample, biasedUnbiased, evaluate) {
 
-    if (reaudit == "reaudit")
-    {
+    if (reaudit == "reaudit") {
         reaudit = true
     }
-    else
-    {
+    else {
         reaudit = false;
     }
 
@@ -1477,8 +1478,10 @@ function saveLevel01(Level01Id, date, unidadeId, shift, period, reaudit, reaudit
     lastEvaluate = lastEvaluate ? lastEvaluate : 0;
     lastSample = lastSample ? lastSample : 0;
     biasedUnbiased = biasedUnbiased ? biasedUnbiased : 0;
+    evaluate = evaluate ? evaluate : 1;
 
-    return "<div class='level01Result' level01Id='" + Level01Id + "' unidadeid='" + unidadeId + "' date='" + $('.App').attr('date') + "' dateTime='" + dateTimeFormat() + "' shift='" + shift + "' period='" + period + "' reaudit='" + reaudit + "' reauditNumber='" + reauditNumber + "' totalevaluate='" + totalEvaluate + "' sidewitherros='" + sidesWithErros + "' more3Defects='" + more3Defects + "' lastevaluate='" + lastEvaluate + "' lastsample='" + lastSample + "' biasedunbiased='" + biasedUnbiased + "'></div>";
+
+    return "<div class='level01Result' level01Id='" + Level01Id + "' unidadeid='" + unidadeId + "' date='" + $('.App').attr('date') + "' dateTime='" + dateTimeFormat() + "' shift='" + shift + "' period='" + period + "' reaudit='" + reaudit + "' reauditNumber='" + reauditNumber + "' totalevaluate='" + totalEvaluate + "' sidewitherros='" + sidesWithErros + "' more3Defects='" + more3Defects + "' lastevaluate='" + lastEvaluate + "' lastsample='" + lastSample + "' biasedunbiased='" + biasedUnbiased + "' evaluate='" + evaluate + "'></div>";
 }
 function saveLevel02(Level01Id, Level02Id, unidadeId, date, dateTime, auditorId, shift, period, evaluate, sample, defects, reaudit, reauditNumber, phase, startPhaseDate, cattleType,
                      chainSpeed, lotNumber, mudScore, consecutivefailureLevel, consecutivefailureTotal, notAvaliabled) {
@@ -1533,7 +1536,7 @@ $(document).on('click', '#btnSalvarCFF', function (e) {
     var setsDone = parseInt($('.painelLevel02 .setsDone').text());
 
     level02Group.removeAttr('firstErrorSide');
-    level02Group.removeAttr('Error3MoreSide');    
+    level02Group.removeAttr('Error3MoreSide');
 
     var attrReaudit = "[reaudit=false]";
     var attrReauditNumber = "";
@@ -1554,11 +1557,11 @@ $(document).on('click', '#btnSalvarCFF', function (e) {
         }
     }
 
-    var level01Save = $('.level01Result[level01Id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']' + attrReaudit + attrReauditNumber);
+    var level01Save = $('.level01Result[level01Id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][evaluate=' + currentSet + ']' + attrReaudit + attrReauditNumber);
 
     if (!level01Save.length) {
         level01Save = $(
-                            saveLevel01(level01.attr('id'), $('.App').attr('date'), $('.App').attr('unidadeid'), $('.App').attr('shift'), $('.App').attr('period'), reaudit, reauditNumber)
+                            saveLevel01(level01.attr('id'), $('.App').attr('date'), $('.App').attr('unidadeid'), $('.App').attr('shift'), $('.App').attr('period'), reaudit, reauditNumber, $('.setsDone:first').text(), null, null, null, null, null, currentSet)
                         );
     }
 
@@ -1610,15 +1613,13 @@ $(document).on('click', '#btnSalvarCFF', function (e) {
             level02Save.append(level03Save);
 
         });
-
         level01Save.append(level02Save);
-
     });
 
-   // level02Complete(level02Head);
+    // level02Complete(level02Head);
 
     currentSide = currentSide + 1;
-    level02Head.parents('.level02Group').append(level01Save);
+    $('.Results').append(level01Save);
 
     $('.sideErros').text('0').parents('.labelPainel').removeClass('red');
     $('.level03Group:visible input').val(0).parents('.level03').removeClass('bgAlert');
@@ -1641,8 +1642,7 @@ $(document).on('click', '#btnSalvarCFF', function (e) {
         level01Save.attr('totalevaluate', setsDone);
         //aumentar o set
         defectLimitCheck();
-        if (level02Head.attr('limitexceeded'))
-        {
+        if (level02Head.attr('limitexceeded')) {
             level02Head.attr('havereaudit', 'havereaudit');
             level01Save.attr('havereaudit', 'havereaudit');
         }
@@ -1653,6 +1653,7 @@ $(document).on('click', '#btnSalvarCFF', function (e) {
     $('#btnSave').removeClass('hide');
     level01Save.attr('sidewitherros', $('span.sideWithErrors:first').text()).attr('more3Defects', $('span.more3Defects:first').text()).attr('lastevaluate', $('span.setAtual:first').text()).attr('lastsample', $('span.sideAtual:first').text());
 });
+
 $(document).on('click', '#btnSalvarHTP', function (e) {
 
     var level01 = $('.level01.selected');

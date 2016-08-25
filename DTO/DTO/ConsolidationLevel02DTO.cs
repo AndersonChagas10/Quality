@@ -12,7 +12,31 @@ namespace DTO.DTO
         {
             ValidaBaseEntity();
 
-            //Level01Consolidation_Id DOMAIN
+            #region Caso for HTP
+
+            if (x.FirstOrDefault().Level01_Id == 1)
+            {
+            }
+
+            #endregion
+
+            #region Caso for CCA
+
+            if (x.FirstOrDefault().Level01_Id  == 2)
+            {
+            }
+
+            #endregion
+
+            #region Caso for CFF
+
+            if (x.FirstOrDefault().Level01_Id == 3)
+            {
+            }
+
+            #endregion
+
+            #region Comum para todos
 
             ConsolidationDate = DateTime.Now;
 
@@ -20,6 +44,8 @@ namespace DTO.DTO
             Guard.ForValidFk(Level02_Id, "Level02 Id.");
 
             //collectionLevel02DTO = x;
+
+            #endregion
 
         }
 

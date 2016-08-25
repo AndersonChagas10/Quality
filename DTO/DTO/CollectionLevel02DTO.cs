@@ -19,10 +19,46 @@ namespace DTO.DTO
             //Auditor_Id = int.Parse(nextRoot.auditorid);
             //Guard.ForValidFk(Auditor_Id, "Auditor_Id  is not valid.");
 
-            CattleType_Id = int.Parse(nextRoot.cattletype);
-            Guard.ForValidFk(CattleType_Id, "CattleType Id is not valid.");
+            #region Caso for HTP
 
-            //Level01_Id = int.Parse(nextRoot.); COLOCAR NO DOMAIn
+            if (nextRoot.level01id.Equals("1"))
+            {
+            }
+
+            #endregion
+
+            #region Caso for CCA
+
+            if (nextRoot.level01id.Equals("2"))
+            {
+            }
+
+            #endregion
+
+            #region Caso for CFF
+
+            if (nextRoot.level01id.Equals("3"))
+            {
+                CattleType_Id = int.Parse(nextRoot.cattletype);
+                Guard.ForValidFk(CattleType_Id, "CattleType Id is not valid.");
+
+                Chainspeed = decimal.Parse(nextRoot.chainspeed);
+                Guard.ForNegative(Chainspeed, "Chainspeed");
+                //ConsecutiveFailureIs = bool.Parse(nextRoot.Con)
+
+                LotNumber = decimal.Parse(nextRoot.lotnumber);
+                Guard.ForNegative(LotNumber, "LotNumber");
+
+                Mudscore = decimal.Parse(nextRoot.mudscore);
+                Guard.ForNegative(Mudscore, "Mudscore");
+
+                ConsecutiveFailureTotal = int.Parse(nextRoot.consecutivefailuretotal);
+                Guard.ForNegative(ConsecutiveFailureTotal, "ConsecutiveFailureTotal");
+            }
+
+            #endregion
+
+            #region Valores Default Para Todos
 
             Level02_Id = int.Parse(nextRoot.level02id);
             Guard.ForValidFk(Level02_Id, "Level02 Id is not valid.");
@@ -30,49 +66,47 @@ namespace DTO.DTO
             Unit_Id = int.Parse(nextRoot.unidadeid);
             Guard.ForValidFk(Unit_Id, "Unit id is not valid.");
 
-            Chainspeed = decimal.Parse(nextRoot.chainspeed);
-            Guard.ForNegative(Chainspeed, "Chainspeed");
-            //ConsecutiveFailureIs = bool.Parse(nextRoot.Con)
-
-            ConsecutiveFailureTotal = int.Parse(nextRoot.consecutivefailuretotal);
-            Guard.ForNegative(ConsecutiveFailureTotal, "Chainspeed");
-
-            LotNumber = decimal.Parse(nextRoot.lotnumber);
-            Guard.ForNegative(LotNumber, "Chainspeed");
-
-            Mudscore = decimal.Parse(nextRoot.mudscore);
-            Guard.ForNegative(Mudscore, "Chainspeed");
-
             Period = int.Parse(nextRoot.period);
-            Guard.ForNegative(Period, "Chainspeed");
+            Guard.ForNegative(Period, "Period");
 
-            if (Guard.VerifyStringNullValue(nextRoot.phase))
+            if (nextRoot.phase.IsNotNull())
             {
                 Phase = int.Parse(nextRoot.phase);
                 Guard.ForNegative(Phase, "Phase number");
             }
 
             ReauditIs = bool.Parse(nextRoot.reaudit);
-            Guard.VerifyIfIsBool(ReauditIs, "Chainspeed");
+            Guard.VerifyIfIsBool(ReauditIs, "ReauditIs");
 
             ReauditNumber = int.Parse(nextRoot.reauditnumber);
-            Guard.ForNegative(ReauditNumber, "Chainspeed");
+            Guard.ForNegative(ReauditNumber, "ReauditNumber");
 
             NotEvaluatedIs = bool.Parse(nextRoot.notavaliable);
-            Guard.VerifyIfIsBool(NotEvaluatedIs, "Not Evalueated");
+            Guard.VerifyIfIsBool(NotEvaluatedIs, "NotEvaluatedIs");
 
             nextRoot.sample = "1";
             Sample = int.Parse(nextRoot.sample);
-            Guard.ForNegative(Sample, "Chainspeed");
+            Guard.ForNegative(Sample, "Sample");
 
             Shift = int.Parse(nextRoot.shift);
-            Guard.ForNegative(Shift, "Chainspeed");
+            Guard.ForNegative(Shift, "Shift");
 
             if (Phase > 1)
                 StartPhaseDate = DateTime.Parse(nextRoot.startphasedate);
 
+            #endregion
+            
+            #region Cria Level03 Collection
+
+            collectionLevel03DTO = new List<CollectionLevel03DTO>();
+            foreach (var x in nextRoot.nextnextRoot)
+                collectionLevel03DTO.Add(new CollectionLevel03DTO(x, Level01_Id, Level02_Id)); 
+
+            #endregion
+
         }
 
+        public List<CollectionLevel03DTO> collectionLevel03DTO { get; set; }
         public int ConsolidationLevel02_Id { get; set; }
         public int Auditor_Id { get; set; } //FK
         public int CattleType_Id { get; set; } //FK

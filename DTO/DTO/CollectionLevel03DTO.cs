@@ -10,11 +10,35 @@ namespace DTO.DTO
 {
     public class CollectionLevel03DTO : EntityBase
     {
-        public CollectionLevel03DTO(NextnextRoot nextnextRoot)
+        public CollectionLevel03DTO(NextnextRoot nextnextRoot, int level02Id, int level01Id)
         {
             ValidaBaseEntity();
 
-            //CollectionLevel02_ID
+            #region Caso for HTP
+
+            if (level01Id == 1)
+            {
+            }
+
+            #endregion
+          
+            #region Caso for CCA
+
+            if (level01Id == 2)
+            {
+            }
+
+            #endregion
+
+            #region Caso for CFF
+
+            if (level01Id == 3)
+            {
+            }
+
+            #endregion
+
+            #region Valores Comum para todos
 
             Level03_Id = int.Parse(nextnextRoot.level03id);
             Guard.ForValidFk(Level03_Id.Value, "Level03 Id must be valid.");
@@ -25,10 +49,13 @@ namespace DTO.DTO
             ConformedIs = Convert.ToBoolean(nextnextRoot.conform);
             Guard.VerifyIfIsBool(ConformedIs, "ConformedIs");
 
-            Value = decimal.Parse(nextnextRoot.value);
+            if (nextnextRoot.value != null)
+                Value = decimal.Parse(nextnextRoot.value);
             Guard.ForNegative(Value, "Value level03");
 
-            ValueText = "";
+            ValueText = ""; 
+
+            #endregion
 
         }
 
