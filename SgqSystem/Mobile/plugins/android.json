@@ -1,0 +1,28 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.hibrido.sgqusa"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.hibrido.sgqusa"
+        },
+        "cordova-plugin-websql": {
+            "PACKAGE_NAME": "com.hibrido.sgqusa"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.hibrido.sgqusa"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.hibrido.sgqusa"
+        }
+    }
+}

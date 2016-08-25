@@ -1,0 +1,28 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "SGQUSA"
+        },
+        "cordova-plugin-websql": {
+            "PACKAGE_NAME": "SGQUSA"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "SGQUSA"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "SGQUSA"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "SGQUSA"
+        }
+    }
+}
