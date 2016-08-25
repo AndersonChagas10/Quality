@@ -38,6 +38,13 @@ namespace Dominio.Services
             try
             {
 
+
+
+                var t1 = CriptografarAES("eduardomaia");
+                var t2 = Criptografar3DES("eduardomaia");
+                var t3 = Encrypt("eduardomaia", true);
+                var t4 = Encrypt("eduardomaia", false);
+
                 if (userDto.IsNull())
                     throw new ExceptionHelper("Username and Password are required.");
 
@@ -75,7 +82,6 @@ namespace Dominio.Services
                 return new GenericReturn<UserDTO>(e, "CAnnot get user by name.");
             }
         }
-
 
         public static bool CheckUserInAD(string domain, string username, string password, string userVerific)
         {
@@ -125,7 +131,6 @@ namespace Dominio.Services
             }
         }
 
-
         #region Constantes para Criptografar
 
         /// <summary>     
@@ -133,14 +138,14 @@ namespace Dominio.Services
         /// O Valor representa a transformação para base64 de     
         /// um conjunto de 32 caracteres (8 * 32 = 256bits)      
         /// </summary>     
-        const string cryptoKey = "%#dfgh%$$%FGNH3532FGNFGD456@#%GF";
+        const string cryptoKey = "90A4F2C1DC40CE1F";
 
         /// <summary>     
         /// Vetor de bytes utilizados para a criptografia (Chave Externa)     
         /// </summary>     
-        static byte[] bIV =
-        { 0x50, 0x08, 0xF1, 0xDD, 0xDE, 0x3C, 0xF2, 0x18,
-        0x44, 0x74, 0x19, 0x2C, 0x53, 0x49, 0xAB, 0xBC };
+        static byte[] bIV = { 0, 0, 0, 0, 0, 0, 0, 0 };
+        //{ 0x50, 0x08, 0xF1, 0xDD, 0xDE, 0x3C, 0xF2, 0x18,
+        //0x44, 0x74, 0x19, 0x2C, 0x53, 0x49, 0xAB, 0xBC };
 
         #endregion
 
@@ -227,7 +232,7 @@ namespace Dominio.Services
                     // Instancia o encriptador                 
                     CryptoStream encryptor = new CryptoStream(
                         mStream,
-                        rijndael.CreateEncryptor(bKey, bIV),
+                        rijndael.CreateEncryptor(),// rijndael.CreateEncryptor(bKey, bIV),
                         CryptoStreamMode.Write);
 
                     // Faz a escrita dos dados criptografados no espaço de memória
@@ -307,6 +312,55 @@ namespace Dominio.Services
 
         #endregion
 
+
+
+        private static String getHexStringFromArray(byte[] arr)
+        {
+            StringBuilder sBuilder = new StringBuilder();
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                sBuilder.Append(arr[i].ToString("x2"));
+            }
+
+            return sBuilder.ToString();
+        }
+
+
+
+        public static string Encrypt(string toEncrypt, bool useHashing)
+        {
+            byte[] keyArray;
+            byte[] toEncryptArray = UTF8Encoding.UTF8.GetBytes(toEncrypt);
+
+            if (useHashing)
+            {
+                MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
+                keyArray = hashmd5.ComputeHash(UTF8Encoding.UTF8.GetBytes(cryptoKey.Substring(0, 16)));
+                hashmd5.Clear();
+            }
+            else
+                keyArray = UTF8Encoding.UTF8.GetBytes(cryptoKey.Substring(0, 16));
+
+            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider();
+            tdes.Key = keyArray;
+            tdes.Mode = CipherMode.ECB;
+            tdes.Padding = PaddingMode.PKCS7;
+            tdes.IV = bIV;
+
+            ICryptoTransform cTransform = tdes.CreateEncryptor();
+            byte[] resultArray =
+              cTransform.TransformFinalBlock(toEncryptArray, 0,
+              toEncryptArray.Length);
+            tdes.Clear();
+
+            var aaa = getHexStringFromArray(resultArray);
+
+            return Convert.ToBase64String(resultArray, 0, resultArray.Length);
+        }
+
+
     }
+
 
 }
