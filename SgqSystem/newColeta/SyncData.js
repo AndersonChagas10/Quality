@@ -1,4 +1,8 @@
-﻿function MakeObject2(element, ListName, objectReturn) {
+﻿var urlServidor = "http://192.168.25.200/SgqMaster";
+var urlLocal = "http://localhost:63128"
+var urlPreffix = window.location.host.indexOf("host") > 0 ? urlLocal : urlServidor;
+
+function MakeObject2(element, ListName, objectReturn) {
     objectReturn[ListName] = [];
     var elemens = element;
     $.each(elemens, function (counter, object) {
@@ -25,18 +29,20 @@ function MakeResult(Obj) {
 
 function Sync() {
     var ObjListaLevel1 = {};
-
     MakeResult(ObjListaLevel1)
-    //window.location.host + window.location.pathname // COLOCAR NO ROOT
-    var url = window.location.host
-
     $.each(ObjListaLevel1.Root, function (c, o) {
         var smallerObject = {};
         smallerObject['Root'] = [];
         smallerObject.Root.push(o);
         console.log(smallerObject)
-        $.post("http://192.168.25.200/SgqMaster/api/Sync/SetDataAuditConsolidated", smallerObject, function (r) { console.log(r); });
-        //$.post("http://localhost:63128/api/Sync/SetDataAuditConsolidated", smallerObject, function (r) { console.log(r); });
+        $.post(urlPreffix + "/api/Sync/SetDataAuditConsolidated", smallerObject, function (r) {
+            console.log(r);
+        });
     });
+}
 
+function GetSync() {
+    $.post(urlPreffix + "/api/Sync/GetLastEntry", {}, function (r) {
+        console.log(r);
+    });
 }
