@@ -1,30 +1,6 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
-        "id": "cordova-plugin-websql.WebSQL",
-        "file": "plugins/cordova-plugin-websql/www/WebSQL.js",
-        "pluginId": "cordova-plugin-websql",
-        "merges": [
-            "window"
-        ]
-    },
-    {
-        "id": "cordova-plugin-websql.Database",
-        "file": "plugins/cordova-plugin-websql/www/windows/Database.js",
-        "pluginId": "cordova-plugin-websql"
-    },
-    {
-        "id": "cordova-plugin-websql.SqlTransaction",
-        "file": "plugins/cordova-plugin-websql/www/windows/SqlTransaction.js",
-        "pluginId": "cordova-plugin-websql"
-    },
-    {
-        "id": "cordova-plugin-websql.WebSqlProxy",
-        "file": "plugins/cordova-plugin-websql/src/windows/WebSqlProxy.js",
-        "pluginId": "cordova-plugin-websql",
-        "runs": true
-    },
-    {
         "id": "cordova-plugin-device.device",
         "file": "plugins/cordova-plugin-device/www/device.js",
         "pluginId": "cordova-plugin-device",
@@ -212,7 +188,6 @@ module.exports.metadata =
 // TOP OF METADATA
 {
     "cordova-plugin-whitelist": "1.2.2",
-    "cordova-plugin-websql": "0.0.10",
     "cordova-plugin-device": "1.1.2",
     "cordova-plugin-compat": "1.0.0",
     "cordova-plugin-file": "4.2.0"

@@ -707,6 +707,9 @@ function imageShow() {
         $(this).addClass('visible');
     });
 }
+$(document).on('click', '#btnSync', function (e) {
+    Sync();
+});
 $(document).on('click', '#btnLogout', function (e) {
     $('.App').fadeOut("fast", function (e) {
         $('.login').removeClass('hide').show();

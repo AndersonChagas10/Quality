@@ -13,9 +13,6 @@
         "cordova-plugin-file": {
             "PACKAGE_NAME": "com.hibrido.sgqusa"
         },
-        "cordova-plugin-websql": {
-            "PACKAGE_NAME": "com.hibrido.sgqusa"
-        },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.hibrido.sgqusa"
         }

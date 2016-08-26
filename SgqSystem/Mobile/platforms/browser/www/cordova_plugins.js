@@ -200,8 +200,7 @@ module.exports.metadata =
     "cordova-plugin-whitelist": "1.2.2",
     "cordova-plugin-compat": "1.0.0",
     "cordova-plugin-device": "1.1.2",
-    "cordova-plugin-file": "4.2.0",
-    "cordova-plugin-websql": "0.0.10"
+    "cordova-plugin-file": "4.2.0"
 }
 // BOTTOM OF METADATA
 });

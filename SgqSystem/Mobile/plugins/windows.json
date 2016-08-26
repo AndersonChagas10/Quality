@@ -10,9 +10,6 @@
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "SGQUSA"
         },
-        "cordova-plugin-websql": {
-            "PACKAGE_NAME": "SGQUSA"
-        },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "SGQUSA"
         },
