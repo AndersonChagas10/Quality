@@ -68,7 +68,7 @@ namespace Dominio.Services
                     var temp = consildatedLelve01ListDTO2.Where(r => r.Level01ConsolidationId == i.Id);
                     
                     i.consolidationLevel02DTO = temp.ToList();
-                    var temp2 = collectionLelve02ListDTO.Where(r => temp.Any(z => z.Id == r.ConsolidationLevel02_Id));
+                    var temp2 = collectionLelve02ListDTO.Where(r => temp.Any(z => z.Id == r.ConsolidationLevel02Id));
                     i.collectionLevel02DTO = temp2.ToList();
                     foreach (var y in i.collectionLevel02DTO)
                     {

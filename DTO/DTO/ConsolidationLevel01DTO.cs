@@ -65,7 +65,7 @@ namespace DTO.DTO
 
             #region Consolidações tem que ser calculadas baseadas nas coletas.
 
-            var ids = collectionLevel02DTO.Select(r => r.Level02_Id).Distinct().ToList();
+            var ids = collectionLevel02DTO.Select(r => r.Level02Id).Distinct().ToList();
             consolidationLevel02DTO.Add(new ConsolidationLevel02DTO(collectionLevel02DTO));
 
 

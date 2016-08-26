@@ -17,7 +17,7 @@ namespace DTO.DTO
 
             #region Caso for HTP
 
-            if (x.FirstOrDefault().Level01_Id == 1)
+            if (x.FirstOrDefault().Level01Id == 1)
             {
             }
 
@@ -25,7 +25,7 @@ namespace DTO.DTO
 
             #region Caso for CCA
 
-            if (x.FirstOrDefault().Level01_Id  == 2)
+            if (x.FirstOrDefault().Level01Id  == 2)
             {
             }
 
@@ -33,7 +33,7 @@ namespace DTO.DTO
 
             #region Caso for CFF
 
-            if (x.FirstOrDefault().Level01_Id == 3)
+            if (x.FirstOrDefault().Level01Id == 3)
             {
             }
 
@@ -43,7 +43,7 @@ namespace DTO.DTO
 
             ConsolidationDate = DateTime.Now;
 
-            Level02Id = x.FirstOrDefault().Level02_Id;
+            Level02Id = x.FirstOrDefault().Level02Id;
             Guard.ForValidFk(Level02Id, "Level02 Id.");
 
             //collectionLevel02DTO = x;
