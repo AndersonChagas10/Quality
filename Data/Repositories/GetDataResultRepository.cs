@@ -17,26 +17,30 @@ namespace Data.Repositories
 
         }
 
-        public List<CollectionLevel02> GetLastEntryCollectionLevel02()
+        public IEnumerable<CollectionLevel02> GetLastEntryCollectionLevel02(IEnumerable<ConsolidationLevel02> cl2)
         {
-            throw new NotImplementedException();
+            var lastResults = db.CollectionLevel02.Where(r => cl2.Any(x => x.Id == r.ConsolidationLevel02_Id));
+            return lastResults;
+
         }
 
-        public List<CollectionLevel03> GetLastEntryCollectionLevel03()
+        public IEnumerable<CollectionLevel03> GetLastEntryCollectionLevel03(IEnumerable<CollectionLevel02> cll2)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<ConsolidationLevel01> GetLastEntryConsildatedLevel01()
-        {
-            var ids = db.Database.SqlQuery<int>("SELECT max(id) as id FROM [dbo].ConsolidationLevel01 group by Level01_Id").ToList();
-            var lastResults = db.ConsolidationLevel01.Where(r => ids.Any(x => x == r.Id)).ToList();
+            var lastResults = db.CollectionLevel03.Where(r => cll2.Any(x => x.Id == r.CollectionLevel02_ID));
             return lastResults;
         }
 
-        public List<ConsolidationLevel02> GetLastEntryConsildatedLevel02()
+        public IEnumerable<ConsolidationLevel01> GetLastEntryConsildatedLevel01()
         {
-            throw new NotImplementedException();
+            var ids = db.Database.SqlQuery<int>("SELECT max(id) as id FROM [dbo].ConsolidationLevel01 group by Level01_Id").ToList();
+            var lastResults = db.ConsolidationLevel01.Where(r => ids.Any(x => x == r.Id));
+            return lastResults;
+        }
+
+        public IEnumerable<ConsolidationLevel02> GetLastEntryConsildatedLevel02(IEnumerable<ConsolidationLevel01> cl1)
+        {
+            var listResults = db.ConsolidationLevel02.Where(r => cl1.Any(x => x.Id == r.Level01Consolidation_Id));
+            return listResults;
         }
     }
 }

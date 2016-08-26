@@ -49,13 +49,14 @@
   <ItemGroup>
     <Compile Include="BaseEntity\DataCollectionBase.cs" />
     <Compile Include="BaseEntity\EntityBase.cs" />
-    <Compile Include="DTO\ConsolidationLevel02DTO.cs" />
     <Compile Include="DTO\ColetaDTO.cs" />
+    <Compile Include="DTO\ConsolidationLevel02DTO.cs" />
     <Compile Include="DTO\CollectionLevel02DTO.cs" />
     <Compile Include="DTO\CollectionLevel03DTO.cs" />
     <Compile Include="DTO\ConsolidationLevel01DTO.cs" />
     <Compile Include="DTO\CorrectiveActionLevelsDTO.cs" />
     <Compile Include="DTO\CorrectiveActionDTO.cs" />
+    <Compile Include="DTO\GetSyncDTO.cs" />
     <Compile Include="DTO\PeriodDTO.cs" />
     <Compile Include="DTO\ShiftDTO.cs" />
     <Compile Include="DTO\SyncDTO.cs" />

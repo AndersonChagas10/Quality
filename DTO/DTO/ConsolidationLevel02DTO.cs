@@ -8,6 +8,9 @@ namespace DTO.DTO
 {
     public class ConsolidationLevel02DTO : EntityBase
     {
+
+        public ConsolidationLevel02DTO() { }
+
         public ConsolidationLevel02DTO(List<CollectionLevel02DTO> x)
         {
             ValidaBaseEntity();

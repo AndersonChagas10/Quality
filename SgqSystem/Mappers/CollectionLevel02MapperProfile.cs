@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Dominio;
 using DTO.DTO;
-using DTO.Helpers;
+using System.Collections.Generic;
 
 namespace SgqSystem.Mappers
 {
@@ -10,6 +10,9 @@ namespace SgqSystem.Mappers
         public CollectionLevel02MapperProfile()
         {
             CreateMap<CollectionLevel02DTO, CollectionLevel02>();
+            CreateMap<CollectionLevel02, CollectionLevel02DTO>();
+            CreateMap<List<CollectionLevel02>, List<CollectionLevel02DTO>>();
+            
             //    .ForMember(x => x.Level02Consolidation, opt => opt.Ignore())
             //    .ForMember(x => x.DataCollectionResult, opt => opt.Ignore());
 
@@ -20,8 +23,8 @@ namespace SgqSystem.Mappers
             //CreateMap<GenericReturn<DataCollection>, GenericReturn<DataCollectionDTO>>();
 
             //CreateMap<GenericReturn<DataCollectionDTO>, GenericReturn<DataCollection>>();
-            
-                
+
+
         }
     }
 }

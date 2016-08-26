@@ -51,9 +51,10 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("api/Sync/GetLastEntry")]
-        public GenericReturn<ColetaDTO> GetLastEntry()
+        public GenericReturn<GetSyncDTO> GetLastEntry()
         {
-            return _syncApp.GetLastEntry();
+            var teste =  _syncApp.GetLastEntry();
+            return teste;
         }
 
         #endregion

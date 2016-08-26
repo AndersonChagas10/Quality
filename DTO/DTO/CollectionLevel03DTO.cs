@@ -10,6 +10,8 @@ namespace DTO.DTO
 {
     public class CollectionLevel03DTO : EntityBase
     {
+        public CollectionLevel03DTO() { }
+
         public CollectionLevel03DTO(NextnextRoot nextnextRoot, int level02Id, int level01Id)
         {
             ValidaBaseEntity();

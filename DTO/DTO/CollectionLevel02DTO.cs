@@ -11,6 +11,8 @@ namespace DTO.DTO
     public class CollectionLevel02DTO : EntityBase
     {
 
+        public CollectionLevel02DTO() { }
+
         public CollectionLevel02DTO(NextRoot nextRoot)
         {
             ValidaBaseEntity();

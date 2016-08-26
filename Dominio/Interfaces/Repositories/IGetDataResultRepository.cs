@@ -6,9 +6,9 @@ namespace Dominio.Interfaces.Repositories
 {
     public interface IGetDataResultRepository<T> where T : class
     {
-        List<ConsolidationLevel01> GetLastEntryConsildatedLevel01();
-        List<ConsolidationLevel02> GetLastEntryConsildatedLevel02();
-        List<CollectionLevel02> GetLastEntryCollectionLevel02();
-        List<CollectionLevel03> GetLastEntryCollectionLevel03();
+        IEnumerable<ConsolidationLevel01> GetLastEntryConsildatedLevel01();
+        IEnumerable<ConsolidationLevel02> GetLastEntryConsildatedLevel02(IEnumerable<ConsolidationLevel01> cl1);
+        IEnumerable<CollectionLevel02> GetLastEntryCollectionLevel02(IEnumerable<ConsolidationLevel02> cl2);
+        IEnumerable<CollectionLevel03> GetLastEntryCollectionLevel03(IEnumerable<CollectionLevel02> cll2);
     }
 }
