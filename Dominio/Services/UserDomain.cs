@@ -37,13 +37,10 @@ namespace Dominio.Services
         {
             try
             {
-
-
-
-                var t1 = CriptografarAES("eduardomaia");
-                var t2 = Criptografar3DES("eduardomaia");
-                var t3 = Encrypt("eduardomaia", true);
-                var t4 = Encrypt("eduardomaia", false);
+                //var t1 = CriptografarAES("eduardomaia");
+                //var t2 = Criptografar3DES("eduardomaia");
+                //var t3 = Encrypt("eduardomaia", true);
+                //var t4 = Encrypt("eduardomaia", false);
 
                 if (userDto.IsNull())
                     throw new ExceptionHelper("Username and Password are required.");
@@ -130,6 +127,11 @@ namespace Dominio.Services
                 return false;
             }
         }
+
+
+
+
+        #region Testes
 
         #region Constantes para Criptografar
 
@@ -312,8 +314,6 @@ namespace Dominio.Services
 
         #endregion
 
-
-
         private static String getHexStringFromArray(byte[] arr)
         {
             StringBuilder sBuilder = new StringBuilder();
@@ -325,8 +325,6 @@ namespace Dominio.Services
 
             return sBuilder.ToString();
         }
-
-
 
         public static string Encrypt(string toEncrypt, bool useHashing)
         {
@@ -359,6 +357,12 @@ namespace Dominio.Services
             return Convert.ToBase64String(resultArray, 0, resultArray.Length);
         }
 
+        #endregion
+
+        public bool AuthenticationLoginAd(UserDTO userDto)
+        {
+            return CheckUserInAD("global.corp.prod", userDto.Name, userDto.Password);
+        }
 
     }
 
