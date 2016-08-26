@@ -32,6 +32,13 @@ namespace SgqSystem.Controllers.Api
             return _userApp.AuthenticationLogin(userVm);
         }
 
+        [Route("AuthenticationLoginAd")]
+        [HttpPost]
+        public bool AuthenticationLoginAd([FromBody] UserViewModel userVm)
+        {
+            return _userApp.AuthenticationLoginAd(userVm);
+        }
+
 
     }
 

@@ -5,11 +5,11 @@ using DTO.Helpers;
 
 namespace Application.AppServiceClass
 {
-    public class UserApp :  IUserApp
+    public class UserApp : IUserApp
     {
-        
+
         private readonly IUserDomain _userService;
-        
+
         public UserApp(IUserDomain userService)
         {
             _userService = userService;
@@ -24,6 +24,13 @@ namespace Application.AppServiceClass
         {
             return _userService.GetByName(username);
         }
+
+
+        public bool AuthenticationLoginAd(UserDTO user)
+        {
+            return _userService.AuthenticationLoginAd(user);
+        }
+
     }
 
 }
