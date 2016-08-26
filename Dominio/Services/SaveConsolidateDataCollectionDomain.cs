@@ -68,7 +68,7 @@ namespace Dominio.Services
 
                         foreach (var x in i.collectionLevel02DTO)
                         {
-                            x.Level01_Id = level01Consolidation.Level01_Id;
+                            x.Level01_Id = level01Consolidation.Level01Id;
                             x.ConsolidationLevel02_Id = level02Consolidation.Id;
 
                             var collectionLevel02 = Mapper.Map<CollectionLevel02>(x);

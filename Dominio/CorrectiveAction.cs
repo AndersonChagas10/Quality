@@ -21,11 +21,7 @@ namespace Dominio
         }
     
         public int Id { get; set; }
-        public System.DateTime DateExecute { get; set; }
         public int AuditorId { get; set; }
-        public int ShiftId { get; set; }
-        public System.DateTime StartTime { get; set; }
-        public int PeriodId { get; set; }
         public string DescriptionFailure { get; set; }
         public string ImmediateCorrectiveAction { get; set; }
         public string ProductDisposition { get; set; }
@@ -34,12 +30,16 @@ namespace Dominio
         public Nullable<System.DateTime> DateTimeSlaughter { get; set; }
         public Nullable<int> TechinicalId { get; set; }
         public Nullable<System.DateTime> DateTimeTechinical { get; set; }
-        public string NameTechinical { get; set; }
-        public string NameSlaughter { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public Nullable<int> AuditLevel01Id { get; set; }
+        public System.DateTime AuditStartTime { get; set; }
+        public System.DateTime DateCorrectiveAction { get; set; }
+        public Nullable<int> CollectionLevel03Id { get; set; }
     
+        public virtual CollectionLevel03 CollectionLevel03 { get; set; }
+        public virtual UserSgq UserSgq { get; set; }
+        public virtual UserSgq UserSgq1 { get; set; }
+        public virtual UserSgq UserSgq2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CorrectiveActionLevels> CorrectiveActionLevels { get; set; }
     }

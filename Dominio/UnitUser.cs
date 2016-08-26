@@ -12,18 +12,13 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class CorrectiveActionLevels
+    public partial class UnitUser
     {
         public int Id { get; set; }
-        public int CorrectiveActionId { get; set; }
-        public int Level01Id { get; set; }
-        public int Level02Id { get; set; }
-        public int Level03Id { get; set; }
-        public Nullable<int> Defects { get; set; }
+        public int UserSgqId { get; set; }
+        public int UnitId { get; set; }
     
-        public virtual CorrectiveAction CorrectiveAction { get; set; }
-        public virtual Level01 Level01 { get; set; }
-        public virtual Level02 Level02 { get; set; }
-        public virtual Level03 Level03 { get; set; }
+        public virtual Unit Unit { get; set; }
+        public virtual UserSgq UserSgq { get; set; }
     }
 }

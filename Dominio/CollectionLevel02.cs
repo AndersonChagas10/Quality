@@ -14,15 +14,21 @@ namespace Dominio
     
     public partial class CollectionLevel02
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CollectionLevel02()
+        {
+            this.CollectionLevel03 = new HashSet<CollectionLevel03>();
+        }
+    
         public int Id { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public int ConsolidationLevel02_Id { get; set; }
-        public int Auditor_Id { get; set; }
-        public int CattleType_Id { get; set; }
-        public int Level01_Id { get; set; }
-        public int Level02_Id { get; set; }
-        public int Unit_Id { get; set; }
+        public int ConsolidationLevel02Id { get; set; }
+        public int AuditorId { get; set; }
+        public int CattleTypeId { get; set; }
+        public int Level01Id { get; set; }
+        public int Level02Id { get; set; }
+        public int UnitId { get; set; }
         public decimal Chainspeed { get; set; }
         public bool ConsecutiveFailureIs { get; set; }
         public int ConsecutiveFailureTotal { get; set; }
@@ -36,5 +42,12 @@ namespace Dominio
         public int Sample { get; set; }
         public int Shift { get; set; }
         public System.DateTime StartPhaseDate { get; set; }
+    
+        public virtual ConsolidationLevel02 ConsolidationLevel02 { get; set; }
+        public virtual Level01 Level01 { get; set; }
+        public virtual Level02 Level02 { get; set; }
+        public virtual UserSgq UserSgq { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CollectionLevel03> CollectionLevel03 { get; set; }
     }
 }

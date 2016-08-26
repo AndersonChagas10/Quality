@@ -56,14 +56,14 @@ namespace Data.Repositories
             {
                 if (result.SlaughterId != 0)
                 {
-                    result.NameSlaughter = db.UserSgq.AsNoTracking().FirstOrDefault(x =>
-                          x.Id == result.SlaughterId).Name;
+                    result.SlaughterId = db.UserSgq.AsNoTracking().FirstOrDefault(x =>
+                          x.Id == result.SlaughterId).Id;
                 }
 
                 if (result.TechinicalId != 0)
                 {
-                    result.NameTechinical = db.UserSgq.AsNoTracking().FirstOrDefault(x =>
-                          x.Id == result.TechinicalId).Name;
+                    result.TechinicalId = db.UserSgq.AsNoTracking().FirstOrDefault(x =>
+                          x.Id == result.TechinicalId).Id;
                 }
             }
 

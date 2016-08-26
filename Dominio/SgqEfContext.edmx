@@ -12,12 +12,12 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="ConsolidationLevel02_Id" Type="int" Nullable="false" />
-          <Property Name="Auditor_Id" Type="int" Nullable="false" />
-          <Property Name="CattleType_Id" Type="int" Nullable="false" />
-          <Property Name="Level01_Id" Type="int" Nullable="false" />
-          <Property Name="Level02_Id" Type="int" Nullable="false" />
-          <Property Name="Unit_Id" Type="int" Nullable="false" />
+          <Property Name="ConsolidationLevel02Id" Type="int" Nullable="false" />
+          <Property Name="AuditorId" Type="int" Nullable="false" />
+          <Property Name="CattleTypeId" Type="int" Nullable="false" />
+          <Property Name="Level01Id" Type="int" Nullable="false" />
+          <Property Name="Level02Id" Type="int" Nullable="false" />
+          <Property Name="UnitId" Type="int" Nullable="false" />
           <Property Name="Chainspeed" Type="decimal" Precision="10" Scale="5" Nullable="false" />
           <Property Name="ConsecutiveFailureIs" Type="bit" Nullable="false" />
           <Property Name="ConsecutiveFailureTotal" Type="int" Nullable="false" />
@@ -39,8 +39,8 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="CollectionLevel02_ID" Type="int" Nullable="false" />
-          <Property Name="Level03_Id" Type="int" />
+          <Property Name="CollectionLevel02Id" Type="int" Nullable="false" />
+          <Property Name="Level03Id" Type="int" />
           <Property Name="ConformedIs" Type="bit" Nullable="false" />
           <Property Name="Value" Type="decimal" Precision="10" Scale="5" Nullable="false" />
           <Property Name="ValueText" Type="varchar(max)" Nullable="false" />
@@ -53,9 +53,9 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="ConsolidationDate" Type="datetime2" Precision="7" />
-          <Property Name="Unit_Id" Type="int" Nullable="false" />
-          <Property Name="Department_Id" Type="int" Nullable="false" />
-          <Property Name="Level01_Id" Type="int" Nullable="false" />
+          <Property Name="UnitId" Type="int" Nullable="false" />
+          <Property Name="DepartmentId" Type="int" Nullable="false" />
+          <Property Name="Level01Id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ConsolidationLevel02">
           <Key>
@@ -65,32 +65,28 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="ConsolidationDate" Type="datetime2" Precision="7" />
-          <Property Name="Level01Consolidation_Id" Type="int" Nullable="false" />
-          <Property Name="Level02_Id" Type="int" Nullable="false" />
+          <Property Name="Level01ConsolidationId" Type="int" Nullable="false" />
+          <Property Name="Level02Id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CorrectiveAction">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DateExecute" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AuditorId" Type="int" Nullable="false" />
-          <Property Name="ShiftId" Type="int" Nullable="false" />
-          <Property Name="StartTime" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="PeriodId" Type="int" Nullable="false" />
-          <Property Name="DescriptionFailure" Type="nvarchar" MaxLength="200" />
-          <Property Name="ImmediateCorrectiveAction" Type="nvarchar" MaxLength="200" />
-          <Property Name="ProductDisposition" Type="nvarchar" MaxLength="200" />
-          <Property Name="PreventativeMeasure" Type="nvarchar" MaxLength="200" />
+          <Property Name="DescriptionFailure" Type="nvarchar(max)" />
+          <Property Name="ImmediateCorrectiveAction" Type="nvarchar(max)" />
+          <Property Name="ProductDisposition" Type="nvarchar(max)" />
+          <Property Name="PreventativeMeasure" Type="nvarchar(max)" />
           <Property Name="SlaughterId" Type="int" />
           <Property Name="DateTimeSlaughter" Type="datetime2" Precision="7" />
           <Property Name="TechinicalId" Type="int" />
           <Property Name="DateTimeTechinical" Type="datetime2" Precision="7" />
-          <Property Name="NameTechinical" Type="nvarchar" MaxLength="100" />
-          <Property Name="NameSlaughter" Type="nvarchar" MaxLength="100" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="AuditLevel01Id" Type="int" />
+          <Property Name="AuditStartTime" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="DateCorrectiveAction" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CollectionLevel03Id" Type="int" />
         </EntityType>
         <EntityType Name="CorrectiveActionLevels">
           <Key>
@@ -98,9 +94,9 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CorrectiveActionId" Type="int" Nullable="false" />
-          <Property Name="AuditLevel01Id" Type="int" Nullable="false" />
-          <Property Name="AuditLevel02Id" Type="int" Nullable="false" />
-          <Property Name="AuditLevel03Id" Type="int" Nullable="false" />
+          <Property Name="Level01Id" Type="int" Nullable="false" />
+          <Property Name="Level02Id" Type="int" Nullable="false" />
+          <Property Name="Level03Id" Type="int" Nullable="false" />
           <Property Name="Defects" Type="int" />
         </EntityType>
         <EntityType Name="Department">
@@ -119,12 +115,9 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Alias" Type="varchar" MaxLength="25" />
-          <Property Name="ClientSpecification" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="PeopleCreateId" Type="int" Nullable="false" />
-          <Property Name="Ordering" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Level02">
           <Key>
@@ -133,12 +126,9 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Alias" Type="varchar" MaxLength="25" />
-          <Property Name="ClientSpecification" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="PeopleCreateId" Type="int" Nullable="false" />
-          <Property Name="Ordering" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Level03">
           <Key>
@@ -147,12 +137,9 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Alias" Type="varchar" MaxLength="25" />
-          <Property Name="ClientSpecification" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="PeopleCreateId" Type="int" Nullable="false" />
-          <Property Name="Ordering" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Period">
           <Key>
@@ -176,10 +163,18 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varbinary(max)" Nullable="false" />
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UnitUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserSgqId" Type="int" Nullable="false" />
+          <Property Name="UnitId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UserSgq">
           <Key>
@@ -193,6 +188,186 @@
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="Role" Type="nvarchar(max)" />
         </EntityType>
+        <Association Name="FK_CollectionLevel02_ConsolidationLevel02">
+          <End Role="ConsolidationLevel02" Type="Self.ConsolidationLevel02" Multiplicity="1" />
+          <End Role="CollectionLevel02" Type="Self.CollectionLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidationLevel02">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel02">
+              <PropertyRef Name="ConsolidationLevel02Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel02_Level01">
+          <End Role="Level01" Type="Self.Level01" Multiplicity="1" />
+          <End Role="CollectionLevel02" Type="Self.CollectionLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level01">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel02">
+              <PropertyRef Name="Level01Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel02_Level02">
+          <End Role="Level02" Type="Self.Level02" Multiplicity="1" />
+          <End Role="CollectionLevel02" Type="Self.CollectionLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level02">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel02">
+              <PropertyRef Name="Level02Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel02_UserSgq">
+          <End Role="UserSgq" Type="Self.UserSgq" Multiplicity="1" />
+          <End Role="CollectionLevel02" Type="Self.CollectionLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel02">
+              <PropertyRef Name="AuditorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel03_CollectionLevel02">
+          <End Role="CollectionLevel02" Type="Self.CollectionLevel02" Multiplicity="1" />
+          <End Role="CollectionLevel03" Type="Self.CollectionLevel03" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionLevel02">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel03">
+              <PropertyRef Name="CollectionLevel02Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel03_Level03">
+          <End Role="Level03" Type="Self.Level03" Multiplicity="0..1" />
+          <End Role="CollectionLevel03" Type="Self.CollectionLevel03" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level03">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel03">
+              <PropertyRef Name="Level03Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel01_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="ConsolidationLevel01" Type="Self.ConsolidationLevel01" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel01">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel01_Level01">
+          <End Role="Level01" Type="Self.Level01" Multiplicity="1" />
+          <End Role="ConsolidationLevel01" Type="Self.ConsolidationLevel01" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level01">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel01">
+              <PropertyRef Name="Level01Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel01_Unit">
+          <End Role="Unit" Type="Self.Unit" Multiplicity="1" />
+          <End Role="ConsolidationLevel01" Type="Self.ConsolidationLevel01" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel01">
+              <PropertyRef Name="UnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel02_ConsolidationLevel01">
+          <End Role="ConsolidationLevel01" Type="Self.ConsolidationLevel01" Multiplicity="1" />
+          <End Role="ConsolidationLevel02" Type="Self.ConsolidationLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidationLevel01">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel02">
+              <PropertyRef Name="Level01ConsolidationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel02_Level02">
+          <End Role="Level02" Type="Self.Level02" Multiplicity="1" />
+          <End Role="ConsolidationLevel02" Type="Self.ConsolidationLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level02">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel02">
+              <PropertyRef Name="Level02Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveAction_CollectionLevel03">
+          <End Role="CollectionLevel03" Type="Self.CollectionLevel03" Multiplicity="0..1" />
+          <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionLevel03">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveAction">
+              <PropertyRef Name="CollectionLevel03Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveAction_UserSgq">
+          <End Role="UserSgq" Type="Self.UserSgq" Multiplicity="1" />
+          <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveAction">
+              <PropertyRef Name="AuditorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveAction_UserSgq1">
+          <End Role="UserSgq" Type="Self.UserSgq" Multiplicity="0..1" />
+          <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveAction">
+              <PropertyRef Name="TechinicalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveAction_UserSgq2">
+          <End Role="UserSgq" Type="Self.UserSgq" Multiplicity="0..1" />
+          <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveAction">
+              <PropertyRef Name="SlaughterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CorrectiveActionLevels_CorrectiveAction">
           <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="1" />
           <End Role="CorrectiveActionLevels" Type="Self.CorrectiveActionLevels" Multiplicity="*" />
@@ -202,6 +377,66 @@
             </Principal>
             <Dependent Role="CorrectiveActionLevels">
               <PropertyRef Name="CorrectiveActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveActionLevels_Level01">
+          <End Role="Level01" Type="Self.Level01" Multiplicity="1" />
+          <End Role="CorrectiveActionLevels" Type="Self.CorrectiveActionLevels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level01">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveActionLevels">
+              <PropertyRef Name="Level01Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveActionLevels_Level02">
+          <End Role="Level02" Type="Self.Level02" Multiplicity="1" />
+          <End Role="CorrectiveActionLevels" Type="Self.CorrectiveActionLevels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level02">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveActionLevels">
+              <PropertyRef Name="Level02Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveActionLevels_Level03">
+          <End Role="Level03" Type="Self.Level03" Multiplicity="1" />
+          <End Role="CorrectiveActionLevels" Type="Self.CorrectiveActionLevels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level03">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveActionLevels">
+              <PropertyRef Name="Level03Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UnitUser_Unit">
+          <End Role="Unit" Type="Self.Unit" Multiplicity="1" />
+          <End Role="UnitUser" Type="Self.UnitUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UnitUser">
+              <PropertyRef Name="UnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UnitUser_UserSgq">
+          <End Role="UserSgq" Type="Self.UserSgq" Multiplicity="1" />
+          <End Role="UnitUser" Type="Self.UnitUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UnitUser">
+              <PropertyRef Name="UserSgqId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -219,10 +454,91 @@
           <EntitySet Name="Period" EntityType="Self.Period" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UnitUser" EntityType="Self.UnitUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSgq" EntityType="Self.UserSgq" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CollectionLevel02_ConsolidationLevel02" Association="Self.FK_CollectionLevel02_ConsolidationLevel02">
+            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
+            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel02_Level01" Association="Self.FK_CollectionLevel02_Level01">
+            <End Role="Level01" EntitySet="Level01" />
+            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel02_Level02" Association="Self.FK_CollectionLevel02_Level02">
+            <End Role="Level02" EntitySet="Level02" />
+            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel02_UserSgq" Association="Self.FK_CollectionLevel02_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel03_CollectionLevel02" Association="Self.FK_CollectionLevel03_CollectionLevel02">
+            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
+            <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel03_Level03" Association="Self.FK_CollectionLevel03_Level03">
+            <End Role="Level03" EntitySet="Level03" />
+            <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel01_Department" Association="Self.FK_ConsolidationLevel01_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel01_Level01" Association="Self.FK_ConsolidationLevel01_Level01">
+            <End Role="Level01" EntitySet="Level01" />
+            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel01_Unit" Association="Self.FK_ConsolidationLevel01_Unit">
+            <End Role="Unit" EntitySet="Unit" />
+            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel02_ConsolidationLevel01" Association="Self.FK_ConsolidationLevel02_ConsolidationLevel01">
+            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
+            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel02_Level02" Association="Self.FK_ConsolidationLevel02_Level02">
+            <End Role="Level02" EntitySet="Level02" />
+            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveAction_CollectionLevel03" Association="Self.FK_CorrectiveAction_CollectionLevel03">
+            <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveAction_UserSgq" Association="Self.FK_CorrectiveAction_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveAction_UserSgq1" Association="Self.FK_CorrectiveAction_UserSgq1">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveAction_UserSgq2" Association="Self.FK_CorrectiveAction_UserSgq2">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
           <AssociationSet Name="FK_CorrectiveActionLevels_CorrectiveAction" Association="Self.FK_CorrectiveActionLevels_CorrectiveAction">
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
             <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveActionLevels_Level01" Association="Self.FK_CorrectiveActionLevels_Level01">
+            <End Role="Level01" EntitySet="Level01" />
+            <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveActionLevels_Level02" Association="Self.FK_CorrectiveActionLevels_Level02">
+            <End Role="Level02" EntitySet="Level02" />
+            <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveActionLevels_Level03" Association="Self.FK_CorrectiveActionLevels_Level03">
+            <End Role="Level03" EntitySet="Level03" />
+            <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UnitUser_Unit" Association="Self.FK_UnitUser_Unit">
+            <End Role="Unit" EntitySet="Unit" />
+            <End Role="UnitUser" EntitySet="UnitUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UnitUser_UserSgq" Association="Self.FK_UnitUser_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="UnitUser" EntitySet="UnitUser" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -243,10 +559,91 @@
           <EntitySet Name="Period" EntityType="SgqDbModel.Period" />
           <EntitySet Name="Shift" EntityType="SgqDbModel.Shift" />
           <EntitySet Name="Unit" EntityType="SgqDbModel.Unit" />
+          <EntitySet Name="UnitUser" EntityType="SgqDbModel.UnitUser" />
           <EntitySet Name="UserSgq" EntityType="SgqDbModel.UserSgq" />
+          <AssociationSet Name="FK_CollectionLevel02_ConsolidationLevel02" Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02">
+            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
+            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel02_Level01" Association="SgqDbModel.FK_CollectionLevel02_Level01">
+            <End Role="Level01" EntitySet="Level01" />
+            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel02_Level02" Association="SgqDbModel.FK_CollectionLevel02_Level02">
+            <End Role="Level02" EntitySet="Level02" />
+            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel02_UserSgq" Association="SgqDbModel.FK_CollectionLevel02_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel03_CollectionLevel02" Association="SgqDbModel.FK_CollectionLevel03_CollectionLevel02">
+            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
+            <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel03_Level03" Association="SgqDbModel.FK_CollectionLevel03_Level03">
+            <End Role="Level03" EntitySet="Level03" />
+            <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveAction_CollectionLevel03" Association="SgqDbModel.FK_CorrectiveAction_CollectionLevel03">
+            <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel01_Department" Association="SgqDbModel.FK_ConsolidationLevel01_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel01_Level01" Association="SgqDbModel.FK_ConsolidationLevel01_Level01">
+            <End Role="Level01" EntitySet="Level01" />
+            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel01_Unit" Association="SgqDbModel.FK_ConsolidationLevel01_Unit">
+            <End Role="Unit" EntitySet="Unit" />
+            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel02_ConsolidationLevel01" Association="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01">
+            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
+            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel02_Level02" Association="SgqDbModel.FK_ConsolidationLevel02_Level02">
+            <End Role="Level02" EntitySet="Level02" />
+            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveAction_UserSgq" Association="SgqDbModel.FK_CorrectiveAction_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveAction_UserSgq1" Association="SgqDbModel.FK_CorrectiveAction_UserSgq1">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveAction_UserSgq2" Association="SgqDbModel.FK_CorrectiveAction_UserSgq2">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
           <AssociationSet Name="FK_CorrectiveActionLevels_CorrectiveAction" Association="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction">
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
             <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveActionLevels_Level01" Association="SgqDbModel.FK_CorrectiveActionLevels_Level01">
+            <End Role="Level01" EntitySet="Level01" />
+            <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveActionLevels_Level02" Association="SgqDbModel.FK_CorrectiveActionLevels_Level02">
+            <End Role="Level02" EntitySet="Level02" />
+            <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveActionLevels_Level03" Association="SgqDbModel.FK_CorrectiveActionLevels_Level03">
+            <End Role="Level03" EntitySet="Level03" />
+            <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UnitUser_Unit" Association="SgqDbModel.FK_UnitUser_Unit">
+            <End Role="Unit" EntitySet="Unit" />
+            <End Role="UnitUser" EntitySet="UnitUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UnitUser_UserSgq" Association="SgqDbModel.FK_UnitUser_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="UnitUser" EntitySet="UnitUser" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="CollectionLevel02">
@@ -256,12 +653,12 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="ConsolidationLevel02_Id" Type="Int32" Nullable="false" />
-          <Property Name="Auditor_Id" Type="Int32" Nullable="false" />
-          <Property Name="CattleType_Id" Type="Int32" Nullable="false" />
-          <Property Name="Level01_Id" Type="Int32" Nullable="false" />
-          <Property Name="Level02_Id" Type="Int32" Nullable="false" />
-          <Property Name="Unit_Id" Type="Int32" Nullable="false" />
+          <Property Name="ConsolidationLevel02Id" Type="Int32" Nullable="false" />
+          <Property Name="AuditorId" Type="Int32" Nullable="false" />
+          <Property Name="CattleTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Level01Id" Type="Int32" Nullable="false" />
+          <Property Name="Level02Id" Type="Int32" Nullable="false" />
+          <Property Name="UnitId" Type="Int32" Nullable="false" />
           <Property Name="Chainspeed" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
           <Property Name="ConsecutiveFailureIs" Type="Boolean" Nullable="false" />
           <Property Name="ConsecutiveFailureTotal" Type="Int32" Nullable="false" />
@@ -275,6 +672,11 @@
           <Property Name="Sample" Type="Int32" Nullable="false" />
           <Property Name="Shift" Type="Int32" Nullable="false" />
           <Property Name="StartPhaseDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="CollectionLevel02" ToRole="ConsolidationLevel02" />
+          <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_CollectionLevel02_Level01" FromRole="CollectionLevel02" ToRole="Level01" />
+          <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_CollectionLevel02_Level02" FromRole="CollectionLevel02" ToRole="Level02" />
+          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="CollectionLevel02" ToRole="UserSgq" />
+          <NavigationProperty Name="CollectionLevel03" Relationship="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" FromRole="CollectionLevel02" ToRole="CollectionLevel03" />
         </EntityType>
         <EntityType Name="CollectionLevel03">
           <Key>
@@ -283,11 +685,14 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="CollectionLevel02_ID" Type="Int32" Nullable="false" />
-          <Property Name="Level03_Id" Type="Int32" />
+          <Property Name="CollectionLevel02Id" Type="Int32" Nullable="false" />
+          <Property Name="Level03Id" Type="Int32" />
           <Property Name="ConformedIs" Type="Boolean" Nullable="false" />
           <Property Name="Value" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
           <Property Name="ValueText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" FromRole="CollectionLevel03" ToRole="CollectionLevel02" />
+          <NavigationProperty Name="Level03" Relationship="SgqDbModel.FK_CollectionLevel03_Level03" FromRole="CollectionLevel03" ToRole="Level03" />
+          <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveAction_CollectionLevel03" FromRole="CollectionLevel03" ToRole="CorrectiveAction" />
         </EntityType>
         <EntityType Name="ConsolidationLevel01">
           <Key>
@@ -297,9 +702,13 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="ConsolidationDate" Type="DateTime" Precision="7" />
-          <Property Name="Unit_Id" Type="Int32" Nullable="false" />
-          <Property Name="Department_Id" Type="Int32" Nullable="false" />
-          <Property Name="Level01_Id" Type="Int32" Nullable="false" />
+          <Property Name="UnitId" Type="Int32" Nullable="false" />
+          <Property Name="DepartmentId" Type="Int32" Nullable="false" />
+          <Property Name="Level01Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Department" Relationship="SgqDbModel.FK_ConsolidationLevel01_Department" FromRole="ConsolidationLevel01" ToRole="Department" />
+          <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Level01" FromRole="ConsolidationLevel01" ToRole="Level01" />
+          <NavigationProperty Name="Unit" Relationship="SgqDbModel.FK_ConsolidationLevel01_Unit" FromRole="ConsolidationLevel01" ToRole="Unit" />
+          <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01" FromRole="ConsolidationLevel01" ToRole="ConsolidationLevel02" />
         </EntityType>
         <EntityType Name="ConsolidationLevel02">
           <Key>
@@ -309,32 +718,35 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="ConsolidationDate" Type="DateTime" Precision="7" />
-          <Property Name="Level01Consolidation_Id" Type="Int32" Nullable="false" />
-          <Property Name="Level02_Id" Type="Int32" Nullable="false" />
+          <Property Name="Level01ConsolidationId" Type="Int32" Nullable="false" />
+          <Property Name="Level02Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="ConsolidationLevel02" ToRole="CollectionLevel02" />
+          <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01" FromRole="ConsolidationLevel02" ToRole="ConsolidationLevel01" />
+          <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_ConsolidationLevel02_Level02" FromRole="ConsolidationLevel02" ToRole="Level02" />
         </EntityType>
         <EntityType Name="CorrectiveAction">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DateExecute" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AuditorId" Type="Int32" Nullable="false" />
-          <Property Name="ShiftId" Type="Int32" Nullable="false" />
-          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="PeriodId" Type="Int32" Nullable="false" />
-          <Property Name="DescriptionFailure" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="ImmediateCorrectiveAction" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="ProductDisposition" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PreventativeMeasure" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DescriptionFailure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImmediateCorrectiveAction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductDisposition" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PreventativeMeasure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SlaughterId" Type="Int32" />
           <Property Name="DateTimeSlaughter" Type="DateTime" Precision="7" />
           <Property Name="TechinicalId" Type="Int32" />
           <Property Name="DateTimeTechinical" Type="DateTime" Precision="7" />
-          <Property Name="NameTechinical" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="NameSlaughter" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="AuditLevel01Id" Type="Int32" />
+          <Property Name="AuditStartTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="DateCorrectiveAction" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="CollectionLevel03Id" Type="Int32" />
+          <NavigationProperty Name="CollectionLevel03" Relationship="SgqDbModel.FK_CorrectiveAction_CollectionLevel03" FromRole="CorrectiveAction" ToRole="CollectionLevel03" />
+          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq" FromRole="CorrectiveAction" ToRole="UserSgq" />
+          <NavigationProperty Name="UserSgq1" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq1" FromRole="CorrectiveAction" ToRole="UserSgq" />
+          <NavigationProperty Name="UserSgq2" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq2" FromRole="CorrectiveAction" ToRole="UserSgq" />
           <NavigationProperty Name="CorrectiveActionLevels" Relationship="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction" FromRole="CorrectiveAction" ToRole="CorrectiveActionLevels" />
         </EntityType>
         <EntityType Name="CorrectiveActionLevels">
@@ -343,11 +755,14 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CorrectiveActionId" Type="Int32" Nullable="false" />
-          <Property Name="AuditLevel01Id" Type="Int32" Nullable="false" />
-          <Property Name="AuditLevel02Id" Type="Int32" Nullable="false" />
-          <Property Name="AuditLevel03Id" Type="Int32" Nullable="false" />
+          <Property Name="Level01Id" Type="Int32" Nullable="false" />
+          <Property Name="Level02Id" Type="Int32" Nullable="false" />
+          <Property Name="Level03Id" Type="Int32" Nullable="false" />
           <Property Name="Defects" Type="Int32" />
           <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction" FromRole="CorrectiveActionLevels" ToRole="CorrectiveAction" />
+          <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_CorrectiveActionLevels_Level01" FromRole="CorrectiveActionLevels" ToRole="Level01" />
+          <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_CorrectiveActionLevels_Level02" FromRole="CorrectiveActionLevels" ToRole="Level02" />
+          <NavigationProperty Name="Level03" Relationship="SgqDbModel.FK_CorrectiveActionLevels_Level03" FromRole="CorrectiveActionLevels" ToRole="Level03" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
@@ -357,6 +772,7 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Department" FromRole="Department" ToRole="ConsolidationLevel01" />
         </EntityType>
         <EntityType Name="Level01">
           <Key>
@@ -365,12 +781,12 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Alias" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="ClientSpecification" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="PeopleCreateId" Type="Int32" Nullable="false" />
-          <Property Name="Ordering" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_Level01" FromRole="Level01" ToRole="CollectionLevel02" />
+          <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Level01" FromRole="Level01" ToRole="ConsolidationLevel01" />
+          <NavigationProperty Name="CorrectiveActionLevels" Relationship="SgqDbModel.FK_CorrectiveActionLevels_Level01" FromRole="Level01" ToRole="CorrectiveActionLevels" />
         </EntityType>
         <EntityType Name="Level02">
           <Key>
@@ -379,12 +795,12 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Alias" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="ClientSpecification" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="PeopleCreateId" Type="Int32" Nullable="false" />
-          <Property Name="Ordering" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_Level02" FromRole="Level02" ToRole="CollectionLevel02" />
+          <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_ConsolidationLevel02_Level02" FromRole="Level02" ToRole="ConsolidationLevel02" />
+          <NavigationProperty Name="CorrectiveActionLevels" Relationship="SgqDbModel.FK_CorrectiveActionLevels_Level02" FromRole="Level02" ToRole="CorrectiveActionLevels" />
         </EntityType>
         <EntityType Name="Level03">
           <Key>
@@ -393,12 +809,11 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Alias" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="ClientSpecification" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="PeopleCreateId" Type="Int32" Nullable="false" />
-          <Property Name="Ordering" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CollectionLevel03" Relationship="SgqDbModel.FK_CollectionLevel03_Level03" FromRole="Level03" ToRole="CollectionLevel03" />
+          <NavigationProperty Name="CorrectiveActionLevels" Relationship="SgqDbModel.FK_CorrectiveActionLevels_Level03" FromRole="Level03" ToRole="CorrectiveActionLevels" />
         </EntityType>
         <EntityType Name="Period">
           <Key>
@@ -422,10 +837,22 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Unit" FromRole="Unit" ToRole="ConsolidationLevel01" />
+          <NavigationProperty Name="UnitUser" Relationship="SgqDbModel.FK_UnitUser_Unit" FromRole="Unit" ToRole="UnitUser" />
+        </EntityType>
+        <EntityType Name="UnitUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserSgqId" Type="Int32" Nullable="false" />
+          <Property Name="UnitId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Unit" Relationship="SgqDbModel.FK_UnitUser_Unit" FromRole="UnitUser" ToRole="Unit" />
+          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_UnitUser_UserSgq" FromRole="UnitUser" ToRole="UserSgq" />
         </EntityType>
         <EntityType Name="UserSgq">
           <Key>
@@ -438,7 +865,192 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="UserSgq" ToRole="CollectionLevel02" />
+          <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq" FromRole="UserSgq" ToRole="CorrectiveAction" />
+          <NavigationProperty Name="CorrectiveAction1" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq1" FromRole="UserSgq" ToRole="CorrectiveAction" />
+          <NavigationProperty Name="CorrectiveAction2" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq2" FromRole="UserSgq" ToRole="CorrectiveAction" />
+          <NavigationProperty Name="UnitUser" Relationship="SgqDbModel.FK_UnitUser_UserSgq" FromRole="UserSgq" ToRole="UnitUser" />
         </EntityType>
+        <Association Name="FK_CollectionLevel02_ConsolidationLevel02">
+          <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidationLevel02">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel02">
+              <PropertyRef Name="ConsolidationLevel02Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel02_Level01">
+          <End Type="SgqDbModel.Level01" Role="Level01" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level01">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel02">
+              <PropertyRef Name="Level01Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel02_Level02">
+          <End Type="SgqDbModel.Level02" Role="Level02" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level02">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel02">
+              <PropertyRef Name="Level02Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel02_UserSgq">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel02">
+              <PropertyRef Name="AuditorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel03_CollectionLevel02">
+          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel03" Role="CollectionLevel03" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionLevel02">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel03">
+              <PropertyRef Name="CollectionLevel02Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel03_Level03">
+          <End Type="SgqDbModel.Level03" Role="Level03" Multiplicity="0..1" />
+          <End Type="SgqDbModel.CollectionLevel03" Role="CollectionLevel03" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level03">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel03">
+              <PropertyRef Name="Level03Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveAction_CollectionLevel03">
+          <End Type="SgqDbModel.CollectionLevel03" Role="CollectionLevel03" Multiplicity="0..1" />
+          <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionLevel03">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveAction">
+              <PropertyRef Name="CollectionLevel03Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel01_Department">
+          <End Type="SgqDbModel.Department" Role="Department" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel01" Role="ConsolidationLevel01" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel01">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel01_Level01">
+          <End Type="SgqDbModel.Level01" Role="Level01" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel01" Role="ConsolidationLevel01" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level01">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel01">
+              <PropertyRef Name="Level01Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel01_Unit">
+          <End Type="SgqDbModel.Unit" Role="Unit" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel01" Role="ConsolidationLevel01" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel01">
+              <PropertyRef Name="UnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel02_ConsolidationLevel01">
+          <End Type="SgqDbModel.ConsolidationLevel01" Role="ConsolidationLevel01" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidationLevel01">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel02">
+              <PropertyRef Name="Level01ConsolidationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel02_Level02">
+          <End Type="SgqDbModel.Level02" Role="Level02" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level02">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel02">
+              <PropertyRef Name="Level02Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveAction_UserSgq">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
+          <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveAction">
+              <PropertyRef Name="AuditorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveAction_UserSgq1">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="0..1" />
+          <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveAction">
+              <PropertyRef Name="TechinicalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveAction_UserSgq2">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="0..1" />
+          <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveAction">
+              <PropertyRef Name="SlaughterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CorrectiveActionLevels_CorrectiveAction">
           <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="1" />
           <End Type="SgqDbModel.CorrectiveActionLevels" Role="CorrectiveActionLevels" Multiplicity="*" />
@@ -448,6 +1060,66 @@
             </Principal>
             <Dependent Role="CorrectiveActionLevels">
               <PropertyRef Name="CorrectiveActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveActionLevels_Level01">
+          <End Type="SgqDbModel.Level01" Role="Level01" Multiplicity="1" />
+          <End Type="SgqDbModel.CorrectiveActionLevels" Role="CorrectiveActionLevels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level01">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveActionLevels">
+              <PropertyRef Name="Level01Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveActionLevels_Level02">
+          <End Type="SgqDbModel.Level02" Role="Level02" Multiplicity="1" />
+          <End Type="SgqDbModel.CorrectiveActionLevels" Role="CorrectiveActionLevels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level02">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveActionLevels">
+              <PropertyRef Name="Level02Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveActionLevels_Level03">
+          <End Type="SgqDbModel.Level03" Role="Level03" Multiplicity="1" />
+          <End Type="SgqDbModel.CorrectiveActionLevels" Role="CorrectiveActionLevels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level03">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveActionLevels">
+              <PropertyRef Name="Level03Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UnitUser_Unit">
+          <End Type="SgqDbModel.Unit" Role="Unit" Multiplicity="1" />
+          <End Type="SgqDbModel.UnitUser" Role="UnitUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UnitUser">
+              <PropertyRef Name="UnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UnitUser_UserSgq">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
+          <End Type="SgqDbModel.UnitUser" Role="UnitUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UnitUser">
+              <PropertyRef Name="UserSgqId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -473,12 +1145,12 @@
                 <ScalarProperty Name="ConsecutiveFailureTotal" ColumnName="ConsecutiveFailureTotal" />
                 <ScalarProperty Name="ConsecutiveFailureIs" ColumnName="ConsecutiveFailureIs" />
                 <ScalarProperty Name="Chainspeed" ColumnName="Chainspeed" />
-                <ScalarProperty Name="Unit_Id" ColumnName="Unit_Id" />
-                <ScalarProperty Name="Level02_Id" ColumnName="Level02_Id" />
-                <ScalarProperty Name="Level01_Id" ColumnName="Level01_Id" />
-                <ScalarProperty Name="CattleType_Id" ColumnName="CattleType_Id" />
-                <ScalarProperty Name="Auditor_Id" ColumnName="Auditor_Id" />
-                <ScalarProperty Name="ConsolidationLevel02_Id" ColumnName="ConsolidationLevel02_Id" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+                <ScalarProperty Name="Level02Id" ColumnName="Level02Id" />
+                <ScalarProperty Name="Level01Id" ColumnName="Level01Id" />
+                <ScalarProperty Name="CattleTypeId" ColumnName="CattleTypeId" />
+                <ScalarProperty Name="AuditorId" ColumnName="AuditorId" />
+                <ScalarProperty Name="ConsolidationLevel02Id" ColumnName="ConsolidationLevel02Id" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -491,8 +1163,8 @@
                 <ScalarProperty Name="ValueText" ColumnName="ValueText" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="ConformedIs" ColumnName="ConformedIs" />
-                <ScalarProperty Name="Level03_Id" ColumnName="Level03_Id" />
-                <ScalarProperty Name="CollectionLevel02_ID" ColumnName="CollectionLevel02_ID" />
+                <ScalarProperty Name="Level03Id" ColumnName="Level03Id" />
+                <ScalarProperty Name="CollectionLevel02Id" ColumnName="CollectionLevel02Id" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -502,9 +1174,9 @@
           <EntitySetMapping Name="ConsolidationLevel01">
             <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel01">
               <MappingFragment StoreEntitySet="ConsolidationLevel01">
-                <ScalarProperty Name="Level01_Id" ColumnName="Level01_Id" />
-                <ScalarProperty Name="Department_Id" ColumnName="Department_Id" />
-                <ScalarProperty Name="Unit_Id" ColumnName="Unit_Id" />
+                <ScalarProperty Name="Level01Id" ColumnName="Level01Id" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
                 <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
@@ -515,8 +1187,8 @@
           <EntitySetMapping Name="ConsolidationLevel02">
             <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel02">
               <MappingFragment StoreEntitySet="ConsolidationLevel02">
-                <ScalarProperty Name="Level02_Id" ColumnName="Level02_Id" />
-                <ScalarProperty Name="Level01Consolidation_Id" ColumnName="Level01Consolidation_Id" />
+                <ScalarProperty Name="Level02Id" ColumnName="Level02Id" />
+                <ScalarProperty Name="Level01ConsolidationId" ColumnName="Level01ConsolidationId" />
                 <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
@@ -527,11 +1199,11 @@
           <EntitySetMapping Name="CorrectiveAction">
             <EntityTypeMapping TypeName="SgqDbModel.CorrectiveAction">
               <MappingFragment StoreEntitySet="CorrectiveAction">
-                <ScalarProperty Name="AuditLevel01Id" ColumnName="AuditLevel01Id" />
+                <ScalarProperty Name="CollectionLevel03Id" ColumnName="CollectionLevel03Id" />
+                <ScalarProperty Name="DateCorrectiveAction" ColumnName="DateCorrectiveAction" />
+                <ScalarProperty Name="AuditStartTime" ColumnName="AuditStartTime" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="NameSlaughter" ColumnName="NameSlaughter" />
-                <ScalarProperty Name="NameTechinical" ColumnName="NameTechinical" />
                 <ScalarProperty Name="DateTimeTechinical" ColumnName="DateTimeTechinical" />
                 <ScalarProperty Name="TechinicalId" ColumnName="TechinicalId" />
                 <ScalarProperty Name="DateTimeSlaughter" ColumnName="DateTimeSlaughter" />
@@ -540,11 +1212,7 @@
                 <ScalarProperty Name="ProductDisposition" ColumnName="ProductDisposition" />
                 <ScalarProperty Name="ImmediateCorrectiveAction" ColumnName="ImmediateCorrectiveAction" />
                 <ScalarProperty Name="DescriptionFailure" ColumnName="DescriptionFailure" />
-                <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
                 <ScalarProperty Name="AuditorId" ColumnName="AuditorId" />
-                <ScalarProperty Name="DateExecute" ColumnName="DateExecute" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -553,9 +1221,9 @@
             <EntityTypeMapping TypeName="SgqDbModel.CorrectiveActionLevels">
               <MappingFragment StoreEntitySet="CorrectiveActionLevels">
                 <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="AuditLevel03Id" ColumnName="AuditLevel03Id" />
-                <ScalarProperty Name="AuditLevel02Id" ColumnName="AuditLevel02Id" />
-                <ScalarProperty Name="AuditLevel01Id" ColumnName="AuditLevel01Id" />
+                <ScalarProperty Name="Level03Id" ColumnName="Level03Id" />
+                <ScalarProperty Name="Level02Id" ColumnName="Level02Id" />
+                <ScalarProperty Name="Level01Id" ColumnName="Level01Id" />
                 <ScalarProperty Name="CorrectiveActionId" ColumnName="CorrectiveActionId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -574,12 +1242,9 @@
           <EntitySetMapping Name="Level01">
             <EntityTypeMapping TypeName="SgqDbModel.Level01">
               <MappingFragment StoreEntitySet="Level01">
-                <ScalarProperty Name="Ordering" ColumnName="Ordering" />
-                <ScalarProperty Name="PeopleCreateId" ColumnName="PeopleCreateId" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ClientSpecification" ColumnName="ClientSpecification" />
                 <ScalarProperty Name="Alias" ColumnName="Alias" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -589,12 +1254,9 @@
           <EntitySetMapping Name="Level02">
             <EntityTypeMapping TypeName="SgqDbModel.Level02">
               <MappingFragment StoreEntitySet="Level02">
-                <ScalarProperty Name="Ordering" ColumnName="Ordering" />
-                <ScalarProperty Name="PeopleCreateId" ColumnName="PeopleCreateId" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ClientSpecification" ColumnName="ClientSpecification" />
                 <ScalarProperty Name="Alias" ColumnName="Alias" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -604,12 +1266,9 @@
           <EntitySetMapping Name="Level03">
             <EntityTypeMapping TypeName="SgqDbModel.Level03">
               <MappingFragment StoreEntitySet="Level03">
-                <ScalarProperty Name="Ordering" ColumnName="Ordering" />
-                <ScalarProperty Name="PeopleCreateId" ColumnName="PeopleCreateId" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ClientSpecification" ColumnName="ClientSpecification" />
                 <ScalarProperty Name="Alias" ColumnName="Alias" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -642,6 +1301,15 @@
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UnitUser">
+            <EntityTypeMapping TypeName="SgqDbModel.UnitUser">
+              <MappingFragment StoreEntitySet="UnitUser">
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+                <ScalarProperty Name="UserSgqId" ColumnName="UserSgqId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

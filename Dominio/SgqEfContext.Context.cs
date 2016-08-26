@@ -44,6 +44,7 @@ namespace Dominio
         public virtual DbSet<Period> Period { get; set; }
         public virtual DbSet<Shift> Shift { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
+        public virtual DbSet<UnitUser> UnitUser { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
     }
 }
