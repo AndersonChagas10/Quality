@@ -71,7 +71,7 @@ namespace DTO.Helpers
 
         public static bool VerifyStringNullValue(string verify)
         {
-            return verify != null && !verify.Equals("null");
+            return !(verify != null && (verify.Equals("null") || verify.Equals("undefined")));
         }
 
         public static DateTime AsDateTime(this object valor)

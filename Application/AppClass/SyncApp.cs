@@ -11,22 +11,24 @@ namespace Application.AppServiceClass
 
         //private readonly ISyncDomain _syncDomain;
         private readonly ISaveConsolidateDataCollectionDomain _saveConsolidateDataCollectionDomain;
+        private readonly IGetConsolidateDataCollectionDomain _getConsolidateDataCollectionDomain;
 
         public SyncApp(/*ISyncDomain syncDomain,*/
-            ISaveConsolidateDataCollectionDomain saveConsolidateDataCollectionDomain)
+            ISaveConsolidateDataCollectionDomain saveConsolidateDataCollectionDomain,
+            IGetConsolidateDataCollectionDomain getConsolidateDataCollectionDomain)
         {
-            //_syncDomain = syncDomain;
+            _getConsolidateDataCollectionDomain = getConsolidateDataCollectionDomain;
             _saveConsolidateDataCollectionDomain = saveConsolidateDataCollectionDomain;
         }
-
-        //public GenericReturn<SyncDTO> GetDataToSincyAudit()
-        //{
-        //    return _syncDomain.GetDataToSincyAudit();
-        //}
 
         public GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated(SyncDTO syncConsolidado)
         {
             return _saveConsolidateDataCollectionDomain.SetDataToSincyAuditConsolidated(syncConsolidado);
+        }
+
+        public GenericReturn<ColetaDTO> GetLastEntry()
+        {
+            return _getConsolidateDataCollectionDomain.GetLastEntry();
         }
     }
 }

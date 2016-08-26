@@ -18,7 +18,7 @@ namespace DTO.DTO
 
         public List<ConsolidationLevel02DTO> consolidationLevel02DTO { get; set; }
         public List<CollectionLevel02DTO> collectionLevel02DTO { get; set; }
-        public List<CollectionLevel03DTO> collectionLevel03DTO { get; set; }
+        
         
         public ConsolidationLevel01DTO(RootObject rootObject)
         {
@@ -40,15 +40,12 @@ namespace DTO.DTO
 
             #endregion
 
-            collectionLevel03DTO = new List<CollectionLevel03DTO>();
+            
             collectionLevel02DTO = new List<CollectionLevel02DTO>();
             consolidationLevel02DTO = new List<ConsolidationLevel02DTO>();
 
             #region Coletas necessitam apenas serem salvas.
 
-            foreach (var i in rootObject.nextRoot)
-                foreach (var x in i.nextnextRoot)
-                    collectionLevel03DTO.Add(new CollectionLevel03DTO(x));
 
             foreach (var i in rootObject.nextRoot)
                 collectionLevel02DTO.Add(new CollectionLevel02DTO(i));

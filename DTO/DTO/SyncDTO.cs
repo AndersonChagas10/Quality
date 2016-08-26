@@ -1,5 +1,4 @@
-﻿using DTO.DTO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace DTO.DTO
 {
@@ -30,10 +29,6 @@ namespace DTO.DTO
         public string value { get; set; }
         public CollectionLevel03DTO collectionLevel03DTO { get; set; }
 
-        public void CreateDTOToSaveL3()
-        {
-            collectionLevel03DTO = new CollectionLevel03DTO(this);
-        }
     }
 
     public class NextRoot //UnidadeId Dept Id

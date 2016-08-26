@@ -34,6 +34,6 @@ namespace Dominio.Interfaces.Repositories
         void Commit();
 
         void Dispose();
-
+        
     }
 }

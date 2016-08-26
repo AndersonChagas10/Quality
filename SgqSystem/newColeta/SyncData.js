@@ -7,6 +7,7 @@
         for (var i = 0, atts = el.attributes, n = atts.length, arr = []; i < n; i++) {
             var name = atts[i].nodeName;
             var value = atts[i].nodeValue;
+            if (value == 'undefined' || value == 'null') { continue; }
             temp[atts[i].nodeName] = atts[i].nodeValue
         }
         objectReturn[ListName].push(temp);
@@ -19,15 +20,23 @@
 function MakeResult(Obj) {
     MakeObject2($('.level01Result'), 'Root', Obj);
     console.log('Done.');
-    console.log(Obj);
+    //console.log(Obj);
 }
 
 function Sync() {
     var ObjListaLevel1 = {};
+
     MakeResult(ObjListaLevel1)
     //window.location.host + window.location.pathname // COLOCAR NO ROOT
-    var url = window.location.host 
-    //$.post("http://192.168.25.200/SgqMaster/api/Sync/SetDataAuditConsolidated", ObjListaLevel1, function (r) { console.log(r); });
-    $.post("http://localhost:63128/api/Sync/SetDataAuditConsolidated", ObjListaLevel1, function (r) { console.log(r); });
-}
+    var url = window.location.host
 
+    $.each(ObjListaLevel1.Root, function (c, o) {
+        var smallerObject = {};
+        smallerObject['Root'] = [];
+        smallerObject.Root.push(o);
+        console.log(smallerObject)
+        $.post("http://192.168.25.200/SgqMaster/api/Sync/SetDataAuditConsolidated", smallerObject, function (r) { console.log(r); });
+        //$.post("http://localhost:63128/api/Sync/SetDataAuditConsolidated", smallerObject, function (r) { console.log(r); });
+    });
+
+}

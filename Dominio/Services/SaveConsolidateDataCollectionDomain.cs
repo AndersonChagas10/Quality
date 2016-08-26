@@ -6,9 +6,6 @@ using DTO.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dominio.Services
 {
@@ -37,21 +34,25 @@ namespace Dominio.Services
 
             try
             {
+
                 #region Validação e criação de objetos.
 
                 if (obj.Root.Count == 0)
                     throw new ExceptionHelper("Impossible to Sync data. The Sync list is empty.");
 
                 var ListToSave = new List<ConsolidationLevel01DTO>();
+                //Contrutor que possui validação do objeto, dentro deste contrutor devem constar as RNs para cada objeto a ser inserido no BD, 
+                //caso haja incosistencia, o mesmo deve expedir uma exception, ou exceptionhelper parando a execução, 
+                //e prevenindo a entrada de arquivos não válidos no DB.
                 obj.Root.ForEach(x => ListToSave.Add(x.ValidateAndCreateDtoConsolidationLevel01DTO()));
 
                 #endregion
 
-
-
                 #region Salvando os 5 objetos em Banco de Dados.
-
+                //Iniciar Cronometro.
                 var watch = Stopwatch.StartNew();
+                
+                #region Loop Save
 
                 foreach (var i in ListToSave)
                 {
@@ -67,24 +68,21 @@ namespace Dominio.Services
 
                         foreach (var x in i.collectionLevel02DTO)
                         {
-
                             x.Level01_Id = level01Consolidation.Level01_Id;
                             x.ConsolidationLevel02_Id = level02Consolidation.Id;
 
                             var collectionLevel02 = Mapper.Map<CollectionLevel02>(x);
-                            _baseRepoCollectionL2.AddNotCommit(collectionLevel02);
-                            foreach (var y in i.collectionLevel03DTO)
-                            {
-                                y.CollectionLevel02_ID = collectionLevel02.Id;
-                                _baseRepoCollectionL3.AddNotCommit(Mapper.Map<CollectionLevel03>(y));
-                            }
+                            _baseRepoCollectionL2.Add(collectionLevel02);
 
+                            foreach (var y in x.collectionLevel03DTO)
+                                y.CollectionLevel02_ID = collectionLevel02.Id;
+
+                            _baseRepoCollectionL3.AddAll(Mapper.Map<List<CollectionLevel03>>(x.collectionLevel03DTO));
                         }
                     }
+                } 
 
-                    _baseRepoCollectionL2.Commit();
-                    _baseRepoCollectionL3.Commit();
-                }
+                #endregion
 
                 watch.Stop();
                 var elapsedMs = watch.ElapsedMilliseconds;
@@ -96,6 +94,7 @@ namespace Dominio.Services
                 return new GenericReturn<SyncDTO>("Susscess! All Data Saved in: " + elapsedMs + " ms.");
 
                 #endregion
+
             }
             catch (Exception e)
             {
@@ -114,9 +113,5 @@ namespace Dominio.Services
 
         }
 
-        //public ObjectConsildationDTO SendData()
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }

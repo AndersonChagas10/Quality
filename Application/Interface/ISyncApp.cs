@@ -7,6 +7,6 @@ namespace Application.Interface
     {
         //GenericReturn<SyncDTO> GetDataToSincyAudit();
         GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated(SyncDTO syncConsolidado);
-
+        GenericReturn<ColetaDTO> GetLastEntry();
     }
 }
