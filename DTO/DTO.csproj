@@ -56,10 +56,13 @@
     <Compile Include="DTO\ConsolidationLevel01DTO.cs" />
     <Compile Include="DTO\CorrectiveActionLevelsDTO.cs" />
     <Compile Include="DTO\CorrectiveActionDTO.cs" />
+    <Compile Include="DTO\DepartmentDTO.cs" />
     <Compile Include="DTO\GetSyncDTO.cs" />
+    <Compile Include="DTO\Level01DTO.cs" />
     <Compile Include="DTO\PeriodDTO.cs" />
     <Compile Include="DTO\ShiftDTO.cs" />
     <Compile Include="DTO\SyncDTO.cs" />
+    <Compile Include="DTO\UnitDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="GenericReturn.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />

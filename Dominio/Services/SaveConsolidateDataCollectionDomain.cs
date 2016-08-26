@@ -62,7 +62,7 @@ namespace Dominio.Services
                     ConsolidationLevel02 level02Consolidation;
                     foreach (var j in i.consolidationLevel02DTO)
                     {
-                        j.Level01Consolidation_Id = level01Consolidation.Id;
+                        j.Level01ConsolidationId = level01Consolidation.Id;
                         level02Consolidation = Mapper.Map<ConsolidationLevel02>(j);
                         _baseRepoConsolidationL2.Add(level02Consolidation);
 

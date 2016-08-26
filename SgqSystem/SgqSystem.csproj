@@ -291,7 +291,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\AccerDeniedController.cs" />
+    <Compile Include="Controllers\AccesDeniedController.cs" />
     <Compile Include="Controllers\UserAuthenticationController.cs" />
     <Compile Include="Controllers\Api\SyncController.cs" />
     <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
@@ -310,6 +310,9 @@
     <Compile Include="Mappers\CollectionLevel03MapperProfile.cs" />
     <Compile Include="Mappers\ConsolidationLevel01MapperProfile.cs" />
     <Compile Include="Mappers\ConsolidationLevel02MapperProfile.cs" />
+    <Compile Include="Mappers\Level01MappingProfile - Copy.cs" />
+    <Compile Include="Mappers\UnitMappingProfile.cs" />
+    <Compile Include="Mappers\DepartmenMappingProfile.cs" />
     <Compile Include="Mappers\Level03ConsolidationMapperProfile.cs" />
     <Compile Include="Mappers\UserMappingProfile.cs" />
     <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
@@ -539,7 +542,7 @@
     <Content Include="Views\CorrectiveAction\Index.cshtml" />
     <Content Include="Views\UserAuthentication\LogIn.cshtml" />
     <Content Include="Views\UserAuthentication\Register.cshtml" />
-    <Content Include="Views\AccerDenied\Index.cshtml" />
+    <Content Include="Views\AccesDenied\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

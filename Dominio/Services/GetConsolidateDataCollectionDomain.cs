@@ -65,7 +65,7 @@ namespace Dominio.Services
                 //var putaQuePariuFdp = new List<ConsolidationLevel01DTO>();
                 foreach (var i in consildatedLelve01ListDTO1)
                 {
-                    var temp = consildatedLelve01ListDTO2.Where(r => r.Level01Consolidation_Id == i.Id);
+                    var temp = consildatedLelve01ListDTO2.Where(r => r.Level01ConsolidationId == i.Id);
                     
                     i.consolidationLevel02DTO = temp.ToList();
                     var temp2 = collectionLelve02ListDTO.Where(r => temp.Any(z => z.Id == r.ConsolidationLevel02_Id));

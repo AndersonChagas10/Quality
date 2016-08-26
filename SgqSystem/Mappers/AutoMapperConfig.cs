@@ -18,6 +18,9 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ConsolidationLevel02MapperProfile>();
                 x.AddProfile<ConsolidationLevel01MapperProfile>();
                 x.AddProfile<Level03ConsolidationMapperProfile>();
+                x.AddProfile<Level01MappingProfile>();
+                x.AddProfile<DepartmenMappingProfile>();
+                x.AddProfile<UnitMappingProfile>();
             });
 
         }

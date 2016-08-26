@@ -41,8 +41,8 @@ namespace DTO.DTO
 
             if (nextRoot.level01id.Equals("3"))
             {
-                CattleType_Id = int.Parse(nextRoot.cattletype);
-                Guard.ForValidFk(CattleType_Id, "CattleType Id is not valid.");
+                CattleTypeId = int.Parse(nextRoot.cattletype);
+                Guard.ForValidFk(CattleTypeId, "CattleType Id is not valid.");
 
                 Chainspeed = decimal.Parse(nextRoot.chainspeed);
                 Guard.ForNegative(Chainspeed, "Chainspeed");
@@ -54,7 +54,8 @@ namespace DTO.DTO
                 Mudscore = decimal.Parse(nextRoot.mudscore);
                 Guard.ForNegative(Mudscore, "Mudscore");
 
-                ConsecutiveFailureTotal = int.Parse(nextRoot.consecutivefailuretotal);
+                if(nextRoot.consecutivefailuretotal != null)
+                    ConsecutiveFailureTotal = int.Parse(nextRoot.consecutivefailuretotal);
                 Guard.ForNegative(ConsecutiveFailureTotal, "ConsecutiveFailureTotal");
             }
 
@@ -62,11 +63,11 @@ namespace DTO.DTO
 
             #region Valores Default Para Todos
 
-            Level02_Id = int.Parse(nextRoot.level02id);
-            Guard.ForValidFk(Level02_Id, "Level02 Id is not valid.");
+            Level02Id = int.Parse(nextRoot.level02id);
+            Guard.ForValidFk(Level02Id, "Level02 Id is not valid.");
 
-            Unit_Id = int.Parse(nextRoot.unidadeid);
-            Guard.ForValidFk(Unit_Id, "Unit id is not valid.");
+            UnitId = int.Parse(nextRoot.unidadeid);
+            Guard.ForValidFk(UnitId, "Unit id is not valid.");
 
             Period = int.Parse(nextRoot.period);
             Guard.ForNegative(Period, "Period");
@@ -102,19 +103,18 @@ namespace DTO.DTO
 
             collectionLevel03DTO = new List<CollectionLevel03DTO>();
             foreach (var x in nextRoot.nextnextRoot)
-                collectionLevel03DTO.Add(new CollectionLevel03DTO(x, Level01_Id, Level02_Id)); 
+                collectionLevel03DTO.Add(new CollectionLevel03DTO(x, Level01Id, Level02Id)); 
 
             #endregion
 
         }
 
-        public List<CollectionLevel03DTO> collectionLevel03DTO { get; set; }
-        public int ConsolidationLevel02_Id { get; set; }
-        public int Auditor_Id { get; set; } //FK
-        public int CattleType_Id { get; set; } //FK
-        public int Level01_Id { get; set; } //FK
-        public int Level02_Id { get; set; } //FK
-        public int Unit_Id { get; set; } //FK
+        public int ConsolidationLevel02Id { get; set; }
+        public int AuditorId { get; set; }
+        public int CattleTypeId { get; set; }
+        public int Level01Id { get; set; }
+        public int Level02Id { get; set; }
+        public int UnitId { get; set; }
         public decimal Chainspeed { get; set; }
         public bool ConsecutiveFailureIs { get; set; }
         public int ConsecutiveFailureTotal { get; set; }
@@ -129,6 +129,7 @@ namespace DTO.DTO
         public int Shift { get; set; }
         public System.DateTime StartPhaseDate { get; set; }
 
+        public List<CollectionLevel03DTO> collectionLevel03DTO { get; set; }
         public ConsolidationLevel01DTO consolidationLevel01DTO { get; set; }
     }
 }

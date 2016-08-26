@@ -6,7 +6,7 @@ namespace SgqSystem.Secirity
 {
     public class CustomAuthorizeAttribute : AuthorizeAttribute
     {
-        private readonly IUserApp iuserApp;
+        //private readonly IUserApp iuserApp;
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
@@ -18,7 +18,7 @@ namespace SgqSystem.Secirity
                 CustomPrincipal cp = new CustomPrincipal(SessionPersister.Username);
 
                 //if (!cp.IsInRole(Roles))
-                //    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccerDenied", action = "Index" }));
+                //    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
 
             }
         }
