@@ -2,9 +2,6 @@
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DTO.DTO
 {
@@ -103,9 +100,12 @@ namespace DTO.DTO
 
             collectionLevel03DTO = new List<CollectionLevel03DTO>();
             foreach (var x in nextRoot.nextnextRoot)
-                collectionLevel03DTO.Add(new CollectionLevel03DTO(x, Level01Id, Level02Id)); 
+                collectionLevel03DTO.Add(new CollectionLevel03DTO(x, Level01Id, Level02Id));
 
+            //MOCK
+            AuditorId = 1;
             #endregion
+
 
         }
 

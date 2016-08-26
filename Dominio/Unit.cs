@@ -22,7 +22,7 @@ namespace Dominio
         }
     
         public int Id { get; set; }
-        public byte[] Name { get; set; }
+        public string Name { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
     

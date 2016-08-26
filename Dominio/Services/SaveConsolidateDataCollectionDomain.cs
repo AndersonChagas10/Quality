@@ -75,7 +75,7 @@ namespace Dominio.Services
                             _baseRepoCollectionL2.Add(collectionLevel02);
 
                             foreach (var y in x.collectionLevel03DTO)
-                                y.CollectionLevel02_ID = collectionLevel02.Id;
+                                y.CollectionLevel02Id = collectionLevel02.Id;
 
                             _baseRepoCollectionL3.AddAll(Mapper.Map<List<CollectionLevel03>>(x.collectionLevel03DTO));
                         }

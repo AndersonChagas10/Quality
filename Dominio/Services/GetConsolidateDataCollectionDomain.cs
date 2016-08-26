@@ -72,7 +72,7 @@ namespace Dominio.Services
                     i.collectionLevel02DTO = temp2.ToList();
                     foreach (var y in i.collectionLevel02DTO)
                     {
-                        y.collectionLevel03DTO = collectionLelve03ListDTO.Where(r=> temp2.Any(z=>y.Id == r.CollectionLevel02_ID)).ToList();
+                        y.collectionLevel03DTO = collectionLelve03ListDTO.Where(r=> temp2.Any(z=>y.Id == r.CollectionLevel02Id)).ToList();
                     }
                     //putaQuePariuFdp.Add(i);
                 }

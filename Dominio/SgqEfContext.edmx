@@ -103,7 +103,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="Name" Type="varchar(max)" Nullable="false" />
@@ -164,7 +164,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varbinary(max)" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
         </EntityType>
@@ -187,6 +187,7 @@
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="Role" Type="nvarchar(max)" />
+          <Property Name="FullName" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <Association Name="FK_CollectionLevel02_ConsolidationLevel02">
           <End Role="ConsolidationLevel02" Type="Self.ConsolidationLevel02" Multiplicity="1" />
@@ -768,7 +769,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -838,7 +839,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Unit" FromRole="Unit" ToRole="ConsolidationLevel01" />
@@ -865,6 +866,7 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="UserSgq" ToRole="CollectionLevel02" />
           <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq" FromRole="UserSgq" ToRole="CorrectiveAction" />
           <NavigationProperty Name="CorrectiveAction1" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq1" FromRole="UserSgq" ToRole="CorrectiveAction" />
@@ -1317,6 +1319,7 @@
           <EntitySetMapping Name="UserSgq">
             <EntityTypeMapping TypeName="SgqDbModel.UserSgq">
               <MappingFragment StoreEntitySet="UserSgq">
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DTO.BaseEntity;
 
 namespace DTO.DTO
 {
-    public class UnitDTO
+    public class UnitDTO : EntityBase
     {
+
+        public string Name { get; set; }
+
     }
 }

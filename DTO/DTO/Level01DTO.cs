@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DTO.BaseEntity;
 
 namespace DTO.DTO
 {
-    public class Level01DTO
+    public class Level01DTO : EntityBase
     {
+        public string Name { get; set; }
+        public string Alias { get; set; }
+        public bool Active { get; set; }
     }
 }

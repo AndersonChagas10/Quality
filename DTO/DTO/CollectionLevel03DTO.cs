@@ -42,8 +42,8 @@ namespace DTO.DTO
 
             #region Valores Comum para todos
 
-            Level03_Id = int.Parse(nextnextRoot.level03id);
-            Guard.ForValidFk(Level03_Id.Value, "Level03 Id must be valid.");
+            Level03Id = int.Parse(nextnextRoot.level03id);
+            Guard.ForValidFk(Level03Id.Value, "Level03 Id must be valid.");
 
             //TotalError = decimal.Parse(nextnextRoot.totalerror);
             //Guard.ForNegative(TotalError, "Total Error level03");
@@ -61,9 +61,8 @@ namespace DTO.DTO
 
         }
 
-        public int CollectionLevel02_ID { get; set; }
-        public Nullable<int> Level03_Id { get; set; }
-        public decimal TotalError { get; set; }
+        public int CollectionLevel02Id { get; set; }
+        public Nullable<int> Level03Id { get; set; }
         public bool ConformedIs { get; set; }
         public decimal Value { get; set; }
         public string ValueText { get; set; }
