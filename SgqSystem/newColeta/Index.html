@@ -5,8 +5,7 @@
     <meta charset="utf-8" />
     <link href="Content/Geral.css" rel="stylesheet" />
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="Plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="Plugins/sidebar/css/sidebar.min.css" rel="stylesheet" />
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="Content/bootstrap-modal-bs3patch.css" rel="stylesheet" />
     <link href="Content/bootstrap-modal.css" rel="stylesheet" />
 
@@ -38,6 +37,139 @@
             </div>
         </form>
         <div class="foot"></div>
+    </div>
+
+    <!--Começo Ação Corretiva-->
+    <div id="correctiveActionModal" class="container panel panel-default modal-padrao" style="display:none">
+            <div class="panel-body">
+            <!--<div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>-->
+                <div class="modal-body">
+                    <h2>Corrective Action</h2>
+                    <div id="messageAlert" class="alert alert-info hide" role="alert">
+                        <span id="mensagemAlerta" class="icon-info-sign"></span>
+                    </div>
+                    <div class="row">
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-6" id="CorrectiveActionTaken">
+                                        <b class="font16">Corrective Action Taken:<br /></b>
+                                        <b>Date/Time:</b> <span id="datetime"></span><br />
+                                        <b>Auditor: </b><span id="auditor"></span><br />
+                                        <b>Shift: </b><span id="shift"></span><br />
+                                    </div>
+                                    <div class="col-xs-6" id="AuditInformation">
+                                        <b class="font16">Audit Information:<br /></b>
+                                        <b>Audit: </b><span id="auditText"></span><br />
+                                        <b>Start Time: </b><span id="starttime"></span><br />
+                                        <b>Period: </b><span id="correctivePeriod"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description of Failure:</label>
+                            <textarea id="DescriptionFailure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Immediate Corrective Action:</label>
+                            <textarea id="ImmediateCorrectiveAction" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Product Disposition:</label>
+                            <textarea id="ProductDisposition" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Preventative Measure:</label>
+                            <textarea id="PreventativeMeasure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="SlaugtherSignature hide">
+                                    <h4>Slaugther Signature</h4>
+                                    <div class="name">Admin</div>
+                                    <div class="date">08/24/2016 10:31</div>
+                                    <button class="btn btn-link btnSlaugtherSignatureRemove">Remove Signature</button>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="TechinicalSignature hide">
+                                    <h4>Techinical Signature</h4>
+                                    <div class="name">Admin2</div>
+                                    <div class="date">08/24/2016</div>
+                                    <button class="btn btn-link btnTechinicalSignatureRemove">Remove Signature</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span class="pull-left">
+                        <button class="btn btn-default btnSignature btnSlaugtherSignature">
+                            Slaugther Signature
+                        </button>
+                        
+                        <button class="btn btn-default btnSignature btnTechinicalSignature">
+                            Techinical Signature
+                        </button>
+                        
+                    </span>
+
+                    <button class="btn btn-danger modal-close-ca">Close</button>
+                    <button class="btn btn-primary" id="btnSendCorrectiveAction">Send</button>
+                </div>
+            </div>
+        </div>
+        
+    <div id="modalSignatureCorrectiveAction" class="panel panel-default modal-padrao signature" style="display:none">
+        <div class="panel-body">
+            <div class="modal-header">
+                <h3 class="slaughtersig head hide">Slaughter Signature</h3>
+                <h3 class="techinicalsig head hide">Techinical Signature</h3>
+                <div id="messageAlert" class="alert alert-info hide" role="alert">
+                    <span id="mensagemAlerta" class="icon-info-sign"></span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>Login:</label>
+                            <input type="text" class="form-control" id="signatureLogin">
+                        </div>
+                        <div class="form-group">
+                            <label>Password:</label>
+                            <input type="password" class="form-control" id="signaturePassword">
+                        </div>
+                        <div id="messageError" class="alert alert-danger hide" role="alert">
+                            <span class="icon-remove-sign"></span>    <strong>Error! </strong><span id="mensagemErro"> </span>
+                        </div>
+                        <div id="messageAlert" class="alert alert-info hide" role="alert">
+                            <span id="mensagemAlerta" class="icon-info-sign"></span>
+                        </div>
+                        <div id="messageSuccess" class="alert alert-success hide" role="alert">
+                            <span id="mensagemSucesso" class="icon-ok-circle"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger modal-close-signature">Close</button>
+                <button type="button" class="btn btn-primary" id="btnSignatureLogin">Login</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Fim Ação Corretiva-->
+
+    <div class="message padding20" style="display:none">
+            <h1 class="head">Titulo</h1>
+            <div class="body font16">Mensagem</div>
+            <div class="foot"><button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button></div>
     </div>
     <div class="App hide" breadMainLevel="Slaugther">
         <div class="rightMenu">
@@ -71,34 +203,14 @@
                     <area alt="" title="" onclick='areaImage(28)' shape="poly" coords="15,76,17,105,66,111,83,62" style="outline:none;" target="_self" />
             </a>
         </div>
-        <div class="overlay hide"></div>
+        <div class="overlay" style="display:none"></div>
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                <div class="navbar-header" style="width: 100%">
                     <a class="navbar-brand" id="SGQName" href="#"><i class="fa fa-chevron-left hide iconReturn" aria-hidden="true"></i> Data Collection</a>
+                    <div class="buttonMenu navbar-brand hide" id="btnShowImage" level01Id="3">Show Image</div>
+                    <div id="btnMore" class="iconMoreMenu pull-right" style="padding: 12px;"><i class="fa fa-ellipsis-v iconMoreMenu" aria-hidden="true"></i></div>
                 </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav hide buttonMenu" level01Id="3">
-                        <li>
-                            <a id="btnShowImage" href="#" role="button" title="More" class="font16">Show Image</a>
-
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown iconMoreMenu">
-                            <a id="btnMore" href="#" role="button" title="More" class="iconMoreMenu">...</a>
-                            <!--  <ul class="dropdown-menu">
-                              <li><a href="#">Logout</a></li>
-                            </ul> -->
-                        </li>
-                    </ul>
-                </div><!--/.nav-collapse -->
             </div>
         </div>
         <div class="container">
@@ -1556,6 +1668,7 @@
                                         <span class="cursorPointer iconsArea font18">N/A</span>
                                     </button>
 
+
                                 </div>
                             </div>
                         </div>
@@ -2305,198 +2418,28 @@
                 </div>
             </div>
 
-            <div id="modalMessage" class="modal fade">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title messageHeader"></h4>
-                </div>
-                <div class="modal-body">
-                    <div class="message"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="btnMessageOk">OK</button>
-                </div>
-            </div>
-
-            <!--Começo Ação Corretiva-->
-            <div class="correctiveaction hide list-group" style="margin-top: 16px;  padding-bottom: 70px;">
-                <div id="correctiveActionModal" class="modal container fade" style="display: none;">
-                    <!--<div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    </div>-->
-                    <div class="modal-body" style="overflow:hidden">
-                        <h2>Corrective Action</h2>
-                        <div id="messageAlert" class="alert alert-info hide" role="alert">
-                            <span id="mensagemAlerta" class="icon-info-sign"></span>
-                        </div>
-                        <div class="row">
-
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <b>Corrective Action Taken:<br /></b>
-                                            Date/Time: <span id="datetime"></span><br />
-                                            Auditor: <span id="auditor"></span><br />
-                                            Shift: <span id="shift"></span><br />
-                                        </div>
-                                        <div class="col-xs-6">
-                                            <b>Audit Information:<br /></b>
-                                            Audit: <span id="auditText"></span><br />
-                                            Start Time: <span id="starttime"></span><br />
-                                            Period: <span id="correctivePeriod"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Description of Failure:</label>
-                                <textarea id="DescriptionFailure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Immediate Corrective Action:</label>
-                                <textarea id="ImmediateCorrectiveAction" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Product Disposition:</label>
-                                <textarea id="ProductDisposition" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Preventative Measure:</label>
-                                <textarea id="PreventativeMeasure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                            </div>
-
-
-
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <label>Slaughter:</label>
-                                    <input type="text" class="form-control" id="slaughter" disabled>
-                                </div>
-                                <div class="col-xs-3">
-                                    <label>Date/Time:</label>
-                                    <input type="text" class="form-control" id="slaughterDatetime" disabled>
-                                </div>
-                                <div class="col-xs-3">
-                                    <label>Techinical Services:</label>
-                                    <input type="text" class="form-control" id="techinical" disabled>
-                                </div>
-                                <div class="col-xs-3">
-                                    <label>Date/Time:</label>
-                                    <input type="text" class="form-control" id="techinicalDatetime" disabled>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <span class="pull-left">
-                            <button class="btn btn-default" onclick="AcaoCorretiva.abrirModalLoginSlaughter();">
-                                Slaugther Signature
-                            </button>
-                            <button class="btn btn-default" onclick="AcaoCorretiva.abrirModalLoginTecnical();">
-                                Techinical Signature
-                            </button>
-                        </span>
-
-                        <button class="btn btn-danger" data-dismiss="modal" onclick="defectLimitCheck();">Close</button>
-                        <button class="btn btn-primary" id="btnSendCorrectiveAction" onclick="AcaoCorretiva.enviarAcaoCorretiva();">Send</button>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div id="modalLoginSlaughter" class="modal container fade" data-width="400">
-                <div class="modal-header">
-                    <h2>Slaughter Signature</h2>
-                    <div id="messageAlert" class="alert alert-info hide" role="alert">
-                        <span id="mensagemAlerta" class="icon-info-sign"></span>
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="form-group">
-                                <label>Login:</label>
-                                <input type="text" class="form-control" id="slaughterLogin">
-                            </div>
-                            <div class="form-group">
-                                <label>Password:</label>
-                                <input type="password" class="form-control" id="slaughterPassword">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btnSlaughterLogin" onclick="AcaoCorretiva.logarUsuarioSlaughter();">Login</button>
-                </div>
-            </div>
-
-
-
-            <div id="modalLoginTechinical" class="modal container fade" data-width="400">
-                <div class="modal-header">
-                    <h2>Techinical Services Signature</h2>
-                    <div id="messageAlert" class="alert alert-info hide" role="alert">
-                        <span id="mensagemAlerta" class="icon-info-sign"></span>
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="form-group">
-                                <label>Login:</label>
-                                <input type="text" class="form-control" id="techinicalLogin">
-                            </div>
-                            <div class="form-group">
-                                <label>Password:</label>
-                                <input type="password" class="form-control" id="techinicalPassword">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btnTechinicalLogin" onclick="AcaoCorretiva.logarUsuarioTechnical();">Login</button>
-                </div>
-            </div>
-
-            <!--Fim Ação Corretiva-->
-
-
-
         </div>
 
         <button id="btnSave" class="btn btn-lg btnSave btnRounded btn-warning hide"><i class='fa fa-save'></i></button><!--Save-->
 
         <button class="btn btn-lg btn-danger btnCA hide">Corrective Action</button><!--Corrective Action-->
         <footer class="footer">
-            <div class="container">
-                <p>text here</p>
-            </div>
+            <p style="color: white; margin-left: 16px; margin-top: 12px;"><span class="user">Admin</span> - <span class="unit">Colorado</span></p>
         </footer>
     </div>
     <div class="Results"></div>
-    <script src="Plugins/jquery/jquery.min.js"></script>
+    <div class="Users"></div>
+
+    <script src="jquery/jquery.min.js"></script>
+
+    <script src="cordova.js"></script>
     <script src="Scripts/bootstrap.js"></script>
-    <script src="Plugins/sidebar/js/sidebar.js"></script>
     <script src="Scripts/Methods.js"></script>
-    <script src="Scripts/correctiveaction.js"></script>
     <script src="Scripts/bootstrap-modal.js"></script>
     <script src="Scripts/bootstrap-modalmanager.js"></script>
+    <script src="Scripts/File.js"></script>
+    <script src="SyncData.js"></script>
     <script src="Scripts/DataBase.js"></script>
-    <script src="../Scripts/core.js"></script>
-    <script src="../Scripts/lib-typedarrays.js"></script>
-    <script src="../Scripts/x64-core.js"></script>
-    <script src="../Scripts/enc-utf16.js"></script>
-    <script src="../Scripts/enc-base64.js"></script>
-    <script src="../Scripts/cipher-core.js"></script>
-    <script src="../Scripts/md5.js"></script>
-    <script src="../Scripts/aes.js"></script>
-    <script src="../Scripts/tripledes.js"></script>
 
 </body>
 </html>

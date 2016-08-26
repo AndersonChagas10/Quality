@@ -3,26 +3,28 @@ document.addEventListener('deviceready', onDeviceReady, false);
 
 // Cordova is ready
 function onDeviceReady() {
-    var db = openDatabase('SGQUSA', '1.0', 'WebSQL Database', 2 * 1024 * 1024);
 
     //PeriodHTMLDAO.dropTable();
-    PeriodHTMLDAO.createTable();
-    PeriodHTMLDAO.insertHTML();
-    PeriodHTMLDAO.updateHTML(1);
-    PeriodHTMLDAO.selectTable(list);
-
+    //SystemDAO.getDB();
+    //PeriodHTMLDAO.createTable();
+    //PeriodHTMLDAO.insertHTML();
+    //PeriodHTMLDAO.updateHTML(1);
+    //PeriodHTMLDAO.selectTable(list);
+    //PeriodHTMLDAO.appendHTML();
+    $('#platform').text( device.platform );
+    createFile();
 }
 
 var SystemDAO = {
     getDB: function () {
-        return openDatabase('SGQUSA', '1.0', 'WebSQL Database', 2 * 1024 * 1024);
+        return openDatabase('SGQUSA', '1.0', 'WebSQL Database', 50 * 1024 * 1024);
     }
 }
 
 var PeriodHTMLDAO = {
     createTable: function () {
         SystemDAO.getDB().transaction(function (tx) {
-            tx.executeSql("CREATE TABLE IF NOT EXISTS PeriodHTML (Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, ValueHtml TEXT, InsertDate TEXT, SyncDate TEXT, Shift INTEGER, Period INTEGER)");
+            tx.executeSql("CREATE TABLE IF NOT EXISTS PeriodHTML (Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, Result TEXT, InsertDate TEXT, SyncDate TEXT, Shift INTEGER, Period INTEGER, Sync BOOL)");
         });
     },
 
@@ -32,7 +34,7 @@ var PeriodHTMLDAO = {
         });
     },
 
-    insertHTML: function () {
+    insertHTML: function (result) {
         SystemDAO.getDB().transaction(function (tx) {
             var date = new Date();
             var year = date.getFullYear();
@@ -46,9 +48,8 @@ var PeriodHTMLDAO = {
 
             var shift = $('.App').attr('shift');
             //var period = $('.App').attr('period');
-            var html = $('.App').html();
 
-            tx.executeSql("INSERT INTO PeriodHTML (ValueHtml, InsertDate, Shift, Period) VALUES ('" + html + "', '" + dt + "', '1', '1') ", null, null, null);
+            tx.executeSql("INSERT INTO PeriodHTML (Result, InsertDate, Shift, Period, Sync) VALUES ('" + result + "', '" + dt + "', '" + $('.App').attr('shift') +"', '" + $('.App').attr('period') + "', 0) ", null, null, null);
         });
     },
 
@@ -68,23 +69,8 @@ var PeriodHTMLDAO = {
             var period = $('.App').attr('period');
             var contentHtml = $('.App').html();
 
-            tx.executeSql('UPDATE PeriodHTML SET ValueHtml = ?, InsertDate = ?, Shift = ?, Period = ? WHERE Id = ? ', [contentHtml, dt, 1, 1, 1], onSuccess, onError);
+            tx.executeSql('UPDATE PeriodHTML SET Result = ?, InsertDate = ?, Shift = ?, Period = ? WHERE Id = ? ', [contentHtml, dt, 1, 1, 1], onSuccess, onError);
 
-        });
-    },
-
-    insertTable: function (value) {
-        SystemDAO.getDB().transaction(function (tx) {
-            var date = new Date();
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
-            var hour = date.getHours();
-            var minute = date.getMinutes();
-            var second = date.getSeconds();
-            var yyyymmddhhmm = year + ("0" + month).slice(-2) + "" + ("0" + day).slice(-2) + "" + ("0" + hour).slice(-2) + "" + ("0" + minute).slice(-2) + "" + ("0" + second).slice(-2);
-
-            tx.executeSql("INSERT INTO PeriodHTML (Value, InsertDate) VALUES ('" + value + "', '" + yyyymmddhhmm + "') ", null, null, null);
         });
     },
 
@@ -104,7 +90,8 @@ var PeriodHTMLDAO = {
             function (tx, results) {
                 if (results.rows[results.rows.length - 1] != undefined) {
                     $('.App').empty();
-                    $('.App').append(results.rows[results.rows.length - 1].ValueHtml);
+                    appendDevice(results.rows[results.rows.length - 1].ValueHtml, $('.App'));
+                    //alert(results.rows.length);
                 }
             });
         });
@@ -134,10 +121,12 @@ function list(value, last) {
 
 function onSuccess(transaction, resultSet) {
     console.log('Query completed: ' + JSON.stringify(resultSet));
+    $('#countlines').text( JSON.stringify(resultSet));
 }
 
 function onError(transaction, error) {
     console.log('Query failed: ' + error.message);
+    $('#countlines').text( error.message);
 }
 
 //onDeviceReady();

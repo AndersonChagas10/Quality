@@ -35,13 +35,16 @@ $("#auditText").text(storage.getItem("indicatorName"));
 var AcaoCorretiva = {
 
     abrirModalLoginSlaughter: function () {
-        var $temp = $('#modalLoginSlaughter');
-        $temp.modal();
+        $('#correctiveActionModal').css('z-index', '9997');
+        $('#modalLoginSlaughter').removeClass('hide');
+        var ca = $('#modalLoginSlaughter');
+        ca.fadeIn("fast");
     },
 
     abrirModalLoginTecnical: function () {
-        var $temp = $('#modalLoginTechinical');
-        $temp.modal();
+        $('#modalLoginTechinical').removeClass('hide');
+        var ca = $('#modalLoginTechinical');
+        ca.fadeIn("fast");
     },
 
     logarUsuarioSlaughter: function () {

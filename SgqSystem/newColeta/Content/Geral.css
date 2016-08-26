@@ -1,6 +1,5 @@
 ﻿* {
     font-family: Arial, Verdana, Tahoma;
-    font-size:16px;
     border-radius: 0 !important;
 }
 html, body
@@ -11,6 +10,10 @@ html, body
 body > .App > div.container {
     padding-top:70px;
 }
+.overflowNo
+{
+    overflow: hidden;
+} 
 .overlay
 {
     position: fixed; 
@@ -19,7 +22,7 @@ body > .App > div.container {
     width: 100%;
     height: 100%;
     background: #fff;
-    opacity: 0.1;
+    opacity: 0.5;
     filter: alpha(opacity=10);
     z-index:9998;
 }
@@ -41,6 +44,10 @@ body > .App > div.container {
 .iconMoreMenu *
 {
     font-size: 28px !important;
+    color: white;
+}
+.font14{
+	font-size: 14px !important;
 }
 .font16{
 	font-size: 16px !important;
@@ -56,9 +63,6 @@ body > .App > div.container {
 }
 .font24{
 	font-size: 24px !important;
-}
-.fontBold{
-    font-weight: bold;
 }
 
 .rightMenu .list-group a
@@ -81,8 +85,7 @@ body > .App > div.container {
 	z-index:9999;
 	position:fixed;
 	right:-151px;
-	border: 1px solid #fff;
-	border-right: 0;
+	border: 0;
 	background-color: #333;
 }
 .cffImage
@@ -143,6 +146,11 @@ body > .App > div.container {
 {
     padding:10px !important;
 }
+.padding20
+{
+    padding:20px !important;
+}
+
 .height50
 {
    height: 50px !important;
@@ -199,14 +207,6 @@ body > .App > div.container {
 .marginLeft70
 {
 	margin-left:70px;
-}
-.marginLeft80
-{
-	margin-left:80px;
-}
-.marginLeft90
-{
-	margin-left:90px;
 }
 .marginRight10
 {
@@ -268,7 +268,7 @@ body > .App > div.container {
 {
 	color: #ccc;
 	padding:10px;
-}	FFFF99
+}	
 
 .cursorPointer
 {
@@ -277,7 +277,7 @@ body > .App > div.container {
 .naSelected
 {
 	color: #0000cc !important;
-	font-variant: body !important;
+	/*font-variant: body !important;*/
 }
 .btnAreaSave
 {
@@ -334,6 +334,20 @@ body > .App > div.container {
 .level02Group , .level03Group{
     margin-bottom: 80px !important;
 }
+.modal-padrao{ 
+    position: fixed;
+    z-index: 9999;
+    margin: auto; 
+    top: 50%;
+    left: 50%; 
+    margin-top: -290px;  margin-left: -40% !important;
+}
+#correctiveActionModal
+{
+    height: 600px;
+    width: 80%;
+}
+
 #correctiveActionModal .modal-body
 {
     padding-top: 0!important;
@@ -341,7 +355,6 @@ body > .App > div.container {
 #correctiveActionModal .modal-body > .row
 {
     padding: 10px !important;
-    height: 574px;
     overflow-y:auto;
     overflow-x:hidden;
 
@@ -358,7 +371,7 @@ body > .App > div.container {
 #correctiveActionModal .modal-body > .row
 {
     padding: 10px !important;
-    height: 574px;
+    height: 430px;
     overflow-y:auto;
     overflow-x:hidden;
 
@@ -366,6 +379,10 @@ body > .App > div.container {
 #correctiveActionModal .modal-body > .row .row
 {
     padding: 10px;
+}
+.signature{
+    z-index: 99999; position: fixed; margin: auto; top: 50%; left: 50%; margin-top: -200px;  margin-left: -170px !important;
+; 
 }
 .btnNotAvaliable{
     padding-right: 0;
@@ -374,9 +391,9 @@ body > .App > div.container {
 }
 .btnAreaSaveConfirm
 {
-    position: relative;
+    position: absolute;
     z-index:9999;
-    right: 0px !important;
+    right: 130px !important;
 }
 #selectPeriod
 {
@@ -388,7 +405,7 @@ body > .App > div.container {
 }
 .headDescription span
 {
-    font-size:16px;
+     font-size:16px;
     font-weight: bold;
     margin-right:20px;
 }
@@ -396,6 +413,7 @@ body > .App > div.container {
 {
     margin-right: 120px;
 }
+
 .btnRounded{
     height: 75px !important;
     width: 75px !important;
@@ -409,4 +427,18 @@ body > .App > div.container {
 
 .btnConfirm{    
     margin-bottom:90px !important;
+}
+.spanTitle{
+    margin-right: 1px !important;
+    margin-left: 1px !important;
+}
+.message
+{
+    top: 200px;
+    min-height: 200px;
+    width: 100%;
+    background-color: #5353c6;
+    color: #fff;
+    z-index: 9999;
+    position: absolute;
 }

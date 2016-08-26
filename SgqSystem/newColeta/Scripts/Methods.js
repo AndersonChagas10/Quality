@@ -1,98 +1,25 @@
-﻿var keyEncryptGlobal = "90A4F2C1DC40CE1F";
-
-var threeDES = {
-
-    Encrypt3DES: function (text, useHashing) {
-
-        var keyEncrypt = keyEncryptGlobal;
-
-        if (useHashing) {
-            keyEncrypt = CryptoJS.MD5(keyEncrypt).toString();
-            keyEncrypt = keyEncrypt.substring(0, 16);
-        }
-
-        var textWordArray = CryptoJS.enc.Utf8.parse(text);
-
-        var keyHex = CryptoJS.enc.Hex.parse(keyEncrypt);
-
-        var iv = String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0);
-
-        var ivHex = CryptoJS.enc.Hex.parse(iv);
-
-        var options = {
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7,
-            iv: ivHex
-        };
-        var encrypted = CryptoJS.TripleDES.encrypt(textWordArray, keyHex, options);
-
-        var base64String = encrypted.toString();
-
-        return base64String;
-
-    },
-
-    Decrypt3DES: function (base64String, useHashing) {
-
-        var keyEncrypt = keyEncryptGlobal;
-
-        if (useHashing) {
-            keyEncrypt = CryptoJS.MD5(keyEncrypt).toString();
-            keyEncrypt = keyEncrypt.substring(0, 16);
-        }
-
-        var keyHex = CryptoJS.enc.Hex.parse(keyEncrypt);
-
-        var iv = String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0);
-
-        var ivHex = CryptoJS.enc.Hex.parse(iv);
-
-        var options = {
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7,
-            iv: ivHex
-        };
-
-        var decrypted = CryptoJS.TripleDES.decrypt({
-            ciphertext: CryptoJS.enc.Base64.parse(base64String)
-        }, keyHex, options);
-
-        return decrypted.toString(CryptoJS.enc.Utf8);
-
-    }
-
-
-};
-
-$(document).ready(function () {
-    PeriodHTMLDAO.createTable();
-
+﻿$(document).ready(function () {
+    //PeriodHTMLDAO.createTable();
     //PeriodHTMLDAO.selectTable(list);
+    
 });
+
+function initialLogin(user)
+{
+    $('.App').attr('userid', user.attr('userid'));
+    $('footer .user').text(user.attr('username'));
+    showLevel01();
+}
 
 $(document).on('click', '#btnLogin', function (e) {
     e.preventDefault();
-
-    $.ajax({
-        method: "POST",
-        url: "/api/User/AuthenticationLogin",
-        data: { Name: $('#inputUserName').val(), Password: $('#inputPassword').val() }
-    })
-  .success(function (msg) {
-      showLevel01();
-  });
-
-    //if ($('#inputUserName').val() == "Admin" && $('#inputPassword').val() == "123") {
-    //    showLevel01();
-    //}
-    //else {
-    //    Geral.exibirMensagemErro("Username or password is invalid");
-    //}
+    getlogin($('#inputUserName').val(), $('#inputPassword').val(), initialLogin);
     //auth();
 });
 $(window).bind('beforeunload', function () {
     return "Warning! If you proceed you will loose information";
 });
+
 $(document).on('click', '.level01List .level01', function (e) {
 
     var level01 = $(this);
@@ -100,7 +27,8 @@ $(document).on('click', '.level01List .level01', function (e) {
     if (itensOk == false) {
         return false;
     }
-    if (!$(this).attr('completed') && $(this).attr('reaudit') && !$(this).attr('startreaudit')) {
+    if (!$(this).attr('completed') && $(this).attr('reaudit') && !$(this).attr('startreaudit'))
+    {
         openMessageModal("Pending re-audit", 'Please, complete re-audit prior to move to next audit');
         return false;
     }
@@ -117,7 +45,8 @@ $(document).on('click', '.level01List .level01', function (e) {
             if (level01.attr('startreaudit')) {
                 reauditNumber++;
             }
-            if (reauditNumber > 0) {
+            if(reauditNumber > 0)
+            {
                 attrReaudit = "[reaudit=true]";
                 attrReauditNumber = "[reauditnumber=" + reauditNumber + "]";
             }
@@ -125,7 +54,7 @@ $(document).on('click', '.level01List .level01', function (e) {
 
     }
 
-    var resultsLevel01 = $('.level01Result[date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][level01id=' + level01.attr('id') + ']' + attrReaudit + attrReauditNumber);
+    var resultsLevel01 = $('.level01Result[date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][level01id=' + level01.attr('id') + ']' + attrReaudit + attrReauditNumber + ':last');
 
     level02Reset($('.level02Group[level01id=' + level01.attr('id') + '] .level02'));
 
@@ -134,36 +63,41 @@ $(document).on('click', '.level01List .level01', function (e) {
 
         $("span.setsDone").text((resultsLevel01.attr('totalevaluate')) ? resultsLevel01.attr('totalevaluate') : "0");
 
-
+       
         $("span.sideWithErrors").text((resultsLevel01.attr('sidewitherros')) ? resultsLevel01.attr('sidewitherros') : "0").parents('.labelPainel').removeClass('red');
         $("span.more3Defects").text((resultsLevel01.attr('more3Defects')) ? resultsLevel01.attr('more3Defects') : "0").parents('.labelPainel').removeClass('red');
         $("span.setAtual").text((resultsLevel01.attr('lastevaluate')) ? resultsLevel01.attr('lastevaluate') : "1");
         $("span.sideAtual").text((resultsLevel01.attr('lastsample')) ? resultsLevel01.attr('lastsample') : "1");
 
         var sideWithErros = parseInt($("span.sideWithErrors:first").text());
-        if (sideWithErros > 5) {
+        if (sideWithErros > 5)
+        {
             $("span.sideWithErrors").parents('.lavelPainel').addClass('red');
         }
         var more3Defects = parseInt($("span.more3Defects:first").text());
-        if (more3Defects > 0) {
+        if (more3Defects > 0)
+        {
             $("span.more3Defects").parents('.labelPainel').addClass('red');
         }
 
         var level02 = $('.level02Group[level01id=' + level01.attr('id') + '] .level02');
 
         //level02.removeAttr('completed').parents('li').removeClass('bgCompleted');
-        if (resultsLevel01.attr('completed')) {
+        if(resultsLevel01.attr('completed'))
+        {
             level02.attr('completed', 'completed');
             level02Complete(level02);
         }
     }
-    else {
+    else
+    {
 
         resultsLevel01.each(function (e) {
 
             var level01Result = $(this);
-            var results = level01Result.children('.level02Result:last');
-            if (level01Result.attr('biasedunbiased')) {
+            var results = level01Result.children('.level02Result');
+            if (level01Result.attr('biasedunbiased'))
+            {
                 $('#biasedUnbiased').val(level01Result.attr('biasedunbiased'));
             }
 
@@ -195,7 +129,8 @@ $(document).on('click', '.level01List .level01', function (e) {
                 $('.totalDefects').text(totalDefects);
                 level02.addClass('selected');
                 defectLimitCheck();
-                if (!level02.attr('havephases')) {
+                if (!level02.attr('havephases'))
+                {
                     level02Complete(level02);
                 }
                 level02.removeClass('selected');
@@ -215,30 +150,55 @@ $(document).on('click', '.level01List .level01', function (e) {
 $(document).on('click', '.level02List .level02', function (e) {
     showLevel03($(this));
 });
-//
-//$(document).on('click', '.btnCA', function (e) {
-//    $('.level01List').addClass('hide').hide();
-//    $('.level02List').addClass('hide').hide();
-//    $('.level03List').addClass('hide').hide();
-//    $('.breadcrumb').addClass('hide').hide();
 
-//    $('.correctiveaction').removeClass('hide').show();
-//    $(this).addClass('hide');
-//});
 $(document).on('click', '.btnCA', function (e) {
+
+    $(this).addClass('caLevel02').addClass('hide');
+    correctiveActionOpen();
     //  $('.level01List').addClass('hide').hide();
     // $('.level02List').addClass('hide').hide();
     // $('.level03List').addClass('hide').hide();
     // $('.breadcrumb').addClass('hide').hide();
 
-    $('.correctiveaction').removeClass('hide').show();
-    $(this).addClass('hide');
+    //$('.correctiveaction').removeClass('hide').show();
+    //$(this).addClass('hide');
 
-    var $modal = $('#correctiveActionModal');
+ 
 
-    $modal.modal();
+});
 
-    var level01Id = parseInt($('.level01.selected').attr('id'));
+function correctiveActionOpen(level01Id, date, shift, period)
+{
+    
+    level01Id = level01Id ? level01Id : $('.level01.selected').attr('id');
+    date = date ? date : $('.App').attr('date');
+    shift = shift ? shift : $('.App').attr('shift');
+    period = period ? period : $('.App').attr('period');
+
+    var level01 = $('#' + level01Id + '.level01');
+    var correctiActionSelected = $('.level01Result[level01id=' + level01Id + '][date=' + date + '][shift=' + shift + '][period=' + period + '][havecorrectiveaction]');
+
+    var correctiveActionModal = $('#correctiveActionModal');
+
+    correctiveActionModal.attr('unidadeid', correctiActionSelected.attr('unidadeid'))
+                         .attr('auditorid', $('.App').attr('userid'))
+                         .attr('date', correctiActionSelected.attr('date'))
+                         .attr('shift', correctiActionSelected.attr('shift'))
+                         .attr('period', correctiActionSelected.attr('period'));
+
+    $('#CorrectiveActionTaken').children('#datetime').text(dateTimeFormat());
+    $('#CorrectiveActionTaken').children('#auditor').text('Admin');
+    $('#CorrectiveActionTaken').children('#shift').text($('#shift option[value=' + shift + ']').text());
+    $('#AuditInformation').children('#auditText').text(level01.children('.levelName').text());
+    $('#AuditInformation').children('#starttime').text(correctiActionSelected.attr('datetime'));
+    $('#AuditInformation').children('#correctivePeriod').text($('#selectPeriod option[value=' + period + ']').text());
+    
+
+    $('.overlay').show();
+    $('body').addClass('overflowNo');
+    correctiveActionModal.removeClass('hide');
+
+ //   var level01Id = parseInt($('.level01.selected').attr('id'));
 
     if (!$('.level01.selected').length) {
 
@@ -247,20 +207,24 @@ $(document).on('click', '.btnCA', function (e) {
 
     var description = "";
 
-    $('.level02List .level02Group[level01id=' + level01Id + '] .level02[limitexceeded]').each(function (e) {
+     correctiActionSelected.children('.level02Result[havecorrectiveaction]').each(function (e) {
 
-        var level02 = $(this);
+    
+
+        var level02 = $('#' + $(this).attr('level02id') + '.level02');
+
+
         var level02Id = parseInt(level02.attr('id'));
         var level02Name = level02.children('span.levelName').text();
         var level02errorlimit = parseInt(level02.attr('levelerrorlimit'));
 
         description = description + level02Name + " error limit = " + level02errorlimit;
 
-        $('.level03Group[level01id=' + level01Id + '] .level03').each(function (e) {
+        $(this).children('.level03Result').each(function (e) {
 
-            var level03 = $(this);
+            var level03 = $('#' + $(this).attr('level03id') + '.level03');;
 
-            var level03Defects = level02.attr('level03' + level03.attr('id'));
+            var level03Defects = $(this).attr('value');
             var level03Id = parseInt(level03.attr('id'));
             var level03Name = level03.children('.row').children('div').html();
 
@@ -283,10 +247,12 @@ $(document).on('click', '.btnCA', function (e) {
 
     });
 
+
     $("#DescriptionFailure").val(description);
 
-});
+    correctiveActionModal.fadeIn("fast");
 
+}
 function auth() {
     var userTest = { Name: $("#inputUserName").val(), Password: $("#inputPassword").val() };
     var urlGetUser = '../api/User';
@@ -337,6 +303,10 @@ function auth() {
     });
 
 }
+function correctiveActionSignature()
+{
+      
+}
 
 function dateFormat() {
     var date = new Date();
@@ -354,9 +324,9 @@ function dateReturn() {
     var month = date.getMonth() + 1;
     var day = date.getDate();
 
-    var data = ("0" + month).slice(-2) + ("0" + day).slice(-2) + year;
+    var data = ("0" + month).slice(-2)  + ("0" + day).slice(-2) + year;
     return data;
-
+    
 }
 function dateTimeFormat() {
     var date = new Date();
@@ -381,7 +351,7 @@ var Geral = {
             $divMensagem.find('#mensagemAlerta').text(mensagem);
             $divMensagem.removeClass('hide');
         } else {
-            alert(mensagem);
+            //alert(mensagem);
             location.href = url;
         }
         $('html,body').animate({ scrollTop: 0 }, 'slow');
@@ -396,7 +366,7 @@ var Geral = {
             $divMensagem.find('#mensagemErro').text(mensagem);
             $divMensagem.removeClass('hide');
         } else {
-            alert(mensagem);
+            //alert(mensagem);
             location.href = url;
         }
         $('html,body').animate({ scrollTop: 0 }, 'slow');
@@ -420,7 +390,7 @@ var Geral = {
                 $divMensagem.find('span').text(mensagem);
                 $divMensagem.show();
             } else {
-                alert(mensagem);
+                //alert(mensagem);
                 location.href = url;
             }
             $('html,body').animate({ scrollTop: 0 }, 'slow');
@@ -444,11 +414,14 @@ function showLevel01() {
         level02Reset($('.level02List .level02Group .level02'));
         $('.App').removeClass('hide').show();
         breadCrumb();
+        $('.alert').addClass('hide');
 
-        PeriodHTMLDAO.appendHTML();
+        //PeriodHTMLDAO.appendHTML();
+        loginFile();
 
     });
 }
+
 function configureLevel01() {
 
 
@@ -466,9 +439,9 @@ function configureLevel01() {
     $('.level01, .level01').parents('li').removeClass('bgLimitExceeded');
 
 
-    // var reauditCount = $('.reauditCount[count!=0]');
+   // var reauditCount = $('.reauditCount[count!=0]');
 
-    // reauditCount.children('button').text(reauditCount.attr('count'));
+   // reauditCount.children('button').text(reauditCount.attr('count'));
     //$('.level01').parents('.row').children('.userInfo').children('div').children('.reauditCount').removeClass('hide');
 
     //$('.level01').parents('.row').children('.userInfo').children('div').children('.reauditCount[count!=0]').removeClass('hide').children('button').text();
@@ -481,7 +454,7 @@ function configureLevel01() {
     $('.level01[correctivaction]').parents('.row').children('.userInfo').children('div').children('.btnCorrectiveAction').removeClass('hide');
 
     $('.level01[reaudit]').parents('.row').children('.userInfo').children('div').children('.btnReaudit').removeClass('hide');
-    // $('.level01[reaudit]').parents('li').removeClass('bgLimitExceeded').addClass('bgCompleted');
+   // $('.level01[reaudit]').parents('li').removeClass('bgLimitExceeded').addClass('bgCompleted');
     $('.level01[reaudit]').parents('li').removeClass('bgLimitExceeded');
     $('.level01[correctivaction]').parents('li').addClass('bgLimitExceeded').removeClass('bgCompleted');
 
@@ -496,11 +469,19 @@ function configureLevel01() {
 
         level01User.children('.btnReaudit').children('.reauditPeriod').text($('#selectPeriod option[value=' + level01geraReaudit.attr('period') + ']').text());
 
-        level01User.children('.reauditCount').children('button').text(level01geraReaudit.attr('reauditnumber') + '/' + level01.attr('minreauditnumber'));
+        var totalReaudits = 0;
+        if (level01geraReaudit.attr('totalreaudits'))
+        {
+            totalReaudits = parseInt(level01geraReaudit.attr('totalreaudits'));
+        }
+
+
+        level01User.children('.reauditCount').children('button').text(totalReaudits + '/' + level01.attr('minreauditnumber'));
 
         //level01User.children('.reauditCount');
     });
 }
+
 function showLevel02(level01) {
 
     $('.level01').removeClass('selected');
@@ -510,10 +491,12 @@ function showLevel02(level01) {
     $('.level01List').fadeOut("fast", function (e) {
         level01.parents('.level01List').addClass('hide');
 
-        if (level01.attr('startreaudit')) {
+        if (level01.attr('startreaudit'))
+        {
             $('span.auditReaudit').children('.name').text('Re-audit');
         }
-        else {
+        else
+        {
             $('span.auditReaudit').children('.name').text('Audit').siblings('.reauditPeriod').text("");
         }
         var level02 = $('.level02List');
@@ -550,6 +533,8 @@ function showLevel02(level01) {
         breadCrumb($('.level01List .selected').text());
     });
 }
+
+
 function level02Configure() {
     $('.level02[completed]').parents('li').addClass('bgCompleted');
     $('.level02[limitExceeded]').parents('li').addClass('bgLimitExceeded');
@@ -573,8 +558,9 @@ function checkInputsSelect() {
 
         message = "Select the period<br>";
     }
-    if ($('#selectCattleType:visible option:selected').val() == "0") {
-        message = message + "Select the cattle type<br>";
+    if ($('#selectCattleType:visible option:selected').val() == "0")
+    {
+        message =  message + "Select the cattle type<br>";
     }
 
     if ($('#inputChainSpeed:visible').val() == "") {
@@ -591,7 +577,7 @@ function checkInputsSelect() {
 
     if ($('#biasedUnbiased:visible option:selected').val() == "0") {
         message = message + "Select if biased or unbiased<br>";
-    }
+    } 
 
     if (message == '') {
         return true;
@@ -604,7 +590,8 @@ function checkInputsSelect() {
 function showLevel03(level02) {
 
     var itensOk = checkInputsSelect();
-    if (itensOk == false) {
+    if (itensOk == false)
+    {
         return false;
     }
 
@@ -623,7 +610,8 @@ function showLevel03(level02) {
     if (!level02.attr('defects')) {
         level02.attr('defects', '0');
     }
-    if (level02.attr('consecutivefailure')) {
+    if (level02.attr('consecutivefailure'))
+    {
         $('.painelLevel03 .consecutiveFailure').text(level02.attr('consecutivefailure'));
     }
     $('.level02List').fadeOut("fast", function (e) {
@@ -642,6 +630,7 @@ function showLevel03(level02) {
 
     });
 }
+
 function breadCrumb(level01, level02) {
     var bdCrumb = $('.breadcrumb');
 
@@ -672,6 +661,7 @@ function breadCrumb(level01, level02) {
 
 
 }
+
 //$(document).on('click', '.breadcrumb', function (e) {
 //    $('#messageContent').text('ppppppppp');
 //    var $modal = $('#modalMessage');
@@ -694,7 +684,7 @@ $(document).on('click', '.overlay', function (e) {
 });
 function confirmButtonLevel02Hide() {
     if ($('.btnAreaSaveConfirm').is(':visible')) {
-        $('.overlay').addClass('hide');
+        $('.overlay').hide();
         $('.btnAreaSaveConfirm').addClass('hide').siblings('.btnAreaSave').removeClass('hide');
     }
 }
@@ -702,21 +692,24 @@ $(document).on('click', '#btnShowImage', function (e) {
     imageShow();
 });
 function rightMenuShow() {
+    $('.overlay').fadeIn('fast');
     $(".rightMenu").animate({
         right: "0px"
     }, "fast", function () {
-        $('.overlay').removeClass('hide');
         $(this).addClass('visible');
     });
 }
 function imageShow() {
+    $('.overlay').fadeIn('fast');
     $(".cffImage").animate({
         left: "0px"
     }, "fast", function () {
-        $('.overlay').removeClass('hide');
         $(this).addClass('visible');
     });
 }
+$(document).on('click', '#btnSync', function (e) {
+    Sync();
+});
 $(document).on('click', '#btnLogout', function (e) {
     $('.App').fadeOut("fast", function (e) {
         $('.login').removeClass('hide').show();
@@ -729,14 +722,14 @@ $(document).on('click', '#btnLogout', function (e) {
 function rightMenuHide() {
     if ($('.rightMenu').hasClass('visible')) {
         $(".rightMenu").removeClass('visible').animate({ "right": "-151px" }, "fast", function (e) {
-            $('.overlay').addClass('hide');
+            $('.overlay').hide();
         });
     }
 }
 function imageHide() {
     if ($('.cffImage').hasClass('visible')) {
         $(".cffImage").removeClass('visible').animate({ "left": "-256px" }, "fast", function (e) {
-            $('.overlay').addClass('hide');
+            $('.overlay').hide();
         });
     }
 }
@@ -822,6 +815,47 @@ $(document).on('click', '.btn-minus', function (e) {
 
 });
 
+$(document).on('click', '.btnSlaugtherSignatureRemove', function (e) {
+    $('.SlaugtherSignature').addClass('hide');
+    $('.btnSlaugtherSignature').removeClass('hide');
+    $('.SlaugtherSignature').removeAttr('userid');
+});
+
+$(document).on('click', '.btnTechinicalSignatureRemove', function (e) {
+    $('.TechinicalSignature').addClass('hide');
+    $('.btnTechinicalSignature').removeClass('hide');
+    $('.TechinicalSignature').removeAttr('userid');
+});
+
+$(document).on('click', '.btnSlaugtherSignature', function (e) {
+    var correctiveActionModalSignature = $('#modalSignatureCorrectiveAction');
+    var heads = correctiveActionModalSignature.children('.panel-body').children('.modal-header');
+    heads.children('.head').addClass('hide');
+    heads.children('.slaughtersig').removeClass('hide');
+    correctiveActionModalSignature.removeClass('hide').attr('signature', 'slaugther');
+    correctiveActionSignatureModalOpen();
+});
+
+$(document).on('click', '.btnTechinicalSignature', function (e) {
+    var correctiveActionModalSignature = $('#modalSignatureCorrectiveAction');
+    var heads = correctiveActionModalSignature.children('.panel-body').children('.modal-header');
+    heads.children('.head').addClass('hide');
+    heads.children('.techinicalsig').removeClass('hide');
+    correctiveActionModalSignature.removeClass('hide').attr('signature', 'techinical');
+    correctiveActionSignatureModalOpen();
+
+});
+function correctiveActionSignatureModalOpen()
+{
+    $('.alert').addClass('hide');
+    var correctiveActionModal = $('#correctiveActionModal');
+    correctiveActionModal.css('z-index', '9997');
+    var correctiveActionModalSignature = $('#modalSignatureCorrectiveAction');
+    $('#modalSignatureCorrectiveAction input').val("");
+    correctiveActionModalSignature.fadeIn("fast", function (e) {
+        $('#modalSignatureCorrectiveAction input:first').focus();
+    });
+}
 $(document).on('input', '.level03Group[level01id=3] input', function (e) {
     inputChangesUpdate($(this));
     level03AlertAdd($(this));
@@ -880,6 +914,8 @@ function inputChangesUpdate(input) {
 
 
 }
+
+
 
 function inputChangesUpdate2(input) {
     var level02 = $('.level02.selected');
@@ -961,6 +997,10 @@ function inputChangesUpdate2(input) {
     $('.painel .sideErros').text(level03Defects);
 
 }
+
+
+
+
 function defectLimitCheck() {
     var level02 = $('.level02.selected');
 
@@ -971,14 +1011,15 @@ function defectLimitCheck() {
     defectsDiv.removeClass('red');
     var btnNA = level02.siblings('.userInfo').children('div').children('.na');
     btnNA.addClass('hide');
-
+   
 
 
     if (defectsLevel02 > defectsLimit) {
         defectsDiv.addClass('red');
         level02.attr('limitExceeded', 'limitExceeded');
         level02.parents('li').addClass('bgLimitExceeded');
-        if (level02.parents('.level02Group').is(':visible')) {
+        if (level02.parents('.level02Group').is(':visible'))
+        {
             $('.btnCA').addClass('hide');
         }
     }
@@ -992,7 +1033,35 @@ function defectLimitCheck() {
     }
 
 }
+$(document).on('click', '.modal-close-ca', function (e) {
+    $('body').removeClass('overflowNo');
+    var ca = $(this).parents('.modal-padrao');
+    $('#correctiveActionModal .modal-body .row').scrollTop("0");
 
+    ca.fadeOut("fast", function(e){
+
+        $(this).addClass('hide');
+        $('.overlay').hide();
+        if($('.btnCA').hasClass('caLevel02'))
+        {
+            $('.btnCA').removeClass('hide').removeClass('caLevel02');
+        }
+    });
+});
+
+
+$(document).on('click', '.modal-close-signature', function (e) {
+    $('#correctiveActionModal').css('z-index', '9999');
+    var ca = $(this).parents('.modal-padrao');
+    //$('#correctiveActionModal .modal-body .row').scrollTop("0");
+
+    ca.fadeOut("fast", function(e){
+
+        $(this).addClass('hide');
+
+    });
+
+});
 $(document).on('click', '.button-expand', function (e) {
     $(this).parents('.level03Group').children('.panel-group').children('.panel').children('.collapse').collapse('show');
 });
@@ -1072,7 +1141,7 @@ $(document).on('click', '.btnAreaSave', function (e) {
     if (itensOk == false) {
         return false;
     }
-    $('.overlay').removeClass('hide');
+    $('.overlay').show();
     $(this).siblings('.btnAreaSaveConfirm').removeClass('hide');
     $(this).attr('disabled', 'disabled');
     $(this).siblings('.defects').addClass('hide');
@@ -1091,26 +1160,28 @@ $(document).on('click', '.btnAreaSaveConfirm', function (e) {
     var level02 = $(this).parents('li').children('.row').children('.level02');
     level02.addClass('selected');
     //buscar pelo atributo e nao pelo botao
-    if (level02.siblings('.userInfo').children('div').children('.btnPhase').is(':visible')) {
+    if (level02.siblings('.userInfo').children('div').children('.btnPhase').is(':visible'))
+    {
 
     }
 
     $('.level03Group[level01id=' + level02.parents('.level02Group').attr('level01id') + ']').children('.level03Confirm').click();
-    $('.overlay').addClass('hide');
+    $('.overlay').hide();
     $(this).siblings('.defects').removeClass('hide');
 
 });
+
 function level01Reset(level01) {
 
     level01.each(function (e) {
-
+       
         var level = $(this);
 
 
         var btnCorrectivAction = level.parents('.row').children('.userInfo').children('div').children('.btnCorrectiveAction');
         var btnReaudit = level.parents('.row').children('.userInfo').children('div').children('.btnReaudit');
         var reauditCount = level.parents('.row').children('.userInfo').children('div').children('.reauditCount');
-
+        
 
 
         btnCorrectivAction.addClass('hide');
@@ -1199,8 +1270,10 @@ function level02Complete(level02) {
         btnSalvarLevel02Confirm.addClass('hide');
         $('#btnSave').addClass('hide');
         level02ButtonSave(level.parents('.level02Group'));
-        if (level02.attr('havephases')) {
-            if (level02.attr('completed') && level02.attr('limitexceeded')) {
+        if (level02.attr('havephases'))
+        {
+            if(level02.attr('completed') && level02.attr('limitexceeded'))
+            {
                 botaoSalvarLevel02.removeClass('hide');
                 botaoNa.removeClass('hide');
             }
@@ -1217,7 +1290,8 @@ function level02ButtonSave(level02Group) {
 
     //level01.attr('saveLevel02') && level02Group.children('.row').children('.level02[complete]')
     //activ button save - fazer uma regra
-    if (level01.attr('saveLevel02') && level02Group.is(':visible') && (level02Group.children('li').children('.row').children('.level02[completed!=completed]').length == 0 || (level01.attr('update') && level01.attr('completed')))) {
+    if(level01.attr('saveLevel02') && level02Group.is(':visible') && (level02Group.children('li').children('.row').children('.level02[completed!=completed]').length ==  0 || (level01.attr('update') && level01.attr('completed'))))
+    {
         $('#btnSave').removeClass('hide');
     }
 }
@@ -1247,7 +1321,8 @@ $(document).on('click', '.level02Group[level01id=3] .level02', function (e) {
     }
 
     var resultsLevel01 = $('.level01Result[date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']' + attrReaudit + attrReauditNumber);
-    if (!resultsLevel01.length && !level01.attr('startreaudit')) {
+    if(!resultsLevel01.length && !level01.attr('startreaudit'))
+    {
         var resultsLevel01 = $('.level01Result[date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']:last');
     }
 
@@ -1306,14 +1381,15 @@ $(document).on('click', '.level02Group[level01id=2] .level02', function (e) {
         var resultsLevel01 = $('.level01Result[date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']:last');
     }
 
-    var level02Saved = resultsLevel01.children('.level02Result[level02id=' + level02.attr('id') + ']' + attrReaudit + attrReauditNumber);
+    var level02Saved = resultsLevel01.children('.level02Result[level02id=' + level02.attr('id') + ']' + attrReaudit  + attrReauditNumber);
 
     level02Saved.children('.level03Result').each(function (e) {
 
         var valueResponse = $(this).attr('conform');
         var response = $('.level03Group[level01id=2] .level03[id=' + $(this).attr('level03id') + '] span.response');
 
-        if (valueResponse == "false") {
+        if(valueResponse == "false")
+        {
             response.click();
         }
 
@@ -1342,56 +1418,7 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
     var consectiveFailureLevel = 0;
     var consecFailureTotal = 0;
 
-    if (level01.attr('consecutivefailure')) {
-
-        if (level02.attr('consecutivefailurelevel')) {
-            consectiveFailureLevel = parseInt(level02.attr('consecutivefailurelevel'));
-        }
-
-        if (level02.attr('consecutivefailuretotal')) {
-            consecFailureTotal = parseInt(level02.attr('consecutivefailuretotal'));
-        }
-
-        var defects = parseInt(level02.attr('defects'));
-        var defectsLimit = parseInt(level02.attr('levelerrorlimit'));
-
-        if (level02.attr('completed')) {
-            if (defects > defectsLimit) {
-                if (consectiveFailureLevel == 0) {
-                    consectiveFailureLevel = 1;
-                    var level02Last = $('.level02Result[level01id=' + level01.attr('id') + '][level02id=' + level02.attr('id') + '][shift=' + $('.App').attr('shift') + '][period!=' + $('.App').attr('period') + ']:last');
-
-                    var consecFailureLast = 0;
-                    if (level02Last.attr('consecutivefailuretotal')) {
-                        consecFailureLast = parseInt(level02Last.attr('consecutivefailuretotal'));
-                    }
-                    consecFailureTotal = consectiveFailureLevel + consecFailureLast;
-                }
-
-            }
-            else if (defects <= defectsLimit) {
-                consectiveFailureLevel = 0;
-                consecFailureTotal = 0;
-            }
-            //se eu alterei e continua com mais defeitos nao faço nada
-            //se eu alterei e nao tem defeitos irei zerar o contador ottal
-            //se eu alte+rei e nao tem total de defeitos e estouruo os defietos
-            //vreifica o numero de defeitos anterior e icremento mais 1 no defeitos total e 1 no defeito da areax   
-        }
-        else if (defects > defectsLimit && !level02.attr('completed')) {
-            consectiveFailureLevel = 1
-            consecFailureTotal++
-        }
-        else {
-            consecFailureTotal = 0;
-            consectiveFailureLevel = 0;
-        }
-
-        $('.painelLevel03 .consecutiveFailure').text(consecFailureTotal);
-        level02.attr('consecutivefailurelevel', consectiveFailureLevel);
-        level02.attr('consecutivefailuretotal', consecFailureTotal);
-        level02.parents('.row').children('.userInfo').children('div').children('.consecutiveFailure').text(consecFailureTotal);
-    }
+    
 
     var attrReaudit = "[reaudit=false]";
     var attrReauditNumber = "";
@@ -1405,7 +1432,8 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
                 reauditNumber++;
             }
 
-            if (reauditNumber > 0) {
+            if(reauditNumber > 0)
+            {
                 attrReaudit = "[reaudit=true]";
                 attrReauditNumber = "[reauditnumber=" + reauditNumber + "]";
 
@@ -1453,6 +1481,63 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
                               level02.attr('notavaliable')
                            ));
 
+    if (level01.attr('consecutivefailure')) {
+
+        if (level02.attr('consecutivefailurelevel')) {
+            consectiveFailureLevel = parseInt(level02.attr('consecutivefailurelevel'));
+        }
+
+        if (level02.attr('consecutivefailuretotal')) {
+            consecFailureTotal = parseInt(level02.attr('consecutivefailuretotal'));
+        }
+
+        var defects = parseInt(level02.attr('defects'));
+        var defectsLimit = parseInt(level02.attr('levelerrorlimit'));
+
+        if (level02.attr('completed')) {
+            if (defects > defectsLimit) {
+                if (consectiveFailureLevel == 0) {
+                    consectiveFailureLevel = 1;
+                    var level02Last = $('.level02Result[level01id=' + level01.attr('id') + '][level02id=' + level02.attr('id') + '][shift=' + $('.App').attr('shift') + '][period!=' + $('.App').attr('period') + ']:last');
+
+                    var consecFailureLast = 0;
+                    if (level02Last.attr('consecutivefailuretotal')) {
+                        consecFailureLast = parseInt(level02Last.attr('consecutivefailuretotal'));
+                    }
+                    consecFailureTotal = consectiveFailureLevel + consecFailureLast;
+                }
+                level01Save.attr('havecorrectiveaction', 'havecorrectiveaction');
+                level02Save.attr('havecorrectiveaction', 'havecorrectiveaction');
+            }
+            else if (defects <= defectsLimit) {
+                consectiveFailureLevel = 0;
+                consecFailureTotal = 0;
+            }
+            //se eu alterei e continua com mais defeitos nao faço nada
+            //se eu alterei e nao tem defeitos irei zerar o contador ottal
+            //se eu alte+rei e nao tem total de defeitos e estouruo os defietos
+            //vreifica o numero de defeitos anterior e icremento mais 1 no defeitos total e 1 no defeito da areax   
+        }
+        else if (defects > defectsLimit && !level02.attr('completed')) {
+            consectiveFailureLevel = 1
+            consecFailureTotal++;
+            level01Save.attr('havecorrectiveaction', 'havecorrectiveaction');
+            level02Save.attr('havecorrectiveaction', 'havecorrectiveaction');
+        }
+        
+        else {
+            consecFailureTotal = 0;
+            consectiveFailureLevel = 0;
+        }
+
+        $('.painelLevel03 .consecutiveFailure').text(consecFailureTotal);
+        level02.attr('consecutivefailurelevel', consectiveFailureLevel);
+        level02.attr('consecutivefailuretotal', consecFailureTotal);
+        level02.parents('.row').children('.userInfo').children('div').children('.consecutiveFailure').text(consecFailureTotal);
+    }
+
+    
+
     $('.level03Group[level01id=3] .level03 input').each(function (e) {
 
         var level03 = $(this).parents('.level03');
@@ -1472,14 +1557,15 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
                                        null
                                      ));
 
-        level02Save.append(level03Save);
+        appendDevice(level03Save, level02Save);
 
     });
     $('.level03Group[level01id=3] .level03 input').val('0').parents('li').removeClass('bgAlert');
 
-    level01Save.append(level02Save);
+    appendDevice(level02Save, level01Save);
 
-    level02.parents('.level02Group').append(level01Save);
+    appendDevice(level01Save, $('.Results'));
+
 
     //testar quando editar para nao ter erro o que acontece com os atributos
     if (consecFailureTotal == 3) {
@@ -1496,6 +1582,9 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
     else {
         showLevel02(level01);
     }
+    //PeriodHTMLDAO.insertHTML($('.Results').html());
+
+    createFileResult();
 
 });
 
@@ -1505,12 +1594,14 @@ $(document).on('click', '#btnSalvarCCA', function (e) {
 //    return "<div class='level01Result' level01Id='" + Level01Id + "' date='" + date + "' shift='" + shift + "' period='" + period + "' totalSets='" + totalSets + "' totalSides='" + totalSide + "' atualSet='" + atualSet + "' atualSide='" + atualSide + "' totalerros='" + totalErros + "'></div>";
 //}
 function saveLevel01(Level01Id, date, unidadeId, shift, period, reaudit, reauditNumber
-                    , totalEvaluate, sidesWithErros, more3Defects, lastEvaluate, lastSample, biasedUnbiased) {
+                    , totalEvaluate, sidesWithErros, more3Defects, lastEvaluate, lastSample, biasedUnbiased, evaluate) {
 
-    if (reaudit == "reaudit") {
+    if (reaudit == "reaudit")
+    {
         reaudit = true
     }
-    else {
+    else
+    {
         reaudit = false;
     }
 
@@ -1521,16 +1612,20 @@ function saveLevel01(Level01Id, date, unidadeId, shift, period, reaudit, reaudit
     lastEvaluate = lastEvaluate ? lastEvaluate : 0;
     lastSample = lastSample ? lastSample : 0;
     biasedUnbiased = biasedUnbiased ? biasedUnbiased : 0;
+    evaluate = evaluate ? evaluate : 1;
+    
 
-    return "<div class='level01Result' level01Id='" + Level01Id + "' unidadeid='" + unidadeId + "' date='" + $('.App').attr('date') + "' dateTime='" + dateTimeFormat() + "' shift='" + shift + "' period='" + period + "' reaudit='" + reaudit + "' reauditNumber='" + reauditNumber + "' totalevaluate='" + totalEvaluate + "' sidewitherros='" + sidesWithErros + "' more3Defects='" + more3Defects + "' lastevaluate='" + lastEvaluate + "' lastsample='" + lastSample + "' biasedunbiased='" + biasedUnbiased + "'></div>";
+    return "<div class='level01Result' level01Id='" + Level01Id + "' unidadeid='" + unidadeId + "' date='" + $('.App').attr('date') + "' dateTime='" + dateTimeFormat() + "' shift='" + shift + "' period='" + period + "' reaudit='" + reaudit + "' reauditNumber='" + reauditNumber + "' totalevaluate='" + totalEvaluate + "' sidewitherros='" + sidesWithErros + "' more3Defects='" + more3Defects + "' lastevaluate='" + lastEvaluate + "' lastsample='" + lastSample + "' biasedunbiased='" + biasedUnbiased + "' evaluate='" + evaluate + "'></div>";
 }
 function saveLevel02(Level01Id, Level02Id, unidadeId, date, dateTime, auditorId, shift, period, evaluate, sample, defects, reaudit, reauditNumber, phase, startPhaseDate, cattleType,
                      chainSpeed, lotNumber, mudScore, consecutivefailureLevel, consecutivefailureTotal, notAvaliabled) {
 
-    if (notAvaliabled == "notavaliable") {
+    if (notAvaliabled == "notavaliable")
+    {
         notAvaliabled = true;
     }
-    else {
+    else
+    {
         notAvaliabled = false
     }
 
@@ -1553,8 +1648,6 @@ function saveLevel02(Level01Id, Level02Id, unidadeId, date, dateTime, auditorId,
 function saveLevel03(Level03Id, value, conform, auditorId, totalError) {
     return "<div class='level03Result' level03id='" + Level03Id + "' date='" + dateTimeFormat() + "' value='" + value + "' conform='" + conform + "' auditorId='" + auditorId + "' totalerror='" + totalError + "'></div>";
 }
-
-
 $(document).on('click', '#btnSalvarCFF', function (e) {
     var level01 = $('.level01.selected');
     var level02Group = $('.level03Group:visible');
@@ -1575,7 +1668,7 @@ $(document).on('click', '#btnSalvarCFF', function (e) {
     var setsDone = parseInt($('.painelLevel02 .setsDone').text());
 
     level02Group.removeAttr('firstErrorSide');
-    level02Group.removeAttr('Error3MoreSide');
+    level02Group.removeAttr('Error3MoreSide');    
 
     var attrReaudit = "[reaudit=false]";
     var attrReauditNumber = "";
@@ -1596,11 +1689,11 @@ $(document).on('click', '#btnSalvarCFF', function (e) {
         }
     }
 
-    var level01Save = $('.level01Result[level01Id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']' + attrReaudit + attrReauditNumber);
+    var level01Save = $('.level01Result[level01Id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][evaluate=' + currentSet + ']' + attrReaudit + attrReauditNumber);
 
     if (!level01Save.length) {
         level01Save = $(
-                            saveLevel01(level01.attr('id'), $('.App').attr('date'), $('.App').attr('unidadeid'), $('.App').attr('shift'), $('.App').attr('period'), reaudit, reauditNumber)
+                            saveLevel01(level01.attr('id'), $('.App').attr('date'), $('.App').attr('unidadeid'), $('.App').attr('shift'), $('.App').attr('period'), reaudit, reauditNumber, $('.setsDone:first').text(), null, null, null, null, null, currentSet)
                         );
     }
 
@@ -1649,18 +1742,18 @@ $(document).on('click', '#btnSalvarCFF', function (e) {
                                            null
                                          ));
 
-            level02Save.append(level03Save);
+            appendDevice(level03Save, level02Save);
 
         });
-
-        level01Save.append(level02Save);
-
+        appendDevice(level02Save, level01Save);
     });
 
-    // level02Complete(level02Head);
+   // level02Complete(level02Head);
 
     currentSide = currentSide + 1;
-    level02Head.parents('.level02Group').append(level01Save);
+    
+    appendDevice(level01Save, $('.Results'));
+
 
     $('.sideErros').text('0').parents('.labelPainel').removeClass('red');
     $('.level03Group:visible input').val(0).parents('.level03').removeClass('bgAlert');
@@ -1683,7 +1776,8 @@ $(document).on('click', '#btnSalvarCFF', function (e) {
         level01Save.attr('totalevaluate', setsDone);
         //aumentar o set
         defectLimitCheck();
-        if (level02Head.attr('limitexceeded')) {
+        if (level02Head.attr('limitexceeded'))
+        {
             level02Head.attr('havereaudit', 'havereaudit');
             level01Save.attr('havereaudit', 'havereaudit');
         }
@@ -1693,6 +1787,9 @@ $(document).on('click', '#btnSalvarCFF', function (e) {
     }
     $('#btnSave').removeClass('hide');
     level01Save.attr('sidewitherros', $('span.sideWithErrors:first').text()).attr('more3Defects', $('span.more3Defects:first').text()).attr('lastevaluate', $('span.setAtual:first').text()).attr('lastsample', $('span.sideAtual:first').text());
+
+    createFileResult();
+
 });
 $(document).on('click', '#btnSalvarHTP', function (e) {
 
@@ -1725,7 +1822,7 @@ $(document).on('click', '#btnSalvarHTP', function (e) {
     if (!level01Save.length) {
         level01Save = $(
                             saveLevel01(level01.attr('id'), $('.App').attr('date'), $('.App').attr('unidadeid'), $('.App').attr('shift'), $('.App').attr('period'), null, null, null, null, null, null, null, $('#biasedUnbiased option:selected').val()))
-        ;
+                        ;
     }
 
     var level02Save = $('.level02Result[level01id=' + level01.attr('id') + '][level02id=' + level02.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']' + attrReaudit + attrReauditNumber)
@@ -1733,7 +1830,8 @@ $(document).on('click', '#btnSalvarHTP', function (e) {
         level02Save.remove();
     }
 
-    if (level02.attr('havephases') && !level02.attr('phase')) {
+    if (level02.attr('havephases') && !level02.attr('phase'))
+    {
         level02.attr('phase', '0');
     }
 
@@ -1782,13 +1880,14 @@ $(document).on('click', '#btnSalvarHTP', function (e) {
                                        $('.App').attr('auditorid'),
                                        null
                                      ));
-
-        level02Save.append(level03Save);
+                                
+        appendDevice(level03Save, level02Save);                            
+        // level02Save.append(level03Save);
     });
 
-    level01Save.append(level02Save);
+    appendDevice(level02Save, level01Save);
+    appendDevice(level01Save, $('.Results'));
 
-    level02.parents('.level02Group').append(level01Save);
     var phase = 0;
 
     if (level02.attr('phase')) {
@@ -1817,21 +1916,25 @@ $(document).on('click', '#btnSalvarHTP', function (e) {
         //var reauditNumber = 0;
         btnPhase.removeClass('hide');
         btnPhase.children('button').children('.atualPhase').text(phase);
-
+       
         var countPhase = level02.siblings('.userInfo').children('div').children('.reauditCount');
 
         var phaseConfiguation = $('.phasesreaudits .phase[number=' + phase + ']');
 
-        if (phaseConfiguation.attr('reaudits') == "0" || phaseConfiguation.attr('reaudits') == "") {
+        if (phaseConfiguation.attr('reaudits') == "0" || phaseConfiguation.attr('reaudits') == "")
+        {
             level02.siblings('.userInfo').children('div').children('.reauditCount').addClass('hide');
         }
-        else {
-            if (parseInt(level02.attr('phase')) != phase) {
+        else
+        {
+            if(parseInt(level02.attr('phase')) != phase)
+            {
                 reauditNumber = 0;
                 btnPhase.siblings('.btnAreaSave').removeClass('hide').siblings('.btnNotAvaliable').removeClass('hide');
             }
 
-            if (reauditNumber == parseInt(phaseConfiguation.attr('reaudits')) && !level02.attr('limitexceeded')) {
+            if (reauditNumber == parseInt(phaseConfiguation.attr('reaudits')) && !level02.attr('limitexceeded'))
+            {
                 openMessageModal('Phase Completed', level02.children('.levelName').text() + " returned to phase 0");
                 //reauditNumber = 0;
                 phase = 0;
@@ -1839,7 +1942,8 @@ $(document).on('click', '#btnSalvarHTP', function (e) {
                 btnPhase.addClass('hide');
                 countPhase.addClass('hide');
             }
-            else {
+            else
+            {
                 countPhase.removeClass('hide').children('button').text(reauditNumber + '/' + phaseConfiguation.attr('reaudits'));
 
             }
@@ -1861,30 +1965,36 @@ $(document).on('click', '#btnSalvarHTP', function (e) {
 
     $(this).parents('.level03Group').children('div').children('.button-collapse').click();
 
+    createFileResult();
 
 });
+
 function checkFase(phase) {
-    if (phase == 0) {
+    if(phase == 0)
+    {
         phase = 1
     }
-    else if (phase == 1) {
+    else if (phase == 1)
+    {
         phase = 2;
     }
-    else if (phase == 2) {
+    else if(phase == 2)
+    {
         phase = 3;
     }
     return phase;
 }
 $(document).on('mousedown', '#btnSave', function (e) {
-    $('.level02Group:visible .level02Confirm').click();
+    var that = $(this);
+    that.addClass('disabled');
+    setTimeout(function () {
+        $('.level02Group:visible .level02Confirm').click();
 
-    $('.level03Group:visible .level03Confirm').click();
+        $('.level03Group:visible .level03Confirm').click();
+        that.removeClass('disabled');
+    }, 250);
 });
 
-
-//$(document).on('change', 'select#reaudit:visible', function (e) {
-//    $('span.auditReaudit').html($("select#reaudit:visible :selected").text());
-//});
 $(document).on('change', 'select#selectPeriod', function (e) {
 
     level01Reset($('.level01'));
@@ -1928,8 +2038,10 @@ function periodReset() {
         }
 
         var levelResultPeriod = $('.level01Result[level01id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][reaudit=false]:last');
-        if (levelResultPeriod.length) {
-            if (levelResultPeriod.attr('completed')) {
+        if(levelResultPeriod.length)
+        {
+            if(levelResultPeriod.attr('completed'))
+            {
                 level01.attr('completed', 'completed');
             }
         }
@@ -1937,6 +2049,7 @@ function periodReset() {
     configureLevel01();
 
 }
+
 $(document).on('change', 'select#selectCattleType', function (e) {
     $('span.cattleType').html("<strong>Cattle Type:</strong>" + $("select#selectCattleType :selected").text());
 });
@@ -1952,6 +2065,9 @@ $(document).on('input', 'input#inputMudScore', function (e) {
 $(document).on('change', 'select#biasedUnbiased', function (e) {
     $('span.biasedUnbiased').html($("select#biasedUnbiased :selected").text());
 });
+
+
+
 function reauditCount(level) {
     var reauditNumber = 0;
     if (level.attr('reauditNumber')) {
@@ -1968,9 +2084,10 @@ $(document).on('click', '#btnSalvarLevel02CCA', function (e) {
 
     var reauditNumber = 0;
     var attrReaudit = "[reaudit=false]";
-
+    
     var level01ResultGeraReaudit;
-    if (level01.attr('reaudit')) {
+    if (level01.attr('reaudit'))
+    {
         reauditNumber = reauditCount(level01);
         attrReaudit = "[reaudit=true]";
     }
@@ -1979,9 +2096,10 @@ $(document).on('click', '#btnSalvarLevel02CCA', function (e) {
     level01.attr('completed', 'completed');
 
     //colocar audit e reaudit para pesquisar e pesquisar o audit que gerou a reaudit
-
+    
     var level01Result = $('.level01Result[level01id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']' + attrReaudit + ":last");
-    if (level01Result.attr('reaudit') == "true") {
+    if(level01Result.attr('reaudit') == "true")
+    {
         level01ResultGeraReaudit = $('.level01Result[level01id=' + level01.attr('id') + '][shift=' + $('.App').attr('shift') + '][havereaudit]');
     }
 
@@ -1996,7 +2114,7 @@ $(document).on('click', '#btnSalvarLevel02CCA', function (e) {
     //else {
     //    level01.removeAttr('correctivaction').removeAttr('reaudit').removeAttr('reauditNumber');
     //}
-
+    
     var totalDefects = parseInt($('.painelLevel02 .totalDefects').text());
     var haveConsecutiveFailures = false
 
@@ -2027,13 +2145,13 @@ $(document).on('click', '#btnSalvarLevel02CCA', function (e) {
         //if (reauditNumber == level01.attr('minreauditnumber')) {
         //}
 
-
+        
         level01.parents('.row').children('.userInfo').children('div').children('.reauditCount').children('button').text(reauditNumber + '/' + level01.attr('minreauditnumber'));
         var minreauditNumber = parseInt(level01.attr('minreauditnumber'));
         if (reauditNumber >= minreauditNumber) {
             level01.removeAttr('reaudit').removeAttr('reauditnumber');
             resultStarReaudit.removeAttr('havereaudit').attr('completereaudit', 'completereaudit');
-
+           
             var level01Buttons = level01.siblings('.userInfo').children('div');
 
             level01Buttons.children('.btnReaudit').addClass('hide').children('.reauditPeriod').text('');
@@ -2041,7 +2159,8 @@ $(document).on('click', '#btnSalvarLevel02CCA', function (e) {
 
             if (resultStarReaudit.attr('period') != $('.App').attr('period')) {
                 var resultAtualLevel = $('.level01Result[level01id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][reaudit=false]');
-                if (resultAtualLevel.length == 0) {
+                if(resultAtualLevel.length == 0)
+                {
                     level01.attr('reauditnumber', '0').removeAttr('reaudit').removeAttr('reauditnumber').removeAttr('startreaudit').removeAttr('completed');
                     periodReset();
                 }
@@ -2085,7 +2204,7 @@ $(document).on('click', '#btnSalvarLevel02CFF', function (e) {
         level01Result.attr('havecorrectiveaction', 'havecorrectiveaction');
     }
 
-
+        
 
 
     level01Result.attr('completed', 'completed');
@@ -2093,7 +2212,7 @@ $(document).on('click', '#btnSalvarLevel02CFF', function (e) {
     //{
     //}
 
-
+    
 
     if ($('.level02Group[level01id=' + level01.attr('id') + '] .level02[havereaudit]').length) {
         level01Result.attr('havereaudit', 'havereaudit');
@@ -2205,7 +2324,6 @@ $(document).on('click', '.level01List .btnReaudit', function (e) {
 
     level01.click();
 });
-
 $(document).on('click', '.level02Group .btnReaudit', function (e) {
 
     var level02 = $(this).parents('.row').children('.level02');
@@ -2217,7 +2335,7 @@ $(document).on('click', '.level02Group .btnReaudit', function (e) {
     //{
     //    $('.painelLevel03 .labelPhase').parents('.labelPainel').removeClass('hide');
     //    level02.attr('prevphasexceeded', 'prevphasexceeded').removeAttr('limitexceeded');
-
+        
     //}
     //$('.painelLevel03 .labelPhase').text(level02.attr('phase'));
 
@@ -2255,27 +2373,160 @@ $(document).on('click', '.btnCorrectiveAction', function (e) {
     var level01 = $(this).parents('.row').children('.level01');
     //$(this).addClass('hide');
 
-    level01.removeAttr('correctivaction');
+    // level01.removeAttr('correctivaction');
 
-    $('.btnCA').click();
+    correctiveActionOpen(level01.attr('id'));
 });
-$(document).on('click', '#btnMessageOk', function (e) {
-    $('#modalMessage').modal('hide');
 
+$(document).on('click', '#btnSignatureLogin', function (e) {
+    if ($('#modalSignatureCorrectiveAction').attr('signature') == 'slaugther')
+        getlogin($('#signatureLogin').val(), $('#signaturePassword').val(), slaugtherSignatureLogin);
+    else
+        getlogin($('#signatureLogin').val(), $('#signaturePassword').val(), techinicalSignatureLogin);
+});
+function slaugtherSignatureLogin(user) {
+    $('#btnSignatureLogin').siblings('.modal-close-signature').click();
+    $('.SlaugtherSignature').removeClass('hide');
+    $('.SlaugtherSignature').children('.name').text(user.attr('username'));
+    $('.SlaugtherSignature').children('.date').text(dateTimeFormat());
+    $('.SlaugtherSignature').attr('userid', user.attr('userid'));
+    $('.btnSignature.btnSlaugtherSignature').addClass('hide');
+}
+$(document).on('click', '#btnTechinicalLogin', function (e) {
+    getlogin($('#techinicalLogin').val(), $('#techinicalPassword').val(), techinicalSignatureLogin);
+});
+function techinicalSignatureLogin(user) {
+    $('#btnSignatureLogin').siblings('.modal-close-signature').click();
+    $('.TechinicalSignature').removeClass('hide');
+    $('.TechinicalSignature').children('.name').text(user.attr('username'));
+    $('.TechinicalSignature').children('.date').text(dateTimeFormat());
+    $('.TechinicalSignature').attr('userid', user.attr('userid'));
+    $('.btnSignature.btnTechinicalSignature').addClass('hide');
+}
+
+
+$(document).on('click', '#btnMessageOk', function (e) {
+    ////remover modal do body 
+    //remover modal do body 
+    var mensagem = $('.message');
+
+
+    $('.overlay').hide();
+    mensagem.fadeOut("fast");
 });
 function areaImage(id) {
     showLevel03($("#" + id + ".level02"));
 }
 function openMessageModal(title, content) {
-    var $modal = $('#modalMessage');
-    $modal.children('.modal-header').children('.messageHeader').text(title);
-    $modal.children('.modal-body').children('.message').html(content);
-    $modal.modal();
+  
+    var mensagem = $('.message, .overlay');
+
+    mensagem.children('.head').html(title);
+    mensagem.children('.body').html(content);
+
+    mensagem.fadeIn("fast");
+    // var $modal = $('#modalMessage');
+    // $modal.children('.modal-header').children('.messageHeader').text(title);
+    // $modal.children('.modal-body').children('.message').html(content);
+    // $modal.modal();
+    ////$('.modal-scrollable, .modal-backdrop').removeClass('hide');
 }
+
+function appendDevice(obj, appendTo){
+    var platform = device.platform;
+
+    if(platform == 'windows'){
+        MSApp.execUnsafeLocalFunction(function () {
+            appendTo.append(obj);
+        });
+    }
+    else
+    {
+        appendTo.append(obj);
+    }
+}
+
 $(document).on('click', '#btnSendCorrectiveAction', function (e) {
+
+    var message = '';
+    var descriptionFailure = $('#DescriptionFailure').val();
+    var immediateCorrectiveAction = $('#ImmediateCorrectiveAction').val();
+    var productDisposition = $('#ProductDisposition').val();
+    var preventativeMeasure = $('#PreventativeMeasure').val();
+    var slaugtherSignature = $('.SlaugtherSignature').attr('userid');
+    var techinicalSignature = $('.TechinicalSignature').attr('userid');
+    var unidadeid = $('.App').attr('unidadeid');
+    var auditorid = $('.App').attr('auditorid');
+    var date = $('.App').attr('date');
+    var shift = $('.App').attr('shift');
+    var period = $('.App').attr('period');
+
+    if (descriptionFailure == '')
+    {
+        message += 'The description of the failure is empty.<br>';
+    }
+    if ( immediateCorrectiveAction == '')
+    {
+        message += 'The immediate corrective action is empty.<br>';
+    }
+    if (productDisposition == '')
+    {
+        message += 'The product disposition is empty.<br>';
+    }
+    if($('.SlaugtherSignature').hasClass('hide'))
+    {
+        message += 'The slaughter signature has not inputed.<br>';
+    }
+    if($('.TechinicalSignature').hasClass('hide'))
+    {
+        message += 'The techinical signature has not inputed.<br>';
+    }
+
+    if(message != ''){
+        openMessageModal('The following errors ocurred: ', message);
+        return;
+    }
+
     var level01Result = $('.level01Result[havecorrectiveaction]').attr('correctiveActionComplete', 'correctiveActionComplete').removeAttr('havecorrectiveaction');
-    $('#correctiveActionModal').modal('hide');
+    var level02Result = $('.level02Result[havecorrectiveaction]').attr('correctiveActionComplete', 'correctiveActionComplete').removeAttr('havecorrectiveaction');
+
+    $('.correctiveaction').addClass('hide');
+    var correctiveActionModal = $(this).parents('.modal-padrao');
     $('.btnCorrectiveAction.selected').addClass('hide').removeClass('selected');
+
+    var corretiveActionResult = $(document.createElement('div'));
+    corretiveActionResult.addClass('correctiveAction');
+    corretiveActionResult.attr('slaugtherSignature', slaugtherSignature);
+    corretiveActionResult.attr('techinicalSignature', techinicalSignature);
+    corretiveActionResult.attr('preventativeMeasure', preventativeMeasure);
+    corretiveActionResult.attr('unidadeid', unidadeid);
+    corretiveActionResult.attr('auditorid', auditorid);
+    corretiveActionResult.attr('date', date);
+    corretiveActionResult.attr('shift', shift);
+    corretiveActionResult.attr('period', period);
+
+    var descriptionSpan = $(document.createElement('div'));
+    
+    descriptionSpan.addClass('descriptionFailure');
+    descriptionSpan.text(descriptionFailure);
+
+    var immediateCorrectiveActionSpan = $(document.createElement('span'));
+    immediateCorrectiveActionSpan.addClass('immediateCorrectiveAction');
+    immediateCorrectiveActionSpan.text(immediateCorrectiveAction);
+
+
+    var preventativeMeasureSpan = $(document.createElement('span'));
+    preventativeMeasureSpan.addClass('preventativeMeasure');
+    preventativeMeasureSpan.text(preventativeMeasure);
+
+    appendDevice(descriptionSpan, corretiveActionResult);
+    appendDevice(immediateCorrectiveActionSpan, corretiveActionResult);
+    appendDevice(preventativeMeasureSpan, corretiveActionResult);
+
+    appendDevice(corretiveActionResult, level01Result);
+    correctiveActionModal.fadeOut("fast", function (e) {
+        $('.overlay').hide();
+    });
 
 });
 //var storage = window.localStorage;
