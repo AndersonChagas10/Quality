@@ -5,6 +5,6 @@ namespace Dominio.Interfaces.Services
 {
     public interface IGetConsolidateDataCollectionDomain
     {
-        GenericReturn<ColetaDTO> GetLastEntry();
+        GenericReturn<GetSyncDTO> GetLastEntry();
     }
 }

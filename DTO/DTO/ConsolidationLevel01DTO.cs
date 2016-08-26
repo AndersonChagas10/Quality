@@ -7,8 +7,6 @@ using System.Runtime.Serialization;
 
 namespace DTO.DTO
 {
-    [DataContract]
-    [Serializable]
     public class ConsolidationLevel01DTO : EntityBase
     {
         public Nullable<System.DateTime> ConsolidationDate { get; set; }
@@ -18,8 +16,9 @@ namespace DTO.DTO
 
         public List<ConsolidationLevel02DTO> consolidationLevel02DTO { get; set; }
         public List<CollectionLevel02DTO> collectionLevel02DTO { get; set; }
-        
-        
+
+        public ConsolidationLevel01DTO() { }
+
         public ConsolidationLevel01DTO(RootObject rootObject)
         {
 

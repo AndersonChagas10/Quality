@@ -26,7 +26,7 @@ namespace Application.AppServiceClass
             return _saveConsolidateDataCollectionDomain.SetDataToSincyAuditConsolidated(syncConsolidado);
         }
 
-        public GenericReturn<ColetaDTO> GetLastEntry()
+        public GenericReturn<GetSyncDTO> GetLastEntry()
         {
             return _getConsolidateDataCollectionDomain.GetLastEntry();
         }
