@@ -2,9 +2,6 @@
 using System.Linq;
 using Dominio;
 using System.Collections.Generic;
-using DTO.Helpers;
-using DTO.DTO;
-using System;
 
 namespace Data.Repositories
 {
@@ -15,6 +12,11 @@ namespace Data.Repositories
             : base(_db)
         {
 
+        }
+
+        public CollectionHtml GetHtmlLastEntry()
+        {
+            return db.CollectionHtml.OrderByDescending(o => o.Id).FirstOrDefault();
         }
 
         public IEnumerable<CollectionLevel02> GetLastEntryCollectionLevel02(IEnumerable<ConsolidationLevel02> cl2)
@@ -42,5 +44,6 @@ namespace Data.Repositories
             var listResults = db.ConsolidationLevel02.Where(r => cl1.Any(x => x.Id == r.Level01ConsolidationId));
             return listResults;
         }
+
     }
 }

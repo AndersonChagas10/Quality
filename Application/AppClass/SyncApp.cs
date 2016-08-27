@@ -30,5 +30,15 @@ namespace Application.AppServiceClass
         {
             return _getConsolidateDataCollectionDomain.GetLastEntry();
         }
+
+        public GenericReturn<SyncDTO> SaveHtml(SyncDTO objToSync)
+        {
+            return _saveConsolidateDataCollectionDomain.SaveHtml(objToSync);
+        }
+
+        public GenericReturn<GetSyncDTO> GetHtmlLastEntry()
+        {
+            return _getConsolidateDataCollectionDomain.GetHtmlLastEntry();
+        }
     }
 }

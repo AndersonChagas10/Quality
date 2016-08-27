@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CollectionHtml.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="CollectionLevel02.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
