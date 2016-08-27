@@ -14,12 +14,10 @@ namespace SgqSystem.Controllers.Api
         #region Construtor e atributos
 
         private readonly ISyncApp _syncApp;
-        //private readonly IColetaApp _coletaApp;
 
-        public SyncController(ISyncApp syncApp/*, IColetaApp coletaApp*/)
+        public SyncController(ISyncApp syncApp)
         {
             _syncApp = syncApp;
-            //_coletaApp = coletaApp;
         }
 
         #endregion
