@@ -1,4 +1,70 @@
-﻿$(document).ready(function () {
+﻿var keyEncryptGlobal = "90A4F2C1DC40CE1F";
+
+var threeDES = {
+
+    Encrypt3DES: function (text, useHashing) {
+
+        var keyEncrypt = keyEncryptGlobal;
+
+        if (useHashing) {
+            keyEncrypt = CryptoJS.MD5(keyEncrypt).toString();
+            keyEncrypt = keyEncrypt.substring(0, 16);
+        }
+
+        var textWordArray = CryptoJS.enc.Utf8.parse(text);
+
+        var keyHex = CryptoJS.enc.Hex.parse(keyEncrypt);
+
+        var iv = String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0);
+
+        var ivHex = CryptoJS.enc.Hex.parse(iv);
+
+        var options = {
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7,
+            iv: ivHex
+        };
+        var encrypted = CryptoJS.TripleDES.encrypt(textWordArray, keyHex, options);
+
+        var base64String = encrypted.toString();
+
+        return base64String;
+
+    },
+
+    Decrypt3DES: function (base64String, useHashing) {
+
+        var keyEncrypt = keyEncryptGlobal;
+
+        if (useHashing) {
+            keyEncrypt = CryptoJS.MD5(keyEncrypt).toString();
+            keyEncrypt = keyEncrypt.substring(0, 16);
+        }
+
+        var keyHex = CryptoJS.enc.Hex.parse(keyEncrypt);
+
+        var iv = String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0);
+
+        var ivHex = CryptoJS.enc.Hex.parse(iv);
+
+        var options = {
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7,
+            iv: ivHex
+        };
+
+        var decrypted = CryptoJS.TripleDES.decrypt({
+            ciphertext: CryptoJS.enc.Base64.parse(base64String)
+        }, keyHex, options);
+
+        return decrypted.toString(CryptoJS.enc.Utf8);
+
+    }
+
+};
+
+
+$(document).ready(function () {
     //PeriodHTMLDAO.createTable();
     //PeriodHTMLDAO.selectTable(list);
     
