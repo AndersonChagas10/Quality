@@ -38,7 +38,6 @@ namespace Dominio.Services
             try
             {
 
-                userDto.Name = DecryptStringAES(userDto.Name);
                 userDto.Password = DecryptStringAES(userDto.Password);
 
                 if (userDto.IsNull())
@@ -47,12 +46,11 @@ namespace Dominio.Services
                 userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
 
                 //Autenticação no AD JBS USA
-                if (CheckUserInAD("global.corp.prod", userDto.Name, userDto.Password))
-                {
-                    throw new ExceptionHelper("User not found, please verify Username and Password.");
-                }
+                //if (CheckUserInAD("global.corp.prod", userDto.Name, userDto.Password))
+                //{
+                //    throw new ExceptionHelper("User not found, please verify Username and Password.");
+                //}
 
-                userDto.Name = Criptografar3DES(userDto.Name);
                 userDto.Password = Criptografar3DES(userDto.Password);
 
                 var user = Mapper.Map<UserDTO, UserSgq>(userDto);
@@ -63,12 +61,11 @@ namespace Dominio.Services
                 {
                     user.FullName = "FullName"; //Mock
                     _userRepo.Salvar(user);
-                    // throw new ExceptionHelper("User not found, please verify Username and Password.");
                 }
-
 
                 var retorno = Mapper.Map<UserSgq, UserDTO>(isUser);
                 return new GenericReturn<UserDTO>(retorno);
+
             }
             catch (Exception e)
             {

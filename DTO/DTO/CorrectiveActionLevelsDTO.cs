@@ -11,11 +11,11 @@ namespace DTO.DTO
         [DataMember]
         public int CorrectiveActionId { get; set; }
         [DataMember]
-        public int AuditLevel01Id { get; set; }
+        public int Level01Id { get; set; }
         [DataMember]
-        public int AuditLevel02Id { get; set; }
+        public int Level02Id { get; set; }
         [DataMember]
-        public int AuditLevel03Id { get; set; }
+        public int Level03Id { get; set; }
         [DataMember]
         public Nullable<int> Defects { get; set; }
         //[DataMember]
