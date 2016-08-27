@@ -12,8 +12,7 @@ namespace DTO.DTO
         //public List<CorrectiveActionDTO> CorrectiveAction { get; set; }
         //public ObjectConsildationDTO syncConsolidado { get; set; }
 
-        
-
+        public string html { get; set; }
         public List<RootObject> Root { get; set; }
 
     }

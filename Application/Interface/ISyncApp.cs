@@ -8,5 +8,7 @@ namespace Application.Interface
         //GenericReturn<SyncDTO> GetDataToSincyAudit();
         GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated(SyncDTO syncConsolidado);
         GenericReturn<GetSyncDTO> GetLastEntry();
+        GenericReturn<SyncDTO> SaveHtml(SyncDTO objToSync);
+        GenericReturn<GetSyncDTO> GetHtmlLastEntry();
     }
 }

@@ -39,6 +39,7 @@ namespace Data.Repositories
 
         public void AddNotCommit(T obj)
         {
+            verifyDate(obj, "AddDate");
             Entity.Add(obj);
         }
 
@@ -46,19 +47,14 @@ namespace Data.Repositories
         {
             foreach (var i in obj)
             {
+                verifyDate(i, "AddDate");
                 Entity.Add(i);
             }
         }
 
         public void UpdateNotCommit(T obj)
         {
-            if (obj.GetType().GetProperty("AlterDate") != null)
-            {
-                var alterDate = (DateTime)obj.GetType().GetProperty("AlterDate").GetValue(obj, null);
-                if (alterDate.IsNull())
-                    obj.GetType().GetProperty("AlterDate").SetValue(obj, DateTime.Now);
-            }
-
+            verifyDate(obj, "AlterDate");
             db.Entry(obj).State = EntityState.Modified;
         }
 
@@ -76,6 +72,7 @@ namespace Data.Repositories
 
         public void Add(T obj)
         {
+            verifyDate(obj, "AddDate");
             Entity.Add(obj);
             Commit();
         }
@@ -84,6 +81,7 @@ namespace Data.Repositories
         {
             foreach (var i in obj)
             {
+                verifyDate(i, "AddDate");
                 Entity.Add(i);
             }
             Commit();
@@ -91,15 +89,8 @@ namespace Data.Repositories
 
         public void Update(T obj)
         {
-            if (obj.GetType().GetProperty("AlterDate") != null)
-            {
-                var alterDate = (DateTime) obj.GetType().GetProperty("AlterDate").GetValue(obj, null);
-                if (alterDate.IsNull())
-                    obj.GetType().GetProperty("AlterDate").SetValue(obj, DateTime.Now);
-            }
-
+            verifyDate(obj, "AlterDate");
             //Entity.Attach(obj);
-
             db.Entry(obj).State = EntityState.Modified;
             Commit();
         }
@@ -186,6 +177,21 @@ namespace Data.Repositories
             db.Dispose();
         }
 
-        
+        private void verifyDate(T obj, string property)
+        {
+            if (obj.GetType().GetProperty(property) != null)
+            {
+                var date = (DateTime)obj.GetType().GetProperty(property).GetValue(obj, null);
+                if (date.IsNull())
+                {
+                    obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
+                }
+                else
+                {
+                    if (date == DateTime.MinValue)
+                        obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
+                }
+            }
+        }
     }
 }

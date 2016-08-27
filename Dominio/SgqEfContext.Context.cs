@@ -46,5 +46,6 @@ namespace Dominio
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<UnitUser> UnitUser { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
+        public virtual DbSet<CollectionHtml> CollectionHtml { get; set; }
     }
 }

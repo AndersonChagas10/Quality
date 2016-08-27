@@ -41,6 +41,7 @@
         <AssociationConnector Association="SgqDbModel.FK_CorrectiveActionLevels_Level03" />
         <AssociationConnector Association="SgqDbModel.FK_UnitUser_Unit" />
         <AssociationConnector Association="SgqDbModel.FK_UnitUser_UserSgq" />
+        <EntityTypeShape EntityType="SgqDbModel.CollectionHtml" Width="1.5" PointX="8.375" PointY="9.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -8,5 +8,6 @@ namespace Dominio.Interfaces.Services
     {
         //ObjectConsildationDTO SendData();
         GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated(SyncDTO syncConsolidado);
+        GenericReturn<SyncDTO> SaveHtml(SyncDTO objToSync);
     }
 }

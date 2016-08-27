@@ -15,14 +15,17 @@ namespace Dominio.Services
         private IBaseRepository<ConsolidationLevel02> _baseRepoConsolidationL2;
         private IBaseRepository<CollectionLevel02> _baseRepoCollectionL2;
         private IBaseRepository<CollectionLevel03> _baseRepoCollectionL3;
+        private IBaseRepository<CollectionHtml> _baseRepoCollectionHtml;
 
         public SaveConsolidateDataCollectionDomain(
             IBaseRepository<ConsolidationLevel01> baseRepoConsolidationL1,
             IBaseRepository<ConsolidationLevel02> baseRepoConsolidationL2,
             IBaseRepository<CollectionLevel02> baseRepoCollectionL2,
-            IBaseRepository<CollectionLevel03> baseRepoCollectionL3
+            IBaseRepository<CollectionLevel03> baseRepoCollectionL3,
+            IBaseRepository<CollectionHtml> baseRepoCollectionHtml
             )
         {
+            _baseRepoCollectionHtml = baseRepoCollectionHtml;
             _baseRepoConsolidationL1 = baseRepoConsolidationL1;
             _baseRepoConsolidationL2 = baseRepoConsolidationL2;
             _baseRepoCollectionL2 = baseRepoCollectionL2;
@@ -51,7 +54,7 @@ namespace Dominio.Services
                 #region Salvando os 5 objetos em Banco de Dados.
                 //Iniciar Cronometro.
                 var watch = Stopwatch.StartNew();
-                
+
                 #region Loop Save
 
                 foreach (var i in ListToSave)
@@ -80,7 +83,7 @@ namespace Dominio.Services
                             _baseRepoCollectionL3.AddAll(Mapper.Map<List<CollectionLevel03>>(x.collectionLevel03DTO));
                         }
                     }
-                } 
+                }
 
                 #endregion
 
@@ -113,5 +116,33 @@ namespace Dominio.Services
 
         }
 
+        public GenericReturn<SyncDTO> SaveHtml(SyncDTO objToSync)
+        {
+
+            try
+            {
+                var html = new CollectionHtml()
+                {
+                    Html = objToSync.html
+                };
+                _baseRepoCollectionHtml.Add(html);
+                return new GenericReturn<SyncDTO>("Susscess! sync HTML.");
+            }
+            catch (Exception e)
+            {
+                #region Trata Exceção de forma Geral.
+
+                return new GenericReturn<SyncDTO>(e, "Cannot sync HTML.");
+
+                #endregion
+            }
+            finally
+            {
+                #region NotImplemented
+
+                #endregion
+            }
+
+        }
     }
 }
