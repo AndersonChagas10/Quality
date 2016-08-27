@@ -25,12 +25,6 @@ namespace Application.AppServiceClass
             return _userService.GetByName(username);
         }
 
-
-        public bool AuthenticationLoginAd(UserDTO user)
-        {
-            return _userService.AuthenticationLoginAd(user);
-        }
-
     }
 
 }

@@ -7,6 +7,5 @@ namespace Application.Interface
     {
         GenericReturn<UserDTO> AuthenticationLogin(UserDTO user);
         GenericReturn<UserDTO> GetByName(string user);
-        bool AuthenticationLoginAd(UserDTO user);
     }
 }

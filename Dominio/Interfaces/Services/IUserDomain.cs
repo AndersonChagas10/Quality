@@ -7,7 +7,5 @@ namespace Dominio.Interfaces.Services
     {
         GenericReturn<UserDTO> AuthenticationLogin(UserDTO user);
         GenericReturn<UserDTO> GetByName(string username);
-
-        bool AuthenticationLoginAd(UserDTO userDto);
     }
 }
