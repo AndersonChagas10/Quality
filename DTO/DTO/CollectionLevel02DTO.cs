@@ -110,6 +110,12 @@ namespace DTO.DTO
 
             #region Cria Level03 Collection
 
+            if (nextRoot.nextnextRoot == null)
+                throw new Exception("Lista de CollectionLevel03DTO vazia.");
+
+            if (nextRoot.nextnextRoot.Count == 0)
+                throw new Exception("Lista de CollectionLevel03DTO vazia.");
+
             collectionLevel03DTO = new List<CollectionLevel03DTO>();
             foreach (var x in nextRoot.nextnextRoot)
                 collectionLevel03DTO.Add(new CollectionLevel03DTO(x, Level01Id, Level02Id));

@@ -63,16 +63,21 @@ namespace DTO.DTO
             }
             #region Coletas necessitam apenas serem salvas.
 
-          
-                foreach (var i in rootObject.nextRoot)
-                    collectionLevel02DTO.Add(new CollectionLevel02DTO(i));
+            if (rootObject.nextRoot == null)
+                throw new Exception("Lista de collectionLevel02DTO vazia.");
+
+            if (rootObject.nextRoot.Count == 0)
+                throw new Exception("Lista de collectionLevel02DTO vazia.");
+
+            foreach (var i in rootObject.nextRoot)
+                collectionLevel02DTO.Add(new CollectionLevel02DTO(i));
 
             #endregion
 
             #region Consolidações tem que ser calculadas baseadas nas coletas.
 
-                var ids = collectionLevel02DTO.Select(r => r.Level02Id).Distinct().ToList();
-                consolidationLevel02DTO.Add(new ConsolidationLevel02DTO(collectionLevel02DTO));
+            var ids = collectionLevel02DTO.Select(r => r.Level02Id).Distinct().ToList();
+            consolidationLevel02DTO.Add(new ConsolidationLevel02DTO(collectionLevel02DTO));
 
             #endregion
 
