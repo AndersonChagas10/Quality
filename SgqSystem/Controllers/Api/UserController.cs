@@ -2,6 +2,7 @@
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -30,6 +31,13 @@ namespace SgqSystem.Controllers.Api
         public GenericReturn<UserDTO> AuthenticationLogin([FromBody] UserViewModel userVm)
         {
             return _userApp.AuthenticationLogin(userVm);
+        }
+
+        [Route("GetAllUserValidationAd")]
+        [HttpPost]
+        public GenericReturn<List<UserDTO>> GetAllUserValidationAd(UserViewModel user)
+        {
+            return _userApp.GetAllUserValidationAd(user);
         }
 
     }

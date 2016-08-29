@@ -2,6 +2,7 @@
 using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
+using System.Collections.Generic;
 
 namespace Application.AppServiceClass
 {
@@ -23,6 +24,11 @@ namespace Application.AppServiceClass
         public GenericReturn<UserDTO> GetByName(string username)
         {
             return _userService.GetByName(username);
+        }
+
+        public GenericReturn<List<UserDTO>> GetAllUserValidationAd(UserDTO user)
+        {
+            return _userService.GetAllUserValidationAd(user);
         }
 
     }
