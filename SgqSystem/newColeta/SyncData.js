@@ -1,6 +1,6 @@
 ﻿var urlServidor = "http://192.168.25.200/SgqMaster";
 var urlLocal = "http://localhost:63128"
-var urlPreffix = window.location.host.indexOf("host") > 0 ? urlLocal : urlServidor;
+var urlPreffix = window.location.host.indexOf("host") > 0 ? urlServidor : urlServidor;
 
 function MakeObject2(element, ListName, objectReturn) {
     objectReturn[ListName] = [];
