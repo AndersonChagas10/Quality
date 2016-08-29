@@ -34,8 +34,7 @@ function Sync() {
     $.each(ObjListaLevel1.Root, function (c, o) {
         var smallerObject = {};
         smallerObject['Root'] = [];
-        if (!!o.correctiveactioncomplete)
-        {
+        if (!!o.correctiveactioncomplete) {
             var tempCA = {}
             MakeObject2($('.Results > .correctiveAction'), 'a', tempCA)
             o['correctiveactioncomplete'] = tempCA.a[0]
