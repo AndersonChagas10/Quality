@@ -1,14 +1,15 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Repositories;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Data.Repositories
 {
-    public class UserRepository :  RepositoryBase<UserSgq>, IUserRepository
+    public class UserRepository : RepositoryBase<UserSgq>, IUserRepository
     {
-        
+
         public UserRepository(SgqDbDevEntities _db)
-            :base (_db)
+            : base(_db)
         {
         }
 
@@ -28,10 +29,17 @@ namespace Data.Repositories
             Commit();
         }
 
+
+
         public UserSgq AuthenticationLogin(UserSgq user)
         {
             var result = db.Set<UserSgq>().FirstOrDefault(r => r.Name.Equals(user.Name) && r.Password.Equals(user.Password));
             return result;
+        }
+
+        public List<UserSgq> GetAllUser()
+        {
+            return GetAll().ToList();
         }
     }
 }

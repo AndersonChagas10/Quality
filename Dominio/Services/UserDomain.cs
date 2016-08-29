@@ -4,6 +4,7 @@ using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
 using System;
+using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.IO;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace Dominio.Services
     public class UserDomain : IUserDomain
     {
         private readonly IUserRepository _userRepo;
+
+        private static string dominio = "servidoradteste.com";
 
         public string falhaGeral { get { return "It was not possible retrieve any data."; } }
 
@@ -46,10 +49,11 @@ namespace Dominio.Services
                 userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
 
                 //Autenticação no AD JBS USA
-                //if (CheckUserInAD("global.corp.prod", userDto.Name, userDto.Password))
-                //{
-                //    throw new ExceptionHelper("User not found, please verify Username and Password.");
-                //}
+                if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
+                {
+                    throw new ExceptionHelper("User not found, please verify Username and Password.");
+                }
+
 
                 userDto.Password = Criptografar3DES(userDto.Password);
 
@@ -70,6 +74,39 @@ namespace Dominio.Services
             catch (Exception e)
             {
                 return new GenericReturn<UserDTO>(e, falhaGeral);
+            }
+        }
+
+        public GenericReturn<List<UserDTO>> GetAllUserValidationAd(UserDTO userDto)
+        {
+            try
+            {
+
+                userDto.Password = DecryptStringAES(userDto.Password);
+
+                if (userDto.IsNull())
+                    throw new ExceptionHelper("Username and Password are required.");
+
+                userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
+
+                //Autenticação no AD JBS USA
+                if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
+                {
+                    throw new ExceptionHelper("User not found, please verify Username and Password.");
+                }
+
+
+                userDto.Password = Criptografar3DES(userDto.Password);
+
+                var retorno = Mapper.Map<List<UserSgq>, List<UserDTO>>(_userRepo.GetAllUser());
+
+                return new GenericReturn<List<UserDTO>>(retorno);
+
+
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<List<UserDTO>>(e, falhaGeral);
             }
         }
 
@@ -133,7 +170,6 @@ namespace Dominio.Services
                 return false;
             }
         }
-
 
         #region Constantes para Criptografar
 
@@ -326,8 +362,6 @@ namespace Dominio.Services
             return plaintext;
         }
 
-
     }
-
 
 }

@@ -1,5 +1,6 @@
 ﻿using DTO.DTO;
 using DTO.Helpers;
+using System.Collections.Generic;
 
 namespace Dominio.Interfaces.Services
 {
@@ -7,5 +8,6 @@ namespace Dominio.Interfaces.Services
     {
         GenericReturn<UserDTO> AuthenticationLogin(UserDTO user);
         GenericReturn<UserDTO> GetByName(string username);
+        GenericReturn<List<UserDTO>> GetAllUserValidationAd(UserDTO userDto);
     }
 }
