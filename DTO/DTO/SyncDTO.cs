@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DTO.DTO
 {
@@ -14,7 +15,7 @@ namespace DTO.DTO
 
         public string html { get; set; }
         public List<RootObject> Root { get; set; }
-
+        public List<correctiveactioncomplete> naoprecisa { get; set; }
     }
 
     public class NextnextRoot
@@ -32,6 +33,7 @@ namespace DTO.DTO
 
     public class NextRoot //UnidadeId Dept Id
     {
+        public string idcorrectiveaction { get; set; }
         public string auditorid { get; set; }
         public string cattletype { get; set; } //[CattleType_Id]
         public string chainspeed { get; set; }
@@ -64,7 +66,7 @@ namespace DTO.DTO
         public string @class { get; set; }
         public string completed { get; set; }
         public string completereaudit { get; set; }
-        public string correctiveactioncomplete { get; set; }
+        public correctiveactioncomplete correctiveactioncomplete { get; set; }
         public string date { get; set; }
         public string datetime { get; set; }
         public string lastevaluate { get; set; }
@@ -85,6 +87,46 @@ namespace DTO.DTO
         {
             return new ConsolidationLevel01DTO(this);
         }
+
+        public CorrectiveActionDTO makeCA()
+        {
+            return new CorrectiveActionDTO()
+            {
+                idcorrectiveaction = int.Parse(this.correctiveactioncomplete.idcorrectiveaction),
+                //MOCK
+                AuditorId = 1,
+                DescriptionFailure = this.correctiveactioncomplete.descriptionfailure,
+                ImmediateCorrectiveAction = this.correctiveactioncomplete.immediatecorrectiveaction,
+                ProductDisposition = this.correctiveactioncomplete.productdisposition,
+                PreventativeMeasure = this.correctiveactioncomplete.preventativemeasure,
+                SlaughterId = int.Parse(this.correctiveactioncomplete.slaugthersignature),
+                //MOCK
+                DateTimeSlaughter = DateTime.Now,
+                TechinicalId = int.Parse(this.correctiveactioncomplete.techinicalsignature),
+                //MOCK 
+                DateTimeTechinical = DateTime.Now,
+                //MOCK
+                AuditStartTime = DateTime.Now,
+                //MOCK
+                DateCorrectiveAction = DateTime.Now
+            };
+        }
     }
 
+    public class correctiveactioncomplete
+    {
+        public string @class { get; set; }
+        public string date { get; set; }
+        public string descriptionfailure { get; set; }
+        public string idcorrectiveaction { get; set; }
+        public string immediatecorrectiveaction { get; set; }
+        public string level01id { get; set; }
+        public string period { get; set; }
+        public string preventativemeasure { get; set; }
+        public string productdisposition { get; set; }
+        public string shift { get; set; }
+        public string slaugthersignature { get; set; }
+        public string techinicalsignature { get; set; }
+        public string unidadeid { get; set; }
+    }
 }

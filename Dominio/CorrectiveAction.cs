@@ -34,9 +34,7 @@ namespace Dominio
         public Nullable<System.DateTime> AlterDate { get; set; }
         public System.DateTime AuditStartTime { get; set; }
         public System.DateTime DateCorrectiveAction { get; set; }
-        public Nullable<int> CollectionLevel03Id { get; set; }
     
-        public virtual CollectionLevel03 CollectionLevel03 { get; set; }
         public virtual UserSgq UserSgq { get; set; }
         public virtual UserSgq UserSgq1 { get; set; }
         public virtual UserSgq UserSgq2 { get; set; }

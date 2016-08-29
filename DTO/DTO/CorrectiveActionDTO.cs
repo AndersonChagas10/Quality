@@ -6,15 +6,21 @@ using System.Runtime.Serialization;
 
 namespace DTO.DTO
 {
-    [DataContract]
-    [Serializable]
     public class CorrectiveActionDTO : EntityBase
     {
-        [DataMember]
-        public System.DateTime DateExecute { get; set; }
-        [DataMember]
+        public int idcorrectiveaction { get; set; }
         public int AuditorId { get; set; }
-        [DataMember]
+        public string DescriptionFailure { get; set; }
+        public string ImmediateCorrectiveAction { get; set; }
+        public string ProductDisposition { get; set; }
+        public string PreventativeMeasure { get; set; }
+        public Nullable<int> SlaughterId { get; set; }
+        public Nullable<System.DateTime> DateTimeSlaughter { get; set; }
+        public Nullable<int> TechinicalId { get; set; }
+        public Nullable<System.DateTime> DateTimeTechinical { get; set; }
+        public DateTime AuditStartTime { get; set; }
+        public DateTime DateCorrectiveAction { get; set; }
+        public System.DateTime DateExecute { get; set; }
         public int ShiftId { get; set; }
         //[DataMember]
         //public int AuditLevel1Id { get; set; }
@@ -22,39 +28,15 @@ namespace DTO.DTO
         //public int AuditLevel2Id { get; set; }
         //[DataMember]
         //public int AuditLevel3Id { get; set; }
-        [DataMember]
         public System.DateTime StartTime { get; set; }
-        [DataMember]
         public int PeriodId { get; set; }
-        [DataMember]
-        public string DescriptionFailure { get; set; }
-        [DataMember]
-        public string ImmediateCorrectiveAction { get; set; }
-        [DataMember]
-        public string ProductDisposition { get; set; }
-        [DataMember]
-        public string PreventativeMeasure { get; set; }
-        [DataMember]
-        public Nullable<int> SlaughterId { get; set; }
-        [DataMember]
-        public Nullable<System.DateTime> DateTimeSlaughter { get; set; }
-        [DataMember]
-        public Nullable<int> TechinicalId { get; set; }
-        [DataMember]
-        public Nullable<System.DateTime> DateTimeTechinical { get; set; }
-        [DataMember]
         public string NameTechinical { get; set; }
-        [DataMember]
         public string NameSlaughter { get; set; }
-        [DataMember]
         public Nullable<int> AuditLevel01Id { get; set; }
 
-
-        [DataMember]
         public List<CorrectiveActionLevelsDTO> CorrectiveActionLevels { get; set; }
 
 
-        [DataMember]
         public string DateExecuteFarmatado
         {
             get { return DateExecute.ToString("MM/dd/yyyy hh:mm:ss"); }
@@ -64,7 +46,6 @@ namespace DTO.DTO
                 DateExecute = Convert.ToDateTime(value.ToString(), CultureInfo.InvariantCulture);
             }
         }
-        [DataMember]
         public string StartTimeFarmatado
         {
             get { return StartTime.ToString("MM/dd/yyyy hh:mm:ss"); }
@@ -74,7 +55,6 @@ namespace DTO.DTO
                 StartTime = Convert.ToDateTime(value.ToString(), CultureInfo.InvariantCulture);
             }
         }
-        [DataMember]
         public string DateTimeSlaughterFarmatado
         {
             get { return DateTimeSlaughter != null ? DateTimeSlaughter.Value.ToString("MM/dd/yyyy hh:mm:ss") : string.Empty; }
@@ -87,7 +67,6 @@ namespace DTO.DTO
                 }
             }
         }
-        [DataMember]
         public string DateTimeTechinicalFarmatado
         {
             get { return DateTimeTechinical != null ? DateTimeTechinical.Value.ToString("MM/dd/yyyy hh:mm:ss") : string.Empty; }

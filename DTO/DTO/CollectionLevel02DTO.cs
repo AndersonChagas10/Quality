@@ -106,9 +106,12 @@ namespace DTO.DTO
             AuditorId = 1;
             #endregion
 
+            if (nextRoot.idcorrectiveaction != null)
+                CorrectiveActionId = int.Parse(nextRoot.idcorrectiveaction);
 
         }
 
+        public int CorrectiveActionId { get; set; }
         public int ConsolidationLevel02Id { get; set; }
         public int AuditorId { get; set; }
         public int CattleTypeId { get; set; }

@@ -31,7 +31,6 @@ namespace DTO.DTO
             #region DateConsolidation
 
             ConsolidationDate = DateTime.Now;
-
             //MOCK
             //rootObject.unidadeid = "1";
             DepartmentId = 1;//int.Parse(rootObject.de);
@@ -42,7 +41,7 @@ namespace DTO.DTO
             rootObject.unidadeid = "1";
             UnitId = int.Parse(rootObject.unidadeid);
             Guard.ForValidFk(UnitId, "Unit Id must be valid, in ConsolidationLevel01DTO.");
-            
+
             //Guard.ForValidFk(rootObject.department, "Department Id must be valid.");
             //Department_Id = rootObject.department;
 
@@ -51,7 +50,7 @@ namespace DTO.DTO
 
             #endregion
 
-            
+
             collectionLevel02DTO = new List<CollectionLevel02DTO>();
             consolidationLevel02DTO = new List<ConsolidationLevel02DTO>();
 

@@ -38,6 +38,14 @@ namespace SgqSystem.Controllers.Api
             return _syncApp.SaveHtml(objToSync);
         }
 
+        [HttpPost]
+        [Route("api/Sync/SetFuncionaAgora")]
+        public GenericReturn<SyncDTO> SetFuncionaAgora([FromBody] SyncViewModel objToSync)
+        {
+            return _syncApp.SetDataToSincyAuditConsolidated(objToSync);
+        }
+
+
         #endregion
 
         #region Recebe Dados Para Syncronizar o Db Interno e Web

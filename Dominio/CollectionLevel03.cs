@@ -14,12 +14,6 @@ namespace Dominio
     
     public partial class CollectionLevel03
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CollectionLevel03()
-        {
-            this.CorrectiveAction = new HashSet<CorrectiveAction>();
-        }
-    
         public int Id { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
@@ -29,9 +23,7 @@ namespace Dominio
         public decimal Value { get; set; }
         public string ValueText { get; set; }
     
-        public virtual CollectionLevel02 CollectionLevel02 { get; set; }
         public virtual Level03 Level03 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CorrectiveAction> CorrectiveAction { get; set; }
+        public virtual CollectionLevel02 CollectionLevel02 { get; set; }
     }
 }

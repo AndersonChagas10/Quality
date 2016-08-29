@@ -31,11 +31,9 @@ namespace Dominio
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
         public virtual DbSet<CollectionLevel03> CollectionLevel03 { get; set; }
         public virtual DbSet<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
         public virtual DbSet<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
-        public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
         public virtual DbSet<CorrectiveActionLevels> CorrectiveActionLevels { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Level01> Level01 { get; set; }
@@ -47,5 +45,7 @@ namespace Dominio
         public virtual DbSet<UnitUser> UnitUser { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
         public virtual DbSet<CollectionHtml> CollectionHtml { get; set; }
+        public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
+        public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
     }
 }

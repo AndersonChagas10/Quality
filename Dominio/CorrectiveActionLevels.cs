@@ -21,9 +21,9 @@ namespace Dominio
         public int Level03Id { get; set; }
         public Nullable<int> Defects { get; set; }
     
-        public virtual CorrectiveAction CorrectiveAction { get; set; }
         public virtual Level01 Level01 { get; set; }
         public virtual Level02 Level02 { get; set; }
         public virtual Level03 Level03 { get; set; }
+        public virtual CorrectiveAction CorrectiveAction { get; set; }
     }
 }

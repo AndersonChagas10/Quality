@@ -42,6 +42,7 @@ namespace Dominio
         public int Sample { get; set; }
         public int Shift { get; set; }
         public System.DateTime StartPhaseDate { get; set; }
+        public Nullable<int> CorrectiveActionId { get; set; }
     
         public virtual ConsolidationLevel02 ConsolidationLevel02 { get; set; }
         public virtual Level01 Level01 { get; set; }
