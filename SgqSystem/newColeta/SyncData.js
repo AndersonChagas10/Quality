@@ -63,7 +63,6 @@ function GetSync() {
     });
 }
 
-
 function GetToSync() {
     $.post(urlPreffix + "/api/Sync/GetHtmlLastEntry", {}, function (r) {
         console.log(r);
