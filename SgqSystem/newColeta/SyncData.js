@@ -37,7 +37,10 @@ function Sync() {
         if (!!o.correctiveactioncomplete) {
             var tempCA = {}
             MakeObject2($('.Results > .correctiveAction'), 'a', tempCA)
-            o['correctiveactioncomplete'] = tempCA.a[0]
+            $.each(tempCA.a, function (cc, oo) {
+                if (oo.level01id == o.level01id)
+                    o['correctiveactioncomplete'] = oo;
+            });
         }
         smallerObject.Root.push(o);
         console.log(smallerObject)
@@ -56,7 +59,6 @@ function Sync() {
         console.log(r);
     });
 }
-
 function GetSync() {
     $.post(urlPreffix + "/api/Sync/GetLastEntry", {}, function (r) {
         console.log(r);

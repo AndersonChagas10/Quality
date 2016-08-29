@@ -13,42 +13,49 @@ namespace DTO.DTO
 
         public ConsolidationLevel02DTO(List<CollectionLevel02DTO> x)
         {
-            ValidaBaseEntity();
-
-            #region Caso for HTP
-
-            if (x.FirstOrDefault().Level01Id == 1)
+            try
             {
+                ValidaBaseEntity();
+
+                #region Caso for HTP
+
+                if (x.FirstOrDefault().Level01Id == 1)
+                {
+                }
+
+                #endregion
+
+                #region Caso for CCA
+
+                if (x.FirstOrDefault().Level01Id == 2)
+                {
+                }
+
+                #endregion
+
+                #region Caso for CFF
+
+                if (x.FirstOrDefault().Level01Id == 3)
+                {
+                }
+
+                #endregion
+
+                #region Comum para todos
+
+                ConsolidationDate = DateTime.Now;
+
+                Level02Id = x.FirstOrDefault().Level02Id;
+                Guard.ForValidFk(Level02Id, "Level02 Id.");
+
+                //collectionLevel02DTO = x;
+
+                #endregion
             }
-
-            #endregion
-
-            #region Caso for CCA
-
-            if (x.FirstOrDefault().Level01Id  == 2)
+            catch (Exception e)
             {
+                throw new Exception("Erro ao criar ConsolidationLevel02DTO", e);
             }
-
-            #endregion
-
-            #region Caso for CFF
-
-            if (x.FirstOrDefault().Level01Id == 3)
-            {
-            }
-
-            #endregion
-
-            #region Comum para todos
-
-            ConsolidationDate = DateTime.Now;
-
-            Level02Id = x.FirstOrDefault().Level02Id;
-            Guard.ForValidFk(Level02Id, "Level02 Id.");
-
-            //collectionLevel02DTO = x;
-
-            #endregion
 
         }
 

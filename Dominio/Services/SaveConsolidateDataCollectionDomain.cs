@@ -66,11 +66,18 @@ namespace Dominio.Services
                 var watch = Stopwatch.StartNew();
 
                 #region Loop Save
-
+                var saving = "";
                 foreach (var i in ListToSave)
                 {
 
                     var level01Consolidation = Mapper.Map<ConsolidationLevel01>(i);
+                    if (level01Consolidation.Level01Id == 3)
+                        saving = "CFF (Cut, Fold and Flaps)";
+                    if (level01Consolidation.Level01Id == 1)
+                        saving = "HTP";
+                    if(level01Consolidation.Level01Id == 2)
+                        saving = "Carcass Contamination Audit";
+
                     _baseRepoConsolidationL1.Add(level01Consolidation);
 
                     ConsolidationLevel02 level02Consolidation;
@@ -113,7 +120,7 @@ namespace Dominio.Services
 
                 #region Feedback
 
-                return new GenericReturn<SyncDTO>("Susscess! All Data Saved in: " + elapsedMs + " ms.");
+                return new GenericReturn<SyncDTO>("Susscess! All Data Saved in: " + elapsedMs + " ms, for: " + saving);
 
                 #endregion
 

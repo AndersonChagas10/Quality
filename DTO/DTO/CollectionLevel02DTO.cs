@@ -12,90 +12,102 @@ namespace DTO.DTO
 
         public CollectionLevel02DTO(NextRoot nextRoot)
         {
-            ValidaBaseEntity();
-
-            //FK
-            //Auditor_Id = int.Parse(nextRoot.auditorid);
-            //Guard.ForValidFk(Auditor_Id, "Auditor_Id  is not valid.");
-
-            #region Caso for HTP
-
-            if (nextRoot.level01id.Equals("1"))
+            try
             {
+                ValidaBaseEntity();
+
+                //FK
+                //Auditor_Id = int.Parse(nextRoot.auditorid);
+                //Guard.ForValidFk(Auditor_Id, "Auditor_Id  is not valid.");
+
+                #region Caso for HTP
+
+                if (nextRoot.level01id.Equals("1"))
+                {
+                }
+
+                #endregion
+
+                #region Caso for CFF
+
+                if (nextRoot.level01id.Equals("3"))
+                {
+                }
+
+                #endregion
+
+                #region Caso for  CCA
+
+                if (nextRoot.level01id.Equals("2"))
+                {
+                    CattleTypeId = int.Parse(nextRoot.cattletype);
+                    Guard.ForValidFk(CattleTypeId, "CattleType Id is not valid.");
+
+                    Chainspeed = decimal.Parse(nextRoot.chainspeed);
+                    Guard.ForNegative(Chainspeed, "Chainspeed");
+                    //ConsecutiveFailureIs = bool.Parse(nextRoot.Con)
+
+                    LotNumber = decimal.Parse(nextRoot.lotnumber);
+                    Guard.ForNegative(LotNumber, "LotNumber");
+
+                    Mudscore = decimal.Parse(nextRoot.mudscore);
+                    Guard.ForNegative(Mudscore, "Mudscore");
+
+                    if (nextRoot.consecutivefailuretotal != null)
+                        ConsecutiveFailureTotal = int.Parse(nextRoot.consecutivefailuretotal);
+                    Guard.ForNegative(ConsecutiveFailureTotal, "ConsecutiveFailureTotal");
+                }
+
+                #endregion
+
+                #region Valores Default Para Todos
+
+                Level02Id = int.Parse(nextRoot.level02id);
+                Guard.ForValidFk(Level02Id, "Level02 Id is not valid.");
+
+                UnitId = int.Parse(nextRoot.unidadeid);
+                Guard.ForValidFk(UnitId, "Unit id is not valid.");
+
+                Period = int.Parse(nextRoot.period);
+                Guard.ForNegative(Period, "Period");
+
+                if (nextRoot.phase.IsNotNull())
+                {
+                    Phase = int.Parse(nextRoot.phase);
+                    Guard.ForNegative(Phase, "Phase number");
+                }
+
+                ReauditIs = bool.Parse(nextRoot.reaudit);
+                Guard.VerifyIfIsBool(ReauditIs, "ReauditIs");
+
+                ReauditNumber = int.Parse(nextRoot.reauditnumber);
+                Guard.ForNegative(ReauditNumber, "ReauditNumber");
+
+                NotEvaluatedIs = bool.Parse(nextRoot.notavaliable);
+                Guard.VerifyIfIsBool(NotEvaluatedIs, "NotEvaluatedIs");
+
+                nextRoot.sample = "1";
+                Sample = int.Parse(nextRoot.sample);
+                Guard.ForNegative(Sample, "Sample");
+
+                Shift = int.Parse(nextRoot.shift);
+                Guard.ForNegative(Shift, "Shift");
+
+                if (Phase > 1)
+                    StartPhaseDate = DateTime.Parse(nextRoot.startphasedate);
+
+                #endregion
+
+
+                if (nextRoot.idcorrectiveaction != null)
+                    CorrectiveActionId = int.Parse(nextRoot.idcorrectiveaction);
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao gerar CollectionLevel02DTO", e);
             }
 
-            #endregion
-
-            #region Caso for CCA
-
-            if (nextRoot.level01id.Equals("2"))
-            {
-            }
-
-            #endregion
-
-            #region Caso for CFF
-
-            if (nextRoot.level01id.Equals("3"))
-            {
-                CattleTypeId = int.Parse(nextRoot.cattletype);
-                Guard.ForValidFk(CattleTypeId, "CattleType Id is not valid.");
-
-                Chainspeed = decimal.Parse(nextRoot.chainspeed);
-                Guard.ForNegative(Chainspeed, "Chainspeed");
-                //ConsecutiveFailureIs = bool.Parse(nextRoot.Con)
-
-                LotNumber = decimal.Parse(nextRoot.lotnumber);
-                Guard.ForNegative(LotNumber, "LotNumber");
-
-                Mudscore = decimal.Parse(nextRoot.mudscore);
-                Guard.ForNegative(Mudscore, "Mudscore");
-
-                if(nextRoot.consecutivefailuretotal != null)
-                    ConsecutiveFailureTotal = int.Parse(nextRoot.consecutivefailuretotal);
-                Guard.ForNegative(ConsecutiveFailureTotal, "ConsecutiveFailureTotal");
-            }
-
-            #endregion
-
-            #region Valores Default Para Todos
-
-            Level02Id = int.Parse(nextRoot.level02id);
-            Guard.ForValidFk(Level02Id, "Level02 Id is not valid.");
-
-            UnitId = int.Parse(nextRoot.unidadeid);
-            Guard.ForValidFk(UnitId, "Unit id is not valid.");
-
-            Period = int.Parse(nextRoot.period);
-            Guard.ForNegative(Period, "Period");
-
-            if (nextRoot.phase.IsNotNull())
-            {
-                Phase = int.Parse(nextRoot.phase);
-                Guard.ForNegative(Phase, "Phase number");
-            }
-
-            ReauditIs = bool.Parse(nextRoot.reaudit);
-            Guard.VerifyIfIsBool(ReauditIs, "ReauditIs");
-
-            ReauditNumber = int.Parse(nextRoot.reauditnumber);
-            Guard.ForNegative(ReauditNumber, "ReauditNumber");
-
-            NotEvaluatedIs = bool.Parse(nextRoot.notavaliable);
-            Guard.VerifyIfIsBool(NotEvaluatedIs, "NotEvaluatedIs");
-
-            nextRoot.sample = "1";
-            Sample = int.Parse(nextRoot.sample);
-            Guard.ForNegative(Sample, "Sample");
-
-            Shift = int.Parse(nextRoot.shift);
-            Guard.ForNegative(Shift, "Shift");
-
-            if (Phase > 1)
-                StartPhaseDate = DateTime.Parse(nextRoot.startphasedate);
-
-            #endregion
-            
             #region Cria Level03 Collection
 
             collectionLevel03DTO = new List<CollectionLevel03DTO>();
@@ -105,9 +117,6 @@ namespace DTO.DTO
             //MOCK
             AuditorId = 1;
             #endregion
-
-            if (nextRoot.idcorrectiveaction != null)
-                CorrectiveActionId = int.Parse(nextRoot.idcorrectiveaction);
 
         }
 
