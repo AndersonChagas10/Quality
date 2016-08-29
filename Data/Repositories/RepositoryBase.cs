@@ -99,7 +99,7 @@ namespace Data.Repositories
         {
             if (obj.GetType().GetProperty("Id") != null)
             {
-                var id = (int) obj.GetType().GetProperty("Id").GetValue(obj, null);
+                var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
                 if (id > 0)
                     Update(obj);
                 else
@@ -179,18 +179,25 @@ namespace Data.Repositories
 
         private void verifyDate(T obj, string property)
         {
-            if (obj.GetType().GetProperty(property) != null)
+            try
             {
-                var date = (DateTime)obj.GetType().GetProperty(property).GetValue(obj, null);
-                if (date.IsNull())
+                if (obj.GetType().GetProperty(property) != null)
                 {
-                    obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
-                }
-                else
-                {
-                    if (date == DateTime.MinValue)
+                    var date = (DateTime)obj.GetType().GetProperty(property).GetValue(obj, null);
+                    if (date.IsNull())
+                    {
                         obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
+                    }
+                    else
+                    {
+                        if (date == DateTime.MinValue)
+                            obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
             }
         }
     }
