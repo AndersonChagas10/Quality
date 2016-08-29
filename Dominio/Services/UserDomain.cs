@@ -96,13 +96,15 @@ namespace Dominio.Services
                 }
 
 
-                userDto.Password = Criptografar3DES(userDto.Password);
-
                 var retorno = Mapper.Map<List<UserSgq>, List<UserDTO>>(_userRepo.GetAllUser());
 
+                foreach (var i in retorno)
+                {
+                    i.Password = Descriptografar3DES(i.Password);
+                    i.Password = EncryptStringAES(i.Password);
+                }
+
                 return new GenericReturn<List<UserDTO>>(retorno);
-
-
             }
             catch (Exception e)
             {
@@ -178,14 +180,7 @@ namespace Dominio.Services
         /// O Valor representa a transformação para base64 de     
         /// um conjunto de 32 caracteres (8 * 32 = 256bits)      
         /// </summary>     
-        const string cryptoKey = "90A4F2C1DC40CE1F";
-
-        /// <summary>     
-        /// Vetor de bytes utilizados para a criptografia (Chave Externa)     
-        /// </summary>     
-        static byte[] bIV = { 0, 0, 0, 0, 0, 0, 0, 0 };
-        //{ 0x50, 0x08, 0xF1, 0xDD, 0xDE, 0x3C, 0xF2, 0x18,
-        //0x44, 0x74, 0x19, 0x2C, 0x53, 0x49, 0xAB, 0xBC };
+        const string cryptoKey3DES = "90A4F2C1DC40CE1F";
 
         #endregion
 
@@ -196,7 +191,7 @@ namespace Dominio.Services
             byte[] Results = null;
             System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
             MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
-            byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey));
+            byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey3DES));
             TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
             TDESAlgorithm.Key = TDESKey;
             TDESAlgorithm.Mode = CipherMode.ECB;
@@ -220,7 +215,7 @@ namespace Dominio.Services
             byte[] Results = null;
             System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
             MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
-            byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey));
+            byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey3DES));
             TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
             TDESAlgorithm.Key = TDESKey;
             TDESAlgorithm.Mode = CipherMode.ECB;
@@ -240,6 +235,16 @@ namespace Dominio.Services
         }
 
         #endregion
+
+        public static string EncryptStringAES(string cipherText)
+        {
+            var keybytes = Encoding.UTF8.GetBytes("JDS438FDSSJHLWEQ");
+            var iv = Encoding.UTF8.GetBytes("679FDM329IFD23HJ");
+
+            byte[] encryptedbyte = EncryptStringToBytes(cipherText, keybytes, iv);
+            string encrypted = Convert.ToBase64String(encryptedbyte);
+            return encrypted;
+        }
 
         public static string DecryptStringAES(string cipherText)
         {
