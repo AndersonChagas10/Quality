@@ -46,8 +46,8 @@ function Sync() {
         });
     });
 
-    var ObjListaCa = {};
-    MakeResult(ObjListaCa, $('.Results > .correctiveAction'));
+    //var ObjListaCa = {};
+    //MakeResult(ObjListaCa, $('.Results > .correctiveAction'));
 
 
     var htmlObject = {};
