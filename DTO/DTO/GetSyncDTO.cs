@@ -38,15 +38,18 @@ namespace DTO.DTO
                 </div>
             */
             var divMaster = "<div>";
-            foreach (var i in ConsolidationLevel01.FirstOrDefault().GetType().GetProperties())
+            if (ConsolidationLevel01.FirstOrDefault() != null)
             {
-                if (i.PropertyType.BaseType.Name.Equals("EntityBase"))
-                    foreach (var x in i.GetType().GetProperties())
-                    {
-                        divMaster += x.Name + " = '" + x.GetValue(i, null) + "' ";
-                    }
+                foreach (var i in ConsolidationLevel01.FirstOrDefault().GetType().GetProperties())
+                {
+                    if (i.PropertyType.BaseType.Name.Equals("EntityBase"))
+                        foreach (var x in i.GetType().GetProperties())
+                        {
+                            divMaster += x.Name + " = '" + x.GetValue(i, null) + "' ";
+                        }
 
-                divMaster += i.Name + " = '" + i.GetValue(ConsolidationLevel01.FirstOrDefault(), null) + "' ";
+                    divMaster += i.Name + " = '" + i.GetValue(ConsolidationLevel01.FirstOrDefault(), null) + "' ";
+                }
             }
 
             divMaster += "</div>";

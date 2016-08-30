@@ -2,6 +2,7 @@
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace DTO.DTO
 {
@@ -123,9 +124,16 @@ namespace DTO.DTO
             //MOCK
             AuditorId = 1;
             #endregion
+            //08 / 30 / 2016 10:38
+            if(nextRoot.datetime != null)
+                CollectionDate = DateTime.ParseExact(nextRoot.datetime, "MM/dd/yyyy hh:mm", CultureInfo.InvariantCulture);
 
+            if (nextRoot.evaluate != null)
+                EvaluationNumber = int.Parse(nextRoot.evaluate);
+            
         }
 
+        public int EvaluationNumber { get; set; }
         public int CorrectiveActionId { get; set; }
         public int ConsolidationLevel02Id { get; set; }
         public int AuditorId { get; set; }
@@ -146,6 +154,7 @@ namespace DTO.DTO
         public int Sample { get; set; }
         public int Shift { get; set; }
         public System.DateTime StartPhaseDate { get; set; }
+        public System.DateTime CollectionDate { get; set; }
 
         public List<CollectionLevel03DTO> collectionLevel03DTO { get; set; }
         public ConsolidationLevel01DTO consolidationLevel01DTO { get; set; }
