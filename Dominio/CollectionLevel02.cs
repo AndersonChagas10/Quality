@@ -44,6 +44,7 @@ namespace Dominio
         public System.DateTime StartPhaseDate { get; set; }
         public Nullable<int> CorrectiveActionId { get; set; }
         public Nullable<System.DateTime> CollectionDate { get; set; }
+        public Nullable<bool> Duplicated { get; set; }
     
         public virtual ConsolidationLevel02 ConsolidationLevel02 { get; set; }
         public virtual Level01 Level01 { get; set; }

@@ -15,6 +15,7 @@
           <Property Name="Html" Type="nvarchar(max)" />
           <Property Name="Period" Type="int" Nullable="false" />
           <Property Name="Shift" Type="int" Nullable="false" />
+          <Property Name="CollectionDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="CollectionLevel02">
           <Key>
@@ -44,6 +45,7 @@
           <Property Name="StartPhaseDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="CorrectiveActionId" Type="int" />
           <Property Name="CollectionDate" Type="datetime2" Precision="7" />
+          <Property Name="Duplicated" Type="bit" />
         </EntityType>
         <EntityType Name="CollectionLevel03">
           <Key>
@@ -57,6 +59,7 @@
           <Property Name="ConformedIs" Type="bit" Nullable="false" />
           <Property Name="Value" Type="decimal" Precision="10" Scale="5" Nullable="false" />
           <Property Name="ValueText" Type="varchar(max)" Nullable="false" />
+          <Property Name="Duplicated" Type="bit" />
         </EntityType>
         <EntityType Name="ConsolidationLevel01">
           <Key>
@@ -655,6 +658,7 @@
           <Property Name="ValueText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Level03" Relationship="SgqDbModel.FK_CollectionLevel03_Level03" FromRole="CollectionLevel03" ToRole="Level03" />
           <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" FromRole="CollectionLevel03" ToRole="CollectionLevel02" />
+          <Property Name="Duplicated" Type="Boolean" />
         </EntityType>
         <EntityType Name="ConsolidationLevel01">
           <Key>
@@ -951,6 +955,7 @@
           <Property Name="Html" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Period" Type="Int32" Nullable="false" />
           <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="CollectionDate" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="CollectionLevel02">
           <Key>
@@ -985,6 +990,7 @@
           <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="CollectionLevel02" ToRole="UserSgq" />
           <NavigationProperty Name="CollectionLevel03" Relationship="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" FromRole="CollectionLevel02" ToRole="CollectionLevel03" />
           <Property Name="CollectionDate" Type="DateTime" Precision="7" />
+          <Property Name="Duplicated" Type="Boolean" />
         </EntityType>
         <Association Name="FK_CollectionLevel02_ConsolidationLevel02">
           <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="1" />
@@ -1126,6 +1132,7 @@
           <EntitySetMapping Name="CollectionLevel03">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel03">
               <MappingFragment StoreEntitySet="CollectionLevel03">
+                <ScalarProperty Name="Duplicated" ColumnName="Duplicated" />
                 <ScalarProperty Name="ValueText" ColumnName="ValueText" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="ConformedIs" ColumnName="ConformedIs" />
@@ -1276,6 +1283,7 @@
           <EntitySetMapping Name="CollectionHtml">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionHtml">
               <MappingFragment StoreEntitySet="CollectionHtml">
+                <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
                 <ScalarProperty Name="Shift" ColumnName="Shift" />
                 <ScalarProperty Name="Period" ColumnName="Period" />
                 <ScalarProperty Name="Html" ColumnName="Html" />
@@ -1288,6 +1296,7 @@
           <EntitySetMapping Name="CollectionLevel02">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel02">
               <MappingFragment StoreEntitySet="CollectionLevel02">
+                <ScalarProperty Name="Duplicated" ColumnName="Duplicated" />
                 <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
                 <ScalarProperty Name="CorrectiveActionId" ColumnName="CorrectiveActionId" />
                 <ScalarProperty Name="StartPhaseDate" ColumnName="StartPhaseDate" />
