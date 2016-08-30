@@ -110,8 +110,11 @@ namespace Dominio.Services
 
                 foreach (var i in retorno)
                 {
-                    i.Password = Descriptografar3DES(i.Password);
-                    i.Password = EncryptStringAES(i.Password);
+                    if (!string.IsNullOrEmpty(i.Password))
+                    {
+                        i.Password = Descriptografar3DES(i.Password);
+                        i.Password = EncryptStringAES(i.Password);
+                    }
                 }
 
                 return new GenericReturn<List<UserDTO>>(retorno);
