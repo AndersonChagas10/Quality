@@ -18,6 +18,11 @@ namespace Dominio.Services
         private IBaseRepository<CollectionLevel03> _baseRepoCollectionL3;
         private IBaseRepository<CollectionHtml> _baseRepoCollectionHtml;
         private IBaseRepository<CorrectiveAction> _baseRepoCorrectiveAction;
+        private IGetDataResultRepository<ConsolidationLevel01> _consolidationLevel01RepositoryGET;
+        private IGetDataResultRepository<ConsolidationLevel02> _consolidationLevel02RepositoryGET;
+        private IGetDataResultRepository<CollectionLevel02> _collectionLevel02RepositoryGET;
+        private IGetDataResultRepository<CollectionLevel03> _collectionLevel03RepositoryGET;
+        private IGetDataResultRepository<CollectionHtml> _baseRepoCollectionHtmlGET;
 
         public SaveConsolidateDataCollectionDomain(
             IBaseRepository<ConsolidationLevel01> baseRepoConsolidationL1,
@@ -25,9 +30,19 @@ namespace Dominio.Services
             IBaseRepository<CollectionLevel02> baseRepoCollectionL2,
             IBaseRepository<CollectionLevel03> baseRepoCollectionL3,
             IBaseRepository<CollectionHtml> baseRepoCollectionHtml,
-            IBaseRepository<CorrectiveAction> baseRepoCorrectiveAction
+            IBaseRepository<CorrectiveAction> baseRepoCorrectiveAction,
+            IGetDataResultRepository<ConsolidationLevel01> consolidationLevel01RepositoryGET,
+            IGetDataResultRepository<ConsolidationLevel02> consolidationLevel02RepositoryGET,
+            IGetDataResultRepository<CollectionLevel02> collectionLevel02RepositoryGET,
+            IGetDataResultRepository<CollectionLevel03> collectionLevel03RepositoryGET,
+            IGetDataResultRepository<CollectionHtml> baseRepoCollectionHtmlGET
             )
         {
+            _consolidationLevel01RepositoryGET = consolidationLevel01RepositoryGET;
+            _consolidationLevel02RepositoryGET = consolidationLevel02RepositoryGET;
+            _collectionLevel02RepositoryGET = collectionLevel02RepositoryGET;
+            _collectionLevel03RepositoryGET = collectionLevel03RepositoryGET;
+            _baseRepoCollectionHtmlGET = baseRepoCollectionHtmlGET;
             _baseRepoCollectionHtml = baseRepoCollectionHtml;
             _baseRepoConsolidationL1 = baseRepoConsolidationL1;
             _baseRepoConsolidationL2 = baseRepoConsolidationL2;
@@ -69,27 +84,42 @@ namespace Dominio.Services
                 var saving = "";
                 foreach (var i in ListToSave)
                 {
+                    //ConsolidationLevel01 existentLevel1 = _baseRepoConsolidationL1.CheckForExistent();
 
                     var level01Consolidation = Mapper.Map<ConsolidationLevel01>(i);
                     if (level01Consolidation.Level01Id == 3)
                         saving = "CFF (Cut, Fold and Flaps)";
                     if (level01Consolidation.Level01Id == 1)
                         saving = "HTP";
-                    if(level01Consolidation.Level01Id == 2)
+                    if (level01Consolidation.Level01Id == 2)
                         saving = "Carcass Contamination Audit";
 
-                    _baseRepoConsolidationL1.Add(level01Consolidation);
+                    #region Procura Consolidação existente
+                    //var idTempLevel01ConsollidationId = _consolidationLevel01RepositoryGET.GetExistentLevel01Consollidation(level01Consolidation);
+                    //level01Consolidation.Id = idTempLevel01ConsollidationId;
+                    #endregion
+
+                    _baseRepoConsolidationL1.AddOrUpdate(level01Consolidation);
 
                     ConsolidationLevel02 level02Consolidation;
                     foreach (var j in i.consolidationLevel02DTO)
                     {
-                        
+
+                        //Procura Consolidação existente
+
                         j.Level01ConsolidationId = level01Consolidation.Id;
                         level02Consolidation = Mapper.Map<ConsolidationLevel02>(j);
-                        _baseRepoConsolidationL2.Add(level02Consolidation);
+
+                        #region Procura Consolidação existente
+                        //var idTempLevel02ConsollidationId = _consolidationLevel02RepositoryGET.GetExistentLevel02Consollidation(level02Consolidation);
+                        //level02Consolidation.Id = idTempLevel02ConsollidationId;
+                        #endregion
+
+                        _baseRepoConsolidationL2.AddOrUpdate(level02Consolidation);
 
                         foreach (var x in i.collectionLevel02DTO)
                         {
+
                             x.Level01Id = level01Consolidation.Level01Id;
                             x.ConsolidationLevel02Id = level02Consolidation.Id;
 
@@ -101,12 +131,23 @@ namespace Dominio.Services
                             }
 
                             var collectionLevel02 = Mapper.Map<CollectionLevel02>(x);
+
+                            #region Coloca flag duplicado.
+                            _collectionLevel02RepositoryGET.SetDuplicated(collectionLevel02);
+                            #endregion
+
                             _baseRepoCollectionL2.Add(collectionLevel02);
 
                             foreach (var y in x.collectionLevel03DTO)
                                 y.CollectionLevel02Id = collectionLevel02.Id;
 
-                            _baseRepoCollectionL3.AddAll(Mapper.Map<List<CollectionLevel03>>(x.collectionLevel03DTO));
+                            List<CollectionLevel03> cll3 = Mapper.Map<List<CollectionLevel03>>(x.collectionLevel03DTO);
+
+                            #region Coloca flag duplicado.
+                            _collectionLevel03RepositoryGET.SetDuplicated(cll3, collectionLevel02);
+                            #endregion
+
+                            _baseRepoCollectionL3.AddAll(cll3);
                         }
                     }
                 }

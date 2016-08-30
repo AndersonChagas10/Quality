@@ -2,6 +2,8 @@
 using System.Linq;
 using Dominio;
 using System.Collections.Generic;
+using System;
+using System.Data.Entity;
 
 namespace Data.Repositories
 {
@@ -45,5 +47,94 @@ namespace Data.Repositories
             return listResults;
         }
 
+        public void SetDuplicated(List<CollectionLevel03> cll3, CollectionLevel02 i)
+        {
+
+            var collectionLevel02 = db.CollectionLevel02.Where(r =>
+                              r.Level01Id == i.Level01Id &&
+                              r.Level02Id == i.Level02Id &&
+                              r.Period == i.Period &&
+                              r.Shift == i.Shift &&
+                              r.UnitId == i.UnitId &&
+                              DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(DateTime.Now) &&
+                              (r.Duplicated == true)
+                              ).OrderByDescending(r=>r.Id).FirstOrDefault();
+            //var lista = collectionLevel02.ToList();
+            if (collectionLevel02 == null)
+                return;
+
+            //if (collectionLevel02.Count == 0)
+            //    return;
+
+            var alterThisData = db.CollectionLevel03.Where(r => collectionLevel02.Id == r.CollectionLevel02Id).ToList();
+
+            if (alterThisData == null)
+                throw new Exception("Dados requerem atualização para Duplicated = true em level03 porem não foram encontrados.");
+            if (alterThisData.Count == 0)
+                throw new Exception("Dados requerem atualização para Duplicated = true em level03 porem não foram encontrados.");
+
+            foreach (var x in alterThisData)
+            {
+                x.Duplicated = true;
+                UpdateNotCommit(x as T);
+            }
+
+            Commit();
+
+        }
+
+        public void SetDuplicated(CollectionLevel02 i)
+        {
+
+            var alterThisData = db.CollectionLevel02.FirstOrDefault(r =>
+                                r.Level01Id == i.Level01Id &&
+                                r.Level02Id == i.Level02Id &&
+                                r.Period == i.Period &&
+                                r.Shift == i.Shift &&
+                                r.UnitId == i.UnitId &&
+                                DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(i.CollectionDate) &&
+                                (r.Duplicated == false || r.Duplicated == null)
+                                );
+
+            if (alterThisData == null)
+                return;
+
+            alterThisData.Duplicated = true;
+                Update(alterThisData as T);
+
+        }
+
+        public int GetExistentLevel01Consollidation(ConsolidationLevel01 level01Consolidation)
+        {
+
+            var retorno = db.ConsolidationLevel01.FirstOrDefault(r => r.DepartmentId == level01Consolidation.DepartmentId &&
+                    r.ConsolidationLevel02 == level01Consolidation.ConsolidationLevel02 &&
+                    r.Level01Id == level01Consolidation.Level01Id &&
+                    r.UnitId == level01Consolidation.UnitId &&
+                    DbFunctions.TruncateTime(r.AddDate) == DbFunctions.TruncateTime(DateTime.Now)
+                    );
+
+            if (retorno != null)
+                return retorno.Id;
+            else
+                return 0;
+
+        }
+
+        public int GetExistentLevel02Consollidation(ConsolidationLevel02 level02Consolidation)
+        {
+
+            var retorno = db.ConsolidationLevel02.FirstOrDefault(r => r.CollectionLevel02 == level02Consolidation.CollectionLevel02 &&
+                    r.Level01ConsolidationId == level02Consolidation.Level01ConsolidationId &&
+                    r.Level02Id == level02Consolidation.Level02Id
+                    && DbFunctions.TruncateTime(r.AddDate) == DbFunctions.TruncateTime(DateTime.Now)
+                    );
+
+            if (retorno != null)
+                return retorno.Id;
+            else
+                return 0;
+
+        }
     }
 }
