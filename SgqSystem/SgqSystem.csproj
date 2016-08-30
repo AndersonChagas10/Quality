@@ -311,6 +311,7 @@
     <Compile Include="Mappers\ConsolidationLevel01MapperProfile.cs" />
     <Compile Include="Mappers\ConsolidationLevel02MapperProfile.cs" />
     <Compile Include="Mappers\Level01MappingProfile - Copy.cs" />
+    <Compile Include="Mappers\UnitUserMappingProfile.cs" />
     <Compile Include="Mappers\UnitMappingProfile.cs" />
     <Compile Include="Mappers\DepartmenMappingProfile.cs" />
     <Compile Include="Mappers\Level03ConsolidationMapperProfile.cs" />

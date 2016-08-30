@@ -1,5 +1,6 @@
 ﻿using DTO.BaseEntity;
 using DTO.Helpers;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DTO.DTO
@@ -20,6 +21,9 @@ namespace DTO.DTO
         public bool isTechnical { get; set; }
         public bool isSlaugther { get; set; }
         public string[] Roles { get; set; }
+        public string FullName { get; set; }
+
+        public List<UnitUserDTO> UnitUser { get; set; }
 
         /// <summary>
         /// Construtor Padrão
