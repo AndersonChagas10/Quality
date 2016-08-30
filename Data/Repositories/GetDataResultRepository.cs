@@ -49,16 +49,22 @@ namespace Data.Repositories
 
         public void SetDuplicated(List<CollectionLevel03> cll3, CollectionLevel02 i)
         {
-
             var collectionLevel02 = db.CollectionLevel02.Where(r =>
-                              r.Level01Id == i.Level01Id &&
-                              r.Level02Id == i.Level02Id &&
-                              r.Period == i.Period &&
-                              r.Shift == i.Shift &&
-                              r.UnitId == i.UnitId &&
-                              DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(DateTime.Now) &&
-                              (r.Duplicated == true)
-                              ).OrderByDescending(r=>r.Id).FirstOrDefault();
+                               r.Level01Id == i.Level01Id &&
+                               r.Level02Id == i.Level02Id &&
+                               r.Period == i.Period &&
+                               r.Shift == i.Shift &&
+                               r.Sample == i.Sample &&
+                               r.UnitId == i.UnitId &&
+                               r.ReauditNumber == i.ReauditNumber &&
+                               r.EvaluationNumber == i.EvaluationNumber &&
+                               r.Phase == i.Phase &&
+                               r.ReauditIs == i.ReauditIs &&
+                               DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(i.CollectionDate) &&
+                               (r.Duplicated == true)
+                               ).OrderByDescending(r => r.Id).FirstOrDefault(); ;
+
+          
             //var lista = collectionLevel02.ToList();
             if (collectionLevel02 == null)
                 return;
@@ -91,7 +97,12 @@ namespace Data.Repositories
                                 r.Level02Id == i.Level02Id &&
                                 r.Period == i.Period &&
                                 r.Shift == i.Shift &&
+                                r.Sample == i.Sample &&
                                 r.UnitId == i.UnitId &&
+                                r.ReauditNumber == i.ReauditNumber && 
+                                r.EvaluationNumber == i.EvaluationNumber &&
+                                r.Phase == i.Phase &&
+                                r.ReauditIs == i.ReauditIs &&
                                 DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(i.CollectionDate) &&
                                 (r.Duplicated == false || r.Duplicated == null)
                                 );
