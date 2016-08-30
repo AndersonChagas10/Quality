@@ -17,9 +17,9 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Level02()
         {
+            this.CollectionLevel02 = new HashSet<CollectionLevel02>();
             this.ConsolidationLevel02 = new HashSet<ConsolidationLevel02>();
             this.CorrectiveActionLevels = new HashSet<CorrectiveActionLevels>();
-            this.CollectionLevel02 = new HashSet<CollectionLevel02>();
         }
     
         public int Id { get; set; }
@@ -30,10 +30,10 @@ namespace Dominio
         public bool Active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CollectionLevel02> CollectionLevel02 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CorrectiveActionLevels> CorrectiveActionLevels { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CollectionLevel02> CollectionLevel02 { get; set; }
     }
 }
