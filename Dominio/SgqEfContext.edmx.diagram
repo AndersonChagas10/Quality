@@ -33,14 +33,14 @@
         <AssociationConnector Association="SgqDbModel.FK_CorrectiveAction_UserSgq1" />
         <AssociationConnector Association="SgqDbModel.FK_CorrectiveAction_UserSgq2" />
         <AssociationConnector Association="SgqDbModel.FK_CorrectiveActionLevels_CorrectiveAction" />
+        <EntityTypeShape EntityType="SgqDbModel.CollectionLevel03" Width="1.5" PointX="8.25" PointY="12.875" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel03_Level03" />
         <EntityTypeShape EntityType="SgqDbModel.CollectionLevel02" Width="1.5" PointX="3.75" PointY="15.375" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_Level01" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_Level02" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_UserSgq" />
-        <EntityTypeShape EntityType="SgqDbModel.CollectionLevel03" Width="1.5" PointX="8.25" PointY="12.875" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" />
-        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel03_Level03" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

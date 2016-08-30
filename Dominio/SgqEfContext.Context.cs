@@ -45,7 +45,7 @@ namespace Dominio
         public virtual DbSet<UserSgq> UserSgq { get; set; }
         public virtual DbSet<CollectionHtml> CollectionHtml { get; set; }
         public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
-        public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
         public virtual DbSet<CollectionLevel03> CollectionLevel03 { get; set; }
+        public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
     }
 }

@@ -13,6 +13,9 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Html" Type="nvarchar(max)" />
+          <Property Name="Period" Type="int" Nullable="false" />
+          <Property Name="Shift" Type="int" Nullable="false" />
+          <Property Name="CollectionDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="CollectionLevel02">
           <Key>
@@ -43,6 +46,7 @@
           <Property Name="CorrectiveActionId" Type="int" />
           <Property Name="CollectionDate" Type="datetime2" Precision="7" />
           <Property Name="Duplicated" Type="bit" />
+          <Property Name="EvaluationNumber" Type="int" />
         </EntityType>
         <EntityType Name="CollectionLevel03">
           <Key>
@@ -614,6 +618,11 @@
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
             <End Role="CorrectiveActionLevels" EntitySet="CorrectiveActionLevels" />
           </AssociationSet>
+          <EntitySet Name="CollectionLevel03" EntityType="SgqDbModel.CollectionLevel03" />
+          <AssociationSet Name="FK_CollectionLevel03_Level03" Association="SgqDbModel.FK_CollectionLevel03_Level03">
+            <End Role="Level03" EntitySet="Level03" />
+            <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
+          </AssociationSet>
           <EntitySet Name="CollectionLevel02" EntityType="SgqDbModel.CollectionLevel02" />
           <AssociationSet Name="FK_CollectionLevel02_ConsolidationLevel02" Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02">
             <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
@@ -631,13 +640,8 @@
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
           </AssociationSet>
-          <EntitySet Name="CollectionLevel03" EntityType="SgqDbModel.CollectionLevel03" />
           <AssociationSet Name="FK_CollectionLevel03_CollectionLevel02" Association="SgqDbModel.FK_CollectionLevel03_CollectionLevel02">
             <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-            <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel03_Level03" Association="SgqDbModel.FK_CollectionLevel03_Level03">
-            <End Role="Level03" EntitySet="Level03" />
             <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
           </AssociationSet>
         </EntityContainer>
@@ -922,6 +926,9 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Html" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Period" Type="Int32" Nullable="false" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="CollectionDate" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="CorrectiveAction">
           <Key>
@@ -994,6 +1001,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CollectionLevel03">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="CollectionLevel02Id" Type="Int32" Nullable="false" />
+          <Property Name="Level03Id" Type="Int32" />
+          <Property Name="ConformedIs" Type="Boolean" Nullable="false" />
+          <Property Name="Value" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
+          <Property Name="ValueText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Duplicated" Type="Boolean" />
+          <NavigationProperty Name="Level03" Relationship="SgqDbModel.FK_CollectionLevel03_Level03" FromRole="CollectionLevel03" ToRole="Level03" />
+          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" FromRole="CollectionLevel03" ToRole="CollectionLevel02" />
+        </EntityType>
+        <Association Name="FK_CollectionLevel03_Level03">
+          <End Type="SgqDbModel.Level03" Role="Level03" Multiplicity="0..1" />
+          <End Type="SgqDbModel.CollectionLevel03" Role="CollectionLevel03" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level03">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel03">
+              <PropertyRef Name="Level03Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="CollectionLevel02">
           <Key>
             <PropertyRef Name="Id" />
@@ -1023,6 +1058,7 @@
           <Property Name="CorrectiveActionId" Type="Int32" />
           <Property Name="CollectionDate" Type="DateTime" Precision="7" />
           <Property Name="Duplicated" Type="Boolean" />
+          <Property Name="EvaluationNumber" Type="Int32" />
           <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="CollectionLevel02" ToRole="ConsolidationLevel02" />
           <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_CollectionLevel02_Level01" FromRole="CollectionLevel02" ToRole="Level01" />
           <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_CollectionLevel02_Level02" FromRole="CollectionLevel02" ToRole="Level02" />
@@ -1077,22 +1113,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CollectionLevel03">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="CollectionLevel02Id" Type="Int32" Nullable="false" />
-          <Property Name="Level03Id" Type="Int32" />
-          <Property Name="ConformedIs" Type="Boolean" Nullable="false" />
-          <Property Name="Value" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="ValueText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Duplicated" Type="Boolean" />
-          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" FromRole="CollectionLevel03" ToRole="CollectionLevel02" />
-          <NavigationProperty Name="Level03" Relationship="SgqDbModel.FK_CollectionLevel03_Level03" FromRole="CollectionLevel03" ToRole="Level03" />
-        </EntityType>
         <Association Name="FK_CollectionLevel03_CollectionLevel02">
           <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="1" />
           <End Type="SgqDbModel.CollectionLevel03" Role="CollectionLevel03" Multiplicity="*" />
@@ -1102,18 +1122,6 @@
             </Principal>
             <Dependent Role="CollectionLevel03">
               <PropertyRef Name="CollectionLevel02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel03_Level03">
-          <End Type="SgqDbModel.Level03" Role="Level03" Multiplicity="0..1" />
-          <End Type="SgqDbModel.CollectionLevel03" Role="CollectionLevel03" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level03">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel03">
-              <PropertyRef Name="Level03Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1262,6 +1270,9 @@
           <EntitySetMapping Name="CollectionHtml">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionHtml">
               <MappingFragment StoreEntitySet="CollectionHtml">
+                <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
                 <ScalarProperty Name="Html" ColumnName="Html" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
@@ -1289,9 +1300,25 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CollectionLevel03">
+            <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel03">
+              <MappingFragment StoreEntitySet="CollectionLevel03">
+                <ScalarProperty Name="Duplicated" ColumnName="Duplicated" />
+                <ScalarProperty Name="ValueText" ColumnName="ValueText" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="ConformedIs" ColumnName="ConformedIs" />
+                <ScalarProperty Name="Level03Id" ColumnName="Level03Id" />
+                <ScalarProperty Name="CollectionLevel02Id" ColumnName="CollectionLevel02Id" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CollectionLevel02">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel02">
               <MappingFragment StoreEntitySet="CollectionLevel02">
+                <ScalarProperty Name="EvaluationNumber" ColumnName="EvaluationNumber" />
                 <ScalarProperty Name="Duplicated" ColumnName="Duplicated" />
                 <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
                 <ScalarProperty Name="CorrectiveActionId" ColumnName="CorrectiveActionId" />
@@ -1314,21 +1341,6 @@
                 <ScalarProperty Name="CattleTypeId" ColumnName="CattleTypeId" />
                 <ScalarProperty Name="AuditorId" ColumnName="AuditorId" />
                 <ScalarProperty Name="ConsolidationLevel02Id" ColumnName="ConsolidationLevel02Id" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CollectionLevel03">
-            <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel03">
-              <MappingFragment StoreEntitySet="CollectionLevel03">
-                <ScalarProperty Name="Duplicated" ColumnName="Duplicated" />
-                <ScalarProperty Name="ValueText" ColumnName="ValueText" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="ConformedIs" ColumnName="ConformedIs" />
-                <ScalarProperty Name="Level03Id" ColumnName="Level03Id" />
-                <ScalarProperty Name="CollectionLevel02Id" ColumnName="CollectionLevel02Id" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
