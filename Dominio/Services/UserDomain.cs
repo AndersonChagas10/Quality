@@ -17,7 +17,7 @@ namespace Dominio.Services
     {
         private readonly IUserRepository _userRepo;
 
-        private static string dominio = "servidoradteste.com";
+        private static string dominio = "global.corp.prod";
 
         public string falhaGeral { get { return "It was not possible retrieve any data."; } }
 
@@ -56,10 +56,16 @@ namespace Dominio.Services
                 }
 
                 //Autenticação no AD JBS USA
-                //if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
-                //{
-                //    throw new ExceptionHelper("User not found, please verify Username and Password.");
-                //}
+                if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
+                {
+                    var user = Mapper.Map<UserDTO, UserSgq>(userDto);
+                    user.Password = Criptografar3DES(user.Password);
+                    var isUser = _userRepo.AuthenticationLogin(user);
+                    if (isUser.IsNull())
+                    {
+                        throw new ExceptionHelper("User not found, please verify Username and Password.");
+                    }
+                }
 
                 userByName.Password = Criptografar3DES(userDto.Password);
 
@@ -100,10 +106,16 @@ namespace Dominio.Services
                 userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
 
                 //Autenticação no AD JBS USA
-                //if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
-                //{
-                //    throw new ExceptionHelper("User not found, please verify Username and Password.");
-                //}
+                if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
+                {
+                    var user = Mapper.Map<UserDTO, UserSgq>(userDto);
+                    user.Password = Criptografar3DES(user.Password);
+                    var isUser = _userRepo.AuthenticationLogin(user);
+                    if (isUser.IsNull())
+                    {
+                        throw new ExceptionHelper("User not found, please verify Username and Password.");
+                    }
+                }
 
 
                 var retorno = Mapper.Map<List<UserSgq>, List<UserDTO>>(_userRepo.GetAllUser());
@@ -201,72 +213,100 @@ namespace Dominio.Services
 
         public static string Criptografar3DES(string Message)
         {
-            byte[] Results = null;
-            System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
-            MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
-            byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey3DES));
-            TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
-            TDESAlgorithm.Key = TDESKey;
-            TDESAlgorithm.Mode = CipherMode.ECB;
-            TDESAlgorithm.Padding = PaddingMode.PKCS7;
-            byte[] DataToEncrypt = UTF8.GetBytes(Message);
             try
             {
-                ICryptoTransform Encryptor = TDESAlgorithm.CreateEncryptor();
-                Results = Encryptor.TransformFinalBlock(DataToEncrypt, 0, DataToEncrypt.Length);
+                byte[] Results = null;
+                System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
+                MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
+                byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey3DES));
+                TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
+                TDESAlgorithm.Key = TDESKey;
+                TDESAlgorithm.Mode = CipherMode.ECB;
+                TDESAlgorithm.Padding = PaddingMode.PKCS7;
+                byte[] DataToEncrypt = UTF8.GetBytes(Message);
+                try
+                {
+                    ICryptoTransform Encryptor = TDESAlgorithm.CreateEncryptor();
+                    Results = Encryptor.TransformFinalBlock(DataToEncrypt, 0, DataToEncrypt.Length);
+                }
+                finally
+                {
+                    TDESAlgorithm.Clear();
+                    HashProvider.Clear();
+                }
+                return Convert.ToBase64String(Results);
             }
-            finally
+            catch (Exception)
             {
-                TDESAlgorithm.Clear();
-                HashProvider.Clear();
+                return Message;
             }
-            return Convert.ToBase64String(Results);
         }
 
         public static string Descriptografar3DES(string Message)
         {
-            byte[] Results = null;
-            System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
-            MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
-            byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey3DES));
-            TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
-            TDESAlgorithm.Key = TDESKey;
-            TDESAlgorithm.Mode = CipherMode.ECB;
-            TDESAlgorithm.Padding = PaddingMode.PKCS7;
-            byte[] DataToDecrypt = Convert.FromBase64String(Message);
             try
             {
-                ICryptoTransform Decryptor = TDESAlgorithm.CreateDecryptor();
-                Results = Decryptor.TransformFinalBlock(DataToDecrypt, 0, DataToDecrypt.Length);
+                byte[] Results = null;
+                System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
+                MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
+                byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey3DES));
+                TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
+                TDESAlgorithm.Key = TDESKey;
+                TDESAlgorithm.Mode = CipherMode.ECB;
+                TDESAlgorithm.Padding = PaddingMode.PKCS7;
+                byte[] DataToDecrypt = Convert.FromBase64String(Message);
+                try
+                {
+                    ICryptoTransform Decryptor = TDESAlgorithm.CreateDecryptor();
+                    Results = Decryptor.TransformFinalBlock(DataToDecrypt, 0, DataToDecrypt.Length);
+                }
+                finally
+                {
+                    TDESAlgorithm.Clear();
+                    HashProvider.Clear();
+                }
+                return UTF8.GetString(Results);
             }
-            finally
+            catch (Exception)
             {
-                TDESAlgorithm.Clear();
-                HashProvider.Clear();
+                return Message;
             }
-            return UTF8.GetString(Results);
         }
 
         #endregion
 
         public static string EncryptStringAES(string cipherText)
         {
-            var keybytes = Encoding.UTF8.GetBytes("JDS438FDSSJHLWEQ");
-            var iv = Encoding.UTF8.GetBytes("679FDM329IFD23HJ");
+            try
+            {
+                var keybytes = Encoding.UTF8.GetBytes("JDS438FDSSJHLWEQ");
+                var iv = Encoding.UTF8.GetBytes("679FDM329IFD23HJ");
 
-            byte[] encryptedbyte = EncryptStringToBytes(cipherText, keybytes, iv);
-            string encrypted = Convert.ToBase64String(encryptedbyte);
-            return encrypted;
+                byte[] encryptedbyte = EncryptStringToBytes(cipherText, keybytes, iv);
+                string encrypted = Convert.ToBase64String(encryptedbyte);
+                return encrypted;
+            }
+            catch (Exception)
+            {
+                return cipherText;
+            }
         }
 
         public static string DecryptStringAES(string cipherText)
         {
-            var keybytes = Encoding.UTF8.GetBytes("JDS438FDSSJHLWEQ");
-            var iv = Encoding.UTF8.GetBytes("679FDM329IFD23HJ");
+            try
+            {
+                var keybytes = Encoding.UTF8.GetBytes("JDS438FDSSJHLWEQ");
+                var iv = Encoding.UTF8.GetBytes("679FDM329IFD23HJ");
 
-            var encrypted = Convert.FromBase64String(cipherText);
-            var decriptedFromJavascript = DecryptStringFromBytes(encrypted, keybytes, iv);
-            return string.Format(decriptedFromJavascript);
+                var encrypted = Convert.FromBase64String(cipherText);
+                var decriptedFromJavascript = DecryptStringFromBytes(encrypted, keybytes, iv);
+                return string.Format(decriptedFromJavascript);
+            }
+            catch (Exception)
+            {
+                return cipherText;
+            }
         }
 
         private static byte[] EncryptStringToBytes(string plainText, byte[] key, byte[] iv)
