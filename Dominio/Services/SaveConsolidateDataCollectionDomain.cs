@@ -75,7 +75,7 @@ namespace Dominio.Services
                         saving = "CFF (Cut, Fold and Flaps)";
                     if (level01Consolidation.Level01Id == 1)
                         saving = "HTP";
-                    if(level01Consolidation.Level01Id == 2)
+                    if (level01Consolidation.Level01Id == 2)
                         saving = "Carcass Contamination Audit";
 
                     _baseRepoConsolidationL1.Add(level01Consolidation);
@@ -83,7 +83,7 @@ namespace Dominio.Services
                     ConsolidationLevel02 level02Consolidation;
                     foreach (var j in i.consolidationLevel02DTO)
                     {
-                        
+
                         j.Level01ConsolidationId = level01Consolidation.Id;
                         level02Consolidation = Mapper.Map<ConsolidationLevel02>(j);
                         _baseRepoConsolidationL2.Add(level02Consolidation);
@@ -151,7 +151,8 @@ namespace Dominio.Services
                 {
                     Html = objToSync.html,
                     Period = objToSync.CollectionHtml.Period,
-                    Shift = objToSync.CollectionHtml.Shift
+                    Shift = objToSync.CollectionHtml.Shift,
+                    CollectionDate = objToSync.CollectionHtml.CollectionDate
                 };
                 _baseRepoCollectionHtml.Add(html);
                 return new GenericReturn<SyncDTO>("Susscess! sync HTML.");
