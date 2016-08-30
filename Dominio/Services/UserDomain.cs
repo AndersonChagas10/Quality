@@ -72,6 +72,7 @@ namespace Dominio.Services
                 //if (!isUser.IsNotNull())
                 //{
                 //user.FullName = "FullName"; //Mock
+
                 _userRepo.Salvar(userByName);
                 //}
 

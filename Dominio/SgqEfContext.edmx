@@ -13,6 +13,8 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Html" Type="nvarchar(max)" />
+          <Property Name="Period" Type="int" Nullable="false" />
+          <Property Name="Shift" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CollectionLevel02">
           <Key>
@@ -41,6 +43,7 @@
           <Property Name="Shift" Type="int" Nullable="false" />
           <Property Name="StartPhaseDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="CorrectiveActionId" Type="int" />
+          <Property Name="CollectionDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="CollectionLevel03">
           <Key>
@@ -946,6 +949,8 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Html" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Period" Type="Int32" Nullable="false" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="CollectionLevel02">
           <Key>
@@ -979,6 +984,7 @@
           <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_CollectionLevel02_Level02" FromRole="CollectionLevel02" ToRole="Level02" />
           <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="CollectionLevel02" ToRole="UserSgq" />
           <NavigationProperty Name="CollectionLevel03" Relationship="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" FromRole="CollectionLevel02" ToRole="CollectionLevel03" />
+          <Property Name="CollectionDate" Type="DateTime" Precision="7" />
         </EntityType>
         <Association Name="FK_CollectionLevel02_ConsolidationLevel02">
           <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="1" />
@@ -1270,6 +1276,8 @@
           <EntitySetMapping Name="CollectionHtml">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionHtml">
               <MappingFragment StoreEntitySet="CollectionHtml">
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
                 <ScalarProperty Name="Html" ColumnName="Html" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
@@ -1280,6 +1288,7 @@
           <EntitySetMapping Name="CollectionLevel02">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel02">
               <MappingFragment StoreEntitySet="CollectionLevel02">
+                <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
                 <ScalarProperty Name="CorrectiveActionId" ColumnName="CorrectiveActionId" />
                 <ScalarProperty Name="StartPhaseDate" ColumnName="StartPhaseDate" />
                 <ScalarProperty Name="Shift" ColumnName="Shift" />

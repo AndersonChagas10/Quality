@@ -16,6 +16,7 @@ namespace DTO.DTO
         public string html { get; set; }
         public List<RootObject> Root { get; set; }
         public List<correctiveactioncomplete> naoprecisa { get; set; }
+        public CollectionHtmlDTO CollectionHtml { get; set; }
     }
 
     public class NextnextRoot

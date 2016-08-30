@@ -50,6 +50,7 @@
     <Compile Include="BaseEntity\DataCollectionBase.cs" />
     <Compile Include="BaseEntity\EntityBase.cs" />
     <Compile Include="DTO\ColetaDTO.cs" />
+    <Compile Include="DTO\CollectionHtmlDTO.cs" />
     <Compile Include="DTO\ConsolidationLevel02DTO.cs" />
     <Compile Include="DTO\CollectionLevel02DTO.cs" />
     <Compile Include="DTO\CollectionLevel03DTO.cs" />
