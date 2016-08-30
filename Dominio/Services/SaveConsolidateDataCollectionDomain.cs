@@ -152,7 +152,8 @@ namespace Dominio.Services
                     Html = objToSync.html,
                     Period = objToSync.CollectionHtml.Period,
                     Shift = objToSync.CollectionHtml.Shift,
-                    CollectionDate = objToSync.CollectionHtml.CollectionDate
+                    CollectionDate = objToSync.CollectionHtml.CollectionDate,
+                    UnitId = objToSync.CollectionHtml.UnitId
                 };
                 _baseRepoCollectionHtml.Add(html);
                 return new GenericReturn<SyncDTO>("Susscess! sync HTML.");

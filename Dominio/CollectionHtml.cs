@@ -21,5 +21,6 @@ namespace Dominio
         public int Period { get; set; }
         public int Shift { get; set; }
         public Nullable<System.DateTime> CollectionDate { get; set; }
+        public Nullable<int> UnitId { get; set; }
     }
 }
