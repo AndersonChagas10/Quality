@@ -4,6 +4,30 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    #myProgress {
+        position: relative;
+        width: 100%;
+        height: 30px;
+        background-color: #ddd;
+    }
+
+    #myBar {
+        position: absolute;
+        width: 1%;
+        height: 100%;
+        background-color: #4CAF50;
+    }
+</style>
+
+<h1>JavaScript Progress Bar</h1>
+
+<div id="myProgress">
+    <div id="myBar"></div>
+</div>
+
+<button onclick="move(5)">Click Me</button>
+
 <h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm())
@@ -34,3 +58,33 @@
 
     </div>
 }
+
+<script>
+    var quantidade = 0;
+    function move(q) {
+        var andarAte = q + quantidade;
+        var elem = document.getElementById("myBar");
+        var width = 1;
+        var id = setInterval(frame, 10);
+        function frame() {
+            if (elem.style.width.replace(/[^0-9]/g, '').length > 0) {
+                if (parseInt(elem.style.width.replace(/[^0-9]/g, '')) >= 100){
+                    clearInterval(id);
+                    return;
+                }
+            }
+            if (width >= q || width >= 100) {
+                clearInterval(id);
+            } else {
+                width++;
+                var andar = 0;
+                if (elem.style.width.replace(/[^0-9]/g, '').length > 0)
+                    andar += (parseInt(elem.style.width.replace(/[^0-9]/g, ''))) + 1;
+                else
+                    andar = width;
+                elem.style.width = andar + '%';
+            }
+        }
+        quantidade += q;
+    }
+</script>

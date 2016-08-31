@@ -4,7 +4,7 @@
     {
         CorrectiveAction SalvarAcaoCorretiva(CorrectiveAction entitie);
 
-        CorrectiveActionLevels SalvarAcaoCorretivaLevels(CorrectiveActionLevels entitie);
+        //CorrectiveActionLevels SalvarAcaoCorretivaLevels(CorrectiveActionLevels entitie);
 
         CorrectiveAction VerificarAcaoCorretivaIncompleta(CorrectiveAction entitie);
 

@@ -14,31 +14,25 @@ namespace Dominio
     
     public partial class CorrectiveAction
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CorrectiveAction()
-        {
-            this.CorrectiveActionLevels = new HashSet<CorrectiveActionLevels>();
-        }
-    
         public int Id { get; set; }
         public int AuditorId { get; set; }
+        public int CollectionLevel02Id { get; set; }
+        public Nullable<int> SlaughterId { get; set; }
+        public Nullable<int> TechinicalId { get; set; }
+        public Nullable<System.DateTime> DateTimeSlaughter { get; set; }
+        public Nullable<System.DateTime> DateTimeTechinical { get; set; }
+        public System.DateTime AddDate { get; set; }
+        public Nullable<System.DateTime> AlterDate { get; set; }
+        public System.DateTime DateCorrectiveAction { get; set; }
+        public System.DateTime AuditStartTime { get; set; }
         public string DescriptionFailure { get; set; }
         public string ImmediateCorrectiveAction { get; set; }
         public string ProductDisposition { get; set; }
         public string PreventativeMeasure { get; set; }
-        public Nullable<int> SlaughterId { get; set; }
-        public Nullable<System.DateTime> DateTimeSlaughter { get; set; }
-        public Nullable<int> TechinicalId { get; set; }
-        public Nullable<System.DateTime> DateTimeTechinical { get; set; }
-        public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
-        public System.DateTime AuditStartTime { get; set; }
-        public System.DateTime DateCorrectiveAction { get; set; }
     
         public virtual UserSgq UserSgq { get; set; }
         public virtual UserSgq UserSgq1 { get; set; }
         public virtual UserSgq UserSgq2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CorrectiveActionLevels> CorrectiveActionLevels { get; set; }
+        public virtual CollectionLevel02 CollectionLevel02 { get; set; }
     }
 }

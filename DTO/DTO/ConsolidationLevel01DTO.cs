@@ -70,7 +70,7 @@ namespace DTO.DTO
                 throw new Exception("Lista de collectionLevel02DTO vazia.");
 
             foreach (var i in rootObject.nextRoot)
-                collectionLevel02DTO.Add(new CollectionLevel02DTO(i));
+                collectionLevel02DTO.Add(new CollectionLevel02DTO(i, UnitId));
 
             #endregion
 

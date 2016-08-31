@@ -30,14 +30,14 @@ namespace Data.Repositories
             return entitie;
         }
 
-        public CorrectiveActionLevels SalvarAcaoCorretivaLevels(CorrectiveActionLevels entitie)
-        {
-            db.Set<CorrectiveActionLevels>().Add(entitie);
-            Commit();
+        //public CorrectiveActionLevels SalvarAcaoCorretivaLevels(CorrectiveActionLevels entitie)
+        //{
+        //    db.Set<CorrectiveActionLevels>().Add(entitie);
+        //    Commit();
 
-            return entitie;
+        //    return entitie;
 
-        }
+        //}
 
         public CorrectiveAction VerificarAcaoCorretivaIncompleta(CorrectiveAction entitie)
         {

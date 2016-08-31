@@ -81,18 +81,23 @@ namespace Dominio.Services
                 var watch = Stopwatch.StartNew();
 
                 #region Loop Save
-                var saving = "";
+                var saving = 0;
                 foreach (var i in ListToSave)
                 {
                     //ConsolidationLevel01 existentLevel1 = _baseRepoConsolidationL1.CheckForExistent();
+                    #region Feedback
 
                     var level01Consolidation = Mapper.Map<ConsolidationLevel01>(i);
-                    if (level01Consolidation.Level01Id == 3)
-                        saving = "CFF (Cut, Fold and Flaps)";
+                    if (level01Consolidation.Level01Id == 3) { }
+                    saving = 3;
                     if (level01Consolidation.Level01Id == 1)
-                        saving = "HTP";
+                        saving = 1;
                     if (level01Consolidation.Level01Id == 2)
-                        saving = "Carcass Contamination Audit";
+                        saving = 2;
+
+                    #endregion
+
+                    #region Salva ConsolidationLevel01
 
                     #region Procura Consolidação existente
                     //var idTempLevel01ConsollidationId = _consolidationLevel01RepositoryGET.GetExistentLevel01Consollidation(level01Consolidation);
@@ -101,11 +106,13 @@ namespace Dominio.Services
 
                     _baseRepoConsolidationL1.AddOrUpdate(level01Consolidation);
 
+                    #endregion
+
                     ConsolidationLevel02 level02Consolidation;
                     foreach (var j in i.consolidationLevel02DTO)
                     {
 
-                        //Procura Consolidação existente
+                        #region Salva ConsolidationLevel02
 
                         j.Level01ConsolidationId = level01Consolidation.Id;
                         level02Consolidation = Mapper.Map<ConsolidationLevel02>(j);
@@ -117,26 +124,35 @@ namespace Dominio.Services
 
                         _baseRepoConsolidationL2.AddOrUpdate(level02Consolidation);
 
+                        #endregion
+
                         foreach (var x in i.collectionLevel02DTO)
                         {
 
+                            #region Salva CollectionLevel02
+
                             x.Level01Id = level01Consolidation.Level01Id;
                             x.ConsolidationLevel02Id = level02Consolidation.Id;
-
-                            if (x.CorrectiveActionId > 0)
-                            {
-                                var CA = Mapper.Map<CorrectiveAction>(ListToSaveCA.FirstOrDefault(z => z.idcorrectiveaction == x.CorrectiveActionId));
-                                _baseRepoCorrectiveAction.Add(CA);
-                                x.CorrectiveActionId = CA.Id;
-                            }
-
                             var collectionLevel02 = Mapper.Map<CollectionLevel02>(x);
-
+                            
                             #region Coloca flag duplicado.
                             _collectionLevel02RepositoryGET.SetDuplicated(collectionLevel02);
                             #endregion
 
                             _baseRepoCollectionL2.Add(collectionLevel02);
+
+                            #endregion
+
+                            #region Salva CA
+                            if (x.CorrectiveActionId > 0)
+                            {
+                                var CA = Mapper.Map<CorrectiveAction>(ListToSaveCA.FirstOrDefault(z => z.idcorrectiveaction == x.CorrectiveActionId));
+                                CA.CollectionLevel02Id = collectionLevel02.Id;
+                                _baseRepoCorrectiveAction.Add(CA);
+                            }
+                            #endregion
+
+                            #region Salva CollectionLevel03
 
                             foreach (var y in x.collectionLevel03DTO)
                                 y.CollectionLevel02Id = collectionLevel02.Id;
@@ -147,7 +163,8 @@ namespace Dominio.Services
                             _collectionLevel03RepositoryGET.SetDuplicated(cll3, collectionLevel02);
                             #endregion
 
-                            _baseRepoCollectionL3.AddAll(cll3);
+                            _baseRepoCollectionL3.AddAll(cll3); 
+                            #endregion
                         }
                     }
                 }
@@ -160,8 +177,18 @@ namespace Dominio.Services
                 #endregion
 
                 #region Feedback
+                
+                var savingText = "";
+                if (saving == 3) { }
+                savingText = "CFF (Cut, Fold and Flaps)";
+                if (saving == 1)
+                    savingText = "HTP";
+                if (saving == 2)
+                    savingText = "Carcass Contamination Audit";
 
-                return new GenericReturn<SyncDTO>("Susscess! All Data Saved in: " + elapsedMs + " ms, for: " + saving);
+                var feedback = new GenericReturn<SyncDTO>("Susscess! All Data Saved in: " + elapsedMs + " ms, for: " + savingText);
+                feedback.IdSaved = saving;
+                return feedback;
 
                 #endregion
 

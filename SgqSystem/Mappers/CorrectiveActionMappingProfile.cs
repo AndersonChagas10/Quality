@@ -13,8 +13,8 @@ namespace SgqSystem.Mappers
             CreateMap<CorrectiveActionDTO, CorrectiveAction>();
             CreateMap<CorrectiveAction, CorrectiveActionDTO>();
 
-            CreateMap<CorrectiveActionLevelsDTO, CorrectiveActionLevels>();
-            CreateMap<CorrectiveActionLevels, CorrectiveActionLevelsDTO>();
+            //CreateMap<CorrectiveActionLevelsDTO, CorrectiveActionLevels>();
+            //CreateMap<CorrectiveActionLevels, CorrectiveActionLevelsDTO>();
 
             #endregion
         }

@@ -21,12 +21,12 @@ namespace Dominio
         }
     
         public int Id { get; set; }
-        public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
-        public Nullable<System.DateTime> ConsolidationDate { get; set; }
         public int UnitId { get; set; }
         public int DepartmentId { get; set; }
         public int Level01Id { get; set; }
+        public System.DateTime AddDate { get; set; }
+        public Nullable<System.DateTime> AlterDate { get; set; }
+        public System.DateTime ConsolidationDate { get; set; }
     
         public virtual Department Department { get; set; }
         public virtual Level01 Level01 { get; set; }

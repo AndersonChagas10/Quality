@@ -96,11 +96,11 @@ namespace Dominio.Services
             }
         }
 
-        public GenericReturn<GetSyncDTO> GetHtmlLastEntry()
+        public GenericReturn<GetSyncDTO> GetHtmlLastEntry(int idUnidade)
         {
             try
             {
-                CollectionHtml result = _baseRepoCollectionHtml.GetHtmlLastEntry();
+                CollectionHtml result = _baseRepoCollectionHtml.GetHtmlLastEntry(idUnidade);
                 var returnObj = new GetSyncDTO() { html = result.Html };
                 return new GenericReturn<GetSyncDTO>(returnObj);
             }

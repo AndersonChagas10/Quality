@@ -16,9 +16,13 @@ namespace Data.Repositories
 
         }
 
-        public CollectionHtml GetHtmlLastEntry()
+        public CollectionHtml GetHtmlLastEntry(int idUnidade)
         {
-            return db.CollectionHtml.OrderByDescending(o => o.Id).FirstOrDefault();
+            var retorno = db.CollectionHtml.OrderByDescending(o => o.Id).FirstOrDefault(r => r.UnitId == idUnidade);
+            if (retorno == null)
+                return new CollectionHtml();
+
+            return retorno;
         }
 
         public IEnumerable<CollectionLevel02> GetLastEntryCollectionLevel02(IEnumerable<ConsolidationLevel02> cl2)
@@ -62,7 +66,7 @@ namespace Data.Repositories
                                r.ReauditIs == i.ReauditIs &&
                                DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(i.CollectionDate) &&
                                (r.Duplicated == true)
-                               ).OrderByDescending(r => r.Id).FirstOrDefault(); ;
+                               ).OrderByDescending(r => r.Id).FirstOrDefault();
 
           
             //var lista = collectionLevel02.ToList();
@@ -104,7 +108,7 @@ namespace Data.Repositories
                                 r.Phase == i.Phase &&
                                 r.ReauditIs == i.ReauditIs &&
                                 DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(i.CollectionDate) &&
-                                (r.Duplicated == false || r.Duplicated == null)
+                                (r.Duplicated == false)
                                 );
 
             if (alterThisData == null)

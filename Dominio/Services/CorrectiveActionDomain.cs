@@ -33,13 +33,13 @@ namespace Dominio.Services
                 entitie = _correctiveActionRepository.SalvarAcaoCorretiva(entitie);
 
 
-                foreach (var item in correctiveActionLevels)
-                {
-                    item.ValidaCorrectiveActionLevels();
-                    item.CorrectiveActionId = entitie.Id;
-                    var entitieLevels = Mapper.Map<CorrectiveActionLevels>(item);
-                    entitieLevels = _correctiveActionRepository.SalvarAcaoCorretivaLevels(entitieLevels);
-                }
+                //foreach (var item in correctiveActionLevels)
+                //{
+                //    item.ValidaCorrectiveActionLevels();
+                //    item.CorrectiveActionId = entitie.Id;
+                //    var entitieLevels = Mapper.Map<CorrectiveActionLevels>(item);
+                //    entitieLevels = _correctiveActionRepository.SalvarAcaoCorretivaLevels(entitieLevels);
+                //}
 
                 return new GenericReturn<CorrectiveActionDTO>(dto);
             }

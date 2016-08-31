@@ -49,9 +49,6 @@
     <Compile Include="CorrectiveAction.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="CorrectiveActionLevels.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Department.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

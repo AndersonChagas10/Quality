@@ -9,6 +9,8 @@ namespace DTO.Helpers
         public string MensagemExcecao { get; set; }
         public T Retorno { get; private set; }
         public string Inner { get; private set; }
+        public string StackTrace { get; private set; }
+        public int IdSaved { get; set; }
 
         public GenericReturn()
         {
@@ -60,6 +62,10 @@ namespace DTO.Helpers
             Mensagem = isExceptionHelper ? _ex.Message : mensagemPadrao;
             MensagemExcecao = _ex.Message;
             Inner = innerMessage;
+            StackTrace = _ex.StackTrace;
+
+            if (_ex.InnerException.IsNotNull())
+                StackTrace += _ex.InnerException.StackTrace;
 
             if (!isExceptionHelper)
             {

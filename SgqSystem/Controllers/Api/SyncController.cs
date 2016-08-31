@@ -60,11 +60,12 @@ namespace SgqSystem.Controllers.Api
             return teste;
         }
 
+        //[Route("api/Sync/GetHtmlLastEntry")]
         [HttpPost]
         [Route("api/Sync/GetHtmlLastEntry")]
-        public GenericReturn<GetSyncDTO> GetHtmlLastEntry()
+        public GenericReturn<GetSyncDTO> GetHtmlLastEntry([FromBody]int idUnidade)
         {
-            return _syncApp.GetHtmlLastEntry();
+            return _syncApp.GetHtmlLastEntry(idUnidade);
         }
         
         #endregion

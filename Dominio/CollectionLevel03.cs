@@ -15,16 +15,16 @@ namespace Dominio
     public partial class CollectionLevel03
     {
         public int Id { get; set; }
-        public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
         public int CollectionLevel02Id { get; set; }
         public Nullable<int> Level03Id { get; set; }
+        public System.DateTime AddDate { get; set; }
+        public Nullable<System.DateTime> AlterDate { get; set; }
         public bool ConformedIs { get; set; }
         public decimal Value { get; set; }
         public string ValueText { get; set; }
         public Nullable<bool> Duplicated { get; set; }
     
-        public virtual CollectionLevel02 CollectionLevel02 { get; set; }
         public virtual Level03 Level03 { get; set; }
+        public virtual CollectionLevel02 CollectionLevel02 { get; set; }
     }
 }

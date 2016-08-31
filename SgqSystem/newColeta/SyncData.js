@@ -42,9 +42,11 @@ function Sync() {
                     o['correctiveactioncomplete'] = oo;
             });
         }
+
         smallerObject.Root.push(o);
         console.log(smallerObject)
         $.post(urlPreffix + "/api/Sync/SetDataAuditConsolidated", smallerObject, function (r) {
+            $('.level01Result[level01Id=' + r.IdSaved + '] .level02Result').attr('sync', true)
             console.log(r);
         });
     });
@@ -66,7 +68,7 @@ function GetSync() {
 }
 
 function GetToSync() {
-    $.post(urlPreffix + "/api/Sync/GetHtmlLastEntry", {}, function (r) {
-        console.log(r);
+    $.post("/api/Sync/GetHtmlLastEntry", { '': 1}, function (r) {
+            console.log(r);
     });
 }

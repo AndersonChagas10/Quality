@@ -11,7 +11,7 @@ namespace DTO.DTO
 
         public CollectionLevel02DTO() { }
 
-        public CollectionLevel02DTO(NextRoot nextRoot)
+        public CollectionLevel02DTO(NextRoot nextRoot, int unitId)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace DTO.DTO
                 Level02Id = int.Parse(nextRoot.level02id);
                 Guard.ForValidFk(Level02Id, "Level02 Id is not valid.");
 
-                UnitId = int.Parse(nextRoot.unidadeid);
+                UnitId = unitId;
                 Guard.ForValidFk(UnitId, "Unit id is not valid.");
 
                 Period = int.Parse(nextRoot.period);
@@ -99,14 +99,13 @@ namespace DTO.DTO
 
                 #endregion
 
-
                 if (nextRoot.idcorrectiveaction != null)
                     CorrectiveActionId = int.Parse(nextRoot.idcorrectiveaction);
 
             }
             catch (Exception e)
             {
-                throw new Exception("Erro ao gerar CollectionLevel02DTO", e);
+                throw new Exception("Erro ao gerar CollectionLevel02DTO" + e.Message, e);
             }
 
             #region Cria Level03 Collection
@@ -126,7 +125,7 @@ namespace DTO.DTO
             #endregion
             //08 / 30 / 2016 10:38
             if(nextRoot.datetime != null)
-                CollectionDate = DateTime.ParseExact(nextRoot.datetime, "MM/dd/yyyy hh:mm", CultureInfo.InvariantCulture);
+                CollectionDate = DateTime.ParseExact(nextRoot.datetime, "MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
 
             if (nextRoot.evaluate != null)
                 EvaluationNumber = int.Parse(nextRoot.evaluate);
