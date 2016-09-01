@@ -15,7 +15,7 @@ namespace Data.Repositories
 
         public UserSgq GetByName(string Name)
         {
-            return GetAll().FirstOrDefault(r => r.Name == Name);
+            return GetAll().FirstOrDefault(r => r.Name.ToLower().Equals(Name.ToLower()));
         }
 
         public bool UserNameIsCadastrado(string Name, int id)
@@ -29,11 +29,9 @@ namespace Data.Repositories
             Commit();
         }
 
-
-
         public UserSgq AuthenticationLogin(UserSgq user)
         {
-            var result = db.Set<UserSgq>().FirstOrDefault(r => r.Name.Equals(user.Name) && r.Password.Equals(user.Password));
+            var result = db.Set<UserSgq>().FirstOrDefault(r => r.Name.ToLower().Equals(user.Name.ToLower()) && r.Password.Equals(user.Password));
             return result;
         }
 
