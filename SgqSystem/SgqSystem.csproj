@@ -326,6 +326,7 @@
     <Compile Include="ViewModels\CorrectiveActionViewModel.cs" />
     <Compile Include="ViewModels\IdentityModels.cs" />
     <Compile Include="ViewModels\ColetaViewModel.cs" />
+    <Compile Include="ViewModels\ReqController.cs" />
     <Compile Include="ViewModels\SyncViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

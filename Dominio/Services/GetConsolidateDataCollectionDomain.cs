@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 namespace Dominio.Services
 {
+
     public class GetConsolidateDataCollectionDomain : IGetConsolidateDataCollectionDomain
     {
         private IGetDataResultRepository<ConsolidationLevel01> _consolidationLevel01Repository;
@@ -101,8 +102,10 @@ namespace Dominio.Services
             try
             {
                 CollectionHtml result = _baseRepoCollectionHtml.GetHtmlLastEntry(idUnidade);
-                var returnObj = new GetSyncDTO() { html = result.Html };
-                return new GenericReturn<GetSyncDTO>(returnObj);
+                var returnObj = new GetSyncDTO() { html = "<div class=\"Results \">" + result.Html + "</div>" };
+                var retorno = new GenericReturn<GetSyncDTO>(returnObj);
+                retorno.IdSaved = result.Id;
+                return retorno;
             }
             catch (Exception e)
             {
@@ -111,4 +114,5 @@ namespace Dominio.Services
         }
 
     }
+
 }

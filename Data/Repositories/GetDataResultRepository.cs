@@ -97,17 +97,26 @@ namespace Data.Repositories
         {
 
             var alterThisData = db.CollectionLevel02.FirstOrDefault(r =>
+                                r.ConsolidationLevel02Id == i.ConsolidationLevel02Id &&
                                 r.Level01Id == i.Level01Id &&
                                 r.Level02Id == i.Level02Id &&
-                                r.Period == i.Period &&
-                                r.Shift == i.Shift &&
-                                r.Sample == i.Sample &&
                                 r.UnitId == i.UnitId &&
-                                r.ReauditNumber == i.ReauditNumber && 
-                                r.EvaluationNumber == i.EvaluationNumber &&
+                                r.Shift == i.Shift &&
+                                r.Period == i.Period &&
                                 r.Phase == i.Phase &&
                                 r.ReauditIs == i.ReauditIs &&
+                                r.ReauditNumber == i.ReauditNumber && 
                                 DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(i.CollectionDate) &&
+                                //r.StartPhaseDate == i.StartPhaseDate &&
+                                r.EvaluationNumber == i.EvaluationNumber &&
+                                r.Sample == i.Sample &&
+                                //r.CattleTypeId == i.CattleTypeId &&
+                                //r.Chainspeed == i.Chainspeed &&
+                                //r.ConsecutiveFailureIs == i.ConsecutiveFailureIs &&
+                                //r.ConsecutiveFailureTotal == i.ConsecutiveFailureTotal &&
+                                //r.LotNumber == i.LotNumber &&
+                                //r.Mudscore == i.Mudscore &&
+                                //r.NotEvaluatedIs == i.NotEvaluatedIs &&
                                 (r.Duplicated == false)
                                 );
 

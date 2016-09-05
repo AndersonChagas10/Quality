@@ -28,6 +28,7 @@ namespace Data.Repositories
         public RepositoryBase(SgqDbDevEntities Db)
         {
             db = Db;
+            db.Database.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;");
         }
 
         /// <summary>
@@ -90,7 +91,9 @@ namespace Data.Repositories
         public void Update(T obj)
         {
             verifyDate(obj, "AlterDate");
+            //verifyDate(obj, "AddDate");
             //Entity.Attach(obj);
+            //db.Entry(obj).State = EntityState.Added;
             db.Entry(obj).State = EntityState.Modified;
             Commit();
         }
@@ -105,6 +108,11 @@ namespace Data.Repositories
                 else
                     Add(obj);
             }
+        }
+
+        public void Dettach(T obj)
+        {
+            db.Entry(obj).State = EntityState.Detached;
         }
 
         #endregion

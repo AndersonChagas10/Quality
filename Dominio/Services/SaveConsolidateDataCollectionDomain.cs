@@ -12,6 +12,9 @@ namespace Dominio.Services
 {
     public class SaveConsolidateDataCollectionDomain : ISaveConsolidateDataCollectionDomain
     {
+
+        #region Variaveis
+
         private IBaseRepository<ConsolidationLevel01> _baseRepoConsolidationL1;
         private IBaseRepository<ConsolidationLevel02> _baseRepoConsolidationL2;
         private IBaseRepository<CollectionLevel02> _baseRepoCollectionL2;
@@ -23,6 +26,10 @@ namespace Dominio.Services
         private IGetDataResultRepository<CollectionLevel02> _collectionLevel02RepositoryGET;
         private IGetDataResultRepository<CollectionLevel03> _collectionLevel03RepositoryGET;
         private IGetDataResultRepository<CollectionHtml> _baseRepoCollectionHtmlGET;
+
+        #endregion
+
+        #region Construtor
 
         public SaveConsolidateDataCollectionDomain(
             IBaseRepository<ConsolidationLevel01> baseRepoConsolidationL1,
@@ -50,6 +57,8 @@ namespace Dominio.Services
             _baseRepoCollectionL3 = baseRepoCollectionL3;
             _baseRepoCorrectiveAction = baseRepoCorrectiveAction;
         }
+
+        #endregion
 
         public GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated(SyncDTO obj)
         {
@@ -197,7 +206,7 @@ namespace Dominio.Services
             {
                 #region Trata Exceção de forma Geral.
 
-                return new GenericReturn<SyncDTO>(e, "Cannot sync.");
+                return new GenericReturn<SyncDTO>(e, "Cannot sync Data.");
 
                 #endregion
             }
@@ -223,8 +232,20 @@ namespace Dominio.Services
                     CollectionDate = objToSync.CollectionHtml.CollectionDate,
                     UnitId = objToSync.CollectionHtml.UnitId
                 };
-                _baseRepoCollectionHtml.Add(html);
-                return new GenericReturn<SyncDTO>("Susscess! sync HTML.");
+                var elemento = _baseRepoCollectionHtml.GetAll().FirstOrDefault(r=>r.UnitId == objToSync.idUnidade);
+                if(elemento.IsNull() && (objToSync.html.IsNull()))
+                    return new GenericReturn<SyncDTO>("Susscess! Sync.");
+
+                if (elemento.IsNotNull())
+                {
+                    html.Id = elemento.Id;
+                    _baseRepoCollectionHtml.Dettach(elemento);
+                }
+
+
+                _baseRepoCollectionHtml.AddOrUpdate(html);
+
+                return new GenericReturn<SyncDTO>("Susscess! Sync.");
             }
             catch (Exception e)
             {

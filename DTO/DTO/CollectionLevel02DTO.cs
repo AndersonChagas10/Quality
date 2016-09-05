@@ -87,8 +87,11 @@ namespace DTO.DTO
                 NotEvaluatedIs = bool.Parse(nextRoot.notavaliable);
                 Guard.VerifyIfIsBool(NotEvaluatedIs, "NotEvaluatedIs");
 
-                nextRoot.sample = "1";
-                Sample = int.Parse(nextRoot.sample);
+                //nextRoot.sample = "1";
+                if (nextRoot.sample != null)
+                    Sample = int.Parse(nextRoot.sample);
+                else
+                    Sample = 1;
                 Guard.ForNegative(Sample, "Sample");
 
                 Shift = int.Parse(nextRoot.shift);
@@ -129,6 +132,8 @@ namespace DTO.DTO
 
             if (nextRoot.evaluate != null)
                 EvaluationNumber = int.Parse(nextRoot.evaluate);
+            else
+                EvaluationNumber = 1;
             
         }
 

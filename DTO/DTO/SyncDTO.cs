@@ -13,6 +13,9 @@ namespace DTO.DTO
         //public List<CorrectiveActionDTO> CorrectiveAction { get; set; }
         //public ObjectConsildationDTO syncConsolidado { get; set; }
 
+        public int idUnidade { get; set; }
+        public string lockPattern { get; set; }
+        public string username { get; set; }
         public string html { get; set; }
         public List<RootObject> Root { get; set; }
         public List<correctiveactioncomplete> naoprecisa { get; set; }
