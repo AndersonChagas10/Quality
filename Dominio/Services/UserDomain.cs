@@ -69,20 +69,9 @@ namespace Dominio.Services
 
                 userByName.Password = Criptografar3DES(userDto.Password);
 
-                //userDto.Password = Criptografar3DES(userDto.Password);
-
-                //var user = Mapper.Map<UserDTO, UserSgq>(userDto);
-
-                //var isUser = _userRepo.AuthenticationLogin(user);
-
-                //if (!isUser.IsNotNull())
-                //{
-                //user.FullName = "FullName"; //Mock
-
                 _userRepo.Salvar(userByName);
-                //}
 
-                var retorno = Mapper.Map<UserSgq, UserDTO>(/*isUser*/userByName);
+                var retorno = Mapper.Map<UserSgq, UserDTO>(userByName);
 
                 return new GenericReturn<UserDTO>(retorno);
 
@@ -116,7 +105,6 @@ namespace Dominio.Services
                         throw new ExceptionHelper("User not found, please verify Username and Password.");
                     }
               //  }
-
 
                 var retorno = Mapper.Map<List<UserSgq>, List<UserDTO>>(_userRepo.GetAllUser());
 
