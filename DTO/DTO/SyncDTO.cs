@@ -20,10 +20,13 @@ namespace DTO.DTO
         public List<RootObject> Root { get; set; }
         public List<correctiveactioncomplete> naoprecisa { get; set; }
         public CollectionHtmlDTO CollectionHtml { get; set; }
+        public List<ConsolidationLevel01DTO>  ListToSave;
+        public List<CorrectiveActionDTO> ListToSaveCA;
     }
 
     public class NextnextRoot
     {
+        public string id { get; set; }
         public string auditorid { get; set; } //Remover HTML
         public string @class { get; set; }
         public string conform { get; set; }
@@ -37,6 +40,7 @@ namespace DTO.DTO
 
     public class NextRoot //UnidadeId Dept Id
     {
+        public string id { get; set; }
         public string idcorrectiveaction { get; set; }
         public string auditorid { get; set; }
         public string cattletype { get; set; } //[CattleType_Id]
@@ -86,6 +90,7 @@ namespace DTO.DTO
         public string totalreaudits { get; set; }
         public string unidadeid { get; set; }
         public List<NextRoot> nextRoot { get; set; }
+        public string Id { get; internal set; }
 
         public ConsolidationLevel01DTO ValidateAndCreateDtoConsolidationLevel01DTO()
         {
@@ -121,6 +126,7 @@ namespace DTO.DTO
     {
         public string @class { get; set; }
         public string date { get; set; }
+        public string Id { get; set; }
         public string descriptionfailure { get; set; }
         public string idcorrectiveaction { get; set; }
         public string immediatecorrectiveaction { get; set; }

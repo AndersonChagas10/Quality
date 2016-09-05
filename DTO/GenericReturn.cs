@@ -1,9 +1,10 @@
 ﻿using NLog;
 using System;
+using System.Collections.Generic;
 
 namespace DTO.Helpers
 {
-    public class GenericReturn<T> 
+    public class GenericReturn<T>
     {
         public string Mensagem { get; set; }
         public string MensagemExcecao { get; set; }
@@ -11,6 +12,8 @@ namespace DTO.Helpers
         public string Inner { get; private set; }
         public string StackTrace { get; private set; }
         public int IdSaved { get; set; }
+       
+        #region Contrutores
 
         public GenericReturn()
         {
@@ -18,14 +21,30 @@ namespace DTO.Helpers
 
         public GenericReturn(T obj)
         {
-             SetRetorno(obj);
+            SetRetorno(obj);
         }
 
         public GenericReturn(string _mensagem)
         {
-            Guard.ForNullOrEmpty(_mensagem,"A mensagem de retorno esta vazia.(GEnericReturn)");
-            Mensagem = _mensagem;
+            SetMessage(_mensagem);
         }
+
+        public GenericReturn(string _mensagem, T obj)
+        {
+            Guard.ForNullOrEmpty(_mensagem, "A mensagem de retorno esta vazia.(GEnericReturn)");
+            Mensagem = _mensagem;
+
+            SetRetorno(obj);
+        }
+
+        public GenericReturn(Exception _ex, string mensagemPadrao = "")
+        {
+            SetMensagemExcecao(_ex, mensagemPadrao);
+        }
+
+        #endregion
+
+        #region Auxiliares
 
         public void SetRetorno(T obj)
         {
@@ -35,9 +54,10 @@ namespace DTO.Helpers
             Retorno = obj;
         }
 
-        public GenericReturn(Exception _ex, string mensagemPadrao = "")
+        private void SetMessage(string _mensagem)
         {
-            SetMensagemExcecao(_ex, mensagemPadrao);
+            Guard.ForNullOrEmpty(_mensagem, "A mensagem de retorno esta vazia.(GEnericReturn)");
+            Mensagem = _mensagem;
         }
 
         public void SetMensagemExcecao(Exception _ex, string mensagemPadrao)
@@ -74,6 +94,8 @@ namespace DTO.Helpers
             }
 
         }
+        
+        #endregion
 
     }
 }

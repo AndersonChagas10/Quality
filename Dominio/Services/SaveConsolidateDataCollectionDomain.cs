@@ -71,16 +71,16 @@ namespace Dominio.Services
                 if (obj.Root.Count == 0)
                     throw new ExceptionHelper("Impossible to Sync data. The Sync list is empty.");
 
-                var ListToSave = new List<ConsolidationLevel01DTO>();
-                var ListToSaveCA = new List<CorrectiveActionDTO>();
                 //Contrutor que possui validação do objeto, dentro deste contrutor devem constar as RNs para cada objeto a ser inserido no BD, 
                 //caso haja incosistencia, o mesmo deve expedir uma exception, ou exceptionhelper parando a execução, 
                 //e prevenindo a entrada de arquivos não válidos no DB.
+                obj.ListToSave = new List<ConsolidationLevel01DTO>();
+                obj.ListToSaveCA = new List<CorrectiveActionDTO>();
                 foreach (var i in obj.Root)
                 {
-                    ListToSave.Add(i.ValidateAndCreateDtoConsolidationLevel01DTO());
+                    obj.ListToSave.Add(i.ValidateAndCreateDtoConsolidationLevel01DTO());
                     if (i.correctiveactioncomplete != null)
-                        ListToSaveCA.Add(i.makeCA());
+                        obj.ListToSaveCA.Add(i.makeCA());
                 }
 
                 #endregion
@@ -91,7 +91,7 @@ namespace Dominio.Services
 
                 #region Loop Save
                 var saving = 0;
-                foreach (var i in ListToSave)
+                foreach (var i in obj.ListToSave)
                 {
                     //ConsolidationLevel01 existentLevel1 = _baseRepoConsolidationL1.CheckForExistent();
                     #region Feedback
@@ -114,6 +114,7 @@ namespace Dominio.Services
                     #endregion
 
                     _baseRepoConsolidationL1.AddOrUpdate(level01Consolidation);
+                    i.Id = level01Consolidation.Id;
 
                     #endregion
 
@@ -132,6 +133,7 @@ namespace Dominio.Services
                         #endregion
 
                         _baseRepoConsolidationL2.AddOrUpdate(level02Consolidation);
+                        i.Id = level02Consolidation.Id;
 
                         #endregion
 
@@ -148,16 +150,18 @@ namespace Dominio.Services
                             _collectionLevel02RepositoryGET.SetDuplicated(collectionLevel02);
                             #endregion
 
-                            _baseRepoCollectionL2.Add(collectionLevel02);
+                            _baseRepoCollectionL2.AddOrUpdate(collectionLevel02);
+                            x.Id = collectionLevel02.Id;
 
                             #endregion
 
                             #region Salva CA
                             if (x.CorrectiveActionId > 0)
                             {
-                                var CA = Mapper.Map<CorrectiveAction>(ListToSaveCA.FirstOrDefault(z => z.idcorrectiveaction == x.CorrectiveActionId));
+                                var CA = Mapper.Map<CorrectiveAction>(obj.ListToSaveCA.FirstOrDefault(z => z.idcorrectiveaction == x.CorrectiveActionId));
                                 CA.CollectionLevel02Id = collectionLevel02.Id;
-                                _baseRepoCorrectiveAction.Add(CA);
+                                _baseRepoCorrectiveAction.AddOrUpdate(CA);
+
                             }
                             #endregion
 
@@ -172,7 +176,15 @@ namespace Dominio.Services
                             _collectionLevel03RepositoryGET.SetDuplicated(cll3, collectionLevel02);
                             #endregion
 
-                            _baseRepoCollectionL3.AddAll(cll3); 
+                            _baseRepoCollectionL3.AddOrUpdateAll(cll3);
+
+                            var counter = 0;
+                            foreach (var xx in x.collectionLevel03DTO)
+                            {
+                                xx.Id = cll3[counter].Id;
+                                counter++;
+                            }
+
                             #endregion
                         }
                     }
@@ -195,7 +207,7 @@ namespace Dominio.Services
                 if (saving == 2)
                     savingText = "Carcass Contamination Audit";
 
-                var feedback = new GenericReturn<SyncDTO>("Susscess! All Data Saved in: " + elapsedMs + " ms, for: " + savingText);
+                var feedback = new GenericReturn<SyncDTO>("Susscess! All Data Saved in: " + elapsedMs + " ms, for: " + savingText, obj);
                 feedback.IdSaved = saving;
                 return feedback;
 

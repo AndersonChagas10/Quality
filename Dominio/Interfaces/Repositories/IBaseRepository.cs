@@ -11,7 +11,11 @@ namespace Dominio.Interfaces.Repositories
 
         void AddAll(IEnumerable<T> obj);
 
+        void AddOrUpdateAll(IEnumerable<T> obj);
+
         void AddAllNotCommit(IEnumerable<T> obj);
+
+        void AddOrUpdateAllNotCommit(IEnumerable<T> obj);
 
         T GetById(int id);
 

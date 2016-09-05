@@ -71,6 +71,12 @@ namespace Data.Repositories
             }
         }
 
+        public void AddOrUpdateAllNotCommit(IEnumerable<T> obj)
+        {
+            foreach (var i in obj)
+                AddOrUpdateNotCommit(i);
+        }
+
         public void Add(T obj)
         {
             verifyDate(obj, "AddDate");
@@ -108,6 +114,12 @@ namespace Data.Repositories
                 else
                     Add(obj);
             }
+        }
+
+        public void AddOrUpdateAll(IEnumerable<T> obj)
+        {
+            foreach (var i in obj)
+                AddOrUpdate(i);
         }
 
         public void Dettach(T obj)
@@ -208,5 +220,7 @@ namespace Data.Repositories
                 obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
             }
         }
+
+        
     }
 }

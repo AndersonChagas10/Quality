@@ -13,6 +13,10 @@ namespace DTO.DTO
 
         public CollectionLevel02DTO(NextRoot nextRoot, int unitId)
         {
+            if (nextRoot.id != null)
+                if (nextRoot.id.Length > 0)
+                    Id = int.Parse(nextRoot.id);
+
             try
             {
                 ValidaBaseEntity();

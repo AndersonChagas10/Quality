@@ -25,7 +25,7 @@ namespace DTO.DTO
 
         public ConsolidationLevel01DTO(RootObject rootObject)
         {
-
+          
             try
             {
                 ValidaBaseEntity();
