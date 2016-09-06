@@ -156,6 +156,7 @@ namespace Dominio.Services
                 if (elemento.IsNotNull())
                 {
                     html.Id = elemento.Id;
+                    html.AddDate = elemento.AddDate;
                     _baseRepoCollectionHtml.Dettach(elemento);
                 }
 
