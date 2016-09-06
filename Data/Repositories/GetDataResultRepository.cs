@@ -4,6 +4,7 @@ using Dominio;
 using System.Collections.Generic;
 using System;
 using System.Data.Entity;
+using DTO.DTO;
 
 namespace Data.Repositories
 {
@@ -16,13 +17,21 @@ namespace Data.Repositories
 
         }
 
-        public CollectionHtml GetHtmlLastEntry(int idUnidade)
+        public CollectionHtml GetHtmlLastEntry(SyncDTO idUnidade)
         {
-            var retorno = db.CollectionHtml.OrderByDescending(o => o.Id).FirstOrDefault(r => r.UnitId == idUnidade);
+            var retorno = db.CollectionHtml.OrderByDescending(o => o.Id).FirstOrDefault(r => r.UnitId == idUnidade.CollectionHtml.UnitId && r.Shift == idUnidade.CollectionHtml.Shift 
+            //&& r.Period == idUnidade.CollectionHtml.Period
+            );
             if (retorno == null)
                 return new CollectionHtml();
 
             return retorno;
+        }
+
+        public void Remove(int id)
+        {
+            T element = GetById(id);
+            Remove(element);
         }
 
         public IEnumerable<CollectionLevel02> GetLastEntryCollectionLevel02(IEnumerable<ConsolidationLevel02> cl2)

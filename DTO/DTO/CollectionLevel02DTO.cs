@@ -17,6 +17,11 @@ namespace DTO.DTO
                 if (nextRoot.id.Length > 0)
                     Id = int.Parse(nextRoot.id);
 
+            if (nextRoot.remove != null)
+                if (nextRoot.remove.Length > 0)
+                    Remove = bool.Parse(nextRoot.remove);
+            Guard.VerifyIfIsBool(Remove, "problema no remove.");
+
             try
             {
                 ValidaBaseEntity();
@@ -108,6 +113,7 @@ namespace DTO.DTO
 
                 if (nextRoot.idcorrectiveaction != null)
                     CorrectiveActionId = int.Parse(nextRoot.idcorrectiveaction);
+               
 
             }
             catch (Exception e)
@@ -166,5 +172,6 @@ namespace DTO.DTO
 
         public List<CollectionLevel03DTO> collectionLevel03DTO { get; set; }
         public ConsolidationLevel01DTO consolidationLevel01DTO { get; set; }
+        public bool Remove { get; set; }
     }
 }

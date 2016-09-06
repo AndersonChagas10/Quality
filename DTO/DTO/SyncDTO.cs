@@ -40,6 +40,7 @@ namespace DTO.DTO
 
     public class NextRoot //UnidadeId Dept Id
     {
+        public string remove { get; set; }
         public string id { get; set; }
         public string idcorrectiveaction { get; set; }
         public string auditorid { get; set; }
@@ -74,7 +75,7 @@ namespace DTO.DTO
         public string @class { get; set; }
         public string completed { get; set; }
         public string completereaudit { get; set; }
-        public correctiveactioncomplete correctiveactioncomplete { get; set; }
+        public List<correctiveactioncomplete> correctiveactioncomplete { get; set; }
         public string date { get; set; }
         public string datetime { get; set; }
         public string lastevaluate { get; set; }
@@ -97,28 +98,34 @@ namespace DTO.DTO
             return new ConsolidationLevel01DTO(this);
         }
 
-        public CorrectiveActionDTO makeCA()
+        public List<CorrectiveActionDTO> makeCA()
         {
-            return new CorrectiveActionDTO()
+            var CA = new List<CorrectiveActionDTO>();
+            foreach (var ca in this.correctiveactioncomplete)
             {
-                idcorrectiveaction = int.Parse(this.correctiveactioncomplete.idcorrectiveaction),
-                //MOCK
-                AuditorId = 1,
-                DescriptionFailure = this.correctiveactioncomplete.descriptionfailure,
-                ImmediateCorrectiveAction = this.correctiveactioncomplete.immediatecorrectiveaction,
-                ProductDisposition = this.correctiveactioncomplete.productdisposition,
-                PreventativeMeasure = this.correctiveactioncomplete.preventativemeasure,
-                SlaughterId = int.Parse(this.correctiveactioncomplete.slaugthersignature),
-                //MOCK
-                DateTimeSlaughter = DateTime.Now,
-                TechinicalId = int.Parse(this.correctiveactioncomplete.techinicalsignature),
-                //MOCK 
-                DateTimeTechinical = DateTime.Now,
-                //MOCK
-                AuditStartTime = DateTime.Now,
-                //MOCK
-                DateCorrectiveAction = DateTime.Now
-            };
+                CA.Add(new CorrectiveActionDTO()
+                {
+                    idcorrectiveaction = int.Parse(ca.idcorrectiveaction),
+                    //MOCK
+                    AuditorId = 1,
+                    DescriptionFailure = ca.descriptionfailure,
+                    ImmediateCorrectiveAction = ca.immediatecorrectiveaction,
+                    ProductDisposition = ca.productdisposition,
+                    PreventativeMeasure = ca.preventativemeasure,
+                    SlaughterId = int.Parse(ca.slaugthersignature),
+                    //MOCK
+                    DateTimeSlaughter = DateTime.Now,
+                    TechinicalId = int.Parse(ca.techinicalsignature),
+                    //MOCK 
+                    DateTimeTechinical = DateTime.Now,
+                    //MOCK
+                    AuditStartTime = DateTime.Now,
+                    //MOCK
+                    DateCorrectiveAction = DateTime.Now
+                });
+            }
+
+            return CA;
         }
     }
 

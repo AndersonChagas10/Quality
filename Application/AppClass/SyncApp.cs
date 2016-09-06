@@ -36,7 +36,7 @@ namespace Application.AppServiceClass
             return _saveConsolidateDataCollectionDomain.SaveHtml(objToSync);
         }
 
-        public GenericReturn<GetSyncDTO> GetHtmlLastEntry(int idUnidade)
+        public GenericReturn<GetSyncDTO> GetHtmlLastEntry(SyncDTO idUnidade)
         {
             return _getConsolidateDataCollectionDomain.GetHtmlLastEntry(idUnidade);
         }

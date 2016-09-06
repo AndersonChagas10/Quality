@@ -97,7 +97,7 @@ namespace Dominio.Services
             }
         }
 
-        public GenericReturn<GetSyncDTO> GetHtmlLastEntry(int idUnidade)
+        public GenericReturn<GetSyncDTO> GetHtmlLastEntry(SyncDTO idUnidade)
         {
             try
             {

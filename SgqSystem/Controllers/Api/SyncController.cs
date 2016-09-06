@@ -110,7 +110,7 @@ namespace SgqSystem.Controllers.Api
             //if (ReqController.avaliable.Equals(objToSync.lockPattern))
             //{
                 //objToSync.username = (User as CustomPrincipal).UserName;
-            var results = _syncApp.GetHtmlLastEntry(objToSync.idUnidade);
+            var results = _syncApp.GetHtmlLastEntry(objToSync);
             return results;
             //return "<div class=\"Results hide\">" + results + "</div>";
             //}
