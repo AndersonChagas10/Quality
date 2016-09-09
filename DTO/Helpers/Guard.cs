@@ -57,6 +57,15 @@ namespace DTO.Helpers
             }
         }
 
+        public static void CheckListNullOrEmpty<T>(List<T> result, string messsage)
+        {
+            if (result.IsNull())
+                throw new ExceptionHelper(messsage);
+
+            if (result.Count == 0)
+                throw new ExceptionHelper(messsage);
+        }
+
         public static string AsString(this object valor, string valorPadrao = "")
         {
             try

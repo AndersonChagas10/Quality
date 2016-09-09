@@ -10,11 +10,11 @@ namespace CrossCutting.IOC.Module
         {
             Bind(typeof(IBaseRepository<>)).To(typeof(RepositoryBase<>));
             Bind(typeof(IGetDataResultRepository<>)).To(typeof(GetDataResultRepository<>));
+            Bind(typeof(IRelatorioColetaRepository<>)).To(typeof(RelatorioColetaRepository<>));
             //Bind(typeof(ISyncRepository<>)).To(typeof(SyncRepository<>));
             Bind<IUserRepository>().To<UserRepository>();
             //Bind<IBetaRepository>().To<BetaRepository>();
             Bind<ICorrectiveActionRepository>().To<CorrectiveActionRepository>();
-            //Bind<IConsolidationLevel01Repository>().To<ConsolidationLevel01Repository>();
             //Bind<IRelatorioColetaRepository>().To<RelatorioColetaRepository>();
             //Bind<IColetaRepository>().To<ColetaRepository>();
         }

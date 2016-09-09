@@ -6,6 +6,7 @@ using Dominio.Interfaces.Repositories;
 using System.Linq;
 using AutoMapper;
 using System.Collections.Generic;
+using DTO;
 
 namespace Dominio.Services
 {

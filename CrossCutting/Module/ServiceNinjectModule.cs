@@ -10,13 +10,13 @@ namespace CrossCutting.IOC.Module
         {
             Bind(typeof(IBaseDomain<>)).To(typeof(BaseDomain<>));
             Bind<IUserDomain>().To<UserDomain>();
-            //Bind<IBetaService>().To<BetaService>();
             Bind<ICorrectiveActionDomain>().To<CorrectiveActionDomain>();
-            //Bind<ISyncDomain>().To<SyncDomain>();
-            //Bind<IRelatorioColetaDomain>().To<RelatorioColetaDomain>();
-            //Bind<IColetaDomain>().To<ColetaDomain>();
+            Bind<IRelatorioColetaDomain>().To<RelatorioColetaDomain>();
             Bind<ISaveConsolidateDataCollectionDomain>().To<SaveConsolidateDataCollectionDomain>();
             Bind<IGetConsolidateDataCollectionDomain>().To<GetConsolidateDataCollectionDomain>();
+            //Bind<IBetaService>().To<BetaService>();
+            //Bind<ISyncDomain>().To<SyncDomain>();
+            //Bind<IColetaDomain>().To<ColetaDomain>();
             
         }
     }

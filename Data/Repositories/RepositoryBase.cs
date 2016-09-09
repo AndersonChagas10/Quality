@@ -22,6 +22,11 @@ namespace Data.Repositories
         protected readonly SgqDbDevEntities db;
 
         /// <summary>
+        /// Objeto T em memória volátil pela chamada de sua Interface.
+        /// </summary>
+        protected DbSet<T> Entity { get { return db.Set<T>(); } }
+
+        /// <summary>
         /// Construtor.
         /// </summary>
         /// <param name="Db"></param>
@@ -30,11 +35,6 @@ namespace Data.Repositories
             db = Db;
             db.Database.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;");
         }
-
-        /// <summary>
-        /// Objeto T em memória volátil pela chamada de sua Interface.
-        /// </summary>
-        private DbSet<T> Entity { get { return db.Set<T>(); } }
 
         #region Adiciona e Atualiza
 

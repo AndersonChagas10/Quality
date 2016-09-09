@@ -1,6 +1,6 @@
 ﻿using Application.Interface;
-using NLog;
-using System;
+using SgqSystem.ViewModels;
+using System.Collections.Generic;
 using System.Web.Mvc;
 namespace SgqSystem.Controllers
 {
@@ -8,6 +8,7 @@ namespace SgqSystem.Controllers
     {
 
         private readonly IRelatorioColetaApp _relatorioColetaApp;
+
         public RelatorioColetaController(IRelatorioColetaApp relatorioColetaApp)
         {
             _relatorioColetaApp = relatorioColetaApp;
@@ -16,10 +17,18 @@ namespace SgqSystem.Controllers
         // GET: RelatorioColeta
         public ActionResult Index()
         {
-            //Logger logger = LogManager.GetLogger("dataBaseLogger");
-            //logger.Error(new Exception("teste"), "teste", null);
-            var resultadosLista = _relatorioColetaApp.GetColetas();
-            return View(resultadosLista.Retorno);
+
+            var form = new FormularioParaRelatorioViewModel();
+            
+            //MOCK
+            form.level01DTO = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text="HTP", Value="1"},
+                new SelectListItem() {Text="Carcass Contamination Audit", Value="2"},
+                new SelectListItem() {Text="CFF (Cut, Fold and Flaps)", Value="3"},
+            };
+
+            return View(form);
         }
     }
 }

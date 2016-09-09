@@ -1,4 +1,5 @@
-﻿using DTO.DTO;
+﻿using DTO;
+using DTO.DTO;
 using DTO.Helpers;
 
 namespace Application.Interface
@@ -10,5 +11,6 @@ namespace Application.Interface
         GenericReturn<GetSyncDTO> GetLastEntry();
         GenericReturn<SyncDTO> SaveHtml(SyncDTO objToSync);
         GenericReturn<GetSyncDTO> GetHtmlLastEntry(SyncDTO idUnidade);
+        //GenericReturn<GetSyncDTO> GetEntryByDate(DataCarrierFormulario form);
     }
 }

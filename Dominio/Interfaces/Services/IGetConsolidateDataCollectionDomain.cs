@@ -1,4 +1,5 @@
-﻿using DTO.DTO;
+﻿using DTO;
+using DTO.DTO;
 using DTO.Helpers;
 
 namespace Dominio.Interfaces.Services
@@ -7,5 +8,6 @@ namespace Dominio.Interfaces.Services
     {
         GenericReturn<GetSyncDTO> GetLastEntry();
         GenericReturn<GetSyncDTO> GetHtmlLastEntry(SyncDTO idUnidade);
+        //GenericReturn<GetSyncDTO> GetLastEntryByDate(DataCarrierFormulario form);
     }
 }

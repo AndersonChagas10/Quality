@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="BaseEntity\DataCollectionBase.cs" />
     <Compile Include="BaseEntity\EntityBase.cs" />
+    <Compile Include="DataCarrierFormulario.cs" />
     <Compile Include="DTO\ColetaDTO.cs" />
     <Compile Include="DTO\CollectionHtmlDTO.cs" />
     <Compile Include="DTO\ConsolidationLevel02DTO.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\Guard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultSetRelatorioColeta.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

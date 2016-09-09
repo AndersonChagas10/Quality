@@ -1,44 +1,174 @@
-﻿@model IEnumerable<DTO.DTO.ColetaDTO>
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @using GridMvc.Html
 @{
     ViewBag.Title = "Audit Reports";
     var url = Url.Action("Index", "Home");
 }
 
+
 <h2>Audit Reports:</h2>
 <p><a href="@url" class="btn btn-primary btn-lg"><< Back</a></p>
 
+<table style="width: 100%">
+    <tr>
+        <td style="text-align: right">
+            <a href="javascript:void(0);" onclick="window.print();">Imprimir</a>
+        </td>
+    </tr>
+</table>
+
+<table>
+
+    <tr>&nbsp;</tr>
+    <tr>
+        <td class="dl-fake">
+            @Html.Label("Date: ", htmlAttributes: new { @class = "control-label col-md-2" })
+        </td>
+        <td style="margin-top:10px;">
+            <div id="sandbox-container">
+                <div class="input-daterange input-group" id="datepicker">
+                    <input type="text" class="input-sm form-control" name="dataInicio" />
+                    <span class="input-group-addon">to</span>
+                    <input type="text" class="input-sm form-control" name="dataFim" />
+                </div>
+            </div>
+        </td>
+        <td class="dl-fake">
+            @Html.Label("Select Indicator: ", htmlAttributes: new { @class = "control-label col-md-2" })
+        </td>
+        <td>
+            @Html.DropDownList("level01", Model.level01DTO, "Select", htmlAttributes: new { @class = "form-control required" })
+        </td>
+        <td style="margin-top:10px; margin-left:15px;">
+            &nbsp; &nbsp; <button type="button" class="btn btn-default" id="btnCarregaGraficoDiario" onclick="send()">Atualizar</button>
+        </td>
+    </tr>
+</table>
+<table id="results"></table>
+
 @*@Html.Grid(Model).AutoGenerateColumns()*@
-@Html.Grid(Model).Columns(columns =>
-{
-    //columns.Add(c => c.Id).Titled("Id Resultado").Filterable(true);
-    columns.Add(c => c.Level1Name).Titled("Level1").Filterable(true);
-    columns.Add(c => c.Level2Name).Titled("Monitoring").Filterable(true);
-    columns.Add(c => c.Level3Name).Titled("Task").Filterable(true);
-    columns.Add(c => c.Evaluate).Titled("Evaluated").Filterable(true);
-    columns.Add(c => c.NotConform)
-        .Titled("Non Conform")
-        .Filterable(true)
-        .SortInitialDirection(GridMvc.Sorting.GridSortDirection.Descending);
-    columns.Add(c => c.Reaudit).Titled("Reaudit").Filterable(true);
-    columns.Add(c => c.Period).Titled("Period").Filterable(true);
-    columns.Add(c => c.TotalDefectsLevel1).Titled("Defects Level1").Filterable(true);
-    columns.Add(c => c.TotalDefectsLevel2).Titled("Defects Level2").Filterable(true);
-    columns.Add(c => c.TotalDefectsLevel3).Titled("Defects Level3").Filterable(true);
-    columns.Add(c => c.AddDate).Titled("Add Date").Filterable(true);
+@*@Html.Grid(Model).Columns(columns =>
+    {
+        //columns.Add(c => c.Id).Titled("Id Resultado").Filterable(true);
+        columns.Add(c => c.Level1Name).Titled("Level1").Filterable(true);
+        columns.Add(c => c.Level2Name).Titled("Monitoring").Filterable(true);
+        columns.Add(c => c.Level3Name).Titled("Task").Filterable(true);
+        columns.Add(c => c.Evaluate).Titled("Evaluated").Filterable(true);
+        columns.Add(c => c.NotConform)
+            .Titled("Non Conform")
+            .Filterable(true)
+            .SortInitialDirection(GridMvc.Sorting.GridSortDirection.Descending);
+        columns.Add(c => c.Reaudit).Titled("Reaudit").Filterable(true);
+        columns.Add(c => c.Period).Titled("Period").Filterable(true);
+        columns.Add(c => c.TotalDefectsLevel1).Titled("Defects Level1").Filterable(true);
+        columns.Add(c => c.TotalDefectsLevel2).Titled("Defects Level2").Filterable(true);
+        columns.Add(c => c.TotalDefectsLevel3).Titled("Defects Level3").Filterable(true);
+        columns.Add(c => c.AddDate).Titled("Add Date").Filterable(true);
 
-    //columns.Add()
-    //    .Encoded(false)
-    //    .Sanitized(false)
-    //    .SetWidth(30)
-    //    .RenderValueAs(o => Html.ActionLink("Edit", "Edit", new { id = o.Id }));
+        //columns.Add()
+        //    .Encoded(false)
+        //    .Sanitized(false)
+        //    .SetWidth(30)
+        //    .RenderValueAs(o => Html.ActionLink("Edit", "Edit", new { id = o.Id }));
 
-}).WithPaging(20).Sortable(true)
+    }).WithPaging(20).Sortable(true)*@
 
 
 <link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" />
-<link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+
 
 @section Scripts {
+
+    @Scripts.Render("~/Scripts/moment.min.js")
+    @Scripts.Render("~/Scripts/bootstrap-datepicker.js")
+    @Scripts.Render("~/Scripts/locales/bootstrap-datepicker.eu.min.js")
     @Scripts.Render("~/Scripts/gridmvc.min.js")
+    <script type="text/javascript">
+        $('#sandbox-container input').datepicker();
+
+        function send() {
+            var enviar = {};
+            enviar['dataInicio'] = $('#sandbox-container input')[0].value;
+            enviar['dataFim'] = $('#sandbox-container input')[1].value;
+            enviar['unidadeId'] = 1;
+            enviar;
+            $.post('http://localhost:63128/api/RelatorioColeta/GetEntryByDate', enviar, function (r) {
+                console.log(r)
+
+                var retornoArray = [];
+                var arrayItarator = r.Retorno;
+                arrayItarator.ConsolidationLevel01.forEach(function (o, c) {
+                    var retorno = {};
+                    retorno['Departamento'] = o.Department.Name;
+                    retorno['Level01'] = o.Level01.Name;
+                    retorno['Unit'] = o.Unit.Name;
+                    o.collectionLevel02DTO.forEach(function (oo, cc) {
+                        retorno['Level02'] = oo.Level02Id;
+                        retorno['avaliado'] = oo.EvaluationNumber;
+                        retorno['Phase'] = oo.Level02Id;
+                        retorno['Phase'] = oo.Level02Id;
+                        retorno['NotEvaluatedIs'] = oo.NotEvaluatedIs;
+                        oo.collectionLevel03DTO.forEach(function (ooo, ccc) {
+                            retorno["ConformedIs"] = ooo.ConformedIs;
+                            retorno["Level03Id"] = ooo.Level03Id;
+                            retorno["Value"] = ooo.Value;
+                            retorno["ValueText"] = ooo.ValueText;
+                            retornoArray.push(retorno);
+                        });
+
+                    });
+                })
+
+                //ConformedIs:true
+                //Departamento:"Slaugther"
+                //Level01: "Carcass Contamination Audit" ok
+                //Level02: 39
+                //Level03Id: 5
+                //NotEvaluatedIs: false
+                //Phase: 39
+                //Unit: "Colorado" ok
+                //Value: 0
+                //ValueText: ""
+                //avaliado: 1
+
+                $('#results').empty().DataTable({
+                    data: result,
+                    columns: [{ title: "Unit", mData: "Unit" },
+                       { title: "Departamento", mData: "Departamento" },
+                       { title: "Level01", mData: "Level01" },
+                       { title: "Level02", mData: "Level02" },
+                       { title: "avaliado?", mData: "avaliado" },
+                       { title: "Phase?", mData: "Phase" },
+                       { title: "Shift?", mData: "Shift" },
+                       { title: "NotEvaluatedIs?", mData: "NotEvaluatedIs" },
+                       { title: "Level03", mData: "Level03Id" },
+                       { title: "ConformedIs", mData: "ConformedIs" },
+                       { title: "Value", mData: "Value" },
+                       { title: "ValueText", mData: "ValueText" },
+                    ],
+                    //columnDefs: config.columnDefs,
+                    //bSort: true,
+                    //bAutoWidth: true,
+                    //bFilter: true,
+                    //scrollX: true,
+                    //lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    //pageLength: 10,
+                    //processing: true,
+                    //loadingRecords: true,
+                    //destroy: true,
+                    //paginate: true,
+                    //paging: true,
+                    //info: true,
+                    //searching: true,
+                    //createdRow: config.createdRow,
+                    //fnDrawCallback: config.fnDrawCallback,
+                    //initComplete: config.initComplete,
+                    //order: config.order || [[0, 'asc']],
+                    //serverSide: !config.serverSide == undefined || config.serverSide,
+                    //sPaginationType: 'full_numbers',
+                });
+
+            })
+        };
+    </script>
 }
