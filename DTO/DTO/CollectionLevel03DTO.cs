@@ -62,6 +62,8 @@ namespace DTO.DTO
                 Guard.ForNegative(Value, "Value level03");
 
                 ValueText = "";
+                if (nextnextRoot.valueText != null)
+                    ValueText = nextnextRoot.valueText;
 
                 #endregion
             }
@@ -72,6 +74,7 @@ namespace DTO.DTO
 
         }
 
+        public string Name { get; set; }
         public int CollectionLevel02Id { get; set; }
         public Nullable<int> Level03Id { get; set; }
         public bool ConformedIs { get; set; }

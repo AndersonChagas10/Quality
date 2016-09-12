@@ -2,6 +2,7 @@
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
+using System.Collections.Generic;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api
@@ -23,27 +24,20 @@ namespace SgqSystem.Controllers.Api
         [HttpPost]
         public GenericReturn<CorrectiveActionDTO> SalvarAcaoCorretiva([FromBody]CorrectiveActionViewModel model)
         {
-            //if (model.Conectado)
-            //{
             return _correctiveActionAppService.SalvarAcaoCorretiva(model);
-            //    return result;
-            //}
-            //else
-            //{
-            //    return null;
-            //}
+        }
+
+        [Route("GetCorrectiveAction")]
+        [HttpPost]
+        public GenericReturn<List<CorrectiveActionDTO>> GetCorrectiveAction([FromBody]FormularioParaRelatorioViewModel model)
+        {
+            return _correctiveActionAppService.GetCorrectiveAction(model);
         }
 
         [Route("LoginSlaughterTechinical")]
         [HttpPost]
         public GenericReturn<UserDTO> LoginSlaughterTechinical([FromBody]UserViewModel model)
         {
-            //var user = new UserDTO()
-            //{
-            //    Name = model.SlaughterLogin,
-            //    Password = model.SlaughterPassword
-            //};
-
             var result = _userAppService.AuthenticationLogin(model);
             return result;
         }
@@ -56,7 +50,11 @@ namespace SgqSystem.Controllers.Api
             return result;
         }
 
-
-
+        [Route("GetCorrectiveActionById")]
+        [HttpPost]
+        public GenericReturn<CorrectiveActionDTO> GetCorrectiveActionById([FromBody]int id)
+        {
+            return _correctiveActionAppService.GetCorrectiveActionById(id);
+        }
     }
 }

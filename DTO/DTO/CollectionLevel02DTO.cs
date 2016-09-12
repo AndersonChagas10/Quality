@@ -167,6 +167,7 @@ namespace DTO.DTO
         public bool NotEvaluatedIs { get; set; }
         public int Sample { get; set; }
         public int Shift { get; set; }
+        public string Name { get; set; }
         public System.DateTime StartPhaseDate { get; set; }
         public System.DateTime CollectionDate { get; set; }
 

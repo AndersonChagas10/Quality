@@ -2,11 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DTO;
 using Dominio;
-using Dominio.Entities.BaseEntity;
 using System.Data.Entity;
 
 namespace Data.Repositories
@@ -51,16 +48,44 @@ namespace Data.Repositories
 
         #region Get Last
 
-        public IEnumerable<CollectionLevel02> GetLastEntryCollectionLevel02(IEnumerable<ConsolidationLevel02> cl2)
+        public IEnumerable<CollectionLevel02> GetLastEntryCollectionLevel02(IEnumerable<ConsolidationLevel02> cl2, DataCarrierFormulario form)
         {
-            var lastResults = db.CollectionLevel02.Where(r => cl2.Any(x => x.Id == r.ConsolidationLevel02Id));
+            IEnumerable<CollectionLevel02> lastResults;
+
+            lastResults = db.CollectionLevel02.Where(r => cl2.Any(x => x.Id == r.ConsolidationLevel02Id));
+
+            if (form.shift > 0)
+            {
+                lastResults = lastResults.Where(r => r.Shift == form.shift);
+            }
+
+            if (form.period > 0)
+            {
+                lastResults = lastResults.Where(r => r.Period == form.period);
+            }
+
+            if (form.auditorId > 0)
+            {
+                lastResults = lastResults.Where(r => r.AuditorId == form.auditorId);
+            }
+
             return lastResults;
 
         }
 
-        public IEnumerable<CollectionLevel03> GetLastEntryCollectionLevel03(IEnumerable<CollectionLevel02> cll2)
+        public IEnumerable<CollectionLevel03> GetLastEntryCollectionLevel03(IEnumerable<CollectionLevel02> cll2, DataCarrierFormulario form)
         {
-            var lastResults = db.CollectionLevel03.Where(r => cll2.Any(x => x.Id == r.CollectionLevel02Id));
+            var ids = new List<int>();
+            foreach (var i in cll2)
+                ids.Add(i.Id);
+
+            var lastResults = db.CollectionLevel03.Where(r => ids.Any(x => x == r.CollectionLevel02Id));
+            if (form.hasErros)
+            {
+                lastResults = lastResults.Where(r => r.Value > 0 || r.ValueText.Length > 0);
+            }
+
+            //var teste = lastResults.ToList();
             return lastResults;
         }
 
@@ -84,15 +109,35 @@ namespace Data.Repositories
             return listResults;
         }
 
+
         public IEnumerable<ConsolidationLevel01> GetEntryConsildatedLevel01ByDateAndUnit(DataCarrierFormulario form)
         {
-            //var teste1 = db.ConsolidationLevel01.Where(r => r.UnitId == form.unidadeId);
-            var lastResults = db.ConsolidationLevel01.Where(r => r.UnitId == form.unidadeId
+            IEnumerable<ConsolidationLevel01> lastResults;
+            if (form.unitId > 0)
+            {
+                lastResults =  db.ConsolidationLevel01.Where(r => r.UnitId == form.unitId
                     && DbFunctions.TruncateTime(r.AddDate) >= DbFunctions.TruncateTime(form._dataInicio)
-                    && DbFunctions.TruncateTime(r.AddDate) <= DbFunctions.TruncateTime(form._dataFim));//.OrderByDescending(r=>r.Id).FirstOrDefault();
-
+                    && DbFunctions.TruncateTime(r.AddDate) <= DbFunctions.TruncateTime(form._dataFim));
+            }
+            else {
+                lastResults = db.ConsolidationLevel01.Where(r => DbFunctions.TruncateTime(r.AddDate) >= DbFunctions.TruncateTime(form._dataInicio)
+                   && DbFunctions.TruncateTime(r.AddDate) <= DbFunctions.TruncateTime(form._dataFim));
+            }
+                        
             return lastResults;
         }
+
+
+        public IEnumerable<ConsolidationLevel01> GetEntryConsildatedLevel01ByDate(DataCarrierFormulario form)
+        {
+            //var teste1 = db.ConsolidationLevel01.Where(r => r.UnitId == form.unidadeId);
+            var lastResults = db.ConsolidationLevel01.Where(r =>  DbFunctions.TruncateTime(r.AddDate) >= DbFunctions.TruncateTime(form._dataInicio)
+                    && DbFunctions.TruncateTime(r.AddDate) <= DbFunctions.TruncateTime(form._dataFim));//.OrderByDescending(r=>r.Id).FirstOrDefault();
+            return lastResults;
+        }
+
+        
+
 
         #endregion
     }

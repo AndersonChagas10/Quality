@@ -31,11 +31,10 @@ namespace SgqSystem
                       "~/Content/site.css"));
 
 
-            bundles.Add(new ScriptBundle("~/bundles/dataTables").Include(
+            bundles.Add(new ScriptBundle("~/bundles/DataTables").Include(
                      "~/Scripts/DataTables/jquery.dataTables.min.js"
                      //"~/Scripts/jbs.jquery.dataTables.configuration.js",
                      //"~/Scripts/dataTable.CRUD.js",
-                     //"~/Scripts/jbs.url.helper.js",
                      //"~/Scripts/buttonsDataTable/buttons.html5.min.js",
                      //"~/Scripts/buttonsDataTable/buttons.flash.min.js",
                      //"~/Scripts/buttonsDataTable/buttons.print.min.js",

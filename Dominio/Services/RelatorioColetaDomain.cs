@@ -14,7 +14,10 @@ namespace Dominio.Services
     {
 
         #region Construtor
-
+        private IBaseRepository<Level02> _baseLevel02Repo;
+        private IBaseRepository<Level03> _baseLevel03Repo;
+        private IEnumerable<Level02> _listLevel02;
+        private IEnumerable<Level03> _listLevel03;
         private IRelatorioColetaRepository<CollectionLevel02> _repoCollectionLevel02;
         private IRelatorioColetaRepository<CollectionLevel03> _repoCollectionLevel03;
         private IRelatorioColetaRepository<ConsolidationLevel01> _repoConsolidationLevel01;
@@ -24,17 +27,24 @@ namespace Dominio.Services
             IRelatorioColetaRepository<CollectionLevel02> repoCollectionLevel02,
             IRelatorioColetaRepository<CollectionLevel03> repoCollectionLevel03,
             IRelatorioColetaRepository<ConsolidationLevel01> repoConsolidationLevel01,
-            IRelatorioColetaRepository<ConsolidationLevel02> repoConsolidationLevel02
+            IRelatorioColetaRepository<ConsolidationLevel02> repoConsolidationLevel02,
+            IBaseRepository<Level02> baseLevel02Repo,
+            IBaseRepository<Level03> baseLevel03Repo
             )
         {
+            _baseLevel02Repo = baseLevel02Repo;
+            _baseLevel03Repo = baseLevel03Repo;
             _repoCollectionLevel02 = repoCollectionLevel02;
             _repoCollectionLevel03 = repoCollectionLevel03;
             _repoConsolidationLevel01 = repoConsolidationLevel01;
             _repoConsolidationLevel02 = repoConsolidationLevel02;
+
+            _listLevel02 = _baseLevel02Repo.GetAll();
+            _listLevel03 = _baseLevel03Repo.GetAll();
         }
 
         #endregion
-        
+
         #region Prototype
 
         public GenericReturn<ResultSetRelatorioColeta> GetCollectionLevel02(DataCarrierFormulario form)
@@ -174,10 +184,13 @@ namespace Dominio.Services
                 var consildatedLelve02 = _repoConsolidationLevel02.GetLastEntryConsildatedLevel02(consildatedLelve01);
                 var consildatedLelve02List = consildatedLelve02.ToList();
 
-                var collectionLelve02 = _repoCollectionLevel02.GetLastEntryCollectionLevel02(consildatedLelve02);
-                var collectionLelve02List = collectionLelve02.ToList();
+                var collectionLelve02 = _repoCollectionLevel02.GetLastEntryCollectionLevel02(consildatedLelve02, form);
+                var collectionLelve03 = _repoCollectionLevel03.GetLastEntryCollectionLevel03(collectionLelve02, form);
 
-                var collectionLelve03 = _repoCollectionLevel03.GetLastEntryCollectionLevel03(collectionLelve02);
+                if (collectionLelve02.Count() == 0 || collectionLelve03.Count() == 0)
+                    return new GenericReturn<GetSyncDTO>(new GetSyncDTO() { ConsolidationLevel01 = new List<ConsolidationLevel01DTO>() });
+
+                var collectionLelve02List = collectionLelve02.ToList();
                 var collectionLelve03List = collectionLelve03.ToList();
 
                 #endregion
@@ -209,20 +222,28 @@ namespace Dominio.Services
                     var temp = consildatedLelve01ListDTO2.Where(r => r.Level01ConsolidationId == i.Id);
                     i.consolidationLevel02DTO = temp.ToList();
 
-                   var temp2 = collectionLelve02ListDTO.Where(r => temp.Any(z => z.Id == r.ConsolidationLevel02Id));
+                    var temp2 = collectionLelve02ListDTO.Where(r => temp.Any(z => z.Id == r.ConsolidationLevel02Id));
                     i.collectionLevel02DTO = temp2.ToList();
 
                     for (var v = 0; v < i.collectionLevel02DTO.Count; v++)
                     {
                         var y = i.collectionLevel02DTO[v];
-                        var level03DoLevel02 = collectionLelve03ListDTO.Where(r =>  y.Id == r.CollectionLevel02Id).ToList();
+
+                        //Busca nome level02
+                        y.Name = _listLevel02.FirstOrDefault(z => z.Id == y.Level02Id).Name;
+
+                        //Encontra os level03 do level02
+                        var level03DoLevel02 = collectionLelve03ListDTO.Where(r => y.Id == r.CollectionLevel02Id).ToList();
+
+                        //Busca nome level03
+                        foreach (var z in level03DoLevel02)
+                            z.Name = _listLevel03.FirstOrDefault(zz => zz.Id == z.Level03Id).Name;
+
+                        //Insere level03 no leve02 e remove o 03 da lista temp.
                         y.collectionLevel03DTO = level03DoLevel02;
                         collectionLelve03ListDTO.RemoveAll(r => y.Id == r.CollectionLevel02Id);
                     }
-                    //foreach (var y in i.collectionLevel02DTO)
-                    //{
-                    //    y.collectionLevel03DTO = level03DoLevel02;
-                    //}
+
                 }
 
                 #endregion
@@ -240,6 +261,6 @@ namespace Dominio.Services
                 return new GenericReturn<GetSyncDTO>(e, "Cannot get data.");
             }
         }
-     
+
     }
 }

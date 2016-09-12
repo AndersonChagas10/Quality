@@ -1,6 +1,4 @@
-﻿using SgqSystem.ViewModels;
-using System.Collections.Generic;
-using System.Web;
+﻿using System.Web;
 
 namespace SgqSystem.Secirity
 {

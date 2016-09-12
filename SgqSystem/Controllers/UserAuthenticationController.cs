@@ -4,6 +4,7 @@ using DTO.Helpers;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace SgqSystem.Controllers.Api
 {
@@ -31,6 +32,7 @@ namespace SgqSystem.Controllers.Api
             if (isAuthorized.Retorno.IsNotNull())
             {
                 SessionPersister.Username = isAuthorized.Retorno.Name;
+                //RenewCurrentUser();
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -56,5 +58,30 @@ namespace SgqSystem.Controllers.Api
             return View();
         }
 
+        public void RenewCurrentUser()
+        {
+            System.Web.HttpCookie authCookie =
+                System.Web.HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (authCookie != null)
+            {
+                FormsAuthenticationTicket authTicket = null;
+                authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+
+                if (authTicket != null && !authTicket.Expired)
+                {
+                    FormsAuthenticationTicket newAuthTicket = authTicket;
+
+                    if (FormsAuthentication.SlidingExpiration)
+                    {
+                        newAuthTicket = FormsAuthentication.RenewTicketIfOld(authTicket);
+                    }
+                    string userData = newAuthTicket.UserData;
+                    string[] roles = userData.Split(',');
+
+                    System.Web.HttpContext.Current.User =
+                        new System.Security.Principal.GenericPrincipal(new FormsIdentity(newAuthTicket), roles);
+                }
+            }
+        }
     }
 }

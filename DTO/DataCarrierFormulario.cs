@@ -6,14 +6,15 @@ namespace DTO
     public class DataCarrierFormulario
     {
         private DateTime _dtvalueInicio, _dtvalueFim;
+        public bool hasErros;
 
         public DateTime _dataInicio
         {
             get
             {
-                if (dataInicio != null)
+                if (startDate != null)
                 {
-                    _dtvalueInicio = DateTime.ParseExact(dataInicio, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                    _dtvalueInicio = DateTime.ParseExact(startDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                     return _dtvalueInicio;
                 }
                 return DateTime.Now;
@@ -24,21 +25,23 @@ namespace DTO
         {
             get
             {
-                if (dataFim != null)
+                if (endDate != null)
                 {
-                    _dtvalueFim = DateTime.ParseExact(dataFim, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                    _dtvalueFim = DateTime.ParseExact(endDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                     return _dtvalueFim;
                 }
                 return DateTime.Now;
             }
         }
 
-        public string dataInicio { get; set; }
-        public string dataFim { get; set; }
-        public int level01id { get; set; }
-        public int level02id { get; set; }
-        public int level03id { get; set; }
-        public int unidadeId { get; set; }
-        public int userId { get; set; }
+        public string startDate { get; set; }
+        public string endDate { get; set; }
+        public int level01Id { get; set; }
+        public int level02Id { get; set; }
+        public int level03Id { get; set; }
+        public int unitId { get; set; }
+        public int auditorId { get; set; }
+        public int shift { get; set; }
+        public int period { get; set; }
     }
 }

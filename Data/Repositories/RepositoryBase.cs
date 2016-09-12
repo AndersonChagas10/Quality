@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Dominio.Entities.BaseEntity;
 using Dominio.Interfaces.Repositories;
 using DTO.Helpers;
 using System;
@@ -24,7 +25,7 @@ namespace Data.Repositories
         /// <summary>
         /// Objeto T em memória volátil pela chamada de sua Interface.
         /// </summary>
-        protected DbSet<T> Entity { get { return db.Set<T>(); } }
+        private DbSet<T> Entity { get { return db.Set<T>(); } }
 
         /// <summary>
         /// Construtor.
@@ -146,6 +147,15 @@ namespace Data.Repositories
             return Entity.Find(id);
         }
 
+        //public IEnumerable<T> GetByDate(DateTime initalDate, DateTime finalDate)
+        //{
+        //    var tipo = typeof(T);
+        //    if (tipo.Equals(typeof(EntityBase)))
+        //    {
+
+        //        Entity.Where(r=>)
+        //    }
+        //}
         #endregion
 
         #region Remove/Deleta

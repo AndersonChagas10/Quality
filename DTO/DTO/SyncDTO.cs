@@ -34,6 +34,7 @@ namespace DTO.DTO
         public string level03id { get; set; }
         public string totalerror { get; set; }
         public string value { get; set; }
+        public string valueText { get; set; }
         public CollectionLevel03DTO collectionLevel03DTO { get; set; }
 
     }

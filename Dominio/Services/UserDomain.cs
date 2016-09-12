@@ -87,24 +87,24 @@ namespace Dominio.Services
             try
             {
 
-                userDto.Password = DecryptStringAES(userDto.Password);
+                //userDto.Password = DecryptStringAES(userDto.Password);
 
-                if (userDto.IsNull())
-                    throw new ExceptionHelper("Username and Password are required.");
+                //if (userDto.IsNull())
+                //    throw new ExceptionHelper("Username and Password are required.");
 
-                userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
+                //userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
 
                 //Autenticação no AD JBS USA
                // if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
                // {
-                    var user = Mapper.Map<UserDTO, UserSgq>(userDto);
-                    user.Password = Criptografar3DES(user.Password);
-                    var isUser = _userRepo.AuthenticationLogin(user);
-                    if (isUser.IsNull())
-                    {
-                        throw new ExceptionHelper("User not found, please verify Username and Password.");
-                    }
-              //  }
+                    //var user = Mapper.Map<UserDTO, UserSgq>(userDto);
+                    //user.Password = Criptografar3DES(user.Password);
+                    //var isUser = _userRepo.AuthenticationLogin(user);
+                    //if (isUser.IsNull())
+                    //{
+                    //    throw new ExceptionHelper("User not found, please verify Username and Password.");
+                    //}
+                //}
 
                 var retorno = Mapper.Map<List<UserSgq>, List<UserDTO>>(_userRepo.GetAllUser());
 

@@ -3,6 +3,8 @@ using Dominio.Interfaces.Repositories;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using DTO;
+using System.Collections.Generic;
 
 namespace Data.Repositories
 {
@@ -12,6 +14,29 @@ namespace Data.Repositories
         public CorrectiveActionRepository(SgqDbDevEntities _db)
             : base(_db)
         {
+        }
+
+        public IEnumerable<CorrectiveAction> GetCorrectiveAction(DataCarrierFormulario data)
+        {
+            var query = db.CorrectiveAction.Where(r => DbFunctions.TruncateTime(r.AddDate) >= DbFunctions.TruncateTime(data._dataInicio)
+                                             && DbFunctions.TruncateTime(r.AddDate) <= DbFunctions.TruncateTime(data._dataFim));
+
+            if (data.shift > 0)
+            {
+                query = query.Where(r => r.CollectionLevel02.Shift == data.shift);
+            }
+
+            if (data.period > 0)
+            {
+                query = query.Where(r => r.CollectionLevel02.Period == data.period);
+            }
+
+            if (data.auditorId > 0)
+            {
+                query = query.Where(r => r.CollectionLevel02.AuditorId == data.auditorId);
+            }
+
+            return query;
         }
 
         public CorrectiveAction SalvarAcaoCorretiva(CorrectiveAction entitie)

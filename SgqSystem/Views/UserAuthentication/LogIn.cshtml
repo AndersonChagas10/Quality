@@ -19,20 +19,23 @@
         background-color: #4CAF50;
     }
 </style>
+<div id="teste" style="display:none">
 
-<h1>JavaScript Progress Bar</h1>
+    <h1>JavaScript Progress Bar</h1>
 
-<div id="myProgress">
-    <div id="myBar"></div>
+    <div id="myProgress">
+        <div id="myBar"></div>
+    </div>
+
+    <button onclick="move(5)">Click Me</button>
 </div>
 
-<button onclick="move(5)">Click Me</button>
 
 <h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm())
 {
-
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "Log in failed. Check your login details.")
 
     <div>
@@ -68,7 +71,7 @@
         var id = setInterval(frame, 10);
         function frame() {
             if (elem.style.width.replace(/[^0-9]/g, '').length > 0) {
-                if (parseInt(elem.style.width.replace(/[^0-9]/g, '')) >= 100){
+                if (parseInt(elem.style.width.replace(/[^0-9]/g, '')) >= 100) {
                     clearInterval(id);
                     return;
                 }

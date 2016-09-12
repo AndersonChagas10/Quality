@@ -1,5 +1,7 @@
-﻿using DTO.DTO;
+﻿using DTO;
+using DTO.DTO;
 using DTO.Helpers;
+using System.Collections.Generic;
 
 namespace Dominio.Interfaces.Services
 {
@@ -10,6 +12,8 @@ namespace Dominio.Interfaces.Services
 
         GenericReturn<CorrectiveActionDTO> VerificarAcaoCorretivaIncompleta(CorrectiveActionDTO dto);
 
+        GenericReturn<List<CorrectiveActionDTO>> GetCorrectiveAction(DataCarrierFormulario data);
+        GenericReturn<CorrectiveActionDTO> GetCorrectiveActionById(int id);
     }
 
 }

@@ -9,25 +9,37 @@ namespace DTO.DTO
     public class CorrectiveActionDTO : EntityBase
     {
         public int idcorrectiveaction { get; set; }
+        public string PeriodName { get; set; }
+        public string ShiftName { get; set; }
+        public string AuditorName { get; set; }
+        public string level02Name { get; set; }
+        public string level03Name { get; set; }
+        public string level01Name { get; set; }
+        public int Level01Id { get; set; }
+        public int Level02Id { get; set; }
+
         public int AuditorId { get; set; }
+        public int CollectionLevel02Id { get; set; }
+        public Nullable<int> SlaughterId { get; set; }
+        public Nullable<int> TechinicalId { get; set; }
+        public Nullable<System.DateTime> DateTimeSlaughter { get; set; }
+        public Nullable<System.DateTime> DateTimeTechinical { get; set; }
+        public System.DateTime DateCorrectiveAction { get; set; }
+        public System.DateTime AuditStartTime { get; set; }
         public string DescriptionFailure { get; set; }
         public string ImmediateCorrectiveAction { get; set; }
         public string ProductDisposition { get; set; }
         public string PreventativeMeasure { get; set; }
-        public Nullable<int> SlaughterId { get; set; }
-        public Nullable<System.DateTime> DateTimeSlaughter { get; set; }
-        public Nullable<int> TechinicalId { get; set; }
-        public Nullable<System.DateTime> DateTimeTechinical { get; set; }
-        public DateTime AuditStartTime { get; set; }
-        public DateTime DateCorrectiveAction { get; set; }
+
         public System.DateTime DateExecute { get; set; }
         public int ShiftId { get; set; }
-        //[DataMember]
-        //public int AuditLevel1Id { get; set; }
-        //[DataMember]
-        //public int AuditLevel2Id { get; set; }
-        //[DataMember]
-        //public int AuditLevel3Id { get; set; }
+
+
+        //public virtual UserSgq UserSgq { get; set; }
+        //public virtual UserSgq UserSgq1 { get; set; }
+        //public virtual UserSgq UserSgq2 { get; set; }
+        //public virtual CollectionLevel02 CollectionLevel02 { get; set; }
+
         public System.DateTime StartTime { get; set; }
         public int PeriodId { get; set; }
         public string NameTechinical { get; set; }
@@ -37,22 +49,32 @@ namespace DTO.DTO
         public List<CorrectiveActionLevelsDTO> CorrectiveActionLevels { get; set; }
 
 
-        public string DateExecuteFarmatado
+        //public string DateExecuteFarmatado
+        //{
+        //    get { return DateExecute.ToString("MM/dd/yyyy hh:mm:ss"); }
+        //    set
+        //    {
+        //        //DateExecute = DateTime.ParseExact(value.ToString(), "MM/dd/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
+        //        DateExecute = Convert.ToDateTime(value.ToString(), CultureInfo.InvariantCulture);
+        //    }
+        //}
+        public string DateCorrectiveActionFormatado
         {
-            get { return DateExecute.ToString("MM/dd/yyyy hh:mm:ss"); }
-            set
-            {
-                //DateExecute = DateTime.ParseExact(value.ToString(), "MM/dd/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
-                DateExecute = Convert.ToDateTime(value.ToString(), CultureInfo.InvariantCulture);
-            }
-        }
-        public string StartTimeFarmatado
-        {
-            get { return StartTime.ToString("MM/dd/yyyy hh:mm:ss"); }
+            get { return DateCorrectiveAction.ToString("MM/dd/yyyy hh:mm:ss"); }
             set
             {
                 // StartTime = DateTime.ParseExact(value.ToString(), "MM/dd/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
-                StartTime = Convert.ToDateTime(value.ToString(), CultureInfo.InvariantCulture);
+                DateCorrectiveAction = Convert.ToDateTime(value.ToString(), CultureInfo.InvariantCulture);
+            }
+        }
+        
+        public string StartTimeFormatado
+        {
+            get { return AuditStartTime.ToString("MM/dd/yyyy hh:mm:ss"); }
+            set
+            {
+                // StartTime = DateTime.ParseExact(value.ToString(), "MM/dd/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
+                AuditStartTime = Convert.ToDateTime(value.ToString(), CultureInfo.InvariantCulture);
             }
         }
         public string DateTimeSlaughterFarmatado

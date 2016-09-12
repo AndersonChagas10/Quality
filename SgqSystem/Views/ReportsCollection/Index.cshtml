@@ -1,0 +1,206 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "Audit Reports";
+    var url = Url.Action("Index", "Home");
+    var urlTabelaRelatorio = Url.Action("GetEntryByDate", "api/RelatorioColeta");
+}
+
+<link href="@Url.Content("~/Content/DataTables/css/jquery.dataTables.min.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/DataTables/css/buttons.dataTables.min.css")" rel="stylesheet" />
+
+<h2>Audit Reports:</h2>
+<p><a href="@url" class=""><< Back</a></p>
+
+<table style="width: 100%">
+    <tr>
+        <td style="text-align: right">
+            <a href="javascript:void(0);" onclick="window.print();">Imprimir</a>
+        </td>
+    </tr>
+</table>
+@Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+@Html.Partial("~/Views/Shared/_formularioParaPesquisa.cshtml", Model)
+
+<div id="loading" style="display:none"> Loading. </div>
+&nbsp;
+<table id="results" class="display" cellspacing="0" ></table>
+
+@section Scripts {
+
+    @Scripts.Render("~/Scripts/moment.min.js")
+    @Scripts.Render("~/Scripts/bootstrap-datepicker.js")
+    @Scripts.Render("~/Scripts/locales/bootstrap-datepicker.eu.min.js")
+    @Scripts.Render("~/Scripts/gridmvc.min.js")
+    @Scripts.Render("~/Scripts/GuardJs.js")
+
+    @Scripts.Render("~/Scripts/DataTables/dataTables.buttons.min.js")
+    @Scripts.Render("~/Scripts/DataTables/buttons.flash.min.js")
+    @Scripts.Render("~/Scripts/DataTables/jszip.min.js")
+    @Scripts.Render("~/Scripts/DataTables/pdfmake.min.js")
+    @Scripts.Render("~/Scripts/DataTables/vfs_fonts.js")
+    @Scripts.Render("~/Scripts/DataTables/buttons.html5.min.js")
+    @Scripts.Render("~/Scripts/DataTables/buttons.print.min.js")
+    @Scripts.Render("~/Scripts/DataTables/buttons.colVis.min.js")
+    @Scripts.Render("~/Scripts/DataTables/buttons.print.min.js")
+
+    <script type="text/javascript">
+        $('#sandbox-container input').datepicker();
+        var url1 = '@Html.Raw(@urlTabelaRelatorio)';
+        function send() {
+
+
+            $('#loading').show();
+            $('#results').empty();
+            var enviar = {};
+            enviar['startDate'] = $('#sandbox-container input')[0].value;
+            enviar['endDate'] = $('#sandbox-container input')[1].value;
+            enviar['unitId'] = $('#unitId option:selected').val();
+            enviar['shift'] = $('#shift option:selected').val();
+            enviar['period'] = $('#period option:selected').val();
+            enviar['level01Id'] = null;
+            enviar['level02Id'] = null;
+            enviar['level03Id'] = null;
+            enviar['auditorId'] = $('#auditorId').val();
+
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+
+            if (!GuardJs.isValid)
+                return;
+
+            GuardJs.esconderMensagem();
+
+
+            $.post('http://localhost:63128/api/RelatorioColeta/GetEntryByDate', enviar, function (r) {
+
+                //console.log(r)
+
+                var retornoArray = [];
+                var arrayItarator = r.Retorno;
+                arrayItarator.ConsolidationLevel01.forEach(function (o, c) {
+
+                    o.collectionLevel02DTO.forEach(function (oo, cc) {
+
+                        oo.collectionLevel03DTO.forEach(function (ooo, ccc) {
+                            var retorno = {};
+
+                            retorno['Departamento'] = o.Department.Name;
+                            retorno['Level01'] = o.Level01.Name;
+                            retorno['Unit'] = o.Unit.Name;
+
+                            retorno['Level02'] = oo.Level02Id;
+                            retorno['Level02name'] = oo.Name;
+                            retorno['avaliado'] = oo.EvaluationNumber;
+                            retorno['Sample'] = oo.Sample;
+                            retorno['Shift'] = oo.Shift;
+                            retorno['Phase'] = oo.Phase;
+                            retorno['AddDate'] = new Date(oo.AddDate).toLocaleDateString();
+                            retorno['NotEvaluatedIs'] = oo.NotEvaluatedIs;
+
+                            retorno["ConformedIs"] = ooo.ConformedIs;
+                            retorno["Level03Id"] = ooo.Level03Id;
+                            retorno["Level03Name"] = ooo.Name;
+                            retorno["Value"] = ooo.Value;
+                            retorno["ValueText"] = ooo.ValueText;
+
+                            retornoArray.push(retorno);
+                        });
+
+                    });
+                })
+                console.log(retornoArray);
+                //ConformedIs:true
+                //Departamento:"Slaugther"
+                //Level01: "Carcass Contamination Audit" ok
+                //Level02: 39
+                //Level03Id: 5
+                //NotEvaluatedIs: false
+                //Phase: 39
+                //Unit: "Colorado" ok
+                //Value: 0
+                //ValueText: ""
+                //avaliado: 1
+
+                var table = $('#results').empty().DataTable({
+                    data: retornoArray,
+                    columns: [{ title: "Unit", mData: "Unit" },
+                       { title: "Department", mData: "Departamento" },
+                       { title: "Level01", mData: "Level01" },
+                       { title: "Level02", mData: "Level02name" },
+                       { title: "Evaluated?", mData: "avaliado" },
+                       { title: "Phase?", mData: "Phase" },
+                       { title: "Shift?", mData: "Shift" },
+                       { title: "Sample?", mData: "Sample" },
+                       { title: "Date?", mData: "AddDate" },
+                       { title: "NotEvaluated?", mData: "NotEvaluatedIs" },
+                       { title: "Level03", mData: "Level03Name" },
+                       { title: "Is Conformed", mData: "ConformedIs" },
+                       { title: "Value", mData: "Value" },
+                       { title: "ValueText", mData: "ValueText" },
+                    ],
+                    //dom: 'Bfrtip',
+                    //buttons: [
+                    //   'copy', 'excel', 'pdf'
+                    //],
+                    //columnDefs: config.columnDefs,
+                    //bSort: true,
+                    //bAutoWidth: true,
+                    //bFilter: true,
+                    scrollX: true,
+                    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                    pageLength: 10,
+                    //processing: true,
+                    loadingRecords: true,
+                    destroy: true,
+                    //paginate: true,
+                    //paging: true,
+                    info: true,
+                    //searching: true,
+                    //createdRow: config.createdRow,
+                    //fnDrawCallback: config.fnDrawCallback,
+                    initComplete: function () {
+                        $('#loading').hide();
+                    },
+                    //order: config.order || [[0, 'asc']],
+                    //serverSide: !config.serverSide == undefined || config.serverSide,
+                    //sPaginationType: 'full_numbers',
+                });
+
+
+                new $.fn.dataTable.Buttons(table, {
+                    buttons: [
+                        {
+                            extend: 'print',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'excel',
+                        'pdf',
+                        'colvis',
+                        //, 'print'
+                        //{
+                        //    text: 'Extra 1',
+                        //    action: function (e, dt, node, conf) {
+                        //        console.log('Button 1 clicked on');
+                        //    }
+                        //},
+                        //{
+                        //    text: 'Extra 2',
+                        //    action: function (e, dt, node, conf) {
+                        //        console.log('Button 2 clicked on');
+                        //    }
+                        //}
+                    ]
+                });
+
+                table.buttons(0, null).container().prependTo(
+                    table.table().container()
+                );
+
+            });
+
+            $('#loading').hide();
+        };
+    </script>
+}

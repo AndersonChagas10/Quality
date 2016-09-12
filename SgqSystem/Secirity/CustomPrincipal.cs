@@ -22,6 +22,7 @@ namespace SgqSystem.Secirity
             //if (UserVm == null)
             //    UserVm = teste.GetByName(userName).Retorno;
             Identity = new GenericIdentity(userName);
+            
 
         }
 
