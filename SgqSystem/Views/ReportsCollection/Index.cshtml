@@ -11,15 +11,8 @@
 <h2>Audit Reports:</h2>
 <p><a href="@url" class=""><< Back</a></p>
 
-<table style="width: 100%">
-    <tr>
-        <td style="text-align: right">
-            <a href="javascript:void(0);" onclick="window.print();">Imprimir</a>
-        </td>
-    </tr>
-</table>
 @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-@Html.Partial("~/Views/Shared/_formularioParaPesquisa.cshtml", Model)
+@Html.Partial("~/Views/Shared/_FormularioParaPesquisaPrototype.cshtml", Model)
 
 <div class="margin-top"></div>
 
@@ -191,5 +184,6 @@
 
             $('#loading').hide();
         };
+        formControl.showCustomForRelatorioColeta();
     </script>
 }

@@ -10,17 +10,16 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "Log in failed. Check your login details.")
 
-        <div class="login">
-            <div class="head"></div>
-            <form class="form-signin">
-                <h2 class="form-signin-heading">Please sign in</h2>
-              
+    <div class="login">
+        <div class="head"></div>
+        <div class="form-signin">
+            <h2 class="form-signin-heading">Please sign in</h2>
                 <label for="inputUserName" class="sr-only">Username</label>
                 <input type="text" id="inputUserName" class="form-control" placeholder="Username" required="" autofocus="" name="Name">
                 <label for="inputPassword" class="sr-only">Password</label>
                 <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="Password">
 
-                <button class="btn btn-lg btn-primary marginTop10" type="submit" data-loading-text="Authenticating..." id="btnLogin">Sign in</button>
+                <button class="btn btn-lg btn-primary marginTop10 btn-block" type="submit" data-loading-text="Authenticating..." id="btnLogin">Sign in</button>
                 <div id="messageError" class="alert alert-danger hide" role="alert">
                     <span class="icon-remove-sign"></span>    <strong>Error! </strong><span id="mensagemErro"> </span>
                 </div>
@@ -30,39 +29,8 @@
                 <div id="messageSuccess" class="alert alert-success hide" role="alert">
                     <span id="mensagemSucesso" class="icon-ok-circle"></span>
                 </div>
-            </form>
-            <div class="foot"></div>
         </div>
-
+        <div class="foot"></div>
+    </div>
 
 }
-
-        @*<script>
-                var quantidade = 0;
-                function move(q) {
-                    var andarAte = q + quantidade;
-                    var elem = document.getElementById("myBar");
-                    var width = 1;
-                    var id = setInterval(frame, 10);
-                    function frame() {
-                        if (elem.style.width.replace(/[^0-9]/g, '').length > 0) {
-                            if (parseInt(elem.style.width.replace(/[^0-9]/g, '')) >= 100) {
-                                clearInterval(id);
-                                return;
-                            }
-                        }
-                        if (width >= q || width >= 100) {
-                            clearInterval(id);
-                        } else {
-                            width++;
-                            var andar = 0;
-                            if (elem.style.width.replace(/[^0-9]/g, '').length > 0)
-                                andar += (parseInt(elem.style.width.replace(/[^0-9]/g, ''))) + 1;
-                            else
-                                andar = width;
-                            elem.style.width = andar + '%';
-                        }
-                    }
-                    quantidade += q;
-                }
-            </script>*@

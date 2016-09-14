@@ -1,5 +1,4 @@
 ﻿using Application.Interface;
-using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
@@ -22,6 +21,10 @@ namespace SgqSystem.Controllers.Api
         [AllowAnonymous]
         public ActionResult LogIn()
         {
+            if(!(string.IsNullOrEmpty(SessionPersister.Username)))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -32,7 +35,6 @@ namespace SgqSystem.Controllers.Api
             if (isAuthorized.Retorno.IsNotNull())
             {
                 SessionPersister.Username = isAuthorized.Retorno.Name;
-                //RenewCurrentUser();
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -43,7 +45,8 @@ namespace SgqSystem.Controllers.Api
 
         public ActionResult LogOut(UserViewModel user)
         {
-            return View();
+            SessionPersister.LogOut();
+            return RedirectToAction("LogIn", "UserAuthentication");
         }
 
         [HttpGet]

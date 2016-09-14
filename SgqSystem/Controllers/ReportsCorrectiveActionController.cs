@@ -1,10 +1,12 @@
 ﻿using Application.Interface;
 using DTO.DTO;
+using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
+    [CustomAuthorize(Roles = "Admin")]
     public class ReportsCorrectiveActionController : Controller
     {
         private readonly IRelatorioColetaApp _relatorioColetaApp;

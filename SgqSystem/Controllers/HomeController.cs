@@ -9,7 +9,7 @@ namespace SgqSystem.Controllers
         [CustomAuthorize(Roles = "Admin")]
         public ActionResult Index()
         {
-            ViewBag.Title = "Sgq Global Beta";
+            ViewBag.Title = "Sgq Global";
             return View();
         }
     }

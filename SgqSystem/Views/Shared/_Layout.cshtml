@@ -32,27 +32,45 @@
                 </button>
                 @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar-collapse collapse pull-right">
                 <ul class="nav navbar-nav">
-                    @*<li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                        <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>*@
-                    @if (Session["username"] != null)
+                    @if (HttpContext.Current.Session["username"] != null)
                     {
-                        @*<strong>@Html.Encode(User.Identity.Name)</strong>*@
-                        <strong>@Session["username"].ToString()</strong>
-                        @Html.ActionLink("Log Out", "Logout", "Authentication")
+                        <li class="nav-item ">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                        <li class="nav-item ">@Html.ActionLink("Collection Reports", "Index", "ReportsCollection")</li>
+                        <li class="nav-item ">@Html.ActionLink("Corrective Action Reports", "Index", "ReportsCorrectiveAction")</li>
                     }
-                    else
-                    {
-                        @Html.ActionLink("Log in", "LogIn", "UserAuthentication")
-                        <span> | </span>
-                        @Html.ActionLink("Register", "Register", "Authentication")
-                    }
+
+                    <a class="navbar-brand">
+                        @if (Session["username"] != null)
+                        {
+                            @*<strong>@Html.Encode(User.Identity.Name)</strong>*@
+                            <li class="nav-item">
+                                @Session["username"].ToString():
+                            </li>
+                            <li class="nav-item">
+                                @Html.ActionLink("Sign Out", "LogOut", "UserAuthentication")
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink("Sign in", "LogIn", "UserAuthentication")
+                            </li>
+                            @*<li class="nav-item">
+                                <a> | </a>
+                            </li>
+                            <li class="nav-item">
+                                @Html.ActionLink("Register", "Register", "Authentication")
+                            </li>*@
+
+                        }
+                    </a>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div class="container body-content" style="margin-top:50px">
 
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")

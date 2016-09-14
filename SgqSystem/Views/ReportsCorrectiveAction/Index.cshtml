@@ -13,20 +13,14 @@
 <h2>@ViewBag.Title</h2>
 <p><a href="@url" class=""><< Back</a></p>
 
-<table style="width: 100%">
-    <tr>
-        <td style="text-align: right">
-            <a href="javascript:void(0);" onclick="window.print();">Imprimir</a>
-        </td>
-    </tr>
-</table>
+
 
 @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 @Html.Partial("~/Views/Shared/_formularioParaPesquisa.cshtml", Model)
 @Html.Partial("~/Views/Shared/_CorrectiveActionReportEdit.cshtml", new DTO.DTO.CorrectiveActionDTO())
 
 
-<div id="loading" style="display:none"> Loading. </div>
+@Html.Partial("~/Views/Shared/_LoadingBar.cshtml")
 &nbsp;
 @*<div>*@
     <table id="results" class="display" cellspacing="0"></table>
@@ -221,6 +215,6 @@
             $printSection.appendChild(domClone);
         }
 
-       
+         formControl.showCustomForRelatorioColeta();
     </script>
 }

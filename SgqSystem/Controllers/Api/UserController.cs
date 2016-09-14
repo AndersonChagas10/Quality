@@ -1,6 +1,7 @@
 ﻿using Application.Interface;
 using DTO.DTO;
 using DTO.Helpers;
+using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -40,6 +41,16 @@ namespace SgqSystem.Controllers.Api
             return _userApp.GetAllUserValidationAd(user);
         }
 
+        [Route("VerifyPassiveSiginInLoginScreen")]
+        [HttpPost]
+        public bool VerifyPassiveSiginInLoginScreen()
+        {
+            if (!(string.IsNullOrEmpty(SessionPersister.Username)))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 
 }

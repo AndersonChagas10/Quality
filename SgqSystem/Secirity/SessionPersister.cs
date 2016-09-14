@@ -24,6 +24,10 @@ namespace SgqSystem.Secirity
             }
         }
 
+        public static void LogOut()
+        {
+            HttpContext.Current.Session[userNameSessionVar] = null;
+        }
     }
 
 }
