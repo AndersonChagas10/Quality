@@ -25,5 +25,12 @@ namespace SgqSystem.Controllers
             form.SetUsers(_userApp.GetAllUserValidationAd(new UserDTO()).Retorno);
             return View(form);
         }
+
+        public ActionResult teste()
+        {
+            var form = new FormularioParaRelatorioViewModel();
+            form.SetUsers(_userApp.GetAllUserValidationAd(new UserDTO()).Retorno);
+            return View(form);
+        }
     }
 }

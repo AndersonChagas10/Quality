@@ -923,6 +923,9 @@
     <Content Include="Views\Shared\_CorrectiveActionReportEdit.cshtml" />
     <Content Include="Views\Shared\_LoadingBar.cshtml" />
     <Content Include="Views\Shared\_FormularioParaPesquisaPrototype.cshtml" />
+    <Content Include="Views\Shared\_FormularioParaPesquisa2.cshtml" />
+    <Content Include="Views\ReportsCollection\teste.cshtml" />
+    <Content Include="Views\Shared\_FormularioParaPesquisa3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
