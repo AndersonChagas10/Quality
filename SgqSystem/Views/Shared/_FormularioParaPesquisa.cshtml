@@ -1,49 +1,206 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
-<table>
 
-    <tr>&nbsp;</tr>
-    <tr>
-        <td class="dl-fake">
-            @Html.Label("Date: ", htmlAttributes: new { @class = "control-label col-md-2" })
-        </td>
-        <td style="margin-top:10px;">
-            <div id="sandbox-container">
-                <div class="input-daterange input-group" id="datepicker">
-                    <input type="text" class="input-sm form-control" name="dataInicio" />
-                    <span class="input-group-addon">&nbsp; to &nbsp; </span>
-                    <input type="text" class="input-sm form-control" name="dataFim" />
-                </div>
+<link href="~/admin-lte/css/AdminLTE.min.css" rel="stylesheet" />
+<link href="~/Content/daterangepicker-bs3.css" rel="stylesheet" />
+<script src="~/admin-lte/js/app.min.js"></script>
+<script src="~/Scripts/moment.min.js"></script>
+<script src="~/Scripts/daterangepicker.js"></script>
+
+<div class="box box-default" style="width:50%">
+
+    <div class="box-header with-border" id="simpleCallendar">
+
+        <h3 class="box-title">Date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</h3>
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+                @*<input type="text" class="form-control input-sm" placeholder="Search...">*@
+                @*<div id="sandbox-container">*@
+                <input type="text" class="form-control" name="datefilter" style="width:210px" />
+                @*</div>*@
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
             </div>
-        </td>
-        <td class="dl-fake">
-            @Html.Label("Unit: ", htmlAttributes: new { @class = "control-label col-md-2" })
-        </td>
-        <td>
-            @Html.DropDownList("unitId", Model.Units, "All", htmlAttributes: new { @class = "form-control required" })
-        </td>
+        </div><!-- /.box-tools -->
 
-    </tr>
-    <tr>
-        <td class="dl-fake">
-            @Html.Label("Shift: ", htmlAttributes: new { @class = "control-label col-md-2" })
-        </td>
-        <td>
-            @Html.DropDownList("shift", Model.ShiftSelectList, "All", htmlAttributes: new { @class = "form-control required" })
-        </td>
-        <td class="dl-fake">
-            @Html.Label("Period: ", htmlAttributes: new { @class = "control-label col-md-2" })
-        </td>
-        <td>
-            @Html.DropDownList("period", Model.PeriodSelectList, "All", htmlAttributes: new { @class = "form-control required" })
-        </td>
-        <td class="dl-fake">
-            @Html.Label("Auditor: ", htmlAttributes: new { @class = "control-label col-md-2" })
-        </td>
-        <td>
-            @Html.DropDownList("auditorId", Model.UserSelectList, "All", htmlAttributes: new { @class = "form-control required" })
-        </td>
-        <td style="margin-top:10px; margin-left:15px;">
-            &nbsp; &nbsp; <button type="button" class="btn btn-default" id="btnCarregaGraficoDiario" onclick="send()">Atualizar</button>
-        </td>
-    </tr>
-</table>
+    </div>
+
+    <div class="box-header with-border" id="complexCallendar">
+
+        <h3 class="box-title">Date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</h3>
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+                @*<input type="text" class="form-control input-sm" placeholder="Search...">*@
+                @*<div id="sandbox-container">*@
+                <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 210px">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                    <span></span> <b class="caret"></b>
+                </div>
+                @*</div>*@
+                @*<span class="glyphicon glyphicon-search form-control-feedback"></span>*@
+            </div>
+        </div><!-- /.box-tools -->
+
+    </div>
+
+    <div class="box-header with-border">
+
+        <div>
+
+            <h3 class="box-title">Unit</h3>
+            <div class="box-tools pull-right">
+                <div class="has-feedback">
+                    @Html.DropDownList("unitId", Model.Units, "All", htmlAttributes: new { @class = "form-control required", @style = "width:210px" })
+                </div>
+            </div><!-- /.box-tools -->
+
+        </div>
+
+
+    </div>
+
+    <div class="box-header with-border">
+
+        <div>
+
+            <h3 class="box-title">Shift</h3>
+            <div class="box-tools pull-right">
+                <div class="has-feedback">
+                    @*<input type="text" class="form-control input-sm" placeholder="Search...">*@
+                    <div class="input-daterange input-group" id="datepicker">
+                        @Html.DropDownList("shift", Model.ShiftSelectList, "All", htmlAttributes: new { @class = "form-control required", @style = "width:210px" })
+                    </div>
+                    @*<span class="glyphicon glyphicon-search form-control-feedback"></span>*@
+                </div>
+            </div><!-- /.box-tools -->
+
+        </div>
+
+    </div>
+
+    <div class="box-header with-border">
+
+        <div>
+            <h3 class="box-title">Period</h3>
+            <div class="box-tools pull-right">
+                <div class="has-feedback">
+                    @Html.DropDownList("period", Model.PeriodSelectList, "All", htmlAttributes: new { @class = "form-control required", @style = "width:210px" })
+                    @*<span class="glyphicon glyphicon-search form-control-feedback"></span>*@
+                </div>
+            </div><!-- /.box-tools -->
+        </div>
+
+    </div>
+
+    <div class="box-header with-border">
+
+        <div>
+            <h3 class="box-title">Auditor</h3>
+            <div class="box-tools pull-right">
+                <div class="has-feedback">
+                    @Html.DropDownList("auditorId", Model.UserSelectList, "All", htmlAttributes: new { @class = "form-control required", @style = "width:210px" })
+                </div>
+            </div><!-- /.box-tools -->
+        </div>
+
+    </div>
+
+    <div class="box-footer with-border">
+        <button type="button" class="btn btn-primary margin-bottom" id="btnCarregaGraficoDiario" onclick="send()">Send</button>
+    </div>
+
+</div>
+
+<div id="loading" style="display:none"> Loading. </div>
+<div class="margin-top"></div>
+
+<script type="text/javascript">
+
+    var enviar = {};
+    var start = moment();
+    var end = moment();
+
+    $(function () {
+
+        $('#unitId').on('change', function (e) {
+            enviar['unitId'] = $('#unitId option:selected').val();
+        });
+
+        $('#shift').on('change', function (e) {
+            enviar['shift'] = $('#shift option:selected').val();
+        });
+
+        $('#period').on('change', function (e) {
+            enviar['period'] = $('#period option:selected').val();
+        });
+
+        $('#auditorId').on('change', function (e) {
+            enviar['auditorId'] = $('#auditorId option:selected').val();
+        });
+
+        enviar['level01Id'] = null;
+        enviar['level02Id'] = null;
+        enviar['level03Id'] = null;
+
+
+        //Start config datepickerrange simple
+        $('input[name="datefilter"]').daterangepicker({
+            autoUpdateInput: false,
+            autoApply: true,
+            showDropdowns: true,
+            startDate: start,
+            opens: "left",
+            endDate: end,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        }, function (start, end, label) {
+            console.log("New date range selected: ' + start.format('MM/DD/YYYY') + ' to ' + end.format('MM/DD/YYYY') + ' (predefined range: ' + label + ')");
+            enviar['startDate'] = start.format('MM/DD/YYYY');
+            enviar['endDate'] = end.format('MM/DD/YYYY');
+        });
+
+        $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+        });
+
+        $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+            enviar['startDate'] = "";
+            enviar['endDate'] = "";
+        });
+        //Start config datepickerrange simple
+
+        //Start config datepickerrange full
+        var start = moment();
+        var end = moment();
+
+        function cb(start, end) {
+            $('#reportrange span').html(start.format('MM/DD/YYYY') + ' - ' + end.format('MM/DD/YYYY'));
+            enviar['startDate'] = start.format('MM/DD/YYYY');
+            enviar['endDate'] = end.format('MM/DD/YYYY');
+        }
+
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            opens: "left",
+            alwaysShowCalendars: true,
+            showDropdowns: true,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, cb);
+
+        cb(start, end);
+        //End config datepickerrange full
+
+        enviar['startDate'] = moment().format('MM/DD/YYYY');
+        enviar['endDate'] = moment().format('MM/DD/YYYY');
+    });
+
+
+</script>

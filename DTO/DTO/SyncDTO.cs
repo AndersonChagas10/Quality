@@ -102,28 +102,39 @@ namespace DTO.DTO
         public List<CorrectiveActionDTO> makeCA()
         {
             var CA = new List<CorrectiveActionDTO>();
-            foreach (var ca in this.correctiveactioncomplete)
+            foreach (var caTela in this.correctiveactioncomplete)
             {
-                CA.Add(new CorrectiveActionDTO()
+                var caTelatoAdd = new CorrectiveActionDTO()
                 {
-                    idcorrectiveaction = int.Parse(ca.idcorrectiveaction),
-                    //MOCK
-                    AuditorId = 1,
-                    DescriptionFailure = ca.descriptionfailure,
-                    ImmediateCorrectiveAction = ca.immediatecorrectiveaction,
-                    ProductDisposition = ca.productdisposition,
-                    PreventativeMeasure = ca.preventativemeasure,
-                    SlaughterId = int.Parse(ca.slaugthersignature),
+
+                    idcorrectiveaction = int.Parse(caTela.idcorrectiveaction),
+                    AuditorId = int.Parse(caTela.auditorid),
+                    DescriptionFailure = caTela.descriptionfailure,
+                    ImmediateCorrectiveAction = caTela.immediatecorrectiveaction,
+                    ProductDisposition = caTela.productdisposition,
+                    PreventativeMeasure = caTela.preventativemeasure,
+                    SlaughterId = int.Parse(caTela.slaugthersignature),
                     //MOCK
                     DateTimeSlaughter = DateTime.Now,
-                    TechinicalId = int.Parse(ca.techinicalsignature),
+                    TechinicalId = int.Parse(caTela.techinicalsignature),
                     //MOCK 
-                    DateTimeTechinical = DateTime.Now,
+                    DateTimeTechinical= DateTime.Now,
                     //MOCK
                     AuditStartTime = DateTime.Now,
                     //MOCK
                     DateCorrectiveAction = DateTime.Now
-                });
+                };
+
+                if (caTela.Id != null)
+                    if (caTela.Id.Length > 0)
+                        caTelatoAdd.Id = int.Parse(caTela.Id);
+
+                if (caTela.CollectionLevel02Id != null)
+                    if (caTela.CollectionLevel02Id.Length > 0)
+                        caTelatoAdd.CollectionLevel02Id = int.Parse(caTela.CollectionLevel02Id);
+
+                CA.Add(caTelatoAdd);
+               
             }
 
             return CA;
@@ -132,6 +143,9 @@ namespace DTO.DTO
 
     public class correctiveactioncomplete
     {
+        
+        public string auditorid { get; set; }
+        public string CollectionLevel02Id { get; set; }
         public string @class { get; set; }
         public string date { get; set; }
         public string Id { get; set; }

@@ -48,7 +48,7 @@ namespace DTO.DTO
 
         public List<CorrectiveActionLevelsDTO> CorrectiveActionLevels { get; set; }
 
-
+        
         //public string DateExecuteFarmatado
         //{
         //    get { return DateExecute.ToString("MM/dd/yyyy hh:mm:ss"); }
@@ -67,7 +67,17 @@ namespace DTO.DTO
                 DateCorrectiveAction = Convert.ToDateTime(value.ToString(), CultureInfo.InvariantCulture);
             }
         }
-        
+
+        public string DateCorrectiveActionFormatadoShort
+        {
+            get { return DateCorrectiveAction.ToString("MM/dd/yyyy"); }
+            set
+            {
+                // StartTime = DateTime.ParseExact(value.ToString(), "MM/dd/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
+                DateCorrectiveAction = Convert.ToDateTime(value.ToString(), CultureInfo.InvariantCulture);
+            }
+        }
+
         public string StartTimeFormatado
         {
             get { return AuditStartTime.ToString("MM/dd/yyyy hh:mm:ss"); }
@@ -77,6 +87,7 @@ namespace DTO.DTO
                 AuditStartTime = Convert.ToDateTime(value.ToString(), CultureInfo.InvariantCulture);
             }
         }
+
         public string DateTimeSlaughterFarmatado
         {
             get { return DateTimeSlaughter != null ? DateTimeSlaughter.Value.ToString("MM/dd/yyyy hh:mm:ss") : string.Empty; }
@@ -89,6 +100,7 @@ namespace DTO.DTO
                 }
             }
         }
+
         public string DateTimeTechinicalFarmatado
         {
             get { return DateTimeTechinical != null ? DateTimeTechinical.Value.ToString("MM/dd/yyyy hh:mm:ss") : string.Empty; }
@@ -102,6 +114,15 @@ namespace DTO.DTO
             }
         }
 
+        public string NameSlaugtherAndDate
+        {
+            get { return NameSlaughter != null ? NameSlaughter + " (" + DateTimeSlaughter.Value.ToString("MM/dd/yyyy hh:mm:ss") + ")" : string.Empty; }
+        }
+
+        public string NameTechinicalAndDate
+        {
+            get { return NameTechinical != null ? NameTechinical + " (" + DateTimeTechinical.Value.ToString("MM/dd/yyyy hh:mm:ss") + ")" : string.Empty; }
+        }
         /// <summary>
         /// Valida Entidade CorrectiveActionDTO para integridade do Banco de dados.
         /// </summary>

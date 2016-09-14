@@ -1,6 +1,6 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
-    ViewBag.Title = "Audit Reports";
+    ViewBag.Title = "Data Collection Reports";
     var url = Url.Action("Index", "Home");
     var urlTabelaRelatorio = Url.Action("GetEntryByDate", "api/RelatorioColeta");
 }
@@ -21,57 +21,41 @@
 @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 @Html.Partial("~/Views/Shared/_formularioParaPesquisa.cshtml", Model)
 
-<div id="loading" style="display:none"> Loading. </div>
-&nbsp;
+<div class="margin-top"></div>
+
 <table id="results" class="display" cellspacing="0" ></table>
 
 @section Scripts {
 
-    @Scripts.Render("~/Scripts/moment.min.js")
+    @*@Scripts.Render("~/Scripts/moment.min.js")
     @Scripts.Render("~/Scripts/bootstrap-datepicker.js")
     @Scripts.Render("~/Scripts/locales/bootstrap-datepicker.eu.min.js")
-    @Scripts.Render("~/Scripts/gridmvc.min.js")
+    @Scripts.Render("~/Scripts/gridmvc.min.js")*@
     @Scripts.Render("~/Scripts/GuardJs.js")
-
-    @Scripts.Render("~/Scripts/DataTables/dataTables.buttons.min.js")
-    @Scripts.Render("~/Scripts/DataTables/buttons.flash.min.js")
-    @Scripts.Render("~/Scripts/DataTables/jszip.min.js")
-    @Scripts.Render("~/Scripts/DataTables/pdfmake.min.js")
-    @Scripts.Render("~/Scripts/DataTables/vfs_fonts.js")
-    @Scripts.Render("~/Scripts/DataTables/buttons.html5.min.js")
-    @Scripts.Render("~/Scripts/DataTables/buttons.print.min.js")
-    @Scripts.Render("~/Scripts/DataTables/buttons.colVis.min.js")
-    @Scripts.Render("~/Scripts/DataTables/buttons.print.min.js")
+    
+    @Scripts.Render("~/bundles/DataTables")
 
     <script type="text/javascript">
-        $('#sandbox-container input').datepicker();
-        var url1 = '@Html.Raw(@urlTabelaRelatorio)';
-        function send() {
 
+        var url1 = '@Html.Raw(@urlTabelaRelatorio)';
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        function send() {
 
             $('#loading').show();
             $('#results').empty();
-            var enviar = {};
-            enviar['startDate'] = $('#sandbox-container input')[0].value;
-            enviar['endDate'] = $('#sandbox-container input')[1].value;
-            enviar['unitId'] = $('#unitId option:selected').val();
-            enviar['shift'] = $('#shift option:selected').val();
-            enviar['period'] = $('#period option:selected').val();
-            enviar['level01Id'] = null;
-            enviar['level02Id'] = null;
-            enviar['level03Id'] = null;
-            enviar['auditorId'] = $('#auditorId').val();
 
             GuardJs.resetForValidation();
+
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            
 
             if (!GuardJs.isValid)
                 return;
 
             GuardJs.esconderMensagem();
 
-
-            $.post('http://localhost:63128/api/RelatorioColeta/GetEntryByDate', enviar, function (r) {
+            $.post(url1, enviar, function (r) {
 
                 //console.log(r)
 
@@ -108,18 +92,6 @@
 
                     });
                 })
-                console.log(retornoArray);
-                //ConformedIs:true
-                //Departamento:"Slaugther"
-                //Level01: "Carcass Contamination Audit" ok
-                //Level02: 39
-                //Level03Id: 5
-                //NotEvaluatedIs: false
-                //Phase: 39
-                //Unit: "Colorado" ok
-                //Value: 0
-                //ValueText: ""
-                //avaliado: 1
 
                 var table = $('#results').empty().DataTable({
                     data: retornoArray,
@@ -127,12 +99,12 @@
                        { title: "Department", mData: "Departamento" },
                        { title: "Level01", mData: "Level01" },
                        { title: "Level02", mData: "Level02name" },
-                       { title: "Evaluated?", mData: "avaliado" },
-                       { title: "Phase?", mData: "Phase" },
-                       { title: "Shift?", mData: "Shift" },
-                       { title: "Sample?", mData: "Sample" },
-                       { title: "Date?", mData: "AddDate" },
-                       { title: "NotEvaluated?", mData: "NotEvaluatedIs" },
+                       { title: "Evaluated", mData: "avaliado" },
+                       { title: "Phase", mData: "Phase" },
+                       { title: "Shift", mData: "Shift" },
+                       { title: "Sample", mData: "Sample" },
+                       { title: "Date", mData: "AddDate" },
+                       { title: "NotEvaluated", mData: "NotEvaluatedIs" },
                        { title: "Level03", mData: "Level03Name" },
                        { title: "Is Conformed", mData: "ConformedIs" },
                        { title: "Value", mData: "Value" },
@@ -171,11 +143,28 @@
                     buttons: [
                         {
                             extend: 'print',
+                            customize: function ( win ) {
+                                //$(win.document.body)
+                                //    .css( 'font-size', '10pt' )
+                                //    .prepend(
+                                //        '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+                                //    );
+ 
+                                $(win.document.body).find( 'table' )
+                                    .addClass( 'compact' )
+                                    .css( 'font-size', 'inherit' );
+                            },
                             exportOptions: {
                                 columns: ':visible'
                             }
                         },
-                        'excel',
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        //'excel',
                         'pdf',
                         'colvis',
                         //, 'print'

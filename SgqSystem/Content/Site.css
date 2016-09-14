@@ -15,3 +15,50 @@ select,
 textarea {
     max-width: 280px;
 }
+
+bg {
+    background-image: url('Imagens/SGQLogo01.png');
+    background-color: #FF6600;
+    width: 100%;
+    height: auto;
+}
+
+.login {
+    width: 100%;
+    height: 100%;
+    background-color: #f8f9fd;
+}
+
+    .login * {
+        font-family: Arial, Verdana, Tahoma;
+        border-radius: 0 !important;
+    }
+
+    .login > .head {
+        background-image: url("Imagens/SGQLogo01.png");
+        background-repeat: no-repeat;
+        background-size: auto 100%;
+        background-position: center;
+        height: 220px;
+    }
+
+    .login > .foot {
+        margin-top: 50px;
+        background-image: url("Imagens/GRTJBSLogo.png");
+        background-repeat: no-repeat;
+        background-size: auto 100%;
+        background-position: center;
+        height: 50px;
+    }
+
+.form-signin {
+    background-position: center;
+    width: 220px;
+    padding: 15px;
+    margin: 0 auto;
+    background-color: #f8f9fd;
+}
+
+.marginTop10 {
+    margin-top: 10px;
+}

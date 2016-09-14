@@ -71,7 +71,7 @@ namespace Dominio.Services
                 if (obj.Root.Count == 0)
                     throw new ExceptionHelper("Impossible to Sync data. The Sync list is empty.");
 
-                
+
                 obj.ListToSave = new List<ConsolidationLevel01DTO>();
                 obj.ListToSaveCA = new List<CorrectiveActionDTO>();
 
@@ -114,8 +114,8 @@ namespace Dominio.Services
 
                 long elapsedMs = ParaCronometro(watch);
                 GenericReturn<SyncDTO> feedback = PreencheFeedBackPt2(obj, saving, elapsedMs);
-                return feedback; 
-
+                return feedback;
+                //idSaved aqui é o level01 que foi salvo.
                 #endregion
 
             }
@@ -252,10 +252,11 @@ namespace Dominio.Services
         {
             if (x.CorrectiveActionId > 0)
             {
-                var CA = Mapper.Map<CorrectiveAction>(obj.ListToSaveCA.FirstOrDefault(z => z.idcorrectiveaction == x.CorrectiveActionId));
+                var CaToSaveDTO = obj.ListToSaveCA.FirstOrDefault(z => z.idcorrectiveaction == x.CorrectiveActionId);
+                var CA = Mapper.Map<CorrectiveAction>(CaToSaveDTO);
                 CA.CollectionLevel02Id = collectionLevel02.Id;
                 _baseRepoCorrectiveAction.AddOrUpdate(CA);
-
+                x.CorrectiveActionSaved = Mapper.Map<CorrectiveActionDTO>(CA);
             }
         }
 

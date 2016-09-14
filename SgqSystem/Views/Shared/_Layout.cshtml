@@ -6,12 +6,19 @@
     <title>@ViewBag.Title</title>
 
     @*@Scripts.Render("~/Content/DataTables")*@
-    @Styles.Render("~/Content/css")
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.css.map" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+
+    @*@Styles.Render("~/Content/css")*@
     @Scripts.Render("~/bundles/modernizr")
-
-    @RenderSection("Styles", false)
-    @RenderSection("css", required: false)
-
+    @if (IsSectionDefined("Styles"))
+    {
+        @RenderSection("Styles");
+    }
+    @*@RenderSection("css", required: false)
+        @RenderSection("Styles", false)*@
 
 </head>
 <body>
@@ -33,24 +40,30 @@
                     {
                         @*<strong>@Html.Encode(User.Identity.Name)</strong>*@
                         <strong>@Session["username"].ToString()</strong>
-                            @Html.ActionLink("Log Out", "Logout", "Authentication")
+                        @Html.ActionLink("Log Out", "Logout", "Authentication")
                     }
                     else
                     {
                         @Html.ActionLink("Log in", "LogIn", "UserAuthentication")
                         <span> | </span>
-                                @Html.ActionLink("Register", "Register", "Authentication")
+                        @Html.ActionLink("Register", "Register", "Authentication")
                     }
                 </ul>
             </div>
         </div>
     </div>
     <div class="container body-content">
+
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
+        @*@Scripts.Render("~/bundles/hc")*@
 
-        @Scripts.Render("~/bundles/hc")
-        @Scripts.Render("~/bundles/DataTables")
+
+        @*@Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/bootstrap")
+
+            @Scripts.Render("~/bundles/hc")
+            @Scripts.Render("~/bundles/DataTables")*@
 
         @RenderBody()
         <hr />

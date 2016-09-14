@@ -3,91 +3,66 @@
     ViewBag.Title = "Log In";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<style>
-    #myProgress {
-        position: relative;
-        width: 100%;
-        height: 30px;
-        background-color: #ddd;
-    }
-
-    #myBar {
-        position: absolute;
-        width: 1%;
-        height: 100%;
-        background-color: #4CAF50;
-    }
-</style>
-<div id="teste" style="display:none">
-
-    <h1>JavaScript Progress Bar</h1>
-
-    <div id="myProgress">
-        <div id="myBar"></div>
-    </div>
-
-    <button onclick="move(5)">Click Me</button>
-</div>
-
-
-<h2>@ViewBag.Title</h2>
+<link href="~/Content/Site.css" rel="stylesheet" />
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "Log in failed. Check your login details.")
 
-    <div>
-        <fieldset>
+        <div class="login">
+            <div class="head"></div>
+            <form class="form-signin">
+                <h2 class="form-signin-heading">Please sign in</h2>
+              
+                <label for="inputUserName" class="sr-only">Username</label>
+                <input type="text" id="inputUserName" class="form-control" placeholder="Username" required="" autofocus="" name="Name">
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="Password">
 
-            <legend>Login Form</legend>
+                <button class="btn btn-lg btn-primary marginTop10" type="submit" data-loading-text="Authenticating..." id="btnLogin">Sign in</button>
+                <div id="messageError" class="alert alert-danger hide" role="alert">
+                    <span class="icon-remove-sign"></span>    <strong>Error! </strong><span id="mensagemErro"> </span>
+                </div>
+                <div id="messageAlert" class="alert alert-info hide" role="alert">
+                    <span id="mensagemAlerta" class="icon-info-sign"></span>
+                </div>
+                <div id="messageSuccess" class="alert alert-success hide" role="alert">
+                    <span id="mensagemSucesso" class="icon-ok-circle"></span>
+                </div>
+            </form>
+            <div class="foot"></div>
+        </div>
 
-            <div>@Html.LabelFor(r => r.Name)</div>
-            <div>
-                @Html.TextBoxFor(r => r.Name)
-                @Html.ValidationMessageFor(r => r.Name)
-            </div>
 
-            <div>@Html.LabelFor(r => r.Password)</div>
-            <div>
-                @Html.PasswordFor(r => r.Password)
-                @Html.ValidationMessageFor(r => r.Password)
-            </div>
-
-            <input type="submit" value="Log In">
-
-        </fieldset>
-
-    </div>
 }
 
-<script>
-    var quantidade = 0;
-    function move(q) {
-        var andarAte = q + quantidade;
-        var elem = document.getElementById("myBar");
-        var width = 1;
-        var id = setInterval(frame, 10);
-        function frame() {
-            if (elem.style.width.replace(/[^0-9]/g, '').length > 0) {
-                if (parseInt(elem.style.width.replace(/[^0-9]/g, '')) >= 100) {
-                    clearInterval(id);
-                    return;
+        @*<script>
+                var quantidade = 0;
+                function move(q) {
+                    var andarAte = q + quantidade;
+                    var elem = document.getElementById("myBar");
+                    var width = 1;
+                    var id = setInterval(frame, 10);
+                    function frame() {
+                        if (elem.style.width.replace(/[^0-9]/g, '').length > 0) {
+                            if (parseInt(elem.style.width.replace(/[^0-9]/g, '')) >= 100) {
+                                clearInterval(id);
+                                return;
+                            }
+                        }
+                        if (width >= q || width >= 100) {
+                            clearInterval(id);
+                        } else {
+                            width++;
+                            var andar = 0;
+                            if (elem.style.width.replace(/[^0-9]/g, '').length > 0)
+                                andar += (parseInt(elem.style.width.replace(/[^0-9]/g, ''))) + 1;
+                            else
+                                andar = width;
+                            elem.style.width = andar + '%';
+                        }
+                    }
+                    quantidade += q;
                 }
-            }
-            if (width >= q || width >= 100) {
-                clearInterval(id);
-            } else {
-                width++;
-                var andar = 0;
-                if (elem.style.width.replace(/[^0-9]/g, '').length > 0)
-                    andar += (parseInt(elem.style.width.replace(/[^0-9]/g, ''))) + 1;
-                else
-                    andar = width;
-                elem.style.width = andar + '%';
-            }
-        }
-        quantidade += q;
-    }
-</script>
+            </script>*@

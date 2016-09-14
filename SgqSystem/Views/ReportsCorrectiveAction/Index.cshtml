@@ -25,47 +25,35 @@
 @Html.Partial("~/Views/Shared/_formularioParaPesquisa.cshtml", Model)
 @Html.Partial("~/Views/Shared/_CorrectiveActionReportEdit.cshtml", new DTO.DTO.CorrectiveActionDTO())
 
+
 <div id="loading" style="display:none"> Loading. </div>
 &nbsp;
-<table id="results" class="display" cellspacing="0"></table>
+@*<div>*@
+    <table id="results" class="display" cellspacing="0"></table>
+    @*<div class="modifyMeTable"></div>
+</div>*@
 
 @section Scripts {
 
-    @Scripts.Render("~/Scripts/moment.min.js")
-    @Scripts.Render("~/Scripts/bootstrap-datepicker.js")
+    @*@Scripts.Render("~/Scripts/moment.min.js")*@
+    @*@Scripts.Render("~/Scripts/bootstrap-datepicker.js")
     @Scripts.Render("~/Scripts/locales/bootstrap-datepicker.eu.min.js")
-    @Scripts.Render("~/Scripts/gridmvc.min.js")
-    @Scripts.Render("~/Scripts/GuardJs.js")
+    @Scripts.Render("~/Scripts/gridmvc.min.js")*@
 
-    @Scripts.Render("~/Scripts/DataTables/dataTables.buttons.min.js")
-    @Scripts.Render("~/Scripts/DataTables/buttons.flash.min.js")
-    @Scripts.Render("~/Scripts/DataTables/jszip.min.js")
-    @Scripts.Render("~/Scripts/DataTables/pdfmake.min.js")
-    @Scripts.Render("~/Scripts/DataTables/vfs_fonts.js")
-    @Scripts.Render("~/Scripts/DataTables/buttons.html5.min.js")
-    @Scripts.Render("~/Scripts/DataTables/buttons.print.min.js")
-    @Scripts.Render("~/Scripts/DataTables/buttons.colVis.min.js")
-    @Scripts.Render("~/Scripts/DataTables/buttons.print.min.js")
+    @Scripts.Render("~/Scripts/GuardJs.js")
+    @Scripts.Render("~/bundles/DataTables")
 
     <script type="text/javascript">
-        $('#sandbox-container input').datepicker();
+
         var url1 = '@Html.Raw(@urlTabelaRelatorio)';
         var url2 = '@Html.Raw(@urlGetCa)';
+        $('#simpleCallendar').hide().attr('disabled', true);
+
         function send() {
 
             $('#loading').show();
             $('#results').empty();
-            var enviar = {};
-            enviar['startDate'] = $('#sandbox-container input')[0].value;
-            enviar['endDate'] = $('#sandbox-container input')[1].value;
-            enviar['unitId'] = $('#unitId option:selected').val();
-            enviar['shift'] = $('#shift option:selected').val();
-            enviar['period'] = $('#period option:selected').val();
-            enviar['level01Id'] = null;
-            enviar['level02Id'] = null;
-            enviar['level03Id'] = null;
-            enviar['auditorId'] = $('#auditorId').val();
-
+           
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
 
@@ -74,22 +62,24 @@
 
             GuardJs.esconderMensagem();
 
-
-            $.post('http://localhost:63128/api/CorrectiveAction/GetCorrectiveAction', enviar, function (r) {
+            $.post(url1, enviar, function (r) {
 
                 var retornoArray = r.Retorno;
-                console.log(retornoArray);
+                //console.log(retornoArray);
 
                 var table = $('#results').empty().DataTable({
                     data: retornoArray,
-                    columns: [{ title: "View", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">View</button>' },
-                       { title: "Auditor", mData: "AuditorId" },
-                       { title: "Add Date", mData: "AddDate" },
-                       { title: "Slaughter", mData: "NameSlaughter" },
-                       { title: "Techinical", mData: "NameTechinical" },
+                    columns: [{ title: "View", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">View</button>' },
+                       { title: "Auditor", mData: "AuditorName" },
+                       { title: "Date", mData: "DateCorrectiveActionFormatadoShort" },
+                       { title: "Start Time", mData: "StartTimeFormatado" },
+                       { title: "Slaughter", mData: "NameSlaugtherAndDate" },
+                       //{ title: "Date Slaughter", mData: "DateTimeSlaughterFarmatado" },
+                       { title: "Techinical", mData: "NameTechinicalAndDate" },
+                       //{ title: "Date Techinical", mData: "DateTimeTechinicalFarmatado" },
                        { title: "level01", mData: "level01Name" },
                        { title: "level02", mData: "level02Name" },
-                       { title: "Audit Start Time", mData: "AuditStartTime" },
+                       { title: "Audit Start Time", mData: "StartTimeFormatado" },
                        { title: "Description Failure", mData: "DescriptionFailure" },
                        { title: "Immediate Corrective Action", mData: "ImmediateCorrectiveAction" },
                        { title: "Preventative Measure", mData: "PreventativeMeasure" },
@@ -123,7 +113,7 @@
                             //alert(data.Id + "Id is: " + data.Id);
                             $.post(url2, { "": data.Id }, function (r, x, e) {
                                 if (!!r.Retorno) {
-                                    console.log(r.Retorno);
+                                    //console.log(r.Retorno);
                                     $('#correctiveActionModal  #datetime').html(r.Retorno.DateCorrectiveActionFormatado); // ?
                                     $('#correctiveActionModal  #auditor').html(r.Retorno.AuditorName);
                                     $('#correctiveActionModal  #auditText').html(r.Retorno.level01Name);
@@ -159,19 +149,30 @@
                     buttons: [
                         {
                             extend: 'print',
+                            customize: function (win) {
+                                //$(win.document.body)
+                                //    .css( 'font-size', '10pt' )
+                                //    .prepend(
+                                //        '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+                                //    );
+
+                                $(win.document.body).find('table')
+                                    .addClass('compact').addClass('printable!important')
+                                    .css('font-size', 'inherit');
+                            },
                             exportOptions: {
                                 columns: ':visible'
                             }
                         },
-                        'excel',
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
                         'pdf',
                         'colvis',
-                        //{
-                        //    text: 'Extra 2',
-                        //    action: function (e, dt, node, conf) {
-                        //        console.log('Button 2 clicked on');
-                        //    }
-                        //}
+                       
                     ]
                 });
 
@@ -184,7 +185,16 @@
             $('#loading').hide();
         };
 
-        function printElement(elem, append, delimiter) {
+        document.getElementById("btnPrint").onclick = function () {
+            printElement(document.getElementById("printThis"));
+
+            var modThis = document.querySelector("#printSection .modifyMe");
+            modThis.appendChild(document.createTextNode(" "));
+
+            window.print();
+        }
+
+         function printElement(elem, append, delimiter) {
             var domClone = elem.cloneNode(true);
 
             var $printSection = document.getElementById("printSection");
@@ -211,13 +221,6 @@
             $printSection.appendChild(domClone);
         }
 
-        document.getElementById("btnPrint").onclick = function () {
-            printElement(document.getElementById("printThis"));
-
-            var modThis = document.querySelector("#printSection .modifyMe");
-            modThis.appendChild(document.createTextNode(" "));
-
-            window.print();
-        }
+       
     </script>
 }

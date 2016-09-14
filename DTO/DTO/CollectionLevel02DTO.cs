@@ -107,7 +107,10 @@ namespace DTO.DTO
                 Guard.ForNegative(Shift, "Shift");
 
                 if (Phase > 1)
-                    StartPhaseDate = DateTime.Parse(nextRoot.startphasedate);
+                {
+                    var partePrincipalDaData = nextRoot.startphasedate.Split(':')[0] + ":" + nextRoot.startphasedate.Split(':')[1];
+                    StartPhaseDate = DateTime.ParseExact(partePrincipalDaData, "MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
+                }
 
                 #endregion
 
@@ -174,5 +177,6 @@ namespace DTO.DTO
         public List<CollectionLevel03DTO> collectionLevel03DTO { get; set; }
         public ConsolidationLevel01DTO consolidationLevel01DTO { get; set; }
         public bool Remove { get; set; }
+        public CorrectiveActionDTO CorrectiveActionSaved { get; set; }
     }
 }
