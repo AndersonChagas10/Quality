@@ -40,7 +40,7 @@
         var url1 = '@Html.Raw(@urlTabelaRelatorio)';
         var url2 = '@Html.Raw(@urlGetCa)';
         $('#simpleCallendar').hide().attr('disabled', true);
-
+       
         function send() {
 
             $('#loading').show();
@@ -178,15 +178,19 @@
         };
 
         document.getElementById("btnPrint").onclick = function () {
+            
+
             printElement(document.getElementById("printThis"));
 
             var modThis = document.querySelector("#printSection .modifyMe");
             modThis.appendChild(document.createTextNode(" "));
 
             window.print();
+
         }
 
          function printElement(elem, append, delimiter) {
+           
             var domClone = elem.cloneNode(true);
 
             var $printSection = document.getElementById("printSection");

@@ -292,19 +292,21 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccesDeniedController.cs" />
+    <Compile Include="Controllers\Api\FileController.cs" />
     <Compile Include="Controllers\Api\RelatorioColetaController.cs" />
-    <Compile Include="Controllers\ReportsCorrectiveActionController.cs" />
+    <Compile Include="Controllers\FileControlController.cs" />
     <Compile Include="Controllers\UserAuthenticationController.cs" />
     <Compile Include="Controllers\Api\SyncController.cs" />
     <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\GraficoBetaController.cs" />
-    <Compile Include="Controllers\ReportsCollectionController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\WebServiceController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\ColetaMappingProfile.cs" />
     <Compile Include="Mappers\CorrectiveActionMappingProfile.cs" />
@@ -908,7 +910,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\ReportsCollection\Index.cshtml" />
+    <Content Include="Views\Reports\CorrectiveActionReport.cshtml" />
     <Content Include="Views\Shared\_GridPager.cshtml" />
     <Content Include="Views\Shared\_Grid.cshtml" />
     <Content Include="Views\Shared\Graficos\_GraficoIndicadores.cshtml" />
@@ -918,18 +920,18 @@
     <Content Include="Views\UserAuthentication\Register.cshtml" />
     <Content Include="Views\AccesDenied\Index.cshtml" />
     <Content Include="Views\Shared\_mensagemObrigatorio.cshtml" />
-    <Content Include="Views\Shared\_FormularioParaPesquisa.cshtml" />
-    <Content Include="Views\ReportsCorrectiveAction\Index.cshtml" />
     <Content Include="Views\Shared\_CorrectiveActionReportEdit.cshtml" />
     <Content Include="Views\Shared\_LoadingBar.cshtml" />
-    <Content Include="Views\Shared\_FormularioParaPesquisaPrototype.cshtml" />
-    <Content Include="Views\Shared\_FormularioParaPesquisa2.cshtml" />
-    <Content Include="Views\ReportsCollection\teste.cshtml" />
-    <Content Include="Views\Shared\_FormularioParaPesquisa3.cshtml" />
+    <Content Include="Views\Reports\DataCollectionReport.cshtml" />
+    <Content Include="Views\Shared\_FormularioQueryData.cshtml" />
+    <Content Include="Views\FileControl\Index.cshtml" />
+    <Content Include="Views\Shared\_FormToQueryFullScreen.cshtml" />
+    <Content Include="Views\Reports\CorrectiveActionReport - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\HelpPage\Views\Shared\" />
+    <Folder Include="Arquivos\uploads\" />
     <Folder Include="Coleta\Areas\HelpPage\App_Start\" />
     <Folder Include="Coleta\Areas\HelpPage\Controllers\" />
     <Folder Include="Coleta\Areas\HelpPage\ModelDescriptions\" />
@@ -962,6 +964,10 @@
     <ProjectReference Include="..\DTO\DTO.csproj">
       <Project>{0ed5466d-2a8f-4e37-8d4a-c2f2760bd687}</Project>
       <Name>DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
+      <Name>Helper</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

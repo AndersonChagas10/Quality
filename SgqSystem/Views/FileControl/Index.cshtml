@@ -1,0 +1,33 @@
+﻿
+@{
+
+}
+
+@using (Html.BeginForm("Upload", "File", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <l>Upload File</l>
+    <input type="file" name="file" />
+    <input type="submit" value="OK" />
+}
+
+&nbsp;
+&nbsp;
+<l>Get File (Insert File Name and Extension 'something.txt')</l>
+<input type="text" id="fileName" />
+<input type="button" value="OK" onclick="getFile()"/>
+
+<script>
+
+    function getFile() {
+        $.post('../File/Download', { fileName: $('#fileName').val() }, function (r) {
+            console.log(r)
+        });
+    }
+
+    function bodiBuild() {
+        $.post('../File/GetFiles', { fileName: 'Clusters.txt' }, function (r) {
+            console.log(r)
+        });
+    }
+
+</script>

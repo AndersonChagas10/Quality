@@ -18,11 +18,6 @@ namespace SgqSystem.Controllers
             _relatorioColetaApp = relatorioColetaApp;
         }
 
-        public ActionResult Index()
-        {
-            var form = new FormularioParaRelatorioViewModel();
-            form.SetUsers(_userApp.GetAllUserValidationAd(new UserDTO()).Retorno);
-            return View(form);
-        }
+       
     }
 }

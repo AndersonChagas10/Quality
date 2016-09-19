@@ -7,11 +7,11 @@
 
     @*@Scripts.Render("~/Content/DataTables")*@
 
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-theme.css.map" rel="stylesheet" />
-    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />*@
 
-    @*@Styles.Render("~/Content/css")*@
+    @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @if (IsSectionDefined("Styles"))
     {
@@ -21,6 +21,7 @@
         @RenderSection("Styles", false)*@
 
 </head>
+
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -70,23 +71,16 @@
             </div>
         </div>
     </div>
-    <div class="container body-content" style="margin-top:50px">
+    <div class="body-content" style="margin-top:50px">
 
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
         @*@Scripts.Render("~/bundles/hc")*@
 
-
-        @*@Scripts.Render("~/bundles/jquery")
-            @Scripts.Render("~/bundles/bootstrap")
-
-            @Scripts.Render("~/bundles/hc")
-            @Scripts.Render("~/bundles/DataTables")*@
-
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - JBS and GRT Application.</p>
+        <footer class="wrapper">
+            <p class="page-content-wrapper">&copy; @DateTime.Now.Year - JBS and GRT Application.</p>
         </footer>
     </div>
 

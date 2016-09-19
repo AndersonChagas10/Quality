@@ -28,10 +28,14 @@ namespace SgqSystem
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       //"~/Content/bootstrap-*",C:\Users\Celso\Source\Repos\ddd.bitbucket7\SgqSystem\Content\bootstrap-theme.css
-                      "~/Content/bootstrap-theme.min.css.map", 
-                      "~/Content/bootstrap-theme.css.map",
-                      "~/Content/site.css"));
+                      "~/Content/bootstrap-theme.min.css.map",
+                      "~/Content/bootstrap-theme.css.map"));
 
+
+            bundles.Add(new StyleBundle("~/Content/DataTables").Include(
+                    "~/Content/DataTables/css/jquery.dataTables.min.css",
+                    "~/Content/DataTables/css/buttons.dataTables.min.css"
+                ));
 
             bundles.Add(new ScriptBundle("~/bundles/DataTables").Include(
                      "~/Scripts/DataTables/jquery.dataTables.min.js",

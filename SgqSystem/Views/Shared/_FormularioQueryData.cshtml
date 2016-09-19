@@ -1,0 +1,419 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+
+
+<link href="~/admin-lte/css/AdminLTE.min.css" rel="stylesheet" />
+<link href="~/Content/daterangepicker-bs3.css" rel="stylesheet" />
+<script src="~/admin-lte/js/app.min.js"></script>
+<script src="~/Scripts/moment.min.js"></script>
+<script src="~/Scripts/daterangepicker.js"></script>
+
+<style>
+
+    /*!
+    * Start Bootstrap - Simple Sidebar (http://startbootstrap.com/)
+    * Copyright 2013-2016 Start Bootstrap
+    * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+    */
+
+    body {
+        overflow-x: hidden;
+    }
+
+    /* Toggle Styles */
+
+    .wrapper {
+        padding-left: 0;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+    }
+
+        .wrapper.toggled {
+            padding-left: 300px;
+        }
+
+    #sidebar-wrapper {
+        z-index: 1000;
+        position: fixed;
+        left: 300px;
+        width: 0;
+        height: 100%;
+        margin-left: -300px;
+        overflow-y: auto;
+        background: #ecebeb;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+    }
+
+    .wrapper.toggled #sidebar-wrapper {
+        width: 300px;
+    }
+
+    .page-content-wrapper {
+        width: 100%;
+        position: absolute;
+        padding: 15px;
+    }
+
+    .wrapper.toggled .page-content-wrapper {
+        position: absolute;
+        margin-right: -300px;
+    }
+
+    /* Sidebar Styles */
+
+    .sidebar-nav {
+        position: absolute;
+        top: 0;
+        width: 300px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+        .sidebar-nav li {
+            text-indent: 20px;
+            line-height: 40px;
+        }
+
+        .sidebar-nav button {
+            margin-left: 15px;
+            margin-top: 20px;
+        }
+
+        .sidebar-nav span.redLabel {
+            margin-left: 15px;
+            line-height: 25px;
+            font-size: 14px;
+            font-family: Verdana;
+            color: #247DBD;
+        }
+
+        .sidebar-nav span.redLabelTitle {
+            margin-left: 15px;
+            line-height: 30px;
+            font-size: 19px;
+            font-family: Verdana;
+            color: #247DBD;
+        }
+
+    span.redLabelSecTitle {
+        margin-left: 15px;
+        line-height: 25px;
+        font-size: 14px;
+        font-family: Verdana;
+        color: #247DBD;
+    }
+
+    .sidebar-nav input {
+        margin-left: 20px;
+    }
+
+    .sidebar-nav select {
+        margin-left: 20px;
+    }
+
+    .sidebar-nav div {
+        margin-left: 20px;
+        text-indent: 5px;
+        line-height: 30px;
+    }
+
+    .sidebar-nav li a {
+        display: block;
+        text-decoration: none;
+        color: #999999;
+    }
+
+        .sidebar-nav li a:hover {
+            text-decoration: none;
+            color: #fff;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .sidebar-nav li a:active,
+        .sidebar-nav li a:focus {
+            text-decoration: none;
+        }
+
+    .sidebar-nav > .sidebar-brand {
+        height: 65px;
+        font-size: 18px;
+        line-height: 60px;
+    }
+
+        .sidebar-nav > .sidebar-brand a {
+            color: #999999;
+        }
+
+            .sidebar-nav > .sidebar-brand a:hover {
+                color: #fff;
+                background: none;
+            }
+
+    @@media(min-width:768px) {
+        .wrapper {
+            padding-left: 300px;
+        }
+
+            .wrapper.toggled {
+                padding-left: 0;
+            }
+
+        #sidebar-wrapper {
+            width: 300px;
+        }
+
+        .wrapper.toggled #sidebar-wrapper {
+            width: 0;
+        }
+
+        .page-content-wrapper {
+            padding: 20px;
+            position: relative;
+        }
+
+        .wrapper.toggled .page-content-wrapper {
+            position: relative;
+            margin-right: 0;
+        }
+    }
+</style>
+
+
+@*<div class="wrapper">*@
+<!-- Sidebar -->
+<div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li class="sidebar-brand">
+            <span class="redLabelTitle">
+                @ViewBag.Title
+            </span>
+        </li>
+
+        <li>
+            <div class="" id="simpleCallendar" style="display:none">
+                <span class="redLabel">Date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
+                <div class="has-feedback">
+                    <input type="text" class="form-control" name="datefilter" style="width:210px" />
+                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                </div>
+            </div>
+        </li>
+
+        <li>
+            <div class="" id="complexCallendar">
+                <span class="redLabel">Date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
+                <div id="reportrange" class="" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 210px">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                    <span></span> <b class="caret"></b>
+                </div>
+            </div>
+        </li>
+
+        <li>
+            <div id="showUnit">
+                <span class="redLabel">Unit</span>
+                @Html.DropDownList("unitId", Model.Units, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+            </div>
+        </li>
+
+        <li>
+            <div id="showShift">
+                <span class="redLabel">Shift</span>
+                @Html.DropDownList("shift", Model.ShiftSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+            </div>
+        </li>
+
+        <li>
+            <div id="showPeriod">
+                <span class="redLabel">Period</span>
+                @Html.DropDownList("period", Model.PeriodSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+            </div>
+        </li>
+
+        <li>
+            <div id="showUsers">
+                <span class="redLabel">Auditor</span>
+                @Html.DropDownList("auditorId", Model.UserSelectList, "All", htmlAttributes: new { @class = "form-control required", @style = "width:210px" })
+            </div>
+        </li>
+
+        <li>
+            <button type="button" class="btn margin-top btn-primary" id="btnSend" onclick="">Send</button>
+        </li>
+
+    </ul>
+</div>
+
+<!-- /#sidebar-wrapper -->
+<!-- Page Content -->
+@*<div class="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Simple Sidebar</h1>
+                    <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
+                    <p>Make sure to keep all page content within the <code>.page-content-wrapper</code>.</p>
+                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                </div>
+            </div>
+        </div>
+    </div>*@
+<!-- /.page-content-wrapper -->
+@*</div>*@
+
+<!-- Menu Toggle Script -->
+
+<script>
+
+    var enviar = {};
+    var start = moment();
+    var end = moment();
+
+    $(function () {
+
+        $('#unitId').on('change', function (e) {
+            enviar['unitId'] = $('#unitId option:selected').val();
+        });
+
+        $('#shift').on('change', function (e) {
+            enviar['shift'] = $('#shift option:selected').val();
+        });
+
+        $('#period').on('change', function (e) {
+            enviar['period'] = $('#period option:selected').val();
+        });
+
+        $('#auditorId').on('change', function (e) {
+            enviar['auditorId'] = $('#auditorId option:selected').val();
+        });
+
+        enviar['level01Id'] = null;
+        enviar['level02Id'] = null;
+        enviar['level03Id'] = null;
+
+
+        //Start config datepickerrange simple
+        $('input[name="datefilter"]').daterangepicker({
+            autoUpdateInput: false,
+            autoApply: true,
+            showDropdowns: true,
+            startDate: start,
+            opens: "left",
+            endDate: end,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        }, function (start, end, label) {
+            console.log("New date range selected: ' + start.format('MM/DD/YYYY') + ' to ' + end.format('MM/DD/YYYY') + ' (predefined range: ' + label + ')");
+            enviar['startDate'] = start.format('MM/DD/YYYY');
+            enviar['endDate'] = end.format('MM/DD/YYYY');
+        });
+
+        $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+        });
+
+        $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+            enviar['startDate'] = "";
+            enviar['endDate'] = "";
+        });
+        //Start config datepickerrange simple
+
+        //Start config datepickerrange full
+        var start = moment();
+        var end = moment();
+
+        function cb(start, end) {
+            $('#reportrange span').html(start.format('MM/DD/YYYY') + ' - ' + end.format('MM/DD/YYYY'));
+            enviar['startDate'] = start.format('MM/DD/YYYY');
+            enviar['endDate'] = end.format('MM/DD/YYYY');
+        }
+
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            opens: "left",
+            alwaysShowCalendars: true,
+            showDropdowns: true,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, cb);
+
+        cb(start, end);
+        //End config datepickerrange full
+
+        enviar['startDate'] = moment().format('MM/DD/YYYY');
+        enviar['endDate'] = moment().format('MM/DD/YYYY');
+    });
+
+    $(document).ready(function () {
+        $("#menu-toggle").click(function (e) {
+            $("#menu-toggle > i").toggleClass("glyphicon-chevron-right");
+            $('.redLabelSecTitle').toggle();
+            e.preventDefault();
+            $(".wrapper").toggleClass("toggled");
+
+            //Ajusta as datatables presentes.
+            var tables = $('table[id]')
+            setTimeout(function (e) {
+                tables.each(function (c, o) {
+                    if ($.fn.DataTable.isDataTable('#' + $(o).attr('id'))) {
+                        var oTable = $(o).dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                        oTable = null;
+                    }
+                })
+            }, 500)
+
+        });
+    });
+
+    var formControl = {
+        showUsers: function () {
+            $('#showUsers').show();
+        },
+        showPeriod: function () {
+            $('#showPeriod').show();
+        },
+        showUnit: function () {
+            $('#showUnit').show();
+        },
+        showShift: function () {
+            $('#showShift').show();
+        },
+        showSimpleDate: function () {
+            $('#simpleCallendar').show();
+        },
+        showFullCallendar: function () {
+            $('#complexCallendar').show();
+        },
+        ShowAllFielsAndFullCallendar() {
+            formControl.showPeriod();
+            formControl.showFullCallendar();
+            formControl.showShift();
+            formControl.showUnit();
+            formControl.showUsers();
+        },
+        orderDdls: function () {
+
+        }
+
+    }
+
+</script>
+
+
