@@ -6,10 +6,9 @@
     var urlTabelaRelatorio = Url.Action("GetEntryByDate", "api/RelatorioColeta");
 }
 
-@Styles.Render("~/Content/DataTables")
-
-@*<link href="@Url.Content("~/Content/DataTables/css/jquery.dataTables.min.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/DataTables/css/buttons.dataTables.min.css")" rel="stylesheet" />*@
+@*@Styles.Render("~/Content/Tables")*@
+<link href="@Url.Content("~/Content/DataTables/css/jquery.dataTables.min.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/DataTables/css/buttons.dataTables.min.css")" rel="stylesheet" />
 
 @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
@@ -21,7 +20,7 @@
 @section Scripts {
 
     @Scripts.Render("~/Scripts/GuardJs.js")
-    @Scripts.Render("~/bundles/DataTables")
+    @Scripts.Render("~/bundles/ScriptTables")
 
     <script type="text/javascript">
 

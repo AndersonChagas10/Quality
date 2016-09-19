@@ -6,10 +6,11 @@
     var urlGetCa = Url.Action("GetCorrectiveActionById", "api/CorrectiveAction");
 }
 
-@Styles.Render("~/Content/DataTables")
+@*@Styles.Render("~/Content/Tables")*@
+<link href="@Url.Content("~/Content/DataTables/css/jquery.dataTables.min.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/DataTables/css/buttons.dataTables.min.css")" rel="stylesheet" />
 
 @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
-
 
 <div id="formBodyContent">
     @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
@@ -24,7 +25,7 @@
 @section Scripts {
 
     @Scripts.Render("~/Scripts/GuardJs.js")
-    @Scripts.Render("~/bundles/DataTables")
+    @Scripts.Render("~/bundles/ScriptTables")
 
     <script type="text/javascript">
 

@@ -49,42 +49,42 @@ namespace SgqSystem.Controllers.Api
             return RedirectToAction("LogIn", "UserAuthentication");
         }
 
-        [HttpGet]
-        public ActionResult Register()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public ActionResult Register()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        public ActionResult Register(UserViewModel user)
-        {
-            return View();
-        }
+        //[HttpPost]
+        //public ActionResult Register(UserViewModel user)
+        //{
+        //    return View();
+        //}
 
-        public void RenewCurrentUser()
-        {
-            System.Web.HttpCookie authCookie =
-                System.Web.HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
-            if (authCookie != null)
-            {
-                FormsAuthenticationTicket authTicket = null;
-                authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+        //public void RenewCurrentUser()
+        //{
+        //    System.Web.HttpCookie authCookie =
+        //        System.Web.HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+        //    if (authCookie != null)
+        //    {
+        //        FormsAuthenticationTicket authTicket = null;
+        //        authTicket = FormsAuthentication.Decrypt(authCookie.Value);
 
-                if (authTicket != null && !authTicket.Expired)
-                {
-                    FormsAuthenticationTicket newAuthTicket = authTicket;
+        //        if (authTicket != null && !authTicket.Expired)
+        //        {
+        //            FormsAuthenticationTicket newAuthTicket = authTicket;
 
-                    if (FormsAuthentication.SlidingExpiration)
-                    {
-                        newAuthTicket = FormsAuthentication.RenewTicketIfOld(authTicket);
-                    }
-                    string userData = newAuthTicket.UserData;
-                    string[] roles = userData.Split(',');
+        //            if (FormsAuthentication.SlidingExpiration)
+        //            {
+        //                newAuthTicket = FormsAuthentication.RenewTicketIfOld(authTicket);
+        //            }
+        //            string userData = newAuthTicket.UserData;
+        //            string[] roles = userData.Split(',');
 
-                    System.Web.HttpContext.Current.User =
-                        new System.Security.Principal.GenericPrincipal(new FormsIdentity(newAuthTicket), roles);
-                }
-            }
-        }
+        //            System.Web.HttpContext.Current.User =
+        //                new System.Security.Principal.GenericPrincipal(new FormsIdentity(newAuthTicket), roles);
+        //        }
+        //    }
+        //}
     }
 }

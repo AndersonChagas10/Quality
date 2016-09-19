@@ -8,10 +8,10 @@
     @*@Scripts.Render("~/Content/DataTables")*@
 
     @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-theme.css.map" rel="stylesheet" />
-    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />*@
+        <link href="~/Content/bootstrap-theme.css.map" rel="stylesheet" />
+        <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />*@
 
-    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/General")
     @Scripts.Render("~/bundles/modernizr")
     @if (IsSectionDefined("Styles"))
     {
@@ -23,54 +23,51 @@
 </head>
 
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
-            </div>
-            <div class="navbar-collapse collapse pull-right">
-                <ul class="nav navbar-nav">
-                    @if (HttpContext.Current.Session["username"] != null)
-                    {
-                        <li class="nav-item ">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                        <li class="nav-item ">@Html.ActionLink("Collection Reports", "Index", "ReportsCollection")</li>
-                        <li class="nav-item ">@Html.ActionLink("Corrective Action Reports", "Index", "ReportsCorrectiveAction")</li>
-                    }
 
-                    <a class="navbar-brand">
-                        @if (Session["username"] != null)
-                        {
-                            @*<strong>@Html.Encode(User.Identity.Name)</strong>*@
-                            <li class="nav-item">
-                                @Session["username"].ToString():
-                            </li>
-                            <li class="nav-item">
-                                @Html.ActionLink("Sign Out", "LogOut", "UserAuthentication")
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                @Html.ActionLink("Sign in", "LogIn", "UserAuthentication")
-                            </li>
-                            @*<li class="nav-item">
-                                <a> | </a>
-                            </li>
-                            <li class="nav-item">
-                                @Html.ActionLink("Register", "Register", "Authentication")
-                            </li>*@
-
-                        }
-                    </a>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            @if (Session["username"] != null)
+            {
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="@Url.Action("Index", "Home")">Sgq Global</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        <li class=""><a href="@Url.Action("Index", "Home")">Home</a></li>@*class="active"*@
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("DataCollectionReport", "Reports")">Data Collection Report</a></li>
+                                <li><a href="@Url.Action("CorrectiveActionReport", "Reports")">Corrective Action Reports</a></li>
+                            </ul>
+                        </li>
+                        @*<li><a href="#">Page 2</a></li>
+                            <li><a href="#">Page 3</a></li>*@
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span>@Session["username"].ToString()</a></li>
+                        <li><a href="@Url.Action("LogOut", "UserAuthentication")"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="@Url.Action("LogIn", "UserAuthentication")"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    @*<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>*@
                 </ul>
-            </div>
+            }
+
         </div>
-    </div>
+
+    </nav>
+
+
     <div class="body-content" style="margin-top:50px">
 
         @Scripts.Render("~/bundles/jquery")
@@ -85,5 +82,9 @@
     </div>
 
     @RenderSection("scripts", required: false)
+
+    <script>
+    
+    </script>
 </body>
 </html>
