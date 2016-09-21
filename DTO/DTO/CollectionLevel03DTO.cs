@@ -16,61 +16,55 @@ namespace DTO.DTO
         {
             if (nextnextRoot.id != null)
                 if (nextnextRoot.id.Length > 0)
-                    Id = int.Parse(nextnextRoot.id);
+                    Id = Guard.ConverteValor<int>(nextnextRoot.id, "level03.id"); //int.Parse(nextnextRoot.id);
 
-            try
+
+            ValidaBaseEntity();
+
+            #region Caso for HTP
+
+            if (level01Id == 1)
             {
-                ValidaBaseEntity();
-
-                #region Caso for HTP
-
-                if (level01Id == 1)
-                {
-                }
-
-                #endregion
-
-                #region Caso for CCA
-
-                if (level01Id == 2)
-                {
-                }
-
-                #endregion
-
-                #region Caso for CFF
-
-                if (level01Id == 3)
-                {
-                }
-
-                #endregion
-
-                #region Valores Comum para todos
-
-                Level03Id = int.Parse(nextnextRoot.level03id);
-                Guard.ForValidFk(Level03Id.Value, "Level03 Id must be valid.");
-
-                //TotalError = decimal.Parse(nextnextRoot.totalerror);
-                //Guard.ForNegative(TotalError, "Total Error level03");
-
-                ConformedIs = Convert.ToBoolean(nextnextRoot.conform);
-                Guard.VerifyIfIsBool(ConformedIs, "ConformedIs");
-
-                if (nextnextRoot.value != null)
-                    Value = decimal.Parse(nextnextRoot.value);
-                Guard.ForNegative(Value, "Value level03");
-
-                ValueText = "";
-                if (nextnextRoot.valueText != null)
-                    ValueText = nextnextRoot.valueText;
-
-                #endregion
             }
-            catch (Exception e)
+
+            #endregion
+
+            #region Caso for CCA
+
+            if (level01Id == 2)
             {
-                throw new Exception("Erro ao gerar CollectionLevel03DTO", e);
             }
+
+            #endregion
+
+            #region Caso for CFF
+
+            if (level01Id == 3)
+            {
+            }
+
+            #endregion
+
+            #region Valores Comum para todos
+
+            Level03Id = Guard.ConverteValor<int>(nextnextRoot.level03id, "level03.level03id"); //int.Parse(nextnextRoot.level03id);
+            Guard.ForValidFk(Level03Id.Value, "Level03 Id must be valid.");
+
+            //TotalError = decimal.Parse(nextnextRoot.totalerror);
+            //Guard.ForNegative(TotalError, "Total Error level03");
+
+            ConformedIs = Guard.ConverteValor<bool>(nextnextRoot.conform, "level03.conform"); //Convert.ToBoolean(nextnextRoot.conform);
+            Guard.VerifyIfIsBool(ConformedIs, "ConformedIs");
+
+            if (nextnextRoot.value != null)
+                Value = Guard.ConverteValor<decimal>(nextnextRoot.value, "level03.value"); //decimal.Parse(nextnextRoot.value);
+            Guard.ForNegative(Value, "Value level03");
+
+            ValueText = "";
+            if (nextnextRoot.valueText != null)
+                ValueText = nextnextRoot.valueText;
+
+            #endregion
 
         }
 

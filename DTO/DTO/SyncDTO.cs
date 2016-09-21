@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO.Helpers;
+using System;
 using System.Collections.Generic;
 
 namespace DTO.DTO
@@ -107,18 +108,18 @@ namespace DTO.DTO
                 var caTelatoAdd = new CorrectiveActionDTO()
                 {
 
-                    idcorrectiveaction = int.Parse(caTela.idcorrectiveaction),
-                    AuditorId = int.Parse(caTela.auditorid),
+                    idcorrectiveaction = Guard.ConverteValor<int>(caTela.idcorrectiveaction, "caTela.idcorrectiveaction"), //int.Parse(caTela.idcorrectiveaction),
+                    AuditorId = Guard.ConverteValor<int>(caTela.auditorid, "caTela.auditorid"),//int.Parse(caTela.auditorid),
                     DescriptionFailure = caTela.descriptionfailure,
                     ImmediateCorrectiveAction = caTela.immediatecorrectiveaction,
                     ProductDisposition = caTela.productdisposition,
                     PreventativeMeasure = caTela.preventativemeasure,
-                    SlaughterId = int.Parse(caTela.slaugthersignature),
+                    SlaughterId = Guard.ConverteValor<int>(caTela.slaugthersignature, "caTela.slaugthersignature"),//int.Parse(caTela.slaugthersignature),
                     //MOCK
                     DateTimeSlaughter = DateTime.Now,
-                    TechinicalId = int.Parse(caTela.techinicalsignature),
+                    TechinicalId = Guard.ConverteValor<int>(caTela.techinicalsignature, "caTela.techinicalsignature"),//int.Parse(caTela.techinicalsignature),
                     //MOCK 
-                    DateTimeTechinical= DateTime.Now,
+                    DateTimeTechinical = DateTime.Now,
                     //MOCK
                     AuditStartTime = DateTime.Now,
                     //MOCK

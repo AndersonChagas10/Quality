@@ -10,17 +10,17 @@ namespace DTO.Helpers
 
         #region CONVERT
 
-        public static bool ConverteValor<T>(this object valor, out T resultado, T valorPadrao)
+        public static bool ConverteValor<T>(this object valor, out T resultado, T valorPadrao, string paramiterName)
         {
             try
             {
                 resultado = (T)Convert.ChangeType(valor, typeof(T));
                 return true;
             }
-            catch (ExceptionHelper)
+            catch (Exception e)
             {
                 resultado = valorPadrao;
-                return false;
+                throw new ExceptionHelper("Impossível converter o valor: " + valor.ToString() + " Para:" + typeof(T) + " Nome do parametro: " + paramiterName, e);
             }
         }
 
@@ -29,15 +29,29 @@ namespace DTO.Helpers
             return (T)Convert.ChangeType(valor, typeof(T));
         }
 
-        public static T ConverteValor<T>(this object valor, T valorPadrao)
+        public static T ConverteValor<T>(this object valor, T valorPadrao, string paramiterName)
         {
             try
             {
                 return (T)Convert.ChangeType(valor, typeof(T));
             }
-            catch (ExceptionHelper)
+            catch (Exception e)
             {
-                return valorPadrao;
+                throw new ExceptionHelper("Impossível converter o valor: " + valor.ToString() + " Para:" + typeof(T) + " Nome do parametro: " + paramiterName, e);
+                //return valorPadrao;
+            }
+        }
+
+        public static T ConverteValor<T>(this object valor, string paramiterName)
+        {
+            try
+            {
+                return (T)Convert.ChangeType(valor, typeof(T));
+            }
+            catch (Exception e)
+            {
+                throw new ExceptionHelper("Impossível converter o valor: " + valor.ToString() + " Para: " + typeof(T) + " Nome do parametro: " + paramiterName, e);
+                //return valorPadrao;
             }
         }
 
@@ -248,7 +262,6 @@ namespace DTO.Helpers
             }
         }
 
-
         /// <summary>
         /// Não pode ser negativo, se alteração não pdoe ser Zero.
         /// Throw message "Invalid key for: paramName  in:  className"
@@ -272,7 +285,6 @@ namespace DTO.Helpers
             if (date.IsNull())
                 date = DateTime.Now;
         }
-
 
         public static void ForValidFk(string propName, int id)
         {

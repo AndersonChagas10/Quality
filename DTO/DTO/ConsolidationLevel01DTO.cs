@@ -25,49 +25,40 @@ namespace DTO.DTO
 
         public ConsolidationLevel01DTO(RootObject rootObject)
         {
-          
-            try
-            {
-                ValidaBaseEntity();
 
-                #region DateConsolidation
+            ValidaBaseEntity();
 
-                ConsolidationDate = DateTime.Now;
-                //MOCK
-                //rootObject.unidadeid = "1";
-                DepartmentId = 1;//int.Parse(rootObject.de);
-                Guard.ForValidFk(DepartmentId, "Unit Id must be valid, in ConsolidationLevel01DTO.");
+            #region DateConsolidation
 
+            ConsolidationDate = DateTime.Now;
+            //MOCK
+            //rootObject.unidadeid = "1";
+            DepartmentId = 1;//int.Parse(rootObject.de);
+            Guard.ForValidFk(DepartmentId, "Unit Id must be valid, in ConsolidationLevel01DTO.");
 
-                //MOCK
-                rootObject.unidadeid = "1";
-                UnitId = int.Parse(rootObject.unidadeid);
-                Guard.ForValidFk(UnitId, "Unit Id must be valid, in ConsolidationLevel01DTO.");
+            //MOCK
+            rootObject.unidadeid = "1";
+            UnitId = Guard.ConverteValor<int>(rootObject.unidadeid, "Level01.unidadeid");//int.Parse(rootObject.unidadeid);
+            Guard.ForValidFk(UnitId, "Unit Id must be valid, in ConsolidationLevel01DTO.");
 
-                //Guard.ForValidFk(rootObject.department, "Department Id must be valid.");
-                //Department_Id = rootObject.department;
+            //Guard.ForValidFk(rootObject.department, "Department Id must be valid.");
+            //Department_Id = rootObject.department;
 
-                Level01Id = int.Parse(rootObject.level01id);
-                Guard.ForValidFk(Level01Id, "Level01 Id must be valid, in ConsolidationLevel01DTO.");
+            Level01Id = Guard.ConverteValor<int>(rootObject.level01id, "Level01.level01id");
+            Guard.ForValidFk(Level01Id, "Level01 Id must be valid, in ConsolidationLevel01DTO.");
 
-                #endregion
+            #endregion
 
+            collectionLevel02DTO = new List<CollectionLevel02DTO>();
+            consolidationLevel02DTO = new List<ConsolidationLevel02DTO>();
 
-                collectionLevel02DTO = new List<CollectionLevel02DTO>();
-                consolidationLevel02DTO = new List<ConsolidationLevel02DTO>();
-
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao gerar ConsolidationLevel01DTO", e);
-            }
             #region Coletas necessitam apenas serem salvas.
 
             if (rootObject.nextRoot == null)
-                throw new Exception("Lista de collectionLevel02DTO vazia.");
+                throw new ExceptionHelper("Lista de collectionLevel02DTO vazia.");
 
             if (rootObject.nextRoot.Count == 0)
-                throw new Exception("Lista de collectionLevel02DTO vazia.");
+                throw new ExceptionHelper("Lista de collectionLevel02DTO vazia.");
 
             foreach (var i in rootObject.nextRoot)
                 collectionLevel02DTO.Add(new CollectionLevel02DTO(i, UnitId));

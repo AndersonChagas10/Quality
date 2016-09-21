@@ -71,7 +71,6 @@ namespace Dominio.Services
                 if (obj.Root.Count == 0)
                     throw new ExceptionHelper("Impossible to Sync data. The Sync list is empty.");
 
-
                 obj.ListToSave = new List<ConsolidationLevel01DTO>();
                 obj.ListToSaveCA = new List<CorrectiveActionDTO>();
 
@@ -123,7 +122,7 @@ namespace Dominio.Services
             {
                 #region Trata Exceção de forma Geral.
 
-                return new GenericReturn<SyncDTO>(e, "Cannot sync Data.");
+                return new GenericReturn<SyncDTO>(e, "Cannot sync Data.", obj);
 
                 #endregion
             }

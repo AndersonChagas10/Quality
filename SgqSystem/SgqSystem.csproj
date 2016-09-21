@@ -804,6 +804,7 @@
     <Content Include="Scripts\highcharts\4.2.0\themes\grid.js" />
     <Content Include="Scripts\highcharts\4.2.0\themes\sand-signika.js" />
     <Content Include="Scripts\highcharts\4.2.0\themes\skies.js" />
+    <None Include="Properties\PublishProfiles\DeployUsbNaVPN.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\PublishEUA.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
@@ -926,6 +927,9 @@
     <Content Include="Views\Shared\_FormularioQueryData.cshtml" />
     <Content Include="Views\FileControl\Index.cshtml" />
     <Content Include="Views\Shared\_FormToQueryFullScreen.cshtml" />
+    <None Include="Web.DeployInterno.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

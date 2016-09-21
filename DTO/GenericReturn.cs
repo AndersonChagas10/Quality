@@ -1,6 +1,7 @@
 ﻿using NLog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace DTO.Helpers
 {
@@ -12,7 +13,9 @@ namespace DTO.Helpers
         public string Inner { get; private set; }
         public string StackTrace { get; private set; }
         public int IdSaved { get; set; }
-       
+        public string InnerStackTrace { get; private set; }
+        public string InnerStackTrace2 { get; private set; }
+
         #region Contrutores
 
         public GenericReturn()
@@ -42,6 +45,12 @@ namespace DTO.Helpers
             SetMensagemExcecao(_ex, mensagemPadrao);
         }
 
+        public GenericReturn(Exception _ex, string mensagemPadrao, T obj)
+        {
+            SetRetorno(obj);
+            SetMensagemExcecao(_ex, mensagemPadrao);
+        }
+
         #endregion
 
         #region Auxiliares
@@ -63,6 +72,7 @@ namespace DTO.Helpers
         public void SetMensagemExcecao(Exception _ex, string mensagemPadrao)
         {
             var innerMessage = "";
+        
             var isExceptionHelper = _ex.GetType() == typeof(ExceptionHelper);
 
             if (!isExceptionHelper && _ex.InnerException != null) // Se a Exception lancada não for Exception Helper & Se a InnerException for diferente de null:
@@ -75,26 +85,56 @@ namespace DTO.Helpers
             if (_ex.InnerException != null)
             {
                 innerMessage += " Inner: " + _ex.InnerException.Message;
-                if (_ex.InnerException.InnerException != null)
-                    innerMessage += " Inner: " + _ex.InnerException.InnerException.Message;
+                //if (_ex.InnerException.StackTrace != null)
+                //    innerStackTrace = _ex.InnerException.StackTrace;
+                //if (_ex.InnerException.InnerException != null)
+                //{
+                //    innerMessage2 += " Inner: " + _ex.InnerException.InnerException.Message;
+                //    if (_ex.InnerException.InnerException.StackTrace != null)
+                //        innerStackTrace2 = _ex.InnerException.StackTrace;
+                //}
             }
 
+            CreateStackTrace(_ex);
+            
+            if (_ex.InnerException.IsNotNull())
+                CreateStackTrace(_ex.InnerException);
+
+            // Get the line number from the stack frame
             Mensagem = isExceptionHelper ? _ex.Message : mensagemPadrao;
             MensagemExcecao = _ex.Message;
+            //StackTrace += "\n ////////// Original Stack trace : " + _ex.StackTrace;
+            //StackTrace += "\n \\\\\\\\\\";
             Inner = innerMessage;
-            StackTrace = _ex.StackTrace;
 
-            if (_ex.InnerException.IsNotNull())
-                StackTrace += _ex.InnerException.StackTrace;
+            if (StackTrace.IndexOf("Line") > 0)
+            {
+
+            }
 
             if (!isExceptionHelper)
             {
-                Logger logger = LogManager.GetLogger("dataBaseLogger");
-                logger.Error(_ex, Mensagem, null);
+                var logger = LogManager.GetLogger("dataBaseLogger");
+                GlobalDiagnosticsContext.Set("StackTrace", StackTrace);
+                logger.Error(_ex, Mensagem, this);
             }
 
         }
-        
+
+        private void CreateStackTrace(Exception _ex)
+        {
+            var st = new StackTrace(_ex, true);
+            var counter = 0;
+            while (st.GetFrame(counter) != null)
+            {
+                var frame = st.GetFrame(counter);
+                StackTrace += " Method: " + frame.GetMethod().DeclaringType.Name;
+                StackTrace += " Line:" + frame.GetFileLineNumber();
+                StackTrace += "\n";
+                counter++;
+            }
+        }
+
         #endregion
 
     }
