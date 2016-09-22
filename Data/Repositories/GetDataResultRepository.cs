@@ -20,7 +20,7 @@ namespace Data.Repositories
 
         public CollectionHtml GetHtmlLastEntry(SyncDTO idUnidade)
         {
-            var retorno = db.CollectionHtml.OrderByDescending(o => o.Id).FirstOrDefault(r => r.UnitId == idUnidade.CollectionHtml.UnitId && r.Shift == idUnidade.CollectionHtml.Shift 
+            var retorno = db.CollectionHtml.OrderByDescending(o => o.Id).FirstOrDefault(r => r.UnitId == idUnidade.CollectionHtml.UnitId && r.Shift == idUnidade.CollectionHtml.Shift
             //&& r.Period == idUnidade.CollectionHtml.Period
             );
             if (retorno == null)
@@ -52,7 +52,7 @@ namespace Data.Repositories
                                (r.Duplicated == true)
                                ).OrderByDescending(r => r.Id).FirstOrDefault();
 
-          
+
             //var lista = collectionLevel02.ToList();
             if (collectionLevel02 == null)
                 return;
@@ -89,7 +89,7 @@ namespace Data.Repositories
                                 r.Period == i.Period &&
                                 r.Phase == i.Phase &&
                                 r.ReauditIs == i.ReauditIs &&
-                                r.ReauditNumber == i.ReauditNumber && 
+                                r.ReauditNumber == i.ReauditNumber &&
                                 DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(i.CollectionDate) &&
                                 //r.StartPhaseDate == i.StartPhaseDate &&
                                 r.EvaluationNumber == i.EvaluationNumber &&
@@ -108,44 +108,33 @@ namespace Data.Repositories
                 return;
 
             alterThisData.Duplicated = true;
-                Update(alterThisData as T);
+            Update(alterThisData as T);
 
         }
 
-        public int GetExistentLevel01Consollidation(ConsolidationLevel01 level01Consolidation)
+        public ConsolidationLevel01 GetExistentLevel01Consollidation(ConsolidationLevel01 level01Consolidation)
         {
 
             var retorno = db.ConsolidationLevel01.FirstOrDefault(r => r.DepartmentId == level01Consolidation.DepartmentId &&
-                    r.ConsolidationLevel02 == level01Consolidation.ConsolidationLevel02 &&
                     r.Level01Id == level01Consolidation.Level01Id &&
                     r.UnitId == level01Consolidation.UnitId &&
                     DbFunctions.TruncateTime(r.AddDate) == DbFunctions.TruncateTime(DateTime.Now)
                     );
 
-            if (retorno != null)
-                return retorno.Id;
-            else
-                return 0;
-
+            return retorno;
         }
 
-        public int GetExistentLevel02Consollidation(ConsolidationLevel02 level02Consolidation)
+        public ConsolidationLevel02 GetExistentLevel02Consollidation(ConsolidationLevel02 level02Consolidation, ConsolidationLevel01 consolidationLevel01)
         {
 
-            var retorno = db.ConsolidationLevel02.FirstOrDefault(r => r.CollectionLevel02 == level02Consolidation.CollectionLevel02 &&
-                    r.Level01ConsolidationId == level02Consolidation.Level01ConsolidationId &&
-                    r.Level02Id == level02Consolidation.Level02Id
-                    && DbFunctions.TruncateTime(r.AddDate) == DbFunctions.TruncateTime(DateTime.Now)
-                    );
+            ConsolidationLevel02 consolidacaoExistente;
+            if (consolidationLevel01.ConsolidationLevel02 != null)
+                return consolidacaoExistente = consolidationLevel01.ConsolidationLevel02.FirstOrDefault(r => r.Level02Id == level02Consolidation.Level02Id);
 
-            if (retorno != null)
-                return retorno.Id;
-            else
-                return 0;
-
+            return null;
         }
 
-       
+
 
         #region Get Last
 

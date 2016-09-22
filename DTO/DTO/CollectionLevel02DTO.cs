@@ -91,7 +91,7 @@ namespace DTO.DTO
 
             ReauditNumber = Guard.ConverteValor<int>(nextRoot.reauditnumber, "Level02.reauditnumber"); //int.Parse(nextRoot.reauditnumber);
             Guard.ForNegative(ReauditNumber, "ReauditNumber");
-            if(nextRoot.notavaliable.IsNotNull())
+            if (nextRoot.notavaliable.IsNotNull())
                 NotEvaluatedIs = Guard.ConverteValor<bool>(nextRoot.notavaliable, "Level02.notavaliable"); //bool.Parse(nextRoot.notavaliable);
             Guard.VerifyIfIsBool(NotEvaluatedIs, "NotEvaluatedIs");
 
@@ -143,29 +143,58 @@ namespace DTO.DTO
 
         }
 
-        public int EvaluationNumber { get; set; }
-        public int CorrectiveActionId { get; set; }
         public int ConsolidationLevel02Id { get; set; }
-        public int AuditorId { get; set; }
-        public int CattleTypeId { get; set; }
         public int Level01Id { get; set; }
         public int Level02Id { get; set; }
         public int UnitId { get; set; }
+        public int AuditorId { get; set; }
+        public int Shift { get; set; }
+        public int Period { get; set; }
+        public int Phase { get; set; }
+        public bool ReauditIs { get; set; }
+        public int ReauditNumber { get; set; }
+        public System.DateTime CollectionDate { get; set; }
+        public System.DateTime StartPhaseDate { get; set; }
+        public Nullable<int> EvaluationNumber { get; set; }
+        public int Sample { get; set; }
+        public int CattleTypeId { get; set; }
         public decimal Chainspeed { get; set; }
         public bool ConsecutiveFailureIs { get; set; }
         public int ConsecutiveFailureTotal { get; set; }
         public decimal LotNumber { get; set; }
         public decimal Mudscore { get; set; }
-        public int Period { get; set; }
-        public int Phase { get; set; }
-        public bool ReauditIs { get; set; }
-        public int ReauditNumber { get; set; }
         public bool NotEvaluatedIs { get; set; }
-        public int Sample { get; set; }
-        public int Shift { get; set; }
+        public bool Duplicated { get; set; }
+        public Level01DTO Level01 { get; set; }
+        public Level02DTO Level02 { get; set; }
+        public UserDTO UserSgq { get; set; }
+        public List<CollectionLevel03DTO> CollectionLevel03 { get; set; }
+        public List<CorrectiveActionDTO> CorrectiveAction { get; set; }
+
+
+        //public int EvaluationNumber { get; set; }
+        public int CorrectiveActionId { get; set; }
+        //public int ConsolidationLevel02Id { get; set; }
+        //public int AuditorId { get; set; }
+        //public int CattleTypeId { get; set; }
+        //public int Level01Id { get; set; }
+        //public int Level02Id { get; set; }
+        //public int UnitId { get; set; }
+        //public decimal Chainspeed { get; set; }
+        //public bool ConsecutiveFailureIs { get; set; }
+        //public int ConsecutiveFailureTotal { get; set; }
+        //public decimal LotNumber { get; set; }
+        //public decimal Mudscore { get; set; }
+        //public int Period { get; set; }
+        //public int Phase { get; set; }
+        //public bool ReauditIs { get; set; }
+        //public int ReauditNumber { get; set; }
+        //public bool NotEvaluatedIs { get; set; }
+        //public int Sample { get; set; }
+        //public int Shift { get; set; }
         public string Name { get; set; }
-        public System.DateTime StartPhaseDate { get; set; }
-        public System.DateTime CollectionDate { get; set; }
+        //public System.DateTime StartPhaseDate { get; set; }
+        //public System.DateTime CollectionDate { get; set; }
 
         public List<CollectionLevel03DTO> collectionLevel03DTO { get; set; }
         public ConsolidationLevel01DTO consolidationLevel01DTO { get; set; }

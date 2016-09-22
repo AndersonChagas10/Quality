@@ -11,7 +11,7 @@ namespace SgqSystem.Mappers
         {
             CreateMap<CollectionLevel03DTO, CollectionLevel03>();
             CreateMap<CollectionLevel03, CollectionLevel03DTO>();
-            CreateMap<List<CollectionLevel03>, List<CollectionLevel03DTO>>();
+            //CreateMap<List<CollectionLevel03>, List<CollectionLevel03DTO>>();
 
             //.ForMember(x => x.Level03, opt => opt.Ignore())
             //.ForMember(x => x.DataCollection, opt => opt.Ignore());

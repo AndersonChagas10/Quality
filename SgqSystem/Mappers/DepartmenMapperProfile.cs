@@ -4,9 +4,9 @@ using DTO.DTO;
 
 namespace SgqSystem.Mappers
 {
-    public class DepartmenMappingProfile : Profile
+    public class DepartmenMapperProfile : Profile
     {
-        public DepartmenMappingProfile()
+        public DepartmenMapperProfile()
         {
             CreateMap<Department, DepartmentDTO>();
             CreateMap<DepartmentDTO, Department>();

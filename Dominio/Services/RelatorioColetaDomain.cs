@@ -181,70 +181,66 @@ namespace Dominio.Services
                 var consildatedLelve01 = _repoConsolidationLevel01.GetEntryConsildatedLevel01ByDateAndUnit(form);
                 var consildatedLelve01List = consildatedLelve01.ToList();
 
-                var consildatedLelve02 = _repoConsolidationLevel02.GetLastEntryConsildatedLevel02(consildatedLelve01);
-                var consildatedLelve02List = consildatedLelve02.ToList();
+                //var consildatedLelve02 = _repoConsolidationLevel02.GetLastEntryConsildatedLevel02(consildatedLelve01);
+                //var consildatedLelve02List = consildatedLelve02.ToList();
 
-                var collectionLelve02 = _repoCollectionLevel02.GetLastEntryCollectionLevel02(consildatedLelve02, form);
-                var collectionLelve03 = _repoCollectionLevel03.GetLastEntryCollectionLevel03(collectionLelve02, form);
+                //var collectionLelve02 = _repoCollectionLevel02.GetLastEntryCollectionLevel02(consildatedLelve02, form);
+                //var collectionLelve03 = _repoCollectionLevel03.GetLastEntryCollectionLevel03(collectionLelve02, form);
 
-                if (collectionLelve02.Count() == 0 || collectionLelve03.Count() == 0)
-                    return new GenericReturn<GetSyncDTO>(new GetSyncDTO() { ConsolidationLevel01 = new List<ConsolidationLevel01DTO>() });
+                //if (collectionLelve02.Count() == 0 || collectionLelve03.Count() == 0)
+                //    return new GenericReturn<GetSyncDTO>(new GetSyncDTO() { ConsolidationLevel01 = new List<ConsolidationLevel01DTO>() });
 
-                var collectionLelve02List = collectionLelve02.ToList();
-                var collectionLelve03List = collectionLelve03.ToList();
+                //var collectionLelve02List = collectionLelve02.ToList();
+                //var collectionLelve03List = collectionLelve03.ToList();
 
                 #endregion
 
                 #region Mapper
 
                 var consildatedLelve01ListDTO1 = new List<ConsolidationLevel01DTO>();
-                foreach (var i in consildatedLelve01List)
-                    consildatedLelve01ListDTO1.Add(Mapper.Map<ConsolidationLevel01DTO>(i));
+                consildatedLelve01ListDTO1 = Mapper.Map<List<ConsolidationLevel01DTO>>(consildatedLelve01List);
+               
+                //var consildatedLelve01ListDTO2 = new List<ConsolidationLevel02DTO>();
+                //consildatedLelve01ListDTO2 = Mapper.Map<List<ConsolidationLevel02DTO>>(consildatedLelve02List);
 
-                var consildatedLelve01ListDTO2 = new List<ConsolidationLevel02DTO>();
-                foreach (var i in consildatedLelve02List)
-                    consildatedLelve01ListDTO2.Add(Mapper.Map<ConsolidationLevel02DTO>(i));
+                //var collectionLelve02ListDTO = new List<CollectionLevel02DTO>();
+                //collectionLelve02ListDTO = Mapper.Map<List<CollectionLevel02DTO>>(collectionLelve02List);
 
-                var collectionLelve02ListDTO = new List<CollectionLevel02DTO>();
-                foreach (var i in collectionLelve02List)
-                    collectionLelve02ListDTO.Add(Mapper.Map<CollectionLevel02DTO>(i));
-
-                var collectionLelve03ListDTO = new List<CollectionLevel03DTO>();
-                foreach (var i in collectionLelve03List)
-                    collectionLelve03ListDTO.Add(Mapper.Map<CollectionLevel03DTO>(i));
+                //var collectionLelve03ListDTO = new List<CollectionLevel03DTO>();
+                //collectionLelve03ListDTO = Mapper.Map<List<CollectionLevel03DTO>>(collectionLelve03List);
 
                 #endregion
 
                 #region Make ResultSet
 
-                foreach (var i in consildatedLelve01ListDTO1)
-                {
-                    var temp = consildatedLelve01ListDTO2.Where(r => r.Level01ConsolidationId == i.Id);
-                    i.consolidationLevel02DTO = temp.ToList();
+                //foreach (var i in consildatedLelve01ListDTO1)
+                //{
+                //    var temp = consildatedLelve01ListDTO2.Where(r => r.Level01ConsolidationId == i.Id);
+                //    i.consolidationLevel02DTO = temp.ToList();
 
-                    var temp2 = collectionLelve02ListDTO.Where(r => temp.Any(z => z.Id == r.ConsolidationLevel02Id));
-                    i.collectionLevel02DTO = temp2.ToList();
+                //    var temp2 = collectionLelve02ListDTO.Where(r => temp.Any(z => z.Id == r.ConsolidationLevel02Id));
+                //    i.collectionLevel02DTO = temp2.ToList();
 
-                    for (var v = 0; v < i.collectionLevel02DTO.Count; v++)
-                    {
-                        var y = i.collectionLevel02DTO[v];
+                //    for (var v = 0; v < i.collectionLevel02DTO.Count; v++)
+                //    {
+                //        var y = i.collectionLevel02DTO[v];
 
-                        //Busca nome level02
-                        y.Name = _listLevel02.FirstOrDefault(z => z.Id == y.Level02Id).Name;
+                //        //Busca nome level02
+                //        y.Name = _listLevel02.FirstOrDefault(z => z.Id == y.Level02Id).Name;
 
-                        //Encontra os level03 do level02
-                        var level03DoLevel02 = collectionLelve03ListDTO.Where(r => y.Id == r.CollectionLevel02Id).ToList();
+                //        //Encontra os level03 do level02
+                //        var level03DoLevel02 = collectionLelve03ListDTO.Where(r => y.Id == r.CollectionLevel02Id).ToList();
 
-                        //Busca nome level03
-                        foreach (var z in level03DoLevel02)
-                            z.Name = _listLevel03.FirstOrDefault(zz => zz.Id == z.Level03Id).Name;
+                //        //Busca nome level03
+                //        foreach (var z in level03DoLevel02)
+                //            z.Name = _listLevel03.FirstOrDefault(zz => zz.Id == z.Level03Id).Name;
 
-                        //Insere level03 no leve02 e remove o 03 da lista temp.
-                        y.collectionLevel03DTO = level03DoLevel02;
-                        collectionLelve03ListDTO.RemoveAll(r => y.Id == r.CollectionLevel02Id);
-                    }
+                //        //Insere level03 no leve02 e remove o 03 da lista temp.
+                //        y.collectionLevel03DTO = level03DoLevel02;
+                //        collectionLelve03ListDTO.RemoveAll(r => y.Id == r.CollectionLevel02Id);
+                //    }
 
-                }
+                //}
 
                 #endregion
 
@@ -252,6 +248,8 @@ namespace Dominio.Services
                 {
                     ConsolidationLevel01 = consildatedLelve01ListDTO1,
                 };
+
+
 
                 return new GenericReturn<GetSyncDTO>(listResult);
 

@@ -19,8 +19,8 @@ namespace Dominio.Interfaces.Repositories
 
         void SetDuplicated(CollectionLevel02 i);
         void SetDuplicated(List<CollectionLevel03> cll3, CollectionLevel02 collectionLevel02);
-        int GetExistentLevel01Consollidation(ConsolidationLevel01 level01Consolidation);
-        int GetExistentLevel02Consollidation(ConsolidationLevel02 level02Consolidation);
+        ConsolidationLevel01 GetExistentLevel01Consollidation(ConsolidationLevel01 level01Consolidation);
+        ConsolidationLevel02 GetExistentLevel02Consollidation(ConsolidationLevel02 level02Consolidation, ConsolidationLevel01 consolidationLevel01);
 
         void Remove(int id);
     }

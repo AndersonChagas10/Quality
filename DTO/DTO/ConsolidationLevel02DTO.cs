@@ -11,6 +11,20 @@ namespace DTO.DTO
 
         public ConsolidationLevel02DTO() { }
 
+        #region  Properties refletidas da Entidade EDMX Do Entity Framework
+
+        public int Level01ConsolidationId { get; set; }
+        public int Level02Id { get; set; }
+        public int UnitId { get; set; }
+        public Nullable<System.DateTime> ConsolidationDate { get; set; }
+
+        public Level02DTO Level02 { get; set; }
+        public List<CollectionLevel02DTO> CollectionLevel02 { get; set; }
+
+        #endregion
+
+        #region Properties e construtores utilizadas na coleta de dados
+
         public ConsolidationLevel02DTO(List<CollectionLevel02DTO> x)
         {
 
@@ -53,9 +67,9 @@ namespace DTO.DTO
 
         }
 
-        public Nullable<System.DateTime> ConsolidationDate { get; set; }
-        public int Level01ConsolidationId { get; set; }
-        public int Level02Id { get; set; }
+        public List<CollectionLevel02DTO> collectionLevel02DTO { get; set; }
+
+        #endregion
 
     }
 }

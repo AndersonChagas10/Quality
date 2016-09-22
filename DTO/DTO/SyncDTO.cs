@@ -103,6 +103,9 @@ namespace DTO.DTO
         public List<CorrectiveActionDTO> makeCA()
         {
             var CA = new List<CorrectiveActionDTO>();
+            if (this.correctiveactioncomplete.IsNull())
+                throw new ExceptionHelper("The corrective action is null!");
+
             foreach (var caTela in this.correctiveactioncomplete)
             {
                 var caTelatoAdd = new CorrectiveActionDTO()
@@ -110,10 +113,10 @@ namespace DTO.DTO
 
                     idcorrectiveaction = Guard.ConverteValor<int>(caTela.idcorrectiveaction, "caTela.idcorrectiveaction"), //int.Parse(caTela.idcorrectiveaction),
                     AuditorId = Guard.ConverteValor<int>(caTela.auditorid, "caTela.auditorid"),//int.Parse(caTela.auditorid),
-                    DescriptionFailure = caTela.descriptionfailure,
-                    ImmediateCorrectiveAction = caTela.immediatecorrectiveaction,
-                    ProductDisposition = caTela.productdisposition,
-                    PreventativeMeasure = caTela.preventativemeasure,
+                    DescriptionFailure = Guard.ConverteValor<string>(caTela.descriptionfailure, "caTela.descriptionfailure"),
+                    ImmediateCorrectiveAction = Guard.ConverteValor<string>(caTela.immediatecorrectiveaction, "caTela.immediatecorrectiveaction"),
+                    ProductDisposition = Guard.ConverteValor<string>(caTela.productdisposition, "caTela.productdisposition"),
+                    PreventativeMeasure = Guard.ConverteValor<string>(caTela.preventativemeasure, "caTela.preventativemeasure"),
                     SlaughterId = Guard.ConverteValor<int>(caTela.slaugthersignature, "caTela.slaugthersignature"),//int.Parse(caTela.slaugthersignature),
                     //MOCK
                     DateTimeSlaughter = DateTime.Now,

@@ -308,17 +308,17 @@
     </Compile>
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
-    <Compile Include="Mappers\ColetaMappingProfile.cs" />
-    <Compile Include="Mappers\CorrectiveActionMappingProfile.cs" />
+    <Compile Include="Mappers\CorrectiveActionMapperProfile.cs" />
     <Compile Include="Mappers\CollectionLevel02MapperProfile.cs" />
     <Compile Include="Mappers\CollectionLevel03MapperProfile.cs" />
     <Compile Include="Mappers\ConsolidationLevel01MapperProfile.cs" />
     <Compile Include="Mappers\ConsolidationLevel02MapperProfile.cs" />
-    <Compile Include="Mappers\Level01MappingProfile - Copy.cs" />
+    <Compile Include="Mappers\Level01MapperProfile.cs" />
+    <Compile Include="Mappers\Level02MapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMappingProfile.cs" />
     <Compile Include="Mappers\UnitMappingProfile.cs" />
-    <Compile Include="Mappers\DepartmenMappingProfile.cs" />
-    <Compile Include="Mappers\Level03ConsolidationMapperProfile.cs" />
+    <Compile Include="Mappers\DepartmenMapperProfile.cs" />
+    <Compile Include="Mappers\Level03MapperProfile.cs" />
     <Compile Include="Mappers\UserMappingProfile.cs" />
     <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
@@ -675,6 +675,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\DeployInterno.pubxml" />
+    <None Include="Properties\PublishProfiles\DeployInternoDebug.pubxml" />
     <None Include="Properties\PublishProfiles\DeploySgqInterno.pubxml" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />

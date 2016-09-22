@@ -4,9 +4,9 @@ using DTO.DTO;
 
 namespace SgqSystem.Mappers
 {
-    public class CorrectiveActionMappingProfile : Profile
+    public class CorrectiveActionMapperProfile : Profile
     {
-        public CorrectiveActionMappingProfile()
+        public CorrectiveActionMapperProfile()
         {
             #region CorrectiveAction
 

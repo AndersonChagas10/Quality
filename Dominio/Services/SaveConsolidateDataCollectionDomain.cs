@@ -5,6 +5,7 @@ using DTO.DTO;
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 
@@ -83,22 +84,28 @@ namespace Dominio.Services
                 #region Loop Save
 
                 var saving = 0;
+
+                foreach (var v in obj.ListToSave) {
+                    var consildatedLelve01ListDTO1 = new List<ConsolidationLevel01DTO>();
+                    consildatedLelve01ListDTO1 = Mapper.Map<List<ConsolidationLevel01DTO>>(v);
+                }
+
                 foreach (var i in obj.ListToSave)
                 {
 
                     ConsolidationLevel01 level01Consolidation;
                     PrencheFeedaBackPt1(out saving, i, out level01Consolidation);
-                    SalvaConsolidationLevel01(i, level01Consolidation);
+                    level01Consolidation = SalvaConsolidationLevel01(i, level01Consolidation);
                     ConsolidationLevel02 level02Consolidation;
 
                     foreach (var j in i.consolidationLevel02DTO)
                     {
-                        level02Consolidation = SalvaConsolidationLevel02(i, level01Consolidation, j);
 
                         foreach (var x in i.collectionLevel02DTO)
                         {
 
-                            CollectionLevel02 collectionLevel02 = SalvaCollectionLevel02(level01Consolidation, level02Consolidation, x);
+                            level02Consolidation = SalvaConsolidationLevel02(i, level01Consolidation, j, x);
+                            CollectionLevel02 collectionLevel02 = SalvaCollectionLevel02(level01Consolidation, level02Consolidation, x, x.collectionLevel03DTO, obj);
                             SalvaCorrectiveAction(obj, x, collectionLevel02);
                             SalvaCollectionLevel03(x, collectionLevel02);
 
@@ -122,7 +129,7 @@ namespace Dominio.Services
             {
                 #region Trata Exceção de forma Geral.
 
-                return new GenericReturn<SyncDTO>(e, "Cannot sync Data.", obj);
+                return new GenericReturn<SyncDTO>(e, "Cannot sync Data." + e.Message, obj);
 
                 #endregion
             }
@@ -218,7 +225,7 @@ namespace Dominio.Services
             if (saving == 2)
                 savingText = "Carcass Contamination Audit";
 
-            var feedback = new GenericReturn<SyncDTO>("Susscess! All Data Saved in: " + elapsedMs + " ms, for: " + savingText, obj);
+            var feedback = new GenericReturn<SyncDTO>("Susscess! All Data Saved for: " + savingText, obj); //in: " + elapsedMs + " ms,
             feedback.IdSaved = saving;
             return feedback;
         }
@@ -259,14 +266,39 @@ namespace Dominio.Services
             }
         }
 
-        private CollectionLevel02 SalvaCollectionLevel02(ConsolidationLevel01 level01Consolidation, ConsolidationLevel02 level02Consolidation, CollectionLevel02DTO x)
+        private CollectionLevel02 SalvaCollectionLevel02(ConsolidationLevel01 level01Consolidation, 
+            ConsolidationLevel02 level02Consolidation, CollectionLevel02DTO x, List<CollectionLevel03DTO> maldito,
+            SyncDTO obj)
         {
             x.Level01Id = level01Consolidation.Level01Id;
             x.ConsolidationLevel02Id = level02Consolidation.Id;
-            var collectionLevel02 = Mapper.Map<CollectionLevel02>(x);
+            CollectionLevel02 collectionLevel02;
 
             #region Coloca flag duplicado.
+            //MOCK
+
+            //if (x.Id > 0)
+            //{
+            //    if (x.CorrectiveActionId > 0)
+            //    {
+            //        var CaToSaveDTO = obj.ListToSaveCA.FirstOrDefault(z => z.idcorrectiveaction == x.CorrectiveActionId);
+            //        if (CaToSaveDTO != null)
+            //        {
+            //            x.CorrectiveAction = new List<CorrectiveActionDTO>();
+            //            x.CorrectiveAction.Add(CaToSaveDTO);
+            //        }
+            //        //MOCK
+            //        foreach (var i in maldito)
+            //            i.CollectionLevel02Id = x.Id;
+            //        x.CollectionLevel03 = maldito;
+            //    }
+            //}
+
+            collectionLevel02 = Mapper.Map<CollectionLevel02>(x);
+
+
             _collectionLevel02RepositoryGET.SetDuplicated(collectionLevel02);
+
             #endregion
 
             _baseRepoCollectionL2.AddOrUpdate(collectionLevel02);
@@ -274,32 +306,36 @@ namespace Dominio.Services
             return collectionLevel02;
         }
 
-        private ConsolidationLevel02 SalvaConsolidationLevel02(ConsolidationLevel01DTO i, ConsolidationLevel01 level01Consolidation, ConsolidationLevel02DTO j)
+        private ConsolidationLevel02 SalvaConsolidationLevel02(ConsolidationLevel01DTO i, ConsolidationLevel01 level01Consolidation, ConsolidationLevel02DTO j, CollectionLevel02DTO x)
         {
             ConsolidationLevel02 level02Consolidation;
             j.Level01ConsolidationId = level01Consolidation.Id;
+            j.Level02Id = x.Level02Id;
             level02Consolidation = Mapper.Map<ConsolidationLevel02>(j);
 
-            #region Procura Consolidação existente
-            //var idTempLevel02ConsollidationId = _consolidationLevel02RepositoryGET.GetExistentLevel02Consollidation(level02Consolidation);
-            //level02Consolidation.Id = idTempLevel02ConsollidationId;
+            #region Procura consolidação existente
+            var todasConsolidations = _consolidationLevel02RepositoryGET.GetExistentLevel02Consollidation(level02Consolidation, level01Consolidation);
             #endregion
-
-            _baseRepoConsolidationL2.AddOrUpdate(level02Consolidation);
+            //Se não encontrar nenhuma consolidação com o level02Id ja criada, ele cria uma.
+            var adicionar = todasConsolidations ?? level02Consolidation;
+            //_baseRepoConsolidationL2.AddOrUpdate(adicionar);
+            _baseRepoConsolidationL2.AddOrUpdate(adicionar);
             i.Id = level02Consolidation.Id;
-            return level02Consolidation;
+            return adicionar;
         }
 
-        private void SalvaConsolidationLevel01(ConsolidationLevel01DTO i, ConsolidationLevel01 level01Consolidation)
+        private ConsolidationLevel01 SalvaConsolidationLevel01(ConsolidationLevel01DTO i, ConsolidationLevel01 level01Consolidation)
         {
-
             #region Procura Consolidação existente
-            //var idTempLevel01ConsollidationId = _consolidationLevel01RepositoryGET.GetExistentLevel01Consollidation(level01Consolidation);
-            //level01Consolidation.Id = idTempLevel01ConsollidationId;
+            var todasConsolidations = _consolidationLevel01RepositoryGET.GetExistentLevel01Consollidation(level01Consolidation);
             #endregion
 
-            _baseRepoConsolidationL1.AddOrUpdate(level01Consolidation);
+            var adicionar = todasConsolidations ?? level01Consolidation;
+            _baseRepoConsolidationL1.AddOrUpdate(adicionar);
+            level01Consolidation = adicionar;
+            //_baseRepoConsolidationL1.AddOrUpdate(level01Consolidation);
             i.Id = level01Consolidation.Id;
+            return adicionar;
         }
 
         private static void PrencheFeedaBackPt1(out int saving, ConsolidationLevel01DTO i, out ConsolidationLevel01 level01Consolidation)

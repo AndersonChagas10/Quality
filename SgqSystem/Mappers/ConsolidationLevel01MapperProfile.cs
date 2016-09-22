@@ -11,7 +11,7 @@ namespace SgqSystem.Mappers
         {
             CreateMap<ConsolidationLevel01DTO, ConsolidationLevel01>();
             CreateMap<ConsolidationLevel01, ConsolidationLevel01DTO>();//.ForMember(x => x.collectionLevel02DTO, opt => opt.Ignore()).ForMember(x => x.consolidationLevel02DTO, opt => opt.Ignore());
-            CreateMap<List<ConsolidationLevel01>, List<ConsolidationLevel01DTO>>();
+            //CreateMap<List<ConsolidationLevel01>, List<ConsolidationLevel01DTO>>();
 
             //    .ForMember(x => x.Level01, opt => opt.Ignore())
             //    .ForMember(x => x.Level02Consolidation, opt => opt.Ignore());

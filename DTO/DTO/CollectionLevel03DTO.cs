@@ -74,7 +74,8 @@ namespace DTO.DTO
         public bool ConformedIs { get; set; }
         public decimal Value { get; set; }
         public string ValueText { get; set; }
-
+        public Nullable<bool> Duplicated { get; set; }
+        public Level03DTO Level03 { get; set; }
 
     }
 }

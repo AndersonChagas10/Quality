@@ -8,6 +8,11 @@ namespace DTO.DTO
 {
     public class ConsolidationLevel01DTO : EntityBase
     {
+
+        public ConsolidationLevel01DTO() { }
+        
+        #region Properties refletidas da Entidade EDMX Do Entity Framework
+
         public Nullable<System.DateTime> ConsolidationDate { get; set; }
         public int UnitId { get; set; }
         public int DepartmentId { get; set; }
@@ -16,12 +21,16 @@ namespace DTO.DTO
         public DepartmentDTO Department { get; set; }
         public Level01DTO Level01 { get; set; }
         public UnitDTO Unit { get; set; }
+        public List<ConsolidationLevel02DTO> ConsolidationLevel02 { get; set; }
+
+        #endregion
+
+        #region Properties e construtores utilizadas na coleta de dados
 
         //public ICollection<ConsolidationLevel02DTO> ConsolidationLevel02 { get; set; }
         public List<ConsolidationLevel02DTO> consolidationLevel02DTO { get; set; }
         public List<CollectionLevel02DTO> collectionLevel02DTO { get; set; }
 
-        public ConsolidationLevel01DTO() { }
 
         public ConsolidationLevel01DTO(RootObject rootObject)
         {
@@ -72,6 +81,8 @@ namespace DTO.DTO
 
             #endregion
 
-        }
+        } 
+
+        #endregion
     }
 }

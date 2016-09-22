@@ -11,7 +11,7 @@ namespace SgqSystem.Mappers
         {
             CreateMap<CollectionLevel02DTO, CollectionLevel02>();
             CreateMap<CollectionLevel02, CollectionLevel02DTO>();
-            CreateMap<List<CollectionLevel02>, List<CollectionLevel02DTO>>();
+            //CreateMap<List<CollectionLevel02>, List<CollectionLevel02DTO>>();
             
             //    .ForMember(x => x.Level02Consolidation, opt => opt.Ignore())
             //    .ForMember(x => x.DataCollectionResult, opt => opt.Ignore());
