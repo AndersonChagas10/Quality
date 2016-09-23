@@ -99,7 +99,7 @@ namespace Data.Repositories
         {
             verifyDate(obj, "AlterDate");
             //verifyDate(obj, "AddDate");
-            //Entity.Attach(obj);
+            Entity.Attach(obj);
             //db.Entry(obj).State = EntityState.Added;
             db.Entry(obj).State = EntityState.Modified;
             Commit();
@@ -231,6 +231,11 @@ namespace Data.Repositories
             }
         }
 
+        //public T ExecutaSql<T>(string sqlQuery, string sqlSelectLast)
+        //{
+        //    db.Database.ExecuteSqlCommand(sqlQuery);
+        //    return db.Database.SqlQuery<T>(sqlSelectLast).FirstOrDefault();
+        //}
         
     }
 }

@@ -19,6 +19,7 @@ namespace Dominio.Services
         private IBaseRepository<ConsolidationLevel01> _baseRepoConsolidationL1;
         private IBaseRepository<ConsolidationLevel02> _baseRepoConsolidationL2;
         private IBaseRepository<CollectionLevel02> _baseRepoCollectionL2;
+        private ICollectionLevel02Repo _collectionLevel02Repo;
         private IBaseRepository<CollectionLevel03> _baseRepoCollectionL3;
         private IBaseRepository<CollectionHtml> _baseRepoCollectionHtml;
         private IBaseRepository<CorrectiveAction> _baseRepoCorrectiveAction;
@@ -43,9 +44,11 @@ namespace Dominio.Services
             IGetDataResultRepository<ConsolidationLevel02> consolidationLevel02RepositoryGET,
             IGetDataResultRepository<CollectionLevel02> collectionLevel02RepositoryGET,
             IGetDataResultRepository<CollectionLevel03> collectionLevel03RepositoryGET,
-            IGetDataResultRepository<CollectionHtml> baseRepoCollectionHtmlGET
+            IGetDataResultRepository<CollectionHtml> baseRepoCollectionHtmlGET,
+            ICollectionLevel02Repo collectionLevel02Repo
             )
         {
+            _collectionLevel02Repo = collectionLevel02Repo;
             _consolidationLevel01RepositoryGET = consolidationLevel01RepositoryGET;
             _consolidationLevel02RepositoryGET = consolidationLevel02RepositoryGET;
             _collectionLevel02RepositoryGET = collectionLevel02RepositoryGET;
@@ -78,39 +81,47 @@ namespace Dominio.Services
                 CriaListaDeObjectsToSave(obj);
 
                 #endregion
-
                 Stopwatch watch = IniciaCronometro();
-
                 #region Loop Save
 
                 var saving = 0;
 
-                foreach (var v in obj.ListToSave) {
-                    var consildatedLelve01ListDTO1 = new List<ConsolidationLevel01DTO>();
-                    consildatedLelve01ListDTO1 = Mapper.Map<List<ConsolidationLevel01DTO>>(v);
-                }
+                //foreach (var v in obj.ListToSave) {
+                //    var consildatedLelve01ListDTO1 = new List<ConsolidationLevel01DTO>();
+                //    consildatedLelve01ListDTO1 = Mapper.Map<List<ConsolidationLevel01DTO>>(v);
+                //}
 
                 foreach (var i in obj.ListToSave)
                 {
 
                     ConsolidationLevel01 level01Consolidation;
+                    level01Consolidation = Mapper.Map<ConsolidationLevel01>(i);
+                    level01Consolidation.ConsolidationLevel02 = Mapper.Map<List<ConsolidationLevel02>>(i.consolidationLevel02DTO);
+
+                    //foreach (var b in i.ConsolidationLevel02)
+                    //{
+                    //    b.CollectionLevel02 = i.collectionLevel02DTO;
+                    //    foreach (var c in i.collectionLevel02DTO)
+                    //    {
+
+                    //    // i.consolidationLevel02DTO
+                    //        c.CollectionLevel03 = c.collectionLevel03DTO;
+                    //    }
+                    //}
+
                     PrencheFeedaBackPt1(out saving, i, out level01Consolidation);
                     level01Consolidation = SalvaConsolidationLevel01(i, level01Consolidation);
                     ConsolidationLevel02 level02Consolidation;
 
                     foreach (var j in i.consolidationLevel02DTO)
                     {
-
                         foreach (var x in i.collectionLevel02DTO)
                         {
-
                             level02Consolidation = SalvaConsolidationLevel02(i, level01Consolidation, j, x);
                             CollectionLevel02 collectionLevel02 = SalvaCollectionLevel02(level01Consolidation, level02Consolidation, x, x.collectionLevel03DTO, obj);
                             SalvaCorrectiveAction(obj, x, collectionLevel02);
                             SalvaCollectionLevel03(x, collectionLevel02);
-
                         }
-
                     }
                 }
 
@@ -232,26 +243,74 @@ namespace Dominio.Services
 
         private void SalvaCollectionLevel03(CollectionLevel02DTO x, CollectionLevel02 collectionLevel02)
         {
+            List<CollectionLevel03> collectionLevel03Old = new List<CollectionLevel03>();
+            List<CollectionLevel03> cll3 = new List<CollectionLevel03>();
+            var isAlter = false;
             foreach (var y in x.collectionLevel03DTO)
-                y.CollectionLevel02Id = collectionLevel02.Id;
-
-            List<CollectionLevel03> cll3 = Mapper.Map<List<CollectionLevel03>>(x.collectionLevel03DTO);
-
-            #region Coloca flag duplicado.
-            _collectionLevel03RepositoryGET.SetDuplicated(cll3, collectionLevel02);
-            #endregion
-
-            //Observar por que alguns elemento vem não nulos, o EF buga ao dar o update pois essa property não esta attached.
-            cll3.ForEach(r => r.CollectionLevel02 = null);
-
-            _baseRepoCollectionL3.AddOrUpdateAll(cll3);
-
-            var counter = 0;
-            foreach (var xx in x.collectionLevel03DTO)
             {
-                xx.Id = cll3[counter].Id;
-                counter++;
+                y.CollectionLevel02Id = collectionLevel02.Id;
+                if (y.Id > 0)
+                {
+                    var old = _baseRepoCollectionL3.GetById(y.Id);
+                    //alterdate, conformedIs, value, valueText, Duplicated
+                    //if (y.ConformedIs != old.ConformedIs)
+                    //{
+                    //    isAlter = true;
+                    //    old.ConformedIs = y.ConformedIs;
+                    //}
+                    //if (y.Value != old.Value)
+                    //{
+                    //    isAlter = true;
+                    //    old.Value = y.Value;
+                    //}
+                    //if (y.ValueText != old.ValueText)
+                    //{
+                    //    isAlter = true;
+                    //    old.ValueText = y.ValueText;
+                    //}
+                    //if (y.Duplicated != old.Duplicated)
+                    //{
+                    //    isAlter = true;
+                    //    old.Duplicated = y.Duplicated;
+                    //}
+                    //if (isAlter)
+                    //{
+                    //}
+                    isAlter = true;
+                    old.ConformedIs = y.ConformedIs;
+                    old.Value = y.Value;
+                    old.ValueText = y.ValueText;
+                    old.Duplicated = y.Duplicated;
+                    collectionLevel03Old.Add(old);
+                }
             }
+
+            if (isAlter)
+            {
+                //collectionLevel03Old.ForEach(r => r.CollectionLevel02 = null);
+                _baseRepoCollectionL3.AddOrUpdateAll(collectionLevel03Old);
+            }
+            else
+            {
+                cll3 = Mapper.Map<List<CollectionLevel03>>(x.collectionLevel03DTO);
+
+                #region Coloca flag duplicado.
+                _collectionLevel03RepositoryGET.SetDuplicated(cll3, collectionLevel02);
+                #endregion
+
+                //Observar por que alguns elemento vem não nulos, o EF buga ao dar o update pois essa property não esta attached.
+                cll3.ForEach(r => r.CollectionLevel02 = null);
+
+                _baseRepoCollectionL3.AddAll(cll3);
+
+            }
+            x.collectionLevel03DTO = Mapper.Map<List<CollectionLevel03DTO>>(cll3);
+            //var counter = 0;
+            //foreach (var xx in x.collectionLevel03DTO)
+            //{
+            //    xx.Id = cll3[counter].Id;
+            //    counter++;
+            //}
         }
 
         private void SalvaCorrectiveAction(SyncDTO obj, CollectionLevel02DTO x, CollectionLevel02 collectionLevel02)
@@ -266,7 +325,7 @@ namespace Dominio.Services
             }
         }
 
-        private CollectionLevel02 SalvaCollectionLevel02(ConsolidationLevel01 level01Consolidation, 
+        private CollectionLevel02 SalvaCollectionLevel02(ConsolidationLevel01 level01Consolidation,
             ConsolidationLevel02 level02Consolidation, CollectionLevel02DTO x, List<CollectionLevel03DTO> maldito,
             SyncDTO obj)
         {
@@ -295,13 +354,18 @@ namespace Dominio.Services
             //}
 
             collectionLevel02 = Mapper.Map<CollectionLevel02>(x);
-
-
             _collectionLevel02RepositoryGET.SetDuplicated(collectionLevel02);
-
+            collectionLevel02.CollectionLevel03 = null;
             #endregion
-
-            _baseRepoCollectionL2.AddOrUpdate(collectionLevel02);
+            //_baseRepoCollectionL2.AddOrUpdate(collectionLevel02);
+            if (x.Id == 0)
+            {
+                _baseRepoCollectionL2.Add(collectionLevel02);
+            }
+            else
+            {
+                _collectionLevel02Repo.UpdateCollectionLevel02(collectionLevel02);
+            }
             x.Id = collectionLevel02.Id;
             return collectionLevel02;
         }

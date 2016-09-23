@@ -18,7 +18,6 @@ namespace Dominio
         public CollectionLevel02()
         {
             this.CollectionLevel03 = new HashSet<CollectionLevel03>();
-            this.CorrectiveAction = new HashSet<CorrectiveAction>();
         }
     
         public int Id { get; set; }
@@ -53,7 +52,5 @@ namespace Dominio
         public virtual UserSgq UserSgq { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel03> CollectionLevel03 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CorrectiveAction> CorrectiveAction { get; set; }
     }
 }

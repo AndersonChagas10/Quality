@@ -12,7 +12,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Html" Type="nvarchar(max)" />
+          <Property Name="Html" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Period" Type="int" Nullable="false" />
           <Property Name="Shift" Type="int" Nullable="false" />
           <Property Name="CollectionDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -40,11 +40,11 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="CattleTypeId" Type="int" Nullable="false" />
-          <Property Name="Chainspeed" Type="decimal" Precision="10" Scale="5" Nullable="false" />
+          <Property Name="Chainspeed" Type="decimal" Precision="20" Scale="5" Nullable="false" />
           <Property Name="ConsecutiveFailureIs" Type="bit" Nullable="false" />
           <Property Name="ConsecutiveFailureTotal" Type="int" Nullable="false" />
-          <Property Name="LotNumber" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="Mudscore" Type="decimal" Precision="10" Scale="5" Nullable="false" />
+          <Property Name="LotNumber" Type="decimal" Precision="20" Scale="5" Nullable="false" />
+          <Property Name="Mudscore" Type="decimal" Precision="20" Scale="5" Nullable="false" />
           <Property Name="NotEvaluatedIs" Type="bit" Nullable="false" />
           <Property Name="Duplicated" Type="bit" Nullable="false" />
         </EntityType>
@@ -581,7 +581,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Html" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Html" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Period" Type="Int32" Nullable="false" />
           <Property Name="Shift" Type="Int32" Nullable="false" />
           <Property Name="CollectionDate" Type="DateTime" Nullable="false" Precision="7" />
@@ -917,11 +917,11 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="CattleTypeId" Type="Int32" Nullable="false" />
-          <Property Name="Chainspeed" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
+          <Property Name="Chainspeed" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
           <Property Name="ConsecutiveFailureIs" Type="Boolean" Nullable="false" />
           <Property Name="ConsecutiveFailureTotal" Type="Int32" Nullable="false" />
-          <Property Name="LotNumber" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="Mudscore" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
+          <Property Name="LotNumber" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
+          <Property Name="Mudscore" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
           <Property Name="NotEvaluatedIs" Type="Boolean" Nullable="false" />
           <Property Name="Duplicated" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="CollectionLevel02" ToRole="ConsolidationLevel02" />
@@ -929,7 +929,6 @@
           <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_CollectionLevel02_Level02" FromRole="CollectionLevel02" ToRole="Level02" />
           <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="CollectionLevel02" ToRole="UserSgq" />
           <NavigationProperty Name="CollectionLevel03" Relationship="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" FromRole="CollectionLevel02" ToRole="CollectionLevel03" />
-          <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveAction_CollectionLevel02" FromRole="CollectionLevel02" ToRole="CorrectiveAction" />
         </EntityType>
         <Association Name="FK_CollectionLevel02_ConsolidationLevel02">
           <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="1" />
