@@ -36,7 +36,6 @@
         var $wrapper = $($('style')[1]);
         var $placeholder = $('<span style="display: none;" />').insertAfter($wrapper)
         $wrapper.detach();
-        //$wrapper.insertBefore($placeholder);
 
         $(document).ready(function () {
             $("#btnSend").click(function (e) {
@@ -47,7 +46,6 @@
         formControl.ShowAllFielsAndFullCallendar();
 
         function Send() {
-
             try {
                 $btn.button('loading');
                 $('#results').empty();
@@ -56,14 +54,18 @@
                 if (!GuardJs.isValid) { return; }
                 GuardJs.esconderMensagem();
                 $.post(url1, enviar, function (r) {
-
                     CriaTable(r.Retorno);
-
-                    $btn.button('reset');
                 });
             } catch (err) {
                 console.log(e);
+            } finally {
                 $btn.button('reset');
+                setTimeout(function (e) {
+                    var oTable = $('#results').dataTable();
+                    if (oTable.length > 0) {
+                        oTable.fnAdjustColumnSizing();
+                    }
+                }, 500);
             }
         };
 
@@ -88,31 +90,19 @@
                    { title: "Product Disposition", mData: "ProductDisposition" },
                    //{ title: "Auditor", mData: "Id" }
                 ],
-                //dom: 'Bfrtip',
-                //buttons: [
-                //   'copy', 'excel', 'pdf'
-                //],
-                //columnDefs: config.columnDefs,
-                //bSort: true,
-                //bAutoWidth: true,
-                //bFilter: true,
+                "columnDefs": [
+                   { "className": "dt-center", "targets": "_all" }
+                ],
                 scrollX: true,
                 lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
                 pageLength: 10,
-                //processing: true,
                 loadingRecords: true,
                 destroy: true,
-                //paginate: true,
-                //paging: true,
                 info: true,
-                //searching: true,
-                //createdRow: config.createdRow,
-                //fnDrawCallback: config.fnDrawCallback,
                 initComplete: function () {
                     $('#loading').hide();
                     $('#results tbody').on('click', 'button', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
-                        //alert(data.Id + "Id is: " + data.Id);
                         $.post(url2, { "": data.Id }, function (r, x, e) {
                             if (!!r.Retorno) {
                                 //console.log(r.Retorno);
@@ -141,9 +131,6 @@
                         });
                     });
                 },
-                //order: config.order || [[0, 'asc']],
-                //serverSide: !config.serverSide == undefined || config.serverSide,
-                //sPaginationType: 'full_numbers',
             });
 
             new $.fn.dataTable.Buttons(table, {
@@ -151,12 +138,6 @@
                     {
                         extend: 'print',
                         customize: function (win) {
-                            //$(win.document.body)
-                            //    .css( 'font-size', '10pt' )
-                            //    .prepend(
-                            //        '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
-                            //    );
-
                             $(win.document.body).find('table')
                                 .addClass('compact').addClass('printable!important')
                                 .css('font-size', 'inherit');

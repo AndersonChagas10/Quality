@@ -35,22 +35,23 @@
         });
 
         function Send() {
-            try {
-                $btn.button('loading');
-                $('#results').empty();
-                ValidaDadosParaEnvio();
-                //AJAX
-                $.post(url1, enviar, function (r) {
+            $btn.button('loading');
+            $('#results').empty();
+            ValidaDadosParaEnvio();
+            //AJAX
+            $.post(url1, enviar, function (r) {
+                try {
                     var retornoArray = [];
                     var arrayItarator = r.Retorno;
-                    TratarDados(retornoArray, arrayItarator);
-                    GerarTabela(retornoArray);
+                    GerarTabela(r.Retorno.ConsolidationLevel01);
+                } catch (e) {
+                    console.log(e);
+                } finally {
                     $btn.button('reset');
-                });
-            } catch (e) {
-                console.log(e);
-                $btn.button('reset');
-            }
+                    //Hotfix: table não alinha resultados de centro no meio da tr....
+                   
+                }
+            });
         };
         function GerarTabela(retornoArray) {
 
@@ -71,6 +72,24 @@
                    { title: "Value", mData: "Value" },
                    { title: "ValueText", mData: "ValueText" },
                 ],
+                "columnDefs": [
+                    { "className": "dt-center", "targets": "_all" }
+                ],
+                scrollX: true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                pageLength: 10,
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                initComplete: function () {
+                    $('#loading').hide();
+                    setTimeout(function (e) {
+                        var oTable = $('#results').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 100);
+                },
                 //dom: 'Bfrtip',
                 //buttons: [
                 //   'copy', 'excel', 'pdf'
@@ -79,26 +98,12 @@
                 //bSort: true,
                 //bAutoWidth: true,
                 //bFilter: true,
-                scrollX: true,
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-                pageLength: 10,
                 //processing: true,
-                loadingRecords: true,
-                destroy: true,
                 //paginate: true,
                 //paging: true,
-                info: true,
                 //searching: true,
                 //createdRow: config.createdRow,
                 //fnDrawCallback: config.fnDrawCallback,
-                initComplete: function () {
-                    $('#loading').hide();
-                    var oTable = $('#results').dataTable();
-                    //$('#menu-toggle').trigger('click');
-                    if (oTable.length > 0) {
-                        oTable.fnAdjustColumnSizing();
-                    }
-                },
                 //order: config.order || [[0, 'asc']],
                 //serverSide: !config.serverSide == undefined || config.serverSide,
                 //sPaginationType: 'full_numbers',
@@ -152,39 +157,6 @@
                 table.table().container()
             );
 
-        }
-        function TratarDados(retornoArray, arrayItarator) {
-            arrayItarator.ConsolidationLevel01.forEach(function (o, c) {
-
-                o.collectionLevel02DTO.forEach(function (oo, cc) {
-
-                    oo.collectionLevel03DTO.forEach(function (ooo, ccc) {
-                        var retorno = {};
-
-                        retorno['Departamento'] = o.Department.Name;
-                        retorno['Level01'] = o.Level01.Name;
-                        retorno['Unit'] = o.Unit.Name;
-
-                        retorno['Level02'] = oo.Level02Id;
-                        retorno['Level02name'] = oo.Name;
-                        retorno['avaliado'] = oo.EvaluationNumber;
-                        retorno['Sample'] = oo.Sample;
-                        retorno['Shift'] = oo.Shift;
-                        retorno['Phase'] = oo.Phase;
-                        retorno['AddDate'] = new Date(oo.AddDate).toLocaleDateString();
-                        retorno['NotEvaluatedIs'] = oo.NotEvaluatedIs;
-
-                        retorno["ConformedIs"] = ooo.ConformedIs;
-                        retorno["Level03Id"] = ooo.Level03Id;
-                        retorno["Level03Name"] = ooo.Name;
-                        retorno["Value"] = ooo.Value;
-                        retorno["ValueText"] = ooo.ValueText;
-
-                        retornoArray.push(retorno);
-                    });
-
-                });
-            })
         }
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();

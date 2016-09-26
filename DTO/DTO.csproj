@@ -65,7 +65,7 @@
     <Compile Include="DTO\Level03DTO.cs" />
     <Compile Include="DTO\Level01DTO.cs" />
     <Compile Include="DTO\PeriodDTO.cs" />
-    <Compile Include="TableResults\ResultDataCollectionReportsTable.cs" />
+    <Compile Include="TableResults\TableResultsForDataTable.cs" />
     <Compile Include="DTO\ShiftDTO.cs" />
     <Compile Include="DTO\SyncDTO.cs" />
     <Compile Include="DTO\UnitDTO.cs" />

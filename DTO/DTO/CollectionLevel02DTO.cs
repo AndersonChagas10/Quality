@@ -134,7 +134,7 @@ namespace DTO.DTO
             #endregion
             //08 / 30 / 2016 10:38
             if (nextRoot.datetime != null)
-                CollectionDate = DateTime.ParseExact(nextRoot.datetime, "MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
+                CollectionDate = DateTime.ParseExact(nextRoot.datetime.Split(':')[0] + ":" + nextRoot.datetime.Split(':')[1], "MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
 
             if (nextRoot.evaluate != null)
                 EvaluationNumber = Guard.ConverteValor<int>(nextRoot.evaluate, "Level02.evaluate"); //int.Parse(nextRoot.evaluate);
