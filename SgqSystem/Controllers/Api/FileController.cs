@@ -11,7 +11,7 @@ namespace SgqSystem.Controllers.Api
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class FileController : Controller
     {
-        private string ServerVirtualPath { get { return Server.MapPath("~/Arquivos/uploads"); } }
+        private string ServerVirtualPath { get { return Server.MapPath("~/Arquivos"); } }
         //[Route("GetFiles")]
         public ActionResult GetFiles()
         {

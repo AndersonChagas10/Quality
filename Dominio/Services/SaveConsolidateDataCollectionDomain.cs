@@ -308,17 +308,20 @@ namespace Dominio.Services
         {
             if (x.CorrectiveActionId > 0)
             {
-                var CaToSaveDTO = objListToSaveCA.FirstOrDefault(z => z.idcorrectiveaction == x.CorrectiveActionId);
-                var CA = Mapper.Map<CorrectiveAction>(CaToSaveDTO);
-                CA.CollectionLevel02Id = collectionLevel02Id;
+                if (_baseRepoCorrectiveAction.GetById(x.CorrectiveActionId) == null)
+                {
+                    var CaToSaveDTO = objListToSaveCA.FirstOrDefault(z => z.idcorrectiveaction == x.CorrectiveActionId);
+                    var CA = Mapper.Map<CorrectiveAction>(CaToSaveDTO);
+                    CA.CollectionLevel02Id = collectionLevel02Id;
 
-                CA.UserSgq = null;
-                CA.UserSgq1 = null; 
-                CA.UserSgq2 = null;
-                CA.CollectionLevel02 = null;
+                    CA.UserSgq = null;
+                    CA.UserSgq1 = null;
+                    CA.UserSgq2 = null;
+                    CA.CollectionLevel02 = null;
 
-                _baseRepoCorrectiveAction.AddOrUpdate(CA);
-                x.CorrectiveActionSaved = Mapper.Map<CorrectiveActionDTO>(CA);
+                    _baseRepoCorrectiveAction.AddOrUpdate(CA);
+                    x.CorrectiveActionSaved = Mapper.Map<CorrectiveActionDTO>(CA);
+                }
             }
         }
 
