@@ -217,7 +217,7 @@
         <li>
             <div id="showUnit">
                 <span class="redLabel">Unit</span>
-                @Html.DropDownList("unitId", Model.Units, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                @Html.DropDownList("unitId", Model.UnitsSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
@@ -295,7 +295,6 @@
         enviar['level01Id'] = null;
         enviar['level02Id'] = null;
         enviar['level03Id'] = null;
-
 
         //Start config datepickerrange simple
         $('input[name="datefilter"]').daterangepicker({

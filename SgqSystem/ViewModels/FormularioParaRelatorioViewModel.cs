@@ -1,4 +1,5 @@
-﻿using DTO;
+﻿using Application.Interface;
+using DTO;
 using DTO.DTO;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -7,80 +8,92 @@ namespace SgqSystem.ViewModels
 {
     public class FormularioParaRelatorioViewModel : DataCarrierFormulario
     {
+        //private readonly IBaseApp<Dominio.Unit, UnitDTO> _Unit;
+        //public FormularioParaRelatorioViewModel(IBaseApp<Dominio.Unit, UnitDTO> Unit
+        //    )
+        //{
+        //    _Unit = Unit;
+
+
+        //}
 
         #region Retorno
 
         public ResultSetRelatorioColeta result { get; set; }
         public ResultSetGetCorrectiveAction resultSetGetCorrectiveAction { get; set; }
 
+        #endregion
+        
         #region SelectListItem
 
-        public IEnumerable<SelectListItem> level01DTOSelectList
+        public IEnumerable<SelectListItem> level01DTOSelectList { get; set; }
+        internal void SetLevel01SelectList(IEnumerable<Level01DTO> enumerable)
         {
-            get
-            {
-                return new List<SelectListItem>(){
-                                                    new SelectListItem() {Text="HTP", Value="1"},
-                                                    new SelectListItem() {Text="Carcass Contamination Audit", Value="2"},
-                                                    new SelectListItem() {Text="CFF (Cut, Fold and Flaps)", Value="3"},
-                                                };
-            }
-            set { level01DTOSelectList = value; }
+            level01DTOSelectList = CriaSelectList(enumerable);
         }
+
         public IEnumerable<SelectListItem> level02DTOSelectList { get; set; }
-        public IEnumerable<SelectListItem> level03DTOSelectList { get; set; }
-        public IEnumerable<SelectListItem> Units
+        internal void Setlevel02SelectList(IEnumerable<Level02DTO> enumerable)
         {
-            get
-            {
-                return new List<SelectListItem>(){
-                                                    new SelectListItem() {Text="Colorado", Value="1"},
-                                                };
-            }
-            set { Units = value; }
+            level02DTOSelectList = CriaSelectList(enumerable);
         }
-        public IEnumerable<SelectListItem> ShiftSelectList
+
+        public IEnumerable<SelectListItem> level03DTOSelectList { get; set; }
+        internal void SetLevel03SelectList(IEnumerable<Level03DTO> enumerable)
         {
-            get
-            {
-                return new List<SelectListItem>(){
+            level02DTOSelectList = CriaSelectList(enumerable);
+
+        }
+
+        public IEnumerable<SelectListItem> UnitsSelectList { get; set; }
+        internal void SetUnitsSelectList(IEnumerable<UnitDTO> enumerable)
+        {
+            UnitsSelectList = CriaSelectList(enumerable);
+
+        }
+
+        public IEnumerable<SelectListItem> ShiftSelectList { get; set; }
+        internal void SetShiftSelectList(/*IEnumerable<ShiftDTO> enumerable*/)
+        {
+            //MOCK tabela fora de padrão 29 09 2016 celsogea.
+            ShiftSelectList = new List<SelectListItem>(){
                                                     new SelectListItem() {Text="Shift A", Value="1"},
                                                     new SelectListItem() {Text="Shift B", Value="2"},
                                                 };
-            }
-            set { ShiftSelectList = value; }
         }
-        public IEnumerable<SelectListItem> PeriodSelectList
+
+        public IEnumerable<SelectListItem> PeriodSelectList { get; set; }
+        internal void SetPeriodSelectList(IEnumerable<PeriodDTO> enumerable)
         {
-            get
-            {
-                return new List<SelectListItem>(){
-                                                    new SelectListItem() {Text="Period 1", Value="1"},
-                                                    new SelectListItem() {Text="Period 2", Value="2"},
-                                                    new SelectListItem() {Text="Period 3", Value="3"},
-                                                    new SelectListItem() {Text="Period 4", Value="4"},
-                                                };
-            }
-            set { PeriodSelectList = value; }
+            PeriodSelectList = CriaSelectList(enumerable);
+
         }
 
         public IEnumerable<SelectListItem> UserSelectList { get; set; }
-
-        public void SetUsers(List<UserDTO> users)
+        internal void SetUserSelectList(IEnumerable<UserDTO> enumerable)
         {
+            UserSelectList = CriaSelectList(enumerable);
 
-            var adicionar = new List<SelectListItem>();
+        }
 
-            foreach (var i in users)
-                adicionar.Add(new SelectListItem() { Text = i.Name, Value = i.Id.ToString() });
+        private List<SelectListItem> CriaSelectList<T>(IEnumerable<T> enumerable) 
+        {
+            List<SelectListItem> retorno = new List<SelectListItem>();
+            var counter = 0;
+            foreach (var i in enumerable)
+            {
 
-            UserSelectList = adicionar;
+                var text = i.GetType().GetProperty("Name") ?? i.GetType().GetProperty("Description");
+                var prop = i.GetType().GetProperty("Id");
+                retorno.Insert(counter, new SelectListItem() { Text = text.GetValue(i).ToString(), Value = prop.GetValue(i).ToString() });
+                counter++;
+            }
 
+            return retorno;
         }
 
         #endregion
 
-        #endregion
 
 
 

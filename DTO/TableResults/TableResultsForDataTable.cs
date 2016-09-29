@@ -17,6 +17,7 @@ namespace DTO.TableResults
         public string Phase { get; set; }
         public string AddDate { get; set; }
         public string NotEvaluatedIs { get; set; }
+        public string Auditor { get; set; }
         public string ConformedIs { get; set; }
         public string Level03Id { get; set; }
         public string Level03Name { get; set; }
@@ -67,26 +68,31 @@ namespace DTO.TableResults
                     {
                         foreach (var level03 in level02.CollectionLevel03)
                         {
-                            Departamento = conslL1.Department.Name;
-                            Level01 = conslL1.Level01.Name;
-                            Unit = conslL1.Unit.Name;
+                            var resultSet = new TableResultsForDataTable()
+                            {
+                                Departamento = conslL1.Department.Name,
+                                Level01 = conslL1.Level01.Name,
+                                Unit = conslL1.Unit.Name,
 
-                            Level02 = conslL2.Level02.Id.ToString();
-                            Level02name = conslL2.Level02.Name;
-                            avaliado = level02.EvaluationNumber.ToString();
-                            Sample = level02.Sample.ToString();
-                            Shift = level02.Shift.ToString();
-                            Phase = level02.Phase.ToString();
-                            AddDate = level02.AddDate.ToString("MM/dd/yyyy");
-                            NotEvaluatedIs = level02.NotEvaluatedIs ? "Not Evaluated" : "Evaluated";
+                                //Level02 = conslL2.Level02.Id.ToString(),
+                                Level02name = conslL2.Level02.Name,
+                                avaliado = level02.EvaluationNumber.ToString(),
+                                Sample = level02.Sample.ToString(),
+                                Shift = level02.Shift.ToString(),
+                                Phase = level02.Phase.ToString(),
+                                AddDate = level02.AddDate.ToString("MM/dd/yyyy"),
+                                NotEvaluatedIs = level02.NotEvaluatedIs ? "Not Evaluated" : "Evaluated",
+                                Auditor = level02.UserSgq.Name,
 
-                            ConformedIs = level03.ConformedIs ? "Conform" : "Not Conform";
-                            Level03Id = level03.Id.ToString();
-                            Level03Name = level03.Name;
-                            Value = string.Format("{0:N2}", level03.Value);
-                            ValueText = level03.ValueText;
+                                ConformedIs = level03.ConformedIs ? "Conform" : "Not Conform",
+                                //Level03Id = level03.Id.ToString(),
+                                Level03Name = level03.Level03.Name,
+                                Value = string.Format("{0:N2}", level03.Value),
+                                ValueText = level03.ValueText
+                            };
 
-                            ListaResultDataCollectionReportsTable.Add(this);
+
+                            ListaResultDataCollectionReportsTable.Add(resultSet);
                         }
                     }
                 }

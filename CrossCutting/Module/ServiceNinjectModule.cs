@@ -8,7 +8,7 @@ namespace CrossCutting.IOC.Module
     {
         public override void Load()
         {
-            Bind(typeof(IBaseDomain<>)).To(typeof(BaseDomain<>));
+            Bind(typeof(IBaseDomain<,>)).To(typeof(BaseDomain<,>));
             Bind<IUserDomain>().To<UserDomain>();
             Bind<ICorrectiveActionDomain>().To<CorrectiveActionDomain>();
             Bind<IRelatorioColetaDomain>().To<RelatorioColetaDomain>();

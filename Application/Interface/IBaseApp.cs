@@ -1,17 +1,17 @@
-﻿using Dominio.Entities;
+﻿using Dominio.Entities.BaseEntity;
 using DTO.Helpers;
 using System.Collections.Generic;
 
 namespace Application.Interface
 {
-    public interface IBaseApp<T> where T : class
+    public interface IBaseApp<T, Y> where T : class where Y : class
     {
 
         GenericReturn<T> Add(T obj);
 
         T GetById(int id);
 
-        IEnumerable<T> GetAll();
+        IEnumerable<Y> GetAll();
 
         GenericReturn<T> Update(T obj);
 

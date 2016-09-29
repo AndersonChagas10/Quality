@@ -49,9 +49,11 @@
                 } finally {
                     $btn.button('reset');
                     //Hotfix: table não alinha resultados de centro no meio da tr....
-                   
                 }
-            });
+            })
+            //    .error(function (a, b, c) {
+            //    $btn.button('reset');
+            //});
         };
         function GerarTabela(retornoArray) {
 
@@ -59,6 +61,7 @@
                 data: retornoArray,
                 columns: [{ title: "Unit", mData: "Unit" },
                    { title: "Department", mData: "Departamento" },
+                   { title: "Auditor", mData: "Auditor" },
                    { title: "Level01", mData: "Level01" },
                    { title: "Level02", mData: "Level02name" },
                    { title: "Evaluated", mData: "avaliado" },

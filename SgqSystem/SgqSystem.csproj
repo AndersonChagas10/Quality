@@ -300,7 +300,7 @@
     <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\GraficoBetaController.cs" />
+    <Compile Include="Controllers\ChartsController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\WebServiceController.cs" />
     <Compile Include="Global.asax.cs">
@@ -315,7 +315,9 @@
     <Compile Include="Mappers\ConsolidationLevel02MapperProfile.cs" />
     <Compile Include="Mappers\Level01MapperProfile.cs" />
     <Compile Include="Mappers\Level02MapperProfile.cs" />
-    <Compile Include="Mappers\UnitUserMappingProfile.cs" />
+    <Compile Include="Mappers\ShiftMapperProfile.cs" />
+    <Compile Include="Mappers\PeriodMapperProfile.cs" />
+    <Compile Include="Mappers\UnitUserMapperProfile.cs" />
     <Compile Include="Mappers\UnitMappingProfile.cs" />
     <Compile Include="Mappers\DepartmenMapperProfile.cs" />
     <Compile Include="Mappers\Level03MapperProfile.cs" />
@@ -928,6 +930,7 @@
     <Content Include="Views\Shared\_FormularioQueryData.cshtml" />
     <Content Include="Views\FileControl\Index.cshtml" />
     <Content Include="Views\Shared\_FormToQueryFullScreen.cshtml" />
+    <Content Include="Views\Charts\DataCollectionChart.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

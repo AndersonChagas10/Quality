@@ -121,9 +121,6 @@ namespace Dominio.Services
                     //    _baseRepoCollectionL3.AddOrUpdateAll(collectionLevel02DestaConsilidacao.CollectionLevel03);
                     //}
 
-
-
-
                     ConsolidationLevel01 level01Consolidation = Mapper.Map<ConsolidationLevel01>(i);
                     PrencheFeedaBackPt1(out saving, level01Consolidation);
                     level01Consolidation = SalvaConsolidationLevel01(level01Consolidation);
@@ -177,7 +174,11 @@ namespace Dominio.Services
                     CollectionDate = objToSync.CollectionHtml.CollectionDate,
                     UnitId = objToSync.CollectionHtml.UnitId
                 };
-                var elemento = _baseRepoCollectionHtml.GetAll().FirstOrDefault(r => r.UnitId == objToSync.idUnidade && r.Shift == objToSync.CollectionHtml.Shift && r.Period == objToSync.CollectionHtml.Period);
+                var elemento = _baseRepoCollectionHtml.GetAll()
+                    .FirstOrDefault(r => r.UnitId == objToSync.idUnidade 
+                        && r.Shift == objToSync.CollectionHtml.Shift 
+                        //&& r.Period == objToSync.CollectionHtml.Period
+                    );
                 if (elemento.IsNull() && (objToSync.html.IsNull()))
                     return new GenericReturn<SyncDTO>("Susscess! Sync.");
 

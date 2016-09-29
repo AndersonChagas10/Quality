@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System;
 using System.Data.Entity;
 using DTO.DTO;
-using DTO;
 
 namespace Data.Repositories
 {
@@ -20,9 +19,11 @@ namespace Data.Repositories
 
         public CollectionHtml GetHtmlLastEntry(SyncDTO idUnidade)
         {
-            var retorno = db.CollectionHtml.OrderByDescending(o => o.Id).FirstOrDefault(r => r.UnitId == idUnidade.CollectionHtml.UnitId && r.Shift == idUnidade.CollectionHtml.Shift
-            //&& r.Period == idUnidade.CollectionHtml.Period
-            );
+            var retorno = db.CollectionHtml//OrderByDescending(o => o.Id)
+                .FirstOrDefault(r => r.UnitId == idUnidade.CollectionHtml.UnitId 
+                    && r.Shift == idUnidade.CollectionHtml.Shift
+                    //&& r.Period == idUnidade.CollectionHtml.Period
+                );
             if (retorno == null)
                 return new CollectionHtml();
 

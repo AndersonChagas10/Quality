@@ -113,17 +113,22 @@ namespace Data.Repositories
         public IEnumerable<ConsolidationLevel01> GetEntryConsildatedLevel01ByDateAndUnit(DataCarrierFormulario form)
         {
             IEnumerable<ConsolidationLevel01> lastResults;
-            if (form.unitId > 0)
-            {
-                lastResults =  db.ConsolidationLevel01.Where(r => r.UnitId == form.unitId
-                    && DbFunctions.TruncateTime(r.AddDate) >= DbFunctions.TruncateTime(form._dataInicio)
-                    && DbFunctions.TruncateTime(r.AddDate) <= DbFunctions.TruncateTime(form._dataFim));
-            }
-            else {
                 lastResults = db.ConsolidationLevel01.Where(r => DbFunctions.TruncateTime(r.AddDate) >= DbFunctions.TruncateTime(form._dataInicio)
                    && DbFunctions.TruncateTime(r.AddDate) <= DbFunctions.TruncateTime(form._dataFim));
-            }
-                        
+
+            if (form.unitId > 0)
+                lastResults = lastResults.Where(r => r.UnitId == form.unitId);
+
+            if (form.auditorId > 0)
+                lastResults = lastResults.Where(r => r.ConsolidationLevel02.Any(cl2=>cl2.CollectionLevel02.Any(cll2=>cll2.AuditorId == form.auditorId)));
+
+            if(form.shift > 0 )
+                lastResults = lastResults.Where(r => r.ConsolidationLevel02.Any(cl2 => cl2.CollectionLevel02.Any(cll2 => cll2.Shift == form.shift)));
+
+            if (form.period > 0)
+                lastResults = lastResults.Where(r => r.ConsolidationLevel02.Any(cl2 => cl2.CollectionLevel02.Any(cll2 => cll2.Period == form.period)));
+
+            //var teste = lastResults.ToList();
             return lastResults;
         }
 
