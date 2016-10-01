@@ -263,6 +263,8 @@ namespace Dominio.Services
             if(collectionLevel03.Any(r=>r.Id == 0))
                 _collectionLevel03RepositoryGET.SetDuplicated(collectionLevel03, collectionLevel02Id);
 
+            //foreach(var i in collectionLevel03)
+
             _baseRepoCollectionL3.AddOrUpdateAll(collectionLevel03);
             collectionLevel02DTO.collectionLevel03DTO = Mapper.Map<List<CollectionLevel03DTO>>(collectionLevel03);
             
@@ -333,11 +335,7 @@ namespace Dominio.Services
             collectionLevel02DTO.ConsolidationLevel02Id = level02ConsolidationId;
             CollectionLevel02 collectionLevel02 = Mapper.Map<CollectionLevel02>(collectionLevel02DTO);
 
-            collectionLevel02.CollectionLevel03 = null;
-            collectionLevel02.Level01 = null;
-            collectionLevel02.Level02 = null;
-            collectionLevel02.UserSgq = null;
-            collectionLevel02.ConsolidationLevel02 = null;
+         
 
             //Coloca flag duplicado.
             if (collectionLevel02.Id == 0)
@@ -352,6 +350,12 @@ namespace Dominio.Services
             //{
             //    _collectionLevel02Repo.addor(collectionLevel02);
             //}
+
+            collectionLevel02.CollectionLevel03 = null;
+            collectionLevel02.Level01 = null;
+            collectionLevel02.Level02 = null;
+            collectionLevel02.UserSgq = null;
+            collectionLevel02.ConsolidationLevel02 = null;
 
             _baseRepoCollectionL2.AddOrUpdate(collectionLevel02);
 
