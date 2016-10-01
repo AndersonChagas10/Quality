@@ -64,17 +64,17 @@ namespace Data.Repositories
             var alterThisData = db.CollectionLevel03.Where(r => collectionLevel02.Id == r.CollectionLevel02Id).ToList();
 
             if (alterThisData == null)
-                throw new Exception("Dados requerem atualização para Duplicated = true em level03 porem não foram encontrados.");
+                return;// throw new Exception("Dados requerem atualização para Duplicated = true em level03 porem não foram encontrados.");
             if (alterThisData.Count == 0)
-                throw new Exception("Dados requerem atualização para Duplicated = true em level03 porem não foram encontrados.");
+                return; //throw new Exception("Dados requerem atualização para Duplicated = true em level03 porem não foram encontrados.");
 
             foreach (var x in alterThisData)
             {
                 x.Duplicated = true;
-                UpdateNotCommit(x as T);
+                Update(x as T);
             }
 
-            Commit();
+            //Commit();
 
         }
 

@@ -255,18 +255,47 @@ namespace Dominio.Services
 
         private void SalvaCollectionLevel03(CollectionLevel02DTO collectionLevel02DTO, CollectionLevel02 collectionLevel02Id)
         {
+            List<CollectionLevel03> saved = new List<CollectionLevel03>();
+            foreach (var i in collectionLevel02DTO.collectionLevel03DTO)
+            {
 
-            collectionLevel02DTO.collectionLevel03DTO.Select(c => { c.CollectionLevel02Id = collectionLevel02Id.Id; return c; }).ToList();
-            List<CollectionLevel03> collectionLevel03 = Mapper.Map<List<CollectionLevel03>>(collectionLevel02DTO.collectionLevel03DTO);
+                if (i.CollectionLevel02Id == 0)
+                    i.CollectionLevel02Id = collectionLevel02Id.Id;
+
+                CollectionLevel03 collectionLevel03 = Mapper.Map<CollectionLevel03>(i);
+
+                if (collectionLevel03.Id == 0)
+                {
+                    var correcaoTemp = new List<CollectionLevel03>();
+                    correcaoTemp.Add(collectionLevel03);
+                    _collectionLevel03RepositoryGET.SetDuplicated(correcaoTemp, collectionLevel02Id);
+                }
+
+                if (collectionLevel03.Id > 0)
+                {
+                    collectionLevel03.CollectionLevel02 = null;
+                    collectionLevel03.Level03 = null;
+                    _baseRepoCollectionL3.Update(collectionLevel03);
+                }
+                else
+                {
+                    _baseRepoCollectionL3.Add(collectionLevel03);
+                }
+
+                saved.Add(collectionLevel03);
+            }
+            collectionLevel02DTO.collectionLevel03DTO = Mapper.Map<List<CollectionLevel03DTO>>(saved);
+            //collectionLevel02DTO.collectionLevel03DTO.Select(c => { c.CollectionLevel02Id = collectionLevel02Id.Id; return c; }).ToList();
+            //List<CollectionLevel03> collectionLevel03 = Mapper.Map<List<CollectionLevel03>>(collectionLevel02DTO.collectionLevel03DTO);
 
             //region Coloca flag duplicado.
-            if(collectionLevel03.Any(r=>r.Id == 0))
-                _collectionLevel03RepositoryGET.SetDuplicated(collectionLevel03, collectionLevel02Id);
+            //if(collectionLevel03.Any(r=>r.Id == 0))
+            //    _collectionLevel03RepositoryGET.SetDuplicated(collectionLevel03, collectionLevel02Id);
+
 
             //foreach(var i in collectionLevel03)
-
-            _baseRepoCollectionL3.AddOrUpdateAll(collectionLevel03);
-            collectionLevel02DTO.collectionLevel03DTO = Mapper.Map<List<CollectionLevel03DTO>>(collectionLevel03);
+            //    _baseRepoCollectionL3.AddOrUpdate(i);
+            ////_baseRepoCollectionL3.AddOrUpdateAll(collectionLevel03);
             
             //List<CollectionLevel03> collectionLevel03Old = new List<CollectionLevel03>();
             //List<CollectionLevel03> cll3 = new List<CollectionLevel03>();
