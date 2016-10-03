@@ -36,7 +36,7 @@ namespace Data.Repositories
             Remove(element);
         }
 
-        public void SetDuplicated(List<CollectionLevel03> cll3, CollectionLevel02 i)
+        public void SetDuplicated(CollectionLevel03 cll3, CollectionLevel02 i)
         {
             var collectionLevel02 = db.CollectionLevel02.Where(r =>
                                r.Level01Id == i.Level01Id &&

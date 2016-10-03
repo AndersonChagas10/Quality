@@ -11,7 +11,7 @@ namespace DTO.DTO
 
         public CollectionLevel02DTO() { }
 
-        public CollectionLevel02DTO(NextRoot nextRoot, int unitId)
+        public CollectionLevel02DTO(NextRoot nextRoot, int unitId, string biasedunbiased)
         {
             if (nextRoot.id != null)
                 if (nextRoot.id.Length > 0)
@@ -134,7 +134,10 @@ namespace DTO.DTO
             #endregion
             //08 / 30 / 2016 10:38
             if (nextRoot.datetime != null)
+            {
+                var dataCorrigida = nextRoot.datetime.Split(':');
                 CollectionDate = DateTime.ParseExact(nextRoot.datetime.Split(':')[0] + ":" + nextRoot.datetime.Split(':')[1], "MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
+            }
 
             if (nextRoot.evaluate != null)
                 EvaluationNumber = Guard.ConverteValor<int>(nextRoot.evaluate, "Level02.evaluate"); //int.Parse(nextRoot.evaluate);
@@ -161,6 +164,7 @@ namespace DTO.DTO
         public decimal Chainspeed { get; set; }
         public bool ConsecutiveFailureIs { get; set; }
         public int ConsecutiveFailureTotal { get; set; }
+        public int biasedunbiased { get; set; }
         public decimal LotNumber { get; set; }
         public decimal Mudscore { get; set; }
         public bool NotEvaluatedIs { get; set; }
