@@ -33,6 +33,8 @@ namespace DTO.DTO
 
             if (nextRoot.level01id.Equals("1"))
             {
+                CattleTypeId = Guard.ConverteValor<int>(biasedunbiased, "Level01.biasedunbiased");//int.Parse(nextRoot.cattletype);
+                Guard.ForValidFk(CattleTypeId, "biasedunbiased Id is not valid.");
             }
 
             #endregion
