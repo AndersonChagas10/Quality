@@ -1,5 +1,4 @@
-﻿using DTO;
-using DTO.DTO;
+﻿using DTO.DTO;
 using System.Collections.Generic;
 
 namespace Dominio.Interfaces.Repositories
@@ -17,11 +16,12 @@ namespace Dominio.Interfaces.Repositories
         //IEnumerable<CollectionLevel02> GetEntryCollectionLevel02ByDateAndUnit(IEnumerable<ConsolidationLevel02> cl2);
         //IEnumerable<CollectionLevel03> GetEntryCollectionLevel03ByDateAndUnit(IEnumerable<CollectionLevel02> cll2);
 
-        void SetDuplicated(CollectionLevel02 i);
-        void SetDuplicated(CollectionLevel03 cll3, CollectionLevel02 collectionLevel02);
+       // bool SetDuplicated(CollectionLevel02 collectionLevel02);
+        //void SetDuplicated(List<CollectionLevel03> cll3, CollectionLevel02 collectionLevel02);
         ConsolidationLevel01 GetExistentLevel01Consollidation(ConsolidationLevel01 level01Consolidation);
         ConsolidationLevel02 GetExistentLevel02Consollidation(ConsolidationLevel02 level02Consolidation, ConsolidationLevel01 consolidationLevel01);
 
         void Remove(int id);
+        void SetDuplicated(IEnumerable<CollectionLevel02> collectionAVerificarDuplicidade, int level01Id);
     }
 }

@@ -8,6 +8,9 @@ using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.Api
 {
+    /// <summary>
+    /// Api para Coleta de Dados SgqGlobal.
+    /// </summary>
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SyncController : ApiController
     {
@@ -25,44 +28,65 @@ namespace SgqSystem.Controllers.Api
 
         #endregion
 
-        #region Sync Data
+        #region Data Collection
 
+        /// <summary>
+        /// Metodo do Api para salvar Consolidação lelve01, level2, collection level02 e level03, corrective action. 
+        /// O Objeto SyncViewModel objToSync deve conter o parametro Root com a estrutura correta segundo definido no
+        /// Banco de Dados para que o restanten do processo ocorra sem imprevistos.
+        /// </summary>
+        /// <param name="objToSync"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/Sync/SetDataAuditConsolidated")]
-        public  GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated([FromBody] SyncViewModel objToSync)
+        public GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated([FromBody] SyncViewModel objToSync)
         {
-            //if (ReqController.avaliable.Equals(objToSync.lockPattern))
-            //{
-                var results = _syncApp.SetDataToSincyAuditConsolidated(objToSync);
-                return results;
-            //}
-            //else
-            //{
-            //    return new GenericReturn<SyncDTO>("Wait");
-            //}
+            return _syncApp.SetDataToSincyAuditConsolidated(objToSync);
         }
 
         #endregion
 
-        #region Lock
+        #region Html
+
+        /// <summary>
+        /// Api para Salvar o html da div Results do SgqGlobal. O Objeto objToSync deve conter os seguintes parametros:
+        /// objToSync.CollectionHtml.Period.
+        /// objToSync.CollectionHtml.Shift.
+        /// objToSync.CollectionHtml.CollectionDate.
+        /// objToSync.CollectionHtml.UnitId.
+        /// objToSync.html.
+        /// </summary>
+        /// <param name="objToSync"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/Sync/SaveHtml")]
+        public GenericReturn<SyncDTO> SaveHtml([FromBody] SyncViewModel objToSync)
+        {
+            var results = _syncApp.SaveHtml(objToSync);
+            //unLock();
+            return results;
+        }
+
+        /// <summary>
+        /// Retorna a ultima div salva com parametros definidos para: Unidade e Shift.
+        /// </summary>
+        /// <param name="objToSync"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/Sync/GetHtmlLastEntry")]
+        public GenericReturn<GetSyncDTO> GetHtmlLastEntry([FromBody] SyncViewModel objToSync)
+        {
+            return _syncApp.GetHtmlLastEntry(objToSync);
+        }
+
+        #endregion
+
+        #region Lock BETA TRAVA CLIENTE QUANDO ALGUM TABLET ESTIVER SINCRONIZANDO.
 
         [HttpPost]
         [Route("api/Sync/Lock")]
         public string Lock([FromBody] string lockable)
         {
-            //if (!(ReqController.avaliable == null))
-            //    if (ReqController.avaliable.Equals(lockable))
-            //        return ReqController.avaliable;
-
-            //if (ReqController.avaliable == null)
-            //{
-            //    ReqController.avaliable = lockable;
-            //    return ReqController.avaliable;
-            //}
-            //else
-            //{
-            //    return "wait";
-            //}
             return lockable;
         }
 
@@ -74,85 +98,11 @@ namespace SgqSystem.Controllers.Api
             return ReqController.avaliable;
         }
 
-
-
         [HttpPost]
         [Route("api/Sync/verifyUnlock")]
         public string verifyUnlock()
         {
             return ReqController.avaliable;
-        }
-
-        #endregion
-
-        #region Html
-
-        [HttpPost]
-        [Route("api/Sync/SaveHtml")]
-        public GenericReturn<SyncDTO> SaveHtml([FromBody] SyncViewModel objToSync)
-        {
-            //if (ReqController.avaliable.Equals(objToSync.lockPattern))
-            //{
-                var results = _syncApp.SaveHtml(objToSync);
-                unLock();
-                return results;
-            //}
-            //else
-            //{
-            //    return new GenericReturn<SyncDTO>("Wait");
-            //}
-        }
-
-        [HttpPost]
-        [Route("api/Sync/GetHtmlLastEntry")]
-        public GenericReturn<GetSyncDTO> GetHtmlLastEntry([FromBody] SyncViewModel objToSync)
-        {
-            //if (ReqController.avaliable.Equals(objToSync.lockPattern))
-            //{
-                //objToSync.username = (User as CustomPrincipal).UserName;
-            var results = _syncApp.GetHtmlLastEntry(objToSync);
-            return results;
-            //return "<div class=\"Results hide\">" + results + "</div>";
-            //}
-            //else
-            //{
-            //    return new GenericReturn<GetSyncDTO>("Wait");
-            //}
-        }
-
-        //[HttpPost]
-        //[Route("api/Sync/GetHtmlLastEntryNoLock")]
-        //public GenericReturn<GetSyncDTO> GetHtmlLastEntryNoLock([FromBody]SyncViewModel objToSync)
-        //{
-        //    if (ReqController.avaliable.Equals(objToSync.lockPattern))
-        //    {
-        //        var results = _syncApp.GetHtmlLastEntry(objToSync.idUnidade);
-        //        return results;
-        //    }
-        //    else
-        //    {
-        //        return new GenericReturn<GetSyncDTO>("Wait");
-        //    }
-        //}
-
-        #endregion
-
-        #region deprecated
-
-        [HttpPost]
-        [Route("api/Sync/GetLastEntry")]
-        public GenericReturn<GetSyncDTO> GetLastEntry()
-        {
-            var teste = _syncApp.GetLastEntry();
-            teste.Retorno.MakeHtml();
-            return teste;
-        }
-
-        [HttpPost]
-        [Route("api/Sync/SetFuncionaAgora")]
-        public GenericReturn<SyncDTO> SetFuncionaAgora([FromBody] SyncViewModel objToSync)
-        {
-            return _syncApp.SetDataToSincyAuditConsolidated(objToSync);
         }
 
         #endregion

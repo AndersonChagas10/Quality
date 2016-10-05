@@ -37,7 +37,7 @@ namespace Data.Repositories
             db.Database.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;");
         }
 
-        #region Adiciona e Atualiza
+        #region Add
 
         public void AddNotCommit(T obj)
         {
@@ -54,9 +54,39 @@ namespace Data.Repositories
             }
         }
 
+        public void Add(T obj)
+        {
+            verifyDate(obj, "AddDate");
+            Entity.Add(obj);
+            Commit();
+        }
+
+        public void AddAll(IEnumerable<T> obj)
+        {
+            foreach (var i in obj)
+            {
+                verifyDate(i, "AddDate");
+                Entity.Add(i);
+            }
+            Commit();
+        }
+
+        #endregion
+
+        #region Update / AddUpdate
+
+        public void Update(T obj)
+        {
+            verifyDate(obj, "AlterDate");
+            Entity.Attach(obj);
+            db.Entry(obj).State = EntityState.Modified;
+            Commit();
+        }
+
         public void UpdateNotCommit(T obj)
         {
             verifyDate(obj, "AlterDate");
+            Entity.Attach(obj);
             db.Entry(obj).State = EntityState.Modified;
         }
 
@@ -78,30 +108,11 @@ namespace Data.Repositories
                 AddOrUpdateNotCommit(i);
         }
 
-        public void Add(T obj)
+        public void UpdateAll(IEnumerable<T> listObj)
         {
-            verifyDate(obj, "AddDate");
-            Entity.Add(obj);
-            Commit();
-        }
+            foreach (var i in listObj)
+                UpdateNotCommit(i);
 
-        public void AddAll(IEnumerable<T> obj)
-        {
-            foreach (var i in obj)
-            {
-                verifyDate(i, "AddDate");
-                Entity.Add(i);
-            }
-            Commit();
-        }
-
-        public void Update(T obj)
-        {
-            verifyDate(obj, "AlterDate");
-            //verifyDate(obj, "AddDate");
-            Entity.Attach(obj);
-            //db.Entry(obj).State = EntityState.Added;
-            db.Entry(obj).State = EntityState.Modified;
             Commit();
         }
 
@@ -123,12 +134,12 @@ namespace Data.Repositories
                 AddOrUpdate(i);
         }
 
+        #endregion
+
         public void Dettach(T obj)
         {
             db.Entry(obj).State = EntityState.Detached;
         }
-
-        #endregion
 
         #region Busca
 

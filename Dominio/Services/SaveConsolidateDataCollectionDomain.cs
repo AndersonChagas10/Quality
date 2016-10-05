@@ -31,6 +31,7 @@ namespace Dominio.Services
         private IGetDataResultRepository<CollectionLevel02> _collectionLevel02RepositoryGET;
         private IGetDataResultRepository<CollectionLevel03> _collectionLevel03RepositoryGET;
         private IGetDataResultRepository<CollectionHtml> _baseRepoCollectionHtmlGET;
+        private List<CollectionLevel03> _collectionLevel03ToSave;
 
         #endregion
 
@@ -63,6 +64,7 @@ namespace Dominio.Services
             _baseRepoCollectionL2 = baseRepoCollectionL2;
             _baseRepoCollectionL3 = baseRepoCollectionL3;
             _baseRepoCorrectiveAction = baseRepoCorrectiveAction;
+            _collectionLevel03ToSave = new List<CollectionLevel03>();
         }
 
         #endregion
@@ -74,8 +76,8 @@ namespace Dominio.Services
         /// A DEFINIR: Integridade do Banco de Dados - Rollback um das várias entidades apresentem problemas ao serem salvas (pelo fato de existir 'sync = false' em tela, o objeto recebera um "ressend", o objeto pode ser salvo como duplicado hoje).
         /// RN3: Debug - Cronometro para debug do tempo de "commit".
         /// RN4: Debug - Retorno Genério disponibiliza saida sem erro, porem todo retorno deve ser tratado pelo "call site", mensagens automáticas são geradas.
-        /// RN5: Sucesso - "Susscess! All Data Saved for: ....."
-        /// RN6: Erro - "Cannot sync Data: ....."
+        /// RN5: Debug - Sucesso "Susscess! All Data Saved for: ....."
+        /// RN6: Debug - Erro "Cannot sync Data: ....."
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -97,6 +99,7 @@ namespace Dominio.Services
 
                 #endregion
                 Stopwatch watch = IniciaCronometro(); //RN3
+
                 #region Loop Save
 
                 var saving = 0;
@@ -110,14 +113,36 @@ namespace Dominio.Services
 
                     foreach (var consolidationLevel02Dto in i.consolidationLevel02DTO)
                     {
+
+                        var collectionAVerificarDuplicidade = i.collectionLevel02DTO.Where(r => r.Id == 0);
+                        if (collectionAVerificarDuplicidade.Count() > 0)
+                        {
+                            var verificar = Mapper.Map<IEnumerable<CollectionLevel02>>(collectionAVerificarDuplicidade);
+                            _collectionLevel02RepositoryGET.SetDuplicated(verificar, i.Level01Id);
+                            var duplicadoInsercao = verificar.Where(r => r.Duplicated == true);
+                            if (duplicadoInsercao.Count() > 0)
+                                foreach (var dup in duplicadoInsercao)
+                                    i.collectionLevel02DTO.FirstOrDefault(r => r.Level02Id == dup.Level02Id).Duplicated = true;
+                        }
+
                         foreach (var collectionLevel02Dto in i.collectionLevel02DTO)
                         {
                             level02Consolidation = SalvaConsolidationLevel02(level01Consolidation, consolidationLevel02Dto, collectionLevel02Dto.Level02Id);
                             CollectionLevel02 collectionLevel02 = SalvaCollectionLevel02(collectionLevel02Dto, level01Consolidation.Level01Id, level02Consolidation.Id);
                             SalvaCorrectiveAction(obj.ListToSaveCA, collectionLevel02Dto, collectionLevel02.Id);
-                            SalvaCollectionLevel03(collectionLevel02Dto, collectionLevel02);
                         }
                     }
+
+                    _baseRepoCollectionL3.UpdateAll(_collectionLevel03ToSave.Where(r => r.Id > 0));
+                    _baseRepoCollectionL3.AddAll(_collectionLevel03ToSave.Where(r => r.Id == 0));
+
+                    foreach (var consolidationLevel02Dto in i.consolidationLevel02DTO)
+                        foreach (var collectionLevel02Dto in i.collectionLevel02DTO)
+                            foreach (var level03 in collectionLevel02Dto.collectionLevel03DTO)
+                            {
+                                level03.Id = _collectionLevel03ToSave.FirstOrDefault(r => r.Level03Id == level03.Level03Id && r.CollectionLevel02Id == level03.CollectionLevel02Id).Id;
+                            }
+
                 }
 
                 #endregion
@@ -197,7 +222,7 @@ namespace Dominio.Services
         }
 
         #region Auxiliares e Validações
-        
+
         /// <summary>
         /// Cria e valida Objeto DTO com "self Validation"
         /// </summary>
@@ -216,52 +241,63 @@ namespace Dominio.Services
         }
 
         /// <summary>
-        /// Salva Collection level03 em loop de 1 em 1 elemento:
-        /// RN's contempladas:
-        /// RN1: Integridade de Banco de Dados - Deve salvar a CollectionLevel02Id corretamente com cabeçado de tabela salvo anteriormente em SalvaCollectionLevel02(..).
-        /// RN2: Integridade de Banco de Dados - Deve salvar a Level03Id corretamente com cabeçado de tabela definido no Db.    
-        /// RN3: Duplicado - Ao registrar um elemento CollectionLevel02 como DUPLICADO, o CollectionLevel03 referente a este precisa ser atualizado com os dados do CollectionLevel02.    
-        /// RN4: Duplicado - Deve validar elemento Duplicado caso o CollectionLevel02 deste mesmo seja duplicado anteriormente em "SalvaCollectionLevel02(..)" e o mesmo seja um REGISTRO DE INSERÇÃO.
-        /// RN5: Debug - Deve o objeto DTO é atualizado com dados do objeto salvo, o mesmo é disponiblizado em console JavaScript após o termino do ajax.
-        /// RN6: Debug - O cabeçalho de exceção deve ser definido.
-        /// Params: Object CollectionLevel02DTO, Object CollectionLevel02.
+        /// Salva ConsolidationLevel01
+        /// RN1: Banco de dados - Procura Consolidação Level01 existente no DIA, caso exista sobrescreve.
+        /// RN2: Banco de dados - Consolida dados.
+        /// RN3: Debug - Try/Catch para Log.
         /// </summary>
-        /// <param name="collectionLevel02Dto"></param>
-        /// <param name="collectionLevel02"></param>
-        private void SalvaCollectionLevel03(CollectionLevel02DTO collectionLevel02Dto, CollectionLevel02 collectionLevel02)
+        /// <param name="level01Consolidation"></param>
+        /// <returns></returns>
+        private ConsolidationLevel01 SalvaConsolidationLevel01(ConsolidationLevel01 level01Consolidation)
         {
-            try
+            try //RN3
             {
-                List<CollectionLevel03> saved = new List<CollectionLevel03>();
-                foreach (var i in collectionLevel02Dto.collectionLevel03DTO)
+                var consolidacaoLevel01Existente = _consolidationLevel01RepositoryGET.GetExistentLevel01Consollidation(level01Consolidation); //RN1
+
+                if (consolidacaoLevel01Existente != null) //RN2
                 {
-                    //throw new NullReferenceException("teste");
-
-                    if (i.CollectionLevel02Id == 0)
-                        i.CollectionLevel02Id = collectionLevel02.Id;//RN1 e RN4
-
-                    CollectionLevel03 collectionLevel03 = Mapper.Map<CollectionLevel03>(i);//RN2
-
-                    if (collectionLevel03.Id == 0)
-                        _collectionLevel03RepositoryGET.SetDuplicated(collectionLevel03, collectionLevel02);//RN3
-
-                    if (collectionLevel03.Id > 0)
-                    {
-                        collectionLevel03.CollectionLevel02 = null;
-                        collectionLevel03.Level03 = null;
-                        _baseRepoCollectionL3.Update(collectionLevel03);
-                    }
-                    else
-                        _baseRepoCollectionL3.Add(collectionLevel03);
-
-                    saved.Add(collectionLevel03);
+                    level01Consolidation = consolidacaoLevel01Existente;
                 }
-                collectionLevel02Dto.collectionLevel03DTO = Mapper.Map<List<CollectionLevel03DTO>>(saved);//RN5
 
+                _baseRepoConsolidationL1.AddOrUpdate(level01Consolidation);
+                return level01Consolidation;
             }
             catch (Exception e)
             {
-                throw new Exception("Erro ao salvar Colleta do level03", e); //RN6
+                throw new Exception("Erro ao gerar consoidação level01", e);
+            }
+        }
+
+        /// <summary>
+        /// Salva ConsolidationLevel02
+        /// RN1: Banco de dados - Procura Consolidação Level02 existente no DIA, caso exista sobrescreve.
+        /// RN2: Banco de dados - Salva ConsolidationLevel02 Com Id salvo préviamente em ConsolidationLelve01.
+        /// RN3: Banco de dados - Consolida dados.
+        /// RN4: Debug - Try/Catch para Log.
+        /// </summary>
+        /// <param name="level01Consolidation"></param>
+        /// <returns></returns>
+        private ConsolidationLevel02 SalvaConsolidationLevel02(ConsolidationLevel01 level01Consolidation, ConsolidationLevel02DTO consolidationLevel02DTO, int level02Id)
+        {
+            try //RN4
+            {
+                ConsolidationLevel02 level02Consolidation = Mapper.Map<ConsolidationLevel02>(consolidationLevel02DTO);
+                level02Consolidation.Level01ConsolidationId = level01Consolidation.Id;
+                level02Consolidation.Level02Id = level02Id; //RN2
+
+                var consolidacaoExistente = _consolidationLevel02RepositoryGET.GetExistentLevel02Consollidation(level02Consolidation, level01Consolidation); //RN2
+
+                if (consolidacaoExistente != null) //RN3
+                {
+                    level02Consolidation = consolidacaoExistente;
+                }
+
+                _baseRepoConsolidationL2.AddOrUpdate(level02Consolidation);
+                return level02Consolidation;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao gerar consoidação level02", e);
             }
         }
 
@@ -307,7 +343,7 @@ namespace Dominio.Services
 
         /// <summary>
         /// RN1: DataBase - Deve conter foregin keys consistentes Level01 e ConsolidationLevel02.
-        /// RN2: DataBase - Deve procurar por elementos duplicados.
+        /// RN2 |DEPRECATED: DataBase - Deve procurar por elementos duplicados.
         /// RN3: DataBase - Deve utilizar a FK de ConsolidationLevel02 Previamente salva.
         /// RN3: DataBase - Deve atualizar o ID no DTO para posterior save do CollectionLevel03.
         /// RN5: HOTFIX - Deve limpar elementos de properties "VIRTUAL" do objeto.
@@ -324,10 +360,8 @@ namespace Dominio.Services
             {
                 collectionLevel02DTO.Level01Id = level01Id; //RN01
                 collectionLevel02DTO.ConsolidationLevel02Id = level02ConsolidationId;//RN03
-                CollectionLevel02 collectionLevel02 = Mapper.Map<CollectionLevel02>(collectionLevel02DTO);
 
-                if (collectionLevel02.Id == 0) //RN2
-                    _collectionLevel02RepositoryGET.SetDuplicated(collectionLevel02);
+                CollectionLevel02 collectionLevel02 = Mapper.Map<CollectionLevel02>(collectionLevel02DTO);
 
                 collectionLevel02.CollectionLevel03 = null; //RN5
                 collectionLevel02.Level01 = null;
@@ -338,72 +372,19 @@ namespace Dominio.Services
                 _baseRepoCollectionL2.AddOrUpdate(collectionLevel02);
 
                 collectionLevel02DTO.Id = collectionLevel02.Id; //RN3
+
+                foreach (var i in collectionLevel02DTO.collectionLevel03DTO)
+                {
+                    i.Duplicated = collectionLevel02.Duplicated;
+                    i.CollectionLevel02Id = collectionLevel02.Id;
+                    _collectionLevel03ToSave.Add(Mapper.Map<CollectionLevel03>(i));
+                }
+
                 return collectionLevel02;
             }
             catch (Exception e)
             {
                 throw new Exception("Erro ao salvar CollectionLevel02", e);
-            }
-        }
-
-        /// <summary>
-        /// Salva ConsolidationLevel02
-        /// RN1: Banco de dados - Procura Consolidação Level02 existente no DIA, caso exista sobrescreve.
-        /// RN2: Banco de dados - Salva ConsolidationLevel02 Com Id salvo préviamente em ConsolidationLelve01.
-        /// RN3: Banco de dados - Consolida dados.
-        /// RN4: Debug - Try/Catch para Log.
-        /// </summary>
-        /// <param name="level01Consolidation"></param>
-        /// <returns></returns>
-        private ConsolidationLevel02 SalvaConsolidationLevel02(ConsolidationLevel01 level01Consolidation, ConsolidationLevel02DTO consolidationLevel02DTO, int level02Id)
-        {
-            try //RN4
-            {
-                ConsolidationLevel02 level02Consolidation = Mapper.Map<ConsolidationLevel02>(consolidationLevel02DTO);
-                level02Consolidation.Level01ConsolidationId = level01Consolidation.Id;
-                level02Consolidation.Level02Id = level02Id; //RN2
-
-                var consolidacaoExistente = _consolidationLevel02RepositoryGET.GetExistentLevel02Consollidation(level02Consolidation, level01Consolidation); //RN2
-
-                if (consolidacaoExistente != null) //RN3
-                {
-                    level02Consolidation = consolidacaoExistente;
-                }
-
-                _baseRepoConsolidationL2.AddOrUpdate(level02Consolidation);
-                return level02Consolidation;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao gerar consoidação level02", e);
-            }
-        }
-
-        /// <summary>
-        /// Salva ConsolidationLevel01
-        /// RN1: Banco de dados - Procura Consolidação Level01 existente no DIA, caso exista sobrescreve.
-        /// RN2: Banco de dados - Consolida dados.
-        /// RN3: Debug - Try/Catch para Log.
-        /// </summary>
-        /// <param name="level01Consolidation"></param>
-        /// <returns></returns>
-        private ConsolidationLevel01 SalvaConsolidationLevel01(ConsolidationLevel01 level01Consolidation)
-        {
-            try //RN3
-            { 
-                var consolidacaoLevel01Existente = _consolidationLevel01RepositoryGET.GetExistentLevel01Consollidation(level01Consolidation); //RN1
-
-                if (consolidacaoLevel01Existente != null) //RN2
-                {
-                    level01Consolidation = consolidacaoLevel01Existente;
-                }
-
-                _baseRepoConsolidationL1.AddOrUpdate(level01Consolidation);
-                return level01Consolidation;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao gerar consoidação level01", e);
             }
         }
 
@@ -416,7 +397,7 @@ namespace Dominio.Services
         {
 
             if (level01Consolidation.Level01Id == 3) { }
-                saving = 3;
+            saving = 3;
             if (level01Consolidation.Level01Id == 1)
                 saving = 1;
             if (level01Consolidation.Level01Id == 2)

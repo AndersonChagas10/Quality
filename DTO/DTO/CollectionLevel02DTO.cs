@@ -137,8 +137,11 @@ namespace DTO.DTO
             //08 / 30 / 2016 10:38
             if (nextRoot.datetime != null)
             {
+
                 var dataCorrigida = nextRoot.datetime.Split(':');
                 CollectionDate = DateTime.ParseExact(nextRoot.datetime.Split(':')[0] + ":" + nextRoot.datetime.Split(':')[1], "MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
+                CollectionDate = CollectionDate.AddSeconds(Guard.ConverteValor<int>(nextRoot.datetime.Split(':')[2], "CollectionDate")).AddMilliseconds(Guard.ConverteValor<int>(nextRoot.datetime.Split(':')[3], "CollectionDate"));
+
             }
 
             if (nextRoot.evaluate != null)
@@ -206,5 +209,6 @@ namespace DTO.DTO
         public ConsolidationLevel01DTO consolidationLevel01DTO { get; set; }
         public bool Remove { get; set; }
         public CorrectiveActionDTO CorrectiveActionSaved { get; set; }
+        public bool HasDuplicated { get; set; }
     }
 }

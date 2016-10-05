@@ -22,6 +22,9 @@ namespace Dominio.Interfaces.Repositories
         IEnumerable<T> GetAll();
 
         void Update(T obj);
+
+        void UpdateAll(IEnumerable<T> listObj);
+
         void UpdateNotCommit(T obj);
         
         void Remove(T obj);
@@ -33,6 +36,7 @@ namespace Dominio.Interfaces.Repositories
         T First();
 
         void AddOrUpdate(T obj);
+
         void AddOrUpdateNotCommit(T obj);
         
         void Commit();
