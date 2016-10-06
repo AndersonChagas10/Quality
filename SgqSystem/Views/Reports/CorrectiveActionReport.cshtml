@@ -60,12 +60,12 @@
                 console.log(e);
             } finally {
                 $btn.button('reset');
-                setTimeout(function (e) {
-                    var oTable = $('#results').dataTable();
-                    if (oTable.length > 0) {
-                        oTable.fnAdjustColumnSizing();
-                    }
-                }, 500);
+                //setTimeout(function (e) {
+                //    var oTable = $('#results').dataTable();
+                //    if (oTable.length > 0) {
+                //        oTable.fnAdjustColumnSizing();
+                //    }
+                //}, 500);
             }
         };
 
@@ -99,6 +99,7 @@
                 loadingRecords: true,
                 destroy: true,
                 info: true,
+                responsive: true,
                 initComplete: function () {
                     $('#loading').hide();
                     $('#results tbody').on('click', 'button', function (data, a, b) {

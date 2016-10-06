@@ -546,7 +546,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="newColeta\SyncData.js" />
+    <Content Include="DataCollect\a.js" />
     <Content Include="Scripts\aes.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
@@ -932,6 +932,16 @@
     <Content Include="Views\FileControl\Index.cshtml" />
     <Content Include="Views\Shared\_FormToQueryFullScreen.cshtml" />
     <Content Include="Views\Charts\DataCollectionChart.cshtml" />
+    <Content Include="Web - Copy.config" />
+    <Content Include="Web - Copy.Debug.config">
+      <DependentUpon>Web - Copy.config</DependentUpon>
+    </Content>
+    <Content Include="Web - Copy.DeployInterno.config">
+      <DependentUpon>Web - Copy.config</DependentUpon>
+    </Content>
+    <Content Include="Web - Copy.Release.config">
+      <DependentUpon>Web - Copy.config</DependentUpon>
+    </Content>
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

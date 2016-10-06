@@ -31,7 +31,8 @@ namespace SgqSystem
                     "~/Scripts/DataTables/buttons.html5.min.js",
                     "~/Scripts/DataTables/buttons.print.min.js",
                     "~/Scripts/DataTables/buttons.colVis.min.js",
-                    "~/Scripts/DataTables/buttons.print.min.js"
+                    "~/Scripts/DataTables/buttons.print.min.js",
+                    "~/Scripts/DataTables/dataTables.responsive.min.js"
                     //"~/Scripts/jbs.jquery.dataTables.configuration.js",
                     //"~/Scripts/dataTable.CRUD.js",
                     ));

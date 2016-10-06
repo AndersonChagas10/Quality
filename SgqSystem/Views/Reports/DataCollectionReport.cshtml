@@ -9,6 +9,7 @@
 @*@Styles.Render("~/Content/Tables")*@
 <link href="@Url.Content("~/Content/DataTables/css/jquery.dataTables.min.css")" rel="stylesheet" />
 <link href="@Url.Content("~/Content/DataTables/css/buttons.dataTables.min.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/DataTables/css/responsive.dataTables.min.css")" rel="stylesheet" />
 
 @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
@@ -84,6 +85,7 @@
                 loadingRecords: true,
                 destroy: true,
                 info: true,
+                responsive: true,
                 initComplete: function () {
                     $('#loading').hide();
                     setTimeout(function (e) {

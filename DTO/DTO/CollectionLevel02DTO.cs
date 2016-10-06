@@ -37,6 +37,15 @@ namespace DTO.DTO
                 Guard.ForValidFk(CattleTypeId, "biasedunbiased Id is not valid.");
             }
 
+            if (nextRoot.startphasedate != null)
+            {
+
+                var dataCorrigida = nextRoot.startphasedate.Split(':');
+                StartPhaseDate = DateTime.ParseExact(nextRoot.startphasedate.Split(':')[0] + ":" + nextRoot.startphasedate.Split(':')[1], "MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
+                StartPhaseDate = CollectionDate.AddSeconds(Guard.ConverteValor<int>(nextRoot.startphasedate.Split(':')[2], "CollectionDate")).AddMilliseconds(Guard.ConverteValor<int>(nextRoot.startphasedate.Split(':')[3], "startphasedate"));
+
+            }
+
             #endregion
 
             #region Caso for CFF
