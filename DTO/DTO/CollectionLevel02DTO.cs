@@ -141,7 +141,7 @@ namespace DTO.DTO
                 collectionLevel03DTO.Add(new CollectionLevel03DTO(x, Level01Id, Level02Id));
 
             //MOCK
-            AuditorId = 1;
+            AuditorId = Guard.ConverteValor<int>(nextRoot.auditorid, "Level02.auditorid");
             #endregion
             //08 / 30 / 2016 10:38
             if (nextRoot.datetime != null)

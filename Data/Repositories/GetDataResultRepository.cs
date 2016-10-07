@@ -11,6 +11,8 @@ namespace Data.Repositories
     public class GetDataResultRepository<T> : RepositoryBase<T>, IGetDataResultRepository<T> where T : class
     {
 
+        #region Construtor
+
         private IBaseRepository<CollectionLevel03> _baseRepoCollectionL3;
 
         public GetDataResultRepository(SgqDbDevEntities _db, IBaseRepository<CollectionLevel03> baseRepoCollectionL3)
@@ -18,6 +20,8 @@ namespace Data.Repositories
         {
             _baseRepoCollectionL3 = baseRepoCollectionL3;
         }
+
+        #endregion
 
         public CollectionHtml GetHtmlLastEntry(SyncDTO idUnidade)
         {
@@ -38,52 +42,10 @@ namespace Data.Repositories
             Remove(element);
         }
 
-        //public void SetDuplicated(List<CollectionLevel03 >cll3, CollectionLevel02 i)
-        //{
-        //    var collectionLevel02 = db.CollectionLevel02.Where(r =>
-        //                       r.Level01Id == i.Level01Id &&
-        //                       r.Level02Id == i.Level02Id &&
-        //                       r.Period == i.Period &&
-        //                       r.Shift == i.Shift &&
-        //                       r.Sample == i.Sample &&
-        //                       r.UnitId == i.UnitId &&
-        //                       r.ReauditNumber == i.ReauditNumber &&
-        //                       r.EvaluationNumber == i.EvaluationNumber &&
-        //                       r.Phase == i.Phase &&
-        //                       r.ReauditIs == i.ReauditIs &&
-        //                       DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(i.CollectionDate) &&
-        //                       (r.Duplicated == true)
-        //                       ).OrderByDescending(r => r.Id).FirstOrDefault();
-
-
-        //    //var lista = collectionLevel02.ToList();
-        //    if (collectionLevel02 == null)
-        //        return;
-
-        //    //if (collectionLevel02.Count == 0)
-        //    //    return;
-
-        //    var alterThisData = db.CollectionLevel03.Where(r => collectionLevel02.Id == r.CollectionLevel02Id).ToList();
-
-        //    if (alterThisData == null)
-        //        return;// throw new Exception("Dados requerem atualização para Duplicated = true em level03 porem não foram encontrados.");
-        //    if (alterThisData.Count == 0)
-        //        return; //throw new Exception("Dados requerem atualização para Duplicated = true em level03 porem não foram encontrados.");
-
-        //    foreach (var x in alterThisData)
-        //    {
-        //        x.Duplicated = true;
-        //        UpdateNotCommit(x as T);
-        //    }
-
-        //    Commit();
-
-        //}
-
-        public void SetDuplicated(IEnumerable<CollectionLevel02> collectionAVerificarDuplicidade, int level01Id)
+        public void SetDuplicated(IEnumerable<CollectionLevel02> CollectionLevel02Verificar, int level01Id)
         {
             List<CollectionLevel02> results = new List<CollectionLevel02>();
-            foreach (var i in collectionAVerificarDuplicidade)
+            foreach (var i in CollectionLevel02Verificar)
             {
                 var data = db.CollectionLevel02.FirstOrDefault(r =>
                                     //db.CollectionLevel02.Any(c =>

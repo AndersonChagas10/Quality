@@ -73,11 +73,12 @@ namespace Dominio.Services
         /// Recebe um SyncDTO com objeto ConsolidationLevel01DTO, com todas a properties Virtual vinculadas ao Objeto ConsolidationLevel01 do entity devidamente preenchidas, para serem inseridas no DataBase.
         /// RN1: Integridade do Banco de Dados - Valida todos os objetos que serão inseridos com "self validation" para garantir integridade do DataBase.
         /// RN2: Integridade do Banco de Dados - Deve Salvar os objetos obedecendo a ordem de hierarquia de "Foreign key".
-        /// A DEFINIR: Integridade do Banco de Dados - Rollback um das várias entidades apresentem problemas ao serem salvas (pelo fato de existir 'sync = false' em tela, o objeto recebera um "ressend", o objeto pode ser salvo como duplicado hoje).
         /// RN3: Debug - Cronometro para debug do tempo de "commit".
         /// RN4: Debug - Retorno Genério disponibiliza saida sem erro, porem todo retorno deve ser tratado pelo "call site", mensagens automáticas são geradas.
         /// RN5: Debug - Sucesso "Susscess! All Data Saved for: ....."
         /// RN6: Debug - Erro "Cannot sync Data: ....."
+        /// RN7: Banco de Dados - Verifica itens DUPLICADOS collection Lelve02  e level03.
+        /// RN8: Banco de Dados -  Salva level03 em lote.
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -98,6 +99,7 @@ namespace Dominio.Services
                 CriaListaDeObjectsToSave(obj); //RN1
 
                 #endregion
+
                 Stopwatch watch = IniciaCronometro(); //RN3
 
                 #region Loop Save
@@ -113,17 +115,7 @@ namespace Dominio.Services
 
                     foreach (var consolidationLevel02Dto in i.consolidationLevel02DTO)
                     {
-
-                        var collectionAVerificarDuplicidade = i.collectionLevel02DTO.Where(r => r.Id == 0);
-                        if (collectionAVerificarDuplicidade.Count() > 0)
-                        {
-                            var verificar = Mapper.Map<IEnumerable<CollectionLevel02>>(collectionAVerificarDuplicidade);
-                            _collectionLevel02RepositoryGET.SetDuplicated(verificar, i.Level01Id);
-                            var duplicadoInsercao = verificar.Where(r => r.Duplicated == true);
-                            if (duplicadoInsercao.Count() > 0)
-                                foreach (var dup in duplicadoInsercao)
-                                    i.collectionLevel02DTO.FirstOrDefault(r => r.Level02Id == dup.Level02Id).Duplicated = true;
-                        }
+                        VerificaDuplicados(i);//RN7
 
                         foreach (var collectionLevel02Dto in i.collectionLevel02DTO)
                         {
@@ -131,18 +123,10 @@ namespace Dominio.Services
                             CollectionLevel02 collectionLevel02 = SalvaCollectionLevel02(collectionLevel02Dto, level01Consolidation.Level01Id, level02Consolidation.Id);
                             SalvaCorrectiveAction(obj.ListToSaveCA, collectionLevel02Dto, collectionLevel02.Id);
                         }
+
                     }
 
-                    _baseRepoCollectionL3.UpdateAll(_collectionLevel03ToSave.Where(r => r.Id > 0));
-                    _baseRepoCollectionL3.AddAll(_collectionLevel03ToSave.Where(r => r.Id == 0));
-
-                    foreach (var consolidationLevel02Dto in i.consolidationLevel02DTO)
-                        foreach (var collectionLevel02Dto in i.collectionLevel02DTO)
-                            foreach (var level03 in collectionLevel02Dto.collectionLevel03DTO)
-                            {
-                                level03.Id = _collectionLevel03ToSave.FirstOrDefault(r => r.Level03Id == level03.Level03Id && r.CollectionLevel02Id == level03.CollectionLevel02Id).Id;
-                            }
-
+                    SalvaCollectionLevel03(i);//RN8
                 }
 
                 #endregion
@@ -169,6 +153,61 @@ namespace Dominio.Services
         }
 
         /// <summary>
+        /// Salva o Collection do level03 e insere o ID na classe DTO.
+        /// 
+        /// Rn1: Data Base - Salva collection Level03
+        /// 
+        /// Rn2: Insere o ID na classe DTO.
+        /// 
+        /// </summary>
+        /// <param name="i"></param>
+        private void SalvaCollectionLevel03(ConsolidationLevel01DTO i)
+        {
+            _baseRepoCollectionL3.UpdateAll(_collectionLevel03ToSave.Where(r => r.Id > 0));//Rn1
+            _baseRepoCollectionL3.AddAll(_collectionLevel03ToSave.Where(r => r.Id == 0));//Rn1
+
+            foreach (var consolidationLevel02Dto in i.consolidationLevel02DTO)//Rn2
+                foreach (var collectionLevel02Dto in i.collectionLevel02DTO)
+                    foreach (var level03 in collectionLevel02Dto.collectionLevel03DTO)
+                    {
+                        level03.Id = _collectionLevel03ToSave.FirstOrDefault(r => r.Level03Id == level03.Level03Id && r.CollectionLevel02Id == level03.CollectionLevel02Id).Id;
+                    }
+        }
+
+
+        /// <summary>
+        /// Metodo que insere/altera registros como duplicadas 
+        /// caso DOIS tablets enviem a mesma informação devido a 
+        /// SINCRONIZAÇÃO DE TELA ATRASADA ou outros fatores, isto somente é realizado se o ID do elemento for para INSERÇÃO.
+        /// 
+        /// RN1: Banco de dados - Deve verificar se existe Coleta já realizada com os seguintes parametros IGUAIS ao objeto sendo INSERIDO DO LEVEL02 : 
+        /// Level01Id, Level02Id, UnitId, Shift, Period, Phase, ReauditIs, ReauditNumber, CollectionDate, EvaluationNumber, Sample 
+        /// e Duplicated do elemento no BANCO DE DADOS = FALSE.
+        /// Caso ou o elmento de INSERÇÃO ou o elemento que está no BANCO DE DADOS seja identificado como DUPLICADO,
+        /// verifica-se qual emento possui a MENOR data, este então é o elemento DUPLICADO = TRUE no BANCO DE DADOS.
+        /// 
+        /// RN2: Retorno de Duplicado INSERÇÃO no metodo "SetDuplicated":Caso o elemento que vai ser INSERIDO seja o duplicado,
+        /// o mesmo tem sua property Duplicated alterada para true, como todos são salvos em lote,
+        /// atualiza-se a lista completa de elementos utilizando Levle02Id como referencia.
+        /// 
+        /// </summary>
+        /// <param name="CollectionLevel02Verificar"></param>
+        /// <param name="level01Id"></param>
+        private void VerificaDuplicados(ConsolidationLevel01DTO i)
+        {
+            var collectionAVerificarDuplicidade = i.collectionLevel02DTO.Where(r => r.Id == 0);
+            if (collectionAVerificarDuplicidade.Count() > 0)
+            {
+                var verificar = Mapper.Map<IEnumerable<CollectionLevel02>>(collectionAVerificarDuplicidade);
+                _collectionLevel02RepositoryGET.SetDuplicated(verificar, i.Level01Id);//RN1
+                var duplicadoInsercao = verificar.Where(r => r.Duplicated == true);
+                if (duplicadoInsercao.Count() > 0)
+                    foreach (var dup in duplicadoInsercao)
+                        i.collectionLevel02DTO.FirstOrDefault(r => r.Level02Id == dup.Level02Id).Duplicated = true;//RN2
+            }
+        }
+
+        /// <summary>
         /// Salva o Html para merge em frontend.
         /// RN1: Banco De Dados - Distingue Unidade e Shift.
         /// RN2: Banco De Dados - Atualiza elementos de mesma Unidade e Shift.
@@ -179,7 +218,7 @@ namespace Dominio.Services
         public GenericReturn<SyncDTO> SaveHtml(SyncDTO objToSync)
         {
 
-            try
+            try //RN3
             {
                 var html = new CollectionHtml()
                 {
@@ -195,7 +234,7 @@ namespace Dominio.Services
                     //&& r.Period == objToSync.CollectionHtml.Period
                     );
                 if (elemento.IsNull() && (objToSync.html.IsNull()))
-                    return new GenericReturn<SyncDTO>("Susscess! Sync.");//RN3
+                    return new GenericReturn<SyncDTO>("Susscess! Sync.");
 
                 if (elemento.IsNotNull())
                 {
@@ -225,13 +264,16 @@ namespace Dominio.Services
 
         /// <summary>
         /// Cria e valida Objeto DTO com "self Validation"
-        /// </summary>
-        /// <param name="obj"></param>
+        /// 
+        /// RN1 : Banco De Dados (Integridade): 
+        /// Contrutor que possui validação do objeto, dentro deste contrutor devem constar as RNs para cada objeto a ser inserido no BD, 
+        /// caso haja incosistencia, o mesmo deve expedir uma exception, ou exceptionhelper parando a execução, 
+        /// e prevenindo a entrada de arquivos não válidos no DB.
+        /// 
+        /// </summary>                          
+        /// <param name="obj"></param>          
         private static void CriaListaDeObjectsToSave(SyncDTO obj)
         {
-            //Contrutor que possui validação do objeto, dentro deste contrutor devem constar as RNs para cada objeto a ser inserido no BD, 
-            //caso haja incosistencia, o mesmo deve expedir uma exception, ou exceptionhelper parando a execução, 
-            //e prevenindo a entrada de arquivos não válidos no DB.
             foreach (var i in obj.Root)
             {
                 obj.ListToSave.Add(i.ValidateAndCreateDtoConsolidationLevel01DTO());
@@ -342,12 +384,15 @@ namespace Dominio.Services
         }
 
         /// <summary>
-        /// RN1: DataBase - Deve conter foregin keys consistentes Level01 e ConsolidationLevel02.
-        /// RN2 |DEPRECATED: DataBase - Deve procurar por elementos duplicados.
+        /// RN1: Debug - Try/Catch para Log.
+        /// RN2: DataBase - Deve conter foregin keys consistentes Level01.
         /// RN3: DataBase - Deve utilizar a FK de ConsolidationLevel02 Previamente salva.
-        /// RN3: DataBase - Deve atualizar o ID no DTO para posterior save do CollectionLevel03.
-        /// RN5: HOTFIX - Deve limpar elementos de properties "VIRTUAL" do objeto.
-        /// RN6: Debug - Try/Catch para Log.
+        /// RN4: HOTFIX - Deve limpar elementos de properties "VIRTUAL" do objeto.
+        /// RN5: DataBase - Deve atualizar o ID no DTO para posterior PARA RETORNO em tela.
+        /// RN6: DataBase - Deve Salvar CollectionLevel02.
+        /// RN7: DataBase - Deve referenciar DUPLICATED para CollectionLevel03 caso haja.
+        /// RN8: DataBase - Deve referenciar CollectionLevel02 ID para CollectionLevel03.
+        /// RN9: DataBase - Deve ADICIONAR elementos do CollectionLevel03 na lista de inserção/update para ser salvo posteriormente.
         /// </summary>
         /// <param name="collectionLevel02DTO"></param>
         /// <param name="level01Id"></param>
@@ -356,28 +401,26 @@ namespace Dominio.Services
         private CollectionLevel02 SalvaCollectionLevel02(CollectionLevel02DTO collectionLevel02DTO, int level01Id
             , int level02ConsolidationId)
         {
-            try //RN6
+            try //RN1
             {
-                collectionLevel02DTO.Level01Id = level01Id; //RN01
-                collectionLevel02DTO.ConsolidationLevel02Id = level02ConsolidationId;//RN03
-
+                collectionLevel02DTO.Level01Id = level01Id; //RN2
+                collectionLevel02DTO.ConsolidationLevel02Id = level02ConsolidationId; //RN3
                 CollectionLevel02 collectionLevel02 = Mapper.Map<CollectionLevel02>(collectionLevel02DTO);
 
-                collectionLevel02.CollectionLevel03 = null; //RN5
+                collectionLevel02.CollectionLevel03 = null; //RN4
                 collectionLevel02.Level01 = null;
                 collectionLevel02.Level02 = null;
                 collectionLevel02.UserSgq = null;
                 collectionLevel02.ConsolidationLevel02 = null;
 
-                _baseRepoCollectionL2.AddOrUpdate(collectionLevel02);
+                _baseRepoCollectionL2.AddOrUpdate(collectionLevel02);//RN5
+                collectionLevel02DTO.Id = collectionLevel02.Id; //RN6
 
-                collectionLevel02DTO.Id = collectionLevel02.Id; //RN3
-
-                foreach (var i in collectionLevel02DTO.collectionLevel03DTO)
+                foreach (var i in collectionLevel02DTO.collectionLevel03DTO) 
                 {
-                    i.Duplicated = collectionLevel02.Duplicated;
-                    i.CollectionLevel02Id = collectionLevel02.Id;
-                    _collectionLevel03ToSave.Add(Mapper.Map<CollectionLevel03>(i));
+                    i.Duplicated = collectionLevel02.Duplicated; //RN7
+                    i.CollectionLevel02Id = collectionLevel02.Id; // RN8
+                    _collectionLevel03ToSave.Add(Mapper.Map<CollectionLevel03>(i)); //RN9
                 }
 
                 return collectionLevel02;

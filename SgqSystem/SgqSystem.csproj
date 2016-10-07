@@ -901,6 +901,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\tripledes.js" />
     <Content Include="Scripts\x64-core.js" />
+    <Content Include="Help.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
