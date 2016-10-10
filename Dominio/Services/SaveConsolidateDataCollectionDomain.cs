@@ -71,6 +71,7 @@ namespace Dominio.Services
 
         /// <summary>
         /// Recebe um SyncDTO com objeto ConsolidationLevel01DTO, com todas a properties Virtual vinculadas ao Objeto ConsolidationLevel01 do entity devidamente preenchidas, para serem inseridas no DataBase.
+        /// 
         /// RN1: Integridade do Banco de Dados - Valida todos os objetos que serão inseridos com "self validation" para garantir integridade do DataBase.
         /// RN2: Integridade do Banco de Dados - Deve Salvar os objetos obedecendo a ordem de hierarquia de "Foreign key".
         /// RN3: Debug - Cronometro para debug do tempo de "commit".
@@ -79,8 +80,9 @@ namespace Dominio.Services
         /// RN6: Debug - Erro "Cannot sync Data: ....."
         /// RN7: Banco de Dados - Verifica itens DUPLICADOS collection Lelve02  e level03.
         /// RN8: Banco de Dados -  Salva level03 em lote.
+        /// 
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">SyncDTO com objeto Root Completo</param>
         /// <returns></returns>
         public GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated(SyncDTO obj)
         {
@@ -312,10 +314,12 @@ namespace Dominio.Services
 
         /// <summary>
         /// Salva ConsolidationLevel02
+        /// 
         /// RN1: Banco de dados - Procura Consolidação Level02 existente no DIA, caso exista sobrescreve.
         /// RN2: Banco de dados - Salva ConsolidationLevel02 Com Id salvo préviamente em ConsolidationLelve01.
         /// RN3: Banco de dados - Consolida dados.
         /// RN4: Debug - Try/Catch para Log.
+        /// 
         /// </summary>
         /// <param name="level01Consolidation"></param>
         /// <returns></returns>
@@ -345,12 +349,14 @@ namespace Dominio.Services
 
         /// <summary>
         /// Salva Corrective action, se alguem level02 possuis a property CorrectiveActionId > 0
+        /// 
         /// RN1: DataBaase - Deve conter FK CollectionLevel02 ID válida.
         /// RN2: DataBaase - Salva Corrective action, se alguem level02 possuis a property CorrectiveActionId > 0
         /// RN3: DataBaase - Salva somente se corrective action não existir.
         /// RN4: HOTFIX - Limpa properties VIRTUAL do objeto a ser salvo.
         /// RN5: Debug/Retorno - Deve atualizar DTO principalmente ID.
         /// RN6: Debug - Try/Catch para Log.
+        /// 
         /// </summary>
         /// <param name="objListToSaveCA"></param>
         /// <param name="x"></param>
@@ -384,6 +390,7 @@ namespace Dominio.Services
         }
 
         /// <summary>
+        /// 
         /// RN1: Debug - Try/Catch para Log.
         /// RN2: DataBase - Deve conter foregin keys consistentes Level01.
         /// RN3: DataBase - Deve utilizar a FK de ConsolidationLevel02 Previamente salva.
@@ -393,6 +400,7 @@ namespace Dominio.Services
         /// RN7: DataBase - Deve referenciar DUPLICATED para CollectionLevel03 caso haja.
         /// RN8: DataBase - Deve referenciar CollectionLevel02 ID para CollectionLevel03.
         /// RN9: DataBase - Deve ADICIONAR elementos do CollectionLevel03 na lista de inserção/update para ser salvo posteriormente.
+        /// 
         /// </summary>
         /// <param name="collectionLevel02DTO"></param>
         /// <param name="level01Id"></param>
