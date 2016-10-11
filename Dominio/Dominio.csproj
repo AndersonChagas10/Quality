@@ -64,6 +64,7 @@
     <Compile Include="Interfaces\Repositories\ICollectionLevel02Repo.cs" />
     <Compile Include="Interfaces\Services\ICorrectiveActionDomain.cs" />
     <Compile Include="Interfaces\Services\IGetConsolidateDataCollectionDomain.cs" />
+    <Compile Include="Interfaces\Services\IParamsDomain.cs" />
     <Compile Include="Interfaces\Services\IRelatorioColetaDomain.cs" />
     <Compile Include="Interfaces\Services\ISaveConsolidateDataCollectionDomain.cs" />
     <Compile Include="Interfaces\Services\IBaseDomain.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CorrectiveActionDomain.cs" />
     <Compile Include="Services\GetConsolidateDataCollectionDomain.cs" />
+    <Compile Include="Services\ParamsDomain.cs" />
     <Compile Include="Services\RelatorioColetaDomain.cs" />
     <Compile Include="Services\SaveConsolidateDataCollectionDomain.cs" />
     <Compile Include="Services\BaseDomain.cs" />

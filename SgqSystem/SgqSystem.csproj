@@ -291,18 +291,18 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\AccesDeniedController.cs" />
-    <Compile Include="Controllers\Api\FileController.cs" />
-    <Compile Include="Controllers\Api\RelatorioColetaController.cs" />
-    <Compile Include="Controllers\FileControlController.cs" />
-    <Compile Include="Controllers\UserAuthenticationController.cs" />
-    <Compile Include="Controllers\Api\SyncController.cs" />
-    <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
+    <Compile Include="Controllers\Login\AccesDeniedController.cs" />
+    <Compile Include="Controllers\Api\File\FileController.cs" />
+    <Compile Include="Controllers\Api\Par\ParApiController.cs" />
+    <Compile Include="Controllers\Api\Reports\RelatorioColetaController.cs" />
+    <Compile Include="Controllers\File\FileControlController.cs" />
+    <Compile Include="Controllers\Params\ParamsController.cs" />
+    <Compile Include="Controllers\Login\UserAuthenticationController.cs" />
+    <Compile Include="Controllers\Api\Collection\SyncController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ChartsController.cs" />
-    <Compile Include="Controllers\ReportsController.cs" />
-    <Compile Include="Controllers\WebServiceController.cs" />
+    <Compile Include="Controllers\Charts\ChartsController.cs" />
+    <Compile Include="Controllers\Reports\ReportsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -333,6 +333,7 @@
     <Compile Include="ViewModels\CorrectiveActionViewModel.cs" />
     <Compile Include="ViewModels\IdentityModels.cs" />
     <Compile Include="ViewModels\ColetaViewModel.cs" />
+    <Compile Include="ViewModels\ParamsViewModel.cs" />
     <Compile Include="ViewModels\ReportsCorrectiveActionViewModel.cs" />
     <Compile Include="ViewModels\ReqController.cs" />
     <Compile Include="ViewModels\SyncViewModel.cs" />
@@ -943,6 +944,7 @@
     <Content Include="Web - Copy.Release.config">
       <DependentUpon>Web - Copy.config</DependentUpon>
     </Content>
+    <Content Include="Views\Params\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -988,6 +990,9 @@
       <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
       <Name>Helper</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

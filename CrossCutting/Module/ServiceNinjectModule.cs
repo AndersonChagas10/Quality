@@ -14,10 +14,7 @@ namespace CrossCutting.IOC.Module
             Bind<IRelatorioColetaDomain>().To<RelatorioColetaDomain>();
             Bind<ISaveConsolidateDataCollectionDomain>().To<SaveConsolidateDataCollectionDomain>();
             Bind<IGetConsolidateDataCollectionDomain>().To<GetConsolidateDataCollectionDomain>();
-            //Bind<IBetaService>().To<BetaService>();
-            //Bind<ISyncDomain>().To<SyncDomain>();
-            //Bind<IColetaDomain>().To<ColetaDomain>();
-            
+            Bind<IParamsDomain>().To<ParamsDomain>();
         }
     }
 }

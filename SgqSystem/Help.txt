@@ -1,5 +1,13 @@
 ﻿O Projeto 'SgqSystem' no Solution 'SgqGlobal', tem a função de oferecer dados, 'Views', API´s aos usuários do SgqGlobal.
 
+Referências:
+	Domain,
+	Aplication,
+	DTO,
+	Helpers,
+	CrossCutting.
+
+
 1 - Neste projeto podemos utilizar as tecnologias e linguagens:
  * Razor MVC5
  * .Net Framework 4.5

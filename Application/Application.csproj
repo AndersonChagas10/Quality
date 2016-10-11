@@ -44,11 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppClass\ParApp.cs" />
     <Compile Include="AppClass\RelatorioColetaApp.cs" />
     <Compile Include="AppClass\SyncApp.cs" />
     <Compile Include="AppClass\AppBase.cs" />
     <Compile Include="AppClass\CorrectiveActionApp.cs" />
     <Compile Include="Interface\ICorrectiveActionApp.cs" />
+    <Compile Include="Interface\IParApp.cs" />
     <Compile Include="Interface\IRelatorioColetaApp.cs" />
     <Compile Include="Interface\ISyncApp.cs" />
     <Compile Include="Interface\IBaseApp.cs" />
