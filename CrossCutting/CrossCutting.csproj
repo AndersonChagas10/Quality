@@ -53,8 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IoC.cs" />
-    <Compile Include="Module\ServiceNinjectModule.cs" />
-    <Compile Include="Module\RepositoryNinjectModule.cs" />
+    <Compile Include="Module\DomainNinjectModule.cs" />
+    <Compile Include="Module\DataNinjectModule.cs" />
     <Compile Include="Module\ApplicationNinjectModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

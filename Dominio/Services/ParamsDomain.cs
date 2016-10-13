@@ -1,36 +1,25 @@
-﻿using Dominio.Interfaces.Services;
-using System;
+﻿using System;
+using Dominio.Interfaces.Services;
 using DTO.DTO;
+using DTO.Helpers;
 
 namespace Dominio.Services
 {
     public class ParamsDomain : IParamsDomain
     {
+     
 
-
-        public ParamsDTO AddUpdateCompany()
+        public ParamsDTO AddUpdateParLevel1(ParamsDTO paramsDto)
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
 
-        public ParamsDTO AddUpdateParLevel1()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ParamsDTO AddUpdateParLevel2()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ParamsDTO AddUpdateParLevel3()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ParamsDTO Integrate()
-        {
-            throw new NotImplementedException();
+            }
+            catch (Exception e)
+            {
+                new GenericReturn<ParamsDTO>(e, )
+                throw;
+            }
         }
     }
 }

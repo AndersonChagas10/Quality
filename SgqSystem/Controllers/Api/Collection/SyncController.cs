@@ -1,7 +1,6 @@
-﻿using Application.Interface;
+﻿using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
-using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -17,13 +16,16 @@ namespace SgqSystem.Controllers.Api
 
         #region Construtor e atributos
 
-        private readonly ISyncApp _syncApp;
-
+        private readonly ISaveConsolidateDataCollectionDomain _saveConsolidateDataCollectionDomain;
+        private readonly IGetConsolidateDataCollectionDomain _getConsolidateDataCollectionDomain;
+        
         public string UserSgqDTO { get; private set; }
 
-        public SyncController(ISyncApp syncApp)
+        public SyncController(ISaveConsolidateDataCollectionDomain saveConsolidateDataCollectionDomain,
+            IGetConsolidateDataCollectionDomain getConsolidateDataCollectionDomain)
         {
-            _syncApp = syncApp;
+            _saveConsolidateDataCollectionDomain = saveConsolidateDataCollectionDomain;
+            _getConsolidateDataCollectionDomain = getConsolidateDataCollectionDomain;
         }
 
         #endregion
@@ -41,7 +43,7 @@ namespace SgqSystem.Controllers.Api
         [Route("api/Sync/SetDataAuditConsolidated")]
         public GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated([FromBody] SyncViewModel objToSync)
         {
-            return _syncApp.SetDataToSincyAuditConsolidated(objToSync);
+            return _saveConsolidateDataCollectionDomain.SetDataToSincyAuditConsolidated(objToSync);
         }
 
         #endregion
@@ -62,7 +64,7 @@ namespace SgqSystem.Controllers.Api
         [Route("api/Sync/SaveHtml")]
         public GenericReturn<SyncDTO> SaveHtml([FromBody] SyncViewModel objToSync)
         {
-            var results = _syncApp.SaveHtml(objToSync);
+            var results = _saveConsolidateDataCollectionDomain.SaveHtml(objToSync);
             //unLock();
             return results;
         }
@@ -76,7 +78,7 @@ namespace SgqSystem.Controllers.Api
         [Route("api/Sync/GetHtmlLastEntry")]
         public GenericReturn<GetSyncDTO> GetHtmlLastEntry([FromBody] SyncViewModel objToSync)
         {
-            return _syncApp.GetHtmlLastEntry(objToSync);
+            return _getConsolidateDataCollectionDomain.GetHtmlLastEntry(objToSync);
         }
 
         #endregion

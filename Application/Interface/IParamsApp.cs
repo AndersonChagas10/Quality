@@ -1,11 +1,10 @@
 ﻿using DTO.DTO;
 
-namespace Dominio.Interfaces.Services
+namespace Application.Interface
 {
-    public interface IParamsDomain
+    public interface IParamsApp
     {
 
         ParamsDTO AddUpdateParLevel1(ParamsDTO paramsDto);
-       
     }
 }

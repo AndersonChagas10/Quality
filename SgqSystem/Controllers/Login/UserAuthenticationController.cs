@@ -1,20 +1,19 @@
-﻿using Application.Interface;
+﻿using Dominio.Interfaces.Services;
 using DTO.Helpers;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Web.Mvc;
-using System.Web.Security;
 
 namespace SgqSystem.Controllers.Api
 {
     public class UserAuthenticationController : Controller
     {
 
-        private readonly IUserApp _userApp;
+        private readonly IUserDomain _userDomain;
 
-        public UserAuthenticationController(IUserApp userApp)
+        public UserAuthenticationController(IUserDomain userDomain)
         {
-            _userApp = userApp;
+            _userDomain = userDomain;
         }
 
         [HttpGet]
@@ -31,7 +30,7 @@ namespace SgqSystem.Controllers.Api
         [HttpPost]  
         public ActionResult LogIn(UserViewModel user)
         {
-            var isAuthorized = _userApp.AuthenticationLogin(user);
+            var isAuthorized = _userDomain.AuthenticationLogin(user);
             if (isAuthorized.Retorno.IsNotNull())
             {
                 SessionPersister.Username = isAuthorized.Retorno.Name;

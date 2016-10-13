@@ -1,4 +1,4 @@
-﻿using Application.Interface;
+﻿using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.Secirity;
@@ -14,31 +14,31 @@ namespace SgqSystem.Controllers.Api
     public class UserController : ApiController
     {
 
-        private readonly IUserApp _userApp;
+        private readonly IUserDomain _userDomain;
 
-        public UserController(IUserApp userApp)
+        public UserController(IUserDomain userDomain)
         {
-            _userApp = userApp;
+            _userDomain = userDomain;
         }
 
         // POST: api/Teste
         public GenericReturn<UserDTO> Post([FromBody] UserViewModel userVm)
         {
-            return _userApp.AuthenticationLogin(userVm);
+            return _userDomain.AuthenticationLogin(userVm);
         }
 
         [Route("AuthenticationLogin")]
         [HttpPost]
         public GenericReturn<UserDTO> AuthenticationLogin([FromBody] UserViewModel userVm)
         {
-            return _userApp.AuthenticationLogin(userVm);
+            return _userDomain.AuthenticationLogin(userVm);
         }
 
         [Route("GetAllUserValidationAd")]
         [HttpPost]
         public GenericReturn<List<UserDTO>> GetAllUserValidationAd(UserViewModel user)
         {
-            return _userApp.GetAllUserValidationAd(user);
+            return _userDomain.GetAllUserValidationAd(user);
         }
 
         [Route("VerifyPassiveSiginInLoginScreen")]

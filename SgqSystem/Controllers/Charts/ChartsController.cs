@@ -1,4 +1,5 @@
 ﻿using Application.Interface;
+using Dominio.Interfaces.Services;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
@@ -7,13 +8,13 @@ namespace SgqSystem.Controllers
     {
         #region Constructor
 
-        private readonly IRelatorioColetaApp _relatorioColetaApp;
-        private readonly IUserApp _userApp;
+        private readonly IRelatorioColetaDomain _relatorioColetaDomain;
+        private readonly IUserDomain _userDomain;
 
-        public ChartsController(IRelatorioColetaApp relatorioColetaApp, IUserApp userApp)
+        public ChartsController(IRelatorioColetaDomain relatorioColetaDomain, IUserDomain userDomain)
         {
-            _userApp = userApp;
-            _relatorioColetaApp = relatorioColetaApp;
+            _userDomain = userDomain;
+            _relatorioColetaDomain = relatorioColetaDomain;
         }
 
         #endregion

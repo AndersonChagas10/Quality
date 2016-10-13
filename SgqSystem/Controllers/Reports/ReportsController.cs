@@ -1,4 +1,4 @@
-﻿using Application.Interface;
+﻿using Dominio.Interfaces.Services;
 using DTO.DTO;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
@@ -12,36 +12,36 @@ namespace SgqSystem.Controllers
         #region Constructor
 
         private FormularioParaRelatorioViewModel form;
-        private readonly IRelatorioColetaApp _relatorioColetaApp;
-        private readonly IUserApp _userApp;
-        private readonly IBaseApp<Dominio.UserSgq, UserDTO> _user;
-        private readonly IBaseApp<Dominio.Level01, Level01DTO> _level01;
-        private readonly IBaseApp<Dominio.Level02, Level02DTO> _level02;
-        private readonly IBaseApp<Dominio.Level03, Level03DTO> _level03;
-        private readonly IBaseApp<Dominio.Shift, ShiftDTO> _shift;
-        private readonly IBaseApp<Dominio.Period, PeriodDTO> _period;
-        private readonly IBaseApp<Dominio.Unit, UnitDTO> _unit;
+        private readonly IRelatorioColetaDomain _relatorioColetaDomain;
+        private readonly IUserDomain _userDomain;
+        private readonly IBaseDomain<Dominio.UserSgq, UserDTO> _user;
+        private readonly IBaseDomain<Dominio.Level01, Level01DTO> _level01;
+        private readonly IBaseDomain<Dominio.Level02, Level02DTO> _level02;
+        private readonly IBaseDomain<Dominio.Level03, Level03DTO> _level03;
+        private readonly IBaseDomain<Dominio.Shift, ShiftDTO> _shift;
+        private readonly IBaseDomain<Dominio.Period, PeriodDTO> _period;
+        private readonly IBaseDomain<Dominio.Unit, UnitDTO> _unit;
 
-        public ReportsController(IRelatorioColetaApp relatorioColetaApp
-            , IUserApp userApp
-            , IBaseApp<Dominio.UserSgq, UserDTO> user
-            , IBaseApp<Dominio.Level01, Level01DTO> level01
-            , IBaseApp<Dominio.Level02, Level02DTO> level02
-            , IBaseApp<Dominio.Level03, Level03DTO> level03
-            , IBaseApp<Dominio.Shift, ShiftDTO> shift
-            , IBaseApp<Dominio.Period, PeriodDTO> period
-            , IBaseApp<Dominio.Unit, UnitDTO> unit
+        public ReportsController(IRelatorioColetaDomain relatorioColetaDomain
+            , IUserDomain userDomain
+            , IBaseDomain<Dominio.UserSgq, UserDTO> user
+            , IBaseDomain<Dominio.Level01, Level01DTO> level01
+            , IBaseDomain<Dominio.Level02, Level02DTO> level02
+            , IBaseDomain<Dominio.Level03, Level03DTO> level03
+            , IBaseDomain<Dominio.Shift, ShiftDTO> shift
+            , IBaseDomain<Dominio.Period, PeriodDTO> period
+            , IBaseDomain<Dominio.Unit, UnitDTO> unit
             )
         {
             _unit = unit;
-            _userApp = userApp;
+            _userDomain = userDomain;
             _level01 = level01;
             _level02 = level02;
             _level03 = level03;
             _shift = shift;
             _period = period;
             _user = user;
-            _relatorioColetaApp = relatorioColetaApp;
+            _relatorioColetaDomain = relatorioColetaDomain;
 
             form = new FormularioParaRelatorioViewModel();
             form.SetLevel01SelectList(_level01.GetAll());
@@ -51,7 +51,7 @@ namespace SgqSystem.Controllers
             form.SetShiftSelectList(/*_shift.GetAll()*/);
             form.SetPeriodSelectList(_period.GetAll());
             form.SetUnitsSelectList(_unit.GetAll());
-            form.SetUserSelectList(_userApp.GetAllUserValidationAd(new UserDTO()).Retorno);
+            form.SetUserSelectList(_userDomain.GetAllUserValidationAd(new UserDTO()).Retorno);
         }
 
         #endregion

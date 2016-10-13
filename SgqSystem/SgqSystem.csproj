@@ -293,7 +293,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\Login\AccesDeniedController.cs" />
     <Compile Include="Controllers\Api\File\FileController.cs" />
-    <Compile Include="Controllers\Api\Par\ParApiController.cs" />
+    <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Api\Reports\RelatorioColetaController.cs" />
     <Compile Include="Controllers\File\FileControlController.cs" />
     <Compile Include="Controllers\Params\ParamsController.cs" />

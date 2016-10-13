@@ -4,7 +4,7 @@ using Ninject.Modules;
 
 namespace CrossCutting.IOC.Module
 {
-    public class RepositoryNinjectModule : NinjectModule
+    public class DataNinjectModule : NinjectModule
     {
         public override void Load()
         {
