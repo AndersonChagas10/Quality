@@ -13,11 +13,12 @@ namespace Dominio.Services
         {
             try
             {
-
+                return new ParamsDTO();
             }
             catch (Exception e)
             {
-                new GenericReturn<ParamsDTO>(e, )
+                //Salva Log
+                new GenericReturn<ParamsDTO>(e, "");
                 throw;
             }
         }

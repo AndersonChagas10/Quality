@@ -970,10 +970,6 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj">
-      <Project>{54A72B39-94FD-4B0D-BAAD-891E3789F31F}</Project>
-      <Name>Application</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CrossCutting\CrossCutting.csproj">
       <Project>{0896bc38-df38-4e39-adf9-db1f9910bfe6}</Project>
       <Name>CrossCutting</Name>

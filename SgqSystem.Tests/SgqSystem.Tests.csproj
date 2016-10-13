@@ -112,10 +112,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj">
-      <Project>{54A72B39-94FD-4B0D-BAAD-891E3789F31F}</Project>
-      <Name>Application</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{A75EC76C-9ABF-4890-B82B-D8A048E6B7C5}</Project>
       <Name>Data</Name>

@@ -1,4 +1,4 @@
-﻿using Application.Interface;
+﻿using Dominio.Interfaces.Services;
 using DTO.DTO;
 using SgqSystem.ViewModels;
 using System.Web.Http;
@@ -11,11 +11,11 @@ namespace SgqSystem.Controllers.Api.Par
 
         #region Construtor para injeção de dependencia
 
-        private IParamsApp _parApp;
+        private IParamsDomain _parDomain;
 
-        public ParamsApiController(IParamsApp parApp)
+        public ParamsApiController(IParamsDomain parDomain)
         {
-            _parApp = parApp;
+            _parDomain = parDomain;
         }
 
         #endregion
@@ -26,7 +26,7 @@ namespace SgqSystem.Controllers.Api.Par
         [Route("AddLevel01")]
         public ParamsDTO AddLevel01([FromBody] ParamsViewModel paramsViewModel)
         {
-           return _parApp.AddUpdateParLevel1(paramsViewModel);
+           return _parDomain.AddUpdateParLevel1(paramsViewModel);
         }
 
         #endregion

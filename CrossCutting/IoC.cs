@@ -19,7 +19,7 @@ namespace CrossCutting.IOC
         public StandardKernel GetNinjectModules()
         {
             return new StandardKernel(
-                new ApplicationNinjectModule(),
+                //new ApplicationNinjectModule(),
                 new DomainNinjectModule(),
                 new DataNinjectModule()
                 );
