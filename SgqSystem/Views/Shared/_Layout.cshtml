@@ -5,43 +5,84 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
 
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    @*@Scripts.Render("~/Content/DataTables")*@
 
-    @RenderSection("Styles", false)
-    @RenderSection("css", required: false)
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/Content/bootstrap-theme.css.map" rel="stylesheet" />
+        <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />*@
+
+    @Styles.Render("~/Content/General")
+    @Scripts.Render("~/bundles/modernizr")
+    @if (IsSectionDefined("Styles"))
+    {
+        @RenderSection("Styles");
+    }
+    @*@RenderSection("css", required: false)
+        @RenderSection("Styles", false)*@
 
 </head>
+
 <body>
-    @*<div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            @if (Session["username"] != null)
+            {
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    <a class="navbar-brand" href="@Url.Action("Index", "Home")">Sgq Global</a>
                 </div>
-                <div class="navbar-collapse collapse">
+                <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                        <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
+                        <li class=""><a href="@Url.Action("Index", "Home")">Home</a></li>@*class="active"*@
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("DataCollectionReport", "Reports")">Data Collection Report</a></li>
+                                <li><a href="@Url.Action("CorrectiveActionReport", "Reports")">Corrective Action Reports</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span>@Session["username"].ToString()</a></li>
+                        <li><a href="@Url.Action("LogOut", "UserAuthentication")"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
                     </ul>
                 </div>
-            </div>
-        </div>*@
-    <div class="container body-content">
+            }
+            else
+            {
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="@Url.Action("LogIn", "UserAuthentication")"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    @*<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>*@
+                </ul>
+            }
+
+        </div>
+
+    </nav>
+
+
+    <div class="body-content" style="margin-top:50px">
+
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
-        @Scripts.Render("~/bundles/hc")
+        @*@Scripts.Render("~/bundles/hc")*@
+
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - JBS and GRT Application.</p>
+        <footer class="wrapper">
+            <p class="page-content-wrapper">&copy; @DateTime.Now.Year - JBS and GRT Application.</p>
         </footer>
     </div>
 
     @RenderSection("scripts", required: false)
+
+    <script>
+    
+    </script>
 </body>
 </html>

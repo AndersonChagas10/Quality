@@ -1,4 +1,5 @@
-﻿using SgqSystem.Mappers;
+﻿using Microsoft.ApplicationInsights.Extensibility;
+using SgqSystem.Mappers;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -16,7 +17,12 @@ namespace SgqSystem
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperConfig.RegisterMappings();
+            #if DEBUG
+            TelemetryConfiguration.Active.DisableTelemetry = true;
+            #endif
+
 
         }
+
     }
 }

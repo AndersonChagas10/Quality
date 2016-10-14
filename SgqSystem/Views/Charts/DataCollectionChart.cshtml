@@ -1,0 +1,73 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "Chart";
+    var url = Url.Action("Index", "Home");
+    var urlForAjax = Url.Action("GetEntryByDate", "api/RelatorioColeta");
+}
+
+@*@Styles.Render("~/Content/Tables")*@
+<link href="@Url.Content("~/Content/DataTables/css/jquery.dataTables.min.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/DataTables/css/buttons.dataTables.min.css")" rel="stylesheet" />
+
+@Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+<div id="formBodyContent">
+    @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+    <div id="chart"></div>
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/Scripts/GuardJs.js")
+    @Scripts.Render("~/bundles/ScriptTables")
+    @Scripts.Render("hc");
+
+    <script type="text/javascript">
+
+        var url1 = '@Html.Raw(@urlForAjax)';
+        var $btn = $('#btnSend');
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $(document).ready(function () {
+            $("#btnSend").click(function (e) {
+                Send();
+            });
+        });
+
+        function Send() {
+            $btn.button('loading');
+            $('#results').empty();
+            ValidaDadosParaEnvio();
+            //AJAX
+            $.post(url1, enviar, function (r) {
+                try {
+                    var resultSet = r.Retorno.ConsolidationLevel01
+                    CreateChart(resultSet);
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    $btn.button('reset');
+                    //Hotfix: table não alinha resultados de centro no meio da tr....
+                   
+                }
+            });
+        };
+
+        function CreateChart(retornoArray) {
+
+
+
+        };
+
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            if (!GuardJs.isValid)
+                return;
+            GuardJs.esconderMensagem();
+        };
+
+        formControl.ShowAllFielsAndFullCallendar();
+
+    </script>
+}

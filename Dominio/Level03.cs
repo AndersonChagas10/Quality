@@ -17,23 +17,17 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Level03()
         {
-            this.DataCollectionResult = new HashSet<DataCollectionResult>();
-            this.Level03Consolidation = new HashSet<Level03Consolidation>();
+            this.CollectionLevel03 = new HashSet<CollectionLevel03>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public string Alias { get; set; }
-        public string ClientSpecification { get; set; }
-        public System.DateTime AddedDate { get; set; }
+        public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool Active { get; set; }
-        public int PeopleCreateId { get; set; }
-        public int Ordering { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DataCollectionResult> DataCollectionResult { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Level03Consolidation> Level03Consolidation { get; set; }
+        public virtual ICollection<CollectionLevel03> CollectionLevel03 { get; set; }
     }
 }

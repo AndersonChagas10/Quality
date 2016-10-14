@@ -21,9 +21,9 @@ namespace Dominio.Services
             _coletaRepository = coletaRepository;
         }
 
-        #region Coleta de Dados.
+        #region Coleta de Dados. (Antigo)
 
-        public GenericReturn<ColetaDTO> Salvar(ColetaDTO result)
+        public GenericReturn<ColetaDTO> SalvarColeta(ColetaDTO result)
         {
             try
             {
@@ -33,9 +33,9 @@ namespace Dominio.Services
                 result.ValidaColeta();
                 var objTosave = Mapper.Map<ColetaDTO, Coleta>(result);
 
-                _coletaRepository.ValidaFkResultado(objTosave);
+                _coletaRepository.ValidaFkColeta(objTosave);
 
-                _coletaRepository.Salvar(objTosave);
+                _coletaRepository.SalvarColeta(objTosave);
 
                 return new GenericReturn<ColetaDTO>(inseridoOk);
             }
@@ -45,7 +45,7 @@ namespace Dominio.Services
             }
         }
 
-        public GenericReturn<ColetaDTO> SalvarLista(List<ColetaDTO> list)
+        public GenericReturn<ColetaDTO> SalvarListaColeta(List<ColetaDTO> list)
         {
             try
             {
@@ -61,9 +61,9 @@ namespace Dominio.Services
                 var listObjTosave = Mapper.Map<List<ColetaDTO>, List<Coleta>>(list);
 
                 foreach (var i in listObjTosave)
-                    _coletaRepository.ValidaFkResultado(i);
+                    _coletaRepository.ValidaFkColeta(i);
 
-                _coletaRepository.SalvarLista(listObjTosave);
+                _coletaRepository.SalvarListaColeta(listObjTosave);
 
                 return new GenericReturn<ColetaDTO>(inseridoOk);
 
@@ -75,5 +75,7 @@ namespace Dominio.Services
         }
 
         #endregion
+
+
     }
 }

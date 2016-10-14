@@ -31,66 +31,66 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Coleta.cs">
+    <Compile Include="CollectionHtml.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CollectionLevel02.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CollectionLevel03.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConsolidationLevel01.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConsolidationLevel02.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="CorrectiveAction.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataCollection.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataCollectionResult.cs">
+    <Compile Include="Department.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DataCollection\DataCollection.cs" />
     <Compile Include="Entities\DataCollection\DataCollectionResult.cs" />
     <Compile Include="Entities\BaseEntity\DataCollectionBase.cs" />
     <Compile Include="Entities\BaseEntity\EntityBase.cs" />
+    <Compile Include="Example.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\Repositories\ICorrectiveActionRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IColetaRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IRelatorioColetaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
-    <Compile Include="Interfaces\Repositories\ISyncRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IGetDataResultRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IRelatorioColetaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
-    <Compile Include="Interfaces\Services\IColetaDomain.cs" />
-    <Compile Include="Interfaces\Services\ICorrectiveActionService.cs" />
+    <Compile Include="Interfaces\Repositories\ICollectionLevel02Repo.cs" />
+    <Compile Include="Interfaces\Services\ICorrectiveActionDomain.cs" />
+    <Compile Include="Interfaces\Services\IGetConsolidateDataCollectionDomain.cs" />
+    <Compile Include="Interfaces\Services\IExampleDomain.cs" />
     <Compile Include="Interfaces\Services\IRelatorioColetaDomain.cs" />
-    <Compile Include="Interfaces\Services\ISyncDomain.cs" />
+    <Compile Include="Interfaces\Services\ISaveConsolidateDataCollectionDomain.cs" />
     <Compile Include="Interfaces\Services\IBaseDomain.cs" />
     <Compile Include="Interfaces\Services\IUserDomain.cs" />
     <Compile Include="Level01.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Level01Consolidation.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Level02.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Level02Consolidation.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Level03.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Level03Consolidation.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Level1.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Level2.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Level3.cs">
+    <Compile Include="LogService\LoggerNLog.cs" />
+    <Compile Include="Period.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ColetaDomain.cs" />
-    <Compile Include="Services\CorrectiveActionService.cs" />
+    <Compile Include="Services\CorrectiveActionDomain.cs" />
+    <Compile Include="Services\GetConsolidateDataCollectionDomain.cs" />
+    <Compile Include="Services\ExampleDomain.cs" />
     <Compile Include="Services\RelatorioColetaDomain.cs" />
-    <Compile Include="Services\SyncDomain.cs" />
+    <Compile Include="Services\SaveConsolidateDataCollectionDomain.cs" />
     <Compile Include="Services\BaseDomain.cs" />
     <Compile Include="Services\UserDomain.cs" />
     <Compile Include="SgqEfContext.Context.cs">
@@ -108,7 +108,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SgqEfContext.edmx</DependentUpon>
     </Compile>
-    <Compile Include="teste.cs">
+    <Compile Include="Shift.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Unit.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnitUser.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="UserSgq.cs">
@@ -129,11 +135,17 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.3.6\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

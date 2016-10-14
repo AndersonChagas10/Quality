@@ -112,9 +112,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj">
-      <Project>{54A72B39-94FD-4B0D-BAAD-891E3789F31F}</Project>
-      <Name>Application</Name>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{A75EC76C-9ABF-4890-B82B-D8A048E6B7C5}</Project>
+      <Name>Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dominio\Dominio.csproj">
       <Project>{777D8E88-0D52-446A-BC77-2F50A7D936E5}</Project>

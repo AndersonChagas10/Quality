@@ -53,19 +53,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IoC.cs" />
-    <Compile Include="Module\ServiceNinjectModule.cs" />
-    <Compile Include="Module\RepositoryNinjectModule.cs" />
-    <Compile Include="Module\ApplicationNinjectModule.cs" />
+    <Compile Include="Module\DomainNinjectModule.cs" />
+    <Compile Include="Module\DataNinjectModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj">
-      <Project>{54a72b39-94fd-4b0d-baad-891e3789f31f}</Project>
-      <Name>Application</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{a75ec76c-9abf-4890-b82b-d8a048e6b7c5}</Project>
       <Name>Data</Name>

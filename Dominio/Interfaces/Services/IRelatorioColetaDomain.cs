@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DTO.Helpers;
 using DTO.DTO;
-using DTO.Helpers;
+using DTO;
 
 namespace Dominio.Interfaces.Services
 {
     public interface IRelatorioColetaDomain
     {
-        GenericReturn<List<ColetaDTO>> GetColetas();
+        GenericReturn<ResultSetRelatorioColeta> GetCollectionLevel02(DataCarrierFormulario form);
+        GenericReturn<ResultSetRelatorioColeta> GetCollectionLevel03(DataCarrierFormulario form);
+        GenericReturn<ResultSetRelatorioColeta> GetConsolidationLevel01(DataCarrierFormulario form);
+        GenericReturn<ResultSetRelatorioColeta> GetConsolidationLevel02(DataCarrierFormulario form);
+
+        GenericReturn<GetSyncDTO> GetEntryByDate(DataCarrierFormulario form);
     }
 }

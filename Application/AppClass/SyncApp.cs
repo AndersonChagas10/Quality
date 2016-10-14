@@ -9,18 +9,36 @@ namespace Application.AppServiceClass
     public class SyncApp : ISyncApp
     {
 
-        private readonly ISyncDomain _coletaService;
+        //private readonly ISyncDomain _syncDomain;
+        private readonly ISaveConsolidateDataCollectionDomain _saveConsolidateDataCollectionDomain;
+        private readonly IGetConsolidateDataCollectionDomain _getConsolidateDataCollectionDomain;
 
-        public SyncApp(ISyncDomain coletaService)
+        public SyncApp(/*ISyncDomain syncDomain,*/
+            ISaveConsolidateDataCollectionDomain saveConsolidateDataCollectionDomain,
+            IGetConsolidateDataCollectionDomain getConsolidateDataCollectionDomain)
         {
-            _coletaService = coletaService;
+            _getConsolidateDataCollectionDomain = getConsolidateDataCollectionDomain;
+            _saveConsolidateDataCollectionDomain = saveConsolidateDataCollectionDomain;
         }
 
-        public GenericReturn<SyncDTO> GetDataToSincyAudit()
+        public GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated(SyncDTO syncConsolidado)
         {
-            return _coletaService.GetDataToSincyAudit();
+            return _saveConsolidateDataCollectionDomain.SetDataToSincyAuditConsolidated(syncConsolidado);
         }
 
-       
+        public GenericReturn<GetSyncDTO> GetLastEntry()
+        {
+            return _getConsolidateDataCollectionDomain.GetLastEntry();
+        }
+
+        public GenericReturn<SyncDTO> SaveHtml(SyncDTO objToSync)
+        {
+            return _saveConsolidateDataCollectionDomain.SaveHtml(objToSync);
+        }
+
+        public GenericReturn<GetSyncDTO> GetHtmlLastEntry(SyncDTO idUnidade)
+        {
+            return _getConsolidateDataCollectionDomain.GetHtmlLastEntry(idUnidade);
+        }
     }
 }

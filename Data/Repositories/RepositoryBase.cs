@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Dominio.Entities.BaseEntity;
 using Dominio.Interfaces.Repositories;
 using DTO.Helpers;
 using System;
@@ -22,23 +23,40 @@ namespace Data.Repositories
         protected readonly SgqDbDevEntities db;
 
         /// <summary>
+        /// Objeto T em memória volátil pela chamada de sua Interface.
+        /// </summary>
+        private DbSet<T> Entity { get { return db.Set<T>(); } }
+
+        /// <summary>
         /// Construtor.
         /// </summary>
         /// <param name="Db"></param>
         public RepositoryBase(SgqDbDevEntities Db)
         {
             db = Db;
+            db.Database.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;");
         }
 
-        /// <summary>
-        /// Objeto T em memória volátil pela chamada de sua Interface.
-        /// </summary>
-        private DbSet<T> Entity { get { return db.Set<T>(); } }
+        #region Add
 
-        #region Adiciona e Atualiza
+        public void AddNotCommit(T obj)
+        {
+            verifyDate(obj, "AddDate");
+            Entity.Add(obj);
+        }
+
+        public void AddAllNotCommit(IEnumerable<T> obj)
+        {
+            foreach (var i in obj)
+            {
+                verifyDate(i, "AddDate");
+                Entity.Add(i);
+            }
+        }
 
         public void Add(T obj)
         {
+            verifyDate(obj, "AddDate");
             Entity.Add(obj);
             Commit();
         }
@@ -47,21 +65,54 @@ namespace Data.Repositories
         {
             foreach (var i in obj)
             {
+                verifyDate(i, "AddDate");
                 Entity.Add(i);
             }
             Commit();
         }
 
+        #endregion
+
+        #region Update / AddUpdate
+
         public void Update(T obj)
         {
-            if (obj.GetType().GetProperty("AlterDate") != null)
-            {
-                var alterDate = (DateTime) obj.GetType().GetProperty("AlterDate").GetValue(obj, null);
-                if (alterDate.IsNull())
-                    obj.GetType().GetProperty("AlterDate").SetValue(obj, DateTime.Now);
-            }
-
+            verifyDate(obj, "AlterDate");
+            Entity.Attach(obj);
             db.Entry(obj).State = EntityState.Modified;
+            Commit();
+        }
+
+        public void UpdateNotCommit(T obj)
+        {
+            verifyDate(obj, "AlterDate");
+            Entity.Attach(obj);
+            db.Entry(obj).State = EntityState.Modified;
+        }
+
+        public void AddOrUpdateNotCommit(T obj)
+        {
+            if (obj.GetType().GetProperty("Id") != null)
+            {
+                var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
+                if (id > 0)
+                    UpdateNotCommit(obj);
+                else
+                    AddNotCommit(obj);
+            }
+        }
+
+        public void AddOrUpdateAllNotCommit(IEnumerable<T> obj)
+        {
+            foreach (var i in obj)
+                AddOrUpdateNotCommit(i);
+        }
+
+        public void UpdateAll(IEnumerable<T> listObj)
+        {
+            foreach (var i in listObj)
+                UpdateNotCommit(i);
+
             Commit();
         }
 
@@ -69,7 +120,7 @@ namespace Data.Repositories
         {
             if (obj.GetType().GetProperty("Id") != null)
             {
-                var id = (int) obj.GetType().GetProperty("Id").GetValue(obj, null);
+                var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
                 if (id > 0)
                     Update(obj);
                 else
@@ -77,7 +128,18 @@ namespace Data.Repositories
             }
         }
 
+        public void AddOrUpdateAll(IEnumerable<T> obj)
+        {
+            foreach (var i in obj)
+                AddOrUpdate(i);
+        }
+
         #endregion
+
+        public void Dettach(T obj)
+        {
+            db.Entry(obj).State = EntityState.Detached;
+        }
 
         #region Busca
 
@@ -96,6 +158,15 @@ namespace Data.Repositories
             return Entity.Find(id);
         }
 
+        //public IEnumerable<T> GetByDate(DateTime initalDate, DateTime finalDate)
+        //{
+        //    var tipo = typeof(T);
+        //    if (tipo.Equals(typeof(EntityBase)))
+        //    {
+
+        //        Entity.Where(r=>)
+        //    }
+        //}
         #endregion
 
         #region Remove/Deleta
@@ -120,25 +191,31 @@ namespace Data.Repositories
 
         public void Commit()
         {
-            try
+            using (var transaction = db.Database.BeginTransaction())
             {
-                db.SaveChanges();
-            }
-            catch (DbEntityValidationException e)
-            {
-                foreach (var i in e.EntityValidationErrors)
+                try
                 {
-                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", i.Entry.Entity.GetType().Name, i.Entry.State);
-                    foreach (var ve in i.ValidationErrors)
-                    {
-                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
-                    }
+                    db.SaveChanges();
+
                 }
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                catch (DbEntityValidationException e)
+                {
+                    transaction.Rollback();
+                    foreach (var i in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", i.Entry.Entity.GetType().Name, i.Entry.State);
+                        foreach (var ve in i.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
+
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
 
@@ -147,6 +224,35 @@ namespace Data.Repositories
             db.Dispose();
         }
 
-       
+        private void verifyDate(T obj, string property)
+        {
+            try
+            {
+                if (obj.GetType().GetProperty(property) != null)
+                {
+                    var date = (DateTime)obj.GetType().GetProperty(property).GetValue(obj, null);
+                    if (date.IsNull())
+                    {
+                        obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
+                    }
+                    else
+                    {
+                        if (date == DateTime.MinValue)
+                            obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
+            }
+        }
+
+        //public T ExecutaSql<T>(string sqlQuery, string sqlSelectLast)
+        //{
+        //    db.Database.ExecuteSqlCommand(sqlQuery);
+        //    return db.Database.SqlQuery<T>(sqlSelectLast).FirstOrDefault();
+        //}
+
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Dominio.Interfaces.Services
 {
-    public interface IBaseDomain<T> where T : class
+    public interface IBaseDomain<T, Y> where T : class where Y : class
     {
 
         GenericReturn<T> Add(T obj);
@@ -13,7 +13,7 @@ namespace Dominio.Interfaces.Services
 
         T GetById(int id);
 
-        IEnumerable<T> GetAll();
+        IEnumerable<Y> GetAll();
 
         GenericReturn<T> Update(T obj);
 

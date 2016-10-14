@@ -18,10 +18,10 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressSSLPort>63128</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -97,6 +97,14 @@
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject.Extensions.Logging, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Extensions.Logging.3.2.0.0\lib\net45-full\Ninject.Extensions.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Logging.NLog4, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Extensions.Logging.nlog4.3.2.3.0\lib\net45-full\Ninject.Extensions.Logging.NLog4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
       <Private>True</Private>
@@ -111,6 +119,10 @@
     </Reference>
     <Reference Include="Ninject.WebApi.DependencyResolver, Version=0.1.4758.24814, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.WebApi.DependencyResolver.0.1.4758.24814\lib\net45\Ninject.WebApi.DependencyResolver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.3.6\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -279,30 +291,55 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\Api\SyncController.cs" />
-    <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
+    <Compile Include="Controllers\Error\ErrorController.cs" />
+    <Compile Include="Controllers\Login\AccesDeniedController.cs" />
+    <Compile Include="Controllers\Api\File\FileController.cs" />
+    <Compile Include="Controllers\Api\Example\ExampleApiController.cs" />
+    <Compile Include="Controllers\Api\Reports\RelatorioColetaController.cs" />
+    <Compile Include="Controllers\File\FileControlController.cs" />
+    <Compile Include="Controllers\Example\ExampleController.cs" />
+    <Compile Include="Controllers\Login\UserAuthenticationController.cs" />
+    <Compile Include="Controllers\Api\Collection\SyncController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
-    <Compile Include="Controllers\Api\ColetaController.cs" />
-    <Compile Include="Controllers\CorrectiveActionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\GraficoBetaController.cs" />
-    <Compile Include="Controllers\RelatorioColetaController.cs" />
-    <Compile Include="Controllers\WebServiceController.cs" />
+    <Compile Include="Controllers\Charts\ChartsController.cs" />
+    <Compile Include="Controllers\Reports\ReportsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Handlres\HandleApi.cs" />
+    <Compile Include="Handlres\Params\HandlerParams.cs" />
+    <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
-    <Compile Include="Mappers\CorrectiveActionMappingProfile.cs" />
-    <Compile Include="Mappers\DomainToViewModelMappingProfile.cs" />
-    <Compile Include="Mappers\ViewModelToDomainMappingProfile.cs" />
+    <Compile Include="Mappers\ExampleMapperProfile.cs" />
+    <Compile Include="Mappers\CorrectiveActionMapperProfile.cs" />
+    <Compile Include="Mappers\CollectionLevel02MapperProfile.cs" />
+    <Compile Include="Mappers\CollectionLevel03MapperProfile.cs" />
+    <Compile Include="Mappers\ConsolidationLevel01MapperProfile.cs" />
+    <Compile Include="Mappers\ConsolidationLevel02MapperProfile.cs" />
+    <Compile Include="Mappers\Level01MapperProfile.cs" />
+    <Compile Include="Mappers\Level02MapperProfile.cs" />
+    <Compile Include="Mappers\ShiftMapperProfile.cs" />
+    <Compile Include="Mappers\PeriodMapperProfile.cs" />
+    <Compile Include="Mappers\UnitUserMapperProfile.cs" />
+    <Compile Include="Mappers\UnitMappingProfile.cs" />
+    <Compile Include="Mappers\DepartmenMapperProfile.cs" />
+    <Compile Include="Mappers\Level03MapperProfile.cs" />
+    <Compile Include="Mappers\UserMappingProfile.cs" />
+    <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Secirity\CustomPrincipal.cs" />
+    <Compile Include="Secirity\SessionPersister.cs" />
     <Compile Include="ViewModels\AccountBindingModels.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\EntityBaseViewModel.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\DataCollectionBaseViewModel.cs" />
+    <Compile Include="ViewModels\FormularioParaRelatorioViewModel.cs" />
     <Compile Include="ViewModels\CorrectiveActionViewModel.cs" />
-    <Compile Include="ViewModels\GenericReturnViewModel.cs" />
     <Compile Include="ViewModels\IdentityModels.cs" />
     <Compile Include="ViewModels\ColetaViewModel.cs" />
+    <Compile Include="ViewModels\ContextExampleViewModel.cs" />
+    <Compile Include="ViewModels\ReportsCorrectiveActionViewModel.cs" />
+    <Compile Include="ViewModels\ReqController.cs" />
     <Compile Include="ViewModels\SyncViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -310,216 +347,428 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin-lte\css\AdminLTE.css" />
+    <Content Include="admin-lte\css\AdminLTE.min.css" />
+    <Content Include="admin-lte\css\skins\skin-black-light.css" />
+    <Content Include="admin-lte\css\skins\skin-black-light.min.css" />
+    <Content Include="admin-lte\css\skins\skin-black.css" />
+    <Content Include="admin-lte\css\skins\skin-black.min.css" />
+    <Content Include="admin-lte\css\skins\skin-blue-light.css" />
+    <Content Include="admin-lte\css\skins\skin-blue-light.min.css" />
+    <Content Include="admin-lte\css\skins\skin-blue.css" />
+    <Content Include="admin-lte\css\skins\skin-blue.min.css" />
+    <Content Include="admin-lte\css\skins\skin-green-light.css" />
+    <Content Include="admin-lte\css\skins\skin-green-light.min.css" />
+    <Content Include="admin-lte\css\skins\skin-green.css" />
+    <Content Include="admin-lte\css\skins\skin-green.min.css" />
+    <Content Include="admin-lte\css\skins\skin-purple-light.css" />
+    <Content Include="admin-lte\css\skins\skin-purple-light.min.css" />
+    <Content Include="admin-lte\css\skins\skin-purple.css" />
+    <Content Include="admin-lte\css\skins\skin-purple.min.css" />
+    <Content Include="admin-lte\css\skins\skin-red-light.css" />
+    <Content Include="admin-lte\css\skins\skin-red-light.min.css" />
+    <Content Include="admin-lte\css\skins\skin-red.css" />
+    <Content Include="admin-lte\css\skins\skin-red.min.css" />
+    <Content Include="admin-lte\css\skins\skin-yellow-light.css" />
+    <Content Include="admin-lte\css\skins\skin-yellow-light.min.css" />
+    <Content Include="admin-lte\css\skins\skin-yellow.css" />
+    <Content Include="admin-lte\css\skins\skin-yellow.min.css" />
+    <Content Include="admin-lte\css\skins\_all-skins.css" />
+    <Content Include="admin-lte\css\skins\_all-skins.min.css" />
+    <Content Include="admin-lte\js\app.js" />
+    <Content Include="admin-lte\js\app.min.js" />
     <Content Include="App_Readme\readme.txt" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
-    <Content Include="Coleta\components\indicator.js" />
-    <Content Include="Coleta\components\monitoring.js" />
-    <Content Include="Coleta\components\save.js" />
-    <Content Include="Coleta\components\task.js" />
-    <Content Include="Coleta\components\taskgroup.js" />
-    <Content Include="Coleta\controllers\correctiveaction.js" />
-    <Content Include="Coleta\controllers\indicators.js" />
-    <Content Include="Coleta\controllers\login.js" />
-    <Content Include="Coleta\controllers\monitorings.js" />
-    <Content Include="Coleta\controllers\tasks.js" />
-    <Content Include="Coleta\css\login.css" />
-    <Content Include="Coleta\css\task.css" />
-    <Content Include="Coleta\dao\constructDao.js" />
-    <Content Include="Coleta\dao\userDao.js" />
-    <Content Include="Coleta\img\beef.jpg" />
-    <Content Include="Coleta\img\fundoSGQ.jpg" />
-    <Content Include="Coleta\img\login.png" />
-    <Content Include="Coleta\img\sgq.jpg" />
-    <Content Include="Coleta\index.html" />
-    <Content Include="Coleta\models\DataCollectionBase.js" />
-    <Content Include="Coleta\models\EntityBase.js" />
-    <Content Include="Coleta\models\Indicator.js" />
-    <Content Include="Coleta\models\Monitoring.js" />
-    <Content Include="Coleta\models\Result.js" />
-    <Content Include="Coleta\models\Task.js" />
-    <Content Include="Coleta\models\TaskGroup.js" />
-    <Content Include="Coleta\models\User.js" />
-    <Content Include="Coleta\pages\carcass\usa_audit_menu_carcass.html" />
-    <Content Include="Coleta\pages\carcass\usa_data_collection_carcass.html" />
-    <Content Include="Coleta\pages\cff\usa_audit_menu_cff.html" />
-    <Content Include="Coleta\pages\cff\usa_data_collection_cff.html" />
-    <Content Include="Coleta\pages\htp\usa_audit_menu_htp.html" />
-    <Content Include="Coleta\pages\htp\usa_data_collection_htp.html" />
-    <Content Include="Coleta\pages\menu\usa_audits_selection.html" />
-    <Content Include="Coleta\plugins\bootstrap\css\bootstrap-theme.css" />
-    <Content Include="Coleta\plugins\bootstrap\css\bootstrap-theme.min.css" />
-    <Content Include="Coleta\plugins\bootstrap\css\bootstrap.css" />
-    <Content Include="Coleta\plugins\bootstrap\css\bootstrap.min.css" />
-    <Content Include="Coleta\plugins\bootstrap\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Coleta\plugins\bootstrap\js\bootstrap.js" />
-    <Content Include="Coleta\plugins\bootstrap\js\bootstrap.min.js" />
-    <Content Include="Coleta\plugins\bootstrap\js\npm.js" />
-    <Content Include="Coleta\plugins\float_button\css\kc.fab.css" />
-    <Content Include="Coleta\plugins\float_button\js\kc.fab.js" />
-    <Content Include="Coleta\plugins\float_button\js\kc.fab.min.js" />
-    <Content Include="Coleta\plugins\font-awesome\css\font-awesome.css" />
-    <Content Include="Coleta\plugins\font-awesome\css\font-awesome.min.css" />
-    <Content Include="Coleta\plugins\font-awesome\fonts\fontawesome-webfont.svg" />
-    <Content Include="Coleta\plugins\font-awesome\HELP-US-OUT.txt" />
-    <Content Include="Coleta\plugins\jquery\jquery.min.js" />
-    <Content Include="Coleta\sidebar\css\sidebar.min.css" />
-    <Content Include="Coleta\sidebar\js\sidebar.js" />
-    <Content Include="Coleta\sidebar\ts\sidebar.js" />
-    <Content Include="Coleta\tests\indicatorsTest.js" />
-    <Content Include="Coleta\tests\loginTest.js" />
-    <Content Include="Coleta\tests\monitoringsTest.js" />
-    <Content Include="Coleta\tests\taskgroupsTest.js" />
-    <Content Include="Coleta\tests\tasksTest.js" />
-    <Content Include="Coleta\utils\urlHelper.js" />
-    <Content Include="Coleta\view\correctiveaction.html" />
-    <Content Include="Coleta\view\indicators.html" />
-    <Content Include="Coleta\view\monitorings.html" />
-    <Content Include="Coleta\view\tasks.html" />
+    <Content Include="Content\bootstrap-datepicker.css" />
+    <Content Include="Content\bootstrap-datepicker.min.css" />
+    <Content Include="Content\bootstrap-datepicker.standalone.css" />
+    <Content Include="Content\bootstrap-datepicker.standalone.min.css" />
+    <Content Include="Content\bootstrap-datepicker3.css" />
+    <Content Include="Content\bootstrap-datepicker3.min.css" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.css" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\font-awesome.css" />
+    <Content Include="Content\css\font-awesome.min.css" />
+    <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
+    <Content Include="Content\DataTables\css\autoFill.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\autoFill.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\autoFill.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\autoFill.dataTables.css" />
+    <Content Include="Content\DataTables\css\autoFill.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\autoFill.foundation.css" />
+    <Content Include="Content\DataTables\css\autoFill.foundation.min.css" />
+    <Content Include="Content\DataTables\css\autoFill.jqueryui.css" />
+    <Content Include="Content\DataTables\css\autoFill.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\autoFill.semanticui.css" />
+    <Content Include="Content\DataTables\css\autoFill.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\buttons.bootstrap.css" />
+    <Content Include="Content\DataTables\css\buttons.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\buttons.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\buttons.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\buttons.dataTables.css" />
+    <Content Include="Content\DataTables\css\buttons.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\buttons.foundation.css" />
+    <Content Include="Content\DataTables\css\buttons.foundation.min.css" />
+    <Content Include="Content\DataTables\css\buttons.jqueryui.css" />
+    <Content Include="Content\DataTables\css\buttons.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\buttons.semanticui.css" />
+    <Content Include="Content\DataTables\css\buttons.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\colReorder.bootstrap.css" />
+    <Content Include="Content\DataTables\css\colReorder.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\colReorder.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\colReorder.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\colReorder.dataTables.css" />
+    <Content Include="Content\DataTables\css\colReorder.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\colReorder.foundation.css" />
+    <Content Include="Content\DataTables\css\colReorder.foundation.min.css" />
+    <Content Include="Content\DataTables\css\colReorder.jqueryui.css" />
+    <Content Include="Content\DataTables\css\colReorder.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\colReorder.semanticui.css" />
+    <Content Include="Content\DataTables\css\colReorder.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.bootstrap.css" />
+    <Content Include="Content\DataTables\css\dataTables.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\dataTables.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.foundation.css" />
+    <Content Include="Content\DataTables\css\dataTables.foundation.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.jqueryui.css" />
+    <Content Include="Content\DataTables\css\dataTables.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.material.css" />
+    <Content Include="Content\DataTables\css\dataTables.material.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.semanticui.css" />
+    <Content Include="Content\DataTables\css\dataTables.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.uikit.css" />
+    <Content Include="Content\DataTables\css\dataTables.uikit.min.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.bootstrap.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.dataTables.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.foundation.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.foundation.min.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.jqueryui.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.semanticui.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.bootstrap.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.dataTables.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.foundation.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.foundation.min.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.jqueryui.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.semanticui.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\jquery.dataTables.css" />
+    <Content Include="Content\DataTables\css\jquery.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\jquery.dataTables_themeroller.css" />
+    <Content Include="Content\DataTables\css\keyTable.bootstrap.css" />
+    <Content Include="Content\DataTables\css\keyTable.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\keyTable.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\keyTable.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\keyTable.dataTables.css" />
+    <Content Include="Content\DataTables\css\keyTable.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\keyTable.foundation.css" />
+    <Content Include="Content\DataTables\css\keyTable.foundation.min.css" />
+    <Content Include="Content\DataTables\css\keyTable.jqueryui.css" />
+    <Content Include="Content\DataTables\css\keyTable.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\keyTable.semanticui.css" />
+    <Content Include="Content\DataTables\css\keyTable.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\responsive.bootstrap.css" />
+    <Content Include="Content\DataTables\css\responsive.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\responsive.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\responsive.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\responsive.dataTables.css" />
+    <Content Include="Content\DataTables\css\responsive.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\responsive.foundation.css" />
+    <Content Include="Content\DataTables\css\responsive.foundation.min.css" />
+    <Content Include="Content\DataTables\css\responsive.jqueryui.css" />
+    <Content Include="Content\DataTables\css\responsive.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\responsive.semanticui.css" />
+    <Content Include="Content\DataTables\css\responsive.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\rowReorder.bootstrap.css" />
+    <Content Include="Content\DataTables\css\rowReorder.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\rowReorder.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\rowReorder.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\rowReorder.dataTables.css" />
+    <Content Include="Content\DataTables\css\rowReorder.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\rowReorder.foundation.css" />
+    <Content Include="Content\DataTables\css\rowReorder.foundation.min.css" />
+    <Content Include="Content\DataTables\css\rowReorder.jqueryui.css" />
+    <Content Include="Content\DataTables\css\rowReorder.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\rowReorder.semanticui.css" />
+    <Content Include="Content\DataTables\css\rowReorder.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\scroller.bootstrap.css" />
+    <Content Include="Content\DataTables\css\scroller.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\scroller.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\scroller.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\scroller.dataTables.css" />
+    <Content Include="Content\DataTables\css\scroller.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\scroller.foundation.css" />
+    <Content Include="Content\DataTables\css\scroller.foundation.min.css" />
+    <Content Include="Content\DataTables\css\scroller.jqueryui.css" />
+    <Content Include="Content\DataTables\css\scroller.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\scroller.semanticui.css" />
+    <Content Include="Content\DataTables\css\scroller.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\select.bootstrap.css" />
+    <Content Include="Content\DataTables\css\select.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\select.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\select.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\select.dataTables.css" />
+    <Content Include="Content\DataTables\css\select.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\select.foundation.css" />
+    <Content Include="Content\DataTables\css\select.foundation.min.css" />
+    <Content Include="Content\DataTables\css\select.jqueryui.css" />
+    <Content Include="Content\DataTables\css\select.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\select.semanticui.css" />
+    <Content Include="Content\DataTables\css\select.semanticui.min.css" />
+    <Content Include="Content\DataTables\images\details_close.png" />
+    <Content Include="Content\DataTables\images\details_open.png" />
+    <Content Include="Content\DataTables\images\sort_asc.png" />
+    <Content Include="Content\DataTables\images\sort_asc_disabled.png" />
+    <Content Include="Content\DataTables\images\sort_both.png" />
+    <Content Include="Content\DataTables\images\sort_desc.png" />
+    <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
+    <Content Include="Content\DataTables\jquery.dataTables.min.css" />
+    <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\daterangepicker-bs2.css" />
+    <Content Include="Content\daterangepicker-bs3.css" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\gridmvc.datepicker.css" />
     <Content Include="Content\gridmvc.datepicker.min.css" />
+    <Content Include="Content\Imagens\GRTJBSLogo.png" />
+    <Content Include="Content\Imagens\SGQLogo01.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="newColeta\Content\bootstrap.css" />
-    <Content Include="newColeta\Content\bootstrap.min.css" />
-    <Content Include="newColeta\Content\Geral.css" />
-    <Content Include="newColeta\Img\beef.jpg" />
-    <Content Include="newColeta\Img\fundoSGQ.jpg" />
-    <Content Include="newColeta\Img\GRTJBSLogo.png" />
-    <Content Include="newColeta\Img\login.png" />
-    <Content Include="newColeta\Img\sgq.jpg" />
-    <Content Include="newColeta\Img\SGQLogo01.png" />
-    <Content Include="newColeta\Index.html" />
-    <Content Include="newColeta\Plugins\float_button\css\kc.fab.css" />
-    <Content Include="newColeta\Plugins\float_button\js\kc.fab.js" />
-    <Content Include="newColeta\Plugins\float_button\js\kc.fab.min.js" />
-    <Content Include="newColeta\Plugins\font-awesome\css\font-awesome.css" />
-    <Content Include="newColeta\Plugins\font-awesome\css\font-awesome.min.css" />
-    <Content Include="newColeta\Plugins\font-awesome\fonts\fontawesome-webfont.svg" />
-    <Content Include="newColeta\Plugins\font-awesome\HELP-US-OUT.txt" />
-    <Content Include="newColeta\Plugins\jquery\jquery.min.js" />
-    <Content Include="newColeta\Plugins\sidebar\css\sidebar.min.css" />
-    <Content Include="newColeta\Plugins\sidebar\js\sidebar.js" />
-    <Content Include="newColeta\Plugins\sidebar\ts\sidebar.js" />
-    <Content Include="newColeta\Scripts\bootstrap.js" />
-    <Content Include="newColeta\Scripts\bootstrap.min.js" />
-    <Content Include="newColeta\Scripts\Methods.js" />
+    <Content Include="DataCollect\a.js" />
+    <Content Include="Scripts\aes.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
-    <Content Include="Areas\HelpPage\Views\Web.config" />
-    <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\Index.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TextSample.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\SimpleTypeModelDescription.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Samples.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Parameters.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ModelDescriptionLink.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\KeyValuePairModelDescription.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\InvalidSample.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ImageSample.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\HelpPageApiModel.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\EnumTypeModelDescription.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\DictionaryModelDescription.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ComplexTypeModelDescription.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Coleta\plugins\bootstrap\css\bootstrap-theme.css.map" />
-    <Content Include="Coleta\plugins\bootstrap\css\bootstrap-theme.min.css.map" />
-    <Content Include="Coleta\plugins\bootstrap\css\bootstrap.css.map" />
-    <Content Include="Coleta\plugins\bootstrap\css\bootstrap.min.css.map" />
-    <Content Include="Coleta\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Coleta\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Coleta\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Coleta\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="Coleta\plugins\font-awesome\fonts\fontawesome-webfont.eot" />
-    <Content Include="Coleta\plugins\font-awesome\fonts\fontawesome-webfont.ttf" />
-    <Content Include="Coleta\plugins\font-awesome\fonts\fontawesome-webfont.woff" />
-    <Content Include="Coleta\plugins\font-awesome\fonts\fontawesome-webfont.woff2" />
-    <Content Include="Coleta\plugins\font-awesome\fonts\FontAwesome.otf" />
-    <Content Include="Coleta\plugins\font-awesome\less\animated.less" />
-    <Content Include="Coleta\plugins\font-awesome\less\bordered-pulled.less" />
-    <Content Include="Coleta\plugins\font-awesome\less\core.less" />
-    <Content Include="Coleta\plugins\font-awesome\less\fixed-width.less" />
-    <Content Include="Coleta\plugins\font-awesome\less\font-awesome.less" />
-    <Content Include="Coleta\plugins\font-awesome\less\icons.less" />
-    <Content Include="Coleta\plugins\font-awesome\less\larger.less" />
-    <Content Include="Coleta\plugins\font-awesome\less\list.less" />
-    <Content Include="Coleta\plugins\font-awesome\less\mixins.less" />
-    <Content Include="Coleta\plugins\font-awesome\less\path.less" />
-    <Content Include="Coleta\plugins\font-awesome\less\rotated-flipped.less" />
-    <Content Include="Coleta\plugins\font-awesome\less\screen-reader.less" />
-    <Content Include="Coleta\plugins\font-awesome\less\stacked.less" />
-    <Content Include="Coleta\plugins\font-awesome\less\variables.less" />
-    <Content Include="Coleta\plugins\font-awesome\scss\font-awesome.scss" />
-    <Content Include="Coleta\plugins\font-awesome\scss\_animated.scss" />
-    <Content Include="Coleta\plugins\font-awesome\scss\_bordered-pulled.scss" />
-    <Content Include="Coleta\plugins\font-awesome\scss\_core.scss" />
-    <Content Include="Coleta\plugins\font-awesome\scss\_fixed-width.scss" />
-    <Content Include="Coleta\plugins\font-awesome\scss\_icons.scss" />
-    <Content Include="Coleta\plugins\font-awesome\scss\_larger.scss" />
-    <Content Include="Coleta\plugins\font-awesome\scss\_list.scss" />
-    <Content Include="Coleta\plugins\font-awesome\scss\_mixins.scss" />
-    <Content Include="Coleta\plugins\font-awesome\scss\_path.scss" />
-    <Content Include="Coleta\plugins\font-awesome\scss\_rotated-flipped.scss" />
-    <Content Include="Coleta\plugins\font-awesome\scss\_screen-reader.scss" />
-    <Content Include="Coleta\plugins\font-awesome\scss\_stacked.scss" />
-    <Content Include="Coleta\plugins\font-awesome\scss\_variables.scss" />
-    <Content Include="Coleta\sidebar\scss\sidebar.scss" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="newColeta\Plugins\font-awesome\fonts\fontawesome-webfont.eot" />
-    <Content Include="newColeta\Plugins\font-awesome\fonts\fontawesome-webfont.ttf" />
-    <Content Include="newColeta\Plugins\font-awesome\fonts\fontawesome-webfont.woff" />
-    <Content Include="newColeta\Plugins\font-awesome\fonts\fontawesome-webfont.woff2" />
-    <Content Include="newColeta\Plugins\font-awesome\fonts\FontAwesome.otf" />
-    <Content Include="newColeta\Plugins\font-awesome\less\animated.less" />
-    <Content Include="newColeta\Plugins\font-awesome\less\bordered-pulled.less" />
-    <Content Include="newColeta\Plugins\font-awesome\less\core.less" />
-    <Content Include="newColeta\Plugins\font-awesome\less\fixed-width.less" />
-    <Content Include="newColeta\Plugins\font-awesome\less\font-awesome.less" />
-    <Content Include="newColeta\Plugins\font-awesome\less\icons.less" />
-    <Content Include="newColeta\Plugins\font-awesome\less\larger.less" />
-    <Content Include="newColeta\Plugins\font-awesome\less\list.less" />
-    <Content Include="newColeta\Plugins\font-awesome\less\mixins.less" />
-    <Content Include="newColeta\Plugins\font-awesome\less\path.less" />
-    <Content Include="newColeta\Plugins\font-awesome\less\rotated-flipped.less" />
-    <Content Include="newColeta\Plugins\font-awesome\less\screen-reader.less" />
-    <Content Include="newColeta\Plugins\font-awesome\less\stacked.less" />
-    <Content Include="newColeta\Plugins\font-awesome\less\variables.less" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\font-awesome.scss" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\_animated.scss" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\_bordered-pulled.scss" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\_core.scss" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\_fixed-width.scss" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\_icons.scss" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\_larger.scss" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\_list.scss" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\_mixins.scss" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\_path.scss" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\_rotated-flipped.scss" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\_screen-reader.scss" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\_stacked.scss" />
-    <Content Include="newColeta\Plugins\font-awesome\scss\_variables.scss" />
-    <Content Include="newColeta\Plugins\sidebar\scss\sidebar.scss" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ComplexTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\DictionaryModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\EnumTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\HelpPageApiModel.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ImageSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\InvalidSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\KeyValuePairModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ModelDescriptionLink.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Parameters.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Samples.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\SimpleTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TextSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Index.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Web.config" />
+    <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap\wells.less" />
+    <Content Include="Content\bootstrap\variables.less" />
+    <Content Include="Content\bootstrap\utilities.less" />
+    <Content Include="Content\bootstrap\type.less" />
+    <Content Include="Content\bootstrap\tooltip.less" />
+    <Content Include="Content\bootstrap\thumbnails.less" />
+    <Content Include="Content\bootstrap\theme.less" />
+    <Content Include="Content\bootstrap\tables.less" />
+    <Content Include="Content\bootstrap\scaffolding.less" />
+    <Content Include="Content\bootstrap\responsive-utilities.less" />
+    <Content Include="Content\bootstrap\responsive-embed.less" />
+    <Content Include="Content\bootstrap\progress-bars.less" />
+    <Content Include="Content\bootstrap\print.less" />
+    <Content Include="Content\bootstrap\popovers.less" />
+    <Content Include="Content\bootstrap\panels.less" />
+    <Content Include="Content\bootstrap\pagination.less" />
+    <Content Include="Content\bootstrap\pager.less" />
+    <Content Include="Content\bootstrap\normalize.less" />
+    <Content Include="Content\bootstrap\navs.less" />
+    <Content Include="Content\bootstrap\navbar.less" />
+    <Content Include="Content\bootstrap\modals.less" />
+    <Content Include="Content\bootstrap\mixins\vendor-prefixes.less" />
+    <Content Include="Content\bootstrap\mixins\text-overflow.less" />
+    <Content Include="Content\bootstrap\mixins\text-emphasis.less" />
+    <Content Include="Content\bootstrap\mixins\table-row.less" />
+    <Content Include="Content\bootstrap\mixins\tab-focus.less" />
+    <Content Include="Content\bootstrap\mixins\size.less" />
+    <Content Include="Content\bootstrap\mixins\responsive-visibility.less" />
+    <Content Include="Content\bootstrap\mixins\resize.less" />
+    <Content Include="Content\bootstrap\mixins\reset-text.less" />
+    <Content Include="Content\bootstrap\mixins\reset-filter.less" />
+    <Content Include="Content\bootstrap\mixins\progress-bar.less" />
+    <Content Include="Content\bootstrap\mixins\panels.less" />
+    <Content Include="Content\bootstrap\mixins\pagination.less" />
+    <Content Include="Content\bootstrap\mixins\opacity.less" />
+    <Content Include="Content\bootstrap\mixins\nav-vertical-align.less" />
+    <Content Include="Content\bootstrap\mixins\nav-divider.less" />
+    <Content Include="Content\bootstrap\mixins\list-group.less" />
+    <Content Include="Content\bootstrap\mixins\labels.less" />
+    <Content Include="Content\bootstrap\mixins\image.less" />
+    <Content Include="Content\bootstrap\mixins\hide-text.less" />
+    <Content Include="Content\bootstrap\mixins\grid.less" />
+    <Content Include="Content\bootstrap\mixins\grid-framework.less" />
+    <Content Include="Content\bootstrap\mixins\gradients.less" />
+    <Content Include="Content\bootstrap\mixins\forms.less" />
+    <Content Include="Content\bootstrap\mixins\clearfix.less" />
+    <Content Include="Content\bootstrap\mixins\center-block.less" />
+    <Content Include="Content\bootstrap\mixins\buttons.less" />
+    <Content Include="Content\bootstrap\mixins\border-radius.less" />
+    <Content Include="Content\bootstrap\mixins\background-variant.less" />
+    <Content Include="Content\bootstrap\mixins\alerts.less" />
+    <Content Include="Content\bootstrap\mixins.less" />
+    <Content Include="Content\bootstrap\media.less" />
+    <Content Include="Content\bootstrap\list-group.less" />
+    <Content Include="Content\bootstrap\labels.less" />
+    <Content Include="Content\bootstrap\jumbotron.less" />
+    <Content Include="Content\bootstrap\input-groups.less" />
+    <Content Include="Content\bootstrap\grid.less" />
+    <Content Include="Content\bootstrap\glyphicons.less" />
+    <Content Include="Content\bootstrap\forms.less" />
+    <Content Include="Content\bootstrap\dropdowns.less" />
+    <Content Include="Content\bootstrap\component-animations.less" />
+    <Content Include="Content\bootstrap\code.less" />
+    <Content Include="Content\bootstrap\close.less" />
+    <Content Include="Content\bootstrap\carousel.less" />
+    <Content Include="Content\bootstrap\buttons.less" />
+    <Content Include="Content\bootstrap\button-groups.less" />
+    <Content Include="Content\bootstrap\breadcrumbs.less" />
+    <Content Include="Content\bootstrap\bootstrap.less" />
+    <Content Include="Content\bootstrap\badges.less" />
+    <Content Include="Content\bootstrap\alerts.less" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.min.css.map" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.css.map" />
+    <Content Include="Content\bootstrap-datepicker3.min.css.map" />
+    <Content Include="Content\bootstrap-datepicker3.css.map" />
+    <Content Include="Content\bootstrap-datepicker.standalone.min.css.map" />
+    <Content Include="Content\bootstrap-datepicker.standalone.css.map" />
+    <Content Include="Content\bootstrap-datepicker.min.css.map" />
+    <Content Include="Content\bootstrap-datepicker.css.map" />
+    <Content Include="Content\DataTables\css\semanticui.scss" />
+    <Content Include="Content\DataTables\css\mixins.scss" />
+    <Content Include="Content\DataTables\css\common.scss" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\DeployInterno.pubxml" />
+    <None Include="Properties\PublishProfiles\DeployInternoDebug.pubxml" />
     <None Include="Properties\PublishProfiles\DeploySgqInterno.pubxml" />
+    <Content Include="Scripts\bootstrap-datepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\cipher-core.js" />
+    <Content Include="Scripts\core.js" />
+    <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
+    <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\autoFill.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.foundation.js" />
+    <Content Include="Scripts\DataTables\autoFill.foundation.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.jqueryui.js" />
+    <Content Include="Scripts\DataTables\autoFill.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.semanticui.js" />
+    <Content Include="Scripts\DataTables\autoFill.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\buttons.bootstrap.js" />
+    <Content Include="Scripts\DataTables\buttons.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\buttons.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\buttons.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\buttons.colVis.js" />
+    <Content Include="Scripts\DataTables\buttons.colVis.min.js" />
+    <Content Include="Scripts\DataTables\buttons.flash.js" />
+    <Content Include="Scripts\DataTables\buttons.flash.min.js" />
+    <Content Include="Scripts\DataTables\buttons.foundation.js" />
+    <Content Include="Scripts\DataTables\buttons.foundation.min.js" />
+    <Content Include="Scripts\DataTables\buttons.html5.js" />
+    <Content Include="Scripts\DataTables\buttons.html5.min.js" />
+    <Content Include="Scripts\DataTables\buttons.jqueryui.js" />
+    <Content Include="Scripts\DataTables\buttons.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\buttons.print.js" />
+    <Content Include="Scripts\DataTables\buttons.print.min.js" />
+    <Content Include="Scripts\DataTables\buttons.semanticui.js" />
+    <Content Include="Scripts\DataTables\buttons.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.autoFill.js" />
+    <Content Include="Scripts\DataTables\dataTables.autoFill.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.bootstrap.js" />
+    <Content Include="Scripts\DataTables\dataTables.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\dataTables.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.buttons.js" />
+    <Content Include="Scripts\DataTables\dataTables.buttons.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.colReorder.js" />
+    <Content Include="Scripts\DataTables\dataTables.colReorder.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.fixedColumns.js" />
+    <Content Include="Scripts\DataTables\dataTables.fixedColumns.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.fixedHeader.js" />
+    <Content Include="Scripts\DataTables\dataTables.fixedHeader.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.foundation.js" />
+    <Content Include="Scripts\DataTables\dataTables.foundation.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.jqueryui.js" />
+    <Content Include="Scripts\DataTables\dataTables.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.keyTable.js" />
+    <Content Include="Scripts\DataTables\dataTables.keyTable.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.material.js" />
+    <Content Include="Scripts\DataTables\dataTables.material.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.responsive.js" />
+    <Content Include="Scripts\DataTables\dataTables.responsive.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.rowReorder.js" />
+    <Content Include="Scripts\DataTables\dataTables.rowReorder.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.scroller.js" />
+    <Content Include="Scripts\DataTables\dataTables.scroller.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.select.js" />
+    <Content Include="Scripts\DataTables\dataTables.select.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.semanticui.js" />
+    <Content Include="Scripts\DataTables\dataTables.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.uikit.js" />
+    <Content Include="Scripts\DataTables\dataTables.uikit.min.js" />
+    <Content Include="Scripts\DataTables\jszip.min.js" />
+    <Content Include="Scripts\DataTables\jquery.dataTables.js" />
+    <Content Include="Scripts\DataTables\jquery.dataTables.min.js" />
+    <Content Include="Scripts\DataTables\pdfmake.min.js" />
+    <Content Include="Scripts\DataTables\responsive.bootstrap.js" />
+    <Content Include="Scripts\DataTables\responsive.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\responsive.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\responsive.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\responsive.foundation.js" />
+    <Content Include="Scripts\DataTables\responsive.foundation.min.js" />
+    <Content Include="Scripts\DataTables\responsive.jqueryui.js" />
+    <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\responsive.semanticui.js" />
+    <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\vfs_fonts.js" />
+    <Content Include="Scripts\daterangepicker.js" />
+    <Content Include="Scripts\enc-base64.js" />
+    <Content Include="Scripts\enc-utf16.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
     <Content Include="Scripts\gridmvc.min.js" />
@@ -563,7 +812,12 @@
     <Content Include="Scripts\highcharts\4.2.0\themes\grid.js" />
     <Content Include="Scripts\highcharts\4.2.0\themes\sand-signika.js" />
     <Content Include="Scripts\highcharts\4.2.0\themes\skies.js" />
+    <None Include="Properties\PublishProfiles\DeployUsbNaVPN.pubxml" />
+    <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
+    <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
+    <None Include="Properties\PublishProfiles\PublishEUA.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
+    <Content Include="Scripts\GuardJs.js" />
     <Content Include="Scripts\jquery-3.1.0.js" />
     <Content Include="Scripts\jquery-3.1.0.min.js" />
     <Content Include="Scripts\jquery-3.1.0.slim.js" />
@@ -575,9 +829,84 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\lib-typedarrays.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ar.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.az.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.bg.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.bs.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ca.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.cs.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.cy.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.da.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.de.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.el.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.en-AU.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.en-GB.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.eo.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.es.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.et.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.eu.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fa.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fi.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fo.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fr-CH.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fr.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.gl.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.he.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.hr.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.hu.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.hy.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.id.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.is.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.it-CH.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.it.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ja.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ka.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.kh.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.kk.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ko.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.kr.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.lt.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.lv.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.me.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.mk.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.mn.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ms.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.nb.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.nl-BE.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.nl.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.no.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.pl.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.pt-BR.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.pt.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ro.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.rs-latin.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.rs.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ru.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sk.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sl.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sq.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sr-latin.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sr.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sv.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sw.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.th.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.tr.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.uk.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.vi.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.zh-CN.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.min.js" />
+    <Content Include="Scripts\md5.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\tripledes.js" />
+    <Content Include="Scripts\x64-core.js" />
+    <Content Include="Help.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -585,7 +914,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Web.config" />
@@ -593,19 +921,50 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\RelatorioColeta\Index.cshtml" />
+    <Content Include="Views\Reports\CorrectiveActionReport.cshtml" />
     <Content Include="Views\Shared\_GridPager.cshtml" />
     <Content Include="Views\Shared\_Grid.cshtml" />
     <Content Include="Views\Shared\Graficos\_GraficoIndicadores.cshtml" />
     <Content Include="Views\GraficoBeta\Index.cshtml" />
     <Content Include="Views\CorrectiveAction\Index.cshtml" />
+    <Content Include="Views\UserAuthentication\LogIn.cshtml" />
+    <Content Include="Views\UserAuthentication\Register.cshtml" />
+    <Content Include="Views\AccesDenied\Index.cshtml" />
+    <Content Include="Views\Shared\_mensagemObrigatorio.cshtml" />
+    <Content Include="Views\Shared\_CorrectiveActionReportEdit.cshtml" />
+    <Content Include="Views\Shared\_LoadingBar.cshtml" />
+    <Content Include="Views\Reports\DataCollectionReport.cshtml" />
+    <Content Include="Views\Shared\_FormularioQueryData.cshtml" />
+    <Content Include="Views\FileControl\Index.cshtml" />
+    <Content Include="Views\Shared\_FormToQueryFullScreen.cshtml" />
+    <Content Include="Views\Charts\DataCollectionChart.cshtml" />
+    <Content Include="Web - Copy.config" />
+    <Content Include="Web - Copy.Debug.config">
+      <DependentUpon>Web - Copy.config</DependentUpon>
+    </Content>
+    <Content Include="Web - Copy.DeployInterno.config">
+      <DependentUpon>Web - Copy.config</DependentUpon>
+    </Content>
+    <Content Include="Web - Copy.Release.config">
+      <DependentUpon>Web - Copy.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Example\Index.cshtml" />
+    <Content Include="Views\Error\Params.cshtml" />
+    <None Include="Web.DeployInterno.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Coleta\.tern-defs\" />
-    <Folder Include="Coleta\db\" />
-    <Folder Include="Coleta\json\" />
-    <Folder Include="Coleta\webservices\" />
+    <Folder Include="Areas\HelpPage\Views\Shared\" />
+    <Folder Include="Arquivos\uploads\" />
+    <Folder Include="Coleta\Areas\HelpPage\App_Start\" />
+    <Folder Include="Coleta\Areas\HelpPage\Controllers\" />
+    <Folder Include="Coleta\Areas\HelpPage\ModelDescriptions\" />
+    <Folder Include="Coleta\Areas\HelpPage\Models\" />
+    <Folder Include="Coleta\Areas\HelpPage\SampleGeneration\" />
+    <Folder Include="Coleta\Areas\HelpPage\Views\Help\DisplayTemplates\" />
+    <Folder Include="Coleta\Areas\HelpPage\Views\Shared\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>
@@ -616,10 +975,6 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj">
-      <Project>{54A72B39-94FD-4B0D-BAAD-891E3789F31F}</Project>
-      <Name>Application</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CrossCutting\CrossCutting.csproj">
       <Project>{0896bc38-df38-4e39-adf9-db1f9910bfe6}</Project>
       <Name>CrossCutting</Name>
@@ -632,6 +987,13 @@
       <Project>{0ed5466d-2a8f-4e37-8d4a-c2f2760bd687}</Project>
       <Name>DTO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -654,8 +1016,7 @@
           <IISUrl>http://localhost:63128/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <CustomServerUrl>http://eduardolucasmaia.ngrok.io:63128/</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

@@ -1,0 +1,11 @@
+﻿A library 'Application' no Solution 'SgqGlobal', tem a função de:
+
+1 - ponte de comunicação e filtro de dados da camada de presentation 'SgqSystem' para 'Domain' e vice versa. Esta classe possibilita que os objetos DTO
+Sejam independentes dos Objetos do Banco de dados.
+
+2 - Comunicação de projetos de saida e entrada de dados (por ex: SgqSystem, SgqSystem.Tests e outros proejtos).
+
+
+Referencias: 
+	Dominio
+	DTO

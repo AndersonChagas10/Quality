@@ -1,0 +1,60 @@
+﻿O Projeto 'SgqSystem' no Solution 'SgqGlobal', tem a função de oferecer dados, 'Views', API´s aos usuários do SgqGlobal.
+
+Referências:
+	Domain,
+	Aplication,
+	DTO,
+	Helpers,
+	CrossCutting.
+
+
+1 - Neste projeto podemos utilizar as tecnologias e linguagens:
+ * Razor MVC5
+ * .Net Framework 4.5
+ * Jquery 3.1
+ * BootStrapCss
+ * DataTable 1.10
+ * HighCharts
+ * Testes de Unidade.
+ * Referencias:
+		Dominio (Necessário para utilizar o RepositoryBase com dupla referencia e AutoMapper automático)
+		DTO
+		Application (Referencia direta, a camada SgqGlobal deve se comunicar diretamente com a Application)
+		CrossCutting
+		(Helper Futuramente implementada para helpers Razor)
+
+ 2 - Controllers e API´s:
+
+	2.1 - Controllers: 
+		Os nomes de controllers devem identificar regiões de trabalho, como Relatórios, Graficos, Planilhas, Coleta etc...
+		e suas funcionalidades distintas devem ser separadas por regions.
+		
+	2.2 - API´s:
+		Os Api´s devem seguir o mesmo padrão dos controllers.
+		
+	Exemplos:
+		Nome do Controller? Resp .Para que ele serve.
+		Nome da Region? Resp. O que ele faz de forma sucinta.
+		Metodos do Controller? Resp. O que ele faz brevemente.
+
+	Exemplo 1:	Se quisermos inserir uma região para alteração dos dados de coleta, deve-se dento do controler ColetaController, 
+				cria-se o metodo EdicaoDeColeta, dentro de uma regios "Edição".
+
+	Exemplo2: Relatorio de utilização do sistema, deve ser criado dentro do controller Relatorio, na Region "Relatorio de utilização do sistema".
+
+
+ 3 - Neste projeto encontram-se parametros de configurações para o statup do IOC (NINJECT) e as configurações dos AutoMappers (em Mappers).
+
+	* Sobre os AutoMappers:
+		A configuração feita aqui no AutoMapper sera utilizada apenas no caso de uma entidade trafegar até a camada de DOMAIN, la o DTO é, ocasionalmente,
+		convertido em classe do Entity Framework.
+
+	* Sobre as estruturas de classes:
+		As classes ViewModel, devem conter propriedades que serão utilizadas em TELA, caso haja necessidade de alguma dessas propriedades 
+		avançarem para outras CAMADAS do software, deve-se utilizar um DTO contido na camada DTO deste Projeto, lembrando que, se um ViewModel extende um DTO,
+		é possivel enviar sua referência como sendo um DTO.
+
+
+ OBS: Atulizar/Atualizações de componentes do NuGet, ou bibliotecas ja existentes neste projeto devem ser reportadas a mim, Celso Gea, 
+ pois a alteração do mesmo pode tanto beneficiar quanto depreciar funcionalidades já existentes no projeto.
+

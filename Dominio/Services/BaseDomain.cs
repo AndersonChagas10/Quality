@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using Dominio.Interfaces.Repositories;
 using Dominio.Entities.BaseEntity;
 using DTO.Helpers;
+using AutoMapper;
 
 namespace Dominio.Services
 {
-    public class BaseDomain<T> : IDisposable, IBaseDomain<T> where T : class
+    public class BaseDomain<T, Y> : IDisposable, IBaseDomain<T, Y> where T : class where Y : class
     {
 
         private readonly IBaseRepository<T> _repositoryBase;
@@ -18,7 +19,7 @@ namespace Dominio.Services
 
         public BaseDomain(IBaseRepository<T> repo)
         {
-
+            //Mapper.Map<Y>(Activator.CreateInstance<T>());
             _repositoryBase = repo;
         }
 
@@ -110,9 +111,9 @@ namespace Dominio.Services
             return _repositoryBase.GetById(id);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<Y> GetAll()
         {
-            return _repositoryBase.GetAll();
+            return Mapper.Map<IEnumerable<Y>>(_repositoryBase.GetAll());
         }
 
         public void Remove(T obj)

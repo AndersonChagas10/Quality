@@ -4,8 +4,8 @@ namespace Dominio.Interfaces.Repositories
 {
     public interface IColetaRepository
     {
-        void Salvar(Coleta r);
-        void SalvarLista(List<Coleta> list);
-        void ValidaFkResultado(Coleta r);
+        void SalvarColeta(Coleta r);
+        void SalvarListaColeta(List<Coleta> list);
+        void ValidaFkColeta(Coleta r);
     }
 }

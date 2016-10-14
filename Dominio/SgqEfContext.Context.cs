@@ -18,6 +18,12 @@ namespace Dominio
         public SgqDbDevEntities()
             : base("name=SgqDbDevEntities")
         {
+    
+    
+    this.Database.CommandTimeout = 9600;
+    this.Database.Log = s => System.Diagnostics.Debug.Write(s);
+    
+    
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -25,20 +31,21 @@ namespace Dominio
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Coleta> Coleta { get; set; }
-        public virtual DbSet<DataCollection> DataCollection { get; set; }
-        public virtual DbSet<DataCollectionResult> DataCollectionResult { get; set; }
-        public virtual DbSet<Level01> Level01 { get; set; }
-        public virtual DbSet<Level01Consolidation> Level01Consolidation { get; set; }
-        public virtual DbSet<Level02> Level02 { get; set; }
-        public virtual DbSet<Level02Consolidation> Level02Consolidation { get; set; }
-        public virtual DbSet<Level03> Level03 { get; set; }
-        public virtual DbSet<Level03Consolidation> Level03Consolidation { get; set; }
-        public virtual DbSet<Level1> Level1 { get; set; }
-        public virtual DbSet<Level2> Level2 { get; set; }
-        public virtual DbSet<Level3> Level3 { get; set; }
-        public virtual DbSet<teste> teste { get; set; }
-        public virtual DbSet<UserSgq> UserSgq { get; set; }
+        public virtual DbSet<CollectionHtml> CollectionHtml { get; set; }
+        public virtual DbSet<CollectionLevel03> CollectionLevel03 { get; set; }
+        public virtual DbSet<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
+        public virtual DbSet<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
         public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
+        public virtual DbSet<Department> Department { get; set; }
+        public virtual DbSet<Level01> Level01 { get; set; }
+        public virtual DbSet<Level02> Level02 { get; set; }
+        public virtual DbSet<Level03> Level03 { get; set; }
+        public virtual DbSet<Period> Period { get; set; }
+        public virtual DbSet<Shift> Shift { get; set; }
+        public virtual DbSet<Unit> Unit { get; set; }
+        public virtual DbSet<UnitUser> UnitUser { get; set; }
+        public virtual DbSet<UserSgq> UserSgq { get; set; }
+        public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
+        public virtual DbSet<Example> Example { get; set; }
     }
 }

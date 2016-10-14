@@ -15,23 +15,24 @@ namespace Dominio
     public partial class CorrectiveAction
     {
         public int Id { get; set; }
-        public System.DateTime DateExecute { get; set; }
-        public int Auditor { get; set; }
-        public int Shift { get; set; }
-        public int AuditLevel1 { get; set; }
-        public int AuditLevel2 { get; set; }
-        public int AuditLevel3 { get; set; }
-        public System.DateTime StartTime { get; set; }
-        public int Period { get; set; }
+        public int AuditorId { get; set; }
+        public int CollectionLevel02Id { get; set; }
+        public Nullable<int> SlaughterId { get; set; }
+        public Nullable<int> TechinicalId { get; set; }
+        public Nullable<System.DateTime> DateTimeSlaughter { get; set; }
+        public Nullable<System.DateTime> DateTimeTechinical { get; set; }
+        public System.DateTime AddDate { get; set; }
+        public Nullable<System.DateTime> AlterDate { get; set; }
+        public System.DateTime DateCorrectiveAction { get; set; }
+        public System.DateTime AuditStartTime { get; set; }
         public string DescriptionFailure { get; set; }
         public string ImmediateCorrectiveAction { get; set; }
         public string ProductDisposition { get; set; }
         public string PreventativeMeasure { get; set; }
-        public Nullable<int> Slaughter { get; set; }
-        public Nullable<System.DateTime> DateTimeSlaughter { get; set; }
-        public Nullable<int> Techinical { get; set; }
-        public Nullable<System.DateTime> DateTimeTechinical { get; set; }
-        public string NameTechinical { get; set; }
-        public string NameSlaughter { get; set; }
+    
+        public virtual UserSgq UserSgq { get; set; }
+        public virtual UserSgq UserSgq1 { get; set; }
+        public virtual UserSgq UserSgq2 { get; set; }
+        public virtual CollectionLevel02 CollectionLevel02 { get; set; }
     }
 }

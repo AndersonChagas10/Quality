@@ -2,6 +2,7 @@
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
+using System.Collections.Generic;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api
@@ -10,10 +11,10 @@ namespace SgqSystem.Controllers.Api
     public class CorrectiveActionController : ApiController
     {
 
-        private readonly ICorrectiveActionAppService _correctiveActionAppService;
+        private readonly ICorrectiveActionApp _correctiveActionAppService;
         private readonly IUserApp _userAppService;
 
-        public CorrectiveActionController(ICorrectiveActionAppService correctiveActionAppService, IUserApp userAppService)
+        public CorrectiveActionController(ICorrectiveActionApp correctiveActionAppService, IUserApp userAppService)
         {
             _correctiveActionAppService = correctiveActionAppService;
             _userAppService = userAppService;
@@ -23,55 +24,37 @@ namespace SgqSystem.Controllers.Api
         [HttpPost]
         public GenericReturn<CorrectiveActionDTO> SalvarAcaoCorretiva([FromBody]CorrectiveActionViewModel model)
         {
+            return _correctiveActionAppService.SalvarAcaoCorretiva(model);
+        }
 
-            var result = _correctiveActionAppService.SalvarAcaoCorretiva(model.CorrectiveAction);
+        [Route("GetCorrectiveAction")]
+        [HttpPost]
+        public GenericReturn<List<CorrectiveActionDTO>> GetCorrectiveAction([FromBody]FormularioParaRelatorioViewModel model)
+        {
+            return _correctiveActionAppService.GetCorrectiveAction(model);
+        }
 
+        [Route("LoginSlaughterTechinical")]
+        [HttpPost]
+        public GenericReturn<UserDTO> LoginSlaughterTechinical([FromBody]UserViewModel model)
+        {
+            var result = _userAppService.AuthenticationLogin(model);
             return result;
-        }
-
-
-        [Route("LogarUsuarioSlaughter")]
-        [HttpPost]
-        public UserDTO LogarUsuarioSlaughter([FromBody]CorrectiveActionViewModel model)
-        {
-            var user = new UserDTO()
-            {
-                Name = model.SlaughterLogin,
-                Password = model.SlaughterPassword
-            };
-
-            var result = _userAppService.AuthenticationLogin(user);
-
-            return result.Retorno;
-        }
-
-
-        [Route("LogarUsuarioTechnical")]
-        [HttpPost]
-        public UserDTO LogarUsuarioTechnical([FromBody]CorrectiveActionViewModel model)
-        {
-            var user = new UserDTO()
-            {
-                Name = model.TechnicalLogin,
-                Password = model.TechnicalPassword
-            };
-
-            var result = _userAppService.AuthenticationLogin(user);
-
-            return result.Retorno;
-
         }
 
         [Route("VerificarAcaoCorretivaIncompleta")]
         [HttpPost]
-        public CorrectiveActionDTO VerificarAcaoCorretivaIncompleta([FromBody]CorrectiveActionViewModel model)
+        public GenericReturn<CorrectiveActionDTO> VerificarAcaoCorretivaIncompleta([FromBody]CorrectiveActionViewModel model)
         {
-            var result = _correctiveActionAppService.VerificarAcaoCorretivaIncompleta(model.CorrectiveAction);
-
-            return result.Retorno;
+            var result = _correctiveActionAppService.VerificarAcaoCorretivaIncompleta(model);
+            return result;
         }
 
-
-
+        [Route("GetCorrectiveActionById")]
+        [HttpPost]
+        public GenericReturn<CorrectiveActionDTO> GetCorrectiveActionById([FromBody]int id)
+        {
+            return _correctiveActionAppService.GetCorrectiveActionById(id);
+        }
     }
 }

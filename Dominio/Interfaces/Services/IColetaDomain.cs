@@ -6,7 +6,7 @@ namespace Dominio.Interfaces.Services
 {
     public interface IColetaDomain
     {
-        GenericReturn<ColetaDTO> Salvar(ColetaDTO r);
-        GenericReturn<ColetaDTO> SalvarLista(List<ColetaDTO> list);
+        GenericReturn<ColetaDTO> SalvarColeta(ColetaDTO r);
+        GenericReturn<ColetaDTO> SalvarListaColeta(List<ColetaDTO> list);
     }
 }

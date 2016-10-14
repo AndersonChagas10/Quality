@@ -44,13 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppClass\ColetaApp.cs" />
+    <Compile Include="AppClass\ParamsApp.cs" />
     <Compile Include="AppClass\RelatorioColetaApp.cs" />
     <Compile Include="AppClass\SyncApp.cs" />
     <Compile Include="AppClass\AppBase.cs" />
-    <Compile Include="AppClass\CorrectiveActionAppService.cs" />
-    <Compile Include="Interface\IColetaApp.cs" />
-    <Compile Include="Interface\ICorrectiveActionAppService.cs" />
+    <Compile Include="AppClass\CorrectiveActionApp.cs" />
+    <Compile Include="Interface\ICorrectiveActionApp.cs" />
+    <Compile Include="Interface\IParamsApp.cs" />
     <Compile Include="Interface\IRelatorioColetaApp.cs" />
     <Compile Include="Interface\ISyncApp.cs" />
     <Compile Include="Interface\IBaseApp.cs" />
@@ -70,6 +70,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Help.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

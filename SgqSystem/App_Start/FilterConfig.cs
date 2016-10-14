@@ -1,4 +1,4 @@
-﻿using System.Web;
+﻿using Helper;
 using System.Web.Mvc;
 
 namespace SgqSystem
@@ -8,6 +8,7 @@ namespace SgqSystem
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new HandlerParams());
         }
     }
 }

@@ -7,12 +7,12 @@ using System.Collections.Generic;
 
 namespace Application.AppServiceClass
 {
-    public class AppServiceBase<T> : IDisposable, IBaseApp<T> where T : class
+    public class AppServiceBase<T, Y> : IDisposable, IBaseApp<T, Y> where T : class where Y : class
     {
 
-        private readonly IBaseDomain<T> _serviceDomain;
+        private readonly IBaseDomain<T, Y> _serviceDomain;
 
-        public AppServiceBase(IBaseDomain<T> serviceDomain)
+        public AppServiceBase(IBaseDomain<T, Y> serviceDomain)
         {
             _serviceDomain = serviceDomain;
         }
@@ -46,7 +46,7 @@ namespace Application.AppServiceClass
             return _serviceDomain.GetById(id);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<Y> GetAll()
         {
             return _serviceDomain.GetAll();
         }

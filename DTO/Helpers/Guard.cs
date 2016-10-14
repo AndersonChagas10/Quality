@@ -1,4 +1,4 @@
-﻿using DTO.Entities.BaseEntity;
+﻿using DTO.BaseEntity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,17 +10,17 @@ namespace DTO.Helpers
 
         #region CONVERT
 
-        public static bool ConverteValor<T>(this object valor, out T resultado, T valorPadrao)
+        public static bool ConverteValor<T>(this object valor, out T resultado, T valorPadrao, string paramiterName)
         {
             try
             {
                 resultado = (T)Convert.ChangeType(valor, typeof(T));
                 return true;
             }
-            catch (ExceptionHelper)
+            catch (Exception e)
             {
                 resultado = valorPadrao;
-                return false;
+                throw new ExceptionHelper("Impossível converter o valor: " + valor.ToString() + " Para:" + typeof(T) + " Nome do parametro: " + paramiterName, e);
             }
         }
 
@@ -29,15 +29,29 @@ namespace DTO.Helpers
             return (T)Convert.ChangeType(valor, typeof(T));
         }
 
-        public static T ConverteValor<T>(this object valor, T valorPadrao)
+        public static T ConverteValor<T>(this object valor, T valorPadrao, string paramiterName)
         {
             try
             {
                 return (T)Convert.ChangeType(valor, typeof(T));
             }
-            catch (ExceptionHelper)
+            catch (Exception e)
             {
-                return valorPadrao;
+                throw new ExceptionHelper("Impossível converter o valor: " + valor.ToString() + " Para:" + typeof(T) + " Nome do parametro: " + paramiterName, e);
+                //return valorPadrao;
+            }
+        }
+
+        public static T ConverteValor<T>(this object valor, string paramiterName)
+        {
+            try
+            {
+                return (T)Convert.ChangeType(valor, typeof(T));
+            }
+            catch (Exception e)
+            {
+                throw new ExceptionHelper("Impossível converter o valor: " + valor.ToString() + " Para: " + typeof(T) + " Nome do parametro: " + paramiterName, e);
+                //return valorPadrao;
             }
         }
 
@@ -57,6 +71,15 @@ namespace DTO.Helpers
             }
         }
 
+        public static void CheckListNullOrEmpty<T>(List<T> result, string messsage)
+        {
+            if (result.IsNull())
+                throw new ExceptionHelper(messsage);
+
+            if (result.Count == 0)
+                throw new ExceptionHelper(messsage);
+        }
+
         public static string AsString(this object valor, string valorPadrao = "")
         {
             try
@@ -67,6 +90,11 @@ namespace DTO.Helpers
             {
                 return valorPadrao;
             }
+        }
+
+        public static bool VerifyStringNullValue(string verify)
+        {
+            return !(verify != null && (verify.Equals("null") || verify.Equals("undefined")));
         }
 
         public static DateTime AsDateTime(this object valor)
@@ -91,6 +119,13 @@ namespace DTO.Helpers
             {
                 return valorPadrao;
             }
+        }
+
+        public static void VerifyIfIsBool(bool isIAmBool, string propName)
+        {
+            if (isIAmBool.GetType() != typeof(bool))
+                throw new Exception("The property: " + propName + " is not a bool.");
+
         }
 
         public static DateTime AsDateTime(this object valor, DateTime valorPadrao, IFormatProvider formato)
@@ -186,11 +221,23 @@ namespace DTO.Helpers
 
         #endregion
 
+        /// <summary>
+        /// Não pode ser Zero.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="msg"></param>
         public static void forValueZero(int value, string msg)
         {
             if (value == 0)
                 throw new ExceptionHelper(msg);
         }
+
+        public static void forValueZeroPredefinedMessage(int value, string paramName)
+        {
+            if (value == 0)
+                throw new ExceptionHelper(paramName + " Must be different of Zero.");
+        }
+
         public static string RetornaInsersaoRegistro<T>(List<T> ids) where T : EntityBase
         {
             var acao = "inseridos";
@@ -215,20 +262,33 @@ namespace DTO.Helpers
             }
         }
 
-        public static void ForValidId(string propName, string id)
-        {
-            ForValidId(int.Parse(id), propName + "Id Inválido!");
-        }
-
-        public static void ForValidId(int id, string mensagemErro)
+        /// <summary>
+        /// Não pode ser negativo, se alteração não pdoe ser Zero.
+        /// Throw message "Invalid key for: paramName  in:  className"
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="paramName"></param>
+        /// <param name="className"></param>
+        /// <param name="isAlter"></param>
+        public static void ForValidId(int id, string callerMethod)
         {
             if (!(id >= 0))
-                throw new ExceptionHelper(mensagemErro);
+                throw new ExceptionHelper("Invalid primary key detected in: " + callerMethod);
         }
 
-        public static void ForValidFk(string propName, string id)
+        /// <summary>
+        ///  Se nulo utilizar a data atual.
+        /// </summary>
+        /// <param name="date"></param>
+        public static void AutoFillDateWithDateNow(DateTime? date)
         {
-            ForValidFk(int.Parse(id), propName + "Id Inválido!");
+            if (date.IsNull())
+                date = DateTime.Now;
+        }
+
+        public static void ForValidFk(string propName, int id)
+        {
+            ForValidFk(id, propName + "Id Inválido!");
         }
 
         public static void ForValidFk(int id, string mensagemErro)
@@ -237,6 +297,11 @@ namespace DTO.Helpers
                 throw new ExceptionHelper(mensagemErro);
         }
 
+        /// <summary>
+        /// Não pode ser negativo.
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="propName"></param>
         public static void ForNegative(int number, string propName)
         {
             if (number < 0)
@@ -297,7 +362,7 @@ namespace DTO.Helpers
         /// <param name="DuplicateWhiteEspace"> Remove espaços duplicados entre a string. </param>
         /// <param name="WhiteSpacesStart"> Remove espaços no inicio da string. </param>
         /// <param name="WhiteSpacesEnd"> Remove espaços no fim da string.</param>
-        public static void NullOrEmptyValuesCheck(out string retorno, string propName, string value, string mensagem = null, bool requerido = false
+        public static void CheckStringFull(out string retorno, string propName, string value, string mensagem = null, bool requerido = false
                                                  ,bool DuplicateWhiteEspace = false, bool WhiteSpacesStart = false, bool WhiteSpacesEnd = false)
         {
             //Se o valor da STRING é NULL e for Obrigatório.

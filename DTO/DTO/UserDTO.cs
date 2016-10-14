@@ -1,13 +1,31 @@
-﻿using DTO.Entities.BaseEntity;
+﻿using DTO.BaseEntity;
 using DTO.Helpers;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DTO.DTO
 {
     public class UserDTO : EntityBase
     {
+        //[Required]
+        [StringLength(150)]
+        [Display(Name = "Username: ")]
         public string Name { get; set; }
+
+        //[Required]
+        [StringLength(20, MinimumLength = 3)]
+        [Display(Name = "Password: ")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
-        public string Tste { get; set; }
+
+        public bool isTechnical { get; set; }
+        public bool isSlaugther { get; set; }
+        public string[] Roles { get; set; }
+        public string FullName { get; set; }
+
+        public List<UnitUserDTO> UnitUser { get; set; }
+
+        public string Role { get; set; }
 
         /// <summary>
         /// Construtor Padrão
@@ -40,7 +58,7 @@ namespace DTO.DTO
         public void SetName(string name)
         {
             Guard.ForNullOrEmpty(name, "The Username is required.");
-            Guard.NullOrEmptyValuesCheck(out name, "Username", name, requerido: true, mensagem: "The Username is required.");
+            Guard.CheckStringFull(out name, "Username", name, requerido: true, mensagem: "The Username is required.");
             //Name = name;
         }
 
@@ -52,7 +70,7 @@ namespace DTO.DTO
         {
             Guard.ForNullOrEmpty(pass, "The Password is required.");
             Guard.VerificaEspacoString(pass, "The Password field should not contains blank spaces."); //A Senha não deve conter espaços
-            Guard.NullOrEmptyValuesCheck(out pass, "Password", pass, mensagem: "The Password is required.", requerido: true); //O campo senha deve ser informado.
+            Guard.CheckStringFull(out pass, "Password", pass, mensagem: "The Password is required.", requerido: true); //O campo senha deve ser informado.
             //Password = pass;
         }
 

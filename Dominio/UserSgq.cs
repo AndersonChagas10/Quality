@@ -14,12 +14,34 @@ namespace Dominio
     
     public partial class UserSgq
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public UserSgq()
+        {
+            this.CorrectiveAction = new HashSet<CorrectiveAction>();
+            this.CorrectiveAction1 = new HashSet<CorrectiveAction>();
+            this.CorrectiveAction2 = new HashSet<CorrectiveAction>();
+            this.UnitUser = new HashSet<UnitUser>();
+            this.CollectionLevel02 = new HashSet<CollectionLevel02>();
+        }
+    
         public int Id { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public Nullable<System.DateTime> AcessDate { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public string Tste { get; set; }
+        public string Role { get; set; }
+        public string FullName { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CorrectiveAction> CorrectiveAction { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CorrectiveAction> CorrectiveAction1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CorrectiveAction> CorrectiveAction2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UnitUser> UnitUser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CollectionLevel02> CollectionLevel02 { get; set; }
     }
 }

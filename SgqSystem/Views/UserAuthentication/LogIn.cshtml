@@ -1,0 +1,42 @@
+﻿@model SgqSystem.ViewModels.UserViewModel
+@{
+    ViewBag.Title = "Log In";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "Log in failed. Check your login details.")
+
+    <div class="login">
+        <div class="head"></div>
+        <div class="form-signin">
+            <h2 class="form-signin-heading">Please sign in</h2>
+                <label for="inputUserName" class="sr-only">Username</label>
+                <input type="text" id="inputUserName" class="form-control" placeholder="Username" required="" autofocus="" name="Name">
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="Password">
+
+                <button class="btn btn-lg btn-primary marginTop10 btn-block" type="submit" data-loading-text="Authenticating..." id="btnLogin">Sign in</button>
+                <div id="messageError" class="alert alert-danger hide" role="alert">
+                    <span class="icon-remove-sign"></span>    <strong>Error! </strong><span id="mensagemErro"> </span>
+                </div>
+                <div id="messageAlert" class="alert alert-info hide" role="alert">
+                    <span id="mensagemAlerta" class="icon-info-sign"></span>
+                </div>
+                <div id="messageSuccess" class="alert alert-success hide" role="alert">
+                    <span id="mensagemSucesso" class="icon-ok-circle"></span>
+                </div>
+        </div>
+        <div class="foot"></div>
+    </div>
+
+}
+@section Scripts {
+    <script type="text/javascript">
+
+
+    </script>
+}
