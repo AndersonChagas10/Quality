@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Helper;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
@@ -31,27 +32,19 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
+        [HandleController()]
         public string Upload(HttpPostedFileBase file)
         {
-            // Verify that the user selected a file
-            try
+            if (file != null && file.ContentLength > 0)
             {
-                if (file != null && file.ContentLength > 0)
-                {
-                    // extract only the filename
-                    var fileName = Path.GetFileName(file.FileName);
-                    // store the file inside ~/App_Data/uploads folder
-                    var path = Path.Combine(ServerVirtualPath, fileName);
-                    file.SaveAs(path);
-                    return "File inserted: " + path;
-                }
-                return "The file is empity";
-                // redirect back to the index action to show the form once again
+                // extract only the filename
+                var fileName = Path.GetFileName(file.FileName);
+                // store the file inside ~/App_Data/uploads folder
+                var path = Path.Combine(ServerVirtualPath, fileName);
+                file.SaveAs(path);
+                return "File inserted: " + path;
             }
-            catch (Exception e)
-            {
-                return "Error inserting file. Check log.";
-            }
+            return "The file is empity";
         }
 
     }

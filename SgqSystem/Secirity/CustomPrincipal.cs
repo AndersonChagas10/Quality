@@ -8,8 +8,8 @@ namespace SgqSystem.Secirity
     {
         private UserDTO UserVm;
         public string UserName;
-        private string token;
-        private string cookie;
+        //private string token;
+        //private string cookie;
 
         //private readonly IUserDomain _userApp;
 
