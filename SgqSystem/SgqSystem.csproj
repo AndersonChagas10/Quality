@@ -293,6 +293,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
+    <Compile Include="Controllers\Globalization\GlobalizationController.cs" />
     <Compile Include="Controllers\Login\AccesDeniedController.cs" />
     <Compile Include="Controllers\Api\File\FileController.cs" />
     <Compile Include="Controllers\Api\Example\ExampleApiController.cs" />
@@ -907,9 +908,19 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\theme\css\components.min.css" />
+    <Content Include="Scripts\theme\css\darkblue.min.css" />
+    <Content Include="Scripts\theme\css\layout.min.css" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\css\font-awesome.css" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\css\font-awesome.min.css" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\fonts\fontawesome-webfont.svg" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\HELP-US-OUT.txt" />
+    <Content Include="Scripts\theme\js\app.min.js" />
+    <Content Include="Scripts\theme\js\jquery.slimscroll.min.js" />
     <Content Include="Scripts\tripledes.js" />
     <Content Include="Scripts\x64-core.js" />
     <Content Include="Help.txt" />
+    <Content Include="Views\Globalization\index2.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -954,6 +965,44 @@
     <Content Include="Views\Example\Index.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Params\Index.cshtml" />
+    <Content Include="Views\Globalization\components\_content_layout.cshtml" />
+    <Content Include="Views\Globalization\components\_left_layout.cshtml" />
+    <Content Include="Views\Globalization\components\_navbar.cshtml" />
+    <Content Include="Views\Globalization\components\_right_layout.cshtml" />
+    <Content Include="Views\Globalization\Index.cshtml" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\fonts\fontawesome-webfont.eot" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\fonts\fontawesome-webfont.woff" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\fonts\FontAwesome.otf" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\animated.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\bordered-pulled.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\core.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\fixed-width.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\font-awesome.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\icons.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\larger.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\list.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\mixins.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\path.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\rotated-flipped.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\screen-reader.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\stacked.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\less\variables.less" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\font-awesome.scss" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_animated.scss" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_bordered-pulled.scss" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_core.scss" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_fixed-width.scss" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_icons.scss" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_larger.scss" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_list.scss" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_mixins.scss" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_path.scss" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_rotated-flipped.scss" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_screen-reader.scss" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_stacked.scss" />
+    <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_variables.scss" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -962,13 +1011,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\HelpPage\Views\Shared\" />
     <Folder Include="Arquivos\uploads\" />
-    <Folder Include="Coleta\Areas\HelpPage\App_Start\" />
-    <Folder Include="Coleta\Areas\HelpPage\Controllers\" />
-    <Folder Include="Coleta\Areas\HelpPage\ModelDescriptions\" />
-    <Folder Include="Coleta\Areas\HelpPage\Models\" />
-    <Folder Include="Coleta\Areas\HelpPage\SampleGeneration\" />
-    <Folder Include="Coleta\Areas\HelpPage\Views\Help\DisplayTemplates\" />
-    <Folder Include="Coleta\Areas\HelpPage\Views\Shared\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>

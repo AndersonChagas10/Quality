@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Components with globalization";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/Content/General")
+
+    @Styles.Render("~/Content/Theme")
+</head>
+
+<body class="page-header-fixed page-sidebar-closed-hide-logo">
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @Scripts.Render("~/bundles/theme")
+    <div class="page-wrapper">
+        @Html.Partial("~/Views/Globalization/components/_navbar.cshtml")
+        <div class="page-container">
+            @Html.Partial("~/Views/Globalization/components/_right_layout.cshtml")
+            @Html.Partial("~/Views/Globalization/components/_left_layout.cshtml")
+            @Html.Partial("~/Views/Globalization/components/_content_layout.cshtml")
+
+        </div>
+            
+    </div>
+</body>
+</html>

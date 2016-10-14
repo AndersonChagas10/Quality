@@ -169,5 +169,7 @@
 /// <reference path="moment.min.js" />
 /// <reference path="moment-with-locales.min.js" />
 /// <reference path="respond.js" />
+/// <reference path="theme/js/app.min.js" />
+/// <reference path="theme/js/jquery.slimscroll.min.js" />
 /// <reference path="tripledes.js" />
 /// <reference path="x64-core.js" />
