@@ -1,4 +1,4 @@
-﻿using Application.Interface;
+﻿using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,19 +10,19 @@ namespace SgqSystem.Controllers.Api.Tests
     public class UserControllerTests
     {
 
-        private readonly Mock<IUserApp> _userApp;
+        private readonly Mock<IUserDomain> _userDomain;
 
         public UserControllerTests()
         {
-            _userApp = new Mock<IUserApp>();
+            _userDomain = new Mock<IUserDomain>();
         }
 
         [TestMethod]
         public void User_Login_Enviando_Usuario_Nulo()
         {
-            _userApp.Setup(r => r.AuthenticationLogin(null)).Returns(new GenericReturn<UserDTO>()).Verifiable();
-            _userApp.Object.AuthenticationLogin(null);
-            _userApp.VerifyAll();
+            _userDomain.Setup(r => r.AuthenticationLogin(null)).Returns(new GenericReturn<UserDTO>()).Verifiable();
+            _userDomain.Object.AuthenticationLogin(null);
+            _userDomain.VerifyAll();
         }
 
         [TestMethod]
@@ -41,9 +41,9 @@ namespace SgqSystem.Controllers.Api.Tests
 
            // Assert.AreEqual(response, retorno);
 
-           // _userApp.Setup(r => r.AuthenticationLogin(user)).Returns(retorno).Verifiable();
-           // _userApp.Object.AuthenticationLogin(user);
-           // _userApp.Verify();
+           // _userDomain.Setup(r => r.AuthenticationLogin(user)).Returns(retorno).Verifiable();
+           // _userDomain.Object.AuthenticationLogin(user);
+           // _userDomain.Verify();
         }
 
     }

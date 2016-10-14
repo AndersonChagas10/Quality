@@ -58,7 +58,7 @@ namespace DTO.DTO
         public void SetName(string name)
         {
             Guard.ForNullOrEmpty(name, "The Username is required.");
-            Guard.NullOrEmptyValuesCheck(out name, "Username", name, requerido: true, mensagem: "The Username is required.");
+            Guard.CheckStringFull(out name, "Username", name, requerido: true, mensagem: "The Username is required.");
             //Name = name;
         }
 
@@ -70,7 +70,7 @@ namespace DTO.DTO
         {
             Guard.ForNullOrEmpty(pass, "The Password is required.");
             Guard.VerificaEspacoString(pass, "The Password field should not contains blank spaces."); //A Senha não deve conter espaços
-            Guard.NullOrEmptyValuesCheck(out pass, "Password", pass, mensagem: "The Password is required.", requerido: true); //O campo senha deve ser informado.
+            Guard.CheckStringFull(out pass, "Password", pass, mensagem: "The Password is required.", requerido: true); //O campo senha deve ser informado.
             //Password = pass;
         }
 

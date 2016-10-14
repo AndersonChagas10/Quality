@@ -15,7 +15,7 @@ namespace DTO.DTO
 
             #region Description
             string DescValidated;
-            Guard.NullOrEmptyValuesCheck(retorno: out DescValidated, propName: "Description", requerido: true, value: Description);
+            Guard.CheckStringFull(retorno: out DescValidated, propName: "Description", requerido: true, value: Description);
             Description = DescValidated;
             #endregion
         }

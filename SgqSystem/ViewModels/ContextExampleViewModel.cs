@@ -7,11 +7,8 @@ namespace SgqSystem.ViewModels
     /// <summary>
     /// A Classe View Model possui apenas dados pertinentes a TELA.
     /// </summary>
-    public class ParamsViewModel : ParamsDTO
+    public class ContextExampleViewModel : ContextExampleDTO
     {
-
-
-        public int _ShiftSelectListExample { get; set; }
         public IEnumerable<SelectListItem> ShiftSelectListExample
         {
             get
@@ -26,6 +23,5 @@ namespace SgqSystem.ViewModels
                 ShiftSelectListExample = value;
             }
         }
-      
     }
 }

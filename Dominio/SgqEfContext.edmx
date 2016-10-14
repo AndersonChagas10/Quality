@@ -115,6 +115,17 @@
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="Name" Type="varchar(max)" Nullable="false" />
         </EntityType>
+        <EntityType Name="Example">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SelectedElement" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Level01">
           <Key>
             <PropertyRef Name="Id" />
@@ -408,6 +419,7 @@
           <EntitySet Name="ConsolidationLevel02" EntityType="Self.ConsolidationLevel02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CorrectiveAction" EntityType="Self.CorrectiveAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Example" EntityType="Self.Example" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level01" EntityType="Self.Level01" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level02" EntityType="Self.Level02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level03" EntityType="Self.Level03" Schema="dbo" store:Type="Tables" />
@@ -573,6 +585,7 @@
             <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
           </AssociationSet>
+          <EntitySet Name="Example" EntityType="SgqDbModel.Example" />
           </EntityContainer>
         <EntityType Name="CollectionHtml">
           <Key>
@@ -1002,6 +1015,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Example">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SelectedElement" Type="Int32" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1210,6 +1234,18 @@
                 <ScalarProperty Name="Level02Id" ColumnName="Level02Id" />
                 <ScalarProperty Name="Level01Id" ColumnName="Level01Id" />
                 <ScalarProperty Name="ConsolidationLevel02Id" ColumnName="ConsolidationLevel02Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Example">
+            <EntityTypeMapping TypeName="SgqDbModel.Example">
+              <MappingFragment StoreEntitySet="Example">
+                <ScalarProperty Name="SelectedElement" ColumnName="SelectedElement" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -362,7 +362,7 @@ namespace DTO.Helpers
         /// <param name="DuplicateWhiteEspace"> Remove espaços duplicados entre a string. </param>
         /// <param name="WhiteSpacesStart"> Remove espaços no inicio da string. </param>
         /// <param name="WhiteSpacesEnd"> Remove espaços no fim da string.</param>
-        public static void NullOrEmptyValuesCheck(out string retorno, string propName, string value, string mensagem = null, bool requerido = false
+        public static void CheckStringFull(out string retorno, string propName, string value, string mensagem = null, bool requerido = false
                                                  ,bool DuplicateWhiteEspace = false, bool WhiteSpacesStart = false, bool WhiteSpacesEnd = false)
         {
             //Se o valor da STRING é NULL e for Obrigatório.

@@ -26,6 +26,7 @@ namespace SgqSystem.Mappers
                 x.AddProfile<DepartmenMapperProfile>();
                 x.AddProfile<UnitMappingProfile>();
                 x.AddProfile<UnitUserMapperProfile>();
+                x.AddProfile<ExampleMapperProfile>();
             });
 
         }

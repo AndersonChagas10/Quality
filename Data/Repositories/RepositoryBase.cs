@@ -191,25 +191,31 @@ namespace Data.Repositories
 
         public void Commit()
         {
-            try
+            using (var transaction = db.Database.BeginTransaction())
             {
-                db.SaveChanges();
-            }
-            catch (DbEntityValidationException e)
-            {
-                foreach (var i in e.EntityValidationErrors)
+                try
                 {
-                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", i.Entry.Entity.GetType().Name, i.Entry.State);
-                    foreach (var ve in i.ValidationErrors)
-                    {
-                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
-                    }
+                    db.SaveChanges();
+
                 }
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                catch (DbEntityValidationException e)
+                {
+                    transaction.Rollback();
+                    foreach (var i in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", i.Entry.Entity.GetType().Name, i.Entry.State);
+                        foreach (var ve in i.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
+
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
 
@@ -247,6 +253,6 @@ namespace Data.Repositories
         //    db.Database.ExecuteSqlCommand(sqlQuery);
         //    return db.Database.SqlQuery<T>(sqlSelectLast).FirstOrDefault();
         //}
-        
+
     }
 }
