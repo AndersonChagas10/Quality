@@ -5,7 +5,7 @@ using System.Web.Routing;
 
 namespace Helper
 {
-    public class HandlerParams : FilterAttribute, IExceptionFilter
+    public class HandleController : FilterAttribute, IExceptionFilter
     {
         /// <summary>
         /// Executa ao receber exceção no controller
@@ -56,7 +56,7 @@ namespace Helper
                 exceptionContext.Result = new RedirectToRouteResult(
                                    new RouteValueDictionary
                                    {
-                                       { "action", "Params" },
+                                       { "action", "Index" },
                                        { "controller", "Error" }
                                    });
             }

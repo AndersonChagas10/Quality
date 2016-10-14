@@ -6,9 +6,9 @@ namespace SgqSystem.Controllers.Error
     {
         
         // GET: Error
-        public ActionResult Params()
+        public ActionResult Index()
         {
-            ViewBag.Title = "Error in Params";
+            ViewBag.Title = "Error.";
             return View();
         }
     }

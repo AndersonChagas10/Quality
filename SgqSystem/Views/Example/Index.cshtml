@@ -8,6 +8,11 @@
 
 @using (Html.BeginForm())
 {
+
+    @*@for (var i = 0; i < 10; i++) {
+        @Html.LinkVoltar(Model.AddDate.ToString(), "volta ae")
+    }*@
+
     @Html.HiddenFor(m => m.example.Id)
   
     @Html.LabelFor(m => m.example.Name, htmlAttributes: new { @class = "", @style = "width:210px" })

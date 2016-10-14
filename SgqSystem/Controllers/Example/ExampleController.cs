@@ -4,11 +4,12 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
-
+    /// <summary>
+    /// Controller para aprendizagem do sistema.
+    /// </summary>
     public class ExampleController : Controller
     {
-        // GET: Par
-        [HandlerParams()]
+        [HandleController()]
         public ActionResult Index()
         {
             ContextExampleViewModel pvm = new ContextExampleViewModel();

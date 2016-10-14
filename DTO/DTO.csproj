@@ -66,6 +66,7 @@
     <Compile Include="DTO\Level03DTO.cs" />
     <Compile Include="DTO\Level01DTO.cs" />
     <Compile Include="DTO\ContextExampleDTO.cs" />
+    <Compile Include="DTO\ParamsDTO.cs" />
     <Compile Include="DTO\PeriodDTO.cs" />
     <Compile Include="DTO\ExampleDTO.cs" />
     <Compile Include="TableResults\TableResultsForDataTable.cs" />
