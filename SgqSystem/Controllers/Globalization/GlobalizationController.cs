@@ -16,10 +16,10 @@ namespace SgqSystem.Controllers.Globalization
         // GET: Globalization
         public ActionResult Index()
         {
-            //Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            //Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+            //Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+            //Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
             return View();
         }
 

@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Consolidation Type.
+        /// </summary>
+        internal static string Consolidation_Type {
+            get {
+                return ResourceManager.GetString("Consolidation_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Corrective Action Reports.
         /// </summary>
         internal static string corrective_action_reports {
@@ -183,6 +192,24 @@ namespace Resources {
         internal static string home {
             get {
                 return ResourceManager.GetString("home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicator Description.
+        /// </summary>
+        internal static string Indicator_Description {
+            get {
+                return ResourceManager.GetString("Indicator_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicator Name.
+        /// </summary>
+        internal static string Indicator_Name {
+            get {
+                return ResourceManager.GetString("Indicator_Name", resourceCulture);
             }
         }
         
