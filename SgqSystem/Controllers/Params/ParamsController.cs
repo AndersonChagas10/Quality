@@ -11,8 +11,15 @@ namespace SgqSystem.Controllers.Params
         [HandleController()]
         public ActionResult Index()
         {
-            var teste = new ParLevel1DTO();
+            var teste = new ParamsViewModel();
             return View(teste);
         }
+
+        public ActionResult ParamsLevel1()
+        {
+            ParamsDTO paramsDto = new ParamsDTO();
+            return PartialView(paramsDto);
+        }
+
     }
 }

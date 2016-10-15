@@ -14,7 +14,6 @@ namespace CrossCutting.IOC.Module
             Bind<IUserRepository>().To<UserRepository>();
             Bind<ICollectionLevel02Repo>().To<CollectionLevel02Repo>();
             Bind<ICorrectiveActionRepository>().To<CorrectiveActionRepository>();
-            //Bind<IRelatorioColetaRepository>().To<RelatorioColetaRepository>();
             //Bind(typeof(ISyncRepository<>)).To(typeof(SyncRepository<>));
             //Bind<IColetaRepository>().To<ColetaRepository>();
         }

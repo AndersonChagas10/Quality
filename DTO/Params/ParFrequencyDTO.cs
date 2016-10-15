@@ -2,7 +2,7 @@
 
 namespace DTO.DTO.Params
 {
-    public class ParConsolidationTypeDTO : EntityBase
+    public class ParFrequencyDTO : EntityBase
     {
         public string Name { get; set; }
         public string Description { get; set; }

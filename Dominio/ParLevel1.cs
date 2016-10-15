@@ -32,5 +32,8 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool Active { get; set; }
+    
+        public virtual ParConsolidationType ParConsolidationType { get; set; }
+        public virtual ParFrequency ParFrequency { get; set; }
     }
 }

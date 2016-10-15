@@ -9,10 +9,8 @@ namespace SgqSystem.Mappers
 
             Mapper.Initialize(x =>
             {
-                //x.AddProfile<DomainToViewModelMappingProfile>();
                 x.AddProfile<CorrectiveActionMapperProfile>();
                 x.AddProfile<UserMappingProfile>();
-                //x.AddProfile<ColetaMappingProfile>();
                 x.AddProfile<ConsolidationLevel01MapperProfile>();
                 x.AddProfile<ConsolidationLevel02MapperProfile>();
                 x.AddProfile<CollectionLevel02MapperProfile>();
@@ -26,6 +24,15 @@ namespace SgqSystem.Mappers
                 x.AddProfile<DepartmenMapperProfile>();
                 x.AddProfile<UnitMappingProfile>();
                 x.AddProfile<UnitUserMapperProfile>();
+                x.AddProfile<ParLevel1MapperProfile>();
+                x.AddProfile<ParConsolidationTypeMapperProfile>();
+                x.AddProfile<ParFrequencyMapperProfile>();
+
+
+
+                /*
+                 Exemplo para configuração do Auto Mapper.
+                 */
                 x.AddProfile<ExampleMapperProfile>();
             });
 

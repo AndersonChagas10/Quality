@@ -324,6 +324,9 @@
     <Compile Include="Handlres\HandleController.cs" />
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
+    <Compile Include="Mappers\ParFrequencyMapperProfile.cs" />
+    <Compile Include="Mappers\ParConsolidationTypeMapperProfile.cs" />
+    <Compile Include="Mappers\ParLevel1MapperProfile.cs" />
     <Compile Include="Mappers\ExampleMapperProfile.cs" />
     <Compile Include="Mappers\CorrectiveActionMapperProfile.cs" />
     <Compile Include="Mappers\CollectionLevel02MapperProfile.cs" />
@@ -1013,6 +1016,7 @@
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_screen-reader.scss" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_stacked.scss" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_variables.scss" />
+    <Content Include="Views\Params\ParamsLevel1.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

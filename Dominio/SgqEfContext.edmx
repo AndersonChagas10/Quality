@@ -748,6 +748,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParLevel1_ParConsolidationType">
+          <End Role="ParConsolidationType" Type="Self.ParConsolidationType" Multiplicity="1" />
+          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParConsolidationType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1">
+              <PropertyRef Name="ParConsolidationType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1_ParFrequency">
+          <End Role="ParFrequency" Type="Self.ParFrequency" Multiplicity="1" />
+          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParFrequency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1">
+              <PropertyRef Name="ParFrequency_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UnitUser_Unit">
           <End Role="Unit" Type="Self.Unit" Multiplicity="1" />
           <End Role="UnitUser" Type="Self.UnitUser" Multiplicity="*" />
@@ -878,6 +902,14 @@
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1_ParConsolidationType" Association="Self.FK_ParLevel1_ParConsolidationType">
+            <End Role="ParConsolidationType" EntitySet="ParConsolidationType" />
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1_ParFrequency" Association="Self.FK_ParLevel1_ParFrequency">
+            <End Role="ParFrequency" EntitySet="ParFrequency" />
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+          </AssociationSet>
           <AssociationSet Name="FK_UnitUser_Unit" Association="Self.FK_UnitUser_Unit">
             <End Role="Unit" EntitySet="Unit" />
             <End Role="UnitUser" EntitySet="UnitUser" />
@@ -996,6 +1028,14 @@
           <AssociationSet Name="FK_CorrectiveAction_UserSgq2" Association="SgqDbModel.FK_CorrectiveAction_UserSgq2">
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1_ParConsolidationType" Association="SgqDbModel.FK_ParLevel1_ParConsolidationType">
+            <End Role="ParConsolidationType" EntitySet="ParConsolidationType" />
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1_ParFrequency" Association="SgqDbModel.FK_ParLevel1_ParFrequency">
+            <End Role="ParFrequency" EntitySet="ParFrequency" />
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
           </AssociationSet>
           <AssociationSet Name="FK_UnitUser_Unit" Association="SgqDbModel.FK_UnitUser_Unit">
             <End Role="Unit" EntitySet="Unit" />
@@ -1254,6 +1294,7 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1_ParConsolidationType" FromRole="ParConsolidationType" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="ParDepartment">
           <Key>
@@ -1299,6 +1340,7 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1_ParFrequency" FromRole="ParFrequency" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="ParGoal">
           <Key>
@@ -1348,6 +1390,8 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParConsolidationType" Relationship="SgqDbModel.FK_ParLevel1_ParConsolidationType" FromRole="ParLevel1" ToRole="ParConsolidationType" />
+          <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParLevel1_ParFrequency" FromRole="ParLevel1" ToRole="ParFrequency" />
         </EntityType>
         <EntityType Name="ParLevel1Cluster">
           <Key>
@@ -1780,6 +1824,30 @@
             </Principal>
             <Dependent Role="CorrectiveAction">
               <PropertyRef Name="SlaughterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1_ParConsolidationType">
+          <End Type="SgqDbModel.ParConsolidationType" Role="ParConsolidationType" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParConsolidationType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1">
+              <PropertyRef Name="ParConsolidationType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1_ParFrequency">
+          <End Type="SgqDbModel.ParFrequency" Role="ParFrequency" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParFrequency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1">
+              <PropertyRef Name="ParFrequency_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
