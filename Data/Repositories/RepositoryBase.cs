@@ -34,7 +34,7 @@ namespace Data.Repositories
         public RepositoryBase(SgqDbDevEntities Db)
         {
             db = Db;
-            db.Database.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;");
+            //db.Database.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;");
         }
 
         #region Add

@@ -1,4 +1,5 @@
-﻿using Helper;
+﻿using DTO.DTO.Params;
+using Helper;
 using SgqSystem.ViewModels;
 using System.Web.Mvc;
 
@@ -10,8 +11,8 @@ namespace SgqSystem.Controllers.Params
         [HandleController()]
         public ActionResult Index()
         {
-            ParamsViewModel paramsViewModel = new ParamsViewModel();
-            return View(paramsViewModel);
+            var teste = new ParLevel1DTO();
+            return View(teste);
         }
     }
 }

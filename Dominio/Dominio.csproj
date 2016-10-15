@@ -83,6 +83,93 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="LogService\LoggerNLog.cs" />
+    <Compile Include="ParCluster.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParClusterGroup.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParCompany.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParCompanyCluster.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParCompanyStructure.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParConsolidationType.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParDepartment.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParEvaluation.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParFieldType.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParFrequency.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParGoal.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParHeaderField.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel1.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel1Cluster.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel1HeaderField.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel2.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel3.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel3BoolFalse.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel3BoolTrue.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel3Group.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel3InputType.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel3Level2.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel3Level2Level1.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel3Value.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParMeasurementUnit.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParMultipleValues.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParSample.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParStructure.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParStructureGroup.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Period.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

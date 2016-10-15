@@ -12,19 +12,14 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class CollectionLevel03
+    public partial class ParCompany
     {
         public int Id { get; set; }
-        public int CollectionLevel02Id { get; set; }
-        public Nullable<int> Level03Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int ParMultipleValues_Id { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool ConformedIs { get; set; }
-        public decimal Value { get; set; }
-        public string ValueText { get; set; }
-        public Nullable<bool> Duplicated { get; set; }
-    
-        public virtual CollectionLevel02 CollectionLevel02 { get; set; }
-        public virtual Level03 Level03 { get; set; }
+        public bool Active { get; set; }
     }
 }

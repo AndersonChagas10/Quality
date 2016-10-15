@@ -15,9 +15,7 @@ namespace Helper
         {
             var ex = filterContext.Exception;
             filterContext.ExceptionHandled = true;
-
             LogException(ex);
-
             CreateExceptionContextResult(filterContext);
         }
 

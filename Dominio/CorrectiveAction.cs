@@ -30,9 +30,9 @@ namespace Dominio
         public string ProductDisposition { get; set; }
         public string PreventativeMeasure { get; set; }
     
+        public virtual CollectionLevel02 CollectionLevel02 { get; set; }
         public virtual UserSgq UserSgq { get; set; }
         public virtual UserSgq UserSgq1 { get; set; }
         public virtual UserSgq UserSgq2 { get; set; }
-        public virtual CollectionLevel02 CollectionLevel02 { get; set; }
     }
 }
