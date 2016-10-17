@@ -4,9 +4,9 @@ using DTO.DTO;
 
 namespace SgqSystem.Mappers
 {
-    public class UnitMappingProfile : Profile
+    public class UnitMapperProfile : Profile
     {
-        public UnitMappingProfile()
+        public UnitMapperProfile()
         {
             CreateMap<Unit, UnitDTO>();
             CreateMap<UnitDTO, Unit>();

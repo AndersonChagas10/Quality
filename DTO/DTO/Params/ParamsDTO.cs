@@ -7,6 +7,12 @@ namespace DTO.DTO.Params
 
         #region Param Level - 1
 
+        public int parLevel1Selected { get; set; }
+
+        public int parLevel2Selected { get; set; }
+
+        public int parLevel3Selected { get; set; }
+
         public ParLevel1DTO parLevel1Dto { get; set; }
         //ParLevel1DTO
 
@@ -22,12 +28,15 @@ namespace DTO.DTO.Params
         public ParClusterGroupDTO parClusterGroupDto { get; set; }
         //ParClusterGroupDTO
 
-
         public ParLevel1HeaderFieldDTO parLevel1HeaderFieldDto { get; set; }
         //ParLevel1HeaderField
 
-        //ParFieldTypeDTO
+        public ParFieldTypeDTO parFieldTypeDto { get; set; }
+
+        public ParMultipleValuesDTO parMultipleValuesDto { get; set; }
         //ParMultipleValuesDTO
+
+        public ParConsolidationTypeDTO parConsolidationTypeDto { get; set; }
         //ParConsolidationTypeDTO
 
         public ParHeaderFieldDTO parHeaderFieldDto { get; set; }

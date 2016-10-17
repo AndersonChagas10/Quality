@@ -6,10 +6,10 @@ using SgqSystem.ViewModels;
 
 namespace SgqSystem.Mappers
 {
-    public class UserMappingProfile : Profile
+    public class UserMapperProfile : Profile
     {
 
-        public UserMappingProfile()
+        public UserMapperProfile()
         {
             CreateMap<GenericReturn<UserSgq>, GenericReturn<UserViewModel>>();
             CreateMap<UserSgq, UserViewModel>();

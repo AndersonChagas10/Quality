@@ -14,12 +14,21 @@ namespace Dominio
     
     public partial class ParClusterGroup
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParClusterGroup()
+        {
+            this.ParCluster = new HashSet<ParCluster>();
+        }
+    
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int ParClusterGroupParent_Id { get; set; }
+        public Nullable<int> ParClusterGroupParent_Id { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool Active { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParCluster> ParCluster { get; set; }
     }
 }

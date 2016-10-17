@@ -1,6 +1,14 @@
-﻿namespace DTO.DTO
+﻿using DTO.BaseEntity;
+
+namespace DTO.DTO
 {
-    internal class ParMultipleValuesDTO
+    public class ParMultipleValuesDTO : EntityBase
     {
+        public int ParHeaderField_Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal PunishmentValue { get; set; }
+        public bool Conformity { get; set; }
+        public bool Active { get; set; }
     }
 }

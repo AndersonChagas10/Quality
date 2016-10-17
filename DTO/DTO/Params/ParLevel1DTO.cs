@@ -18,6 +18,9 @@ namespace DTO.DTO.Params
         public bool SpecificNumberSample { get; set; }
         public bool SpecificLevel3 { get; set; }
         public bool SpecificGoal { get; set; }
+        public bool NonConformityRule { get; set; }
+        public bool FixedEvaluetionNumber { get; set; }
+        public bool LimitedEvaluetionNumber { get; set; }
         public bool Active { get; set; } = true;
 
         public ParConsolidationTypeDTO parConsolidationTypeDto { get; set; }

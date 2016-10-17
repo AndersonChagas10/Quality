@@ -324,6 +324,7 @@
     <Compile Include="Handlres\HandleController.cs" />
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
+    <Compile Include="Mappers\ParClusterMapperProfile.cs" />
     <Compile Include="Mappers\ParFrequencyMapperProfile.cs" />
     <Compile Include="Mappers\ParConsolidationTypeMapperProfile.cs" />
     <Compile Include="Mappers\ParLevel1MapperProfile.cs" />
@@ -338,10 +339,10 @@
     <Compile Include="Mappers\ShiftMapperProfile.cs" />
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMapperProfile.cs" />
-    <Compile Include="Mappers\UnitMappingProfile.cs" />
+    <Compile Include="Mappers\UnitMapperProfile.cs" />
     <Compile Include="Mappers\DepartmenMapperProfile.cs" />
     <Compile Include="Mappers\Level03MapperProfile.cs" />
-    <Compile Include="Mappers\UserMappingProfile.cs" />
+    <Compile Include="Mappers\UserMapperProfile.cs" />
     <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
     <Compile Include="Secirity\SessionPersister.cs" />
@@ -362,7 +363,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Views\Globalization\components\Components.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin-lte\css\AdminLTE.css" />
@@ -1069,8 +1069,9 @@
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_stacked.scss" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_variables.scss" />
     <Content Include="Views\Params\ParamsLevel1.cshtml" />
-    <Content Include="Views\Globalization\components\_parameretrization_create.cshtml" />
-    <Content Include="Views\Globalization\components\_parameretrization_layout.cshtml" />
+    <Content Include="Views\Params\_ParLevel1.cshtml" />
+    <Content Include="Views\Params\_ParCluster.cshtml" />
+    <Content Include="Views\Params\_ParLevel1Cluster.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
