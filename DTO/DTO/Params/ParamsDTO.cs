@@ -23,10 +23,14 @@ namespace DTO.DTO.Params
         //ParClusterGroupDTO
 
 
-        //ParLevel1HeaderFieldDTO
+        public ParLevel1HeaderFieldDTO parLevel1HeaderFieldDto { get; set; }
+        //ParLevel1HeaderField
+
         //ParFieldTypeDTO
         //ParMultipleValuesDTO
         //ParConsolidationTypeDTO
+
+        public ParHeaderFieldDTO parHeaderFieldDto { get; set; }
         //ParHeaderFieldDTO
 
         #endregion
