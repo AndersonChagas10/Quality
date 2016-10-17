@@ -10,30 +10,19 @@
 
 @Html.DropDownList("paramsDto.parLevel1Selected", Model.DdlparLevel1, "Selecione...", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "parLeve1Select2" })
 
-<script>
-    var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
-    $('#parLeve1Select2').select2({
-        placeholder: {
-            id: "-1",
-            text: "Select..." //Substituir Resources
-        },
-    }).on("select2:select", function (e) {
-        $.get(urlGetLevel1 + '/' + e.currentTarget.value, function (obj, responseText, xhr) {
-
-        })
-    });
-</script>
 
 <div id="ParLevel1">
     @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model);
 </div>
 
-
-
 <script>
 
     var url1 = '@Html.Raw(@url)';
 
+    /*
+      Serializa objeto usando bind de property Name
+      $('form').serializeObject();
+    */
     $.fn.serializeObject = function () {
         var o = {};
         var a = this.serializeArray();
@@ -50,6 +39,39 @@
         return o;
     };
 
+    /*Inicio Select 2 Level1*/
+    var parLevel1Empty = $('#ParLevel1 > form').clone();
+    var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
+    $('#parLeve1Select2').select2({
+        placeholder: {
+            id: "-1",
+            text: "Selecione..." 
+        },
+    }).on("select2:select", function (e) {
+
+        if (e.currentTarget.value == "") {
+            $('#ParLevel1').empty()
+            $('#ParLevel1').append(parLevel1Empty)
+        } else {
+            $.get('GetParLevel1ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
+                if (obj != null) {
+                    $('#ParLevel1').empty()
+                    $('#ParLevel1').append(xhr.responseText)
+                }
+            });
+        }
+
+    }).on("select2:unselect", function (e) {
+
+        if (e.currentTarget.value == "") {
+            $('#ParLevel1').empty()
+            $('#ParLevel1').append(parLevel1Empty)
+        }
+
+    });;
+    /*Fim Select 2 Level1*/
+
+    /*Inicio Submit Level1*/
     var indexParamsLevel1 = {
 
         enviarDadosParaApi: function (e) {
@@ -62,8 +84,8 @@
                 console.log(respostaCompleta);
             });
 
-        }
-
+        },
     }
+    /*Fim Submit Level1*/
 
 </script>

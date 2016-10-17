@@ -17,12 +17,12 @@ namespace Dominio
         public int Id { get; set; }
         public int ParLevel1_Id { get; set; }
         public int ParCluster_Id { get; set; }
-        public bool NonConformityRule { get; set; }
         public decimal Points { get; set; }
-        public bool FixedEvaluetionNumber { get; set; }
-        public bool LimitedEvaluetionNumber { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool Active { get; set; }
+    
+        public virtual ParCluster ParCluster { get; set; }
+        public virtual ParLevel1 ParLevel1 { get; set; }
     }
 }

@@ -167,7 +167,7 @@
           <Property Name="ParClusterGroup_Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ParClusterParent_Id" Type="int" Nullable="false" />
+          <Property Name="ParClusterParent_Id" Type="int" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
@@ -179,7 +179,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ParClusterGroupParent_Id" Type="int" Nullable="false" />
+          <Property Name="ParClusterGroupParent_Id" Type="int" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
@@ -319,6 +319,9 @@
           <Property Name="SpecificNumberSample" Type="bit" Nullable="false" />
           <Property Name="SpecificLevel3" Type="bit" Nullable="false" />
           <Property Name="SpecificGoal" Type="bit" Nullable="false" />
+          <Property Name="NonConformityRule" Type="bit" Nullable="false" />
+          <Property Name="FixedEvaluetionNumber" Type="bit" Nullable="false" />
+          <Property Name="LimitedEvaluetionNumber" Type="bit" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
@@ -330,10 +333,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParLevel1_Id" Type="int" Nullable="false" />
           <Property Name="ParCluster_Id" Type="int" Nullable="false" />
-          <Property Name="NonConformityRule" Type="bit" Nullable="false" />
           <Property Name="Points" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="FixedEvaluetionNumber" Type="bit" Nullable="false" />
-          <Property Name="LimitedEvaluetionNumber" Type="bit" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
@@ -748,6 +748,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParCluster_ParClusterGroup">
+          <End Role="ParClusterGroup" Type="Self.ParClusterGroup" Multiplicity="1" />
+          <End Role="ParCluster" Type="Self.ParCluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParClusterGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParCluster">
+              <PropertyRef Name="ParClusterGroup_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParLevel1_ParConsolidationType">
           <End Role="ParConsolidationType" Type="Self.ParConsolidationType" Multiplicity="1" />
           <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="*" />
@@ -769,6 +781,30 @@
             </Principal>
             <Dependent Role="ParLevel1">
               <PropertyRef Name="ParFrequency_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1Cluster_ParCluster">
+          <End Role="ParCluster" Type="Self.ParCluster" Multiplicity="1" />
+          <End Role="ParLevel1Cluster" Type="Self.ParLevel1Cluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCluster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1Cluster">
+              <PropertyRef Name="ParCluster_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1Cluster_ParLevel1">
+          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="1" />
+          <End Role="ParLevel1Cluster" Type="Self.ParLevel1Cluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1Cluster">
+              <PropertyRef Name="ParLevel1_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -902,6 +938,10 @@
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParCluster_ParClusterGroup" Association="Self.FK_ParCluster_ParClusterGroup">
+            <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
+            <End Role="ParCluster" EntitySet="ParCluster" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParLevel1_ParConsolidationType" Association="Self.FK_ParLevel1_ParConsolidationType">
             <End Role="ParConsolidationType" EntitySet="ParConsolidationType" />
             <End Role="ParLevel1" EntitySet="ParLevel1" />
@@ -909,6 +949,14 @@
           <AssociationSet Name="FK_ParLevel1_ParFrequency" Association="Self.FK_ParLevel1_ParFrequency">
             <End Role="ParFrequency" EntitySet="ParFrequency" />
             <End Role="ParLevel1" EntitySet="ParLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1Cluster_ParCluster" Association="Self.FK_ParLevel1Cluster_ParCluster">
+            <End Role="ParCluster" EntitySet="ParCluster" />
+            <End Role="ParLevel1Cluster" EntitySet="ParLevel1Cluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1Cluster_ParLevel1" Association="Self.FK_ParLevel1Cluster_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel1Cluster" EntitySet="ParLevel1Cluster" />
           </AssociationSet>
           <AssociationSet Name="FK_UnitUser_Unit" Association="Self.FK_UnitUser_Unit">
             <End Role="Unit" EntitySet="Unit" />
@@ -1029,6 +1077,14 @@
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParCluster_ParClusterGroup" Association="SgqDbModel.FK_ParCluster_ParClusterGroup">
+            <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
+            <End Role="ParCluster" EntitySet="ParCluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1Cluster_ParCluster" Association="SgqDbModel.FK_ParLevel1Cluster_ParCluster">
+            <End Role="ParCluster" EntitySet="ParCluster" />
+            <End Role="ParLevel1Cluster" EntitySet="ParLevel1Cluster" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParLevel1_ParConsolidationType" Association="SgqDbModel.FK_ParLevel1_ParConsolidationType">
             <End Role="ParConsolidationType" EntitySet="ParConsolidationType" />
             <End Role="ParLevel1" EntitySet="ParLevel1" />
@@ -1036,6 +1092,10 @@
           <AssociationSet Name="FK_ParLevel1_ParFrequency" Association="SgqDbModel.FK_ParLevel1_ParFrequency">
             <End Role="ParFrequency" EntitySet="ParFrequency" />
             <End Role="ParLevel1" EntitySet="ParLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1Cluster_ParLevel1" Association="SgqDbModel.FK_ParLevel1Cluster_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel1Cluster" EntitySet="ParLevel1Cluster" />
           </AssociationSet>
           <AssociationSet Name="FK_UnitUser_Unit" Association="SgqDbModel.FK_UnitUser_Unit">
             <End Role="Unit" EntitySet="Unit" />
@@ -1233,10 +1293,12 @@
           <Property Name="ParClusterGroup_Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ParClusterParent_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParClusterParent_Id" Type="Int32" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParClusterGroup" Relationship="SgqDbModel.FK_ParCluster_ParClusterGroup" FromRole="ParCluster" ToRole="ParClusterGroup" />
+          <NavigationProperty Name="ParLevel1Cluster" Relationship="SgqDbModel.FK_ParLevel1Cluster_ParCluster" FromRole="ParCluster" ToRole="ParLevel1Cluster" />
         </EntityType>
         <EntityType Name="ParClusterGroup">
           <Key>
@@ -1245,10 +1307,11 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ParClusterGroupParent_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParClusterGroupParent_Id" Type="Int32" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParCluster" Relationship="SgqDbModel.FK_ParCluster_ParClusterGroup" FromRole="ParClusterGroup" ToRole="ParCluster" />
         </EntityType>
         <EntityType Name="ParCompany">
           <Key>
@@ -1387,11 +1450,15 @@
           <Property Name="SpecificNumberSample" Type="Boolean" Nullable="false" />
           <Property Name="SpecificLevel3" Type="Boolean" Nullable="false" />
           <Property Name="SpecificGoal" Type="Boolean" Nullable="false" />
+          <Property Name="NonConformityRule" Type="Boolean" Nullable="false" />
+          <Property Name="FixedEvaluetionNumber" Type="Boolean" Nullable="false" />
+          <Property Name="LimitedEvaluetionNumber" Type="Boolean" Nullable="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParConsolidationType" Relationship="SgqDbModel.FK_ParLevel1_ParConsolidationType" FromRole="ParLevel1" ToRole="ParConsolidationType" />
           <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParLevel1_ParFrequency" FromRole="ParLevel1" ToRole="ParFrequency" />
+          <NavigationProperty Name="ParLevel1Cluster" Relationship="SgqDbModel.FK_ParLevel1Cluster_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1Cluster" />
         </EntityType>
         <EntityType Name="ParLevel1Cluster">
           <Key>
@@ -1400,13 +1467,12 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
           <Property Name="ParCluster_Id" Type="Int32" Nullable="false" />
-          <Property Name="NonConformityRule" Type="Boolean" Nullable="false" />
           <Property Name="Points" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="FixedEvaluetionNumber" Type="Boolean" Nullable="false" />
-          <Property Name="LimitedEvaluetionNumber" Type="Boolean" Nullable="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParCluster" Relationship="SgqDbModel.FK_ParLevel1Cluster_ParCluster" FromRole="ParLevel1Cluster" ToRole="ParCluster" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1Cluster_ParLevel1" FromRole="ParLevel1Cluster" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="ParLevel1HeaderField">
           <Key>
@@ -1827,6 +1893,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParCluster_ParClusterGroup">
+          <End Type="SgqDbModel.ParClusterGroup" Role="ParClusterGroup" Multiplicity="1" />
+          <End Type="SgqDbModel.ParCluster" Role="ParCluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParClusterGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParCluster">
+              <PropertyRef Name="ParClusterGroup_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1Cluster_ParCluster">
+          <End Type="SgqDbModel.ParCluster" Role="ParCluster" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1Cluster" Role="ParLevel1Cluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCluster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1Cluster">
+              <PropertyRef Name="ParCluster_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParLevel1_ParConsolidationType">
           <End Type="SgqDbModel.ParConsolidationType" Role="ParConsolidationType" Multiplicity="1" />
           <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
@@ -1848,6 +1938,18 @@
             </Principal>
             <Dependent Role="ParLevel1">
               <PropertyRef Name="ParFrequency_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1Cluster_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1Cluster" Role="ParLevel1Cluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1Cluster">
+              <PropertyRef Name="ParLevel1_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2205,6 +2307,9 @@
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="LimitedEvaluetionNumber" ColumnName="LimitedEvaluetionNumber" />
+                <ScalarProperty Name="FixedEvaluetionNumber" ColumnName="FixedEvaluetionNumber" />
+                <ScalarProperty Name="NonConformityRule" ColumnName="NonConformityRule" />
                 <ScalarProperty Name="SpecificGoal" ColumnName="SpecificGoal" />
                 <ScalarProperty Name="SpecificLevel3" ColumnName="SpecificLevel3" />
                 <ScalarProperty Name="SpecificNumberSample" ColumnName="SpecificNumberSample" />
@@ -2229,10 +2334,7 @@
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="LimitedEvaluetionNumber" ColumnName="LimitedEvaluetionNumber" />
-                <ScalarProperty Name="FixedEvaluetionNumber" ColumnName="FixedEvaluetionNumber" />
                 <ScalarProperty Name="Points" ColumnName="Points" />
-                <ScalarProperty Name="NonConformityRule" ColumnName="NonConformityRule" />
                 <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

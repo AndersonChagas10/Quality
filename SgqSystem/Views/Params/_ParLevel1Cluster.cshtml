@@ -1,0 +1,56 @@
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+
+<div class="form-horizontal">
+    <h4>ParLevel1ClusterDTO</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <table>
+        <tbody>
+
+            <tr>
+                <td>
+                    <b>@Html.LabelFor(model => model.paramsDto.parLevel1ClusterDto.Id, htmlAttributes: new { @class = "" })</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('.')">
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.paramsDto.parLevel1ClusterDto.Id, new { htmlAttributes = new { @class = "" } })
+                    @Html.ValidationMessageFor(model => model.paramsDto.parLevel1ClusterDto.Id, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <b>@Html.LabelFor(model => model.paramsDto.parLevel1ClusterDto.ParCluster_Id, htmlAttributes: new { @class = "" })</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('.')">
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.paramsDto.parLevel1ClusterDto.ParCluster_Id, new { htmlAttributes = new { @class = "" } })
+                    @Html.ValidationMessageFor(model => model.paramsDto.parLevel1ClusterDto.ParCluster_Id, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <b>@Html.LabelFor(model => model.paramsDto.parLevel1ClusterDto.ParLevel1_Id, htmlAttributes: new { @class = "" })</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('.')">
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.paramsDto.parLevel1ClusterDto.ParLevel1_Id, new { htmlAttributes = new { @class = "" } })
+                    @Html.ValidationMessageFor(model => model.paramsDto.parLevel1ClusterDto.ParLevel1_Id, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <b>@Html.LabelFor(model => model.paramsDto.parLevel1ClusterDto.Active, htmlAttributes: new { @class = "" })</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('.')">
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.paramsDto.parLevel1ClusterDto.Active, new { htmlAttributes = new { @class = "" } })
+                    @Html.ValidationMessageFor(model => model.paramsDto.parLevel1ClusterDto.ParLevel1_Id, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+ 
+        </tbody>
+    </table>
+
+
+
+</div>
+

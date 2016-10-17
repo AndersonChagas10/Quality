@@ -1,0 +1,77 @@
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+
+<div class="form-horizontal">
+    <h4>ParClusterDTO</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <table>
+        <tbody>
+
+
+            <tr>
+                <td>
+                    <b>@Html.LabelFor(model => model.paramsDto.parClusterDto.Id, htmlAttributes: new { @class = "" })</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('.')">
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.paramsDto.parClusterDto.Id, new { htmlAttributes = new { @class = "" } })
+                    @Html.ValidationMessageFor(model => model.paramsDto.parClusterDto.Id, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <b>@Html.LabelFor(model => model.paramsDto.parClusterDto.ParClusterGroup_Id, htmlAttributes: new { @class = "" })</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('.')">
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.paramsDto.parClusterDto.ParClusterGroup_Id, new { htmlAttributes = new { @class = "" } })
+                    @Html.ValidationMessageFor(model => model.paramsDto.parClusterDto.ParClusterGroup_Id, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <b>@Html.LabelFor(model => model.paramsDto.parClusterDto.Name, htmlAttributes: new { @class = "" })</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('.')">
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.paramsDto.parClusterDto.Name, new { htmlAttributes = new { @class = "" } })
+                    @Html.ValidationMessageFor(model => model.paramsDto.parClusterDto.Name, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <b>@Html.LabelFor(model => model.paramsDto.parClusterDto.Description, htmlAttributes: new { @class = "" })</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('.')">
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.paramsDto.parClusterDto.Description, new { htmlAttributes = new { @class = "" } })
+                    @Html.ValidationMessageFor(model => model.paramsDto.parClusterDto.Description, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <b>@Html.LabelFor(model => model.paramsDto.parClusterDto.ParClusterParent_Id, htmlAttributes: new { @class = "" })</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('.')">
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.paramsDto.parClusterDto.ParClusterParent_Id, new { htmlAttributes = new { @class = "" } })
+                    @Html.ValidationMessageFor(model => model.paramsDto.parClusterDto.ParClusterParent_Id, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <b>@Html.LabelFor(model => model.paramsDto.parClusterDto.Active, htmlAttributes: new { @class = "" })</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('.')">
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.paramsDto.parClusterDto.Active)
+                    @Html.ValidationMessageFor(model => model.paramsDto.parClusterDto.Active, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+
+
+
+</div>

@@ -14,6 +14,12 @@ namespace Dominio
     
     public partial class ParLevel1
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParLevel1()
+        {
+            this.ParLevel1Cluster = new HashSet<ParLevel1Cluster>();
+        }
+    
         public int Id { get; set; }
         public int ParConsolidationType_Id { get; set; }
         public int ParFrequency_Id { get; set; }
@@ -29,11 +35,16 @@ namespace Dominio
         public bool SpecificNumberSample { get; set; }
         public bool SpecificLevel3 { get; set; }
         public bool SpecificGoal { get; set; }
+        public bool NonConformityRule { get; set; }
+        public bool FixedEvaluetionNumber { get; set; }
+        public bool LimitedEvaluetionNumber { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool Active { get; set; }
     
         public virtual ParConsolidationType ParConsolidationType { get; set; }
         public virtual ParFrequency ParFrequency { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParLevel1Cluster> ParLevel1Cluster { get; set; }
     }
 }

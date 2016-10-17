@@ -175,8 +175,67 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>
+                            <b>NonConformityRule</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                        </td>
+                        <td>
+                            <label class="on-off">
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.NonConformityRule)
+                                <span><a></a></span>
+                            </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <b>FixedEvaluetionNumber</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                        </td>
+                        <td>
+                            <label class="on-off">
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.FixedEvaluetionNumber)
+                                <span><a></a></span>
+                            </label>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <b>LimitedEvaluetionNumber</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                        </td>
+                        <td>
+                            <label class="on-off">
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.LimitedEvaluetionNumber)
+                                <span><a></a></span>
+                            </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <b>Mostrar contadores do Indicador :</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
+                        </td>
+                        <td>
+                            @Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlParConsolidation, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>DdlparCluster</td>
+                        <td>@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlparCluster, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })</td>
+                    </tr>
+
+                    <tr>
+                        <td>Pontos</td>
+                        <td>@Html.EditorFor(model => model.paramsDto.parLevel1Dto.NonConformityRule)</td>
+                    </tr>
+
                 </tbody>
             </table>
+
+            <div id="ParClusterLevel1">
+                @*@Html.Partial("~/Views/Params/_ParCluster.cshtml", Model)*@
+            </div>
 
             <div style="width: 100%; float: left;">
                 <input type="button" value="Salvar o Indicador" onclick="indexParamsLevel1.enviarDadosParaApi();" style="font-size: small; padding: 10px; font-weight: bold;">
@@ -185,4 +244,5 @@
         </div>
 
     </div>
+
 }

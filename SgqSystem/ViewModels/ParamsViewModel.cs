@@ -3,30 +3,52 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Dominio;
 using Dominio.Interfaces.Services;
+using System;
 
 namespace SgqSystem.ViewModels
 {
     public class ParamsViewModel
     {
+        #region Constructors
+
         private IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1;
         private IBaseDomain<ParFrequency, ParFrequencyDTO> _baseParFrequency;
         private IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType;
+        private IBaseDomain<ParCluster, ParClusterDTO> _baseParCluster;
 
-        //Construtor para o MVC
+        /// <summary>
+        /// Construtor para o MVC
+        /// </summary>
         public ParamsViewModel() { }
-        //Construtor para carregar dados do banco
-        public ParamsViewModel(IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1,
+
+        /// <summary>
+        /// Construtor para carregar dados do banco
+        /// </summary>
+        /// <param name="_baseParLevel1"></param>
+        /// <param name="_baseParFrequency"></param>
+        /// <param name="_baseParConsolidationType"></param>
+        /// <param name="_baseParCluster"></param>
+        public ParamsViewModel(
+            IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1,
             IBaseDomain<ParFrequency, ParFrequencyDTO> _baseParFrequency,
-            IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType)
+            IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType,
+            IBaseDomain<ParCluster, ParClusterDTO> _baseParCluster
+            )
         {
             this._baseParLevel1 = _baseParLevel1;
             this._baseParFrequency = _baseParFrequency;
             this._baseParConsolidationType = _baseParConsolidationType;
-            SetDdlParConsolidation();
-            SetDdlFrequency();
-            SetDdlparLevel1();
+            this._baseParCluster = _baseParCluster;
+            SetAllDdl();
         }
 
+        /// <summary>
+        /// Construtor para View Model Level1
+        /// </summary>
+        /// <param name="_baseParLevel1"></param>
+        /// <param name="_baseParFrequency"></param>
+        /// <param name="_baseParConsolidationType"></param>
+        /// <param name="parLevel1DTO"></param>
         public ParamsViewModel(IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1,
             IBaseDomain<ParFrequency, ParFrequencyDTO> _baseParFrequency,
             IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType,
@@ -37,35 +59,28 @@ namespace SgqSystem.ViewModels
             this._baseParConsolidationType = _baseParConsolidationType;
             paramsDto = new ParamsDTO();
             paramsDto.parLevel1Dto = parLevel1DTO;
-            SetDdlParConsolidation();
-            SetDdlFrequency();
-            SetDdlparLevel1();
+            SetAllDdl();
         }
+
+        #endregion
 
         public IEnumerable<SelectListItem> DdlParConsolidation { get; set; }
-        private void SetDdlParConsolidation()
-        {
-            DdlParConsolidation = CreateSelectListParamsViewModel(_baseParConsolidationType.GetAll());
-        }
-
         public IEnumerable<SelectListItem> DdlFrequency { get; set; }
-        private void SetDdlFrequency()
-        {
-            DdlFrequency = CreateSelectListParamsViewModel(_baseParFrequency.GetAll());
-        }
-
         public IEnumerable<SelectListItem> DdlparLevel1 { get; set; }
-        private void SetDdlparLevel1()
-        {
-            DdlparLevel1 = CreateSelectListParamsViewModelListLevel(_baseParLevel1.GetAll());
-        }
-
+        public IEnumerable<SelectListItem> DdlparCluster { get; set; }
         public ParamsDTO paramsDto { get; set; }
-
-
+        
         #region Auxiliares
 
-        private List<SelectListItem> CreateSelectListParamsViewModel<T>(IEnumerable<T> enumerable)
+        private void SetAllDdl()
+        {
+            CreateSelectListParamsViewModel(_baseParConsolidationType.GetAll(), DdlParConsolidation);
+            CreateSelectListParamsViewModel(_baseParFrequency.GetAll(), DdlFrequency);
+            CreateSelectListParamsViewModelListLevel(_baseParLevel1.GetAll(), DdlparLevel1);
+            CreateSelectListParamsViewModel(_baseParCluster.GetAll(), DdlparCluster);
+        }
+
+        private void CreateSelectListParamsViewModel<T>(IEnumerable<T> enumerable, IEnumerable<SelectListItem> dll)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
             var counter = 0;
@@ -77,10 +92,10 @@ namespace SgqSystem.ViewModels
                 counter++;
             }
 
-            return retorno;
+            dll = retorno;
         }
 
-        private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
+        private void CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable, IEnumerable<SelectListItem> dll)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
             var counter = 0;
@@ -92,7 +107,7 @@ namespace SgqSystem.ViewModels
                 counter++;
             }
 
-            return retorno;
+            dll =  retorno;
         }
 
         #endregion
