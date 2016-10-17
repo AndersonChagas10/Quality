@@ -10,7 +10,7 @@ namespace SgqSystem.Mappers
             Mapper.Initialize(x =>
             {
                 x.AddProfile<CorrectiveActionMapperProfile>();
-                x.AddProfile<UserMappingProfile>();
+                x.AddProfile<UserMapperProfile>();
                 x.AddProfile<ConsolidationLevel01MapperProfile>();
                 x.AddProfile<ConsolidationLevel02MapperProfile>();
                 x.AddProfile<CollectionLevel02MapperProfile>();
@@ -22,11 +22,16 @@ namespace SgqSystem.Mappers
                 x.AddProfile<PeriodMapperProfile>();
                 //x.AddProfile<ShiftMapperProfile>(); PROBLEMA NA TABELA, FORA DE PADRão, MOCKADO.
                 x.AddProfile<DepartmenMapperProfile>();
-                x.AddProfile<UnitMappingProfile>();
+                x.AddProfile<UnitMapperProfile>();
                 x.AddProfile<UnitUserMapperProfile>();
+
+                /*
+                 * Par Level1 Mapping
+                 */
                 x.AddProfile<ParLevel1MapperProfile>();
                 x.AddProfile<ParConsolidationTypeMapperProfile>();
                 x.AddProfile<ParFrequencyMapperProfile>();
+                x.AddProfile<ParClusterMapperProfile>();
 
 
 
