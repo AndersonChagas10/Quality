@@ -65,8 +65,43 @@
     </div>
 </div>
 
-@section Scripts {
+<script language="javascript" type="text/javascript">
+  
+        $('.dropdown-btn-config').click(function () {
+            if ($('.page-quick-sidebar-wrapper').css('right') == '0px')
+                closeRightSidebar();
+            else
+                openRightSidebar();
+        });
 
+        $('.menu-toggler').click(function () {
+            if ($('.page-sidebar-menu').hasClass('page-sidebar-menu-closed')) {
+                openLeftSidebar();
+            }else {
+                closeLeftSidebar();
+            }
+        });
 
+        $('.dropdown-user').click(function () {
+            closeRightSidebar();
+        });
 
-}
+        function openRightSidebar() {
+            $('.page-quick-sidebar-wrapper').css('right', '0px');
+        }
+
+        function closeRightSidebar() {
+            $('.page-quick-sidebar-wrapper').css('right', '-320px');
+        }
+
+        function openLeftSidebar() {
+            $('.page-sidebar-menu').removeClass('page-sidebar-menu-closed');
+            $('body').removeClass('page-sidebar-closed');
+        }
+
+        function closeLeftSidebar() {
+            $('.page-sidebar-menu').addClass('page-sidebar-menu-closed');
+            $('body').addClass('page-sidebar-closed');
+        }
+
+</script>

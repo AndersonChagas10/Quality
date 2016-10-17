@@ -116,7 +116,9 @@
     var monthIndex = date.getMonth();
     var year = date.getFullYear();
 
-    $("#currentDate").text(day + " de " + monthNames[monthIndex] + " de " + year);
+    $("#currentDate").text(day + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year);
+
+   
 
 </script>
 

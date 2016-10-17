@@ -1,0 +1,186 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-xs-3"><button class="btn btn-primary btn-block" id="newLevel1">New Level 1</button></div>
+    <div class="col-xs-9">
+        <div class="form-group">
+            <label>Select the level</label>
+            <select class="js-example-basic-single form-control select2">
+                <option value="WY">CCA</option>
+                <option value="AL">CFF</option>
+                <option value="WY">HTP</option>
+            </select>
+        </div>
+    </div>
+    <hr />
+    <div class="col-xs-12">
+        <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
+            <h4 class="widget-thumb-heading">Level 01</h4>
+            <div class="widget-thumb-wrap">
+                <i class="widget-thumb-icon bg-red icon-layers"></i>
+                <div class="widget-thumb-body">
+                    <span class="widget-thumb-subtitle">USD</span>
+                    <span class="widget-thumb-body-stat" data-counter="counterup" data-value="1,293">1,293</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-3"><button class="btn btn-primary btn-block" id="newLevel2">New Level 2</button></div>
+    <div class="col-xs-9">
+        <div class="form-group">
+            <label>Select the level</label>
+            <select class="js-example-basic-single form-control select2">
+                <option value="WY">CCA</option>
+                <option value="AL">CFF</option>
+                <option value="WY">HTP</option>
+            </select>
+        </div>
+    </div>
+    <hr />
+    <div class="col-xs-12">
+        <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
+            <h4 class="widget-thumb-heading">Level 02</h4>
+            <div class="widget-thumb-wrap">
+                <i class="widget-thumb-icon bg-red icon-layers"></i>
+                <div class="widget-thumb-body">
+                    <span class="widget-thumb-subtitle">USD</span>
+                    <span class="widget-thumb-body-stat" data-counter="counterup" data-value="1,293">1,293</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-3"><button class="btn btn-primary btn-block" id="newLevel3">New Level 3</button></div>
+    <div class="col-xs-9">
+        <div class="form-group">
+            <label>Select the level</label>
+            <select class="js-example-basic-single form-control select2">
+                <option value="WY">CCA</option>
+                <option value="AL">CFF</option>
+                <option value="WY">HTP</option>
+            </select>
+        </div>
+    </div>
+    <hr />
+    <div class="col-xs-12">
+        <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
+            <h4 class="widget-thumb-heading">Level 03</h4>
+            <div class="widget-thumb-wrap">
+                <i class="widget-thumb-icon bg-red icon-layers"></i>
+                <div class="widget-thumb-body">
+                    <span class="widget-thumb-subtitle">USD</span>
+                    <span class="widget-thumb-body-stat" data-counter="counterup" data-value="1,293">1,293</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="newLevel1Modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">New Level 1</h4>
+            </div>
+            <div class="modal-body">
+                <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCloseNewLevel1Modal" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="btnSaveNewLevel1Modal" class="btn btn-primary">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="newLevel2Modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">New Level 2</h4>
+            </div>
+            <div class="modal-body">
+                <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCloseNewLevel2Modal" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="btnSaveNewLevel2Modal" class="btn btn-primary">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="newLevel3Modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">New Level 3</h4>
+            </div>
+            <div class="modal-body">
+                <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCloseNewLevel3Modal" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="btnSaveNewLevel3Modal" class="btn btn-primary">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+
+
+
+    $(".js-example-basic-single").select2();
+
+    //level 1
+    $("#newLevel1").click(function () {
+        $('#newLevel1Modal').modal('show');
+    });
+
+    $("#btnCloseNewLevel1Modal").click(function () {
+        $('#newLevel1Modal').modal('close');
+    });
+
+    $("#btnSaveNewLevel1Modal").click(function () {
+        $('#newLevel1Modal').modal('close');
+    });
+
+    //level 2
+    $("#newLevel2").click(function () {
+        $('#newLevel2Modal').modal('show');
+    });
+
+    $("#btnCloseNewLevel2Modal").click(function () {
+        $('#newLevel2Modal').modal('close');
+    });
+
+    $("#btnSaveNewLevel2Modal").click(function () {
+        $('#newLevel2Modal').modal('close');
+    });
+
+    //level 3
+    $("#newLevel3").click(function () {
+        $('#newLevel3Modal').modal('show');
+    });
+
+    $("#btnCloseNewLevel3Modal").click(function () {
+        $('#newLevel3Modal').modal('close');
+    });
+
+    $("#btnSaveNewLevel3Modal").click(function () {
+        $('#newLevel3Modal').modal('close');
+    });
+
+
+</script>

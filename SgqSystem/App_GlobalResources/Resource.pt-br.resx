@@ -219,4 +219,7 @@
   <data name="september" xml:space="preserve">
     <value>Setembro</value>
   </data>
+  <data name="of" xml:space="preserve">
+    <value>de</value>
+  </data>
 </root>
