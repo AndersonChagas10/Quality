@@ -219,7 +219,13 @@
   <data name="september" xml:space="preserve">
     <value>Setembro</value>
   </data>
-  <data name="of" xml:space="preserve">
-    <value>de</value>
+  <data name="Consolidation_Type" xml:space="preserve">
+    <value>Tipo de Consolidação</value>
+  </data>
+  <data name="Indicator_Description" xml:space="preserve">
+    <value>Descrição do Indicador</value>
+  </data>
+  <data name="Indicator_Name" xml:space="preserve">
+    <value>Nome do Indicador</value>
   </data>
 </root>

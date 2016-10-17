@@ -169,6 +169,7 @@
 /// <reference path="moment.js" />
 /// <reference path="moment-with-locales.js" />
 /// <reference path="respond.js" />
+/// <reference path="select2.min.js" />
 /// <reference path="theme/js/app.min.js" />
 /// <reference path="theme/js/jquery.slimscroll.min.js" />
 /// <reference path="theme/select2/gruntfile.js" />
