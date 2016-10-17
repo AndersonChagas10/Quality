@@ -140,7 +140,6 @@ namespace DTO.DTO
             foreach (var x in nextRoot.nextnextRoot)
                 collectionLevel03DTO.Add(new CollectionLevel03DTO(x, Level01Id, Level02Id));
 
-            //MOCK
             AuditorId = Guard.ConverteValor<int>(nextRoot.auditorid, "Level02.auditorid");
             #endregion
             //08 / 30 / 2016 10:38

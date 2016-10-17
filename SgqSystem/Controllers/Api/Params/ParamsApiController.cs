@@ -1,10 +1,13 @@
-﻿using Dominio.Interfaces.Services;
+﻿using Dominio;
+using Dominio.Interfaces.Services;
+using DTO.DTO.Params;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.Params
 {
+    [HandleApi()]
     [RoutePrefix("api/ParamsApi")]
     public class ParamsApiController : ApiController
     {
@@ -12,10 +15,11 @@ namespace SgqSystem.Controllers.Api.Params
         #region Constructor
 
         private IParamsDomain _paramdDomain;
-        //private IBaseDomain<ParC _paramdDomain;
+        private IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1;
 
-        public ParamsApiController(IParamsDomain paramdDomain)
+        public ParamsApiController(IParamsDomain paramdDomain, IBaseDomain<ParLevel1, ParLevel1DTO> baseParLevel1)
         {
+            _baseParLevel1 = baseParLevel1;
             _paramdDomain = paramdDomain;
         }
 
@@ -24,7 +28,6 @@ namespace SgqSystem.Controllers.Api.Params
         #region Metods
 
         [HttpPost]
-        [HandleApi()]
         [Route("AddUpdateLevel1")]
         public ParamsViewModel AddUpdateLevel1([FromBody] ParamsViewModel paramsViewModel)
         {

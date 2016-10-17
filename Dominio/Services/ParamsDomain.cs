@@ -51,7 +51,6 @@ namespace Dominio.Services
             //paramsDto.parLevel1Dto = Mapper.Map<ParLevel1DTO>(saveParamLevel1);
             paramsDto.parLevel1Dto.Id = saveParamLevel1.Id;
             return paramsDto;
-            //throw new NotImplementedException();
         }
 
         /// <summary>
