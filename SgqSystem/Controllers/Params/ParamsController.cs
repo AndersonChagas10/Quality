@@ -3,8 +3,6 @@ using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
 using Helper;
 using SgqSystem.ViewModels;
-using System.Globalization;
-using System.Threading;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Params
@@ -50,23 +48,23 @@ namespace SgqSystem.Controllers.Params
             if (id == 0)
                 return PartialView("_ParLevel1", ViewModel);
             else
-                return PartialView("_ParLevel1", new ParamsViewModel(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParLevel1.GetById(id)));
+                return PartialView("_ParLevel1", new ParamsViewModel(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParCluster, _baseParLevel1.GetById(id)));
         }
 
-        public ActionResult GetParLevel2ById(int id)
-        {
-            if (id == 0)
-                return PartialView("_ParLevel2", ViewModel);
-            else
-                return PartialView("_ParLevel2", new ParamsViewModel(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParLevel1.GetById(id)));
-        }
+        //public ActionResult GetParLevel2ById(int id)
+        //{
+        //    if (id == 0)
+        //        return PartialView("_ParLevel2", ViewModel);
+        //    else
+        //        return PartialView("_ParLevel2", new ParamsViewModel(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParLevel1.GetById(id)));
+        //}
 
-        public ActionResult GetParLevel3ById(int id)
-        {
-            if (id == 0)
-                return PartialView("_ParLevel3", ViewModel);
-            else
-                return PartialView("_ParLevel3", new ParamsViewModel(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParLevel1.GetById(id)));
-        }
+        //public ActionResult GetParLevel3ById(int id)
+        //{
+        //    if (id == 0)
+        //        return PartialView("_ParLevel3", ViewModel);
+        //    else
+        //        return PartialView("_ParLevel3", new ParamsViewModel(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParLevel1.GetById(id)));
+        //}
     }
 }

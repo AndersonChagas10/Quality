@@ -177,11 +177,14 @@
 
                     <tr>
                         <td>
-                            <b>NonConformityRule</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                            <b>Critério</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
                         </td>
                         <td>
                             <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.NonConformityRule)
+                                Conforme
+                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.NonConformityRule, "true")
+                                Não Conforme
+                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.NonConformityRule, "false")
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -189,11 +192,14 @@
 
                     <tr>
                         <td>
-                            <b>FixedEvaluetionNumber</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                            <b>Cadastro do Total Avaliado</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
                         </td>
                         <td>
                             <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.FixedEvaluetionNumber)
+                                Fixo
+                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.FixedEvaluetionNumber, "true")
+                                Variável
+                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.FixedEvaluetionNumber, "false")
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -201,7 +207,7 @@
                     
                     <tr>
                         <td>
-                            <b>LimitedEvaluetionNumber</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                            <b>Número de Avaliações Limitado</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
                         </td>
                         <td>
                             <label class="on-off">

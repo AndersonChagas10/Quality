@@ -35,10 +35,7 @@ namespace SgqSystem.ViewModels
             IBaseDomain<ParCluster, ParClusterDTO> _baseParCluster
             )
         {
-            this._baseParLevel1 = _baseParLevel1;
-            this._baseParFrequency = _baseParFrequency;
-            this._baseParConsolidationType = _baseParConsolidationType;
-            this._baseParCluster = _baseParCluster;
+            SetInterfaces(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParCluster);
             SetAllDdl();
         }
 
@@ -49,14 +46,14 @@ namespace SgqSystem.ViewModels
         /// <param name="_baseParFrequency"></param>
         /// <param name="_baseParConsolidationType"></param>
         /// <param name="parLevel1DTO"></param>
-        public ParamsViewModel(IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1,
-            IBaseDomain<ParFrequency, ParFrequencyDTO> _baseParFrequency,
-            IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType,
+        public ParamsViewModel(
+             IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1,
+             IBaseDomain<ParFrequency, ParFrequencyDTO> _baseParFrequency,
+             IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType,
+             IBaseDomain<ParCluster, ParClusterDTO> _baseParCluster,
             ParLevel1DTO parLevel1DTO)
         {
-            this._baseParLevel1 = _baseParLevel1;
-            this._baseParFrequency = _baseParFrequency;
-            this._baseParConsolidationType = _baseParConsolidationType;
+            SetInterfaces(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParCluster);
             paramsDto = new ParamsDTO();
             paramsDto.parLevel1Dto = parLevel1DTO;
             SetAllDdl();
@@ -74,13 +71,21 @@ namespace SgqSystem.ViewModels
 
         private void SetAllDdl()
         {
-            CreateSelectListParamsViewModel(_baseParConsolidationType.GetAll(), DdlParConsolidation);
-            CreateSelectListParamsViewModel(_baseParFrequency.GetAll(), DdlFrequency);
-            CreateSelectListParamsViewModelListLevel(_baseParLevel1.GetAll(), DdlparLevel1);
-            CreateSelectListParamsViewModel(_baseParCluster.GetAll(), DdlparCluster);
+            DdlParConsolidation = CreateSelectListParamsViewModel(_baseParConsolidationType.GetAll());
+            DdlFrequency = CreateSelectListParamsViewModel(_baseParFrequency.GetAll());
+            DdlparLevel1 = CreateSelectListParamsViewModelListLevel(_baseParLevel1.GetAll());
+            DdlparCluster = CreateSelectListParamsViewModel(_baseParCluster.GetAll());
         }
 
-        private void CreateSelectListParamsViewModel<T>(IEnumerable<T> enumerable, IEnumerable<SelectListItem> dll)
+        private void SetInterfaces(IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1, IBaseDomain<ParFrequency, ParFrequencyDTO> _baseParFrequency, IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType, IBaseDomain<ParCluster, ParClusterDTO> _baseParCluster)
+        {
+            this._baseParLevel1 = _baseParLevel1;
+            this._baseParFrequency = _baseParFrequency;
+            this._baseParConsolidationType = _baseParConsolidationType;
+            this._baseParCluster = _baseParCluster;
+        }
+
+        private List<SelectListItem> CreateSelectListParamsViewModel<T>(IEnumerable<T> enumerable)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
             var counter = 0;
@@ -92,10 +97,10 @@ namespace SgqSystem.ViewModels
                 counter++;
             }
 
-            dll = retorno;
+           return retorno;
         }
 
-        private void CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable, IEnumerable<SelectListItem> dll)
+        private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
             var counter = 0;
@@ -107,7 +112,7 @@ namespace SgqSystem.ViewModels
                 counter++;
             }
 
-            dll =  retorno;
+            return retorno;
         }
 
         #endregion
