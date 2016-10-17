@@ -20,12 +20,12 @@
     <div id="divCadastroIndicadores" style="display: table; border: 1px solid #ccc;">
 
         <div style="padding: 5px; display:inline-table;">
-            <b>@Resources.Resource.Indicator_Name :</b>
+            <b>@Resources.Resource.indicator_name: </b>
             @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
         </div>
         <br>
         <div style="padding: 5px; display:inline-table;">
-            <b>@Resources.Resource.Indicator_Description :</b>
+            <b>@Resources.Resource.indicator_description: </b>
             @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
         </div>
 
@@ -35,7 +35,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            <b>@Resources.Resource.Consolidation_Type :</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
+                            <b>@Resources.Resource.consolidation_type: </b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
                         </td>
                         <td>
                             @Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlParConsolidation, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })
@@ -50,7 +50,7 @@
 
                     <tr>
                         <td>
-                            <b>Frequencia</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Frequencia.')">
+                            <b>@Resources.Resource.frequency: </b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Frequencia.')">
                         </td>
                         <td>
                             @Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.DdlFrequency, "Selecione a frequência", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectFrequencia" })
@@ -65,7 +65,7 @@
 
                     <tr>
                         <td>
-                            <b>Botão de salvar nos monitoramentos</b> <span class="labelUSA">(USA)</span> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão para salvar o level 2 sem inserir dados (sem não conformidades)')">
+                            <b>@Resources.Resource.save_button_on_level2</b> <span class="labelUSA">(USA)</span> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão para salvar o level 2 sem inserir dados (sem não conformidades)')">
                         </td>
                         <td>
                             <label class="on-off">
@@ -79,7 +79,7 @@
 
                     <tr>
                         <td>
-                            <b>Botão Não Aplicado (N/A) nos monitoramentos</b> <span class="labelUSA">(USA)</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão de N/A no level 2 para quando os mesmos não se aplicarem à auditoria')">
+                            <b>@Resources.Resource.allow_the_not_applicable_button_on_level2</b> <span class="labelUSA">(USA)</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão de N/A no level 2 para quando os mesmos não se aplicarem à auditoria')">
                         </td>
                         <td>
                             <label class="on-off">
@@ -91,7 +91,7 @@
 
                     <tr>
                         <td>
-                            <b>Agrupador de Monitoramentos</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                            <b>@Resources.Resource.level2_group: </b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
                         </td>
                         <td>
                             <label class="on-off">
@@ -103,7 +103,7 @@
 
                     <tr>
                         <td>
-                            <b>Emite Alerta</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                            <b>@Resources.Resource.alert_emissor</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
                         </td>
                         <td>
                             <label class="on-off">
@@ -115,7 +115,7 @@
 
                     <tr>
                         <td>
-                            <b>Permite cadastro especifico por unidade</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                            <b>@Resources.Resource.allow_specific_register_by_unit</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
                         </td>
                         <td>
                             <label class="on-off">
@@ -127,7 +127,7 @@
 
                     <tr>
                         <td>
-                            <b>Permite editar campos do cabeçalho</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                            <b>@Resources.Resource.allow_field_edition_of_the_header</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
                         </td>
                         <td>
                             <label class="on-off">
@@ -139,7 +139,7 @@
 
                     <tr>
                         <td>
-                            <b>Permite editar numeros de avaliação</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                            <b>@Resources.Resource.allow_the_edition_of_the_evaluation_number</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
                         </td>
                         <td>
                             <label class="on-off">
@@ -151,7 +151,7 @@
 
                     <tr>
                         <td>
-                            <b>Permite editar numeros de amostras</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                            <b>@Resources.Resource.allow_the_edition_of_the_sample_number: </b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
                         </td>
                         <td>
                             <label class="on-off">
@@ -163,7 +163,7 @@
 
                     <tr>
                         <td>
-                            <b>Permite editar vínculo com tarefas</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                            <b>@Resources.Resource.allow_create_and_or_edit_of_tasks</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
                         </td>
                         <td>
                             <label class="on-off">
@@ -176,7 +176,7 @@
 
                     <tr>
                         <td>
-                            <b>Permite editar metodo indicador por unidade</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                            <b>@Resources.Resource.allow_specific_register_by_unit</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
                         </td>
                         <td>
                             <label class="on-off">

@@ -219,13 +219,49 @@
   <data name="september" xml:space="preserve">
     <value>Setembro</value>
   </data>
-  <data name="Consolidation_Type" xml:space="preserve">
+  <data name="consolidation_type" xml:space="preserve">
     <value>Tipo de Consolidação</value>
   </data>
-  <data name="Indicator_Description" xml:space="preserve">
+  <data name="indicator_description" xml:space="preserve">
     <value>Descrição do Indicador</value>
   </data>
-  <data name="Indicator_Name" xml:space="preserve">
+  <data name="indicator_name" xml:space="preserve">
     <value>Nome do Indicador</value>
+  </data>
+  <data name="of" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="alert_emissor" xml:space="preserve">
+    <value>Emite Alerta</value>
+  </data>
+  <data name="allow_create_and_or_edit_of_tasks" xml:space="preserve">
+    <value>Permite criar e/ou editar tarefas</value>
+  </data>
+  <data name="allow_field_edition_of_the_header" xml:space="preserve">
+    <value>Permite editar campos do cabeçalho</value>
+  </data>
+  <data name="allow_specific_register_by_unit" xml:space="preserve">
+    <value>Permite cadastro especifico por unidade</value>
+  </data>
+  <data name="allow_the_edition_of_the_evaluation_number" xml:space="preserve">
+    <value>Permite editar número de avaliações</value>
+  </data>
+  <data name="allow_the_edition_of_the_goal_of_the_indicator_by_unit" xml:space="preserve">
+    <value>Permite editar meta do indicador por unidade</value>
+  </data>
+  <data name="allow_the_edition_of_the_sample_number" xml:space="preserve">
+    <value>Permite editar numeros de amostras</value>
+  </data>
+  <data name="allow_the_not_applicable_button_on_level2" xml:space="preserve">
+    <value>Botão Não Aplicado (N/A) no level2</value>
+  </data>
+  <data name="frequency" xml:space="preserve">
+    <value>Frequência</value>
+  </data>
+  <data name="level2_group" xml:space="preserve">
+    <value>Agrupador de level2</value>
+  </data>
+  <data name="save_button_on_level2" xml:space="preserve">
+    <value>Botão salvar no level2</value>
   </data>
 </root>

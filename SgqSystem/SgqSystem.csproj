@@ -362,6 +362,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Views\Globalization\components\Components.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin-lte\css\AdminLTE.css" />
@@ -1068,6 +1069,8 @@
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_stacked.scss" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_variables.scss" />
     <Content Include="Views\Params\ParamsLevel1.cshtml" />
+    <Content Include="Views\Globalization\components\_parameretrization_create.cshtml" />
+    <Content Include="Views\Globalization\components\_parameretrization_layout.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

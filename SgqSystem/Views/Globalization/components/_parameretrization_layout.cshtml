@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+@{
     Layout = null;
 }
 
@@ -42,7 +43,7 @@
                         </div>
                     </div>
                     <div class="portlet-body">
-                        @Html.Partial("~/Views/Globalization/components/_parameretrization_create.cshtml")
+                        @Html.Partial("~/Views/Globalization/components/_parameretrization_create.cshtml", Model)
                     </div>
                 </div>
             </div>

@@ -68,16 +68,17 @@
 
     <div class="body-content" style="margin-top:50px">
 
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @*@Scripts.Render("~/bundles/hc")*@
-
         @RenderBody()
+
         <hr />
         <footer class="wrapper">
             <p class="page-content-wrapper">&copy; @DateTime.Now.Year - JBS and GRT Application.</p>
         </footer>
     </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/hc")*@
 
     @RenderSection("scripts", required: false)
 
