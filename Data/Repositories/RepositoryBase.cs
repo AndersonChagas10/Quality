@@ -191,8 +191,8 @@ namespace Data.Repositories
 
         public void Commit()
         {
-            using (var transaction = db.Database.BeginTransaction())
-            {
+            //using (var transaction = db.Database.BeginTransaction())
+            //{
                 try
                 {
                     db.SaveChanges();
@@ -200,7 +200,7 @@ namespace Data.Repositories
                 }
                 catch (DbEntityValidationException e)
                 {
-                    transaction.Rollback();
+                    //transaction.Rollback();
                     foreach (var i in e.EntityValidationErrors)
                     {
                         Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", i.Entry.Entity.GetType().Name, i.Entry.State);
@@ -216,7 +216,7 @@ namespace Data.Repositories
                 {
                     throw ex;
                 }
-            }
+           // }
         }
 
         public void Dispose()

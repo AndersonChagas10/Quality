@@ -2,6 +2,7 @@
 using Dominio.Interfaces.Repositories;
 using System;
 using DTO.DTO.Params;
+using AutoMapper;
 
 namespace Dominio.Services
 {
@@ -13,12 +14,12 @@ namespace Dominio.Services
 
         #region Constructor
 
-        private IBaseRepository<Example> _baseRepoParamLevel1;
+        private IBaseRepository<ParLevel1> _baseRepoParamLevel1;
         private IBaseRepository<Example> _baseRepoParamLevel2;
         private IBaseRepository<Example> _baseRepoParamLevel3;
 
         public ParamsDomain(
-            IBaseRepository<Example> baseRepoParamLevel1,
+            IBaseRepository<ParLevel1> baseRepoParamLevel1,
             IBaseRepository<Example> baseRepoParamLevel2,
             IBaseRepository<Example> baseRepoParamLevel3
             )
@@ -44,13 +45,13 @@ namespace Dominio.Services
         /// <returns></returns>
         public ParamsDTO AddUpdateLevel1(ParamsDTO paramsDto)
         {
-            //paramsDto.IsValid();
-            //Params saveParamLevel1 = Mapper.Map<Params>(paramsDto);
-            //_baseRepoParamLevel1.AddOrUpdate(saveParamLevel1);
-            //paramsDto = Mapper.Map<ParamsDTO>(saveParamLevel1);
-
-            //return paramsDto;
-            throw new NotImplementedException();
+            //paramsDto.parLevel1Dto.IsValid();
+            ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);
+            _baseRepoParamLevel1.AddOrUpdate(saveParamLevel1);
+            //paramsDto.parLevel1Dto = Mapper.Map<ParLevel1DTO>(saveParamLevel1);
+            paramsDto.parLevel1Dto.Id = saveParamLevel1.Id;
+            return paramsDto;
+            //throw new NotImplementedException();
         }
 
         /// <summary>

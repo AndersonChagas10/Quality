@@ -79,6 +79,7 @@
     <Compile Include="DTO\Params\ParLevel1DTO.cs" />
     <Compile Include="DTO\Params\ParLevel1HeaderFieldDTO.cs" />
     <Compile Include="DTO\Params\ParMultipleValuesDTO.cs" />
+    <Compile Include="Params\ParFrequencyDTO.cs" />
     <Compile Include="TableResults\TableResultsForDataTable.cs" />
     <Compile Include="DTO\ShiftDTO.cs" />
     <Compile Include="DTO\SyncDTO.cs" />
