@@ -50,6 +50,7 @@ namespace SgqSystem
             #region Styles
 
             bundles.Add(new StyleBundle("~/Content/General").Include(
+                    "~/Content/Site.css",
                       "~/Content/bootstrap.css",
                       //"~/Content/bootstrap-*",C:\Users\Celso\Source\Repos\ddd.bitbucket7\SgqSystem\Content\bootstrap-theme.css
                       "~/Content/bootstrap-theme.min.css.map"));

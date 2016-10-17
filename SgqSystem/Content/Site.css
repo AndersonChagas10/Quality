@@ -62,3 +62,6 @@ bg {
 .marginTop10 {
     margin-top: 10px;
 }
+.tooltip {
+    z-index: 1151,!important;
+}

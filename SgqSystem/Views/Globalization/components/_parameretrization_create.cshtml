@@ -89,7 +89,7 @@
 <div id="newLevel1Modal" class="modal fade" tabindex="-1" role="dialog">
     @using (Html.BeginForm())
     {
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg"  role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -100,78 +100,76 @@
                 @Html.LinkVoltar("back", "Voltando")
                 @Html.Label("Id (para testes)");
                 @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id);
-
-                <div id="divCadastroIndicadores" style="display: table; border: 1px solid #ccc;">
-
-                    <div style="padding: 5px; display:inline-table;">
-                        <b>@Resources.Resource.indicator_name :</b>
-                        @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
+                
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b>@Resources.Resource.indicator_name: </b>
                     </div>
-                    <br>
-                    <div style="padding: 5px; display:inline-table;">
+                    <div class="col-xs-6"> 
+                        @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, htmlAttributes: new { @class = "form-control input-sm", @style = "" })
+                    </div>                    
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
                         <b>@Resources.Resource.indicator_description :</b>
-                        @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
                     </div>
+                    <div class="col-xs-6">
+                        @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, htmlAttributes: new { @class = "form-control input-sm", @style = "" })
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b class="btQuestion popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Popover body goes here! Popover body goes here!" data-original-title="Popover in bottom">
+                            @Resources.Resource.consolidation_type: 
+                        </b> <input  type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlParConsolidation, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "form-control input-sm", @style = "", @id = "selectConsolidacao" })
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b>Frequencia</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Frequencia.')">
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.DdlFrequency, "Selecione a frequência", htmlAttributes: new { @class = "form-control input-sm", @style = "", @id = "selectFrequencia" })
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b>Botão de salvar nos monitoramentos</b> <span class="labelUSA">(USA)</span> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão para salvar o level 2 sem inserir dados (sem não conformidades)')">
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SaveLevel2)
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b>Botão Não Aplicado (N/A) nos monitoramentos</b> <span class="labelUSA">(USA)</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão de N/A no level 2 para quando os mesmos não se aplicarem à auditoria')">
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.EditorFor(model => model.paramsDto.parLevel1Dto.NoApplicableLevel2)
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b>Botão Não Aplicado (N/A) nos monitoramentos</b> <span class="labelUSA">(USA)</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão de N/A no level 2 para quando os mesmos não se aplicarem à auditoria')">
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.EditorFor(model => model.paramsDto.parLevel1Dto.NoApplicableLevel2)
+                    </div>
+                </div>
 
                     <div id="corpoIndicador" style="display: block; margin-top: 10px;">
 
                         <table>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <b>@Resources.Resource.consolidation_type: </b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
-                                    </td>
-                                    <td>
-                                        @Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlParConsolidation, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })
-                                        @*<select style="padding: 2px;" name="" id="selectConsolidacao">
-                                            <option>Selecione o tipo de consolidacao</option>
-                                            <option>por Tarefa (level 3)</option>
-                                            <option>por monitormento (level 2)</option>
-                                            <option>por outros</option>
-                                        </select>*@
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <b>Frequencia</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Frequencia.')">
-                                    </td>
-                                    <td>
-                                        @Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.DdlFrequency, "Selecione a frequência", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectFrequencia" })
-                                        @*<select style="padding: 2px;" name="" id="selectConsolidacao">
-                                            <option>Selecione o tipo de consolidacao</option>
-                                            <option>por Tarefa (level 3)</option>
-                                            <option>por monitormento (level 2)</option>
-                                            <option>por outros</option>
-                                        </select>*@
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <b>Botão de salvar nos monitoramentos</b> <span class="labelUSA">(USA)</span> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão para salvar o level 2 sem inserir dados (sem não conformidades)')">
-                                    </td>
-                                    <td>
-                                        <label class="on-off">
-                                            @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SaveLevel2)
-                                            <span><a></a></span>
-                                        </label>
-                                    </td>
-
-
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <b>Botão Não Aplicado (N/A) nos monitoramentos</b> <span class="labelUSA">(USA)</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão de N/A no level 2 para quando os mesmos não se aplicarem à auditoria')">
-                                    </td>
-                                    <td>
-                                        <label class="on-off">
-                                            @Html.EditorFor(model => model.paramsDto.parLevel1Dto.NoApplicableLevel2)
-                                            <span><a></a></span>
-                                        </label>
-                                    </td>
-                                </tr>
 
                                 <tr>
                                     <td>
@@ -279,7 +277,6 @@
 
                     </div>
 
-                </div>
 
             </div>
             <div class="modal-footer">
@@ -327,7 +324,7 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-@section scripts{
+
 <script>
 
     $(".js-example-basic-single").select2();
@@ -396,4 +393,4 @@
 
 
 </script>
-}
+
