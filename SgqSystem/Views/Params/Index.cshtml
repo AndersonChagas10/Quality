@@ -4,6 +4,8 @@
     var url = Url.Action("AddUpdateLevel1", "api/ParamsApi"); //URL relativa
 }
 
+<link href="~/Content/css/select2.min.css" rel="stylesheet" />
+<script src="~/Scripts/select2.min.js"></script>
 
 @Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlParConsolidation, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "parLeve1Select2" })
 
