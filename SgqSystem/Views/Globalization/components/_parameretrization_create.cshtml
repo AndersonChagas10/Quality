@@ -1,6 +1,9 @@
-﻿@{
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+@{
     Layout = null;
+    var url = Url.Action("AddUpdateLevel1", "api/ParamsApi"); //URL relativa
 }
+
 
 <div class="row">
     <div class="col-xs-3"><button class="btn btn-primary btn-block" id="newLevel1">New Level 1</button></div>
@@ -84,21 +87,205 @@
 </div>
 
 <div id="newLevel1Modal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    @using (Html.BeginForm())
+    {
+    <div class="modal-dialog modal-lg"  role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">New Level 1</h4>
             </div>
             <div class="modal-body">
-                <p>One fine body&hellip;</p>
+
+                @Html.LinkVoltar("back", "Voltando")
+                @Html.Label("Id (para testes)");
+                @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id);
+                
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b>@Resources.Resource.indicator_name: </b>
+                    </div>
+                    <div class="col-xs-6"> 
+                        @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, htmlAttributes: new { @class = "form-control input-sm", @style = "" })
+                    </div>                    
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b>@Resources.Resource.indicator_description :</b>
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, htmlAttributes: new { @class = "form-control input-sm", @style = "" })
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b class="btQuestion popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Popover body goes here! Popover body goes here!" data-original-title="Popover in bottom">
+                            @Resources.Resource.consolidation_type: 
+                        </b> <input  type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlParConsolidation, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "form-control input-sm", @style = "", @id = "selectConsolidacao" })
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b>Frequencia</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Frequencia.')">
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.DdlFrequency, "Selecione a frequência", htmlAttributes: new { @class = "form-control input-sm", @style = "", @id = "selectFrequencia" })
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b>Botão de salvar nos monitoramentos</b> <span class="labelUSA">(USA)</span> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão para salvar o level 2 sem inserir dados (sem não conformidades)')">
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SaveLevel2)
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b>Botão Não Aplicado (N/A) nos monitoramentos</b> <span class="labelUSA">(USA)</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão de N/A no level 2 para quando os mesmos não se aplicarem à auditoria')">
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.EditorFor(model => model.paramsDto.parLevel1Dto.NoApplicableLevel2)
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b>Botão Não Aplicado (N/A) nos monitoramentos</b> <span class="labelUSA">(USA)</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão de N/A no level 2 para quando os mesmos não se aplicarem à auditoria')">
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.EditorFor(model => model.paramsDto.parLevel1Dto.NoApplicableLevel2)
+                    </div>
+                </div>
+
+                    <div id="corpoIndicador" style="display: block; margin-top: 10px;">
+
+                        <table>
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        <b>Agrupador de Monitoramentos</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                    </td>
+                                    <td>
+                                        <label class="on-off">
+                                            @Html.EditorFor(model => model.paramsDto.parLevel1Dto.GroupLevel2)
+                                            <span><a></a></span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <b>Emite Alerta</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                    </td>
+                                    <td>
+                                        <label class="on-off">
+                                            @Html.EditorFor(model => model.paramsDto.parLevel1Dto.Alert)
+                                            <span><a></a></span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <b>Permite cadastro especifico por unidade</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                    </td>
+                                    <td>
+                                        <label class="on-off">
+                                            @Html.EditorFor(model => model.paramsDto.parLevel1Dto.Specific)
+                                            <span><a></a></span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <b>Permite editar campos do cabeçalho</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                    </td>
+                                    <td>
+                                        <label class="on-off">
+                                            @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SpecificHeaderField)
+                                            <span><a></a></span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <b>Permite editar numeros de avaliação</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                    </td>
+                                    <td>
+                                        <label class="on-off">
+                                            @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SpecificNumberEvaluetion)
+                                            <span><a></a></span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <b>Permite editar numeros de amostras</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                    </td>
+                                    <td>
+                                        <label class="on-off">
+                                            @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SpecificNumberSample)
+                                            <span><a></a></span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <b>Permite editar vínculo com tarefas</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                    </td>
+                                    <td>
+                                        <label class="on-off">
+                                            @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SpecificLevel3)
+                                            <span><a></a></span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>
+                                        <b>Permite editar metodo indicador por unidade</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                    </td>
+                                    <td>
+                                        <label class="on-off">
+                                            @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SpecificGoal)
+                                            <span><a></a></span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        <div style="width: 100%; float: left;">
+                            <input type="button" Salvar o Indicador" style="font-size: small; padding: 10px; font-weight: bold;">
+                        </div>
+
+                    </div>
+
+
             </div>
             <div class="modal-footer">
                 <button type="button" id="btnCloseNewLevel1Modal" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="btnSaveNewLevel1Modal" class="btn btn-primary">Save changes</button>
+                <input type="button" id="btnSaveNewLevel1Modal" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary" value="Save changes" />
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
+    }
 </div><!-- /.modal -->
 
 <div id="newLevel2Modal" class="modal fade" tabindex="-1" role="dialog">
@@ -137,9 +324,8 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
 <script>
-
-
 
     $(".js-example-basic-single").select2();
 
@@ -152,20 +338,12 @@
         $('#newLevel1Modal').modal('close');
     });
 
-    $("#btnSaveNewLevel1Modal").click(function () {
-        $('#newLevel1Modal').modal('close');
-    });
-
     //level 2
     $("#newLevel2").click(function () {
         $('#newLevel2Modal').modal('show');
     });
 
     $("#btnCloseNewLevel2Modal").click(function () {
-        $('#newLevel2Modal').modal('close');
-    });
-
-    $("#btnSaveNewLevel2Modal").click(function () {
         $('#newLevel2Modal').modal('close');
     });
 
@@ -178,9 +356,41 @@
         $('#newLevel3Modal').modal('close');
     });
 
-    $("#btnSaveNewLevel3Modal").click(function () {
-        $('#newLevel3Modal').modal('close');
-    });
+    var url1 = '@Html.Raw(@url)';
+
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+
+    var indexParamsLevel1 = {
+
+        enviarDadosParaApi: function (e) {
+
+            var dados = $('form').serializeObject();
+
+            $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                console.log(objetoReturn);
+                console.log(statusmessage);
+                console.log(respostaCompleta);
+            });
+
+        }
+
+    }
+
 
 
 </script>
+

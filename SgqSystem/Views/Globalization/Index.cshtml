@@ -1,4 +1,4 @@
-﻿
+﻿@model SgqSystem.ViewModels.ParamsViewModel
 @{
     ViewBag.Title = "Components with globalization";
     Layout = null;
@@ -27,7 +27,7 @@
         <div class="page-container">
             @Html.Partial("~/Views/Globalization/components/_right_layout.cshtml")
             @Html.Partial("~/Views/Globalization/components/_left_layout.cshtml")
-            @Html.Partial("~/Views/Globalization/components/_parameretrization_layout.cshtml")
+            @Html.Partial("~/Views/Globalization/components/_parameretrization_layout.cshtml", Model)
 
         </div>
             

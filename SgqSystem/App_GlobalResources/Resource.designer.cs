@@ -70,11 +70,83 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alert emissor.
+        /// </summary>
+        internal static string alert_emissor {
+            get {
+                return ResourceManager.GetString("alert_emissor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         internal static string all {
             get {
                 return ResourceManager.GetString("all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow create and/or edit of tasks.
+        /// </summary>
+        internal static string allow_create_and_or_edit_of_tasks {
+            get {
+                return ResourceManager.GetString("allow_create_and_or_edit_of_tasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow field edition of the header.
+        /// </summary>
+        internal static string allow_field_edition_of_the_header {
+            get {
+                return ResourceManager.GetString("allow_field_edition_of_the_header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow specific register by unit.
+        /// </summary>
+        internal static string allow_specific_register_by_unit {
+            get {
+                return ResourceManager.GetString("allow_specific_register_by_unit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow the edition of the evaluation number.
+        /// </summary>
+        internal static string allow_the_edition_of_the_evaluation_number {
+            get {
+                return ResourceManager.GetString("allow_the_edition_of_the_evaluation_number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow the edition of the goal of the indicator by unit.
+        /// </summary>
+        internal static string allow_the_edition_of_the_goal_of_the_indicator_by_unit {
+            get {
+                return ResourceManager.GetString("allow_the_edition_of_the_goal_of_the_indicator_by_unit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow the edition of the sample number.
+        /// </summary>
+        internal static string allow_the_edition_of_the_sample_number {
+            get {
+                return ResourceManager.GetString("allow_the_edition_of_the_sample_number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow the not applicable button (NA) on level2.
+        /// </summary>
+        internal static string allow_the_not_applicable_button_on_level2 {
+            get {
+                return ResourceManager.GetString("allow_the_not_applicable_button_on_level2", resourceCulture);
             }
         }
         
@@ -117,9 +189,9 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Consolidation Type.
         /// </summary>
-        internal static string Consolidation_Type {
+        internal static string consolidation_type {
             get {
-                return ResourceManager.GetString("Consolidation_Type", resourceCulture);
+                return ResourceManager.GetString("consolidation_type", resourceCulture);
             }
         }
         
@@ -187,6 +259,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Frequency.
+        /// </summary>
+        internal static string frequency {
+            get {
+                return ResourceManager.GetString("frequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         internal static string home {
@@ -198,18 +279,18 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Indicator Description.
         /// </summary>
-        internal static string Indicator_Description {
+        internal static string indicator_description {
             get {
-                return ResourceManager.GetString("Indicator_Description", resourceCulture);
+                return ResourceManager.GetString("indicator_description", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Indicator Name.
         /// </summary>
-        internal static string Indicator_Name {
+        internal static string indicator_name {
             get {
-                return ResourceManager.GetString("Indicator_Name", resourceCulture);
+                return ResourceManager.GetString("indicator_name", resourceCulture);
             }
         }
         
@@ -246,6 +327,15 @@ namespace Resources {
         internal static string june {
             get {
                 return ResourceManager.GetString("june", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level2 group.
+        /// </summary>
+        internal static string level2_group {
+            get {
+                return ResourceManager.GetString("level2_group", resourceCulture);
             }
         }
         
@@ -354,6 +444,15 @@ namespace Resources {
         internal static string reports {
             get {
                 return ResourceManager.GetString("reports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save button on level2.
+        /// </summary>
+        internal static string save_button_on_level2 {
+            get {
+                return ResourceManager.GetString("save_button_on_level2", resourceCulture);
             }
         }
         

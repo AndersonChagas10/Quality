@@ -10,10 +10,14 @@ using System.Web;
 
 namespace SgqSystem.Mappers
 {
-    public class ColetaMappingProfile : Profile
+    public class ColetaMapperProfile : Profile
     {
-        public ColetaMappingProfile()
+        public ColetaMapperProfile()
         {
+
+            //CreateMap<ColetaDTO, Coleta>();
+            //CreateMap<Coleta, ColetaDTO>();
+
             ////Coleta para >>> ColetaViewModel, ColetaDTO
 
             //CreateMap<GenericReturn<Coleta>, GenericReturn<ColetaViewModel>>();

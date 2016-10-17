@@ -222,13 +222,49 @@
   <data name="a" xml:space="preserve">
     <value>a</value>
   </data>
-  <data name="Indicator_Name" xml:space="preserve">
+  <data name="indicator_name" xml:space="preserve">
     <value>Indicator Name</value>
   </data>
-  <data name="Consolidation_Type" xml:space="preserve">
+  <data name="consolidation_type" xml:space="preserve">
     <value>Consolidation Type</value>
   </data>
-  <data name="Indicator_Description" xml:space="preserve">
+  <data name="indicator_description" xml:space="preserve">
     <value>Indicator Description</value>
+  </data>
+  <data name="of" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="alert_emissor" xml:space="preserve">
+    <value>Alert emissor</value>
+  </data>
+  <data name="allow_create_and_or_edit_of_tasks" xml:space="preserve">
+    <value>Allow create and/or edit of tasks</value>
+  </data>
+  <data name="allow_field_edition_of_the_header" xml:space="preserve">
+    <value>Allow field edition of the header</value>
+  </data>
+  <data name="allow_specific_register_by_unit" xml:space="preserve">
+    <value>Allow specific register by unit</value>
+  </data>
+  <data name="allow_the_edition_of_the_evaluation_number" xml:space="preserve">
+    <value>Allow the edition of the evaluation number</value>
+  </data>
+  <data name="allow_the_edition_of_the_goal_of_the_indicator_by_unit" xml:space="preserve">
+    <value>Allow the edition of the goal of the indicator by unit</value>
+  </data>
+  <data name="allow_the_edition_of_the_sample_number" xml:space="preserve">
+    <value>Allow the edition of the sample number</value>
+  </data>
+  <data name="allow_the_not_applicable_button_on_level2" xml:space="preserve">
+    <value>Allow the not applicable button (NA) on level2</value>
+  </data>
+  <data name="frequency" xml:space="preserve">
+    <value>Frequency</value>
+  </data>
+  <data name="level2_group" xml:space="preserve">
+    <value>Level2 group</value>
+  </data>
+  <data name="save_button_on_level2" xml:space="preserve">
+    <value>Save button on level2</value>
   </data>
 </root>

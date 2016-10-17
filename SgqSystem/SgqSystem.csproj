@@ -324,6 +324,15 @@
     <Compile Include="Handlres\HandleController.cs" />
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
+    <Compile Include="Mappers\ColetaMapperProfile.cs" />
+    <Compile Include="Mappers\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\ParHeaderFieldMapperProfile.cs" />
+    <Compile Include="Mappers\ParMultipleValuesMapperProfile.cs" />
+    <Compile Include="Mappers\ParFieldTypeMapperProfile.cs" />
+    <Compile Include="Mappers\ParLevel1HeaderField.cs" />
+    <Compile Include="Mappers\ParLevel1ClusterMapperProfile.cs" />
+    <Compile Include="Mappers\ParGoalMapperProfile.cs" />
+    <Compile Include="Mappers\ParClusterGroupMapperProfile.cs" />
     <Compile Include="Mappers\ParClusterMapperProfile.cs" />
     <Compile Include="Mappers\ParFrequencyMapperProfile.cs" />
     <Compile Include="Mappers\ParConsolidationTypeMapperProfile.cs" />
