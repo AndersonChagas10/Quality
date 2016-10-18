@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Dominio;
 using DTO.DTO;
-using DTO.Helpers;
 
 namespace SgqSystem.Mappers
 {

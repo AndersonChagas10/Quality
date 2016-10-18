@@ -15,6 +15,8 @@
     @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model);
 </div>
 
+
+
 <script>
 
     var url1 = '@Html.Raw(@url)';
@@ -50,13 +52,13 @@
     }).on("select2:select", function (e) {
 
         if (e.currentTarget.value == "") {
-            $('#ParLevel1').empty()
-            $('#ParLevel1').append(parLevel1Empty)
+            $('#ParLevel1').empty();
+            $('#ParLevel1').append(parLevel1Empty);
         } else {
             $.get('GetParLevel1ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
                 if (obj != null) {
-                    $('#ParLevel1').empty()
-                    $('#ParLevel1').append(xhr.responseText)
+                    $('#ParLevel1').empty();
+                    $('#ParLevel1').append(xhr.responseText);
                 }
             });
         }

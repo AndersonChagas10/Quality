@@ -9,12 +9,12 @@
     <div id="divCadastroIndicadores" style="display: table; border: 1px solid #ccc;">
 
         <div style="padding: 5px; display:inline-table;">
-            <b>@Resources.Resource.Indicator_Name :</b>
+            <b>@Resources.Resource.indicator_name :</b>
             @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
         </div>
         <br>
         <div style="padding: 5px; display:inline-table;">
-            <b>@Resources.Resource.Indicator_Description :</b>
+            <b>@Resources.Resource.indicator_description :</b>
             @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
         </div>
 
@@ -24,7 +24,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            <b>@Resources.Resource.Consolidation_Type :</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
+                            <b>@Resources.Resource.consolidation_type :</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
                         </td>
                         <td>
                             @Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlParConsolidation, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })
@@ -252,3 +252,4 @@
     </div>
 
 }
+

@@ -10,6 +10,7 @@ namespace SgqSystem.Controllers.Params
     [HandleController()]
     public class ParamsController : Controller
     {
+
         #region Construtor
 
         private IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1;
