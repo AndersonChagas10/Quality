@@ -1,4 +1,6 @@
-﻿using NLog;
+﻿using DTO.DTO;
+using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Diagnostics;
 
@@ -6,11 +8,33 @@ namespace DTO
 {
     public class CreateLog
     {
-
+        /// <summary>
+        /// cria Log de uma exception
+        /// </summary>
+        /// <param name="e"></param>
         public CreateLog(Exception e)
         {
+            GlobalDiagnosticsContext.Clear();
             LogException(e);
         }
+
+        //public CreateLog(Exception e, object obj, string prefix, string mensagemExtra = "")
+        //{
+        //    GlobalDiagnosticsContext.Clear();
+        //    LogException(e, obj, prefix, mensagemExtra);
+        //}
+
+        public CreateLog(Exception exception, object obj)
+        {
+            LogException(exception, obj);
+        }
+
+        private Logger _logger;
+        public void GetLog(string name)
+        {
+            _logger = LogManager.GetLogger(name);
+        }
+
 
         /// <summary>
         /// Faz log do Nlog, salva em DB e em arquivo.
@@ -23,6 +47,7 @@ namespace DTO
         private string inner = "";
         private void LogException(Exception _ex)
         {
+
             mensagem = _ex.Message;
             mensagemExcecao = mensagem + " " + _ex.Message;
             inner = innerMessage;
@@ -31,10 +56,38 @@ namespace DTO
             CreateInnerStacktrace(_ex);
 
             var logger = LogManager.GetLogger("dataBaseLogger");
-            GlobalDiagnosticsContext.Set("StackTrace", stackTrace);
-            //GlobalDiagnosticsContext.Set("MensagemExcecao", MensagemExcecao);
-            logger.Error(_ex, mensagemExcecao, this);
 
+            GlobalDiagnosticsContext.Set("StackTrace", stackTrace);
+            logger.Warn(_ex, mensagemExcecao, this);
+
+        }
+
+        private void LogException(Exception _ex, object obj)
+        {
+
+            mensagem = _ex.Message;
+            mensagemExcecao = mensagem + " " + _ex.Message;
+            inner = innerMessage;
+
+            CreateStackTrace(_ex);
+            CreateInnerStacktrace(_ex);
+
+            var logger = LogManager.GetLogger("dataBaseLogger");
+
+            GlobalDiagnosticsContext.Set("StackTrace", stackTrace);
+            GlobalDiagnosticsContext.Set("Objects", ToJson(obj).ToString());
+            logger.Warn(_ex, mensagemExcecao, obj);
+            
+        }
+
+        public string ToJson(object value)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+            return JsonConvert.SerializeObject(value, Formatting.Indented, settings);
         }
 
         /// <summary>

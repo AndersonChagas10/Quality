@@ -115,7 +115,7 @@ namespace Data.Repositories
             var retorno = db.ConsolidationLevel01.FirstOrDefault(r => r.DepartmentId == level01Consolidation.DepartmentId &&
                     r.Level01Id == level01Consolidation.Level01Id &&
                     r.UnitId == level01Consolidation.UnitId &&
-                    DbFunctions.TruncateTime(r.AddDate) == DbFunctions.TruncateTime(DateTime.Now)
+                    DbFunctions.TruncateTime(r.AddDate) == DbFunctions.TruncateTime(level01Consolidation.ConsolidationDate)
                     );
 
             return retorno;
