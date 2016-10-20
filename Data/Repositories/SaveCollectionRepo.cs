@@ -16,6 +16,7 @@ namespace Data.Repositories
         /// Instancia do DataBase.
         /// </summary>
         protected readonly SgqDbDevEntities db;
+        protected List<CollectionLevel03> _collectionLevel03ReadyToSave;
 
         /// <summary>
         /// Objeto T em memória volátil pela chamada de sua Interface.
@@ -25,6 +26,7 @@ namespace Data.Repositories
         public SaveCollectionRepo(SgqDbDevEntities Db)
         {
             db = Db;
+            _collectionLevel03ReadyToSave = new List<CollectionLevel03>();
         }
 
 
@@ -41,31 +43,37 @@ namespace Data.Repositories
             , List<CollectionLevel03> listCollectionLelve3
             , List<CorrectiveAction> listCorrectiveAction)
         {
-
             foreach (var collectionLevel02 in listCollectionLelve2)
             {
                 try
                 {
+                    #region Salva CollectionLevel02 e Insere Level03 Para Salvar
+
                     using (var transaction = db.Database.BeginTransaction())
                     {
                         try
                         {
                             /**/
                             InserecollectionLevel02ECollectionLevel03(collectionLevel02, listCollectionLelve3);//listCollectionLelve3 DA CollectionLevel02
+                            db.SaveChanges();
                             transaction.Commit();
-
                         }
                         catch (Exception e)
                         {
                             transaction.Rollback();
-                            //transaction.Dispose();
                             throw e;
                         }
                     }
+
+                    #endregion
                 }
                 catch (Exception e)
                 {
+                    #region Rollback
+
                     var copiaDaCollection = collectionLevel02;
+                    /*Remove os level03 que estão preparados para save em lote.*/
+                    _collectionLevel03ReadyToSave.RemoveAll(r => r.CollectionLevel02Id == collectionLevel02.Id);
                     var erro = "Erro Ao salvar Level2 e Level03 Colelction";
                     /**/
                     if (e.InnerException != null)
@@ -117,8 +125,13 @@ namespace Data.Repositories
 
                     RemovePropVirtual(copiaDaCollection);
                     new CreateLog(new Exception(erro, e), copiaDaCollection);
+
+                    #endregion
                 }
             }
+
+            foreach (var cl3 in _collectionLevel03ReadyToSave)
+                SalvaCollectionLevel03(cl3);
 
         }
 
@@ -199,30 +212,38 @@ namespace Data.Repositories
                 db.CollectionLevel02.Add(collectionLevel02ToSave);
             }
 
-            db.SaveChanges();
+            //db.SaveChanges();
 
             /**/
             if (haveCorrectiveAction != null)
                 InsereCorrectiveAction(collectionLevel02ToSave.Id, haveCorrectiveAction);
 
+            AddCollectionLevel03(collectionLevel02ToSave, level03ToSave);
+
+        }
+
+        private void AddCollectionLevel03(CollectionLevel02 collectionLevel02ToSave, ICollection<CollectionLevel03> level03ToSave)
+        {
             foreach (var collectionLevel03InLevel02ToSave in level03ToSave)
             {
-
+                //SalvaCollectionLevel03(collectionLevel03InLevel02ToSave);
                 collectionLevel03InLevel02ToSave.CollectionLevel02Id = collectionLevel02ToSave.Id;
-
-                if (collectionLevel03InLevel02ToSave.Id > 0)
-                {
-                    verifyDate(collectionLevel03InLevel02ToSave, "AlterDate");
-                    db.CollectionLevel03.Attach(collectionLevel03InLevel02ToSave);
-                    db.Entry(collectionLevel03InLevel02ToSave).State = EntityState.Modified;
-                }
-                else
-                {
-                    db.CollectionLevel03.Add(collectionLevel03InLevel02ToSave);
-                }
+                _collectionLevel03ReadyToSave.Add(collectionLevel03InLevel02ToSave);
             }
+        }
 
-            db.SaveChanges();
+        private void SalvaCollectionLevel03(CollectionLevel03 collectionLevel03InLevel02ToSave)
+        {
+            if (collectionLevel03InLevel02ToSave.Id > 0)
+            {
+                verifyDate(collectionLevel03InLevel02ToSave, "AlterDate");
+                db.CollectionLevel03.Attach(collectionLevel03InLevel02ToSave);
+                db.Entry(collectionLevel03InLevel02ToSave).State = EntityState.Modified;
+            }
+            else
+            {
+                db.CollectionLevel03.Add(collectionLevel03InLevel02ToSave);
+            }
         }
 
         #region Auxiliares

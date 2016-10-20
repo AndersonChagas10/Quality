@@ -15,6 +15,7 @@ namespace SgqSystem.ViewModels
         private IBaseDomain<ParFrequency, ParFrequencyDTO> _baseParFrequency;
         private IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType;
         private IBaseDomain<ParCluster, ParClusterDTO> _baseParCluster;
+        private IBaseDomain<ParLevel1XCluster, ParLevel1XClusterDTO> _baseParLevel1XCluster;
 
         /// <summary>
         /// Construtor para o MVC
@@ -32,11 +33,15 @@ namespace SgqSystem.ViewModels
             IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1,
             IBaseDomain<ParFrequency, ParFrequencyDTO> _baseParFrequency,
             IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType,
-            IBaseDomain<ParCluster, ParClusterDTO> _baseParCluster
+            IBaseDomain<ParCluster, ParClusterDTO> _baseParCluster,
+            IBaseDomain<ParLevel1XCluster, ParLevel1XClusterDTO> _baseParLevel1XCluster
             )
         {
-            SetInterfaces(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParCluster);
+            SetInterfaces(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParCluster, _baseParLevel1XCluster);
             SetAllDdl();
+            paramsDto = new ParamsDTO();
+            paramsDto.parLevel1Dto = new ParLevel1DTO();
+            paramsDto.parLevel1XClusterDto = new ParLevel1XClusterDTO();
         }
 
         /// <summary>
@@ -51,11 +56,11 @@ namespace SgqSystem.ViewModels
              IBaseDomain<ParFrequency, ParFrequencyDTO> _baseParFrequency,
              IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType,
              IBaseDomain<ParCluster, ParClusterDTO> _baseParCluster,
-            ParLevel1DTO parLevel1DTO)
+             IBaseDomain<ParLevel1XCluster, ParLevel1XClusterDTO> _baseParLevel1XCluster,
+             ParamsDTO parLevel1DTO)
         {
-            SetInterfaces(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParCluster);
-            paramsDto = new ParamsDTO();
-            paramsDto.parLevel1Dto = parLevel1DTO;
+            SetInterfaces(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParCluster, _baseParLevel1XCluster);
+            paramsDto = parLevel1DTO;
             SetAllDdl();
         }
 
@@ -77,8 +82,9 @@ namespace SgqSystem.ViewModels
             DdlparCluster = CreateSelectListParamsViewModel(_baseParCluster.GetAll());
         }
 
-        private void SetInterfaces(IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1, IBaseDomain<ParFrequency, ParFrequencyDTO> _baseParFrequency, IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType, IBaseDomain<ParCluster, ParClusterDTO> _baseParCluster)
+        private void SetInterfaces(IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1, IBaseDomain<ParFrequency, ParFrequencyDTO> _baseParFrequency, IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType, IBaseDomain<ParCluster, ParClusterDTO> _baseParCluster, IBaseDomain<ParLevel1XCluster, ParLevel1XClusterDTO> _baseParLevel1XCluster)
         {
+            this._baseParLevel1XCluster = _baseParLevel1XCluster;
             this._baseParLevel1 = _baseParLevel1;
             this._baseParFrequency = _baseParFrequency;
             this._baseParConsolidationType = _baseParConsolidationType;
@@ -88,7 +94,8 @@ namespace SgqSystem.ViewModels
         private List<SelectListItem> CreateSelectListParamsViewModel<T>(IEnumerable<T> enumerable)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
-            var counter = 0;
+            retorno.Insert(0, new SelectListItem() { Text = "Selecione...", Value = "-1" });
+            var counter = 1;
             foreach (var i in enumerable)
             {
                 var text = i.GetType().GetProperty("Name") ?? i.GetType().GetProperty("Description");
@@ -103,7 +110,8 @@ namespace SgqSystem.ViewModels
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
-            var counter = 0;
+            retorno.Insert(0, new SelectListItem() { Text = "Selecione...", Value = "-1" });
+            var counter = 1;
             foreach (var i in enumerable)
             {
                 var text = i.GetType().GetProperty("Name") ?? i.GetType().GetProperty("Description");

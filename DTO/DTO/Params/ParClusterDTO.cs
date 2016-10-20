@@ -8,6 +8,6 @@ namespace DTO.DTO.Params
         public string Name { get; set; }
         public string Description { get; set; }
         public int ParClusterParent_Id { get; set; }
-        public bool Active { get; set; }
+        public bool IsActive { get; set; }
     }
 }

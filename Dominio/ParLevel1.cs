@@ -17,7 +17,7 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParLevel1()
         {
-            this.ParLevel1Cluster = new HashSet<ParLevel1Cluster>();
+            this.ParLevel1XCluster = new HashSet<ParLevel1XCluster>();
         }
     
         public int Id { get; set; }
@@ -25,26 +25,26 @@ namespace Dominio
         public int ParFrequency_Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool SaveLevel2 { get; set; }
-        public bool NoApplicableLevel2 { get; set; }
-        public bool GroupLevel2 { get; set; }
-        public bool Alert { get; set; }
-        public bool Specific { get; set; }
-        public bool SpecificHeaderField { get; set; }
-        public bool SpecificNumberEvaluetion { get; set; }
-        public bool SpecificNumberSample { get; set; }
-        public bool SpecificLevel3 { get; set; }
-        public bool SpecificGoal { get; set; }
-        public bool NonConformityRule { get; set; }
-        public bool FixedEvaluetionNumber { get; set; }
-        public bool LimitedEvaluetionNumber { get; set; }
+        public bool HasSaveLevel2 { get; set; }
+        public bool HasNoApplicableLevel2 { get; set; }
+        public bool HasGroupLevel2 { get; set; }
+        public bool HasAlert { get; set; }
+        public bool IsSpecific { get; set; }
+        public bool IsSpecificHeaderField { get; set; }
+        public bool IsSpecificNumberEvaluetion { get; set; }
+        public bool IsSpecificNumberSample { get; set; }
+        public bool IsSpecificLevel3 { get; set; }
+        public bool IsSpecificGoal { get; set; }
+        public bool IsRuleConformity { get; set; }
+        public bool IsFixedEvaluetionNumber { get; set; }
+        public bool IsLimitedEvaluetionNumber { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool Active { get; set; }
+        public bool IsActive { get; set; }
     
         public virtual ParConsolidationType ParConsolidationType { get; set; }
         public virtual ParFrequency ParFrequency { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParLevel1Cluster> ParLevel1Cluster { get; set; }
+        public virtual ICollection<ParLevel1XCluster> ParLevel1XCluster { get; set; }
     }
 }

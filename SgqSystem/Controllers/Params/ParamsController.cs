@@ -3,11 +3,12 @@ using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
 using Helper;
 using SgqSystem.ViewModels;
+using System;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Params
 {
-    [HandleController()]
+    //[HandleController()]
     public class ParamsController : Controller
     {
 
@@ -15,57 +16,51 @@ namespace SgqSystem.Controllers.Params
 
         private IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1;
         private IBaseDomain<ParCluster, ParClusterDTO> _baseParCluster;
-        //private IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1;
         private IBaseDomain<ParFrequency, ParFrequencyDTO> _baseParFrequency;
         private IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType;
+        private IBaseDomain<ParLevel1XCluster, ParLevel1XClusterDTO> _baseParLevel1XCluster;
+        private IParamsDomain _paramDomain;
         private ParamsViewModel ViewModel;
 
         public ParamsController(
              IBaseDomain<ParLevel1, ParLevel1DTO> baseParLevel1,
              IBaseDomain<ParFrequency, ParFrequencyDTO> baseParFrequency,
              IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> baseParConsolidationType,
-             IBaseDomain<ParCluster, ParClusterDTO> baseParCluster
+             IBaseDomain<ParCluster, ParClusterDTO> baseParCluster,
+             IBaseDomain<ParLevel1XCluster, ParLevel1XClusterDTO> baseParLevel1XCluster,
+            IParamsDomain paramDomain
             )
         {
+            _paramDomain = paramDomain;
+            _baseParLevel1XCluster = baseParLevel1XCluster;
             _baseParLevel1 = baseParLevel1;
             _baseParFrequency = baseParFrequency;
             _baseParConsolidationType = baseParConsolidationType;
             _baseParCluster = baseParCluster;
-            ViewModel = new ParamsViewModel(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParCluster);
+            /*Construtor que carrega as DropDowns do Banco de dados para o View Model.*/
+            ViewModel = new ParamsViewModel(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParCluster, _baseParLevel1XCluster);
         }
 
         #endregion
 
-        // GET: Params
+        //[HandleController()]
         public ActionResult Index()
         {
+            //throw new Exception("teste");
             //Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             //Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
             return View(ViewModel);
         }
 
+        //[HandleController()]
         public ActionResult GetParLevel1ById(int id)
         {
-            if (id == 0)
+            if (id == 0) /*View Vazia*/
                 return PartialView("_ParLevel1", ViewModel);
-            else
-                return PartialView("_ParLevel1", new ParamsViewModel(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParCluster, _baseParLevel1.GetById(id)));
+            else         /*Construtor que carrega as DropDowns do Banco de dados para o View Model e o Model ParLevel1.*/
+                return PartialView("_ParLevel1", new ParamsViewModel(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParCluster, _baseParLevel1XCluster, _paramDomain.GetLevel1(id)));
         }
 
-        //public ActionResult GetParLevel2ById(int id)
-        //{
-        //    if (id == 0)
-        //        return PartialView("_ParLevel2", ViewModel);
-        //    else
-        //        return PartialView("_ParLevel2", new ParamsViewModel(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParLevel1.GetById(id)));
-        //}
-
-        //public ActionResult GetParLevel3ById(int id)
-        //{
-        //    if (id == 0)
-        //        return PartialView("_ParLevel3", ViewModel);
-        //    else
-        //        return PartialView("_ParLevel3", new ParamsViewModel(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParLevel1.GetById(id)));
-        //}
+      
     }
 }

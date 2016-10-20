@@ -13,8 +13,19 @@ namespace DTO.DTO.Params
 
         public int parLevel3Selected { get; set; }
 
+        /*Ja implementados*/
+
         public ParLevel1DTO parLevel1Dto { get; set; }
-        //ParLevel1DTO
+
+        //public ParConsolidationTypeDTO parConsolidationTypeDto { get; set; }
+
+        //public ParFrequencyDTO parFrequencyDto { get; set; }
+
+        public ParLevel1XClusterDTO parLevel1XClusterDto { get; set; }
+        
+        /*Fim Ja implementados */
+
+
 
         public ParClusterDTO parClusterDto { get; set; }
         //ParClusterDTO
@@ -22,7 +33,7 @@ namespace DTO.DTO.Params
         public ParGoalDTO parGoalDto { get; set; }
         //ParGoalDTO
 
-        public ParLevel1ClusterDTO parLevel1ClusterDto { get; set; }
+        public ParLevel1XClusterDTO parLevel1ClusterDto { get; set; }
         //ParLevel1ClusterDTO
 
         public ParClusterGroupDTO parClusterGroupDto { get; set; }
@@ -36,8 +47,6 @@ namespace DTO.DTO.Params
         public ParMultipleValuesDTO parMultipleValuesDto { get; set; }
         //ParMultipleValuesDTO
 
-        public ParConsolidationTypeDTO parConsolidationTypeDto { get; set; }
-        //ParConsolidationTypeDTO
 
         public ParHeaderFieldDTO parHeaderFieldDto { get; set; }
         //ParHeaderFieldDTO

@@ -27,7 +27,7 @@
                             <b>@Resources.Resource.consolidation_type :</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
                         </td>
                         <td>
-                            @Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlParConsolidation, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })
+                            @Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlParConsolidation, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })
                             @*<select style="padding: 2px;" name="" id="selectConsolidacao">
                                     <option>Selecione o tipo de consolidacao</option>
                                     <option>por Tarefa (level 3)</option>
@@ -42,7 +42,7 @@
                             <b>Frequencia</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Frequencia.')">
                         </td>
                         <td>
-                            @Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.DdlFrequency, "Selecione a frequência", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectFrequencia" })
+                            @Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.DdlFrequency, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectFrequencia" })
                             @*<select style="padding: 2px;" name="" id="selectConsolidacao">
                                     <option>Selecione o tipo de consolidacao</option>
                                     <option>por Tarefa (level 3)</option>
@@ -58,7 +58,7 @@
                         </td>
                         <td>
                             <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SaveLevel2)
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2)
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -72,7 +72,7 @@
                         </td>
                         <td>
                             <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.NoApplicableLevel2)
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasNoApplicableLevel2)
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -84,7 +84,7 @@
                         </td>
                         <td>
                             <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.GroupLevel2)
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasGroupLevel2)
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -96,7 +96,7 @@
                         </td>
                         <td>
                             <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.Alert)
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasAlert)
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -108,7 +108,7 @@
                         </td>
                         <td>
                             <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.Specific)
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific)
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -120,7 +120,7 @@
                         </td>
                         <td>
                             <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SpecificHeaderField)
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField)
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -132,7 +132,7 @@
                         </td>
                         <td>
                             <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SpecificNumberEvaluetion)
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion)
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -144,7 +144,7 @@
                         </td>
                         <td>
                             <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SpecificNumberSample)
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberSample)
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -156,7 +156,7 @@
                         </td>
                         <td>
                             <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SpecificLevel3)
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificLevel3)
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -169,7 +169,7 @@
                         </td>
                         <td>
                             <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.SpecificGoal)
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificGoal)
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -182,9 +182,9 @@
                         <td>
                             <label class="on-off">
                                 Conforme
-                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.NonConformityRule, "true")
+                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true")
                                 Não Conforme
-                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.NonConformityRule, "false")
+                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false")
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -197,9 +197,9 @@
                         <td>
                             <label class="on-off">
                                 Fixo
-                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.FixedEvaluetionNumber, "true")
+                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, "true")
                                 Variável
-                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.FixedEvaluetionNumber, "false")
+                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, "false")
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -211,7 +211,7 @@
                         </td>
                         <td>
                             <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.LimitedEvaluetionNumber)
+                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsLimitedEvaluetionNumber)
                                 <span><a></a></span>
                             </label>
                         </td>
@@ -222,18 +222,21 @@
                             <b>Mostrar contadores do Indicador :</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
                         </td>
                         <td>
-                            @Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlParConsolidation, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })
+                            @*@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlParConsolidation, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })*@
                         </td>
                     </tr>
 
                     <tr>
                         <td>DdlparCluster</td>
-                        <td>@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlparCluster, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })</td>
+                        <td>
+                            @Html.DropDownListFor(m => m.paramsDto.parLevel1XClusterDto.ParCluster_Id, Model.DdlparCluster, htmlAttributes: new { @class = "", @style = "padding: 2px;" })
+                           <input type="hidden" name="paramsDto.parLevel1XClusterDto.ParLevel1_Id" value="@Model.paramsDto.parLevel1Dto.Id" id="parLevel1XClusterDto" />
+                        </td>
                     </tr>
 
                     <tr>
                         <td>Pontos</td>
-                        <td>@Html.EditorFor(model => model.paramsDto.parLevel1Dto.NonConformityRule)</td>
+                        <td>@*@Html.EditorFor(model => model.paramsDto.parLevel1Dto.NonConformityRule)*@</td>
                     </tr>
 
                 </tbody>

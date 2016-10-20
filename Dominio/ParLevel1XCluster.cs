@@ -12,7 +12,7 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParLevel1Cluster
+    public partial class ParLevel1XCluster
     {
         public int Id { get; set; }
         public int ParLevel1_Id { get; set; }
@@ -20,7 +20,7 @@ namespace Dominio
         public decimal Points { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool Active { get; set; }
+        public bool IsActive { get; set; }
     
         public virtual ParCluster ParCluster { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }

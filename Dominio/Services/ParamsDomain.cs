@@ -3,6 +3,7 @@ using Dominio.Interfaces.Repositories;
 using System;
 using DTO.DTO.Params;
 using AutoMapper;
+using System.Linq;
 
 namespace Dominio.Services
 {
@@ -15,17 +16,17 @@ namespace Dominio.Services
         #region Constructor
 
         private IBaseRepository<ParLevel1> _baseRepoParamLevel1;
-        private IBaseRepository<Example> _baseRepoParamLevel2;
+        private IBaseRepository<ParLevel1XCluster> _baseRepoParLevel1XCluster;
         private IBaseRepository<Example> _baseRepoParamLevel3;
 
         public ParamsDomain(
             IBaseRepository<ParLevel1> baseRepoParamLevel1,
-            IBaseRepository<Example> baseRepoParamLevel2,
+            IBaseRepository<ParLevel1XCluster> baseParLevel1XCluster,
             IBaseRepository<Example> baseRepoParamLevel3
             )
         {
             _baseRepoParamLevel1 = baseRepoParamLevel1;
-            _baseRepoParamLevel2 = baseRepoParamLevel2;
+            _baseRepoParLevel1XCluster = baseParLevel1XCluster;
             _baseRepoParamLevel3 = baseRepoParamLevel3;
         }
 
@@ -48,10 +49,31 @@ namespace Dominio.Services
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);
             _baseRepoParamLevel1.AddOrUpdate(saveParamLevel1);
-            //paramsDto.parLevel1Dto = Mapper.Map<ParLevel1DTO>(saveParamLevel1);
             paramsDto.parLevel1Dto.Id = saveParamLevel1.Id;
+
+            /*Salva Clueter X*/
+            paramsDto.parLevel1XClusterDto.ParLevel1_Id = saveParamLevel1.Id;
+            _baseRepoParLevel1XCluster.Add(Mapper.Map<ParLevel1XCluster>(paramsDto.parLevel1XClusterDto));
+
             return paramsDto;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="IdParLevel1"></param>
+        /// <returns></returns>
+        public ParamsDTO GetLevel1(int IdParLevel1)
+        {
+            var retorno = new ParamsDTO();
+            var queryResult = _baseRepoParamLevel1.GetById(IdParLevel1);
+
+            retorno.parLevel1Dto = Mapper.Map<ParLevel1DTO>(queryResult);
+            retorno.parLevel1XClusterDto = Mapper.Map<ParLevel1XClusterDTO>(queryResult.ParLevel1XCluster.FirstOrDefault());
+
+            return retorno;
+        }
+
 
         /// <summary>
         /// Salva parametrização Level2

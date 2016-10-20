@@ -55,8 +55,8 @@ namespace Dominio
         public virtual DbSet<ParGoal> ParGoal { get; set; }
         public virtual DbSet<ParHeaderField> ParHeaderField { get; set; }
         public virtual DbSet<ParLevel1> ParLevel1 { get; set; }
-        public virtual DbSet<ParLevel1Cluster> ParLevel1Cluster { get; set; }
         public virtual DbSet<ParLevel1HeaderField> ParLevel1HeaderField { get; set; }
+        public virtual DbSet<ParLevel1XCluster> ParLevel1XCluster { get; set; }
         public virtual DbSet<ParLevel2> ParLevel2 { get; set; }
         public virtual DbSet<ParLevel3> ParLevel3 { get; set; }
         public virtual DbSet<ParLevel3BoolFalse> ParLevel3BoolFalse { get; set; }
