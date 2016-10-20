@@ -20,11 +20,11 @@ namespace Dominio.Services
 
         #region Variaveis
 
+        //private IBaseRepository<CollectionLevel02> _baseRepoCollectionL2;
+        //private IBaseRepository<CollectionLevel03> _baseRepoCollectionL3;
+        //private ICollectionLevel02Repo _collectionLevel02Repo;
         private IBaseRepository<ConsolidationLevel01> _baseRepoConsolidationL1;
         private IBaseRepository<ConsolidationLevel02> _baseRepoConsolidationL2;
-        private IBaseRepository<CollectionLevel02> _baseRepoCollectionL2;
-        private ICollectionLevel02Repo _collectionLevel02Repo;
-        private IBaseRepository<CollectionLevel03> _baseRepoCollectionL3;
         private IBaseRepository<CollectionHtml> _baseRepoCollectionHtml;
         private IBaseRepository<CorrectiveAction> _baseRepoCorrectiveAction;
         private IGetDataResultRepository<ConsolidationLevel01> _consolidationLevel01RepositoryGET;
@@ -37,7 +37,7 @@ namespace Dominio.Services
         private ISaveCollectionRepo _saveCollectionRepo;
         private List<ConsolidationLevel01> _consolidationLevel01ToSave;
         private List<ConsolidationLevel02> _consolidationLevel02ToSave;
-        private List<ConsolidationLevel02DTO> _consolidationLevel02DTOToSave;
+        //private List<ConsolidationLevel02DTO> _consolidationLevel02DTOToSave;
         private List<CollectionLevel02> _collectionLevel02ToSave;
         private List<CollectionLevel03> _collectionLevel03ToSave;
         private List<CorrectiveAction> _correctiveActionToSave;
@@ -47,10 +47,11 @@ namespace Dominio.Services
         #region Construtor
 
         public SaveConsolidateDataCollectionDomain(
+            //ICollectionLevel02Repo collectionLevel02Repo,
+            //IBaseRepository<CollectionLevel02> baseRepoCollectionL2,
+            //IBaseRepository<CollectionLevel03> baseRepoCollectionL3,
             IBaseRepository<ConsolidationLevel01> baseRepoConsolidationL1,
             IBaseRepository<ConsolidationLevel02> baseRepoConsolidationL2,
-            IBaseRepository<CollectionLevel02> baseRepoCollectionL2,
-            IBaseRepository<CollectionLevel03> baseRepoCollectionL3,
             IBaseRepository<CollectionHtml> baseRepoCollectionHtml,
             IBaseRepository<CorrectiveAction> baseRepoCorrectiveAction,
             IGetDataResultRepository<ConsolidationLevel01> consolidationLevel01RepositoryGET,
@@ -58,11 +59,12 @@ namespace Dominio.Services
             IGetDataResultRepository<CollectionLevel02> collectionLevel02RepositoryGET,
             IGetDataResultRepository<CollectionLevel03> collectionLevel03RepositoryGET,
             IGetDataResultRepository<CollectionHtml> baseRepoCollectionHtmlGET,
-            ICollectionLevel02Repo collectionLevel02Repo,
             ISaveCollectionRepo saveCollectionRepo
             )
         {
-            _collectionLevel02Repo = collectionLevel02Repo;
+            //_collectionLevel02Repo = collectionLevel02Repo;
+            //_baseRepoCollectionL2 = baseRepoCollectionL2;
+            //_baseRepoCollectionL3 = baseRepoCollectionL3;
             _consolidationLevel01RepositoryGET = consolidationLevel01RepositoryGET;
             _consolidationLevel02RepositoryGET = consolidationLevel02RepositoryGET;
             _collectionLevel02RepositoryGET = collectionLevel02RepositoryGET;
@@ -71,8 +73,6 @@ namespace Dominio.Services
             _baseRepoCollectionHtml = baseRepoCollectionHtml;
             _baseRepoConsolidationL1 = baseRepoConsolidationL1;
             _baseRepoConsolidationL2 = baseRepoConsolidationL2;
-            _baseRepoCollectionL2 = baseRepoCollectionL2;
-            _baseRepoCollectionL3 = baseRepoCollectionL3;
             _baseRepoCorrectiveAction = baseRepoCorrectiveAction;
 
             /*Save*/
@@ -127,26 +127,20 @@ namespace Dominio.Services
 
                 foreach (var i in obj.ListToSave) //RN2
                 {
-
                     ConsolidationLevel01 level01Consolidation = Mapper.Map<ConsolidationLevel01>(i);
                     PrencheFeedaBackPt1(out saving, level01Consolidation);
                     level01Consolidation = AddConsolidationLevel01(level01Consolidation);
                     ConsolidationLevel02 level02Consolidation;
-
                     foreach (var consolidationLevel02Dto in i.consolidationLevel02DTO)
                     {
                         VerificaDuplicados(i);//RN7
-
                         foreach (var collectionLevel02Dto in i.collectionLevel02DTO)
                         {
                             level02Consolidation = AddConsolidationLevel02(level01Consolidation, consolidationLevel02Dto, collectionLevel02Dto.Level02Id, i.UnitId);
                             AddCorrectiveAction(obj.ListToSaveCA, collectionLevel02Dto);
                             CollectionLevel02 collectionLevel02 = AddCollectionLevel02CollectionLevel03(collectionLevel02Dto, level01Consolidation.Level01Id, level02Consolidation.Id);
                         }
-
                     }
-
-                    //SalvaCollectionLevel03(i);//RN8
                 }
 
                 /*Salvando os itens */
@@ -181,29 +175,6 @@ namespace Dominio.Services
             }
 
         }
-
-        /// <summary>
-        /// Salva o Collection do level03 e insere o ID na classe DTO.
-        ///  
-        /// Rn1: Data Base - Salva collection Level03
-        /// 
-        /// Rn2: Insere o ID na classe DTO.
-        /// 
-        /// </summary>
-        /// <param name="i"></param>
-        //private void SalvaCollectionLevel03(ConsolidationLevel01DTO i)
-        //{
-        //    _baseRepoCollectionL3.UpdateAll(_collectionLevel03ToSave.Where(r => r.Id > 0));//Rn1
-        //    _baseRepoCollectionL3.AddAll(_collectionLevel03ToSave.Where(r => r.Id == 0));//Rn1
-
-        //    foreach (var consolidationLevel02Dto in i.consolidationLevel02DTO)//Rn2
-        //        foreach (var collectionLevel02Dto in i.collectionLevel02DTO)
-        //            foreach (var level03 in collectionLevel02Dto.collectionLevel03DTO)
-        //            {
-        //                level03.Id = _collectionLevel03ToSave.FirstOrDefault(r => r.Level03Id == level03.Level03Id && r.CollectionLevel02Id == level03.CollectionLevel02Id).Id;
-        //            }
-        //}
-
 
         /// <summary>
         /// Metodo que insere/altera registros como duplicadas 
