@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using System.Data.Entity;
 using DTO.DTO;
+using System.Transactions;
 
 namespace Data.Repositories
 {
@@ -111,12 +112,17 @@ namespace Data.Repositories
 
         public ConsolidationLevel01 GetExistentLevel01Consollidation(ConsolidationLevel01 level01Consolidation)
         {
+            ConsolidationLevel01 retorno;
+            using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.RepeatableRead }))
+            {
+                retorno = db.ConsolidationLevel01.FirstOrDefault(r => r.DepartmentId == level01Consolidation.DepartmentId &&
+                        r.Level01Id == level01Consolidation.Level01Id &&
+                        r.UnitId == level01Consolidation.UnitId &&
+                        DbFunctions.TruncateTime(r.AddDate) == DbFunctions.TruncateTime(level01Consolidation.ConsolidationDate)
+                        );
 
-            var retorno = db.ConsolidationLevel01.FirstOrDefault(r => r.DepartmentId == level01Consolidation.DepartmentId &&
-                    r.Level01Id == level01Consolidation.Level01Id &&
-                    r.UnitId == level01Consolidation.UnitId &&
-                    DbFunctions.TruncateTime(r.AddDate) == DbFunctions.TruncateTime(level01Consolidation.ConsolidationDate)
-                    );
+                scope.Complete();
+            }
 
             return retorno;
         }
@@ -124,11 +130,11 @@ namespace Data.Repositories
         public ConsolidationLevel02 GetExistentLevel02Consollidation(ConsolidationLevel02 level02Consolidation, ConsolidationLevel01 consolidationLevel01)
         {
 
-            ConsolidationLevel02 consolidacaoExistente;
-            if (consolidationLevel01.ConsolidationLevel02 != null)
-                return consolidacaoExistente = consolidationLevel01.ConsolidationLevel02.FirstOrDefault(r => r.Level02Id == level02Consolidation.Level02Id);
-
-            return null;
+            //ConsolidationLevel02 consolidacaoExistente;
+            //if (consolidationLevel01.ConsolidationLevel02 != null)
+                //return consolidacaoExistente = consolidationLevel01.ConsolidationLevel02.FirstOrDefault(r => r.Level02Id == level02Consolidation.Level02Id );
+            return consolidationLevel01.ConsolidationLevel02.FirstOrDefault(r => r.Level02Id == level02Consolidation.Level02Id);
+            //return null;
         }
 
 

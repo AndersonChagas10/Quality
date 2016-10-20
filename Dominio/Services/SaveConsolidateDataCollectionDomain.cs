@@ -37,6 +37,7 @@ namespace Dominio.Services
         private ISaveCollectionRepo _saveCollectionRepo;
         private List<ConsolidationLevel01> _consolidationLevel01ToSave;
         private List<ConsolidationLevel02> _consolidationLevel02ToSave;
+        private List<ConsolidationLevel02DTO> _consolidationLevel02DTOToSave;
         private List<CollectionLevel02> _collectionLevel02ToSave;
         private List<CollectionLevel03> _collectionLevel03ToSave;
         private List<CorrectiveAction> _correctiveActionToSave;
@@ -126,6 +127,7 @@ namespace Dominio.Services
 
                 foreach (var i in obj.ListToSave) //RN2
                 {
+
                     ConsolidationLevel01 level01Consolidation = Mapper.Map<ConsolidationLevel01>(i);
                     PrencheFeedaBackPt1(out saving, level01Consolidation);
                     level01Consolidation = AddConsolidationLevel01(level01Consolidation);
@@ -137,9 +139,9 @@ namespace Dominio.Services
 
                         foreach (var collectionLevel02Dto in i.collectionLevel02DTO)
                         {
-                            level02Consolidation = AddConsolidationLevel02(level01Consolidation, consolidationLevel02Dto, collectionLevel02Dto.Level02Id);
+                            level02Consolidation = AddConsolidationLevel02(level01Consolidation, consolidationLevel02Dto, collectionLevel02Dto.Level02Id, i.UnitId);
+                            AddCorrectiveAction(obj.ListToSaveCA, collectionLevel02Dto);
                             CollectionLevel02 collectionLevel02 = AddCollectionLevel02CollectionLevel03(collectionLevel02Dto, level01Consolidation.Level01Id, level02Consolidation.Id);
-                            AddCorrectiveAction(obj.ListToSaveCA, collectionLevel02Dto, collectionLevel02.Id);
                         }
 
                     }
@@ -147,15 +149,16 @@ namespace Dominio.Services
                     //SalvaCollectionLevel03(i);//RN8
                 }
 
-                _saveCollectionRepo.SaveAllLevel(_consolidationLevel01ToSave, _consolidationLevel02ToSave, _collectionLevel02ToSave
+                /*Salvando os itens */
+                _saveCollectionRepo.SaveAllLevel(_collectionLevel02ToSave
                     , _collectionLevel03ToSave, _correctiveActionToSave);
-                /*Salvando os itens*/
 
                 foreach (var preencheObjetoParaAtualizarTela in obj.ListToSave)
                 {
                     preencheObjetoParaAtualizarTela.collectionLevel02DTO = Mapper.Map<List<CollectionLevel02DTO>>(_collectionLevel02ToSave);
                     preencheObjetoParaAtualizarTela.collectionLevel02DTO.ForEach(r => r.collectionLevel03DTO = r.CollectionLevel03);
                 }
+
                 #endregion
 
                 #region Retorno
@@ -328,7 +331,8 @@ namespace Dominio.Services
                     level01Consolidation = consolidacaoLevel01Existente;
                 }
 
-                _consolidationLevel01ToSave.Add(level01Consolidation);
+                //_consolidationLevel01ToSave.Add(level01Consolidation);
+                _baseRepoConsolidationL1.AddOrUpdate(level01Consolidation);
             }
             catch (Exception e)
             {
@@ -349,15 +353,16 @@ namespace Dominio.Services
         /// </summary>
         /// <param name="level01Consolidation"></param>
         /// <returns></returns>
-        private ConsolidationLevel02 AddConsolidationLevel02(ConsolidationLevel01 level01Consolidation, ConsolidationLevel02DTO consolidationLevel02DTO, int level02Id)
+        private ConsolidationLevel02 AddConsolidationLevel02(ConsolidationLevel01 level01Consolidation, ConsolidationLevel02DTO consolidationLevel02DTO, int level02Id, int unitId)
         {
             ConsolidationLevel02 level02Consolidation = new ConsolidationLevel02();
 
             try //RN4
             {
                 level02Consolidation = Mapper.Map<ConsolidationLevel02>(consolidationLevel02DTO);
-                //level02Consolidation.Level01ConsolidationId = level01Consolidation.Id;
+                level02Consolidation.Level01ConsolidationId = level01Consolidation.Id;
                 level02Consolidation.Level02Id = level02Id; //RN2
+                level02Consolidation.UnitId = unitId; //RN2
 
                 var consolidacaoExistente = _consolidationLevel02RepositoryGET.GetExistentLevel02Consollidation(level02Consolidation, level01Consolidation); //RN2
 
@@ -366,7 +371,14 @@ namespace Dominio.Services
                     level02Consolidation = consolidacaoExistente;
                 }
 
-                _consolidationLevel02ToSave.Add(level02Consolidation);
+                //var list = new List<CollectionLevel02DTO>();
+                //list.Add(listaCollectionLevel02);
+                //_consolidationLevel02ToSave.Add(level02Consolidation);
+                _baseRepoConsolidationL2.AddOrUpdate(level02Consolidation);
+
+                //var aa = Mapper.Map<ConsolidationLevel02DTO>(level02Consolidation);
+                //level02Consolidation.CollectionLevel02 = Mapper.Map<List<CollectionLevel02>>(list);
+                //_consolidationLevel02DTOToSave.Add(aa);
             }
             catch (Exception e)
             {
@@ -390,12 +402,13 @@ namespace Dominio.Services
         /// <param name="objListToSaveCA"></param>
         /// <param name="x"></param>
         /// <param name="collectionLevel02Id"></param>
-        private void AddCorrectiveAction(List<CorrectiveActionDTO> objListToSaveCA, CollectionLevel02DTO collectionLevel02Dto, int collectionLevel02Id)
+        private void AddCorrectiveAction(List<CorrectiveActionDTO> objListToSaveCA, CollectionLevel02DTO collectionLevel02Dto)
         {
             try //RN6
             {
                 if (collectionLevel02Dto.CorrectiveActionId > 0) //RN2
                 {
+
                     if (_baseRepoCorrectiveAction.GetById(collectionLevel02Dto.CorrectiveActionId) == null)//RN3
                     {
                         var CaToSaveDTO = objListToSaveCA.FirstOrDefault(z => z.idcorrectiveaction == collectionLevel02Dto.CorrectiveActionId);
@@ -409,6 +422,12 @@ namespace Dominio.Services
 
                         _correctiveActionToSave.Add(CA);
                         collectionLevel02Dto.CorrectiveActionSaved = Mapper.Map<CorrectiveActionDTO>(CA);//RN5
+
+                        var correctiveToSave = new List<CorrectiveAction>();
+                        correctiveToSave.Add(CA);
+
+                        /**/
+                        collectionLevel02Dto.CorrectiveAction = Mapper.Map<List<CorrectiveActionDTO>>(correctiveToSave);
                     }
                 }
             }
@@ -435,14 +454,13 @@ namespace Dominio.Services
         /// <param name="level01Id"></param>
         /// <param name="level02ConsolidationId"></param>
         /// <returns></returns>
-        private CollectionLevel02 AddCollectionLevel02CollectionLevel03(CollectionLevel02DTO collectionLevel02DTO, int level01Id
-            , int level02ConsolidationId)
+        private CollectionLevel02 AddCollectionLevel02CollectionLevel03(CollectionLevel02DTO collectionLevel02DTO, int level01Id, int level02ConsolidationId)
         {
             CollectionLevel02 collectionLevel02 = new CollectionLevel02();
             try //RN1
             {
                 collectionLevel02DTO.Level01Id = level01Id; //RN2
-                //collectionLevel02DTO.ConsolidationLevel02Id = level02ConsolidationId; //RN3
+                collectionLevel02DTO.ConsolidationLevel02Id = level02ConsolidationId; //RN3
                 collectionLevel02 = Mapper.Map<CollectionLevel02>(collectionLevel02DTO);
 
                 collectionLevel02.CollectionLevel03 = null; //RN4
