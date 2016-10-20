@@ -2,6 +2,7 @@
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace DTO.DTO
@@ -13,7 +14,7 @@ namespace DTO.DTO
         
         #region Properties refletidas da Entidade EDMX Do Entity Framework
 
-        public Nullable<System.DateTime> ConsolidationDate { get; set; }
+        public DateTime ConsolidationDate { get; set; }
         public int UnitId { get; set; }
         public int DepartmentId { get; set; }
         public int Level01Id { get; set; }
@@ -38,8 +39,13 @@ namespace DTO.DTO
             ValidaBaseEntity();
 
             #region DateConsolidation
-
-            ConsolidationDate = DateTime.Now;
+            if (rootObject.nextRoot[0].datetime != null)
+            {
+                var dataCorrigida = rootObject.nextRoot[0].datetime.Split(':');
+                ConsolidationDate = DateTime.ParseExact(rootObject.nextRoot[0].datetime.Split(':')[0] + ":" + rootObject.nextRoot[0].datetime.Split(':')[1], "MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
+                ConsolidationDate = ConsolidationDate.AddSeconds(Guard.ConverteValor<int>(rootObject.nextRoot[0].datetime.Split(':')[2], "CollectionDate")).AddMilliseconds(Guard.ConverteValor<int>(rootObject.nextRoot[0].datetime.Split(':')[3], "CollectionDate"));
+            }
+            
             //MOCK
             //rootObject.unidadeid = "1";
             DepartmentId = 1;//int.Parse(rootObject.de);

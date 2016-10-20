@@ -16,7 +16,7 @@ namespace DTO.DTO
         public int Level01ConsolidationId { get; set; }
         public int Level02Id { get; set; }
         public int UnitId { get; set; }
-        public Nullable<System.DateTime> ConsolidationDate { get; set; }
+        public DateTime ConsolidationDate { get; set; }
 
         public Level02DTO Level02 { get; set; }
         public List<CollectionLevel02DTO> CollectionLevel02 { get; set; }
@@ -56,7 +56,10 @@ namespace DTO.DTO
 
             #region Comum para todos
 
-            ConsolidationDate = DateTime.Now;
+            if (x[0].CollectionDate != null)
+            {
+                ConsolidationDate = x[0].CollectionDate;
+            }
 
             Level02Id = x.FirstOrDefault().Level02Id;
             Guard.ForValidFk(Level02Id, "Level02Consolidation Id.");

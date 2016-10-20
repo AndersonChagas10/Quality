@@ -37,6 +37,11 @@ namespace Data.Repositories
             //db.Database.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;");
         }
 
+        public void Refresh(T obj)
+        {
+            db.Entry(obj).Reload();
+        }
+
         #region Add
 
         public void AddNotCommit(T obj)
@@ -77,14 +82,32 @@ namespace Data.Repositories
 
         public void Update(T obj)
         {
+            //VerificaElementoInexistenteEmDb(obj);
             verifyDate(obj, "AlterDate");
             Entity.Attach(obj);
             db.Entry(obj).State = EntityState.Modified;
             Commit();
         }
 
+        //private void VerificaElementoInexistenteEmDb(T obj)
+        //{
+        //    if (obj.GetType().GetProperty("Id") != null)
+        //    {
+        //        var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
+        //        if (id > 0)
+        //        {
+        //            if (GetById(id) == null)
+        //            {
+
+        //                return;
+        //            }
+        //        }
+        //    }
+        //}
+
         public void UpdateNotCommit(T obj)
         {
+            //VerificaElementoInexistenteEmDb(obj);
             verifyDate(obj, "AlterDate");
             Entity.Attach(obj);
             db.Entry(obj).State = EntityState.Modified;
@@ -181,6 +204,12 @@ namespace Data.Repositories
             Entity.Remove(obj);
         }
 
+        public void RemoveAndCommit(T obj)
+        {
+            Entity.Remove(obj);
+            Commit();
+        }
+
         public void RemoveAll(IEnumerable<T> obj)
         {
             foreach (var i in obj)
@@ -196,10 +225,10 @@ namespace Data.Repositories
                 try
                 {
                     db.SaveChanges();
-
                 }
                 catch (DbEntityValidationException e)
                 {
+                
                     //transaction.Rollback();
                     foreach (var i in e.EntityValidationErrors)
                     {
@@ -246,6 +275,11 @@ namespace Data.Repositories
             {
                 obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
             }
+        }
+
+        public void RemoveByIdAndCommit(int id)
+        {
+         
         }
 
         //public T ExecutaSql<T>(string sqlQuery, string sqlSelectLast)
