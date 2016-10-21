@@ -1,4 +1,5 @@
 ﻿using DTO.BaseEntity;
+using System.Collections.Generic;
 
 namespace DTO.DTO.Params
 {
@@ -10,5 +11,10 @@ namespace DTO.DTO.Params
         public int LevelShowm { get; set; }
         public bool LinkNumberEvaluetion { get; set; }
         public bool Active { get; set; }
+
+        //public ParLevelDefinitionDTO parLevelDefinitionDto { get; set; }
+        public List<ParMultipleValuesDTO> parMultipleValuesDto { get; set; }
+        public ParFieldTypeDTO parFieldTypeDto { get; set; }
+
     }
 }

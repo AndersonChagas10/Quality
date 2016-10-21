@@ -20,7 +20,10 @@ namespace DTO.DTO.Params
 
         public List<ParLevel1XClusterDTO> parLevel1XClusterDto { get; set; }
         
-        public ParHeaderFieldDTO parHeaderFieldDto { get; set; }
+        public List<ParLevel1HeaderFieldDTO> parLevel1HeaderFieldDto { get; set; }
+        
+
+       
 
         /*Fim Ja implementados */
 
@@ -38,17 +41,11 @@ namespace DTO.DTO.Params
         //public ParClusterGroupDTO parClusterGroupDto { get; set; }
         ////ParClusterGroupDTO
 
-        //public ParLevel1HeaderFieldDTO parLevel1HeaderFieldDto { get; set; }
-        ////ParLevel1HeaderField
 
         //public ParFieldTypeDTO parFieldTypeDto { get; set; }
 
-        //public ParMultipleValuesDTO parMultipleValuesDto { get; set; }
-        ////ParMultipleValuesDTO
-
-
-        //public ParHeaderFieldDTO parHeaderFieldDto { get; set; }
-        //ParHeaderFieldDTO
+     
+        
 
         #endregion
 
