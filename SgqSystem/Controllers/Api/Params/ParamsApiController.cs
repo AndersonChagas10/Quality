@@ -35,17 +35,6 @@ namespace SgqSystem.Controllers.Api.Params
             return paramsViewModel;
         }
 
-        public ParamsViewModel AddUpdateLevel2(ParamsViewModel paramsViewModel)
-        {
-            paramsViewModel.paramsDto = _paramdDomain.AddUpdateLevel2(paramsViewModel.paramsDto);
-            return paramsViewModel;
-        }
-
-        public ParamsViewModel AddUpdateLevel3(ParamsViewModel paramsViewModel)
-        {
-            paramsViewModel.paramsDto = _paramdDomain.AddUpdateLevel3(paramsViewModel.paramsDto);
-            return paramsViewModel;
-        }
 
         #endregion
 

@@ -63,6 +63,7 @@
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
     <Compile Include="Interfaces\Repositories\IGetDataResultRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRelatorioColetaRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ISaveCollectionRepo.cs" />
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICollectionLevel02Repo.cs" />
     <Compile Include="Interfaces\Services\ICorrectiveActionDomain.cs" />
@@ -122,10 +123,10 @@
     <Compile Include="ParLevel1.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ParLevel1Cluster.cs">
+    <Compile Include="ParLevel1HeaderField.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ParLevel1HeaderField.cs">
+    <Compile Include="ParLevel1XCluster.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParLevel2.cs">
@@ -153,6 +154,9 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParLevel3Value.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevelDefiniton.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParMeasurementUnit.cs">

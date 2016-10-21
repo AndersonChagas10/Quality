@@ -4,7 +4,8 @@ namespace Dominio.Interfaces.Repositories
 {
     public interface IBaseRepository<T> where T : class
     {
-        
+        void Refresh(T obj);
+
         void Add(T obj);
 
         void AddNotCommit(T obj);
@@ -28,6 +29,8 @@ namespace Dominio.Interfaces.Repositories
         void UpdateNotCommit(T obj);
         
         void Remove(T obj);
+
+        void RemoveAndCommit(T obj);
 
         void Delete(int id);
 

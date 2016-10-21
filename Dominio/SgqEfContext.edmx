@@ -261,7 +261,7 @@
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParFrequency">
           <Key>
@@ -294,11 +294,11 @@
           <Property Name="ParFieldType_Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="LevelShowm" Type="int" Nullable="false" />
+          <Property Name="ParLevelDefinition_Id" Type="int" Nullable="false" />
           <Property Name="LinkNumberEvaluetion" Type="bit" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParLevel1">
           <Key>
@@ -313,7 +313,7 @@
           <Property Name="HasNoApplicableLevel2" Type="bit" Nullable="false" />
           <Property Name="HasGroupLevel2" Type="bit" Nullable="false" />
           <Property Name="HasAlert" Type="bit" Nullable="false" />
-          <Property Name="IsSpecific" Type="bit" Nullable="false" />
+          <Property Name="IsSpecific" Type="bit" />
           <Property Name="IsSpecificHeaderField" Type="bit" Nullable="false" />
           <Property Name="IsSpecificNumberEvaluetion" Type="bit" Nullable="false" />
           <Property Name="IsSpecificNumberSample" Type="bit" Nullable="false" />
@@ -322,18 +322,6 @@
           <Property Name="IsRuleConformity" Type="bit" Nullable="false" />
           <Property Name="IsFixedEvaluetionNumber" Type="bit" Nullable="false" />
           <Property Name="IsLimitedEvaluetionNumber" Type="bit" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ParLevel1Cluster">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParLevel1_Id" Type="int" Nullable="false" />
-          <Property Name="ParCluster_Id" Type="int" Nullable="false" />
-          <Property Name="Points" Type="decimal" Precision="10" Scale="5" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -347,7 +335,19 @@
           <Property Name="ParHeaderField_Id" Type="int" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ParLevel1XCluster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="int" Nullable="false" />
+          <Property Name="ParCluster_Id" Type="int" Nullable="false" />
+          <Property Name="Points" Type="decimal" Precision="10" Scale="5" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParLevel2">
           <Key>
@@ -458,6 +458,17 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ParLevelDefiniton">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="150" />
+        </EntityType>
         <EntityType Name="ParMeasurementUnit">
           <Key>
             <PropertyRef Name="Id" />
@@ -481,7 +492,7 @@
           <Property Name="Conformity" Type="bit" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParSample">
           <Key>
@@ -794,30 +805,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ParLevel1Cluster_ParCluster">
-          <End Role="ParCluster" Type="Self.ParCluster" Multiplicity="1" />
-          <End Role="ParLevel1Cluster" Type="Self.ParLevel1Cluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCluster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1Cluster">
-              <PropertyRef Name="ParCluster_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1Cluster_ParLevel1">
-          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="1" />
-          <End Role="ParLevel1Cluster" Type="Self.ParLevel1Cluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1Cluster">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UnitUser_Unit">
           <End Role="Unit" Type="Self.Unit" Multiplicity="1" />
           <End Role="UnitUser" Type="Self.UnitUser" Multiplicity="*" />
@@ -867,8 +854,8 @@
           <EntitySet Name="ParGoal" EntityType="Self.ParGoal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParHeaderField" EntityType="Self.ParHeaderField" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel1" EntityType="Self.ParLevel1" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParLevel1Cluster" EntityType="Self.ParLevel1Cluster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel1HeaderField" EntityType="Self.ParLevel1HeaderField" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParLevel1XCluster" EntityType="Self.ParLevel1XCluster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2" EntityType="Self.ParLevel2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3" EntityType="Self.ParLevel3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolFalse" EntityType="Self.ParLevel3BoolFalse" Schema="dbo" store:Type="Tables" />
@@ -878,6 +865,7 @@
           <EntitySet Name="ParLevel3Level2" EntityType="Self.ParLevel3Level2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3Level2Level1" EntityType="Self.ParLevel3Level2Level1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3Value" EntityType="Self.ParLevel3Value" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParLevelDefiniton" EntityType="Self.ParLevelDefiniton" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParMeasurementUnit" EntityType="Self.ParMeasurementUnit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParMultipleValues" EntityType="Self.ParMultipleValues" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParSample" EntityType="Self.ParSample" Schema="dbo" store:Type="Tables" />
@@ -961,14 +949,6 @@
             <End Role="ParFrequency" EntitySet="ParFrequency" />
             <End Role="ParLevel1" EntitySet="ParLevel1" />
           </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1Cluster_ParCluster" Association="Self.FK_ParLevel1Cluster_ParCluster">
-            <End Role="ParCluster" EntitySet="ParCluster" />
-            <End Role="ParLevel1Cluster" EntitySet="ParLevel1Cluster" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1Cluster_ParLevel1" Association="Self.FK_ParLevel1Cluster_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel1Cluster" EntitySet="ParLevel1Cluster" />
-          </AssociationSet>
           <AssociationSet Name="FK_UnitUser_Unit" Association="Self.FK_UnitUser_Unit">
             <End Role="Unit" EntitySet="Unit" />
             <End Role="UnitUser" EntitySet="UnitUser" />
@@ -1007,8 +987,8 @@
           <EntitySet Name="ParGoal" EntityType="SgqDbModel.ParGoal" />
           <EntitySet Name="ParHeaderField" EntityType="SgqDbModel.ParHeaderField" />
           <EntitySet Name="ParLevel1" EntityType="SgqDbModel.ParLevel1" />
-          <EntitySet Name="ParLevel1Cluster" EntityType="SgqDbModel.ParLevel1Cluster" />
           <EntitySet Name="ParLevel1HeaderField" EntityType="SgqDbModel.ParLevel1HeaderField" />
+          <EntitySet Name="ParLevel1XCluster" EntityType="SgqDbModel.ParLevel1XCluster" />
           <EntitySet Name="ParLevel2" EntityType="SgqDbModel.ParLevel2" />
           <EntitySet Name="ParLevel3" EntityType="SgqDbModel.ParLevel3" />
           <EntitySet Name="ParLevel3BoolFalse" EntityType="SgqDbModel.ParLevel3BoolFalse" />
@@ -1018,6 +998,7 @@
           <EntitySet Name="ParLevel3Level2" EntityType="SgqDbModel.ParLevel3Level2" />
           <EntitySet Name="ParLevel3Level2Level1" EntityType="SgqDbModel.ParLevel3Level2Level1" />
           <EntitySet Name="ParLevel3Value" EntityType="SgqDbModel.ParLevel3Value" />
+          <EntitySet Name="ParLevelDefiniton" EntityType="SgqDbModel.ParLevelDefiniton" />
           <EntitySet Name="ParMeasurementUnit" EntityType="SgqDbModel.ParMeasurementUnit" />
           <EntitySet Name="ParMultipleValues" EntityType="SgqDbModel.ParMultipleValues" />
           <EntitySet Name="ParSample" EntityType="SgqDbModel.ParSample" />
@@ -1093,10 +1074,6 @@
             <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
             <End Role="ParCluster" EntitySet="ParCluster" />
           </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1Cluster_ParCluster" Association="SgqDbModel.FK_ParLevel1Cluster_ParCluster">
-            <End Role="ParCluster" EntitySet="ParCluster" />
-            <End Role="ParLevel1Cluster" EntitySet="ParLevel1Cluster" />
-          </AssociationSet>
           <AssociationSet Name="FK_ParLevel1_ParConsolidationType" Association="SgqDbModel.FK_ParLevel1_ParConsolidationType">
             <End Role="ParConsolidationType" EntitySet="ParConsolidationType" />
             <End Role="ParLevel1" EntitySet="ParLevel1" />
@@ -1104,10 +1081,6 @@
           <AssociationSet Name="FK_ParLevel1_ParFrequency" Association="SgqDbModel.FK_ParLevel1_ParFrequency">
             <End Role="ParFrequency" EntitySet="ParFrequency" />
             <End Role="ParLevel1" EntitySet="ParLevel1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1Cluster_ParLevel1" Association="SgqDbModel.FK_ParLevel1Cluster_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel1Cluster" EntitySet="ParLevel1Cluster" />
           </AssociationSet>
           <AssociationSet Name="FK_UnitUser_Unit" Association="SgqDbModel.FK_UnitUser_Unit">
             <End Role="Unit" EntitySet="Unit" />
@@ -1310,7 +1283,6 @@
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParClusterGroup" Relationship="SgqDbModel.FK_ParCluster_ParClusterGroup" FromRole="ParCluster" ToRole="ParClusterGroup" />
-          <NavigationProperty Name="ParLevel1Cluster" Relationship="SgqDbModel.FK_ParLevel1Cluster_ParCluster" FromRole="ParCluster" ToRole="ParLevel1Cluster" />
         </EntityType>
         <EntityType Name="ParClusterGroup">
           <Key>
@@ -1403,7 +1375,7 @@
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ParFrequency">
           <Key>
@@ -1437,11 +1409,11 @@
           <Property Name="ParFieldType_Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="LevelShowm" Type="Int32" Nullable="false" />
+          <Property Name="ParLevelDefinition_Id" Type="Int32" Nullable="false" />
           <Property Name="LinkNumberEvaluetion" Type="Boolean" Nullable="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ParLevel1">
           <Key>
@@ -1456,7 +1428,7 @@
           <Property Name="HasNoApplicableLevel2" Type="Boolean" Nullable="false" />
           <Property Name="HasGroupLevel2" Type="Boolean" Nullable="false" />
           <Property Name="HasAlert" Type="Boolean" Nullable="false" />
-          <Property Name="IsSpecific" Type="Boolean" Nullable="false" />
+          <Property Name="IsSpecific" Type="Boolean" />
           <Property Name="IsSpecificHeaderField" Type="Boolean" Nullable="false" />
           <Property Name="IsSpecificNumberEvaluetion" Type="Boolean" Nullable="false" />
           <Property Name="IsSpecificNumberSample" Type="Boolean" Nullable="false" />
@@ -1470,21 +1442,6 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParConsolidationType" Relationship="SgqDbModel.FK_ParLevel1_ParConsolidationType" FromRole="ParLevel1" ToRole="ParConsolidationType" />
           <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParLevel1_ParFrequency" FromRole="ParLevel1" ToRole="ParFrequency" />
-          <NavigationProperty Name="ParLevel1Cluster" Relationship="SgqDbModel.FK_ParLevel1Cluster_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1Cluster" />
-        </EntityType>
-        <EntityType Name="ParLevel1Cluster">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParCluster_Id" Type="Int32" Nullable="false" />
-          <Property Name="Points" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParCluster" Relationship="SgqDbModel.FK_ParLevel1Cluster_ParCluster" FromRole="ParLevel1Cluster" ToRole="ParCluster" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1Cluster_ParLevel1" FromRole="ParLevel1Cluster" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="ParLevel1HeaderField">
           <Key>
@@ -1495,7 +1452,19 @@
           <Property Name="ParHeaderField_Id" Type="Int32" Nullable="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ParLevel1XCluster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParCluster_Id" Type="Int32" Nullable="false" />
+          <Property Name="Points" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ParLevel2">
           <Key>
@@ -1606,6 +1575,17 @@
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="ParLevelDefiniton">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="ParMeasurementUnit">
           <Key>
             <PropertyRef Name="Id" />
@@ -1629,7 +1609,7 @@
           <Property Name="Conformity" Type="Boolean" Nullable="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ParSample">
           <Key>
@@ -1927,18 +1907,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ParLevel1Cluster_ParCluster">
-          <End Type="SgqDbModel.ParCluster" Role="ParCluster" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel1Cluster" Role="ParLevel1Cluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCluster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1Cluster">
-              <PropertyRef Name="ParCluster_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ParLevel1_ParConsolidationType">
           <End Type="SgqDbModel.ParConsolidationType" Role="ParConsolidationType" Multiplicity="1" />
           <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
@@ -1960,18 +1928,6 @@
             </Principal>
             <Dependent Role="ParLevel1">
               <PropertyRef Name="ParFrequency_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1Cluster_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel1Cluster" Role="ParLevel1Cluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1Cluster">
-              <PropertyRef Name="ParLevel1_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2274,7 +2230,7 @@
           <EntitySetMapping Name="ParFieldType">
             <EntityTypeMapping TypeName="SgqDbModel.ParFieldType">
               <MappingFragment StoreEntitySet="ParFieldType">
-                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -2311,11 +2267,11 @@
           <EntitySetMapping Name="ParHeaderField">
             <EntityTypeMapping TypeName="SgqDbModel.ParHeaderField">
               <MappingFragment StoreEntitySet="ParHeaderField">
-                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="LinkNumberEvaluetion" ColumnName="LinkNumberEvaluetion" />
-                <ScalarProperty Name="LevelShowm" ColumnName="LevelShowm" />
+                <ScalarProperty Name="ParLevelDefinition_Id" ColumnName="ParLevelDefinition_Id" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ParFieldType_Id" ColumnName="ParFieldType_Id" />
@@ -2350,26 +2306,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ParLevel1Cluster">
-            <EntityTypeMapping TypeName="SgqDbModel.ParLevel1Cluster">
-              <MappingFragment StoreEntitySet="ParLevel1Cluster">
+          <EntitySetMapping Name="ParLevel1HeaderField">
+            <EntityTypeMapping TypeName="SgqDbModel.ParLevel1HeaderField">
+              <MappingFragment StoreEntitySet="ParLevel1HeaderField">
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Points" ColumnName="Points" />
-                <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
+                <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ParLevel1HeaderField">
-            <EntityTypeMapping TypeName="SgqDbModel.ParLevel1HeaderField">
-              <MappingFragment StoreEntitySet="ParLevel1HeaderField">
-                <ScalarProperty Name="Active" ColumnName="Active" />
+          <EntitySetMapping Name="ParLevel1XCluster">
+            <EntityTypeMapping TypeName="SgqDbModel.ParLevel1XCluster">
+              <MappingFragment StoreEntitySet="ParLevel1XCluster">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -2493,6 +2449,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ParLevelDefiniton">
+            <EntityTypeMapping TypeName="SgqDbModel.ParLevelDefiniton">
+              <MappingFragment StoreEntitySet="ParLevelDefiniton">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ParMeasurementUnit">
             <EntityTypeMapping TypeName="SgqDbModel.ParMeasurementUnit">
               <MappingFragment StoreEntitySet="ParMeasurementUnit">
@@ -2508,7 +2476,7 @@
           <EntitySetMapping Name="ParMultipleValues">
             <EntityTypeMapping TypeName="SgqDbModel.ParMultipleValues">
               <MappingFragment StoreEntitySet="ParMultipleValues">
-                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Conformity" ColumnName="Conformity" />

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Web.Mvc;
 
 namespace DTO.Helpers
 {
@@ -220,6 +221,22 @@ namespace DTO.Helpers
         }
 
         #endregion
+
+        public static List<SelectListItem> CreateDropDownList<T>(IEnumerable<T> enumerable)
+        {
+            List<SelectListItem> retorno = new List<SelectListItem>();
+            retorno.Insert(0, new SelectListItem() { Text = "Selecione...", Value = "-1" });
+            var counter = 1;
+            foreach (var i in enumerable)
+            {
+                var text = i.GetType().GetProperty("Name") ?? i.GetType().GetProperty("Description");
+                var prop = i.GetType().GetProperty("Id");
+                retorno.Insert(counter, new SelectListItem() { Text = text.GetValue(i).ToString(), Value = prop.GetValue(i).ToString() });
+                counter++;
+            }
+
+            return retorno;
+        }
 
         /// <summary>
         /// Não pode ser Zero.

@@ -7,8 +7,8 @@ namespace SgqSystem
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
-            filters.Add(new HandleController());
+            //filters.Add(new HandleErrorAttribute());
+            //filters.Add(new HandleController());
         }
     }
 }

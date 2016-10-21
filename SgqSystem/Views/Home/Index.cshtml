@@ -2,6 +2,7 @@
     var url = Url.Action("DataCollectionReport", "Reports");
     var url2 = Url.Action("CorrectiveActionReport", "Reports");
     var url3 = Url.Action("teste", "Reports");
+    var version = ViewBag.Asembly;
 }
 
 <div class="jumbotron">
@@ -16,7 +17,9 @@
 
 @section Scripts {
 
-
+    <script>
+        var version = '@Html.Raw(ViewBag.Asembly)';
+    </script>
 
 }
 

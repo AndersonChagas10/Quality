@@ -24,6 +24,7 @@ namespace SgqSystem.Mappers
                 x.AddProfile<DepartmenMapperProfile>();
                 x.AddProfile<UnitMapperProfile>();
                 x.AddProfile<UnitUserMapperProfile>();
+                
 
                 /*
                  * Par Level1 Mapping
@@ -32,7 +33,9 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParConsolidationTypeMapperProfile>();
                 x.AddProfile<ParFrequencyMapperProfile>();
                 x.AddProfile<ParClusterMapperProfile>();
-
+                x.AddProfile<ParLevel1XClusterMapperProfile>();
+                x.AddProfile<ParFieldTypeMapperProfile>();
+                x.AddProfile<ParLevelDefinitonMapperProfile>();
 
 
                 /*

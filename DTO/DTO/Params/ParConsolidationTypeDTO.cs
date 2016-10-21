@@ -6,7 +6,7 @@ namespace DTO.DTO.Params
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool Active { get; set; }
+        public bool IsActive { get; set; }
 
         //public virtual ICollection<ParLevel1> ParLevel1 { get; set; }
     }

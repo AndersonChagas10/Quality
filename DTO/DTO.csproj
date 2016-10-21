@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.3.6\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -40,6 +44,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,7 +71,9 @@
     <Compile Include="DTO\Level03DTO.cs" />
     <Compile Include="DTO\Level01DTO.cs" />
     <Compile Include="DTO\ContextExampleDTO.cs" />
+    <Compile Include="DTO\Params\ParamsDdl.cs" />
     <Compile Include="DTO\Params\ParamsDTO.cs" />
+    <Compile Include="DTO\Params\ParLevelDefinitonDTO.cs" />
     <Compile Include="DTO\PeriodDTO.cs" />
     <Compile Include="DTO\ExampleDTO.cs" />
     <Compile Include="DTO\Params\ParClusterDTO.cs" />
@@ -75,7 +82,7 @@
     <Compile Include="DTO\Params\ParConsolidationTypeDTO.cs" />
     <Compile Include="DTO\Params\ParFieldTypeDTO.cs" />
     <Compile Include="DTO\Params\ParGoalDTO.cs" />
-    <Compile Include="DTO\Params\ParLevel1ClusterDTO.cs" />
+    <Compile Include="DTO\Params\ParLevel1XClusterDTO.cs" />
     <Compile Include="DTO\Params\ParLevel1DTO.cs" />
     <Compile Include="DTO\Params\ParLevel1HeaderFieldDTO.cs" />
     <Compile Include="DTO\Params\ParMultipleValuesDTO.cs" />
