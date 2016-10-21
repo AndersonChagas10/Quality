@@ -14,12 +14,6 @@ namespace Dominio
     
     public partial class ParLevel1
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ParLevel1()
-        {
-            this.ParLevel1XCluster = new HashSet<ParLevel1XCluster>();
-        }
-    
         public int Id { get; set; }
         public int ParConsolidationType_Id { get; set; }
         public int ParFrequency_Id { get; set; }
@@ -29,7 +23,7 @@ namespace Dominio
         public bool HasNoApplicableLevel2 { get; set; }
         public bool HasGroupLevel2 { get; set; }
         public bool HasAlert { get; set; }
-        public bool IsSpecific { get; set; }
+        public Nullable<bool> IsSpecific { get; set; }
         public bool IsSpecificHeaderField { get; set; }
         public bool IsSpecificNumberEvaluetion { get; set; }
         public bool IsSpecificNumberSample { get; set; }
@@ -44,7 +38,5 @@ namespace Dominio
     
         public virtual ParConsolidationType ParConsolidationType { get; set; }
         public virtual ParFrequency ParFrequency { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParLevel1XCluster> ParLevel1XCluster { get; set; }
     }
 }

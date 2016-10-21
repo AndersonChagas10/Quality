@@ -222,15 +222,15 @@ namespace Data.Repositories
 
         }
 
-        private void AddCollectionLevel03(CollectionLevel02 collectionLevel02ToSave, ICollection<CollectionLevel03> level03ToSave)
-        {
-            foreach (var collectionLevel03InLevel02ToSave in level03ToSave)
-            {
-                //SalvaCollectionLevel03(collectionLevel03InLevel02ToSave);
-                collectionLevel03InLevel02ToSave.CollectionLevel02Id = collectionLevel02ToSave.Id;
-                _collectionLevel03ReadyToSave.Add(collectionLevel03InLevel02ToSave);
-            }
-        }
+        //private void AddCollectionLevel03(CollectionLevel02 collectionLevel02ToSave, ICollection<CollectionLevel03> level03ToSave)
+        //{
+        //    foreach (var collectionLevel03InLevel02ToSave in level03ToSave)
+        //    {
+        //        //SalvaCollectionLevel03(collectionLevel03InLevel02ToSave);
+        //        collectionLevel03InLevel02ToSave.CollectionLevel02Id = collectionLevel02ToSave.Id;
+        //        _collectionLevel03ReadyToSave.Add(collectionLevel03InLevel02ToSave);
+        //    }
+        //}
 
         private void SalvaCollectionLevel03(CollectionLevel03 collectionLevel03InLevel02ToSave)
         {

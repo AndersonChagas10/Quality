@@ -19,6 +19,6 @@ namespace Dominio
         public string Description { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool Active { get; set; }
+        public bool IsActive { get; set; }
     }
 }

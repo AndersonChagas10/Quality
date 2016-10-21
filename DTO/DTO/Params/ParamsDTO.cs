@@ -1,4 +1,5 @@
 ﻿using DTO.BaseEntity;
+using System.Collections.Generic;
 
 namespace DTO.DTO.Params
 {
@@ -17,38 +18,36 @@ namespace DTO.DTO.Params
 
         public ParLevel1DTO parLevel1Dto { get; set; }
 
-        //public ParConsolidationTypeDTO parConsolidationTypeDto { get; set; }
-
-        //public ParFrequencyDTO parFrequencyDto { get; set; }
-
-        public ParLevel1XClusterDTO parLevel1XClusterDto { get; set; }
+        public List<ParLevel1XClusterDTO> parLevel1XClusterDto { get; set; }
         
+        public ParHeaderFieldDTO parHeaderFieldDto { get; set; }
+
         /*Fim Ja implementados */
 
 
 
-        public ParClusterDTO parClusterDto { get; set; }
-        //ParClusterDTO
+        //public ParClusterDTO parClusterDto { get; set; }
+        ////ParClusterDTO
 
-        public ParGoalDTO parGoalDto { get; set; }
-        //ParGoalDTO
+        //public ParGoalDTO parGoalDto { get; set; }
+        ////ParGoalDTO
 
-        public ParLevel1XClusterDTO parLevel1ClusterDto { get; set; }
-        //ParLevel1ClusterDTO
+        //public ParLevel1XClusterDTO parLevel1ClusterDto { get; set; }
+        ////ParLevel1ClusterDTO
 
-        public ParClusterGroupDTO parClusterGroupDto { get; set; }
-        //ParClusterGroupDTO
+        //public ParClusterGroupDTO parClusterGroupDto { get; set; }
+        ////ParClusterGroupDTO
 
-        public ParLevel1HeaderFieldDTO parLevel1HeaderFieldDto { get; set; }
-        //ParLevel1HeaderField
+        //public ParLevel1HeaderFieldDTO parLevel1HeaderFieldDto { get; set; }
+        ////ParLevel1HeaderField
 
-        public ParFieldTypeDTO parFieldTypeDto { get; set; }
+        //public ParFieldTypeDTO parFieldTypeDto { get; set; }
 
-        public ParMultipleValuesDTO parMultipleValuesDto { get; set; }
-        //ParMultipleValuesDTO
+        //public ParMultipleValuesDTO parMultipleValuesDto { get; set; }
+        ////ParMultipleValuesDTO
 
 
-        public ParHeaderFieldDTO parHeaderFieldDto { get; set; }
+        //public ParHeaderFieldDTO parHeaderFieldDto { get; set; }
         //ParHeaderFieldDTO
 
         #endregion

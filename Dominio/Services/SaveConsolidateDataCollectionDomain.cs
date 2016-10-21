@@ -103,7 +103,7 @@ namespace Dominio.Services
         /// <returns></returns>
         public GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated(SyncDTO obj)
         {
-
+            GenericReturn<SyncDTO> feedback = new GenericReturn<SyncDTO>();
             try
             {
 
@@ -158,21 +158,16 @@ namespace Dominio.Services
                 #region Retorno
 
                 long elapsedMs = ParaCronometro(watch);
-                GenericReturn<SyncDTO> feedback = PreencheFeedBackPt2(obj, saving, elapsedMs);//RN4
-                return feedback; //RN4 E RN5
+                feedback = PreencheFeedBackPt2(obj, saving, elapsedMs);//RN4
                 #endregion
 
             }
             catch (Exception e)
             {
-                return new GenericReturn<SyncDTO>(e, "Cannot sync Data: ", obj); //RN6
+                new CreateLog(new Exception("Cannot sync Data: ", e), obj);
             }
-            finally
-            {
-                #region NotImplemented
 
-                #endregion
-            }
+            return feedback; //RN4 E RN5
 
         }
 
@@ -180,16 +175,6 @@ namespace Dominio.Services
         /// Metodo que insere/altera registros como duplicadas 
         /// caso DOIS tablets enviem a mesma informação devido a 
         /// SINCRONIZAÇÃO DE TELA ATRASADA ou outros fatores, isto somente é realizado se o ID do elemento for para INSERÇÃO.
-        /// 
-        /// RN1: Banco de dados - Deve verificar se existe Coleta já realizada com os seguintes parametros IGUAIS ao objeto sendo INSERIDO DO LEVEL02 : 
-        /// Level01Id, Level02Id, UnitId, Shift, Period, Phase, ReauditIs, ReauditNumber, CollectionDate, EvaluationNumber, Sample 
-        /// e Duplicated do elemento no BANCO DE DADOS = FALSE.
-        /// Caso ou o elmento de INSERÇÃO ou o elemento que está no BANCO DE DADOS seja identificado como DUPLICADO,
-        /// verifica-se qual emento possui a MENOR data, este então é o elemento DUPLICADO = TRUE no BANCO DE DADOS.
-        /// 
-        /// RN2: Retorno de Duplicado INSERÇÃO no metodo "SetDuplicated":Caso o elemento que vai ser INSERIDO seja o duplicado,
-        /// o mesmo tem sua property Duplicated alterada para true, como todos são salvos em lote,
-        /// atualiza-se a lista completa de elementos utilizando Levle02Id como referencia.
         /// 
         /// </summary>
         /// <param name="CollectionLevel02Verificar"></param>

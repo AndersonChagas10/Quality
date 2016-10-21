@@ -1,6 +1,6 @@
 ﻿using DTO.BaseEntity;
 
-namespace DTO.DTO
+namespace DTO.DTO.Params
 {
     public class ParHeaderFieldDTO : EntityBase
     {

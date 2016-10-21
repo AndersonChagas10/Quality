@@ -12,16 +12,12 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParHeaderField
+    public partial class sysdiagrams
     {
-        public int Id { get; set; }
-        public int ParFieldType_Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int ParLevelDefinition_Id { get; set; }
-        public bool LinkNumberEvaluetion { get; set; }
-        public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool IsActive { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

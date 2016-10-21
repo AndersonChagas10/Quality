@@ -1,11 +1,12 @@
 ﻿using DTO.BaseEntity;
+using System;
 
 namespace DTO.DTO.Params
 {
-    public class ParFieldTypeDTO : EntityBase
+    public class ParLevelDefinitonDTO : EntityBase
     {
+        public bool IsActive { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool IsActive { get; set; }
     }
 }

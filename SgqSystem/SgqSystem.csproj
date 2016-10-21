@@ -327,6 +327,7 @@
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParHeaderFieldMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevelDefinitonMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParMultipleValuesMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParFieldTypeMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel1HeaderField.cs" />
