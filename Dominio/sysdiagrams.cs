@@ -12,17 +12,12 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParLevel1Cluster
+    public partial class sysdiagrams
     {
-        public int Id { get; set; }
-        public int ParLevel1_Id { get; set; }
-        public int ParCluster_Id { get; set; }
-        public decimal Points { get; set; }
-        public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool IsActive { get; set; }
-    
-        public virtual ParCluster ParCluster { get; set; }
-        public virtual ParLevel1 ParLevel1 { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

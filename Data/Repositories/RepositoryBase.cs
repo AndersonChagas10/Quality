@@ -150,6 +150,9 @@ namespace Data.Repositories
 
         public IEnumerable<T> GetAll()
         {
+
+            var aaa = Entity.AsQueryable();
+
             return Entity.ToList();
         }
 

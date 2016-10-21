@@ -196,6 +196,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Define the type of consolidation between patterns types. System counters will be based on the kind of consolidation..
+        /// </summary>
+        internal static string consolidation_type_popover {
+            get {
+                return ResourceManager.GetString("consolidation_type_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Corrective Action Reports.
         /// </summary>
         internal static string corrective_action_reports {
@@ -241,6 +250,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Emit warning.
+        /// </summary>
+        internal static string emit_warning {
+            get {
+                return ResourceManager.GetString("emit_warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Evaluated.
         /// </summary>
         internal static string evaluated {
@@ -259,11 +277,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Field level.
+        /// </summary>
+        internal static string field_level {
+            get {
+                return ResourceManager.GetString("field_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define on which header (Level 1 or Level 2) the field will be inserted.
+        /// </summary>
+        internal static string field_level_popover {
+            get {
+                return ResourceManager.GetString("field_level_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frequency.
         /// </summary>
         internal static string frequency {
             get {
                 return ResourceManager.GetString("frequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Goal value  (%).
+        /// </summary>
+        internal static string goal_value {
+            get {
+                return ResourceManager.GetString("goal_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Header fields.
+        /// </summary>
+        internal static string header_fields {
+            get {
+                return ResourceManager.GetString("header_fields", resourceCulture);
             }
         }
         
@@ -331,11 +385,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level 1 Clusters.
+        /// </summary>
+        internal static string level1_clusters {
+            get {
+                return ResourceManager.GetString("level1_clusters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 1 counter.
+        /// </summary>
+        internal static string level1_counter {
+            get {
+                return ResourceManager.GetString("level1_counter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level2 group.
         /// </summary>
         internal static string level2_group {
             get {
                 return ResourceManager.GetString("level2_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Número de Avaliações Limitado.
+        /// </summary>
+        internal static string limited_number_of_evaluations {
+            get {
+                return ResourceManager.GetString("limited_number_of_evaluations", resourceCulture);
             }
         }
         
@@ -381,6 +462,15 @@ namespace Resources {
         internal static string may {
             get {
                 return ResourceManager.GetString("may", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not conformity rule.
+        /// </summary>
+        internal static string not_conformity_rule {
+            get {
+                return ResourceManager.GetString("not_conformity_rule", resourceCulture);
             }
         }
         
@@ -439,6 +529,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Points.
+        /// </summary>
+        internal static string points {
+            get {
+                return ResourceManager.GetString("points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reaudit.
+        /// </summary>
+        internal static string reaudit {
+            get {
+                return ResourceManager.GetString("reaudit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register Total Evaluated.
+        /// </summary>
+        internal static string register_total_evaluated {
+            get {
+                return ResourceManager.GetString("register_total_evaluated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reports.
         /// </summary>
         internal static string reports {
@@ -448,11 +565,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rule.
+        /// </summary>
+        internal static string rule {
+            get {
+                return ResourceManager.GetString("rule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save button on level2.
         /// </summary>
         internal static string save_button_on_level2 {
             get {
                 return ResourceManager.GetString("save_button_on_level2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select....
+        /// </summary>
+        internal static string select {
+            get {
+                return ResourceManager.GetString("select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the consolidation type.
+        /// </summary>
+        internal static string select_the_consolidation_type {
+            get {
+                return ResourceManager.GetString("select_the_consolidation_type", resourceCulture);
             }
         }
         
@@ -484,11 +628,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show level 1 counters.
+        /// </summary>
+        internal static string show_level1_counters {
+            get {
+                return ResourceManager.GetString("show_level1_counters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sign In.
         /// </summary>
         internal static string sign_in {
             get {
                 return ResourceManager.GetString("sign_in", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard.
+        /// </summary>
+        internal static string standard {
+            get {
+                return ResourceManager.GetString("standard", resourceCulture);
             }
         }
         
@@ -507,6 +669,15 @@ namespace Resources {
         internal static string username {
             get {
                 return ResourceManager.GetString("username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value.
+        /// </summary>
+        internal static string value {
+            get {
+                return ResourceManager.GetString("value", resourceCulture);
             }
         }
     }

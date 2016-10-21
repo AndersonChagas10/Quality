@@ -222,13 +222,13 @@
   <data name="a" xml:space="preserve">
     <value>a</value>
   </data>
-  <data name="indicator_name" xml:space="preserve">
+  <data name="level1_name" xml:space="preserve">
     <value>Indicator Name</value>
   </data>
   <data name="consolidation_type" xml:space="preserve">
     <value>Consolidation Type</value>
   </data>
-  <data name="indicator_description" xml:space="preserve">
+  <data name="level1_description" xml:space="preserve">
     <value>Indicator Description</value>
   </data>
   <data name="of" xml:space="preserve">
@@ -265,6 +265,138 @@
     <value>Level2 group</value>
   </data>
   <data name="save_button_on_level2" xml:space="preserve">
-    <value>Save button on level2</value>
+    <value>Save button on level 2</value>
+  </data>
+  <data name="consolidation_type_popover" xml:space="preserve">
+    <value>Define the type of consolidation between patterns types. System counters will be based on the kind of consolidation.</value>
+  </data>
+  <data name="select_the_consolidation_type" xml:space="preserve">
+    <value>Select the consolidation type</value>
+  </data>
+  <data name="level1_clusters" xml:space="preserve">
+    <value>Level 1 Clusters</value>
+  </data>
+  <data name="level1_counter" xml:space="preserve">
+    <value>Level 1 counter</value>
+  </data>
+  <data name="not_conformity_rule" xml:space="preserve">
+    <value>Not conformity rule</value>
+  </data>
+  <data name="reaudit" xml:space="preserve">
+    <value>Reaudit</value>
+  </data>
+  <data name="rule" xml:space="preserve">
+    <value>Rule</value>
+  </data>
+  <data name="select" xml:space="preserve">
+    <value>Select...</value>
+  </data>
+  <data name="show_level1_counters" xml:space="preserve">
+    <value>Show level 1 counters</value>
+  </data>
+  <data name="value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="emit_warning" xml:space="preserve">
+    <value>Emit warning</value>
+  </data>
+  <data name="goal_value" xml:space="preserve">
+    <value>Goal value  (%)</value>
+  </data>
+  <data name="limited_number_of_evaluations" xml:space="preserve">
+    <value>Número de Avaliações Limitado</value>
+  </data>
+  <data name="points" xml:space="preserve">
+    <value>Points</value>
+  </data>
+  <data name="register_total_evaluated" xml:space="preserve">
+    <value>Register Total Evaluated</value>
+  </data>
+  <data name="standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="field_level" xml:space="preserve">
+    <value>Field level</value>
+  </data>
+  <data name="field_level_popover" xml:space="preserve">
+    <value>Define on which header (Level 1 or Level 2) the field will be inserted</value>
+  </data>
+  <data name="field_name" xml:space="preserve">
+    <value>Field name</value>
+  </data>
+  <data name="header_fields" xml:space="preserve">
+    <value>Header fields</value>
+  </data>
+  <data name="absent" xml:space="preserve">
+    <value>Absent</value>
+  </data>
+  <data name="allow_the_audit_of_detached_level3" xml:space="preserve">
+    <value>Allow the audit of detached level 3</value>
+  </data>
+  <data name="allow_the_audit_of_detached_level3_popover" xml:space="preserve">
+    <value>Define se existirá um campo para gravar desvios não previstos.</value>
+  </data>
+  <data name="conform" xml:space="preserve">
+    <value>Conform</value>
+  </data>
+  <data name="frequency_popover" xml:space="preserve">
+    <value>Define the frequency that the level 2 will be audit, dailu, weekly, etc.</value>
+  </data>
+  <data name="level2_group_popover" xml:space="preserve">
+    <value>Define is there will be groups on level 2. If there is, create the list below.</value>
+  </data>
+  <data name="level2_name" xml:space="preserve">
+    <value>Level 2 name</value>
+  </data>
+  <data name="level3_group" xml:space="preserve">
+    <value>Level 3 Group</value>
+  </data>
+  <data name="no" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="not_applicable_on_level_2" xml:space="preserve">
+    <value>Not Applicable button on level 2</value>
+  </data>
+  <data name="not_applicable_on_level_2_popover" xml:space="preserve">
+    <value>Define if there will be a not applicable button on level 2.</value>
+  </data>
+  <data name="not_conform" xml:space="preserve">
+    <value>Not conform</value>
+  </data>
+  <data name="positive_value" xml:space="preserve">
+    <value>Positive Value</value>
+  </data>
+  <data name="present" xml:space="preserve">
+    <value>Present</value>
+  </data>
+  <data name="range" xml:space="preserve">
+    <value>Range</value>
+  </data>
+  <data name="recidivism" xml:space="preserve">
+    <value>Recidivism</value>
+  </data>
+  <data name="rule_for_recidivism" xml:space="preserve">
+    <value>Rule for recidivism</value>
+  </data>
+  <data name="save_button_on_level2_popover" xml:space="preserve">
+    <value>Define if there will be a save button on level 2.</value>
+  </data>
+  <data name="save_button_on_level3" xml:space="preserve">
+    <value>Save button on level 3</value>
+  </data>
+  <data name="save_button_on_level3_popover" xml:space="preserve">
+    <value>Define if there will be a save button on level 3.</value>
+  </data>
+  <data name="select_the_frequency" xml:space="preserve">
+    <value>Select the frequency</value>
+  </data>
+  <data name="type_of_data_entry" xml:space="preserve">
+    <value>Type of data entry</value>
+  </data>
+  <data name="Weigth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>
