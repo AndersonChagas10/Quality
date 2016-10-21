@@ -14,7 +14,6 @@ namespace DTO.DTO.Params
 
         //public ParLevelDefinitionDTO parLevelDefinitionDto { get; set; }
         public List<ParMultipleValuesDTO> parMultipleValuesDto { get; set; }
-        public ParFieldTypeDTO parFieldTypeDto { get; set; }
 
     }
 }

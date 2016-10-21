@@ -1,5 +1,4 @@
 ﻿using DTO.BaseEntity;
-using System;
 
 namespace DTO.DTO.Params
 {
@@ -8,5 +7,7 @@ namespace DTO.DTO.Params
         public bool IsActive { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+
+
     }
 }

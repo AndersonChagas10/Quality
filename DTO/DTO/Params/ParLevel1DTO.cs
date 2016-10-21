@@ -1,4 +1,5 @@
 ﻿using DTO.BaseEntity;
+using System.Collections.Generic;
 
 namespace DTO.DTO.Params
 {
@@ -25,6 +26,7 @@ namespace DTO.DTO.Params
 
         public ParConsolidationTypeDTO parConsolidationTypeDto { get; set; }
         public ParFrequencyDTO parFrequencyDto { get; set; }
+        public List<ParLevel1HeaderFieldDTO> parLevel1HeaderFieldDto { get; set; }
 
     }
 }
