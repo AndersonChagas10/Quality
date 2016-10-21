@@ -226,12 +226,6 @@
                         </td>
                     </tr>
 
-
-
-
-
-
-
                 </tbody>
             </table>
 
@@ -273,7 +267,7 @@
                 </tbody>
             </table>
 
-            <table id="CamposDoCabecalho">
+            @*<table id="CamposDoCabecalho">
                 <tbody>
                     <tr>
                         <td>@Html.Label("Nível do Campo")</td>
@@ -393,7 +387,7 @@
                         <th></th>
                     </tr>
                 </tfoot>
-            </table>
+            </table>*@
 
             <div id="ParClusterLevel1">
                 @*@Html.Partial("~/Views/Params/_ParCluster.cshtml", Model)*@
@@ -513,11 +507,22 @@
             var tipo = $('#parFieldType option:selected').text();
             var opcoes = $('#objMultiplaEscolhaName').val();
             var valor = $('#objMultiplaEscolhaPunishmentValue').val();
+            var counterInterno = 0;
             var obj = '<input type="button" value="excluir" />' +
                 '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Name" value="' + opcoes + '"/> ' +
                 '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].ParHeaderField_Id" value=""/> ' +
                 '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Description" value=""/> ' +
                 '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].PunishmentValue" value="' + valor + '"/> ';
+
+
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.ParLevelDefinition_Id" value="' + $('#headerLevel option:selected').val() + '"/> ' +
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.ParFieldType_Id" value="' + $('#parFieldType option:selected').val() + '"/> ' +
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.Name" value="' + $('#paramsDto_parHeaderFieldDto_Name option:selected').val() + '"/> ' +
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.LinkNumberEvaluetion" value="' + $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "true" : "false" + '"/> ' +
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.Description" value=""/> ' +
+
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto[' + counterInterno + ']" value=""/> ' +
+                
                 //'<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Conformity" value=""/> '
 
             Cabecalhos.tableMultiplaEscolha.row.add([
@@ -534,30 +539,34 @@
             Cabecalhos.Counter++;
         },
         IncluirBinario: function () {
+
             var cod = "?";
             var nivelDoCampo = $('#headerLevel option:selected').text();
             var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
             var vinculado = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "Sim" : "Não";
             var tipo = $('#parFieldType option:selected').text();
 
-            var opcoes = $('#objBinarioName').val();
             var nameObjBinario1 = $('#objBinarioPunishmentName1').val();
             var valorObjBinario1 = $('#objBinarioPunishmentValue1').val();
             var nameObjBinario2 = $('#objBinarioPunishmentName2').val();
             var valorObjBinario2 = $('#objBinarioPunishmentValue2').val();
+            counterInterno = 0;
+            /*Obj1*/
             var obj = '<input type="button" value="excluir" />' +
-                /*obj1*/
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Name" value="' + opcoes + '"/> ' +
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].ParHeaderField_Id" value=""/> ' +
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Description" value=""/> ' +
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].PunishmentValue" value="' + valor + '"/> ' +
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Conformity" value=""/> ';
-                /*Obj2*/
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + 1 + '].Name" value="' + opcoes + '"/> ' +
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + 1 + '].ParHeaderField_Id" value=""/> ' +
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + 1 + '].Description" value=""/> ' +
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + 1 + '].PunishmentValue" value="' + valor + '"/> ' +
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + 1 + '].Conformity" value=""/>';
+
+              
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].Name" value="' + nameObjBinario1 + '"/> ' +
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].ParHeaderField_Id" value=""/> ' +
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].Description" value=""/> ' +
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].PunishmentValue" value="' + valorObjBinario1 + '"/> ' +
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].Conformity" value="true"/> ';
+            /*Obj2*/
+            var obj2 = '<input type="button" value="excluir" />' +
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].Name" value="' + nameObjBinario2 + '"/> ' +
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].ParHeaderField_Id" value=""/> ' +
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].Description" value=""/> ' +
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].PunishmentValue" value="' + valorObjBinario2 + '"/> ' +
+                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].Conformity" value="false"/>';
 
             Cabecalhos.tableMultiplaEscolha.row.add([
                cod,
@@ -565,9 +574,20 @@
                nome,
                vinculado,
                tipo,
-               opcoes,
-               valor,
+               nameObjBinario1,
+               valorObjBinario1,
                obj
+            ]).draw(false);
+
+            Cabecalhos.tableMultiplaEscolha.row.add([
+               cod,
+               nivelDoCampo,
+               nome,
+               vinculado,
+               tipo,
+               nameObjBinario2,
+               valorObjBinario2,
+               obj2
             ]).draw(false);
 
             Cabecalhos.Counter++;
