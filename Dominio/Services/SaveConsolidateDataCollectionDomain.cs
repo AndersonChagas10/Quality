@@ -103,7 +103,7 @@ namespace Dominio.Services
         /// <returns></returns>
         public GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated(SyncDTO obj)
         {
-            GenericReturn<SyncDTO> feedback = new GenericReturn<SyncDTO>();
+            GenericReturn<SyncDTO> feedback = new GenericReturn<SyncDTO>("Susscess! All Data Saved for: ");
             try
             {
 
@@ -292,7 +292,7 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                new CreateLog(new Exception("Erro ao gerar consoidação level01", e));
+                throw new Exception("Erro ao gerar consoidação level01", e);
             }
 
             return level01Consolidation;
@@ -338,7 +338,7 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                new CreateLog(new Exception("Erro ao gerar consoidação level02", e));
+                throw new Exception("Erro ao gerar consoidação level02", e);
             }
 
             return level02Consolidation;
@@ -389,7 +389,7 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                new CreateLog(new Exception("Erro ao salvar Corrective Action", e));
+                throw new Exception("Erro ao salvar Corrective Action", e);
             }
         }
 
@@ -441,7 +441,7 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                new CreateLog(new Exception("Erro ao salvar CollectionLevel02", e));
+                throw new Exception("Erro ao salvar CollectionLevel02", e);
             }
 
             return collectionLevel02;

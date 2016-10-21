@@ -273,13 +273,12 @@
                 </tbody>
             </table>
 
-
             <table id="CamposDoCabecalho">
                 <tbody>
                     <tr>
                         <td>@Html.Label("Nível do Campo")</td>
                         <td>
-                            @Html.DropDownList("headerLevel", Model.paramsDdl.DdlparLevelDefinition, htmlAttributes: new { @class = "", @style = "padding: 2px;" })
+                            @Html.DropDownList("paramsDto.parHeaderFieldDto.ParLevelDefinition_Id", Model.paramsDdl.DdlparLevelDefinition, htmlAttributes: new { @class = "", @style = "padding: 2px;" , @id= "headerLevel" })
                         </td>
                     </tr>
                     <tr>
@@ -297,7 +296,7 @@
                     <tr>
                         <td>@Html.Label("Tipo")</td>
                         <td>
-                            @Html.DropDownList("parFieldType", Model.paramsDdl.DdlParFieldType, htmlAttributes: new { @class = "", @style = "padding: 2px;" })
+                            @Html.DropDownList("paramsDto.parHeaderFieldDto.ParFieldType_Id", Model.paramsDdl.DdlParFieldType, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "parFieldType" })
                         </td>
                     </tr>
                 </tbody>
@@ -305,7 +304,7 @@
 
             <div id="allObjCamposCabecalho">
 
-                <div id="objMultiplaEscolha" @*style="display:none;"*@>
+                <div id="objMultiplaEscolha" style="display:none;">
                     <table id="tblOpcaoMultiplaEscolha">
                         <tbody>
                             <tr>
@@ -314,22 +313,22 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="text" id="Name" name="Name" value="" />
+                                    <input type="text" id="objMultiplaEscolhaName" name="Name" value="" />
                                 </td>
                                 <td>
-                                    <input class="" id="PunishmentValue" name="PunishmentValue" type="number" value="0">
+                                    <input class="" id="objMultiplaEscolhaPunishmentValue" name="PunishmentValue" type="number" value="0">
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="button" value="Incluir opção" id="btnIncluirCluster" onclick="Cabecalhos.IncluirMultiplaEscolha();" />
+                                    <input type="button" value="Incluir opção" id="btnIncluirMultiplaEscolha" onclick="Cabecalhos.IncluirMultiplaEscolha();" />
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div id="objBinario" @*style="display:none;"*@>
+                <div id="objBinario" style="display:none;">
                     <table id="tblBinario">
                         <tbody>
                             <tr>
@@ -342,10 +341,10 @@
                                     Positivo
                                 </td>
                                 <td>
-                                    <input type="text" id="name">
+                                    <input type="text" id="objBinarioPunishmentName1">
                                 </td>
                                 <td>
-                                    <input type="number" id="punicao" style="width: 50px;">
+                                    <input type="number" id="objBinarioPunishmentValue1" style="width: 50px;">
                                 </td>
                             </tr>
                             <tr id="negativo">
@@ -353,10 +352,10 @@
                                     Negativo
                                 </td>
                                 <td>
-                                    <input type="text" id="name">
+                                    <input type="text" id="objBinarioPunishmentName2">
                                 </td>
                                 <td>
-                                    <input type="number" id="punicao" style="width: 50px;">
+                                    <input type="number" id="objBinarioPunishmentValue2" style="width: 50px;">
                                 </td>
                             </tr>
                             <tr>
@@ -370,7 +369,6 @@
 
             </div>
 
-
             <table id="camposCabecalhoIncluidos">
                 <thead>
                     <tr>
@@ -379,12 +377,22 @@
                         <th>Nome</th>
                         <th>Vinculado</th>
                         <th>Tipo</th>
-                        <th>Opcoes</th>
+                        <th>Opções</th>
+                        <th>Valor</th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody></tbody>
-                <tfoot></tfoot>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </table>
 
             <div id="ParClusterLevel1">
@@ -398,12 +406,12 @@
         </div>
 
     </div>
-
 }
 
+<link href="~/Content/DataTables/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
 
 <script>
-
     var Cluster = {
 
         IncluirCluster: function () {
@@ -465,42 +473,30 @@
     }
 
     var Cabecalhos = {
-
-        //tableMultiplaEscolha: $('#example').DataTable(),
+        tableMultiplaEscolha: $('#camposCabecalhoIncluidos').DataTable(),
         TipoChange: function () {
-            if ($('#parFieldType option:selected').val() == -1) {
-                $('#objMultiplaEscolha').show();
-                $('#objBinario').show();
-            } else {
-                var escolhaSelecionada = $('#parFieldType option:selected').val();
-
-                switch (escolhaSelecionada) {
-                    case -1:
-                        
-                        break;
-                    case 1: //Multipla Escolha
-                        day = "Monday";
-                        break;
-                    case 2:
-                        day = "Tuesday";
-                        break;
-                    case 3: //Binario
-                        day = "Wednesday";
-                        break;
-                    case 4:
-                        day = "Thursday";
-                        break;
-                    case 5:
-                        day = "Friday";
-                        break;
-                    case 6:
-                        hideAllObj();
-                }
+            var escolhaSelecionada = parseInt($('#parFieldType option:selected').val());
+            Cabecalhos.hideAllObj();
+            switch (escolhaSelecionada) {
+                case 1: //Multipla Escolha
+                    Cabecalhos.ShowMutiplaEscolha();
+                    break;
+                case 2:
+                    break;
+                case 3: //Binario
+                    Cabecalhos.ShowBinari();
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                default:
+                    Cabecalhos.hideAllObj();
             }
         },
-
         hideAllObj: function () {
-            $('#allObjCamposCabecalho')
+            $('#objMultiplaEscolha').hide();
+            $('#objBinario').hide();
         },
         ShowMutiplaEscolha: function () {
             $('#objMultiplaEscolha').show();
@@ -508,24 +504,79 @@
         ShowBinari: function () {
             $('#objBinario').show();
         },
+        Counter: 0,
+        IncluirMultiplaEscolha: function () {
+            var cod = "?";
+            var nivelDoCampo = $('#headerLevel option:selected').text();
+            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+            var vinculado = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "Sim" : "Não";
+            var tipo = $('#parFieldType option:selected').text();
+            var opcoes = $('#objMultiplaEscolhaName').val();
+            var valor = $('#objMultiplaEscolhaPunishmentValue').val();
+            var obj = '<input type="button" value="excluir" />' +
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Name" value="' + opcoes + '"/> ' +
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].ParHeaderField_Id" value=""/> ' +
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Description" value=""/> ' +
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].PunishmentValue" value="' + valor + '"/> ';
+                //'<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Conformity" value=""/> '
 
-        BtnAdcMultiplaEscolha: function () {
+            Cabecalhos.tableMultiplaEscolha.row.add([
+               cod,
+               nivelDoCampo,
+               nome,
+               vinculado,
+               tipo,
+               opcoes,
+               valor,
+               obj
+            ]).draw(false);
 
-            var isChecked = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "Sim" : "Não";
+            Cabecalhos.Counter++;
+        },
+        IncluirBinario: function () {
+            var cod = "?";
+            var nivelDoCampo = $('#headerLevel option:selected').text();
+            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+            var vinculado = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "Sim" : "Não";
+            var tipo = $('#parFieldType option:selected').text();
 
-            $('#BtnAdcMultiplaEscolha').on('click', function () {
-                tableMultiplaEscolha.row.add([
-                    "?",
-                    $('#headerLevel option:selected').text(),
-                    $('#paramsDto_parHeaderFieldDto_Name').val(),
-                    isChecked,
-                    $('#selectTipoCampo option:selected').text(),
-                    '<input type="button" value="excluir" />'
-                ]).draw(false);
-            });
+            var opcoes = $('#objBinarioName').val();
+            var nameObjBinario1 = $('#objBinarioPunishmentName1').val();
+            var valorObjBinario1 = $('#objBinarioPunishmentValue1').val();
+            var nameObjBinario2 = $('#objBinarioPunishmentName2').val();
+            var valorObjBinario2 = $('#objBinarioPunishmentValue2').val();
+            var obj = '<input type="button" value="excluir" />' +
+                /*obj1*/
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Name" value="' + opcoes + '"/> ' +
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].ParHeaderField_Id" value=""/> ' +
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Description" value=""/> ' +
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].PunishmentValue" value="' + valor + '"/> ' +
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Conformity" value=""/> ';
+                /*Obj2*/
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + 1 + '].Name" value="' + opcoes + '"/> ' +
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + 1 + '].ParHeaderField_Id" value=""/> ' +
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + 1 + '].Description" value=""/> ' +
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + 1 + '].PunishmentValue" value="' + valor + '"/> ' +
+                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + 1 + '].Conformity" value=""/>';
 
-        }
+            Cabecalhos.tableMultiplaEscolha.row.add([
+               cod,
+               nivelDoCampo,
+               nome,
+               vinculado,
+               tipo,
+               opcoes,
+               valor,
+               obj
+            ]).draw(false);
+
+            Cabecalhos.Counter++;
+            Cabecalhos.Counter++;
+        },
 
     }
+
+    Cabecalhos.hideAllObj();
+    $('#parFieldType').on('change', Cabecalhos.TipoChange);
 
 </script>

@@ -1,9 +1,7 @@
 ﻿using Dominio.Interfaces.Services;
 using Dominio.Interfaces.Repositories;
-using System;
 using DTO.DTO.Params;
 using AutoMapper;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace Dominio.Services
