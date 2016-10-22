@@ -13,7 +13,7 @@ namespace Dominio.Services
     {
 
         #region Constructor
-
+        /*Repo Genericos, carregam ddls*/
         private IBaseRepository<ParLevel1> _baseRepoParLevel1;
         private IBaseRepository<ParLevel1XCluster> _baseRepoParLevel1XCluster;
         private IBaseRepository<ParFrequency> _baseParFrequency;
@@ -23,15 +23,21 @@ namespace Dominio.Services
         private IBaseRepository<ParFieldType> _baseParFieldType;
         private IBaseRepository<ParDepartment> _baseParDepartment;
 
+        /*Repo Especifico, manejam os itens*/
+        private IParamsRepository _paramsRepo;
+
         public ParamsDomain(IBaseRepository<ParLevel1> baseRepoParLevel1,
             IBaseRepository<ParLevel1XCluster> baseParLevel1XCluster,
             IBaseRepository<ParFrequency> baseParFrequency,
             IBaseRepository<ParConsolidationType> baseParConsolidationType,
             IBaseRepository<ParCluster> baseParCluster,
             IBaseRepository<ParLevelDefiniton> baseParLevelDefiniton,
-            IBaseRepository<ParFieldType> baseParFieldType, 
+            IBaseRepository<ParFieldType> baseParFieldType,
+            IParamsRepository paramsRepo)
+
             IBaseRepository<ParDepartment> baseParDepartment)
         {
+            _paramsRepo = paramsRepo;
             _baseRepoParLevel1 = baseRepoParLevel1;
             _baseRepoParLevel1XCluster = baseParLevel1XCluster;
             _baseParFrequency = baseParFrequency;
@@ -60,7 +66,12 @@ namespace Dominio.Services
         {
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);
-            _baseRepoParLevel1.AddOrUpdate(saveParamLevel1);
+            List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);
+            List<ParLevel1XCluster> ListaParLevel1XCluster = Mapper.Map<List<ParLevel1XCluster>>(paramsDto.parLevel1XClusterDto);
+
+
+            _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster);
+
             paramsDto.parLevel1Dto.Id = saveParamLevel1.Id;
 
             /*Salva Clueter X*/

@@ -10,7 +10,11 @@ namespace SgqSystem.Mappers
         public ParHeaderFieldMapperProfile()
         {
             CreateMap<ParHeaderField, ParHeaderFieldDTO>();
-            CreateMap<ParHeaderFieldDTO, ParHeaderField>();
+            CreateMap<ParHeaderFieldDTO, ParHeaderField>()
+            .ForMember(
+                dest => dest.ParMultipleValues,
+                opt => opt.MapFrom(src => src.parMultipleValuesDto)
+            );
         }
     }
 }

@@ -34,9 +34,13 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParFrequencyMapperProfile>();
                 x.AddProfile<ParClusterMapperProfile>();
                 x.AddProfile<ParLevel1XClusterMapperProfile>();
+                x.AddProfile<ParHeaderFieldMapperProfile>();
+                x.AddProfile<ParLevelDefinitonMapperProfile>();
                 x.AddProfile<ParFieldTypeMapperProfile>();
                 x.AddProfile<ParDepartmentMapperProfile>();
                 x.AddProfile<ParLevelDefinitonMapperProfile>();
+                x.AddProfile<ParMultipleValuesMapperProfile>();
+
 
 
                 /*

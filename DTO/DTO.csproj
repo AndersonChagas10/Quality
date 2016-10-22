@@ -93,7 +93,7 @@
     <Compile Include="DTO\Params\ParGoalDTO.cs" />
     <Compile Include="DTO\Params\ParLevel1XClusterDTO.cs" />
     <Compile Include="DTO\Params\ParLevel1DTO.cs" />
-    <Compile Include="DTO\Params\ParLevel1HeaderFieldDTO.cs" />
+    <Compile Include="DTO\Params\ParLevel1XHeaderFieldDTO.cs" />
     <Compile Include="DTO\Params\ParMultipleValuesDTO.cs" />
     <Compile Include="DTO\Params\ParFrequencyDTO.cs" />
     <Compile Include="TableResults\TableResultsForDataTable.cs" />
