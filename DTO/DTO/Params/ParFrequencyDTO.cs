@@ -6,6 +6,6 @@ namespace DTO.DTO.Params
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

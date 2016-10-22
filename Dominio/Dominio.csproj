@@ -84,6 +84,9 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="LogService\LoggerNLog.cs" />
+    <Compile Include="LogSgqGlobal.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParCluster.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

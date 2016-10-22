@@ -325,6 +325,7 @@
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParHeaderFieldMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevelDefinitonMapperProfile.cs" />
@@ -1079,6 +1080,7 @@
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_stacked.scss" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_variables.scss" />
     <Content Include="Views\Params\_ParLevel1.cshtml" />
+    <Content Include="Views\Params\Index2.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

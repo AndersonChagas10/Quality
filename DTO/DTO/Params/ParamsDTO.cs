@@ -17,6 +17,7 @@ namespace DTO.DTO.Params
         /*Ja implementados*/
 
         public ParLevel1DTO parLevel1Dto { get; set; }
+        public ParLevel2DTO parLevel2Dto { get; set; }
 
         public List<ParLevel1XClusterDTO> parLevel1XClusterDto { get; set; }
         

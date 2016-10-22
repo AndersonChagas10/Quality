@@ -12,17 +12,18 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParLevel1XCluster
+    public partial class LogSgqGlobal
     {
         public int Id { get; set; }
-        public int ParLevel1_Id { get; set; }
-        public int ParCluster_Id { get; set; }
-        public decimal Points { get; set; }
-        public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool IsActive { get; set; }
-    
-        public virtual ParCluster ParCluster { get; set; }
-        public virtual ParLevel1 ParLevel1 { get; set; }
+        public Nullable<System.DateTime> addDate { get; set; }
+        public string Level { get; set; }
+        public string Call_Site { get; set; }
+        public string Exception_Type { get; set; }
+        public string Exception_Message { get; set; }
+        public string Stack_Trace { get; set; }
+        public string Additional_Info { get; set; }
+        public string Object { get; set; }
+        public string email { get; set; }
+        public string Second_Log_Path { get; set; }
     }
 }

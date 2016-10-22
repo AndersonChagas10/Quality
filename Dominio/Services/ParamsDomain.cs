@@ -21,6 +21,7 @@ namespace Dominio.Services
         private IBaseRepository<ParCluster> _baseParCluster;
         private IBaseRepository<ParLevelDefiniton> _baseParLevelDefiniton;
         private IBaseRepository<ParFieldType> _baseParFieldType;
+        private IBaseRepository<ParDepartment> _baseParDepartment;
 
         public ParamsDomain(IBaseRepository<ParLevel1> baseRepoParLevel1,
             IBaseRepository<ParLevel1XCluster> baseParLevel1XCluster,
@@ -28,7 +29,8 @@ namespace Dominio.Services
             IBaseRepository<ParConsolidationType> baseParConsolidationType,
             IBaseRepository<ParCluster> baseParCluster,
             IBaseRepository<ParLevelDefiniton> baseParLevelDefiniton,
-            IBaseRepository<ParFieldType> baseParFieldType)
+            IBaseRepository<ParFieldType> baseParFieldType, 
+            IBaseRepository<ParDepartment> baseParDepartment)
         {
             _baseRepoParLevel1 = baseRepoParLevel1;
             _baseRepoParLevel1XCluster = baseParLevel1XCluster;
@@ -37,6 +39,7 @@ namespace Dominio.Services
             _baseParCluster = baseParCluster;
             _baseParFieldType = baseParFieldType;
             _baseParLevelDefiniton = baseParLevelDefiniton;
+            _baseParDepartment = baseParDepartment;
         }
 
         #endregion
@@ -99,9 +102,10 @@ namespace Dominio.Services
             var DdlparCluster = Mapper.Map<List<ParClusterDTO>>(_baseParCluster.GetAll());
             var DdlparLevelDefinition = Mapper.Map<List<ParLevelDefinitonDTO>>(_baseParLevelDefiniton.GetAll());
             var DdlParFieldType = Mapper.Map<List<ParFieldTypeDTO>>(_baseParFieldType.GetAll());
+            var DdlParDepartment = Mapper.Map<List<ParDepartmentDTO>>(_baseParDepartment.GetAll());
 
             var retorno = new ParamsDdl();
-            retorno.SetDdls(DdlParConsolidation, DdlFrequency, DdlparLevel1, DdlparCluster, DdlparLevelDefinition, DdlParFieldType);
+            retorno.SetDdls(DdlParConsolidation, DdlFrequency, DdlparLevel1, DdlparCluster, DdlparLevelDefinition, DdlParFieldType, DdlParDepartment);
             return retorno;
         }
 
