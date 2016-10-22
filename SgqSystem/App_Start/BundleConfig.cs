@@ -36,9 +36,7 @@ namespace SgqSystem
                     //"~/Scripts/jbs.jquery.dataTables.configuration.js",
                     //"~/Scripts/dataTable.CRUD.js",
                     ));
-
-            #endregion
-
+            
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                       "~/Scripts/modernizr-*"));
             
@@ -46,11 +44,12 @@ namespace SgqSystem
                 "~/Scripts/theme/select2/dist/js/select2.min.js",
                 "~/Scripts/theme/js/app.min.js"
                       ));
+            
+            #endregion
 
             #region Styles
 
             bundles.Add(new StyleBundle("~/Content/General").Include(
-                    "~/Content/Site.css",
                       "~/Content/bootstrap.css",
                       //"~/Content/bootstrap-*",C:\Users\Celso\Source\Repos\ddd.bitbucket7\SgqSystem\Content\bootstrap-theme.css
                       "~/Content/bootstrap-theme.min.css.map"));
@@ -63,12 +62,16 @@ namespace SgqSystem
                 ));
 
             bundles.Add(new StyleBundle("~/Content/Theme").Include(
-                    "~/Scripts/theme/css/components.min.css",
-                    "~/Scripts/theme/css/darkblue.min.css",
-                    "~/Scripts/theme/font-awesome-4.6.3/css/font-awesome.min.css",
-                    "~/Scripts/theme/css/layout.min.css",
-                    "~/Scripts/theme/select2/dist/css/select2.min.css"
-                ));
+                "~/Scripts/theme/css/components.min.css",
+                "~/Scripts/theme/css/darkblue.min.css",
+                "~/Scripts/theme/font-awesome-4.6.3/css/font-awesome.min.css",
+                "~/Scripts/theme/css/layout.min.css",
+                "~/Scripts/theme/select2/dist/css/select2.min.css"
+            ));
+
+            bundles.Add(new StyleBundle("~/Content/Erp").Include(
+                "~/Content/erp.css"
+            ));
 
 
             #endregion

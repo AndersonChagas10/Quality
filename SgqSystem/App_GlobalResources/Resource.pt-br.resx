@@ -289,7 +289,7 @@
     <value>Selecione...</value>
   </data>
   <data name="show_level1_counters" xml:space="preserve">
-    <value>Mostrar contadores do level 1</value>
+    <value>Mostrar contadores do nível 1</value>
   </data>
   <data name="value" xml:space="preserve">
     <value>Valor</value>
@@ -376,13 +376,13 @@
     <value>Regra para reincidência</value>
   </data>
   <data name="save_button_on_level2_popover" xml:space="preserve">
-    <value>Define se haverá botão de salvar no level 2.</value>
+    <value>Define se haverá botão de salvar no nível 2.</value>
   </data>
   <data name="save_button_on_level3" xml:space="preserve">
     <value>Botão salvar no level 3</value>
   </data>
   <data name="save_button_on_level3_popover" xml:space="preserve">
-    <value>Define se haverá botão de salvar no level 3.</value>
+    <value>Define se haverá botão de salvar no nível 3.</value>
   </data>
   <data name="select_the_frequency" xml:space="preserve">
     <value>Selecione a frequência</value>
@@ -395,5 +395,8 @@
   </data>
   <data name="yes" xml:space="preserve">
     <value>Sim</value>
+  </data>
+  <data name="id" xml:space="preserve">
+    <value>ID</value>
   </data>
 </root>

@@ -14,6 +14,8 @@
 
     @Styles.Render("~/Content/Theme")
 
+    @Styles.Render("~/Content/Tables")
+
 </head>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo">
@@ -23,6 +25,9 @@
     @Scripts.Render("~/bundles/modernizr")
 
     @Scripts.Render("~/bundles/theme")
+
+    @Scripts.Render("~/bundles/ScriptTables")
+
     <div class="page-wrapper">
         @Html.Partial("~/Views/Globalization/components/_navbar.cshtml")
         <div class="page-container">

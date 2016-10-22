@@ -1,518 +1,539 @@
 ﻿@model SgqSystem.ViewModels.ParamsViewModel
+@using SgqSystem.Helpers
 
-@using (Html.BeginForm())
-{
-    @*@Html.LinkVoltar("back", "Voltando")*@
-    @Html.Label("Id (para testes)");
-    @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id);
-
-    <div id="divCadastroIndicadores" style="display: table; border: 1px solid #ccc;">
-
-        <div style="padding: 5px; display:inline-table;">
-            <b>@Resources.Resource.indicator_name :</b>
-            @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
-        </div>
-        <br>
-        <div style="padding: 5px; display:inline-table;">
-            <b>@Resources.Resource.indicator_description :</b>
-            @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
-        </div>
-
-        <div id="corpoIndicador" style="display: block; margin-top: 10px;">
-
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            <b>@Resources.Resource.consolidation_type :</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
-                        </td>
-                        <td>
-                            @Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })
-                            @*<select style="padding: 2px;" name="" id="selectConsolidacao">
-                                <option>Selecione o tipo de consolidacao</option>
-                                <option>por Tarefa (level 3)</option>
-                                <option>por monitormento (level 2)</option>
-                                <option>por outros</option>
-                                </select>*@
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Frequencia</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Frequencia.')">
-                        </td>
-                        <td>
-                            @Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectFrequencia" })
-                            @*<select style="padding: 2px;" name="" id="selectConsolidacao">
-                                <option>Selecione o tipo de consolidacao</option>
-                                <option>por Tarefa (level 3)</option>
-                                <option>por monitormento (level 2)</option>
-                                <option>por outros</option>
-                                </select>*@
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Botão de salvar nos monitoramentos</b> <span class="labelUSA">(USA)</span> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão para salvar o level 2 sem inserir dados (sem não conformidades)')">
-                        </td>
-                        <td>
-                            <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2)
-                                <span><a></a></span>
-                            </label>
-                        </td>
-
-
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Botão Não Aplicado (N/A) nos monitoramentos</b> <span class="labelUSA">(USA)</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão de N/A no level 2 para quando os mesmos não se aplicarem à auditoria')">
-                        </td>
-                        <td>
-                            <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasNoApplicableLevel2)
-                                <span><a></a></span>
-                            </label>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Agrupador de Monitoramentos</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
-                        </td>
-                        <td>
-                            <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasGroupLevel2)
-                                <span><a></a></span>
-                            </label>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Emite Alerta</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
-                        </td>
-                        <td>
-                            <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasAlert)
-                                <span><a></a></span>
-                            </label>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Permite cadastro especifico por unidade</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
-                        </td>
-                        <td>
-                            <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific)
-                                <span><a></a></span>
-                            </label>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Permite editar campos do cabeçalho</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
-                        </td>
-                        <td>
-                            <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField)
-                                <span><a></a></span>
-                            </label>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Permite editar numeros de avaliação</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
-                        </td>
-                        <td>
-                            <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion)
-                                <span><a></a></span>
-                            </label>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Permite editar numeros de amostras</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
-                        </td>
-                        <td>
-                            <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberSample)
-                                <span><a></a></span>
-                            </label>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Permite editar vínculo com tarefas</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
-                        </td>
-                        <td>
-                            <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificLevel3)
-                                <span><a></a></span>
-                            </label>
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td>
-                            <b>Permite editar metodo indicador por unidade</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
-                        </td>
-                        <td>
-                            <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificGoal)
-                                <span><a></a></span>
-                            </label>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Critério</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
-                        </td>
-                        <td>
-                            <label class="on-off">
-                                Conforme
-                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true")
-                                Não Conforme
-                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false")
-                                <span><a></a></span>
-                            </label>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Cadastro do Total Avaliado</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
-                        </td>
-                        <td>
-                            <label class="on-off">
-                                Fixo
-                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, "true")
-                                Variável
-                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, "false")
-                                <span><a></a></span>
-                            </label>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Número de Avaliações Limitado</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
-                        </td>
-                        <td>
-                            <label class="on-off">
-                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsLimitedEvaluetionNumber)
-                                <span><a></a></span>
-                            </label>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Mostrar contadores do Indicador :</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
-                        </td>
-                        <td>
-                            @*@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlParConsolidation, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })*@
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
-
-            <table>
-                <tbody>
-                    <tr>
-                        <td>Cluster</td>
-                        <td>
-                            @Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, htmlAttributes: new { @class = "", @style = "padding: 2px;" })
-                            @*<input type="hidden" name="paramsDto.parLevel1XClusterDto.ParLevel1_Id" value="@Model.paramsDto.parLevel1Dto.Id" id="parLevel1XClusterDto" />*@
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Pontos</td>
-                        <td>
-                            @*@Html.EditorFor(model => model.paramsDto.parLevel1XClusterDto.Points)*@
-                            <input class="" id="pontosCluster" name="pontosCluster" type="number" value="0">
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <input type="button" value="Incluir Cluster" id="btnIncluirCluster" onclick="Cluster.IncluirCluster();" />
-                        </td>
-                    </tr>
-
-                    <tr id="clusters"></tr>
-
-                    <tr id="clustersVazia" style="display:none">
-                        <td id="nomeCluster"></td>
-                        <td id="pontosCluster"></td>
-                        <td id="alterarCluster">
-                            <input type="button" value="Alterar" id="btnAlterarCluster" />
-                            <input type="button" value="Excluir" id="btnExcluirCluster" />
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
-
-            @*<table id="CamposDoCabecalho">
-                <tbody>
-                    <tr>
-                        <td>@Html.Label("Nível do Campo")</td>
-                        <td>
-                            @Html.DropDownList("paramsDto.parHeaderFieldDto.ParLevelDefinition_Id", Model.paramsDdl.DdlparLevelDefinition, htmlAttributes: new { @class = "", @style = "padding: 2px;" , @id= "headerLevel" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(m => m.paramsDto.parHeaderFieldDto.Name)</td>
-                        <td>
-                            @Html.TextBoxFor(m => m.paramsDto.parHeaderFieldDto.Name)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion)</td>
-                        <td>
-                            @Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.Label("Tipo")</td>
-                        <td>
-                            @Html.DropDownList("paramsDto.parHeaderFieldDto.ParFieldType_Id", Model.paramsDdl.DdlParFieldType, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "parFieldType" })
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div id="allObjCamposCabecalho">
-
-                <div id="objMultiplaEscolha" style="display:none;">
-                    <table id="tblOpcaoMultiplaEscolha">
-                        <tbody>
-                            <tr>
-                                <td>@Html.Label("Opção")</td>
-                                <td>@Html.Label("Punição/Premiação")</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="text" id="objMultiplaEscolhaName" name="Name" value="" />
-                                </td>
-                                <td>
-                                    <input class="" id="objMultiplaEscolhaPunishmentValue" name="PunishmentValue" type="number" value="0">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="button" value="Incluir opção" id="btnIncluirMultiplaEscolha" onclick="Cabecalhos.IncluirMultiplaEscolha();" />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+<div id="newLevel1Modal" class="modal fade" tabindex="-1" role="dialog">
+    @using (Html.BeginForm())
+    {
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                    <h4 class="modal-title">New Level 1</h4>
                 </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table class="table-erp">
+                                <tbody>
+                                    <tr class="row">
+                                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.left)
+                                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.left)
+                                        @*@Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_name), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_description), Table.PosicaoLabel.top)*@
+                                    </tr>
+                                    @*<tr class="row">
+                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.consolidation_type), Table.PosicaoLabel.top, Resources.Resource.consolidation_type_popover)
+                                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_name), Table.PosicaoLabel.top)
+                                    </tr>*@
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-                <div id="objBinario" style="display:none;">
-                    <table id="tblBinario">
-                        <tbody>
-                            <tr>
-                                <td></td>
-                                <td>Valor</td>
-                                <td>Punição/Premiação <input class="btQuestion" type="button" value="?" onclick="getAlerta('Define o valor de punição e/ou premiação atribuído às opções conforme o cadastro anterior')"></td>
-                            </tr>
-                            <tr id="positivo">
-                                <td>
-                                    Positivo
-                                </td>
-                                <td>
-                                    <input type="text" id="objBinarioPunishmentName1">
-                                </td>
-                                <td>
-                                    <input type="number" id="objBinarioPunishmentValue1" style="width: 50px;">
-                                </td>
-                            </tr>
-                            <tr id="negativo">
-                                <td>
-                                    Negativo
-                                </td>
-                                <td>
-                                    <input type="text" id="objBinarioPunishmentName2">
-                                </td>
-                                <td>
-                                    <input type="number" id="objBinarioPunishmentValue2" style="width: 50px;">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="button" value="Incluir opção" id="btnIncluirCluster" onclick="Cabecalhos.IncluirBinario();" />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    
+
+
+                    <div id="divCadastroIndicadores" style="display: table; border: 1px solid #ccc;">
+
+                        <div id="corpoIndicador" style="display: block; margin-top: 10px;">
+
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <b>@Resources.Resource.consolidation_type :</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
+                                        </td>
+                                        <td>
+                                            @Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })
+                                            @*<select style="padding: 2px;" name="" id="selectConsolidacao">
+                                                <option>Selecione o tipo de consolidacao</option>
+                                                <option>por Tarefa (level 3)</option>
+                                                <option>por monitormento (level 2)</option>
+                                                <option>por outros</option>
+                                                </select>*@
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Frequencia</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Frequencia.')">
+                                        </td>
+                                        <td>
+                                            @Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectFrequencia" })
+                                            @*<select style="padding: 2px;" name="" id="selectConsolidacao">
+                                                <option>Selecione o tipo de consolidacao</option>
+                                                <option>por Tarefa (level 3)</option>
+                                                <option>por monitormento (level 2)</option>
+                                                <option>por outros</option>
+                                                </select>*@
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Botão de salvar nos monitoramentos</b> <span class="labelUSA">(USA)</span> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão para salvar o level 2 sem inserir dados (sem não conformidades)')">
+                                        </td>
+                                        <td>
+                                            <label class="on-off">
+                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2)
+                                                <span><a></a></span>
+                                            </label>
+                                        </td>
+
+
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Botão Não Aplicado (N/A) nos monitoramentos</b> <span class="labelUSA">(USA)</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão de N/A no level 2 para quando os mesmos não se aplicarem à auditoria')">
+                                        </td>
+                                        <td>
+                                            <label class="on-off">
+                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasNoApplicableLevel2)
+                                                <span><a></a></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Agrupador de Monitoramentos</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                        </td>
+                                        <td>
+                                            <label class="on-off">
+                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasGroupLevel2)
+                                                <span><a></a></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Emite Alerta</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                        </td>
+                                        <td>
+                                            <label class="on-off">
+                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasAlert)
+                                                <span><a></a></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Permite cadastro especifico por unidade</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                        </td>
+                                        <td>
+                                            <label class="on-off">
+                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific)
+                                                <span><a></a></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Permite editar campos do cabeçalho</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                        </td>
+                                        <td>
+                                            <label class="on-off">
+                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField)
+                                                <span><a></a></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Permite editar numeros de avaliação</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                        </td>
+                                        <td>
+                                            <label class="on-off">
+                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion)
+                                                <span><a></a></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Permite editar numeros de amostras</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                        </td>
+                                        <td>
+                                            <label class="on-off">
+                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberSample)
+                                                <span><a></a></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Permite editar vínculo com tarefas</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                        </td>
+                                        <td>
+                                            <label class="on-off">
+                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificLevel3)
+                                                <span><a></a></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <b>Permite editar metodo indicador por unidade</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                        </td>
+                                        <td>
+                                            <label class="on-off">
+                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificGoal)
+                                                <span><a></a></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Critério</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                        </td>
+                                        <td>
+                                            <label class="on-off">
+                                                Conforme
+                                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true")
+                                                Não Conforme
+                                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false")
+                                                <span><a></a></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Cadastro do Total Avaliado</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                        </td>
+                                        <td>
+                                            <label class="on-off">
+                                                Fixo
+                                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, "true")
+                                                Variável
+                                                @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, "false")
+                                                <span><a></a></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Número de Avaliações Limitado</b> <span class="labelUSA">USA</span>	<input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se existirão agrupadores de Monitoramentos. Se sim, Abre uma lista para criar os grupos.')">
+                                        </td>
+                                        <td>
+                                            <label class="on-off">
+                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsLimitedEvaluetionNumber)
+                                                <span><a></a></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <b>Mostrar contadores do Indicador :</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.')">
+                                        </td>
+                                        <td>
+                                            @*@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.DdlParConsolidation, "Selecione o tipo de consolidacao", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })*@
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Cluster</td>
+                                        <td>
+                                            @Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, htmlAttributes: new { @class = "", @style = "padding: 2px;" })
+                                            @*<input type="hidden" name="paramsDto.parLevel1XClusterDto.ParLevel1_Id" value="@Model.paramsDto.parLevel1Dto.Id" id="parLevel1XClusterDto" />*@
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Pontos</td>
+                                        <td>
+                                            @*@Html.EditorFor(model => model.paramsDto.parLevel1XClusterDto.Points)*@
+                                            <input class="" id="pontosCluster" name="pontosCluster" type="number" value="0">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <input type="button" value="Incluir Cluster" id="btnIncluirCluster" onclick="Cluster.IncluirCluster();" />
+                                        </td>
+                                    </tr>
+
+                                    <tr id="clusters"></tr>
+
+                                    <tr id="clustersVazia" style="display:none">
+                                        <td id="nomeCluster"></td>
+                                        <td id="pontosCluster"></td>
+                                        <td id="alterarCluster">
+                                            <input type="button" value="Alterar" id="btnAlterarCluster" />
+                                            <input type="button" value="Excluir" id="btnExcluirCluster" />
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                            @*<table id="CamposDoCabecalho">
+                                    <tbody>
+                                        <tr>
+                                            <td>@Html.Label("Nível do Campo")</td>
+                                            <td>
+                                                @Html.DropDownList("paramsDto.parHeaderFieldDto.ParLevelDefinition_Id", Model.paramsDdl.DdlparLevelDefinition, htmlAttributes: new { @class = "", @style = "padding: 2px;" , @id= "headerLevel" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>@Html.LabelFor(m => m.paramsDto.parHeaderFieldDto.Name)</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.paramsDto.parHeaderFieldDto.Name)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>@Html.LabelFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion)</td>
+                                            <td>
+                                                @Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>@Html.Label("Tipo")</td>
+                                            <td>
+                                                @Html.DropDownList("paramsDto.parHeaderFieldDto.ParFieldType_Id", Model.paramsDdl.DdlParFieldType, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "parFieldType" })
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div id="allObjCamposCabecalho">
+
+                                    <div id="objMultiplaEscolha" style="display:none;">
+                                        <table id="tblOpcaoMultiplaEscolha">
+                                            <tbody>
+                                                <tr>
+                                                    <td>@Html.Label("Opção")</td>
+                                                    <td>@Html.Label("Punição/Premiação")</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" id="objMultiplaEscolhaName" name="Name" value="" />
+                                                    </td>
+                                                    <td>
+                                                        <input class="" id="objMultiplaEscolhaPunishmentValue" name="PunishmentValue" type="number" value="0">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="button" value="Incluir opção" id="btnIncluirMultiplaEscolha" onclick="Cabecalhos.IncluirMultiplaEscolha();" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div id="objBinario" style="display:none;">
+                                        <table id="tblBinario">
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Valor</td>
+                                                    <td>Punição/Premiação <input class="btQuestion" type="button" value="?" onclick="getAlerta('Define o valor de punição e/ou premiação atribuído às opções conforme o cadastro anterior')"></td>
+                                                </tr>
+                                                <tr id="positivo">
+                                                    <td>
+                                                        Positivo
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="objBinarioPunishmentName1">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" id="objBinarioPunishmentValue1" style="width: 50px;">
+                                                    </td>
+                                                </tr>
+                                                <tr id="negativo">
+                                                    <td>
+                                                        Negativo
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="objBinarioPunishmentName2">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" id="objBinarioPunishmentValue2" style="width: 50px;">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="button" value="Incluir opção" id="btnIncluirCluster" onclick="Cabecalhos.IncluirBinario();" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                                <table id="camposCabecalhoIncluidos">
+                                    <thead>
+                                        <tr>
+                                            <th>Cod.</th>
+                                            <th>Nivel do campo</th>
+                                            <th>Nome</th>
+                                            <th>Vinculado</th>
+                                            <th>Tipo</th>
+                                            <th>Opções</th>
+                                            <th>Valor</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>*@
+
+                            <div id="ParClusterLevel1">
+                                @*@Html.Partial("~/Views/Params/_ParCluster.cshtml", Model)*@
+                            </div>
+
+                            <div style="width: 100%; float: left;">
+                                <input type="button" value="Salvar o Indicador" onclick="indexParamsLevel1.enviarDadosParaApi();" style="font-size: small; padding: 10px; font-weight: bold;">
+                            </div>
+
+                        </div>
+
+                    </div>
                 </div>
-
-            </div>
-
-            <table id="camposCabecalhoIncluidos">
-                <thead>
-                    <tr>
-                        <th>Cod.</th>
-                        <th>Nivel do campo</th>
-                        <th>Nome</th>
-                        <th>Vinculado</th>
-                        <th>Tipo</th>
-                        <th>Opções</th>
-                        <th>Valor</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </tfoot>
-            </table>*@
-
-            <div id="ParClusterLevel1">
-                @*@Html.Partial("~/Views/Params/_ParCluster.cshtml", Model)*@
-            </div>
-
-            <div style="width: 100%; float: left;">
-                <input type="button" value="Salvar o Indicador" onclick="indexParamsLevel1.enviarDadosParaApi();" style="font-size: small; padding: 10px; font-weight: bold;">
-            </div>
-
-        </div>
-
-    </div>
-}
-
-<link href="~/Content/DataTables/jquery.dataTables.min.css" rel="stylesheet" />
-<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
-
-<script>
-    var Cluster = {
-
-        IncluirCluster: function () {
-
-            /**/
-            if ($('#valueCluster option:selected').val() == -1) {
-                alert("selecione um cluster.");
-                return;
-            }
-
-            /**/
-            if ($('#pontosCluster').val().length == 0) {
-                $('#pontosCluster').val('0');
-            }
-
-            /**/
-            var $this = $('#clustersVazia'), $parentTR = $this.closest('tr');
-
-            /**/
-            var novaTr = $parentTR.clone()
-            var idCluster = $('#valueCluster option:selected').val();
-            var nomeCluster = $('#valueCluster option:selected').text();
-            var pontosCluster = $('#pontosCluster').val();
-
-            /**/
-            novaTr.find('#nomeCluster').append(nomeCluster + ' <input type="hidden" name="paramsDto.parLevel1XClusterDto[' + idCluster + '].ParLevel1_Id" value="' + idCluster + '" />')
-            novaTr.find('#pontosCluster').append(pontosCluster + ' <input type="hidden" name="paramsDto.parLevel1XClusterDto[' + idCluster + '].Points" value="' + pontosCluster + '" />')
-            novaTr.find('#btnAlterarCluster').attr('id', novaTr.find('#btnAlterarCluster').attr('id') + idCluster);
-            novaTr.find('#btnExcluirCluster').attr('id', novaTr.find('#btnExcluirCluster').attr('id') + idCluster);
-            novaTr.attr('id', '');
-
-            //$("#tableid tbody:last").append(
-            novaTr.insertAfter($parentTR);
-            novaTr.show();
-
-            Cluster.EventoAlterar(novaTr.find('#btnAlterarCluster' + idCluster).attr('id'), idCluster);
-            Cluster.EventoRemove(novaTr.find('#btnExcluirCluster' + idCluster).attr('id'), idCluster);
-            Cluster.Index++;
-
-            $('#valueCluster').val(-1);
-            $('#pontosCluster').val("");
-            $('#valueCluster option[value=' + idCluster + ']').attr('disabled', true)
-        },
-
-        EventoRemove: function (btnSelector, idCluster) {
-            $('#' + btnSelector).click(function () {
-                $('#valueCluster option[value=' + idCluster + ']').attr('disabled', false)
-                $(this).parents('tr').first().remove();
-            });
-        },
-
-        EventoAlterar: function (btnSelector, idCluster) {
-            $('#' + btnSelector).click(function () {
-                //$(this).parents('tr').first().remove();
-                alert('Nao implmentado');
-            });
-        }
-
+                <div class="modal-footer">
+                    <button type="button" id="btnCloseNewLevel1Modal" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="button" id="btnSaveNewLevel1Modal" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary" value="Save changes" />
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     }
 
-    var Cabecalhos = {
-        tableMultiplaEscolha: $('#camposCabecalhoIncluidos').DataTable(),
-        TipoChange: function () {
-            var escolhaSelecionada = parseInt($('#parFieldType option:selected').val());
-            Cabecalhos.hideAllObj();
-            switch (escolhaSelecionada) {
-                case 1: //Multipla Escolha
-                    Cabecalhos.ShowMutiplaEscolha();
-                    break;
-                case 2:
-                    break;
-                case 3: //Binario
-                    Cabecalhos.ShowBinari();
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                default:
-                    Cabecalhos.hideAllObj();
+    <script>
+        var Cluster = {
+
+            IncluirCluster: function () {
+
+                /**/
+                if ($('#valueCluster option:selected').val() == -1) {
+                    alert("selecione um cluster.");
+                    return;
+                }
+
+                /**/
+                if ($('#pontosCluster').val().length == 0) {
+                    $('#pontosCluster').val('0');
+                }
+
+                /**/
+                var $this = $('#clustersVazia'), $parentTR = $this.closest('tr');
+
+                /**/
+                var novaTr = $parentTR.clone()
+                var idCluster = $('#valueCluster option:selected').val();
+                var nomeCluster = $('#valueCluster option:selected').text();
+                var pontosCluster = $('#pontosCluster').val();
+
+                /**/
+                novaTr.find('#nomeCluster').append(nomeCluster + ' <input type="hidden" name="paramsDto.parLevel1XClusterDto[' + idCluster + '].ParLevel1_Id" value="' + idCluster + '" />')
+                novaTr.find('#pontosCluster').append(pontosCluster + ' <input type="hidden" name="paramsDto.parLevel1XClusterDto[' + idCluster + '].Points" value="' + pontosCluster + '" />')
+                novaTr.find('#btnAlterarCluster').attr('id', novaTr.find('#btnAlterarCluster').attr('id') + idCluster);
+                novaTr.find('#btnExcluirCluster').attr('id', novaTr.find('#btnExcluirCluster').attr('id') + idCluster);
+                novaTr.attr('id', '');
+
+                //$("#tableid tbody:last").append(
+                novaTr.insertAfter($parentTR);
+                novaTr.show();
+
+                Cluster.EventoAlterar(novaTr.find('#btnAlterarCluster' + idCluster).attr('id'), idCluster);
+                Cluster.EventoRemove(novaTr.find('#btnExcluirCluster' + idCluster).attr('id'), idCluster);
+                Cluster.Index++;
+
+                $('#valueCluster').val(-1);
+                $('#pontosCluster').val("");
+                $('#valueCluster option[value=' + idCluster + ']').attr('disabled', true)
+            },
+
+            EventoRemove: function (btnSelector, idCluster) {
+                $('#' + btnSelector).click(function () {
+                    $('#valueCluster option[value=' + idCluster + ']').attr('disabled', false)
+                    $(this).parents('tr').first().remove();
+                });
+            },
+
+            EventoAlterar: function (btnSelector, idCluster) {
+                $('#' + btnSelector).click(function () {
+                    //$(this).parents('tr').first().remove();
+                    alert('Nao implmentado');
+                });
             }
-        },
-        hideAllObj: function () {
-            $('#objMultiplaEscolha').hide();
-            $('#objBinario').hide();
-        },
-        ShowMutiplaEscolha: function () {
-            $('#objMultiplaEscolha').show();
-        },
-        ShowBinari: function () {
-            $('#objBinario').show();
-        },
-        Counter: 0,
-        IncluirMultiplaEscolha: function () {
-            var cod = "?";
-            var nivelDoCampo = $('#headerLevel option:selected').text();
-            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-            var vinculado = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "Sim" : "Não";
-            var tipo = $('#parFieldType option:selected').text();
-            var opcoes = $('#objMultiplaEscolhaName').val();
-            var valor = $('#objMultiplaEscolhaPunishmentValue').val();
-            var counterInterno = 0;
-            var obj = '<input type="button" value="excluir" />' +
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Name" value="' + opcoes + '"/> ' +
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].ParHeaderField_Id" value=""/> ' +
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Description" value=""/> ' +
-                '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].PunishmentValue" value="' + valor + '"/> ';
+
+        }
+
+        var Cabecalhos = {
+            tableMultiplaEscolha: $('#camposCabecalhoIncluidos').DataTable(),
+            TipoChange: function () {
+                var escolhaSelecionada = parseInt($('#parFieldType option:selected').val());
+                Cabecalhos.hideAllObj();
+                switch (escolhaSelecionada) {
+                    case 1: //Multipla Escolha
+                        Cabecalhos.ShowMutiplaEscolha();
+                        break;
+                    case 2:
+                        break;
+                    case 3: //Binario
+                        Cabecalhos.ShowBinari();
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    default:
+                        Cabecalhos.hideAllObj();
+                }
+            },
+            hideAllObj: function () {
+                $('#objMultiplaEscolha').hide();
+                $('#objBinario').hide();
+            },
+            ShowMutiplaEscolha: function () {
+                $('#objMultiplaEscolha').show();
+            },
+            ShowBinari: function () {
+                $('#objBinario').show();
+            },
+            Counter: 0,
+            IncluirMultiplaEscolha: function () {
+                var cod = "?";
+                var nivelDoCampo = $('#headerLevel option:selected').text();
+                var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+                var vinculado = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "Sim" : "Não";
+                var tipo = $('#parFieldType option:selected').text();
+                var opcoes = $('#objMultiplaEscolhaName').val();
+                var valor = $('#objMultiplaEscolhaPunishmentValue').val();
+                var counterInterno = 0;
+                var obj = '<input type="button" value="excluir" />' +
+                    '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Name" value="' + opcoes + '"/> ' +
+                    '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].ParHeaderField_Id" value=""/> ' +
+                    '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Description" value=""/> ' +
+                    '<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].PunishmentValue" value="' + valor + '"/> ';
 
 
                 '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.ParLevelDefinition_Id" value="' + $('#headerLevel option:selected').val() + '"/> ' +
@@ -522,81 +543,84 @@
                 '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.Description" value=""/> ' +
 
                 '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto[' + counterInterno + ']" value=""/> ' +
-                
+
                 //'<input type="hidden" name="paramsDto.parMultipleValuesDto[' + Cabecalhos.Counter + '].Conformity" value=""/> '
 
             Cabecalhos.tableMultiplaEscolha.row.add([
-               cod,
-               nivelDoCampo,
-               nome,
-               vinculado,
-               tipo,
-               opcoes,
-               valor,
-               obj
+                cod,
+                nivelDoCampo,
+                nome,
+                vinculado,
+                tipo,
+                opcoes,
+                valor,
+                obj
             ]).draw(false);
 
-            Cabecalhos.Counter++;
-        },
-        IncluirBinario: function () {
+                Cabecalhos.Counter++;
+            },
+            IncluirBinario: function () {
 
-            var cod = "?";
-            var nivelDoCampo = $('#headerLevel option:selected').text();
-            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-            var vinculado = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "Sim" : "Não";
-            var tipo = $('#parFieldType option:selected').text();
+                var cod = "?";
+                var nivelDoCampo = $('#headerLevel option:selected').text();
+                var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+                var vinculado = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "Sim" : "Não";
+                var tipo = $('#parFieldType option:selected').text();
 
-            var nameObjBinario1 = $('#objBinarioPunishmentName1').val();
-            var valorObjBinario1 = $('#objBinarioPunishmentValue1').val();
-            var nameObjBinario2 = $('#objBinarioPunishmentName2').val();
-            var valorObjBinario2 = $('#objBinarioPunishmentValue2').val();
-            counterInterno = 0;
-            /*Obj1*/
-            var obj = '<input type="button" value="excluir" />' +
+                var nameObjBinario1 = $('#objBinarioPunishmentName1').val();
+                var valorObjBinario1 = $('#objBinarioPunishmentValue1').val();
+                var nameObjBinario2 = $('#objBinarioPunishmentName2').val();
+                var valorObjBinario2 = $('#objBinarioPunishmentValue2').val();
+                counterInterno = 0;
+                /*Obj1*/
+                var obj = '<input type="button" value="excluir" />' +
 
-              
-                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].Name" value="' + nameObjBinario1 + '"/> ' +
-                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].ParHeaderField_Id" value=""/> ' +
-                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].Description" value=""/> ' +
-                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].PunishmentValue" value="' + valorObjBinario1 + '"/> ' +
-                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].Conformity" value="true"/> ';
-            /*Obj2*/
-            var obj2 = '<input type="button" value="excluir" />' +
-                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].Name" value="' + nameObjBinario2 + '"/> ' +
-                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].ParHeaderField_Id" value=""/> ' +
-                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].Description" value=""/> ' +
-                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].PunishmentValue" value="' + valorObjBinario2 + '"/> ' +
-                '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].Conformity" value="false"/>';
 
-            Cabecalhos.tableMultiplaEscolha.row.add([
-               cod,
-               nivelDoCampo,
-               nome,
-               vinculado,
-               tipo,
-               nameObjBinario1,
-               valorObjBinario1,
-               obj
-            ]).draw(false);
+                    '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].Name" value="' + nameObjBinario1 + '"/> ' +
+                    '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].ParHeaderField_Id" value=""/> ' +
+                    '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].Description" value=""/> ' +
+                    '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].PunishmentValue" value="' + valorObjBinario1 + '"/> ' +
+                    '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + '].Conformity" value="true"/> ';
+                /*Obj2*/
+                var obj2 = '<input type="button" value="excluir" />' +
+                    '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].Name" value="' + nameObjBinario2 + '"/> ' +
+                    '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].ParHeaderField_Id" value=""/> ' +
+                    '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].Description" value=""/> ' +
+                    '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].PunishmentValue" value="' + valorObjBinario2 + '"/> ' +
+                    '<input type="hidden" name="paramsDto.parLevel1HeaderFieldDto[' + Cabecalhos.Counter + '].parHeaderFieldDto.parMultipleValuesDto.[' + counterInterno + 1 + '].Conformity" value="false"/>';
 
-            Cabecalhos.tableMultiplaEscolha.row.add([
-               cod,
-               nivelDoCampo,
-               nome,
-               vinculado,
-               tipo,
-               nameObjBinario2,
-               valorObjBinario2,
-               obj2
-            ]).draw(false);
+                Cabecalhos.tableMultiplaEscolha.row.add([
+                    cod,
+                    nivelDoCampo,
+                    nome,
+                    vinculado,
+                    tipo,
+                    nameObjBinario1,
+                    valorObjBinario1,
+                    obj
+                ]).draw(false);
 
-            Cabecalhos.Counter++;
-            Cabecalhos.Counter++;
-        },
+                Cabecalhos.tableMultiplaEscolha.row.add([
+                    cod,
+                    nivelDoCampo,
+                    nome,
+                    vinculado,
+                    tipo,
+                    nameObjBinario2,
+                    valorObjBinario2,
+                    obj2
+                ]).draw(false);
 
-    }
+                Cabecalhos.Counter++;
+                Cabecalhos.Counter++;
+            },
 
-    Cabecalhos.hideAllObj();
-    $('#parFieldType').on('change', Cabecalhos.TipoChange);
+        }
 
-</script>
+        Cabecalhos.hideAllObj();
+        $('#parFieldType').on('change', Cabecalhos.TipoChange);
+
+    </script>
+    
+</div>
+

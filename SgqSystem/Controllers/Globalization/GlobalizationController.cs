@@ -14,25 +14,13 @@ namespace SgqSystem.Controllers.Globalization
     {
         #region Construtor
 
-        private IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1;
-        private IBaseDomain<ParCluster, ParClusterDTO> _baseParCluster;
-        //private IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1;
-        private IBaseDomain<ParFrequency, ParFrequencyDTO> _baseParFrequency;
-        private IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> _baseParConsolidationType;
+        private IParamsDomain _paramDomain;
         private ParamsViewModel ViewModel;
 
-        public GlobalizationController(
-             IBaseDomain<ParLevel1, ParLevel1DTO> baseParLevel1,
-             IBaseDomain<ParFrequency, ParFrequencyDTO> baseParFrequency,
-             IBaseDomain<ParConsolidationType, ParConsolidationTypeDTO> baseParConsolidationType,
-             IBaseDomain<ParCluster, ParClusterDTO> baseParCluster
-            )
+        public GlobalizationController(IParamsDomain paramDomain)
         {
-            _baseParLevel1 = baseParLevel1;
-            _baseParFrequency = baseParFrequency;
-            _baseParConsolidationType = baseParConsolidationType;
-            _baseParCluster = baseParCluster;
-            ViewModel = new ParamsViewModel(_baseParLevel1, _baseParFrequency, _baseParConsolidationType, _baseParCluster);
+            _paramDomain = paramDomain;
+            ViewModel = new ParamsViewModel(_paramDomain.CarregaDropDownsParams());/*Cria view model vazio.*/
         }
 
         #endregion

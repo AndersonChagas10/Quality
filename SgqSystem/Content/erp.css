@@ -1,0 +1,16 @@
+﻿.table-erp
+{
+    width: 100%;
+}
+.td-erp {
+    padding: 4px;
+}
+
+.input-erp {
+    padding: 4px 8px 4px 8px;
+    height: 26px;
+}
+
+.popover, .tooltip {
+    z-index: 10060 !important;
+}
