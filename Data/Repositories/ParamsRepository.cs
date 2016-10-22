@@ -162,6 +162,25 @@ namespace Data.Repositories
             }
         }
 
+        public void SaveParLevel2(ParLevel2 paramLevel2)
+        {
+            if(paramLevel2.Id == 0)
+            {
+                db.ParLevel2.Add(paramLevel2);
+            }
+            else
+            {
+                Guard.verifyDate(paramLevel2, "AlterDate");
+                db.ParLevel2.Attach(paramLevel2);
+                db.Entry(paramLevel2).State = EntityState.Modified;
+            }
+        }
+
+        public void SaveParLevel2(ParLevel2 paramLevel2, List<ParDepartment> ListParDepartment, List<ParFrequency> listParFrequancy)
+        {
+            throw new NotImplementedException();
+        }
+
         #region Não implementado
 
         //private DbSet<ParLevel1> EntityParLevel1 { get { return db.Set<ParLevel1>(); } }

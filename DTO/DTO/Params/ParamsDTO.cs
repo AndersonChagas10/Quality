@@ -24,7 +24,9 @@ namespace DTO.DTO.Params
         public ParHeaderFieldDTO parHeaderFieldDto { get; set; }
 
         public List<ParHeaderFieldDTO> listParHeaderFieldDto { get; set; }
-        
+        public List<ParDepartmentDTO> listParDepartmentdDto { get; set; }
+        public List<ParFrequencyDTO> listParFrequencydDto { get; set; }
+
         public ParLevel1XHeaderFieldDTO parLevel1HeaderFieldDto { get; set; }
         
         /*Fim Ja implementados */

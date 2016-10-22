@@ -3,6 +3,7 @@ using Dominio.Interfaces.Repositories;
 using DTO.DTO.Params;
 using AutoMapper;
 using System.Collections.Generic;
+using System;
 
 namespace Dominio.Services
 {
@@ -33,8 +34,7 @@ namespace Dominio.Services
             IBaseRepository<ParCluster> baseParCluster,
             IBaseRepository<ParLevelDefiniton> baseParLevelDefiniton,
             IBaseRepository<ParFieldType> baseParFieldType,
-            IParamsRepository paramsRepo)
-
+            IParamsRepository paramsRepo,
             IBaseRepository<ParDepartment> baseParDepartment)
         {
             _paramsRepo = paramsRepo;
@@ -80,6 +80,25 @@ namespace Dominio.Services
             return paramsDto;
         }
 
+        public ParamsDTO AddUpdateLevel2(ParamsDTO paramsDto)
+        {
+            //paramsDto.parLevel1Dto.IsValid();
+            ParLevel2 saveParamLevel2 = Mapper.Map<ParLevel2>(paramsDto.parLevel2Dto);
+            List<ParDepartment> listaParDepartment = Mapper.Map<List<ParDepartment>>(paramsDto.listParDepartmentdDto);
+            List<ParFrequency> ParFrequency = Mapper.Map<List<ParFrequency>>(paramsDto.listParFrequencydDto);
+
+
+            _paramsRepo.SaveParLevel2(saveParamLevel2, listaParDepartment, ParFrequency);
+
+            paramsDto.parLevel2Dto.Id = saveParamLevel2.Id;
+
+            ///*Salva Clueter X*/
+            //SalvarParLevel1XCluster(paramsDto, saveParamLevel1);
+
+            return paramsDto;
+        }
+
+
         private void SalvarParLevel1XCluster(ParamsDTO paramsDto, ParLevel1 saveParamLevel1)
         {
             foreach (var parLevel1XCluster in paramsDto.parLevel1XClusterDto)
@@ -119,6 +138,7 @@ namespace Dominio.Services
             retorno.SetDdls(DdlParConsolidation, DdlFrequency, DdlparLevel1, DdlparCluster, DdlparLevelDefinition, DdlParFieldType, DdlParDepartment);
             return retorno;
         }
+
 
         #endregion
     }
