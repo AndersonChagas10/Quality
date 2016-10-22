@@ -14,6 +14,13 @@ namespace Dominio
     
     public partial class ParCompany
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParCompany()
+        {
+            this.ParEvaluation = new HashSet<ParEvaluation>();
+            this.ParSample = new HashSet<ParSample>();
+        }
+    
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -21,5 +28,10 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool Active { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParEvaluation> ParEvaluation { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParSample> ParSample { get; set; }
     }
 }

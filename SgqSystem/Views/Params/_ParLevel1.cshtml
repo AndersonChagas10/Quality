@@ -11,7 +11,7 @@
 
         @*Obj Level1*@
         <div id="corpoIndicador" style="display: block; margin-top: 10px;">
-            
+
             <div style="padding: 5px; display:inline-table;">
                 <b>@Resources.Resource.indicator_name :</b>
                 @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
@@ -358,7 +358,8 @@
     </div>
 
     @*tabela cabecalho itens inputados*@
-    <table id="camposCabecalhoIncluidos">
+    <div id="divCamposCabecalhoIncluidos" style="display:none;">
+        <table id="camposCabecalhoIncluidos" >
         <thead>
             <tr>
                 <th>Cod.</th>
@@ -385,10 +386,19 @@
             </tr>
         </tfoot>
     </table>
+    </div>
 
     @*Btn salvar cabecalho*@
-    <div style="width: 100%; float: left;">
+    <div style="width: 100%; float: left;" id="btnIncluirCabecalho">
         <input type="button" id="salvarCabecalho" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+        <input type="button" id="salvarCabecalho1" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+        <input type="button" id="salvarCabecalho2" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+        <input type="button" id="salvarCabecalho3" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+    </div>
+
+    @*Cabecalho Preview*@
+    <div id="cabecalhoPreview">
+       
     </div>
 
     @*btn salvar tudo*@
@@ -405,6 +415,7 @@
 <script>
 
     var Cluster = {
+        Counter: 0,
         IncluirCluster: function () {
 
             /**/
@@ -428,8 +439,8 @@
             var pontosCluster = $('#pontosCluster').val();
 
             /**/
-            novaTr.find('#nomeCluster').append(nomeCluster + ' <input type="hidden" name="paramsDto.parLevel1XClusterDto[' + idCluster + '].ParLevel1_Id" value="' + idCluster + '" />')
-            novaTr.find('#pontosCluster').append(pontosCluster + ' <input type="hidden" name="paramsDto.parLevel1XClusterDto[' + idCluster + '].Points" value="' + pontosCluster + '" />')
+            novaTr.find('#nomeCluster').append(nomeCluster + ' <input type="hidden" name="paramsDto.parLevel1XClusterDto[' + Cluster.Counter + '].ParCluster_Id" value="' + idCluster + '" />')
+            novaTr.find('#pontosCluster').append(pontosCluster + ' <input type="hidden" name="paramsDto.parLevel1XClusterDto[' + Cluster.Counter + '].Points" value="' + pontosCluster + '" />')
             novaTr.find('#btnAlterarCluster').attr('id', novaTr.find('#btnAlterarCluster').attr('id') + idCluster);
             novaTr.find('#btnExcluirCluster').attr('id', novaTr.find('#btnExcluirCluster').attr('id') + idCluster);
             novaTr.attr('id', '');
@@ -445,6 +456,7 @@
             $('#valueCluster').val(-1);
             $('#pontosCluster').val("");
             $('#valueCluster option[value=' + idCluster + ']').attr('disabled', true)
+            Cluster.Counter++;
         },
         EventoRemove: function (btnSelector, idCluster) {
             $('#' + btnSelector).click(function () {
@@ -467,10 +479,14 @@
             $('#objMultiplaEscolha').hide();
             $('#objBinario').hide();
             $('#salvarCabecalho').hide().val('');
+            $('#btnIncluirCabecalho input').hide();
         },
         TipoChange: function () {
             var escolhaSelecionada = parseInt($('#parFieldType option:selected').val());
             Cabecalhos.hideAllObj();
+            Cabecalhos.tableMultiplaEscolha.clear().draw();
+            $('#divCamposCabecalhoIncluidos').hide();
+            Cabecalhos.ParMultiplaEscolhaOpcoes = [];
             switch (escolhaSelecionada) {
                 case 1: //Multipla Escolha
                     Cabecalhos.ShowMutiplaEscolha();
@@ -490,6 +506,7 @@
         },
 
         ParMultiplaEscolhaOpcoes: [],
+        Counter: 0,
         IncluirMultiplaEscolha: function () {
             var cod = "?";
             var nivelDoCampo = $('#headerLevel option:selected').text();
@@ -517,16 +534,59 @@
                valor,
                obj
             ]).draw(false);
-
+           
+            $('#divCamposCabecalhoIncluidos').show();
         },
         ShowMutiplaEscolha: function () {
             $('#objMultiplaEscolha').show();
-            $('#salvarCabecalho').val('Salvar ' + $('#parFieldType option:selected').text()).show();
+            $('#btnIncluirCabecalho input').hide();
+            $('#salvarCabecalho1').val('Salvar ' + $('#parFieldType option:selected').text()).show().on('click', Cabecalhos.SalvaMultiplaEscolha);
         },
         SalvaMultiplaEscolha: function () {
+            
+            var example = '<div id=""><label> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label>' +
+                            '<select class="" id="" name="" style="padding: 2px;">' +
+                            '<option value="-1">Selecione...</option> ';
 
+            Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
+                example +=  '<option value="1">'+o.Name+'</option>';
+            });
+
+            example += '</select>';
+            /*Cria inputs para objeto: */
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].ParFieldType_Id"        value="' + $('#parFieldType option:selected').val() + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].Name"                   value="' + $('#paramsDto_parHeaderFieldDto_Name').val() + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].Description"            value="" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].ParLevelDefinition_Id"  value="' + $('#headerLevel option:selected').val() + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') + '"/>';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].IsActive"               value="true" />';
+
+            Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, counter) {
+                /*Cria inputs para objeto: */
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].parMultipleValuesDto[' + counter + '].ParHeaderField_Id"     value="' + o.ParHeaderField_Id + '" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].parMultipleValuesDto[' + counter + '].Name"                  value="' + o.Name + '" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].parMultipleValuesDto[' + counter + '].Description"           value="' + o.Description + '" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].parMultipleValuesDto[' + counter + '].PunishmentValue"       value="' + o.PunishmentValue + '" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].parMultipleValuesDto[' + counter + '].Conformity"            value="" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].parMultipleValuesDto[' + counter + '].IsActive"              value="true" />';
+            });
+
+            example += '</div>'
+
+
+            $('#cabecalhoPreview').append(example);
+
+
+            /*Limpa formulario Header*/
+            $('#paramsDto_parHeaderFieldDto_Name').val('');
+            $('#headerLevel option:selected').val('');
+            Cabecalhos.tableMultiplaEscolha.clear().draw();
+            $('#divCamposCabecalhoIncluidos').hide();
+            Cabecalhos.ParMultiplaEscolhaOpcoes = [];
+            Cabecalhos.Counter++;
         },
 
+        CounterParBinario: 0,
         ParBinario: [],
         IncluirBinario: function () {
 
@@ -535,17 +595,19 @@
             var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
             var vinculado = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "Sim" : "Não";
             var tipo = $('#parFieldType option:selected').text();
+            var tipoVal = $('#parFieldType option:selected').val();
 
             var nameObjBinario1 = $('#objBinarioPunishmentName1').val();
             var valorObjBinario1 = $('#objBinarioPunishmentValue1').val();
             var nameObjBinario2 = $('#objBinarioPunishmentName2').val();
             var valorObjBinario2 = $('#objBinarioPunishmentValue2').val();
-
+            var obj = '<input type="button" value="excluir" id=' + nome + tipo + ' />';
             /*Obj1*/
             Cabecalhos.ParBinario.push({
                 'Name': nameObjBinario1,
                 'ParHeaderField_Id': '',
                 'Description': '',
+                'ParLevelDefinition_Id': tipoVal,
                 'PunishmentValue': valorObjBinario1,
                 'Conformity': true
             });
@@ -555,6 +617,7 @@
                 'Name': nameObjBinario2,
                 'ParHeaderField_Id': '',
                 'Description': '',
+                'ParLevelDefinition_Id': tipoVal,
                 'PunishmentValue': valorObjBinario2,
                 'Conformity': false
             });
@@ -578,15 +641,54 @@
                tipo,
                nameObjBinario2,
                valorObjBinario2,
-               obj2
+               obj
             ]).draw(false);
 
+            $('#divCamposCabecalhoIncluidos').show();
         },
         ShowBinario: function () {
             $('#objBinario').show();
-            $('#salvarCabecalho').val('Salvar ' + $('#parFieldType option:selected').text()).show();
+            $('#btnIncluirCabecalho input').hide();
+            $('#salvarCabecalho2').val('Salvar ' + $('#parFieldType option:selected').text()).show().on('click', Cabecalhos.SalvaBinario);
         },
-        SalvaBinario: function () { },
+        SalvaBinario: function () {
+
+            var example =  '<label class="on-off">';
+            Cabecalhos.ParBinario.forEach(function (o, c) {
+                example += o.Name;
+                var a = c == 0 ? 'checked = "checked"' : '';
+                var b = c == 0 ? "true" : "false";
+                example += '<input disable="disabled" ' + a + ' type="radio" value="' + b + '" >'
+            });
+            example += '</label>';
+
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].ParFieldType_Id"        value="' + $('#parFieldType option:selected').val() + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].Name"                   value="' + $('#paramsDto_parHeaderFieldDto_Name').val() + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].Description"            value="" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].ParLevelDefinition_Id"  value="' + $('#parFieldType option:selected').val() + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') + '"/>';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].IsActive"               value="true" />';
+
+            Cabecalhos.ParBinario.forEach(function (o, counter) {
+                /*Cria inputs para objeto: */
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].parMultipleValuesDto[' + counter + '].ParHeaderField_Id"     value="' + o.ParHeaderField_Id + '" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].parMultipleValuesDto[' + counter + '].Name"                  value="' + o.Name + '" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].parMultipleValuesDto[' + counter + '].Description"           value="' + o.Description + '" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].parMultipleValuesDto[' + counter + '].PunishmentValue"       value="' + o.PunishmentValue + '" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].parMultipleValuesDto[' + counter + '].Conformity"            value="" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[' + Cabecalhos.Counter + '].parMultipleValuesDto[' + counter + '].IsActive"              value="true" />';
+            });
+
+            $('#cabecalhoPreview').append(example);
+
+
+            /*Limpa formulario Header*/
+            $('#paramsDto_parHeaderFieldDto_Name').val('');
+            Cabecalhos.tableMultiplaEscolha.clear().draw();
+            $('#divCamposCabecalhoIncluidos').hide();
+            Cabecalhos.ParBinario = [];
+            Cabecalhos.Counter++;
+        },
 
     }
 

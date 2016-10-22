@@ -14,6 +14,13 @@ namespace Dominio
     
     public partial class ParHeaderField
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParHeaderField()
+        {
+            this.ParLevel1HeaderField = new HashSet<ParLevel1HeaderField>();
+            this.ParMultipleValues = new HashSet<ParMultipleValues>();
+        }
+    
         public int Id { get; set; }
         public int ParFieldType_Id { get; set; }
         public string Name { get; set; }
@@ -23,5 +30,12 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
+    
+        public virtual ParFieldType ParFieldType { get; set; }
+        public virtual ParLevelDefiniton ParLevelDefiniton { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParLevel1HeaderField> ParLevel1HeaderField { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParMultipleValues> ParMultipleValues { get; set; }
     }
 }

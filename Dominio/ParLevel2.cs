@@ -14,16 +14,33 @@ namespace Dominio
     
     public partial class ParLevel2
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParLevel2()
+        {
+            this.ParEvaluation = new HashSet<ParEvaluation>();
+            this.ParLevel3Group = new HashSet<ParLevel3Group>();
+            this.ParSample = new HashSet<ParSample>();
+        }
+    
         public int Id { get; set; }
         public int ParFrequency_Id { get; set; }
         public int ParDepartment_Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool EmptyLevel3 { get; set; }
-        public bool ShowLevel03 { get; set; }
-        public bool GroupLevel3 { get; set; }
+        public bool IsEmptyLevel3 { get; set; }
+        public bool HasShowLevel03 { get; set; }
+        public bool HasGroupLevel3 { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool Active { get; set; }
+        public bool IsActive { get; set; }
+    
+        public virtual ParDepartment ParDepartment { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParEvaluation> ParEvaluation { get; set; }
+        public virtual ParFrequency ParFrequency { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParLevel3Group> ParLevel3Group { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParSample> ParSample { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace DTO.DTO.Params
 {
-    public class ParLevel1HeaderFieldDTO : EntityBase
+    public class ParLevel1XHeaderFieldDTO : EntityBase
     {
         public int ParLevel1_Id { get; set; }
         public int ParHeaderField_Id { get; set; }

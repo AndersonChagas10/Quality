@@ -26,7 +26,7 @@ namespace DTO.DTO.Params
 
         public ParConsolidationTypeDTO parConsolidationTypeDto { get; set; }
         public ParFrequencyDTO parFrequencyDto { get; set; }
-        public List<ParLevel1HeaderFieldDTO> parLevel1HeaderFieldDto { get; set; }
+        public List<ParLevel1XHeaderFieldDTO> parLevel1HeaderFieldDto { get; set; }
 
     }
 }

@@ -9,8 +9,8 @@ namespace SgqSystem.Mappers
     {
         public ParLevel1HeaderFieldMapperProfile()
         {
-            CreateMap<ParLevel1HeaderFieldDTO, ParLevel1HeaderField>();
-            CreateMap<ParLevel1HeaderField, ParLevel1HeaderFieldDTO>();
+            CreateMap<ParLevel1XHeaderFieldDTO, ParLevel1HeaderField>();
+            CreateMap<ParLevel1HeaderField, ParLevel1XHeaderFieldDTO>();
         }
     }
 }

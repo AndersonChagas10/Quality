@@ -62,6 +62,7 @@
     <Compile Include="Interfaces\Repositories\ICorrectiveActionRepository.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
     <Compile Include="Interfaces\Repositories\IGetDataResultRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IParamsRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRelatorioColetaRepository.cs" />
     <Compile Include="Interfaces\Repositories\ISaveCollectionRepo.cs" />
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
@@ -84,6 +85,9 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="LogService\LoggerNLog.cs" />
+    <Compile Include="LogSgqGlobal.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParCluster.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

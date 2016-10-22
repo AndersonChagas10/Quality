@@ -14,11 +14,20 @@ namespace Dominio
     
     public partial class ParLevelDefiniton
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParLevelDefiniton()
+        {
+            this.ParHeaderField = new HashSet<ParHeaderField>();
+        }
+    
         public int Id { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParHeaderField> ParHeaderField { get; set; }
     }
 }
