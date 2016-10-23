@@ -322,10 +322,10 @@
     </Compile>
     <Compile Include="Handlres\HandleApi.cs" />
     <Compile Include="Handlres\HandleController.cs" />
-    <Compile Include="Helpers\Table.cs" />
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParHeaderFieldMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevelDefinitonMapperProfile.cs" />
@@ -572,7 +572,6 @@
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Content\daterangepicker-bs2.css" />
     <Content Include="Content\daterangepicker-bs3.css" />
-    <Content Include="Content\erp.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Gridmvc.css" />
@@ -1081,11 +1080,7 @@
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_stacked.scss" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_variables.scss" />
     <Content Include="Views\Params\_ParLevel1.cshtml" />
-    <Content Include="Views\Globalization\components\_parameretrization_create.cshtml" />
-    <Content Include="Views\Globalization\components\_parameretrization_layout.cshtml" />
-    <Content Include="Views\Params\_Navbar.cshtml" />
-    <Content Include="Views\Params\_LeftLayout.cshtml" />
-    <Content Include="Views\Params\_RightLayout.cshtml" />
+    <Content Include="Views\Params\Index2.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

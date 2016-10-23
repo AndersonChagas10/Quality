@@ -12,6 +12,7 @@ namespace DTO.DTO.Params
         public IEnumerable<SelectListItem> DdlparCluster { get; set; }
         public IEnumerable<SelectListItem> DdlparLevelDefinition { get; set; }
         public IEnumerable<SelectListItem> DdlParFieldType { get; set; }
+        public IEnumerable<SelectListItem> DdlParDepartment { get; set; }
 
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
@@ -29,7 +30,9 @@ namespace DTO.DTO.Params
             return retorno;
         }
 
-        public void SetDdls(List<ParConsolidationTypeDTO> ddlParConsolidation, List<ParFrequencyDTO> ddlFrequency, List<ParLevel1DTO> ddlparLevel1, List<ParClusterDTO> ddlparCluster, List<ParLevelDefinitonDTO> ddlparLevelDefinition, List<ParFieldTypeDTO> ddlParFieldType)
+        public void SetDdls(List<ParConsolidationTypeDTO> ddlParConsolidation, List<ParFrequencyDTO> ddlFrequency, List<ParLevel1DTO> ddlparLevel1, 
+                            List<ParClusterDTO> ddlparCluster, List<ParLevelDefinitonDTO> ddlparLevelDefinition, List<ParFieldTypeDTO> ddlParFieldType,
+                            List<ParDepartmentDTO> ddrParDepartment)
         {
             DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation);
             DdlFrequency = Guard.CreateDropDownList(ddlFrequency);
@@ -37,6 +40,7 @@ namespace DTO.DTO.Params
             DdlparCluster = Guard.CreateDropDownList(ddlparCluster);
             DdlparLevelDefinition = Guard.CreateDropDownList(ddlparLevelDefinition);
             DdlParFieldType = Guard.CreateDropDownList(ddlParFieldType);
+            DdlParDepartment = Guard.CreateDropDownList(ddrParDepartment);
         }
     }
 }

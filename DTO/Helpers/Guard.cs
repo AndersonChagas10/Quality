@@ -181,6 +181,37 @@ namespace DTO.Helpers
 
         #region Data
 
+        /// <summary>
+        /// Verifica property , se ela for data default ou nula, coloca data atual.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <param name="property"></param>
+        public static void verifyDate<T>(T obj, string property)
+        {
+            try
+            {
+                if (obj.GetType().GetProperty(property) != null)
+                {
+                    var date = (DateTime)obj.GetType().GetProperty(property).GetValue(obj, null);
+                    if (date.IsNull())
+                    {
+                        obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
+                    }
+                    else
+                    {
+                        if (date == DateTime.MinValue)
+                            obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
+            }
+        }
+
+
         public static DateTime ConverteStringPateParaDateTime(string dataString)
         {
             return DateTime.ParseExact(dataString, "dd/MM/yyyy", CultureInfo.InvariantCulture);

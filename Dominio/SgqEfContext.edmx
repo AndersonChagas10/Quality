@@ -159,6 +159,22 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="LogSgqGlobal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="addDate" Type="datetime" />
+          <Property Name="Level" Type="varchar(max)" />
+          <Property Name="Call_Site" Type="varchar(max)" />
+          <Property Name="Exception_Type" Type="varchar(max)" />
+          <Property Name="Exception_Message" Type="varchar(max)" />
+          <Property Name="Stack_Trace" Type="varchar(max)" />
+          <Property Name="Additional_Info" Type="varchar(max)" />
+          <Property Name="Object" Type="varchar(max)" />
+          <Property Name="email" Type="varchar(max)" />
+          <Property Name="Second_Log_Path" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="ParCluster">
           <Key>
             <PropertyRef Name="Id" />
@@ -318,7 +334,7 @@
           <Property Name="IsSpecificNumberEvaluetion" Type="bit" Nullable="false" />
           <Property Name="IsSpecificNumberSample" Type="bit" Nullable="false" />
           <Property Name="IsSpecificLevel3" Type="bit" Nullable="false" />
-          <Property Name="IsSpecificGoal" Type="bit" Nullable="false" />
+          <Property Name="IsSpecificGoal" Type="bit" />
           <Property Name="IsRuleConformity" Type="bit" Nullable="false" />
           <Property Name="IsFixedEvaluetionNumber" Type="bit" Nullable="false" />
           <Property Name="IsLimitedEvaluetionNumber" Type="bit" Nullable="false" />
@@ -358,12 +374,12 @@
           <Property Name="ParDepartment_Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="EmptyLevel3" Type="bit" Nullable="false" />
-          <Property Name="ShowLevel03" Type="bit" Nullable="false" />
-          <Property Name="GroupLevel3" Type="bit" Nullable="false" />
+          <Property Name="IsEmptyLevel3" Type="bit" Nullable="false" />
+          <Property Name="HasShowLevel03" Type="bit" Nullable="false" />
+          <Property Name="HasGroupLevel3" Type="bit" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParLevel3">
           <Key>
@@ -462,7 +478,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -781,6 +797,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParEvaluation_ParCompany">
+          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="1" />
+          <End Role="ParEvaluation" Type="Self.ParEvaluation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParEvaluation">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParEvaluation_ParLevel2">
+          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="1" />
+          <End Role="ParEvaluation" Type="Self.ParEvaluation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParEvaluation">
+              <PropertyRef Name="ParLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParHeaderField_ParFieldType">
+          <End Role="ParFieldType" Type="Self.ParFieldType" Multiplicity="1" />
+          <End Role="ParHeaderField" Type="Self.ParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParFieldType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParHeaderField">
+              <PropertyRef Name="ParFieldType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParHeaderField_ParLevelDefinition">
+          <End Role="ParLevelDefiniton" Type="Self.ParLevelDefiniton" Multiplicity="1" />
+          <End Role="ParHeaderField" Type="Self.ParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevelDefiniton">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParHeaderField">
+              <PropertyRef Name="ParLevelDefinition_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParLevel1_ParConsolidationType">
           <End Role="ParConsolidationType" Type="Self.ParConsolidationType" Multiplicity="1" />
           <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="*" />
@@ -802,6 +866,126 @@
             </Principal>
             <Dependent Role="ParLevel1">
               <PropertyRef Name="ParFrequency_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1HeaderField_ParHeaderField">
+          <End Role="ParHeaderField" Type="Self.ParHeaderField" Multiplicity="1" />
+          <End Role="ParLevel1HeaderField" Type="Self.ParLevel1HeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParHeaderField">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1HeaderField">
+              <PropertyRef Name="ParHeaderField_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1HeaderField_ParLevel1">
+          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="1" />
+          <End Role="ParLevel1HeaderField" Type="Self.ParLevel1HeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1HeaderField">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1XCluster_ParCluster">
+          <End Role="ParCluster" Type="Self.ParCluster" Multiplicity="1" />
+          <End Role="ParLevel1XCluster" Type="Self.ParLevel1XCluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCluster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XCluster">
+              <PropertyRef Name="ParCluster_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1XCluster_ParLevel1">
+          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="1" />
+          <End Role="ParLevel1XCluster" Type="Self.ParLevel1XCluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XCluster">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel2_ParDepartment">
+          <End Role="ParDepartment" Type="Self.ParDepartment" Multiplicity="1" />
+          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParDepartment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2">
+              <PropertyRef Name="ParDepartment_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel2_ParFrequency">
+          <End Role="ParFrequency" Type="Self.ParFrequency" Multiplicity="1" />
+          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParFrequency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2">
+              <PropertyRef Name="ParFrequency_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Group_ParLevel2">
+          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="1" />
+          <End Role="ParLevel3Group" Type="Self.ParLevel3Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Group">
+              <PropertyRef Name="ParLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParMultipleValues_ParHeaderField">
+          <End Role="ParHeaderField" Type="Self.ParHeaderField" Multiplicity="1" />
+          <End Role="ParMultipleValues" Type="Self.ParMultipleValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParHeaderField">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParMultipleValues">
+              <PropertyRef Name="ParHeaderField_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParSample_ParCompany">
+          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="1" />
+          <End Role="ParSample" Type="Self.ParSample" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParSample">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParSample_ParLevel2">
+          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="1" />
+          <End Role="ParSample" Type="Self.ParSample" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParSample">
+              <PropertyRef Name="ParLevel2_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -841,6 +1025,7 @@
           <EntitySet Name="Level01" EntityType="Self.Level01" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level02" EntityType="Self.Level02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level03" EntityType="Self.Level03" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogSgqGlobal" EntityType="Self.LogSgqGlobal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCluster" EntityType="Self.ParCluster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParClusterGroup" EntityType="Self.ParClusterGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCompany" EntityType="Self.ParCompany" Schema="dbo" store:Type="Tables" />
@@ -941,6 +1126,22 @@
             <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
             <End Role="ParCluster" EntitySet="ParCluster" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParEvaluation_ParCompany" Association="Self.FK_ParEvaluation_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParEvaluation" EntitySet="ParEvaluation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParEvaluation_ParLevel2" Association="Self.FK_ParEvaluation_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ParEvaluation" EntitySet="ParEvaluation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParHeaderField_ParFieldType" Association="Self.FK_ParHeaderField_ParFieldType">
+            <End Role="ParFieldType" EntitySet="ParFieldType" />
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParHeaderField_ParLevelDefinition" Association="Self.FK_ParHeaderField_ParLevelDefinition">
+            <End Role="ParLevelDefiniton" EntitySet="ParLevelDefiniton" />
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParLevel1_ParConsolidationType" Association="Self.FK_ParLevel1_ParConsolidationType">
             <End Role="ParConsolidationType" EntitySet="ParConsolidationType" />
             <End Role="ParLevel1" EntitySet="ParLevel1" />
@@ -948,6 +1149,46 @@
           <AssociationSet Name="FK_ParLevel1_ParFrequency" Association="Self.FK_ParLevel1_ParFrequency">
             <End Role="ParFrequency" EntitySet="ParFrequency" />
             <End Role="ParLevel1" EntitySet="ParLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1HeaderField_ParHeaderField" Association="Self.FK_ParLevel1HeaderField_ParHeaderField">
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+            <End Role="ParLevel1HeaderField" EntitySet="ParLevel1HeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1HeaderField_ParLevel1" Association="Self.FK_ParLevel1HeaderField_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel1HeaderField" EntitySet="ParLevel1HeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1XCluster_ParCluster" Association="Self.FK_ParLevel1XCluster_ParCluster">
+            <End Role="ParCluster" EntitySet="ParCluster" />
+            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1XCluster_ParLevel1" Association="Self.FK_ParLevel1XCluster_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel2_ParDepartment" Association="Self.FK_ParLevel2_ParDepartment">
+            <End Role="ParDepartment" EntitySet="ParDepartment" />
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel2_ParFrequency" Association="Self.FK_ParLevel2_ParFrequency">
+            <End Role="ParFrequency" EntitySet="ParFrequency" />
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Group_ParLevel2" Association="Self.FK_ParLevel3Group_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ParLevel3Group" EntitySet="ParLevel3Group" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParMultipleValues_ParHeaderField" Association="Self.FK_ParMultipleValues_ParHeaderField">
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+            <End Role="ParMultipleValues" EntitySet="ParMultipleValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParSample_ParCompany" Association="Self.FK_ParSample_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParSample" EntitySet="ParSample" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParSample_ParLevel2" Association="Self.FK_ParSample_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ParSample" EntitySet="ParSample" />
           </AssociationSet>
           <AssociationSet Name="FK_UnitUser_Unit" Association="Self.FK_UnitUser_Unit">
             <End Role="Unit" EntitySet="Unit" />
@@ -974,6 +1215,7 @@
           <EntitySet Name="Level01" EntityType="SgqDbModel.Level01" />
           <EntitySet Name="Level02" EntityType="SgqDbModel.Level02" />
           <EntitySet Name="Level03" EntityType="SgqDbModel.Level03" />
+          <EntitySet Name="LogSgqGlobal" EntityType="SgqDbModel.LogSgqGlobal" />
           <EntitySet Name="ParCluster" EntityType="SgqDbModel.ParCluster" />
           <EntitySet Name="ParClusterGroup" EntityType="SgqDbModel.ParClusterGroup" />
           <EntitySet Name="ParCompany" EntityType="SgqDbModel.ParCompany" />
@@ -1074,13 +1316,69 @@
             <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
             <End Role="ParCluster" EntitySet="ParCluster" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1XCluster_ParCluster" Association="SgqDbModel.FK_ParLevel1XCluster_ParCluster">
+            <End Role="ParCluster" EntitySet="ParCluster" />
+            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParEvaluation_ParCompany" Association="SgqDbModel.FK_ParEvaluation_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParEvaluation" EntitySet="ParEvaluation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParSample_ParCompany" Association="SgqDbModel.FK_ParSample_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParSample" EntitySet="ParSample" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParLevel1_ParConsolidationType" Association="SgqDbModel.FK_ParLevel1_ParConsolidationType">
             <End Role="ParConsolidationType" EntitySet="ParConsolidationType" />
             <End Role="ParLevel1" EntitySet="ParLevel1" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParLevel2_ParDepartment" Association="SgqDbModel.FK_ParLevel2_ParDepartment">
+            <End Role="ParDepartment" EntitySet="ParDepartment" />
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParEvaluation_ParLevel2" Association="SgqDbModel.FK_ParEvaluation_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ParEvaluation" EntitySet="ParEvaluation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParHeaderField_ParFieldType" Association="SgqDbModel.FK_ParHeaderField_ParFieldType">
+            <End Role="ParFieldType" EntitySet="ParFieldType" />
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParLevel1_ParFrequency" Association="SgqDbModel.FK_ParLevel1_ParFrequency">
             <End Role="ParFrequency" EntitySet="ParFrequency" />
             <End Role="ParLevel1" EntitySet="ParLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel2_ParFrequency" Association="SgqDbModel.FK_ParLevel2_ParFrequency">
+            <End Role="ParFrequency" EntitySet="ParFrequency" />
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParHeaderField_ParLevelDefinition" Association="SgqDbModel.FK_ParHeaderField_ParLevelDefinition">
+            <End Role="ParLevelDefiniton" EntitySet="ParLevelDefiniton" />
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1HeaderField_ParHeaderField" Association="SgqDbModel.FK_ParLevel1HeaderField_ParHeaderField">
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+            <End Role="ParLevel1HeaderField" EntitySet="ParLevel1HeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParMultipleValues_ParHeaderField" Association="SgqDbModel.FK_ParMultipleValues_ParHeaderField">
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+            <End Role="ParMultipleValues" EntitySet="ParMultipleValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1HeaderField_ParLevel1" Association="SgqDbModel.FK_ParLevel1HeaderField_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel1HeaderField" EntitySet="ParLevel1HeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1XCluster_ParLevel1" Association="SgqDbModel.FK_ParLevel1XCluster_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Group_ParLevel2" Association="SgqDbModel.FK_ParLevel3Group_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ParLevel3Group" EntitySet="ParLevel3Group" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParSample_ParLevel2" Association="SgqDbModel.FK_ParSample_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ParSample" EntitySet="ParSample" />
           </AssociationSet>
           <AssociationSet Name="FK_UnitUser_Unit" Association="SgqDbModel.FK_UnitUser_Unit">
             <End Role="Unit" EntitySet="Unit" />
@@ -1270,6 +1568,22 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CollectionLevel03" Relationship="SgqDbModel.FK_CollectionLevel03_Level03" FromRole="Level03" ToRole="CollectionLevel03" />
         </EntityType>
+        <EntityType Name="LogSgqGlobal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="addDate" Type="DateTime" Precision="3" />
+          <Property Name="Level" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Call_Site" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Exception_Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Exception_Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Stack_Trace" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Additional_Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Object" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Second_Log_Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="ParCluster">
           <Key>
             <PropertyRef Name="Id" />
@@ -1283,6 +1597,7 @@
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParClusterGroup" Relationship="SgqDbModel.FK_ParCluster_ParClusterGroup" FromRole="ParCluster" ToRole="ParClusterGroup" />
+          <NavigationProperty Name="ParLevel1XCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCluster" FromRole="ParCluster" ToRole="ParLevel1XCluster" />
         </EntityType>
         <EntityType Name="ParClusterGroup">
           <Key>
@@ -1308,6 +1623,8 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParEvaluation" Relationship="SgqDbModel.FK_ParEvaluation_ParCompany" FromRole="ParCompany" ToRole="ParEvaluation" />
+          <NavigationProperty Name="ParSample" Relationship="SgqDbModel.FK_ParSample_ParCompany" FromRole="ParCompany" ToRole="ParSample" />
         </EntityType>
         <EntityType Name="ParCompanyCluster">
           <Key>
@@ -1353,6 +1670,7 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParLevel2_ParDepartment" FromRole="ParDepartment" ToRole="ParLevel2" />
         </EntityType>
         <EntityType Name="ParEvaluation">
           <Key>
@@ -1365,6 +1683,8 @@
           <Property Name="AddDate" Type="DateTime" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParEvaluation_ParCompany" FromRole="ParEvaluation" ToRole="ParCompany" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParEvaluation_ParLevel2" FromRole="ParEvaluation" ToRole="ParLevel2" />
         </EntityType>
         <EntityType Name="ParFieldType">
           <Key>
@@ -1376,6 +1696,7 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_ParHeaderField_ParFieldType" FromRole="ParFieldType" ToRole="ParHeaderField" />
         </EntityType>
         <EntityType Name="ParFrequency">
           <Key>
@@ -1388,6 +1709,7 @@
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1_ParFrequency" FromRole="ParFrequency" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParLevel2_ParFrequency" FromRole="ParFrequency" ToRole="ParLevel2" />
         </EntityType>
         <EntityType Name="ParGoal">
           <Key>
@@ -1414,6 +1736,10 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParFieldType" Relationship="SgqDbModel.FK_ParHeaderField_ParFieldType" FromRole="ParHeaderField" ToRole="ParFieldType" />
+          <NavigationProperty Name="ParLevelDefiniton" Relationship="SgqDbModel.FK_ParHeaderField_ParLevelDefinition" FromRole="ParHeaderField" ToRole="ParLevelDefiniton" />
+          <NavigationProperty Name="ParLevel1HeaderField" Relationship="SgqDbModel.FK_ParLevel1HeaderField_ParHeaderField" FromRole="ParHeaderField" ToRole="ParLevel1HeaderField" />
+          <NavigationProperty Name="ParMultipleValues" Relationship="SgqDbModel.FK_ParMultipleValues_ParHeaderField" FromRole="ParHeaderField" ToRole="ParMultipleValues" />
         </EntityType>
         <EntityType Name="ParLevel1">
           <Key>
@@ -1433,7 +1759,7 @@
           <Property Name="IsSpecificNumberEvaluetion" Type="Boolean" Nullable="false" />
           <Property Name="IsSpecificNumberSample" Type="Boolean" Nullable="false" />
           <Property Name="IsSpecificLevel3" Type="Boolean" Nullable="false" />
-          <Property Name="IsSpecificGoal" Type="Boolean" Nullable="false" />
+          <Property Name="IsSpecificGoal" Type="Boolean" />
           <Property Name="IsRuleConformity" Type="Boolean" Nullable="false" />
           <Property Name="IsFixedEvaluetionNumber" Type="Boolean" Nullable="false" />
           <Property Name="IsLimitedEvaluetionNumber" Type="Boolean" Nullable="false" />
@@ -1442,6 +1768,8 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParConsolidationType" Relationship="SgqDbModel.FK_ParLevel1_ParConsolidationType" FromRole="ParLevel1" ToRole="ParConsolidationType" />
           <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParLevel1_ParFrequency" FromRole="ParLevel1" ToRole="ParFrequency" />
+          <NavigationProperty Name="ParLevel1HeaderField" Relationship="SgqDbModel.FK_ParLevel1HeaderField_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1HeaderField" />
+          <NavigationProperty Name="ParLevel1XCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XCluster" />
         </EntityType>
         <EntityType Name="ParLevel1HeaderField">
           <Key>
@@ -1453,6 +1781,8 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_ParLevel1HeaderField_ParHeaderField" FromRole="ParLevel1HeaderField" ToRole="ParHeaderField" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1HeaderField_ParLevel1" FromRole="ParLevel1HeaderField" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="ParLevel1XCluster">
           <Key>
@@ -1465,6 +1795,8 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCluster" FromRole="ParLevel1XCluster" ToRole="ParCluster" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1XCluster" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="ParLevel2">
           <Key>
@@ -1475,12 +1807,17 @@
           <Property Name="ParDepartment_Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EmptyLevel3" Type="Boolean" Nullable="false" />
-          <Property Name="ShowLevel03" Type="Boolean" Nullable="false" />
-          <Property Name="GroupLevel3" Type="Boolean" Nullable="false" />
+          <Property Name="IsEmptyLevel3" Type="Boolean" Nullable="false" />
+          <Property Name="HasShowLevel03" Type="Boolean" Nullable="false" />
+          <Property Name="HasGroupLevel3" Type="Boolean" Nullable="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParDepartment" Relationship="SgqDbModel.FK_ParLevel2_ParDepartment" FromRole="ParLevel2" ToRole="ParDepartment" />
+          <NavigationProperty Name="ParEvaluation" Relationship="SgqDbModel.FK_ParEvaluation_ParLevel2" FromRole="ParLevel2" ToRole="ParEvaluation" />
+          <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParLevel2_ParFrequency" FromRole="ParLevel2" ToRole="ParFrequency" />
+          <NavigationProperty Name="ParLevel3Group" Relationship="SgqDbModel.FK_ParLevel3Group_ParLevel2" FromRole="ParLevel2" ToRole="ParLevel3Group" />
+          <NavigationProperty Name="ParSample" Relationship="SgqDbModel.FK_ParSample_ParLevel2" FromRole="ParLevel2" ToRole="ParSample" />
         </EntityType>
         <EntityType Name="ParLevel3">
           <Key>
@@ -1524,6 +1861,7 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParLevel3Group_ParLevel2" FromRole="ParLevel3Group" ToRole="ParLevel2" />
         </EntityType>
         <EntityType Name="ParLevel3InputType">
           <Key>
@@ -1579,12 +1917,13 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_ParHeaderField_ParLevelDefinition" FromRole="ParLevelDefiniton" ToRole="ParHeaderField" />
         </EntityType>
         <EntityType Name="ParMeasurementUnit">
           <Key>
@@ -1610,6 +1949,7 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_ParMultipleValues_ParHeaderField" FromRole="ParMultipleValues" ToRole="ParHeaderField" />
         </EntityType>
         <EntityType Name="ParSample">
           <Key>
@@ -1622,6 +1962,8 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParSample_ParCompany" FromRole="ParSample" ToRole="ParCompany" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParSample_ParLevel2" FromRole="ParSample" ToRole="ParLevel2" />
         </EntityType>
         <EntityType Name="ParStructure">
           <Key>
@@ -1907,6 +2249,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParLevel1XCluster_ParCluster">
+          <End Type="SgqDbModel.ParCluster" Role="ParCluster" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1XCluster" Role="ParLevel1XCluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCluster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XCluster">
+              <PropertyRef Name="ParCluster_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParEvaluation_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
+          <End Type="SgqDbModel.ParEvaluation" Role="ParEvaluation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParEvaluation">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParSample_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
+          <End Type="SgqDbModel.ParSample" Role="ParSample" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParSample">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParLevel1_ParConsolidationType">
           <End Type="SgqDbModel.ParConsolidationType" Role="ParConsolidationType" Multiplicity="1" />
           <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
@@ -1919,6 +2297,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParLevel2_ParDepartment">
+          <End Type="SgqDbModel.ParDepartment" Role="ParDepartment" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParDepartment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2">
+              <PropertyRef Name="ParDepartment_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParEvaluation_ParLevel2">
+          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.ParEvaluation" Role="ParEvaluation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParEvaluation">
+              <PropertyRef Name="ParLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParHeaderField_ParFieldType">
+          <End Type="SgqDbModel.ParFieldType" Role="ParFieldType" Multiplicity="1" />
+          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParFieldType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParHeaderField">
+              <PropertyRef Name="ParFieldType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParLevel1_ParFrequency">
           <End Type="SgqDbModel.ParFrequency" Role="ParFrequency" Multiplicity="1" />
           <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
@@ -1928,6 +2342,102 @@
             </Principal>
             <Dependent Role="ParLevel1">
               <PropertyRef Name="ParFrequency_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel2_ParFrequency">
+          <End Type="SgqDbModel.ParFrequency" Role="ParFrequency" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParFrequency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2">
+              <PropertyRef Name="ParFrequency_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParHeaderField_ParLevelDefinition">
+          <End Type="SgqDbModel.ParLevelDefiniton" Role="ParLevelDefiniton" Multiplicity="1" />
+          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevelDefiniton">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParHeaderField">
+              <PropertyRef Name="ParLevelDefinition_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1HeaderField_ParHeaderField">
+          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1HeaderField" Role="ParLevel1HeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParHeaderField">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1HeaderField">
+              <PropertyRef Name="ParHeaderField_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParMultipleValues_ParHeaderField">
+          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="1" />
+          <End Type="SgqDbModel.ParMultipleValues" Role="ParMultipleValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParHeaderField">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParMultipleValues">
+              <PropertyRef Name="ParHeaderField_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1HeaderField_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1HeaderField" Role="ParLevel1HeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1HeaderField">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1XCluster_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1XCluster" Role="ParLevel1XCluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XCluster">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Group_ParLevel2">
+          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel3Group" Role="ParLevel3Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Group">
+              <PropertyRef Name="ParLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParSample_ParLevel2">
+          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.ParSample" Role="ParSample" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParSample">
+              <PropertyRef Name="ParLevel2_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2122,6 +2632,23 @@
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Alias" ColumnName="Alias" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogSgqGlobal">
+            <EntityTypeMapping TypeName="SgqDbModel.LogSgqGlobal">
+              <MappingFragment StoreEntitySet="LogSgqGlobal">
+                <ScalarProperty Name="Second_Log_Path" ColumnName="Second_Log_Path" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="Object" ColumnName="Object" />
+                <ScalarProperty Name="Additional_Info" ColumnName="Additional_Info" />
+                <ScalarProperty Name="Stack_Trace" ColumnName="Stack_Trace" />
+                <ScalarProperty Name="Exception_Message" ColumnName="Exception_Message" />
+                <ScalarProperty Name="Exception_Type" ColumnName="Exception_Type" />
+                <ScalarProperty Name="Call_Site" ColumnName="Call_Site" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="addDate" ColumnName="addDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2334,12 +2861,12 @@
           <EntitySetMapping Name="ParLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel2">
               <MappingFragment StoreEntitySet="ParLevel2">
-                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="GroupLevel3" ColumnName="GroupLevel3" />
-                <ScalarProperty Name="ShowLevel03" ColumnName="ShowLevel03" />
-                <ScalarProperty Name="EmptyLevel3" ColumnName="EmptyLevel3" />
+                <ScalarProperty Name="HasGroupLevel3" ColumnName="HasGroupLevel3" />
+                <ScalarProperty Name="HasShowLevel03" ColumnName="HasShowLevel03" />
+                <ScalarProperty Name="IsEmptyLevel3" ColumnName="IsEmptyLevel3" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ParDepartment_Id" ColumnName="ParDepartment_Id" />

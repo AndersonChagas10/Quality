@@ -18,7 +18,7 @@ namespace Data.Repositories
         protected readonly SgqDbDevEntities db;
 
         /// <summary>
-        /// Objeto T em memória volátil pela chamada de sua Interface.
+        /// Construtor.
         /// </summary>
         //private DbSet<T> Entity { get { return db.Set<T>(); } }
 

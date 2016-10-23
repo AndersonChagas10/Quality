@@ -9,6 +9,6 @@ namespace Dominio.Interfaces.Services
 
         ParamsDTO AddUpdateLevel1(ParamsDTO paramsDto);
         ParamsDTO GetLevel1(int IdParLevel1);
-
+        ParamsDTO AddUpdateLevel2(ParamsDTO paramsDto);
     }
 }

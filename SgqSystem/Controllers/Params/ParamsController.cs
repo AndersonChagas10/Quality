@@ -1,4 +1,5 @@
 ﻿using Dominio.Interfaces.Services;
+using DTO.DTO.Params;
 using SgqSystem.ViewModels;
 using System.Web.Mvc;
 
@@ -34,6 +35,10 @@ namespace SgqSystem.Controllers.Params
                 return PartialView("_ParLevel1", new ParamsViewModel());
         }
 
-      
+        public ActionResult Index2()
+        {
+            return View(ViewModel);
+        }
+
     }
 }
