@@ -8,10 +8,10 @@ namespace DTO.DTO.Params
         public int ParDepartment_Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool EmptyLevel3 { get; set; }
-        public bool ShowLevel03 { get; set; }
-        public bool GroupLevel3 { get; set; }
-        public bool Active { get; set; } = true;
+        public bool IsEmptyLevel3 { get; set; }
+        public bool HasShowLevel03 { get; set; }
+        public bool HasGroupLevel3 { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public ParConsolidationTypeDTO parConsolidationTypeDto { get; set; }
         public ParFrequencyDTO parFrequencyDto { get; set; }

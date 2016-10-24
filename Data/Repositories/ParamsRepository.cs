@@ -25,7 +25,19 @@ namespace Data.Repositories
         {
             db = Db;
         }
-
+        private void SalvaParLevel1(ParLevel1 paramLevel1)
+        {
+            if (paramLevel1.Id == 0)
+            {
+                db.ParLevel1.Add(paramLevel1);
+            }
+            else
+            {
+                Guard.verifyDate(paramLevel1, "AlterDate");
+                db.ParLevel1.Attach(paramLevel1);
+                db.Entry(paramLevel1).State = EntityState.Modified;
+            }
+        }
         public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster)
         {
             using (var ts = db.Database.BeginTransaction())
@@ -148,37 +160,24 @@ namespace Data.Repositories
             }
         }
 
-        private void SalvaParLevel1(ParLevel1 paramLevel1)
-        {
-            if (paramLevel1.Id == 0)
-            {
-                db.ParLevel1.Add(paramLevel1);
-            }
-            else
-            {
-                Guard.verifyDate(paramLevel1, "AlterDate");
-                db.ParLevel1.Attach(paramLevel1);
-                db.Entry(paramLevel1).State = EntityState.Modified;
-            }
-        }
-
         public void SaveParLevel2(ParLevel2 paramLevel2)
         {
-            if(paramLevel2.Id == 0)
+            using (var ts = db.Database.BeginTransaction())
             {
-                db.ParLevel2.Add(paramLevel2);
+                if (paramLevel2.Id == 0)
+                {
+                    db.ParLevel2.Add(paramLevel2);
+                }
+                else
+                {
+                    Guard.verifyDate(paramLevel2, "AlterDate");
+                    db.ParLevel2.Attach(paramLevel2);
+                    db.Entry(paramLevel2).State = EntityState.Modified;
+                }
+                db.SaveChanges();
+                ts.Commit();
             }
-            else
-            {
-                Guard.verifyDate(paramLevel2, "AlterDate");
-                db.ParLevel2.Attach(paramLevel2);
-                db.Entry(paramLevel2).State = EntityState.Modified;
-            }
-        }
-
-        public void SaveParLevel2(ParLevel2 paramLevel2, List<ParDepartment> ListParDepartment, List<ParFrequency> listParFrequancy)
-        {
-            throw new NotImplementedException();
+          
         }
 
         #region Não implementado

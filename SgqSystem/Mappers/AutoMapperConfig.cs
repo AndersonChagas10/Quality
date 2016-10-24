@@ -42,6 +42,9 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParMultipleValuesMapperProfile>();
 
 
+                x.AddProfile<ParLevel2MapperProfile>();
+
+
 
                 /*
                  Exemplo para configuração do Auto Mapper.

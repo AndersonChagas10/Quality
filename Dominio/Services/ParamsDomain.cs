@@ -88,7 +88,7 @@ namespace Dominio.Services
             List<ParFrequency> ParFrequency = Mapper.Map<List<ParFrequency>>(paramsDto.listParFrequencydDto);
 
 
-            _paramsRepo.SaveParLevel2(saveParamLevel2, listaParDepartment, ParFrequency);
+            _paramsRepo.SaveParLevel2(saveParamLevel2);
 
             paramsDto.parLevel2Dto.Id = saveParamLevel2.Id;
 

@@ -61,7 +61,7 @@
                                 <b>Frequencia</b> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Frequencia.')">
                             </td>
                             <td>
-                                @Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectFrequencia" })
+                                @Html.DropDownList("paramsDto.parLevel2Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectFrequencia" })
                                 @*<select style="padding: 2px;" name="" id="selectConsolidacao">
                             <option>Selecione o tipo de consolidacao</option>
                             <option>por Tarefa (level 3)</option>
@@ -76,7 +76,7 @@
                             </td>
                             <td>
                                 <label class="on-off">
-                                    @Html.EditorFor(model => model.paramsDto.parLevel2Dto.EmptyLevel3)
+                                    @Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsEmptyLevel3)
                                     <span><a></a></span>
                                 </label>
                             </td>
@@ -89,7 +89,7 @@
                             </td>
                             <td>
                                 <label class="on-off">
-                                    @Html.EditorFor(model => model.paramsDto.parLevel2Dto.GroupLevel3)
+                                    @Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasGroupLevel3)
                                     <span><a></a></span>
                                 </label>
                             </td>
@@ -100,7 +100,7 @@
                             </td>
                             <td>
                                 <label class="on-off">
-                                    @Html.EditorFor(model => model.paramsDto.parLevel2Dto.GroupLevel3)
+                                    @Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasShowLevel03)
                                     <span><a></a></span>
                                 </label>
                             </td>
