@@ -70,6 +70,7 @@ namespace Data.Repositories
             if (parMultipleValues.Description == null)
                 parMultipleValues.Description = "";
             parMultipleValues.ParHeaderField_Id = parHeadFieldId;
+            parMultipleValues.ParHeaderField = null;
             if (parMultipleValues.Id == 0)
             {
                 db.ParMultipleValues.Add(parMultipleValues);
