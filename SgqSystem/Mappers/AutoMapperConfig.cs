@@ -43,7 +43,10 @@ namespace SgqSystem.Mappers
 
 
                 x.AddProfile<ParLevel2MapperProfile>();
-
+                x.AddProfile<ParLevel3GroupMapperProfile>();
+                x.AddProfile<ParLocalMapperProfile>();
+                x.AddProfile<ParCounterMapperProfile>();
+                x.AddProfile<ParCounterLocalMapperProfile>();
 
 
                 /*

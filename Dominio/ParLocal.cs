@@ -12,16 +12,22 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParLevel3Group
+    public partial class ParLocal
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParLocal()
+        {
+            this.ParCounterLocal = new HashSet<ParCounterLocal>();
+        }
+    
         public int Id { get; set; }
-        public int ParLevel2_Id { get; set; }
+        public int Level { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
     
-        public virtual ParLevel2 ParLevel2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParCounterLocal> ParCounterLocal { get; set; }
     }
 }

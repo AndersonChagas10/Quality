@@ -17,8 +17,10 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParLevel1()
         {
-            this.ParLevel1HeaderField = new HashSet<ParLevel1HeaderField>();
+            this.ParCounterLocal = new HashSet<ParCounterLocal>();
             this.ParLevel1XCluster = new HashSet<ParLevel1XCluster>();
+            this.ParLevel1XHeaderField = new HashSet<ParLevel1XHeaderField>();
+            this.ParLevel1XHeadField = new HashSet<ParLevel1XHeadField>();
         }
     
         public int Id { get; set; }
@@ -44,10 +46,14 @@ namespace Dominio
         public bool IsActive { get; set; }
     
         public virtual ParConsolidationType ParConsolidationType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParCounterLocal> ParCounterLocal { get; set; }
         public virtual ParFrequency ParFrequency { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParLevel1HeaderField> ParLevel1HeaderField { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel1XCluster> ParLevel1XCluster { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParLevel1XHeadField> ParLevel1XHeadField { get; set; }
     }
 }

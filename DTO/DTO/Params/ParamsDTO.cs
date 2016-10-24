@@ -29,6 +29,13 @@ namespace DTO.DTO.Params
 
         public ParLevel1XHeaderFieldDTO parLevel1HeaderFieldDto { get; set; }
         
+        public List<ParLevel3GroupDTO> listParLevel3GroupDto { get; set; }
+
+        public ParLocalDTO parLocalDto { get; set; }
+        public ParCounterDTO parCounterDto { get; set; }
+        public ParCounterLocalDTO parCounterLocalDto { get; set; }
+
+
         /*Fim Ja implementados */
 
 
