@@ -181,6 +181,15 @@
     <Compile Include="ParMultipleValues.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParNotConformityRule.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParNotConformityRuleXLevel.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParRelapse.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParSample.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

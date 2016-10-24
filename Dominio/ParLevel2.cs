@@ -20,6 +20,7 @@ namespace Dominio
             this.ParCounterLocal = new HashSet<ParCounterLocal>();
             this.ParEvaluation = new HashSet<ParEvaluation>();
             this.ParLevel3Group = new HashSet<ParLevel3Group>();
+            this.ParRelapse = new HashSet<ParRelapse>();
             this.ParSample = new HashSet<ParSample>();
         }
     
@@ -43,6 +44,8 @@ namespace Dominio
         public virtual ParFrequency ParFrequency { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3Group> ParLevel3Group { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParRelapse> ParRelapse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParSample> ParSample { get; set; }
     }
