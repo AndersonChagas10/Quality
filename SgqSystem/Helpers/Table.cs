@@ -18,7 +18,7 @@ namespace SgqSystem.Helpers
             top,
             left
         }
-
+        //
         public static MvcHtmlString td(this HtmlHelper html, string idLink, string textoLink = "Voltar")
         {
             string strLink = string.Format("<a id=\"{0}\" href=\"javascript:history.go(-1);\">{1}</a>", idLink, textoLink);

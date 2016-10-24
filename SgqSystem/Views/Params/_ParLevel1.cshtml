@@ -16,16 +16,23 @@
                             <table class="table-erp">
                                 <tbody>
                                     <tr class="row">
-                                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.left)
-                                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.left)
-                                        @*@Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_name), Table.PosicaoLabel.top)
-                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_description), Table.PosicaoLabel.top)*@
+                                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_name), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_description), Table.PosicaoLabel.top)
                                     </tr>
-                                    @*<tr class="row">
-                                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.consolidation_type), Table.PosicaoLabel.top, Resources.Resource.consolidation_type_popover)
-                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_name), Table.PosicaoLabel.top)
-                                        </tr>*@
-                                </tbody>
+                                    <tr class="row">
+                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, new { @class = "form-control input-erp", @id = "selectConsolidacao" }), @Html.Label(Resources.Resource.consolidation_type), Table.PosicaoLabel.top, Resources.Resource.consolidation_type_popover)
+                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-erp", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, Resources.Resource.frequency_popover)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.save_button_on_level2), Table.PosicaoLabel.top, Resources.Resource.save_button_on_level2_popover)
+                                        @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasNoApplicableLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.not_applicable_on_level_2), Table.PosicaoLabel.top, Resources.Resource.not_applicable_on_level_2_popover)
+                                        @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasAlert, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_alert), Table.PosicaoLabel.top, Resources.Resource.has_alert_popover)
+                                    </tr>
+                                    <tr class="row">
+
+                                    </tr>
+</tbody>
                             </table>
                         </div>
                     </div>

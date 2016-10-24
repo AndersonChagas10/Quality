@@ -226,7 +226,7 @@
     <value>Descrição do Indicador</value>
   </data>
   <data name="level1_name" xml:space="preserve">
-    <value>Nome do Indicador</value>
+    <value>Nome do Nível 1</value>
   </data>
   <data name="of" xml:space="preserve">
     <value>de</value>
@@ -343,7 +343,7 @@
     <value>Define se haverá agrupamentos no level 2. Se houverem, crie os agrupamentos abaixo.</value>
   </data>
   <data name="level2_name" xml:space="preserve">
-    <value>Nome nível 2</value>
+    <value>Nome do Nível 2</value>
   </data>
   <data name="level3_group" xml:space="preserve">
     <value>Agrupamento de Level 3</value>
@@ -398,5 +398,14 @@
   </data>
   <data name="id" xml:space="preserve">
     <value>ID</value>
+  </data>
+  <data name="allow_level2_group_popover" xml:space="preserve">
+    <value>Define se existirão agrupadores de nivel 2. Se sim, abre uma lista para criar os grupos.</value>
+  </data>
+  <data name="has_alert" xml:space="preserve">
+    <value>Emitir alerta</value>
+  </data>
+  <data name="has_alert_popover" xml:space="preserve">
+    <value>Define se esse nível acionará alertas. As regras do alerta serão definidas posteriormente no vínculo entre nível 2 e nível 3.</value>
   </data>
 </root>
