@@ -1,7 +1,8 @@
 ﻿using DTO.BaseEntity;
-using Resources;
+using System.Resources;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Resources;
 
 namespace DTO.DTO.Params
 {

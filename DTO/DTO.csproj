@@ -33,6 +33,9 @@
     <Reference Include="App_GlobalResources.bphhks-b">
       <HintPath>..\..\..\..\AppData\Local\Temp\Temporary ASP.NET Files\root\71360d4b\_shadow\3529d52b\7516\App_GlobalResources.bphhks-b.dll</HintPath>
     </Reference>
+    <Reference Include="App_GlobalResources.tzjlsewd">
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\a10ca113\_shadow\df0118b2\12692\App_GlobalResources.tzjlsewd.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
