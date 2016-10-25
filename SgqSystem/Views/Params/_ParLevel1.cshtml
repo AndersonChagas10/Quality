@@ -25,14 +25,47 @@
                                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-erp", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, Resources.Resource.frequency_popover)
                                     </tr>
                                     <tr class="row">
-                                        @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.save_button_on_level2), Table.PosicaoLabel.top, Resources.Resource.save_button_on_level2_popover)
-                                        @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasNoApplicableLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.not_applicable_on_level_2), Table.PosicaoLabel.top, Resources.Resource.not_applicable_on_level_2_popover)
-                                        @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasAlert, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_alert), Table.PosicaoLabel.top, Resources.Resource.has_alert_popover)
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.save_button_on_level2), Table.PosicaoLabel.left, Resources.Resource.save_button_on_level2_popover)
                                     </tr>
                                     <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasNoApplicableLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.not_applicable_on_level_2), Table.PosicaoLabel.left, Resources.Resource.not_applicable_on_level_2_popover)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasAlert, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_alert), Table.PosicaoLabel.left, Resources.Resource.has_alert_popover)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, Resources.Resource.allow_specific_register_by_unit_popover)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_field_edition_of_the_header), Table.PosicaoLabel.left)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number), Table.PosicaoLabel.left)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberSample, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_sample_number), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.save_button_on_level3), Table.PosicaoLabel.top, Resources.Resource.save_button_on_level3_popover)
+                                        @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificGoal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_goal_of_the_level1_by_unit), Table.PosicaoLabel.top)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaRadioButton(
+                                            @Html.Label(Resources.Resource.standard),
+                                            @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true", new { @class = "icheck" }),
+                                            @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false", new { @class = "icheck" }),
+                                            Resources.Resource.conform,
+                                            Resources.Resource.not_conform,
+                                            Table.PosicaoLabel.top)
+
+                                        @Table.GerarColunaRadioButton(
+                                            @Html.Label(Resources.Resource.standard),
+                                            @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true", new { @class = "radio-erp" }),
+                                            @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false", new { @class = "radio-erp" }),
+                                            Resources.Resource.conform,
+                                            Resources.Resource.not_conform,
+                                            Table.PosicaoLabel.top)
 
                                     </tr>
-</tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -42,9 +75,6 @@
 
                         @*Obj Level1*@
                         <div id="corpoIndicador" style="display: block; margin-top: 10px;">
-
-
-
 
                             <table>
                                 <tbody>
@@ -441,6 +471,16 @@
     <link href="~/Content/DataTables/jquery.dataTables.min.css" rel="stylesheet" />
 
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+
+    <script>
+
+        ///initialize switches
+        $.fn.bootstrapSwitch.defaults.size = 'mini';
+        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
+        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
+        $(".check-box").bootstrapSwitch();
+
+    </script>
 
     <script>
 

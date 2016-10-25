@@ -246,7 +246,7 @@
   <data name="allow_the_edition_of_the_evaluation_number" xml:space="preserve">
     <value>Permite editar número de avaliações</value>
   </data>
-  <data name="allow_the_edition_of_the_goal_of_the_indicator_by_unit" xml:space="preserve">
+  <data name="allow_the_edition_of_the_goal_of_the_level1_by_unit" xml:space="preserve">
     <value>Permite editar meta do indicador por unidade</value>
   </data>
   <data name="allow_the_edition_of_the_sample_number" xml:space="preserve">
@@ -401,6 +401,9 @@
   </data>
   <data name="allow_level2_group_popover" xml:space="preserve">
     <value>Define se existirão agrupadores de nivel 2. Se sim, abre uma lista para criar os grupos.</value>
+  </data>
+  <data name="allow_specific_register_by_unit_popover" xml:space="preserve">
+    <value>Define se as unidades terão liberdade de editar o level 1.  Caso a resposta para essa pergunta seja sim, o campo de cadastros específicos será habilitado para a definição de quais edições estarão à disposição da unidade.</value>
   </data>
   <data name="has_alert" xml:space="preserve">
     <value>Emitir alerta</value>
