@@ -324,6 +324,7 @@
     <Compile Include="Handlres\HandleController.cs" />
     <Compile Include="Handlres\ValidateModelAttribute.cs" />
     <Compile Include="Helpers\Teste.cs" />
+    <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />

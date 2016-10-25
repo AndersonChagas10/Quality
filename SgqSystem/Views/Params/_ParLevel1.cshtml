@@ -1,4 +1,5 @@
 ﻿@model SgqSystem.ViewModels.ParamsViewModel
+@using SgqSystem.Helpers
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
@@ -235,6 +236,7 @@
                     <td>Cluster</td>
                     <td>
                         @Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, htmlAttributes: new { @class = "", @style = "padding: 2px;" })
+                        @*@Html.ValidationMessageFor(m => m.paramsDdl.DdlparCluster, "", new { @class = "text-danger" })*@
                     </td>
                 </tr>
 
@@ -292,12 +294,14 @@
                 <td>@Html.Label("Nível do Campo")</td>
                 <td>
                     @Html.DropDownList("paramsDto.parHeaderFieldDto.ParLevelDefinition_Id", Model.paramsDdl.DdlparLevelDefinition, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "headerLevel" })
+                    @Html.ErrorManual("nivelCampoCabecalho", "O Nível do Campo deve ser selecionado")
                 </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(m => m.paramsDto.parHeaderFieldDto.Name)</td>
                 <td>
                     @Html.TextBoxFor(m => m.paramsDto.parHeaderFieldDto.Name)
+                    @Html.ErrorManual("nomeCampoCabecalho", "O campo Nome deve ser preenchido para Nível do Campo")
                 </td>
             </tr>
             <tr>
@@ -310,14 +314,17 @@
                 <td>@Html.Label("Tipo")</td>
                 <td>
                     @Html.DropDownList("paramsDto.parHeaderFieldDto.ParFieldType_Id", Model.paramsDdl.DdlParFieldType, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "parFieldType" })
+                    @Html.ErrorManual("tipoCampoCabecalho", "O campo Tipo deve ser selecionado para Nível do Campo")
                 </td>
             </tr>
         </tbody>
     </table>
 
     @*Obj cabecalho inputs para: multipla escolha, binario*@
+
     <div id="allObjCamposCabecalho">
 
+        @*Multipla Escolha*@
         <div id="objMultiplaEscolha" style="display:none;">
             <table id="tblOpcaoMultiplaEscolha">
                 <tbody>
@@ -328,9 +335,11 @@
                     <tr>
                         <td>
                             <input type="text" id="objMultiplaEscolhaName" name="Name" value="" />
+                            @Html.ErrorManual("multiplaEscolhaNameCabecalho", "O campo Tipo deve ser selecionado para Nível do Campo")
                         </td>
                         <td>
                             <input class="" id="objMultiplaEscolhaPunishmentValue" name="PunishmentValue" type="number" value="0">
+                            @Html.ErrorManual("multiplaEscolhaPunishmentValueCabecalho", "O campo Tipo deve ser selecionado para Nível do Campo")
                         </td>
                     </tr>
                     <tr>
@@ -341,7 +350,8 @@
                 </tbody>
             </table>
         </div>
-
+        
+        @*Binario*@
         <div id="objBinario" style="display:none;">
             <table id="tblBinario">
                 <tbody>
@@ -356,9 +366,12 @@
                         </td>
                         <td>
                             <input type="text" id="objBinarioPunishmentName1">
+                            @Html.ErrorManual("punishmentNameCabecalho1", "O campo Tipo deve ser selecionado para Nível do Campo")
+
                         </td>
                         <td>
                             <input type="number" id="objBinarioPunishmentValue1" style="width: 50px;">
+                            @Html.ErrorManual("punishmentValueCabecalho1", "O campo Tipo deve ser selecionado para Nível do Campo")
                         </td>
                     </tr>
                     <tr id="negativo">
@@ -367,9 +380,11 @@
                         </td>
                         <td>
                             <input type="text" id="objBinarioPunishmentName2">
+                            @Html.ErrorManual("punishmentNameCabecalho2", "O campo Tipo deve ser selecionado para Nível do Campo")
                         </td>
                         <td>
                             <input type="number" id="objBinarioPunishmentValue2" style="width: 50px;">
+                            @Html.ErrorManual("punishmentValueCabecalho2", "O campo Tipo deve ser selecionado para Nível do Campo")
                         </td>
                     </tr>
                     <tr>
@@ -517,7 +532,25 @@
     }
 
     var Cabecalhos = {
+        ValidaCamposCabecalho: function (isValid) {
 
+            if ($('#headerLevel option:selected').val() == -1) {
+                $('#nivelCampoCabecalho').show();
+                isValid = false;
+            }
+
+            if ($('#parFieldType option:selected').val() == -1) {
+                $('#tipoCampoCabecalho').show();
+                isValid = false;
+            }
+
+            if ($('#paramsDto_parHeaderFieldDto_Name').val().length == 0) {
+                $('#nomeCampoCabecalho').show();
+                isValid = false;
+            }
+
+            return isValid;
+        },
         tableMultiplaEscolha: $('#camposCabecalhoIncluidos').DataTable({
             info: false,
             searching: false,
@@ -559,29 +592,15 @@
         ValidaMultiplaEscolha: function (isValid) {
 
             var isValid = true;
-
-            if ($('#headerLevel option:selected') == -1) {
-                alert('Opção "Nível do Campo" do cabeçalho invalida.');
-                isValid = false;
-            }
-
-            if ($('#parFieldType option:selected') == -1) {
-                alert('Opção "Tipo" do cabeçalho inválida.');
-                isValid = false;
-            }
-
-            if ($('#paramsDto_parHeaderFieldDto_Name').val().length == 0) {
-                alert('Campo Name do cabeçalho não preenchido.');
-                isValid = false;
-            }
+            isValid = Cabecalhos.ValidaCamposCabecalho(isValid);
 
             if ($('#objMultiplaEscolhaName').val().length == 0) {
-                alert('Campo Opção não preenchido.');
+                $('#multiplaEscolhaNameCabecalho').show();
                 isValid = false;
             }
 
             if ($('#objMultiplaEscolhaPunishmentValue').val().length == 0) {
-                alert('Campo Punição/Premiação não preenchido.');
+                $('#multiplaEscolhaPunishmentValueCabecalho').show();
                 isValid = false;
             }
 
@@ -683,39 +702,25 @@
         ValidaBinario: function () {
 
             var isValid = true;
-
-            if ($('#headerLevel option:selected') == -1) {
-                alert('Opção "Nível do Campo" do cabeçalho invalida.');
-                isValid = false;
-            }
-
-            if ($('#parFieldType option:selected') == -1) {
-                alert('Opção "Tipo" do cabeçalho inválida.');
-                isValid = false;
-            }
-
-            if ($('#paramsDto_parHeaderFieldDto_Name').val().length == 0) {
-                alert('Campo Name do cabeçalho não preenchido.');
-                isValid = false;
-            }
+            isValid = Cabecalhos.ValidaCamposCabecalho(isValid);
 
             if ($('#objBinarioPunishmentName1').val().length == 0) {
-                alert('Campo Positivo não preenchido.');
+                $('#punishmentNameCabecalho1').show();
                 isValid = false;
             }
 
             if ($('#objBinarioPunishmentName2').val().length == 0) {
-                alert('Campo Negativo não preenchido.');
+                $('#punishmentNameCabecalho2').show();
                 isValid = false;
             }
 
             if ($('#objBinarioPunishmentValue1').val().length == 0) {
-                alert('Campo Punição/Premiação da condicional "Positivo" não preenchido.');
+                $('#punishmentValueCabecalho1').show();
                 isValid = false;
             }
 
             if ($('#objBinarioPunishmentValue2').val().length == 0) {
-                alert('Campo Punição/Premiação da condicional "Negativo" não preenchido.');
+                $('#punishmentValueCabecalho2').show();
                 isValid = false;
             }
 

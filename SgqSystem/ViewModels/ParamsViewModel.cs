@@ -1,9 +1,11 @@
 ﻿using DTO.DTO.Params;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SgqSystem.ViewModels
 {
-    public class ParamsViewModel
+    public class ParamsViewModel : IValidatableObject
     {
         #region Constructors
 
@@ -12,13 +14,10 @@ namespace SgqSystem.ViewModels
         /// </summary>
         public ParamsViewModel() { }
 
-        /// <summary>
-        /// Construtor para carregar dados do banco
-        /// </summary>
-        /// <param name="_baseParLevel1"></param>
-        /// <param name="_baseParFrequency"></param>
-        /// <param name="_baseParConsolidationType"></param>
-        /// <param name="_baseParCluster"></param>
+       /// <summary>
+       /// Construtor Padrão.
+       /// </summary>
+       /// <param name="paramsDdl"></param>
         public ParamsViewModel(ParamsDdl paramsDdl)
         {
             this.paramsDdl = paramsDdl;
@@ -31,10 +30,8 @@ namespace SgqSystem.ViewModels
         /// <summary>
         /// Construtor para View Model Level1
         /// </summary>
-        /// <param name="_baseParLevel1"></param>
-        /// <param name="_baseParFrequency"></param>
-        /// <param name="_baseParConsolidationType"></param>
-        /// <param name="parLevel1DTO"></param>
+        /// <param name="paramsDdl"></param>
+        /// <param name="paramsDb"></param>
         public ParamsViewModel(ParamsDdl paramsDdl, ParamsDTO paramsDb)
         {
         }
@@ -43,7 +40,45 @@ namespace SgqSystem.ViewModels
 
         public ParamsDTO paramsDto { get; set; }
         public ParamsDdl paramsDdl { get; set; }
-        
+
+        public string pontosCluster { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            foreach (var i in paramsDdl.DdlparCluster)
+            {
+                if (i.Selected == true && i.Value.Equals("-1") && string.IsNullOrEmpty(pontosCluster))
+                {
+                    yield return new ValidationResult("Description must be supplied.");
+                }
+            }
+        }
 
     }
 }
+
+
+//public class RequiredIfAttribute : RequiredAttribute
+//{
+//    private string PropertyName { get; set; }
+//    private object DesiredValue { get; set; }
+
+//    public RequiredIfAttribute(string propertyName, object desiredvalue)
+//    {
+//        PropertyName = propertyName;
+//        DesiredValue = desiredvalue;
+//    }
+
+//    protected override ValidationResult IsValid(object value, ValidationContext context)
+//    {
+//        object instance = context.ObjectInstance;
+//        Type type = instance.GetType();
+//        object proprtyvalue = type.GetProperty(PropertyName).GetValue(instance, null);
+//        if (proprtyvalue.ToString() == DesiredValue.ToString())
+//        {
+//            ValidationResult result = base.IsValid(value, context);
+//            return result;
+//        }
+//        return ValidationResult.Success;
+//    }
+//}

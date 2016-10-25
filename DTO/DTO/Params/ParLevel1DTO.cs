@@ -8,12 +8,10 @@ namespace DTO.DTO.Params
     public class ParLevel1DTO : EntityBase
     {
 
-        [Range(0, 999)]
-        [Required(ErrorMessage = "É obrigatório selecionar o tipo de consolidação.")]
+        [Range(0, 999, ErrorMessage = "É obrigatório selecionar o tipo de consolidação.")]
         public int ParConsolidationType_Id { get; set; }
 
-        [Range(0, 999)]
-        [Required(ErrorMessage = "É obrigatório selecionar a frequencia.")]
+        [Range(0, 999, ErrorMessage = "É obrigatório selecionar a frequencia.")]
         public int ParFrequency_Id { get; set; }
 
         //[Display(Name = "level1_name", ResourceType = typeof(Resource))]
