@@ -13,6 +13,8 @@ namespace Data.Repositories
     public class ParamsRepository : IParamsRepository
     {
 
+        #region Construtor
+
         /// <summary>
         /// Instancia do DataBase.
         /// </summary>
@@ -25,19 +27,11 @@ namespace Data.Repositories
         {
             db = Db;
         }
-        private void SalvaParLevel1(ParLevel1 paramLevel1)
-        {
-            if (paramLevel1.Id == 0)
-            {
-                db.ParLevel1.Add(paramLevel1);
-            }
-            else
-            {
-                Guard.verifyDate(paramLevel1, "AlterDate");
-                db.ParLevel1.Attach(paramLevel1);
-                db.Entry(paramLevel1).State = EntityState.Modified;
-            }
-        }
+
+        #endregion
+
+        #region ParLevel1 ParHeadField ParLevel1XCluster ParMultipleValue
+
         public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster)
         {
             using (var ts = db.Database.BeginTransaction())
@@ -69,10 +63,10 @@ namespace Data.Repositories
                             db.SaveChanges();
                         }
 
-                    int idParLevel1HeaderField;
-                    ParLevel1XHeaderField parLevel1HeaderField;
-                    /*Verifica se ja existe vinculo ParLevel1 e ParHEaderField na tabela NxN ParLevel1XHeaderField. */
-                    CriaParLevel1HeaderField(paramLevel1, parHeadField, out idParLevel1HeaderField, out parLevel1HeaderField);
+                        int idParLevel1HeaderField;
+                        ParLevel1XHeaderField parLevel1HeaderField;
+                        /*Verifica se ja existe vinculo ParLevel1 e ParHEaderField na tabela NxN ParLevel1XHeaderField. */
+                        CriaParLevel1HeaderField(paramLevel1, parHeadField, out idParLevel1HeaderField, out parLevel1HeaderField);
 
                         SalvaParLevel1HeaderField(idParLevel1HeaderField, parLevel1HeaderField);/*Salva ParLevel1XHeaderField*/
                         db.SaveChanges(); /*Obtem id do ParLevel1XHeaderField*/
@@ -81,6 +75,20 @@ namespace Data.Repositories
                 }
 
                 ts.Commit();
+            }
+        }
+
+        private void SalvaParLevel1(ParLevel1 paramLevel1)
+        {
+            if (paramLevel1.Id == 0)
+            {
+                db.ParLevel1.Add(paramLevel1);
+            }
+            else
+            {
+                Guard.verifyDate(paramLevel1, "AlterDate");
+                db.ParLevel1.Attach(paramLevel1);
+                db.Entry(paramLevel1).State = EntityState.Modified;
             }
         }
 
@@ -170,6 +178,8 @@ namespace Data.Repositories
                 db.Entry(Level1XCluster).State = EntityState.Modified;
             }
         }
+
+        #endregion
 
         public void AddUpdateParLevel2(ParLevel2 paramLevel2)
         {
@@ -263,7 +273,6 @@ namespace Data.Repositories
                 db.Entry(paramCounterLocal).State = EntityState.Modified;
             }
         }
-
 
         #region Não implementado
 
