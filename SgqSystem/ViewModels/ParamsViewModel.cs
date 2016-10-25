@@ -49,7 +49,7 @@ namespace SgqSystem.ViewModels
             {
                 if (i.Selected == true && i.Value.Equals("-1") && string.IsNullOrEmpty(pontosCluster))
                 {
-                    yield return new ValidationResult("Description must be supplied.");
+yield return new ValidationResult("Description must be supplied.");
                 }
             }
         }

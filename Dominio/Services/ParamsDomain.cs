@@ -230,7 +230,13 @@ namespace Dominio.Services
             paramsDto.parNotConformityRuleDto.Id = saveParNotConformityRule.Id;
             return paramsDto;
         }
-
+        public ParamsDTO AddUpdateParNotConformityRuleXLevel(ParamsDTO paramsDto)
+        {
+            ParNotConformityRuleXLevel saveParNotConformityRuleXLevel = Mapper.Map<ParNotConformityRuleXLevel>(paramsDto.parNotConformityRuleXLevelDto);
+            _paramsRepo.SaveParNotConformityRuleXLevel(saveParNotConformityRuleXLevel);
+            paramsDto.parNotConformityRuleXLevelDto.Id = saveParNotConformityRuleXLevel.Id;
+            return paramsDto;
+        }
 
         public ParamsDTO AddUpdateParCompany(ParamsDTO paramsDto)
         {

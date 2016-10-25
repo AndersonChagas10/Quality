@@ -332,6 +332,7 @@
     <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParNotConformityRuleXLevelMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParRelapseMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParGoalMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParHeaderFieldMapperProfile.cs" />

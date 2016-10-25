@@ -302,6 +302,21 @@ namespace Data.Repositories
             }
         }
 
+        public void SaveParNotConformityRuleXLevel(ParNotConformityRuleXLevel paramNotConformityRuleXLevel)
+        {
+            if (paramNotConformityRuleXLevel.Id == 0)
+            {
+                db.ParNotConformityRuleXLevel.Add(paramNotConformityRuleXLevel);
+            }
+            else
+            {
+                Guard.verifyDate(paramNotConformityRuleXLevel, "AlterDate");
+                db.ParNotConformityRuleXLevel.Attach(paramNotConformityRuleXLevel);
+                db.Entry(paramNotConformityRuleXLevel).State = EntityState.Modified;
+            }
+        }
+
+
         public void SaveParCompany(ParCompany paramCompany)
         {
 
@@ -316,7 +331,6 @@ namespace Data.Repositories
                 db.Entry(paramCompany).State = EntityState.Modified;
             }
         }
-
 
         #region Não implementado
 
