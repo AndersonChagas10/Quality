@@ -292,7 +292,7 @@
             <tr>
                 <td>@Html.Label("Nível do Campo")</td>
                 <td>
-                    @Html.DropDownList("paramsDto.parHeaderFieldDto.ParLevelDefinition_Id", Model.paramsDdl.DdlparLevelDefinition, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "headerLevel" })
+                    @Html.DropDownList("ParLevelDefinition_Id", Model.paramsDdl.DdlparLevelDefinition, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "headerLevel" })
                     @Html.ErrorManual("nivelCampoCabecalho", "O Nível do Campo deve ser selecionado")
                 </td>
             </tr>
@@ -312,7 +312,7 @@
             <tr>
                 <td>@Html.Label("Tipo")</td>
                 <td>
-                    @Html.DropDownList("paramsDto.parHeaderFieldDto.ParFieldType_Id", Model.paramsDdl.DdlParFieldType, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "parFieldType" })
+                    @Html.DropDownList("ParFieldType_Id", Model.paramsDdl.DdlParFieldType, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "parFieldType" })
                     @Html.ErrorManual("tipoCampoCabecalho", "O campo Tipo deve ser selecionado para Nível do Campo")
                 </td>
             </tr>
@@ -427,6 +427,7 @@
         </table>
     </div>
 
+
     @*Btn salvar cabecalho*@
     <div style="width: 100%; float: left;" id="btnIncluirCabecalho">
         <input type="button" id="salvarCabecalho" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
@@ -445,6 +446,7 @@
         <input type="button" value="Salvar o Indicador" onclick="indexParamsLevel1.enviarDadosParaApi();" style="font-size: small; padding: 10px; font-weight: bold;">
     </div>
 
+    @*<input type="hidden" name="paramsViewModel.paramsDto.parHeaderFieldDto.ParLevelDefinition_Id" value="12" />*@
 }
 
 <link href="~/Content/DataTables/jquery.dataTables.min.css" rel="stylesheet" />
@@ -547,6 +549,7 @@
     }
 
     var Cabecalhos = {
+
         ValidaCamposCabecalho: function (isValid) {
 
             if ($('#headerLevel option:selected').val() == -1) {
@@ -596,11 +599,13 @@
             $('#punishmentValueCabecalho2').hide();
         },
         TipoChange: function () {
+
             var escolhaSelecionada = parseInt($('#parFieldType option:selected').val());
             Cabecalhos.hideAllObj();
             Cabecalhos.tableMultiplaEscolha.clear().draw();
             $('#divCamposCabecalhoIncluidos').hide();
             Cabecalhos.ParMultiplaEscolhaOpcoes = [];
+            Cabecalhos.ParBinario = [];
             switch (escolhaSelecionada) {
                 case 1: //Multipla Escolha
                     Cabecalhos.ShowMutiplaEscolha();
@@ -619,8 +624,8 @@
             }
         },
 
-        ParMultiplaEscolhaOpcoes: [],
         Counter: 0,
+        ParMultiplaEscolhaOpcoes: [],
         ValidaMultiplaEscolha: function (isValid) {
 
             var isValid = true;
@@ -658,7 +663,7 @@
             /*Obj*/
             Cabecalhos.ParMultiplaEscolhaOpcoes.push({
                 'Name': opcoes,
-                'ParHeaderField_Id': '',
+                'ParHeaderField_Id': '0',
                 'Description': '',
                 'ParLevelDefinition_Id': $('#headerLevel option:selected').val(),
                 'PunishmentValue': valor
@@ -678,13 +683,13 @@
             $('#divCamposCabecalhoIncluidos').show();
 
             $('#objMultiplaEscolhaName').val('');
-            $('#objMultiplaEscolhaPunishmentValue').val('');
+            $('#objMultiplaEscolhaPunishmentValue').val('0');
 
         },
         ShowMutiplaEscolha: function () {
             $('#objMultiplaEscolha').show();
             $('#btnIncluirCabecalho input').hide();
-            $('#salvarCabecalho1').val('Salvar ' + $('#parFieldType option:selected').text()).show().on('click', Cabecalhos.SalvaMultiplaEscolha);
+            $('#salvarCabecalho1').val('Salvar ' + $('#parFieldType option:selected').text()).show();
         },
         SalvaMultiplaEscolha: function () {
 
@@ -704,7 +709,6 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + $('#headerLevel option:selected').val() + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
-
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, counter) {
                 /*Cria inputs para objeto: */
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].ParHeaderField_Id"     value="' + o.ParHeaderField_Id + '" />';
@@ -712,7 +716,7 @@
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].Name"                  value="' + o.Name + '" />';
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].Description"           value="' + o.Description + '" />';
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].PunishmentValue"       value="' + o.PunishmentValue + '" />';
-                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].Conformity"            value="" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].Conformity"            value="false" />';
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].IsActive"              value="true" />';
             });
 
@@ -724,9 +728,9 @@
             $('#paramsDto_parHeaderFieldDto_Name').val('');
 
             $('#objMultiplaEscolhaName').val('');
-            $('#objMultiplaEscolhaPunishmentValue').val('');
+            $('#objMultiplaEscolhaPunishmentValue').val('0');
             
-            $('#parFieldType').val('');
+            $('#parFieldType').val('-1');
 
             $('#headerLevel option:selected').val('');
             Cabecalhos.tableMultiplaEscolha.clear().draw();
@@ -788,7 +792,7 @@
             /*Obj1*/
             Cabecalhos.ParBinario.push({
                 'Name': nameObjBinario1,
-                'ParHeaderField_Id': '',
+                'ParHeaderField_Id': '0',
                 'Description': '',
                 'ParLevelDefinition_Id': tipoVal,
                 'PunishmentValue': valorObjBinario1,
@@ -798,7 +802,7 @@
             /*Obj2*/
             Cabecalhos.ParBinario.push({
                 'Name': nameObjBinario2,
-                'ParHeaderField_Id': '',
+                'ParHeaderField_Id': '0',
                 'Description': '',
                 'ParLevelDefinition_Id': tipoVal,
                 'PunishmentValue': valorObjBinario2,
@@ -831,13 +835,13 @@
 
             $('#objBinarioPunishmentName1').val('');
             $('#objBinarioPunishmentName2').val('');
-            $('#objBinarioPunishmentValue1').val('');
-            $('#objBinarioPunishmentValue2').val('');
+            $('#objBinarioPunishmentValue1').val('0');
+            $('#objBinarioPunishmentValue2').val('0');
         },
         ShowBinario: function () {
             $('#objBinario').show();
             $('#btnIncluirCabecalho input').hide();
-            $('#salvarCabecalho2').val('Salvar ' + $('#parFieldType option:selected').text()).show().on('click', Cabecalhos.SalvaBinario);
+            $('#salvarCabecalho2').val('Salvar ' + $('#parFieldType option:selected').text()).show();
         },
         SalvaBinario: function () {
 
@@ -863,7 +867,7 @@
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].Name"                  value="' + o.Name + '" />';
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].Description"           value="' + o.Description + '" />';
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].PunishmentValue"       value="' + o.PunishmentValue + '" />';
-                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].Conformity"            value="" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].Conformity"            value="' + o.Conformity + '" />';
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].IsActive"              value="true" />';
             });
             example += '</div>';
@@ -875,12 +879,14 @@
 
             $('#objBinarioPunishmentName1').val('');
             $('#objBinarioPunishmentName2').val('');
-            $('#objBinarioPunishmentValue1').val('');
-            $('#objBinarioPunishmentValue2').val('');
+            $('#objBinarioPunishmentValue1').val('0');
+            $('#objBinarioPunishmentValue2').val('0');
 
-            $('#parFieldType').val('');
+            $('#parFieldType').val('-1');
             Cabecalhos.tableMultiplaEscolha.clear().draw();
             $('#divCamposCabecalhoIncluidos').hide();
+            $('#objBinario').hide();
+            $('#salvarCabecalho2').hide();
             Cabecalhos.ParBinario = [];
         },
 
@@ -901,6 +907,9 @@
         },
 
     }
+
+    $('#salvarCabecalho1').on('click', Cabecalhos.SalvaMultiplaEscolha);
+    $('#salvarCabecalho2').on('click', Cabecalhos.SalvaBinario);
 
     Cluster.EventoDdlClusters();
     Cabecalhos.hideAllObj();
