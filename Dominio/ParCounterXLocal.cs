@@ -12,7 +12,7 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParCounterLocal
+    public partial class ParCounterXLocal
     {
         public int Id { get; set; }
         public int ParLocal_Id { get; set; }

@@ -17,17 +17,17 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParCounter()
         {
-            this.ParCounterLocal = new HashSet<ParCounterLocal>();
+            this.ParCounterXLocal = new HashSet<ParCounterXLocal>();
         }
     
         public int Id { get; set; }
         public int Level { get; set; }
         public string Name { get; set; }
         public System.DateTime AddDate { get; set; }
-        public System.DateTime AlterDate { get; set; }
-        public bool IsActive { get; set; }
+        public Nullable<System.DateTime> AlterDate { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParCounterLocal> ParCounterLocal { get; set; }
+        public virtual ICollection<ParCounterXLocal> ParCounterXLocal { get; set; }
     }
 }

@@ -260,17 +260,17 @@ namespace Data.Repositories
             }
         }
 
-        public void SaveParCounterLocal(ParCounterLocal paramCounterLocal)
+        public void SaveParCounterXLocal(ParCounterXLocal paramCounterXLocal)
         {
-            if (paramCounterLocal.Id == 0)
+            if (paramCounterXLocal.Id == 0)
             {
-                db.ParCounterLocal.Add(paramCounterLocal);
+                db.ParCounterXLocal.Add(paramCounterXLocal);
             }
             else
             {
-                Guard.verifyDate(paramCounterLocal, "AlterDate");
-                db.ParCounterLocal.Attach(paramCounterLocal);
-                db.Entry(paramCounterLocal).State = EntityState.Modified;
+                Guard.verifyDate(paramCounterXLocal, "AlterDate");
+                db.ParCounterXLocal.Attach(paramCounterXLocal);
+                db.Entry(paramCounterXLocal).State = EntityState.Modified;
             }
         }
 

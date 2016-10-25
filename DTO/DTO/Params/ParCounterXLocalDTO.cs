@@ -2,7 +2,7 @@
 
 namespace DTO.DTO.Params
 {
-    public class ParCounterLocalDTO : EntityBase
+    public class ParCounterXLocalDTO : EntityBase
     {
         public int ParLocal_Id { get; set; }
         public int ParCounter_Id { get; set; }

@@ -109,7 +109,7 @@
     <Compile Include="ParCounter.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ParCounterLocal.cs">
+    <Compile Include="ParCounterXLocal.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParDepartment.cs">

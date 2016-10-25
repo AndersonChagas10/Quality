@@ -50,7 +50,7 @@ namespace Dominio
         public virtual DbSet<ParCompanyStructure> ParCompanyStructure { get; set; }
         public virtual DbSet<ParConsolidationType> ParConsolidationType { get; set; }
         public virtual DbSet<ParCounter> ParCounter { get; set; }
-        public virtual DbSet<ParCounterLocal> ParCounterLocal { get; set; }
+        public virtual DbSet<ParCounterXLocal> ParCounterXLocal { get; set; }
         public virtual DbSet<ParDepartment> ParDepartment { get; set; }
         public virtual DbSet<ParEvaluation> ParEvaluation { get; set; }
         public virtual DbSet<ParFieldType> ParFieldType { get; set; }

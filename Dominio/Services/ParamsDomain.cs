@@ -3,6 +3,7 @@ using Dominio.Interfaces.Repositories;
 using DTO.DTO.Params;
 using AutoMapper;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dominio.Services
 {
@@ -25,7 +26,9 @@ namespace Dominio.Services
         private IBaseRepository<ParLevel3Group> _baseParLevel3Group;
         private IBaseRepository<ParLocal> _baseParLocal;
         private IBaseRepository<ParCounter> _baseParCounter;
-        private IBaseRepository<ParCounterLocal> _baseParCounterLocal;
+        private IBaseRepository<ParCounterXLocal> _baseParCounterXLocal;
+        
+
         private IBaseRepository<ParRelapse> _baseParRelapse;
         private IBaseRepository<ParNotConformityRule> _baseParNotConformityRule;
         private IBaseRepository<ParCompany> _baseParCompany;
@@ -44,7 +47,7 @@ namespace Dominio.Services
             IBaseRepository<ParLevel3Group> baseParLevel3Group,
             IBaseRepository<ParLocal> baseParLocal,
             IBaseRepository<ParCounter> baseParCounter,
-            IBaseRepository<ParCounterLocal> baseParCounterLocal,
+            IBaseRepository<ParCounterXLocal> baseParCounterLocal,
             IBaseRepository<ParRelapse> baseParRelapse,
             IBaseRepository<ParNotConformityRule> baseParNotConformityRule,
             IBaseRepository<ParCompany> baseParCompany)
@@ -61,7 +64,7 @@ namespace Dominio.Services
             _baseParLevel3Group = baseParLevel3Group;
             _baseParLocal = baseParLocal;
             _baseParCounter = baseParCounter;
-            _baseParCounterLocal = baseParCounterLocal;
+            _baseParCounterXLocal = baseParCounterLocal;
             _baseParRelapse = baseParRelapse;
             _baseParNotConformityRule = baseParNotConformityRule;
             _baseParCompany = baseParCompany;
@@ -136,6 +139,14 @@ namespace Dominio.Services
             var DdlParFieldType = Mapper.Map<List<ParFieldTypeDTO>>(_baseParFieldType.GetAll());
             var DdlParDepartment = Mapper.Map<List<ParDepartmentDTO>>(_baseParDepartment.GetAll());
 
+
+            var DdlParLocal_Level1 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAll().Where(p => p.Level == 1));
+            var DdlParLocal_Level2 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAll().Where(p => p.Level == 2));
+
+            var DdbParCounter_Level1 = Mapper.Map<List<ParCounterDTO>>(_baseParLocal.GetAll().Where(p => p.Level == 1));
+            var DdbParCounter_Level2 = Mapper.Map<List<ParCounterDTO>>(_baseParLocal.GetAll().Where(p => p.Level == 2));
+
+
             var retorno = new ParamsDdl();
             retorno.SetDdls(DdlParConsolidation, DdlFrequency, DdlparLevel1, DdlparCluster, DdlparLevelDefinition, DdlParFieldType, DdlParDepartment);
             return retorno;
@@ -173,9 +184,9 @@ namespace Dominio.Services
 
         public ParamsDTO AddUpdateParCounterLocal(ParamsDTO paramsDto)
         {
-            ParCounterLocal saveParCounterLocal = Mapper.Map<ParCounterLocal>(paramsDto.parCounterLocalDto);
-            _paramsRepo.SaveParCounterLocal(saveParCounterLocal);
-            paramsDto.parCounterLocalDto.Id = saveParCounterLocal.Id;
+            ParCounterXLocal saveParCounterXLocal = Mapper.Map<ParCounterXLocal>(paramsDto.parCounterXLocalDto);
+            _paramsRepo.SaveParCounterXLocal(saveParCounterXLocal);
+            paramsDto.parCounterXLocalDto.Id = saveParCounterXLocal.Id;
             return paramsDto;
         }
 

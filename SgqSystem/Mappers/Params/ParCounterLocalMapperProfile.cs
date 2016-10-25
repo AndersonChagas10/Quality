@@ -8,8 +8,8 @@ namespace SgqSystem.Mappers
     {
         public ParCounterLocalMapperProfile()
         {
-            CreateMap<ParCounterLocal, ParCounterLocalDTO>();
-            CreateMap<ParCounterLocalDTO, ParCounterLocal>();
+            CreateMap<ParCounterXLocal, ParCounterXLocalDTO>();
+            CreateMap<ParCounterXLocalDTO, ParCounterXLocal>();
         }
     }
 }
