@@ -330,11 +330,15 @@
     <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParNotConformityRuleXLevelMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParRelapseMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParGoalMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParHeaderFieldMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel2MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel2MapperProfile .cs" />
     <Compile Include="Mappers\Params\ParLevel3GroupMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParNotConformityRuleMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevelDefinitonMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLocalMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParMultipleValuesMapperProfile.cs" />

@@ -274,6 +274,64 @@ namespace Data.Repositories
             }
         }
 
+        public void SaveParRelapse(ParRelapse paramRelapse)
+        {
+            if (paramRelapse.Id == 0)
+            {
+                db.ParRelapse.Add(paramRelapse);
+            }
+            else
+            {
+                Guard.verifyDate(paramRelapse, "AlterDate");
+                db.ParRelapse.Attach(paramRelapse);
+                db.Entry(paramRelapse).State = EntityState.Modified;
+            }
+        }
+
+        public void SaveParNotConformityRule(ParNotConformityRule paramNotConformityRule)
+        {
+            if (paramNotConformityRule.Id == 0)
+            {
+                db.ParNotConformityRule.Add(paramNotConformityRule);
+            }
+            else
+            {
+                Guard.verifyDate(paramNotConformityRule, "AlterDate");
+                db.ParNotConformityRule.Attach(paramNotConformityRule);
+                db.Entry(paramNotConformityRule).State = EntityState.Modified;
+            }
+        }
+
+        public void SaveParNotConformityRuleXLevel(ParNotConformityRuleXLevel paramNotConformityRuleXLevel)
+        {
+            if (paramNotConformityRuleXLevel.Id == 0)
+            {
+                db.ParNotConformityRuleXLevel.Add(paramNotConformityRuleXLevel);
+            }
+            else
+            {
+                Guard.verifyDate(paramNotConformityRuleXLevel, "AlterDate");
+                db.ParNotConformityRuleXLevel.Attach(paramNotConformityRuleXLevel);
+                db.Entry(paramNotConformityRuleXLevel).State = EntityState.Modified;
+            }
+        }
+
+
+        public void SaveParCompany(ParCompany paramCompany)
+        {
+
+            if (paramCompany.Id == 0)
+            {
+                db.ParCompany.Add(paramCompany);
+            }
+            else
+            {
+                Guard.verifyDate(paramCompany, "AlterDate");
+                db.ParCompany.Attach(paramCompany);
+                db.Entry(paramCompany).State = EntityState.Modified;
+            }
+        }
+
         #region Não implementado
 
         //private DbSet<ParLevel1> EntityParLevel1 { get { return db.Set<ParLevel1>(); } }
