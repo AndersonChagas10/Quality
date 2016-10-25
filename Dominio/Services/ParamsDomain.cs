@@ -88,14 +88,8 @@ namespace Dominio.Services
             List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);
             List<ParLevel1XCluster> ListaParLevel1XCluster = Mapper.Map<List<ParLevel1XCluster>>(paramsDto.parLevel1XClusterDto);
 
-
             _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster);
-
             paramsDto.parLevel1Dto.Id = saveParamLevel1.Id;
-
-            /*Salva Clueter X*/
-            SalvarParLevel1XCluster(paramsDto, saveParamLevel1);
-
             return paramsDto;
         }
 
@@ -114,37 +108,6 @@ namespace Dominio.Services
             //SalvarParLevel1XCluster(paramsDto, saveParamLevel1);
 
             return paramsDto;
-        }
-
-        //public ParamsDTO AddUpdateParLevel3Group(ParamsDTO paramsDto)
-        //{
-        //    //foreach (var parLevel3Group in paramsDto.parLevel3GroupDto)
-        //    //{
-        //    //    parLevel3Group.Id = saveParamLevel1.Id;
-        //    //    _baseRepoParLevel1XCluster.Add(Mapper.Map<ParLevel1XCluster>(parLevel1XCluster));
-        //    //}
-
-        //    //paramsDto.parLevel1Dto.IsValid();
-        //    List<ParLevel3Group> saveParLevel3Group = Mapper.Map<List<ParLevel3Group>>(paramsDto.listParLevel3GroupDto);
-
-        //    _paramsRepo.SaveParLevel3Group(saveParLevel3Group);
-
-            
-
-        //    ///*Salva Clueter X*/
-        //    //SalvarParLevel1XCluster(paramsDto, saveParamLevel1);
-
-        //    return paramsDto;
-
-
-        //}
-        private void SalvarParLevel1XCluster(ParamsDTO paramsDto, ParLevel1 saveParamLevel1)
-        {
-            foreach (var parLevel1XCluster in paramsDto.parLevel1XClusterDto)
-            {
-                parLevel1XCluster.ParLevel1_Id = saveParamLevel1.Id;
-                _baseRepoParLevel1XCluster.Add(Mapper.Map<ParLevel1XCluster>(parLevel1XCluster));
-            }
         }
 
         /// <summary>
@@ -223,6 +186,7 @@ namespace Dominio.Services
             paramsDto.parRelapseDto.Id = saveParRelapse.Id;
             return paramsDto;
         }
+
         public ParamsDTO AddUpdateParNotConformityRule(ParamsDTO paramsDto)
         {
             ParNotConformityRule saveParNotConformityRule = Mapper.Map<ParNotConformityRule>(paramsDto.parNotConformityRuleDto);
@@ -230,6 +194,7 @@ namespace Dominio.Services
             paramsDto.parNotConformityRuleDto.Id = saveParNotConformityRule.Id;
             return paramsDto;
         }
+
         public ParamsDTO AddUpdateParNotConformityRuleXLevel(ParamsDTO paramsDto)
         {
             ParNotConformityRuleXLevel saveParNotConformityRuleXLevel = Mapper.Map<ParNotConformityRuleXLevel>(paramsDto.parNotConformityRuleXLevelDto);
@@ -245,6 +210,7 @@ namespace Dominio.Services
             paramsDto.parCompanyDto.Id = saveParCompany.Id;
             return paramsDto;
         }
+
         #endregion
     }
 }
