@@ -27,6 +27,7 @@ namespace Dominio.Services
         private IBaseRepository<ParLocal> _baseParLocal;
         private IBaseRepository<ParCounter> _baseParCounter;
         private IBaseRepository<ParCounterLocal> _baseParCounterLocal;
+        private IBaseRepository<ParRelapse> _baseParRelapse;
 
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
@@ -43,7 +44,8 @@ namespace Dominio.Services
             IBaseRepository<ParLevel3Group> baseParLevel3Group,
             IBaseRepository<ParLocal> baseParLocal,
             IBaseRepository<ParCounter> baseParCounter,
-            IBaseRepository<ParCounterLocal> baseParCounterLocal)
+            IBaseRepository<ParCounterLocal> baseParCounterLocal,
+            IBaseRepository<ParRelapse> baseParRelapse)
         {
             _paramsRepo = paramsRepo;
             _baseRepoParLevel1 = baseRepoParLevel1;
@@ -58,6 +60,7 @@ namespace Dominio.Services
             _baseParLocal = baseParLocal;
             _baseParCounter = baseParCounter;
             _baseParCounterLocal = baseParCounterLocal;
+            _baseParRelapse = baseParRelapse;
         }
 
         #endregion
@@ -203,16 +206,17 @@ namespace Dominio.Services
 
         public ParamsDTO AddUpdateParCounterLocal(ParamsDTO paramsDto)
         {
-            //paramsDto.parLevel1Dto.IsValid();
             ParCounterLocal saveParCounterLocal = Mapper.Map<ParCounterLocal>(paramsDto.parCounterLocalDto);
-
             _paramsRepo.SaveParCounterLocal(saveParCounterLocal);
-
             paramsDto.parCounterLocalDto.Id = saveParCounterLocal.Id;
+            return paramsDto;
+        }
 
-            ///*Salva Clueter X*/
-            //SalvarParLevel1XCluster(paramsDto, saveParamLevel1);
-
+        public ParamsDTO AddUpdateParRelapse(ParamsDTO paramsDto)
+        {
+            ParRelapse saveParRelapse = Mapper.Map<ParRelapse>(paramsDto.parRelapseDto);
+            _paramsRepo.SaveParRelapse(saveParRelapse);
+            paramsDto.parRelapseDto.Id = saveParRelapse.Id;
             return paramsDto;
         }
         #endregion

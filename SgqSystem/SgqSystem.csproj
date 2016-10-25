@@ -327,6 +327,7 @@
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParRelapseMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParGoalMapperProfile - Copy.cs" />
     <Compile Include="Mappers\Params\ParHeaderFieldMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3GroupMapperProfile.cs" />

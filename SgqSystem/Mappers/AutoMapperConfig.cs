@@ -47,6 +47,7 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParLocalMapperProfile>();
                 x.AddProfile<ParCounterMapperProfile>();
                 x.AddProfile<ParCounterLocalMapperProfile>();
+                x.AddProfile<ParRelapseMapperProfile>();
 
 
                 /*

@@ -426,7 +426,7 @@
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParLevel3BoolFalse">
           <Key>
@@ -2237,7 +2237,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParNotConformityRuleXLevel' does not 
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParCounterLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel3" FromRole="ParLevel3" ToRole="ParCounterLocal" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel3" FromRole="ParLevel3" ToRole="ParRelapse" />
         </EntityType>
@@ -3525,7 +3525,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParNotConformityRuleXLevel' does not 
           <EntitySetMapping Name="ParLevel3">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel3">
               <MappingFragment StoreEntitySet="ParLevel3">
-                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Description" ColumnName="Description" />

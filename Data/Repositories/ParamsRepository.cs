@@ -253,6 +253,20 @@ namespace Data.Repositories
             }
         }
 
+        public void SaveParRelapse(ParRelapse paramRelapse)
+        {
+            if (paramRelapse.Id == 0)
+            {
+                db.ParRelapse.Add(paramRelapse);
+            }
+            else
+            {
+                Guard.verifyDate(paramRelapse, "AlterDate");
+                db.ParRelapse.Attach(paramRelapse);
+                db.Entry(paramRelapse).State = EntityState.Modified;
+            }
+        }
+
 
         #region Não implementado
 
