@@ -26,7 +26,7 @@ namespace Dominio.Services
         private IBaseRepository<ParLevel3Group> _baseParLevel3Group;
         private IBaseRepository<ParLocal> _baseParLocal;
         private IBaseRepository<ParCounter> _baseParCounter;
-        private IBaseRepository<ParCounterLocal> _baseParCounterLocal;
+        private IBaseRepository<ParCounterXLocal> _baseParCounterXLocal;
         private IBaseRepository<ParRelapse> _baseParRelapse;
         private IBaseRepository<ParNotConformityRule> _baseParNotConformityRule;
         private IBaseRepository<ParCompany> _baseParCompany;
@@ -45,7 +45,7 @@ namespace Dominio.Services
             IBaseRepository<ParLevel3Group> baseParLevel3Group,
             IBaseRepository<ParLocal> baseParLocal,
             IBaseRepository<ParCounter> baseParCounter,
-            IBaseRepository<ParCounterLocal> baseParCounterLocal,
+            IBaseRepository<ParCounterXLocal> baseParCounterXLocal,
             IBaseRepository<ParRelapse> baseParRelapse,
             IBaseRepository<ParNotConformityRule> baseParNotConformityRule,
             IBaseRepository<ParCompany> baseParCompany)
@@ -62,7 +62,7 @@ namespace Dominio.Services
             _baseParLevel3Group = baseParLevel3Group;
             _baseParLocal = baseParLocal;
             _baseParCounter = baseParCounter;
-            _baseParCounterLocal = baseParCounterLocal;
+            _baseParCounterXLocal = baseParCounterXLocal;
             _baseParRelapse = baseParRelapse;
             _baseParNotConformityRule = baseParNotConformityRule;
             _baseParCompany = baseParCompany;
@@ -159,11 +159,11 @@ namespace Dominio.Services
             return paramsDto;
         }
 
-        public ParamsDTO AddUpdateParCounterLocal(ParamsDTO paramsDto)
+        public ParamsDTO AddUpdateParCounterXLocal(ParamsDTO paramsDto)
         {
-            ParCounterLocal saveParCounterLocal = Mapper.Map<ParCounterLocal>(paramsDto.parCounterLocalDto);
-            _paramsRepo.SaveParCounterLocal(saveParCounterLocal);
-            paramsDto.parCounterLocalDto.Id = saveParCounterLocal.Id;
+            ParCounterXLocal saveParCounterLocal = Mapper.Map<ParCounterXLocal>(paramsDto.parCounterXLocalDto);
+            _paramsRepo.SaveParCounterXLocal(saveParCounterLocal);
+            paramsDto.parCounterXLocalDto.Id = saveParCounterLocal.Id;
             return paramsDto;
         }
 
