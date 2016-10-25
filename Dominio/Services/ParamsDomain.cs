@@ -212,8 +212,8 @@ namespace Dominio.Services
             var DdlParLocal_Level1 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAll().Where(p => p.Level == 1));
             var DdlParLocal_Level2 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAll().Where(p => p.Level == 2));
 
-            var DdbParCounter_Level1 = Mapper.Map<List<ParCounterDTO>>(_baseParLocal.GetAll().Where(p => p.Level == 1));
-            var DdbParCounter_Level2 = Mapper.Map<List<ParCounterDTO>>(_baseParLocal.GetAll().Where(p => p.Level == 2));
+            var DdbParCounter_Level1 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAll().Where(p => p.Level == 1));
+            var DdbParCounter_Level2 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAll().Where(p => p.Level == 2));
 
 
             var retorno = new ParamsDdl();
