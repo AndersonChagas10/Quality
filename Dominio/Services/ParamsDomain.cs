@@ -28,7 +28,8 @@ namespace Dominio.Services
         private IBaseRepository<ParCounter> _baseParCounter;
         private IBaseRepository<ParCounterLocal> _baseParCounterLocal;
         private IBaseRepository<ParRelapse> _baseParRelapse;
-
+        private IBaseRepository<ParNotConformityRule> _baseParNotConformityRule;
+        private IBaseRepository<ParCompany> _baseParCompany;
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
 
@@ -45,7 +46,9 @@ namespace Dominio.Services
             IBaseRepository<ParLocal> baseParLocal,
             IBaseRepository<ParCounter> baseParCounter,
             IBaseRepository<ParCounterLocal> baseParCounterLocal,
-            IBaseRepository<ParRelapse> baseParRelapse)
+            IBaseRepository<ParRelapse> baseParRelapse,
+            IBaseRepository<ParNotConformityRule> baseParNotConformityRule,
+            IBaseRepository<ParCompany> baseParCompany)
         {
             _paramsRepo = paramsRepo;
             _baseRepoParLevel1 = baseRepoParLevel1;
@@ -61,6 +64,8 @@ namespace Dominio.Services
             _baseParCounter = baseParCounter;
             _baseParCounterLocal = baseParCounterLocal;
             _baseParRelapse = baseParRelapse;
+            _baseParNotConformityRule = baseParNotConformityRule;
+            _baseParCompany = baseParCompany;
         }
 
         #endregion
@@ -217,6 +222,22 @@ namespace Dominio.Services
             ParRelapse saveParRelapse = Mapper.Map<ParRelapse>(paramsDto.parRelapseDto);
             _paramsRepo.SaveParRelapse(saveParRelapse);
             paramsDto.parRelapseDto.Id = saveParRelapse.Id;
+            return paramsDto;
+        }
+        public ParamsDTO AddUpdateParNotConformityRule(ParamsDTO paramsDto)
+        {
+            ParNotConformityRule saveParNotConformityRule = Mapper.Map<ParNotConformityRule>(paramsDto.parNotConformityRuleDto);
+            _paramsRepo.SaveParNotConformityRule(saveParNotConformityRule);
+            paramsDto.parNotConformityRuleDto.Id = saveParNotConformityRule.Id;
+            return paramsDto;
+        }
+
+
+        public ParamsDTO AddUpdateParCompany(ParamsDTO paramsDto)
+        {
+            ParCompany saveParCompany = Mapper.Map<ParCompany>(paramsDto.parCompanyDto);
+            _paramsRepo.SaveParCompany(saveParCompany);
+            paramsDto.parCompanyDto.Id = saveParCompany.Id;
             return paramsDto;
         }
         #endregion

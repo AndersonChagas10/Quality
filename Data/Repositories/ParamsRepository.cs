@@ -267,6 +267,20 @@ namespace Data.Repositories
             }
         }
 
+        public void SaveParNotConformityRule(ParNotConformityRule paramNotConformityRule)
+        {
+            if (paramNotConformityRule.Id == 0)
+            {
+                db.ParNotConformityRule.Add(paramNotConformityRule);
+            }
+            else
+            {
+                Guard.verifyDate(paramNotConformityRule, "AlterDate");
+                db.ParNotConformityRule.Attach(paramNotConformityRule);
+                db.Entry(paramNotConformityRule).State = EntityState.Modified;
+            }
+        }
+
 
         #region Não implementado
 

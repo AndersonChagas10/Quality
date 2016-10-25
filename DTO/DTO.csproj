@@ -83,7 +83,10 @@
     <Compile Include="DTO\Params\ParDepartmentDTO.cs" />
     <Compile Include="DTO\Params\ParCounterDTO.cs" />
     <Compile Include="DTO\Params\ParCounterLocalDTO.cs" />
+    <Compile Include="DTO\Params\ParNotConformityRuleXLevel.cs" />
+    <Compile Include="DTO\Params\ParNotConformityRuleDTO.cs" />
     <Compile Include="DTO\Params\ParLevel3DTO.cs" />
+    <Compile Include="DTO\Params\ParCompanyDTO.cs" />
     <Compile Include="DTO\Params\ParRelapseDTO.cs" />
     <Compile Include="DTO\Params\ParLocalDTO.cs" />
     <Compile Include="DTO\Params\ParLevel3GroupDTO.cs" />

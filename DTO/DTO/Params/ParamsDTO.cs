@@ -35,7 +35,9 @@ namespace DTO.DTO.Params
         public ParCounterDTO parCounterDto { get; set; }
         public ParCounterLocalDTO parCounterLocalDto { get; set; }
         public ParRelapseDTO parRelapseDto { get; set; }
+        public ParNotConformityRuleDTO parNotConformityRuleDto { get; set; }
 
+        public ParCompanyDTO parCompanyDto { get; set; }
 
         /*Fim Ja implementados */
 
