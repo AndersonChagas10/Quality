@@ -1,5 +1,8 @@
 ﻿@model SgqSystem.ViewModels.ParamsViewModel
 
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
 @using (Html.BeginForm())
 {
     @*@Html.LinkVoltar("back", "Voltando")*@
@@ -13,13 +16,16 @@
         <div id="corpoIndicador" style="display: block; margin-top: 10px;">
 
             <div style="padding: 5px; display:inline-table;">
-                <b>@Resources.Resource.level1_name :</b>
+                @Html.LabelFor(m=>m.paramsDto.parLevel1Dto.Name, true)
+                @*<b>@Resources.Resource.level1_name :</b>*@
                 @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
+                @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.Name, "", new { @class = "text-danger" })
             </div>
             <br>
             <div style="padding: 5px; display:inline-table;">
                 <b>@Resources.Resource.level1_description :</b>
                 @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
+                @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.Description, "", new { @class = "text-danger" })
             </div>
 
             <table>
@@ -30,6 +36,7 @@
                         </td>
                         <td>
                             @Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConsolidacao" })
+                            @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, "", new { @class = "text-danger" })
                         </td>
                     </tr>
 
@@ -39,6 +46,7 @@
                         </td>
                         <td>
                             @Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectFrequencia" })
+                            @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, "", new { @class = "text-danger" })
                         </td>
                     </tr>
 
@@ -436,13 +444,13 @@
         Counter: 0,
         IncluirCluster: function () {
 
-            /**/
+            /*Valida cluster name*/
             if ($('#valueCluster option:selected').val() == -1) {
                 alert("selecione um cluster.");
                 return;
             }
 
-            /**/
+            /*Valida cluster pontos*/
             if ($('#pontosCluster').val().length == 0) {
                 $('#pontosCluster').val('0');
             }
@@ -457,7 +465,9 @@
             var pontosCluster = $('#pontosCluster').val();
 
             /**/
-            novaTr.find('#nomeCluster').append(nomeCluster + ' <input type="hidden" name="paramsDto.parLevel1XClusterDto[~].ParCluster_Id" value="' + idCluster + '" />' + '<input type="hidden" name="paramsDto.parLevel1XClusterDto[~].Points" value="' + pontosCluster + '" />')
+            novaTr.find('#nomeCluster').append(nomeCluster +
+                ' <input type="hidden" name="paramsDto.parLevel1XClusterDto[].ParCluster_Id" value="' + idCluster + '" />' +
+                '<input type="hidden" name="paramsDto.parLevel1XClusterDto[].Points" value="' + pontosCluster + '" />');
             novaTr.find('#pontosCluster').append(pontosCluster)
             novaTr.find('#btnAlterarCluster').attr('id', novaTr.find('#btnAlterarCluster').attr('id') + idCluster);
             novaTr.find('#btnExcluirCluster').attr('id', novaTr.find('#btnExcluirCluster').attr('id') + idCluster);
@@ -490,10 +500,13 @@
         },
 
         UpdateCounter: function () {
+            Cluster.Counter = 0;
             $('#clusterIncluidos > tbody > tr').not('#clustersVazia, #clusters').each(function (c, o) {
                 $(o).find('td:first').each(function (cc, oo) {
                     $(oo).find('input').each(function (ccc, ooo) {
-                        var tempName = ooo.name.split('~')[0] + Cluster.Counter + ooo.name.split('~')[1];
+                        var parte1 = ooo.name.split('[')[0];
+                        var parte2 = ooo.name.split(']')[1];
+                        var tempName = parte1 + '[' + Cluster.Counter + ']' + parte2;
                         ooo.name = tempName;
                     });
                     Cluster.Counter++;
@@ -505,7 +518,12 @@
 
     var Cabecalhos = {
 
-        tableMultiplaEscolha: $('#camposCabecalhoIncluidos').DataTable(),
+        tableMultiplaEscolha: $('#camposCabecalhoIncluidos').DataTable({
+            info: false,
+            searching: false,
+            paging: false,
+            ordering: true,
+        }),
         hideAllObj: function () {
             $('#objMultiplaEscolha').hide();
             $('#objBinario').hide();
@@ -538,7 +556,43 @@
 
         ParMultiplaEscolhaOpcoes: [],
         Counter: 0,
-        IncluirMultiplaEscolha: function () {
+        ValidaMultiplaEscolha: function (isValid) {
+
+            var isValid = true;
+
+            if ($('#headerLevel option:selected') == -1) {
+                alert('Opção "Nível do Campo" do cabeçalho invalida.');
+                isValid = false;
+            }
+
+            if ($('#parFieldType option:selected') == -1) {
+                alert('Opção "Tipo" do cabeçalho inválida.');
+                isValid = false;
+            }
+
+            if ($('#paramsDto_parHeaderFieldDto_Name').val().length == 0) {
+                alert('Campo Name do cabeçalho não preenchido.');
+                isValid = false;
+            }
+
+            if ($('#objMultiplaEscolhaName').val().length == 0) {
+                alert('Campo Opção não preenchido.');
+                isValid = false;
+            }
+
+            if ($('#objMultiplaEscolhaPunishmentValue').val().length == 0) {
+                alert('Campo Punição/Premiação não preenchido.');
+                isValid = false;
+            }
+
+            return isValid;
+        },
+        IncluirMultiplaEscolha: function (e) {
+
+            /*Valida se os campos estão preenchidos*/
+            if (Cabecalhos.ValidaMultiplaEscolha() == false)
+                return;
+
             var cod = "?";
             var nivelDoCampo = $('#headerLevel option:selected').text();
             var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
@@ -567,6 +621,10 @@
             ]).draw(false);
 
             $('#divCamposCabecalhoIncluidos').show();
+
+            $('#objMultiplaEscolhaName').val('');
+            $('#objMultiplaEscolhaPunishmentValue').val('');
+
         },
         ShowMutiplaEscolha: function () {
             $('#objMultiplaEscolha').show();
@@ -604,12 +662,16 @@
 
             example += '</div>'
 
-
             $('#cabecalhoPreview').append(example);
-
 
             /*Limpa formulario Header*/
             $('#paramsDto_parHeaderFieldDto_Name').val('');
+
+            $('#objMultiplaEscolhaName').val('');
+            $('#objMultiplaEscolhaPunishmentValue').val('');
+            
+            $('#parFieldType').val('');
+
             $('#headerLevel option:selected').val('');
             Cabecalhos.tableMultiplaEscolha.clear().draw();
             $('#divCamposCabecalhoIncluidos').hide();
@@ -618,7 +680,53 @@
 
         CounterParBinario: 0,
         ParBinario: [],
-        IncluirBinario: function () {
+        ValidaBinario: function () {
+
+            var isValid = true;
+
+            if ($('#headerLevel option:selected') == -1) {
+                alert('Opção "Nível do Campo" do cabeçalho invalida.');
+                isValid = false;
+            }
+
+            if ($('#parFieldType option:selected') == -1) {
+                alert('Opção "Tipo" do cabeçalho inválida.');
+                isValid = false;
+            }
+
+            if ($('#paramsDto_parHeaderFieldDto_Name').val().length == 0) {
+                alert('Campo Name do cabeçalho não preenchido.');
+                isValid = false;
+            }
+
+            if ($('#objBinarioPunishmentName1').val().length == 0) {
+                alert('Campo Positivo não preenchido.');
+                isValid = false;
+            }
+
+            if ($('#objBinarioPunishmentName2').val().length == 0) {
+                alert('Campo Negativo não preenchido.');
+                isValid = false;
+            }
+
+            if ($('#objBinarioPunishmentValue1').val().length == 0) {
+                alert('Campo Punição/Premiação da condicional "Positivo" não preenchido.');
+                isValid = false;
+            }
+
+            if ($('#objBinarioPunishmentValue2').val().length == 0) {
+                alert('Campo Punição/Premiação da condicional "Negativo" não preenchido.');
+                isValid = false;
+            }
+
+            return isValid;
+
+        },
+        IncluirBinario: function (e) {
+
+            /*Valida se os campos estão preenchidos*/
+            if (Cabecalhos.ValidaBinario() == false)
+                return;
 
             var cod = "?";
             var nivelDoCampo = $('#headerLevel option:selected').text();
@@ -675,6 +783,11 @@
             ]).draw(false);
 
             $('#divCamposCabecalhoIncluidos').show();
+
+            $('#objBinarioPunishmentName1').val('');
+            $('#objBinarioPunishmentName2').val('');
+            $('#objBinarioPunishmentValue1').val('');
+            $('#objBinarioPunishmentValue2').val('');
         },
         ShowBinario: function () {
             $('#objBinario').show();
@@ -712,18 +825,30 @@
 
             $('#cabecalhoPreview').append(example);
 
-
             /*Limpa formulario Header*/
             $('#paramsDto_parHeaderFieldDto_Name').val('');
+
+            $('#objBinarioPunishmentName1').val('');
+            $('#objBinarioPunishmentName2').val('');
+            $('#objBinarioPunishmentValue1').val('');
+            $('#objBinarioPunishmentValue2').val('');
+
+            $('#parFieldType').val('');
             Cabecalhos.tableMultiplaEscolha.clear().draw();
             $('#divCamposCabecalhoIncluidos').hide();
             Cabecalhos.ParBinario = [];
         },
 
         UpdateCabecalhos: function () {
+            Cabecalhos.Counter = 0;
             $('#cabecalhoPreview > div').each(function (c, o) {
                 $(o).find('input[type=hidden]').each(function (cc, oo) {
-                    var tempName = oo.name.split('~')[0] + Cabecalhos.Counter + oo.name.split('~')[1];
+                    var parte1 = oo.name.split('[')[0];
+                    var parte2 = oo.name.split(']')[1];
+                    if (oo.name.split(']').length > 2)
+                        parte2 += ']' + oo.name.split(']')[2]; //MOCK 
+
+                    var tempName = parte1 + '[' + Cabecalhos.Counter + ']' + parte2;
                     oo.name = tempName;
                 });
                 Cabecalhos.Counter++;

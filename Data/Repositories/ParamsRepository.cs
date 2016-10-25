@@ -34,31 +34,38 @@ namespace Data.Repositories
                 SalvaParLevel1(paramLevel1); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
 
-                foreach (var Level1XCluster in listaParLevel1XCluster)
+                if (listaParLevel1XCluster != null)
                 {
-                    SalvaLevel1XCluster(Level1XCluster, paramLevel1.Id); /*Salva NxN Level1XCluster*/
-                    db.SaveChanges(); /*Obtem ID do NxN Level1XCluster*/
+                    foreach (var Level1XCluster in listaParLevel1XCluster)
+                    {
+                        SalvaLevel1XCluster(Level1XCluster, paramLevel1.Id); /*Salva NxN Level1XCluster*/
+                        db.SaveChanges(); /*Obtem ID do NxN Level1XCluster*/
+                    }
                 }
 
-                foreach (var parHeadField in listaParHeadField)
+                if (listaParHeadField != null)
                 {
-                    var ListParMultipleValues = parHeadField.ParMultipleValues;
-                    SalvaParHeadField(parHeadField); /*Salva ParHeadField*/
-                    db.SaveChanges(); /*Obtem id do ParHeadField*/
-
-                    foreach (var parMultipleValues in ListParMultipleValues)
+                    foreach (var parHeadField in listaParHeadField)
                     {
-                        SalvaParMultipleValues(parMultipleValues, parHeadField.Id);
-                        db.SaveChanges();
+                        var ListParMultipleValues = parHeadField.ParMultipleValues; /*Variavel temporaria*/
+                        SalvaParHeadField(parHeadField); /*Salva ParHeadField*/
+                        db.SaveChanges(); /*Obtem id do ParHeadField*/
+
+                        foreach (var parMultipleValues in ListParMultipleValues)
+                        {
+                            SalvaParMultipleValues(parMultipleValues, parHeadField.Id);
+                            db.SaveChanges();
+                        }
+
+                        int idParLevel1HeaderField;
+                        ParLevel1XHeaderField parLevel1HeaderField;
+                        /*Verifica se ja existe vinculo ParLevel1 e ParHEaderField na tabela NxN ParLevel1XHeaderField. */
+                        CriaParLevel1HeaderField(paramLevel1, parHeadField, out idParLevel1HeaderField, out parLevel1HeaderField);
+
+                        SalvaParLevel1HeaderField(idParLevel1HeaderField, parLevel1HeaderField);/*Salva ParLevel1XHeaderField*/
+                        db.SaveChanges(); /*Obtem id do ParLevel1XHeaderField*/
                     }
 
-                    int idParLevel1HeaderField;
-                    ParLevel1HeaderField parLevel1HeaderField;
-                    /*Verifica se ja existe vinculo ParLevel1 e ParHEaderField na tabela NxN ParLevel1XHeaderField. */
-                    CriaParLevel1HeaderField(paramLevel1, parHeadField, out idParLevel1HeaderField, out parLevel1HeaderField);
-
-                    SalvaParLevel1HeaderField(idParLevel1HeaderField, parLevel1HeaderField);/*Salva ParLevel1XHeaderField*/
-                    db.SaveChanges(); /*Obtem id do ParLevel1XHeaderField*/
                 }
 
                 ts.Commit();
@@ -83,14 +90,14 @@ namespace Data.Repositories
             }
         }
 
-        private void CriaParLevel1HeaderField(ParLevel1 paramLevel1, ParHeaderField parHeadField, out int idParLevel1HeaderField, out ParLevel1HeaderField parLevel1HeaderField)
+        private void CriaParLevel1HeaderField(ParLevel1 paramLevel1, ParHeaderField parHeadField, out int idParLevel1HeaderField, out ParLevel1XHeaderField parLevel1HeaderField)
         {
             idParLevel1HeaderField = 0;
-            var verificaSeJaExisteVinculo = db.ParLevel1HeaderField.FirstOrDefault(r => r.ParHeaderField_Id == parHeadField.Id && r.ParLevel1_Id == paramLevel1.Id);
+            var verificaSeJaExisteVinculo = db.ParLevel1XHeaderField.FirstOrDefault(r => r.ParHeaderField_Id == parHeadField.Id && r.ParLevel1_Id == paramLevel1.Id);
             if (verificaSeJaExisteVinculo != null)
                 idParLevel1HeaderField = verificaSeJaExisteVinculo.Id;
 
-            parLevel1HeaderField = new ParLevel1HeaderField()
+            parLevel1HeaderField = new ParLevel1XHeaderField()
             {
                 Id = idParLevel1HeaderField,
                 ParLevel1_Id = paramLevel1.Id,
@@ -98,16 +105,16 @@ namespace Data.Repositories
             };
         }
 
-        private void SalvaParLevel1HeaderField(int idParLevel1HeaderField, ParLevel1HeaderField parLevel1HeaderField)
+        private void SalvaParLevel1HeaderField(int idParLevel1HeaderField, ParLevel1XHeaderField parLevel1HeaderField)
         {
             if (idParLevel1HeaderField == 0)
             {
-                db.ParLevel1HeaderField.Add(parLevel1HeaderField);
+                db.ParLevel1XHeaderField.Add(parLevel1HeaderField);
             }
             else
             {
                 Guard.verifyDate(parLevel1HeaderField, "AlterDate");
-                db.ParLevel1HeaderField.Attach(parLevel1HeaderField);
+                db.ParLevel1XHeaderField.Attach(parLevel1HeaderField);
                 db.Entry(parLevel1HeaderField).State = EntityState.Modified;
             }
         }
@@ -119,7 +126,7 @@ namespace Data.Repositories
             parHeadField.ParMultipleValues = null;
             parHeadField.ParFieldType = null;
             parHeadField.ParLevelDefiniton = null;
-            parHeadField.ParLevel1HeaderField = null;
+            parHeadField.ParLevel1XHeaderField = null;
 
             if (parHeadField.Id == 0)
             {
@@ -136,6 +143,9 @@ namespace Data.Repositories
         private void SalvaLevel1XCluster(ParLevel1XCluster Level1XCluster, int paramLevel1Id)
         {
             Level1XCluster.ParLevel1_Id = paramLevel1Id;
+            Level1XCluster.ParLevel1 = null;
+            Level1XCluster.ParCluster = null;
+
             if (Level1XCluster.Id == 0)
             {
                 db.ParLevel1XCluster.Add(Level1XCluster);
@@ -165,7 +175,7 @@ namespace Data.Repositories
 
         public void SaveParLevel2(ParLevel2 paramLevel2)
         {
-            if(paramLevel2.Id == 0)
+            if (paramLevel2.Id == 0)
             {
                 db.ParLevel2.Add(paramLevel2);
             }

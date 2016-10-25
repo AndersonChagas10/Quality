@@ -12,14 +12,14 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParLevel1HeaderField
+    public partial class ParLevel1XHeadField
     {
         public int Id { get; set; }
-        public int ParLevel1_Id { get; set; }
-        public int ParHeaderField_Id { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool IsActive { get; set; }
+        public Nullable<bool> IsActive { get; set; }
+        public int ParLevel1_Id { get; set; }
+        public int ParHeaderField_Id { get; set; }
     
         public virtual ParHeaderField ParHeaderField { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }

@@ -127,10 +127,13 @@
     <Compile Include="ParLevel1.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ParLevel1HeaderField.cs">
+    <Compile Include="ParLevel1XCluster.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ParLevel1XCluster.cs">
+    <Compile Include="ParLevel1XHeaderField.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel1XHeadField.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParLevel2.cs">

@@ -11,7 +11,7 @@
 @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, "Selecione...", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "parLeve1Select2" })
 
 <div id="ParLevel1">
-    @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model);
+    @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
 </div>
 
 <script>
@@ -47,7 +47,6 @@
             text: "Selecione..."
         },
     }).on("select2:select", function (e) {
-
         if (e.currentTarget.value == "") {
             $('#ParLevel1').empty();
             $('#ParLevel1').append(parLevel1Empty);
@@ -59,21 +58,20 @@
                 }
             });
         }
-
     }).on("select2:unselect", function (e) {
-
         if (e.currentTarget.value == "") {
             $('#ParLevel1').empty()
             $('#ParLevel1').append(parLevel1Empty)
         }
-
-    });;
+    });
     /*Fim Select 2 Level1*/
 
     /*Inicio Submit Level1*/
     var indexParamsLevel1 = {
 
         enviarDadosParaApi: function (e) {
+
+            //if (indexParamsLevel1.ValidaLevel1) {
 
             Cluster.UpdateCounter();
             Cabecalhos.UpdateCabecalhos()
@@ -86,7 +84,34 @@
                 console.log(respostaCompleta);
             });
 
+            //}
+
         },
+
+        ValidaLevel1: function () {
+            var isValid = true;
+
+            if ($('#paramsDto_parLevel1Dto_Name').val().length == 0) {
+                alert('Campo Nome do Indicador invalido.')
+                isValid = false;
+            }
+
+            if ($('#paramsDto_parLevel1Dto_Description').val().length == 0) {
+                alert('Campo Descrição do Indicador invalido.')
+                isValid = false;
+            }
+
+            if ($('#selectConsolidacao option:selected').val() == -1) {
+                alert('Campo Tipo de Consolidação inválido');
+                isValid = false;
+            }
+
+            if ($('#selectConsolidacao option:selected').val() == -1) {
+                alert('Campo Frequencia inválido');
+                isValid = false;
+            }
+            return isValid;
+        }
     }
     /*Fim Submit Level1*/
 

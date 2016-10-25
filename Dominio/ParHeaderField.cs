@@ -17,7 +17,8 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParHeaderField()
         {
-            this.ParLevel1HeaderField = new HashSet<ParLevel1HeaderField>();
+            this.ParLevel1XHeaderField = new HashSet<ParLevel1XHeaderField>();
+            this.ParLevel1XHeadField = new HashSet<ParLevel1XHeadField>();
             this.ParMultipleValues = new HashSet<ParMultipleValues>();
         }
     
@@ -34,7 +35,9 @@ namespace Dominio
         public virtual ParFieldType ParFieldType { get; set; }
         public virtual ParLevelDefiniton ParLevelDefiniton { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParLevel1HeaderField> ParLevel1HeaderField { get; set; }
+        public virtual ICollection<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParLevel1XHeadField> ParLevel1XHeadField { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParMultipleValues> ParMultipleValues { get; set; }
     }
