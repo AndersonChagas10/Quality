@@ -223,13 +223,13 @@
     <value>a</value>
   </data>
   <data name="level1_name" xml:space="preserve">
-    <value>Indicator Name</value>
+    <value>Level 1 Name</value>
   </data>
   <data name="consolidation_type" xml:space="preserve">
     <value>Consolidation Type</value>
   </data>
   <data name="level1_description" xml:space="preserve">
-    <value>Indicator Description</value>
+    <value>Level 1 Description</value>
   </data>
   <data name="of" xml:space="preserve">
     <value>of</value>
@@ -249,7 +249,7 @@
   <data name="allow_the_edition_of_the_evaluation_number" xml:space="preserve">
     <value>Allow the edition of the evaluation number</value>
   </data>
-  <data name="allow_the_edition_of_the_goal_of_the_indicator_by_unit" xml:space="preserve">
+  <data name="allow_the_edition_of_the_goal_of_the_level1_by_unit" xml:space="preserve">
     <value>Allow the edition of the goal of the indicator by unit</value>
   </data>
   <data name="allow_the_edition_of_the_sample_number" xml:space="preserve">
@@ -340,7 +340,7 @@
     <value>Conform</value>
   </data>
   <data name="frequency_popover" xml:space="preserve">
-    <value>Define the frequency that the level 2 will be audit, dailu, weekly, etc.</value>
+    <value>Define the frequency that the level 2 will be audit, daily, weekly, etc.</value>
   </data>
   <data name="level2_group_popover" xml:space="preserve">
     <value>Define is there will be groups on level 2. If there is, create the list below.</value>
@@ -404,5 +404,17 @@
   </data>
   <data name="id" xml:space="preserve">
     <value>ID</value>
+  </data>
+  <data name="allow_level2_group_popover" xml:space="preserve">
+    <value>Define if there will be level 2 groups on this level 1.</value>
+  </data>
+  <data name="allow_specific_register_by_unit_popover" xml:space="preserve">
+    <value>Define if the the units can edit the level 1. If yes, the field "specific register" will show up to define which registers the units will be able to edit.</value>
+  </data>
+  <data name="has_alert" xml:space="preserve">
+    <value>Emit alert</value>
+  </data>
+  <data name="has_alert_popover" xml:space="preserve">
+    <value>Define is this level will emit alert. The rules of the alert will be defined after the link between level 2 and level 3.</value>
   </data>
 </root>

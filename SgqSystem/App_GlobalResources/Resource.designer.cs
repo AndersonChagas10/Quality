@@ -124,11 +124,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Define if there will be level 2 groups on this level 1..
+        /// </summary>
+        internal static string allow_level2_group_popover {
+            get {
+                return ResourceManager.GetString("allow_level2_group_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allow specific register by unit.
         /// </summary>
         internal static string allow_specific_register_by_unit {
             get {
                 return ResourceManager.GetString("allow_specific_register_by_unit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define if the the units can edit the level 1. If yes, the field &quot;specific register&quot; will show up to define which registers the units will be able to edit..
+        /// </summary>
+        internal static string allow_specific_register_by_unit_popover {
+            get {
+                return ResourceManager.GetString("allow_specific_register_by_unit_popover", resourceCulture);
             }
         }
         
@@ -162,9 +180,9 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Allow the edition of the goal of the indicator by unit.
         /// </summary>
-        internal static string allow_the_edition_of_the_goal_of_the_indicator_by_unit {
+        internal static string allow_the_edition_of_the_goal_of_the_level1_by_unit {
             get {
-                return ResourceManager.GetString("allow_the_edition_of_the_goal_of_the_indicator_by_unit", resourceCulture);
+                return ResourceManager.GetString("allow_the_edition_of_the_goal_of_the_level1_by_unit", resourceCulture);
             }
         }
         
@@ -358,7 +376,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Define the frequency that the level 2 will be audit, dailu, weekly, etc..
+        ///   Looks up a localized string similar to Define the frequency that the level 2 will be audit, daily, weekly, etc..
         /// </summary>
         internal static string frequency_popover {
             get {
@@ -372,6 +390,24 @@ namespace Resources {
         internal static string goal_value {
             get {
                 return ResourceManager.GetString("goal_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Emit alert.
+        /// </summary>
+        internal static string has_alert {
+            get {
+                return ResourceManager.GetString("has_alert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define is this level will emit alert. The rules of the alert will be defined after the link between level 2 and level 3..
+        /// </summary>
+        internal static string has_alert_popover {
+            get {
+                return ResourceManager.GetString("has_alert_popover", resourceCulture);
             }
         }
         
@@ -457,7 +493,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicator Description.
+        ///   Looks up a localized string similar to Level 1 Description.
         /// </summary>
         internal static string level1_description {
             get {
@@ -466,7 +502,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicator Name.
+        ///   Looks up a localized string similar to Level 1 Name.
         /// </summary>
         internal static string level1_name {
             get {

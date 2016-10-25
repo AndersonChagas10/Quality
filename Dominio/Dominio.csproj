@@ -106,6 +106,12 @@
     <Compile Include="ParConsolidationType.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParCounter.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParCounterLocal.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParDepartment.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -166,10 +172,22 @@
     <Compile Include="ParLevelDefiniton.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParLocal.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParMeasurementUnit.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParMultipleValues.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParNotConformityRule.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParNotConformityRuleXLevel.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParRelapse.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParSample.cs">

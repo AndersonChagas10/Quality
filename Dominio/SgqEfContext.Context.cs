@@ -49,6 +49,8 @@ namespace Dominio
         public virtual DbSet<ParCompanyCluster> ParCompanyCluster { get; set; }
         public virtual DbSet<ParCompanyStructure> ParCompanyStructure { get; set; }
         public virtual DbSet<ParConsolidationType> ParConsolidationType { get; set; }
+        public virtual DbSet<ParCounter> ParCounter { get; set; }
+        public virtual DbSet<ParCounterLocal> ParCounterLocal { get; set; }
         public virtual DbSet<ParDepartment> ParDepartment { get; set; }
         public virtual DbSet<ParEvaluation> ParEvaluation { get; set; }
         public virtual DbSet<ParFieldType> ParFieldType { get; set; }
@@ -69,8 +71,10 @@ namespace Dominio
         public virtual DbSet<ParLevel3Level2Level1> ParLevel3Level2Level1 { get; set; }
         public virtual DbSet<ParLevel3Value> ParLevel3Value { get; set; }
         public virtual DbSet<ParLevelDefiniton> ParLevelDefiniton { get; set; }
+        public virtual DbSet<ParLocal> ParLocal { get; set; }
         public virtual DbSet<ParMeasurementUnit> ParMeasurementUnit { get; set; }
         public virtual DbSet<ParMultipleValues> ParMultipleValues { get; set; }
+        public virtual DbSet<ParRelapse> ParRelapse { get; set; }
         public virtual DbSet<ParSample> ParSample { get; set; }
         public virtual DbSet<ParStructure> ParStructure { get; set; }
         public virtual DbSet<ParStructureGroup> ParStructureGroup { get; set; }
@@ -80,5 +84,7 @@ namespace Dominio
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<UnitUser> UnitUser { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
+        public virtual DbSet<ParNotConformityRule> ParNotConformityRule { get; set; }
+        public virtual DbSet<ParNotConformityRuleXLevel> ParNotConformityRuleXLevel { get; set; }
     }
 }

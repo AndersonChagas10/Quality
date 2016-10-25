@@ -12,28 +12,22 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParFrequency
+    public partial class ParCounter
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ParFrequency()
+        public ParCounter()
         {
-            this.ParLevel1 = new HashSet<ParLevel1>();
-            this.ParLevel2 = new HashSet<ParLevel2>();
-            this.ParRelapse = new HashSet<ParRelapse>();
+            this.ParCounterLocal = new HashSet<ParCounterLocal>();
         }
     
         public int Id { get; set; }
+        public int Level { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
         public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
+        public System.DateTime AlterDate { get; set; }
         public bool IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParLevel1> ParLevel1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParLevel2> ParLevel2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParRelapse> ParRelapse { get; set; }
+        public virtual ICollection<ParCounterLocal> ParCounterLocal { get; set; }
     }
 }

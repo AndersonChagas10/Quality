@@ -22,6 +22,10 @@ namespace Dominio.Services
         private IBaseRepository<ParLevelDefiniton> _baseParLevelDefiniton;
         private IBaseRepository<ParFieldType> _baseParFieldType;
         private IBaseRepository<ParDepartment> _baseParDepartment;
+        private IBaseRepository<ParLevel3Group> _baseParLevel3Group;
+        private IBaseRepository<ParLocal> _baseParLocal;
+        private IBaseRepository<ParCounter> _baseParCounter;
+        private IBaseRepository<ParCounterLocal> _baseParCounterLocal;
 
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
@@ -34,7 +38,11 @@ namespace Dominio.Services
             IBaseRepository<ParLevelDefiniton> baseParLevelDefiniton,
             IBaseRepository<ParFieldType> baseParFieldType,
             IParamsRepository paramsRepo,
-            IBaseRepository<ParDepartment> baseParDepartment)
+            IBaseRepository<ParDepartment> baseParDepartment,
+            IBaseRepository<ParLevel3Group> baseParLevel3Group,
+            IBaseRepository<ParLocal> baseParLocal,
+            IBaseRepository<ParCounter> baseParCounter,
+            IBaseRepository<ParCounterLocal> baseParCounterLocal)
         {
             _paramsRepo = paramsRepo;
             _baseRepoParLevel1 = baseRepoParLevel1;
@@ -45,6 +53,10 @@ namespace Dominio.Services
             _baseParFieldType = baseParFieldType;
             _baseParLevelDefiniton = baseParLevelDefiniton;
             _baseParDepartment = baseParDepartment;
+            _baseParLevel3Group = baseParLevel3Group;
+            _baseParLocal = baseParLocal;
+            _baseParCounter = baseParCounter;
+            _baseParCounterLocal = baseParCounterLocal;
         }
 
         #endregion
@@ -85,11 +97,10 @@ namespace Dominio.Services
         {
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel2 saveParamLevel2 = Mapper.Map<ParLevel2>(paramsDto.parLevel2Dto);
-            List<ParDepartment> listaParDepartment = Mapper.Map<List<ParDepartment>>(paramsDto.listParDepartmentdDto);
-            List<ParFrequency> ParFrequency = Mapper.Map<List<ParFrequency>>(paramsDto.listParFrequencydDto);
+            List<ParLevel3Group> listaParLevel3Group = Mapper.Map<List<ParLevel3Group>>(paramsDto.listParLevel3GroupDto);
 
 
-            _paramsRepo.SaveParLevel2(saveParamLevel2, listaParDepartment, ParFrequency);
+            _paramsRepo.SaveParLevel2(saveParamLevel2, listaParLevel3Group);
 
             paramsDto.parLevel2Dto.Id = saveParamLevel2.Id;
 
@@ -99,7 +110,28 @@ namespace Dominio.Services
             return paramsDto;
         }
 
+        //public ParamsDTO AddUpdateParLevel3Group(ParamsDTO paramsDto)
+        //{
+        //    //foreach (var parLevel3Group in paramsDto.parLevel3GroupDto)
+        //    //{
+        //    //    parLevel3Group.Id = saveParamLevel1.Id;
+        //    //    _baseRepoParLevel1XCluster.Add(Mapper.Map<ParLevel1XCluster>(parLevel1XCluster));
+        //    //}
 
+        //    //paramsDto.parLevel1Dto.IsValid();
+        //    List<ParLevel3Group> saveParLevel3Group = Mapper.Map<List<ParLevel3Group>>(paramsDto.listParLevel3GroupDto);
+
+        //    _paramsRepo.SaveParLevel3Group(saveParLevel3Group);
+
+            
+
+        //    ///*Salva Clueter X*/
+        //    //SalvarParLevel1XCluster(paramsDto, saveParamLevel1);
+
+        //    return paramsDto;
+
+
+        //}
         private void SalvarParLevel1XCluster(ParamsDTO paramsDto, ParLevel1 saveParamLevel1)
         {
             foreach (var parLevel1XCluster in paramsDto.parLevel1XClusterDto)
@@ -140,7 +172,50 @@ namespace Dominio.Services
             return retorno;
         }
 
+        public ParamsDTO AddUpdateParLocal(ParamsDTO paramsDto)
+        {
+            //paramsDto.parLevel1Dto.IsValid();
+            ParLocal saveParLocal = Mapper.Map<ParLocal>(paramsDto.parLocalDto);
 
+            _paramsRepo.SaveParLocal(saveParLocal);
+
+            paramsDto.parLocalDto.Id = saveParLocal.Id;
+
+            ///*Salva Clueter X*/
+            //SalvarParLevel1XCluster(paramsDto, saveParamLevel1);
+
+            return paramsDto;
+        }
+
+        public ParamsDTO AddUpdateParCounter(ParamsDTO paramsDto)
+        {
+            //paramsDto.parLevel1Dto.IsValid();
+            ParCounter saveParCounter = Mapper.Map<ParCounter>(paramsDto.parCounterDto);
+
+            _paramsRepo.SaveParCounter(saveParCounter);
+
+            paramsDto.parCounterDto.Id = saveParCounter.Id;
+
+            ///*Salva Clueter X*/
+            //SalvarParLevel1XCluster(paramsDto, saveParamLevel1);
+
+            return paramsDto;
+        }
+
+        public ParamsDTO AddUpdateParCounterLocal(ParamsDTO paramsDto)
+        {
+            //paramsDto.parLevel1Dto.IsValid();
+            ParCounterLocal saveParCounterLocal = Mapper.Map<ParCounterLocal>(paramsDto.parCounterLocalDto);
+
+            _paramsRepo.SaveParCounterLocal(saveParCounterLocal);
+
+            paramsDto.parCounterLocalDto.Id = saveParCounterLocal.Id;
+
+            ///*Salva Clueter X*/
+            //SalvarParLevel1XCluster(paramsDto, saveParamLevel1);
+
+            return paramsDto;
+        }
         #endregion
     }
 }

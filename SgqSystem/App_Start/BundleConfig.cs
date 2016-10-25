@@ -41,9 +41,9 @@ namespace SgqSystem
                       "~/Scripts/modernizr-*"));
             
             bundles.Add(new ScriptBundle("~/bundles/theme").Include(
-                "~/Scripts/theme/select2/dist/js/select2.min.js",
-                "~/Scripts/theme/js/app.min.js"
-                      ));
+                        "~/Scripts/theme/select2/dist/js/select2.min.js",
+                        "~/Content/bootstrap-switch/js/bootstrap-switch.min.js",
+                        "~/Scripts/theme/js/app.min.js"));
             
             #endregion
 
@@ -66,7 +66,8 @@ namespace SgqSystem
                 "~/Scripts/theme/css/darkblue.min.css",
                 "~/Scripts/theme/font-awesome-4.6.3/css/font-awesome.min.css",
                 "~/Scripts/theme/css/layout.min.css",
-                "~/Scripts/theme/select2/dist/css/select2.min.css"
+                "~/Scripts/theme/select2/dist/css/select2.min.css",
+                "~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css"
             ));
 
             bundles.Add(new StyleBundle("~/Content/Erp").Include(
