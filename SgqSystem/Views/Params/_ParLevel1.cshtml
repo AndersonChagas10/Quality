@@ -57,13 +57,24 @@
                                             Table.PosicaoLabel.top)
 
                                         @Table.GerarColunaRadioButton(
-                                            @Html.Label(Resources.Resource.standard),
-                                            @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true", new { @class = "radio-erp" }),
-                                            @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false", new { @class = "radio-erp" }),
-                                            Resources.Resource.conform,
-                                            Resources.Resource.not_conform,
+                                            @Html.Label(Resources.Resource.register_total_evaluated),
+                                            @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, "true", new { @class = "radio-erp" }),
+                                            @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, "false", new { @class = "radio-erp" }),
+                                            Resources.Resource.permanent,
+                                            Resources.Resource.variable,
                                             Table.PosicaoLabel.top)
-
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsLimitedEvaluetionNumber, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.limited_number_of_evaluations), Table.PosicaoLabel.left)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColunaLabel(@Html.Label(Resources.Resource.show_level1_counters)) **Precisa finalizar
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_clusters), Table.PosicaoLabel.top)
+                                    </tr>
+                                    <tr class="row">
+                                        <td><input class="btn btn-primary btn-sm" type="button" value="Incluir Cluster" id="btnIncluirCluster" onclick="Cluster.IncluirCluster();" /></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -71,7 +82,7 @@
                     </div>
 
                     @*Obj Level1 e Clusters*@
-                    <div id="divCadastroIndicadores" style="display: table; border: 1px solid #ccc;">
+                    <div id="divCadastroIndicadores" style="display: none; border: 1px solid #ccc;">
 
                         @*Obj Level1*@
                         <div id="corpoIndicador" style="display: block; margin-top: 10px;">
@@ -314,7 +325,7 @@
                     </div>
 
                     @*Obj cabecalho*@
-                    <table id="CamposDoCabecalho">
+                    <table id="CamposDoCabecalho" style="display: none;">
                         <tbody>
                             <tr>
                                 <td>@Html.Label("Nível do Campo")</td>
@@ -344,7 +355,7 @@
                     </table>
 
                     @*Obj cabecalho inputs para: multipla escolha, binario*@
-                    <div id="allObjCamposCabecalho">
+                    <div id="allObjCamposCabecalho" style="display: none;">
 
                         <div id="objMultiplaEscolha" style="display:none;">
                             <table id="tblOpcaoMultiplaEscolha">
@@ -450,19 +461,10 @@
                         <input type="button" id="salvarCabecalho3" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
                     </div>
 
-                    @*Cabecalho Preview*@
-                    <div id="cabecalhoPreview">
-
-                    </div>
-
-                    @*btn salvar tudo*@
-                    <div style="width: 100%; float: left;">
-                        <input type="button" value="Salvar o Indicador" onclick="indexParamsLevel1.enviarDadosParaApi();" style="font-size: small; padding: 10px; font-weight: bold;">
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="btnCloseNewLevel1Modal" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <input type="button" id="btnSaveNewLevel1Modal" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary" value="Save changes" />
+                    <input type="button" id="btnSaveNewLevel1Modal" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary"  onclick="indexParamsLevel1.enviarDadosParaApi();" value="Save level 1" />
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

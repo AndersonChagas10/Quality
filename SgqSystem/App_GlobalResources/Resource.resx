@@ -417,4 +417,10 @@
   <data name="has_alert_popover" xml:space="preserve">
     <value>Define is this level will emit alert. The rules of the alert will be defined after the link between level 2 and level 3.</value>
   </data>
+  <data name="permanent" xml:space="preserve">
+    <value>Fixed</value>
+  </data>
+  <data name="variable" xml:space="preserve">
+    <value>Variable</value>
+  </data>
 </root>

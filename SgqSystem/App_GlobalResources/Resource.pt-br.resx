@@ -411,4 +411,10 @@
   <data name="has_alert_popover" xml:space="preserve">
     <value>Define se esse nível acionará alertas. As regras do alerta serão definidas posteriormente no vínculo entre nível 2 e nível 3.</value>
   </data>
+  <data name="permanent" xml:space="preserve">
+    <value>Fixo</value>
+  </data>
+  <data name="variable" xml:space="preserve">
+    <value>Variável</value>
+  </data>
 </root>
