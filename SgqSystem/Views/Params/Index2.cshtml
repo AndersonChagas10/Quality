@@ -29,12 +29,12 @@
         <div id="divCadastroMonitoramentos" style="display: table; border: 1px solid #ccc;">
         
         <div style="padding: 5px; display:inline-table;">
-            <b>@Resources.Resource.level1_name :</b>
+            <b>Nome :</b>
             @Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Name, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
         </div>
         <br>
         <div style="padding: 5px; display:inline-table;">
-            <b>@Resources.Resource.level1_description :</b>
+            <b>Descrição :</b>
             @Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Description, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
         </div>
             <div id="corpoIndicador" style="display:block; margin-top: 10px;">
@@ -192,7 +192,7 @@
         {
             var indexValue = $('.groupLevel03Class').length;
 
-            var inputHidden = '<input class="groupLevel03Class" type="hidden" name="paramsDto.listParLevel3GroupDto [' + indexValue + '].Name" value="' + input.val() + '" />'
+            var inputHidden = '<input class="groupLevel03Class" type="hidden" name="paramsDto.listParLevel3GroupDto[' + indexValue + '].Name" value="' + input.val() + '" />'
             var elemento = $('<div class="level03Group" style="margin-left:30px">' + input.val() + inputHidden + '<button id="btnRemoveLevel3Group">X</button>' + '</div>');
             $('td#Level03Group').append(elemento);
             input.val("");
