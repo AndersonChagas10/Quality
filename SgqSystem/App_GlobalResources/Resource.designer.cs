@@ -691,6 +691,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fixed.
+        /// </summary>
+        internal static string permanent {
+            get {
+                return ResourceManager.GetString("permanent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please sign in.
         /// </summary>
         internal static string please_sign_in {
@@ -939,6 +948,15 @@ namespace Resources {
         internal static string value {
             get {
                 return ResourceManager.GetString("value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable.
+        /// </summary>
+        internal static string variable {
+            get {
+                return ResourceManager.GetString("variable", resourceCulture);
             }
         }
         
