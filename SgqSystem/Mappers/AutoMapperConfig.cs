@@ -48,7 +48,7 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParCounterMapperProfile>();
                 x.AddProfile<ParCounterLocalMapperProfile>();
                 x.AddProfile<ParRelapseMapperProfile>();
-
+                x.AddProfile<ParCompanyMapperProfile>();
 
                 /*
                  Exemplo para configuração do Auto Mapper.

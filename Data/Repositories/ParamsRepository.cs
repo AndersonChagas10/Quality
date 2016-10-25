@@ -302,6 +302,21 @@ namespace Data.Repositories
             }
         }
 
+        public void SaveParCompany(ParCompany paramCompany)
+        {
+
+            if (paramCompany.Id == 0)
+            {
+                db.ParCompany.Add(paramCompany);
+            }
+            else
+            {
+                Guard.verifyDate(paramCompany, "AlterDate");
+                db.ParCompany.Attach(paramCompany);
+                db.Entry(paramCompany).State = EntityState.Modified;
+            }
+        }
+
 
         #region Não implementado
 
