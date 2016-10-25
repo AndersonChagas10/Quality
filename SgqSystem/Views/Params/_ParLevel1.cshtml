@@ -23,7 +23,7 @@
             </div>
             <br>
             <div style="padding: 5px; display:inline-table;">
-                <b>level1_description:</b>
+                <b>@Resources.Resource.level1_name:</b>
                 @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
                 @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.Description, "", new { @class = "text-danger" })
             </div>
@@ -229,26 +229,26 @@
         </div>
 
         @*Clusters*@
-        <table>
+        <table >
             <tbody>
                 <tr>
                     <td>Cluster</td>
                     <td>
                         @Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, htmlAttributes: new { @class = "", @style = "padding: 2px;" })
-                        @*@Html.ValidationMessageFor(m => m.paramsDdl.DdlparCluster, "", new { @class = "text-danger" })*@
+                        @Html.ErrorManual("valueClusterSelected", "O cluster deve ser selecionado.")
                     </td>
                 </tr>
 
                 <tr>
                     <td>Pontos</td>
                     <td>
-                        <input class="" id="pontosCluster" name="pontosCluster" type="number" value="0">
+                        <input class="" id="pontosCluster" name="pontosCluster" type="number" value="0" >
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <input type="button" value="Incluir Cluster" id="btnIncluirCluster" onclick="Cluster.IncluirCluster();" />
+                        <input type="button" value="Incluir Cluster" style="display:none;" id="btnIncluirCluster" onclick="Cluster.IncluirCluster();" />
                     </td>
                 </tr>
 
@@ -258,7 +258,7 @@
         </table>
 
         @*Tabela de Cluster Incluidos*@
-        <table id="clusterIncluidos">
+        <table id="clusterIncluidos" style="display:none">
             <thead>
                 <tr>
                     <th>1.</th>
@@ -455,11 +455,21 @@
 
     var Cluster = {
         Counter: 0,
+        EventoDdlClusters: function () {
+            $('#valueCluster').on('change', function () {
+                if ($('#valueCluster option:selected').val() == -1) {
+                    $('#btnIncluirCluster').hide();
+                } else {
+                    $('#btnIncluirCluster').show();
+                }
+            });
+        },
         IncluirCluster: function () {
 
             /*Valida cluster name*/
             if ($('#valueCluster option:selected').val() == -1) {
-                alert("selecione um cluster.");
+                $('#valueClusterSelected').show();
+                setTimeout(function () { $('#valueClusterSelected').hide(); }, 10000)
                 return;
             }
 
@@ -498,11 +508,20 @@
             $('#pontosCluster').val("");
             $('#valueCluster option[value=' + idCluster + ']').attr('disabled', true)
             //Cluster.Counter++;
+            Cluster.VerificaShowTable();
+        },
+        VerificaShowTable: function () {
+            if ($('#clusterIncluidos > tbody > tr').length > 2) {
+                $('#clusterIncluidos').show();
+            } else {
+                $('#clusterIncluidos').hide();
+            }
         },
         EventoRemove: function (btnSelector, idCluster) {
             $('#' + btnSelector).click(function () {
                 $('#valueCluster option[value=' + idCluster + ']').attr('disabled', false);
                 $(this).parents('tr').first().remove();
+                Cluster.VerificaShowTable();
             });
         },
         EventoAlterar: function (btnSelector, idCluster) {
@@ -511,7 +530,6 @@
                 alert('Nao implmentado');
             });
         },
-
         UpdateCounter: function () {
             Cluster.Counter = 0;
             $('#clusterIncluidos > tbody > tr').not('#clustersVazia, #clusters').each(function (c, o) {
@@ -526,7 +544,6 @@
                 });
             });
         },
-
     }
 
     var Cabecalhos = {
@@ -564,6 +581,9 @@
             $('#btnIncluirCabecalho input').hide();
 
             /*Esconde mensagens*/
+            Cabecalhos.EscondeMensagemValidacaoCabecalho();
+        },
+        EscondeMensagemValidacaoCabecalho: function () {
             $('#nivelCampoCabecalho').hide();
             $('#tipoCampoCabecalho').hide();
             $('#nomeCampoCabecalho').hide();
@@ -574,7 +594,6 @@
             $('#punishmentNameCabecalho2').hide();
             $('#punishmentValueCabecalho1').hide();
             $('#punishmentValueCabecalho2').hide();
-
         },
         TipoChange: function () {
             var escolhaSelecionada = parseInt($('#parFieldType option:selected').val());
@@ -623,7 +642,10 @@
 
             /*Valida se os campos estão preenchidos*/
             if (Cabecalhos.ValidaMultiplaEscolha() == false)
+            {
+                setTimeout(Cabecalhos.EscondeMensagemValidacaoCabecalho, 10000);
                 return;
+            }
 
             var cod = "?";
             var nivelDoCampo = $('#headerLevel option:selected').text();
@@ -744,7 +766,10 @@
 
             /*Valida se os campos estão preenchidos*/
             if (Cabecalhos.ValidaBinario() == false)
+            {
+                setTimeout(Cabecalhos.EscondeMensagemValidacaoCabecalho, 10000);
                 return;
+            }
 
             var cod = "?";
             var nivelDoCampo = $('#headerLevel option:selected').text();
@@ -875,6 +900,7 @@
 
     }
 
+    Cluster.EventoDdlClusters();
     Cabecalhos.hideAllObj();
     $('#parFieldType').on('change', Cabecalhos.TipoChange);
 
