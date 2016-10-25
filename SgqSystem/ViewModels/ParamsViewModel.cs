@@ -42,17 +42,23 @@ namespace SgqSystem.ViewModels
         public ParamsDdl paramsDdl { get; set; }
 
         public string pontosCluster { get; set; }
-
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            foreach (var i in paramsDdl.DdlparCluster)
-            {
-                if (i.Selected == true && i.Value.Equals("-1") && string.IsNullOrEmpty(pontosCluster))
-                {
-yield return new ValidationResult("Description must be supplied.");
-                }
-            }
+            return null;
+            //throw new NotImplementedException();
         }
+
+
+        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        //{
+        //    foreach (var i in paramsDdl.DdlparCluster)
+        //    {
+        //        if (i.Selected == true && i.Value.Equals("-1") && string.IsNullOrEmpty(pontosCluster))
+        //        {
+        //            yield return new ValidationResult("Description must be supplied.");
+        //        }
+        //    }
+        //}
 
     }
 }
