@@ -320,7 +320,6 @@
     </table>
 
     @*Obj cabecalho inputs para: multipla escolha, binario*@
-
     <div id="allObjCamposCabecalho">
 
         @*Multipla Escolha*@
@@ -557,6 +556,7 @@
             ordering: true,
         }),
         hideAllObj: function () {
+
             /*Esconde campos*/
             $('#objMultiplaEscolha').hide();
             $('#objBinario').hide();
@@ -564,12 +564,17 @@
             $('#btnIncluirCabecalho input').hide();
 
             /*Esconde mensagens*/
+            $('#nivelCampoCabecalho').hide();
+            $('#tipoCampoCabecalho').hide();
+            $('#nomeCampoCabecalho').hide();
+
             $('#multiplaEscolhaNameCabecalho').hide();
             $('#multiplaEscolhaPunishmentValueCabecalho').hide();
             $('#punishmentNameCabecalho1').hide();
             $('#punishmentNameCabecalho2').hide();
             $('#punishmentValueCabecalho1').hide();
             $('#punishmentValueCabecalho2').hide();
+
         },
         TipoChange: function () {
             var escolhaSelecionada = parseInt($('#parFieldType option:selected').val());
@@ -611,8 +616,6 @@
                 $('#multiplaEscolhaPunishmentValueCabecalho').show();
                 isValid = false;
             }
-
-
 
             return isValid;
         },
