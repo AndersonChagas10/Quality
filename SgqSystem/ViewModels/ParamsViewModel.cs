@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SgqSystem.ViewModels
 {
-    public class ParamsViewModel : IValidatableObject
+    public class ParamsViewModel
     {
         #region Constructors
 
@@ -41,14 +41,7 @@ namespace SgqSystem.ViewModels
         public ParamsDTO paramsDto { get; set; }
         public ParamsDdl paramsDdl { get; set; }
 
-        public string pontosCluster { get; set; }
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            return null;
-            //throw new NotImplementedException();
-        }
-
-
+      
         //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         //{
         //    foreach (var i in paramsDdl.DdlparCluster)
