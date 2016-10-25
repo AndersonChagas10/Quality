@@ -13,6 +13,8 @@ namespace SgqSystem.App_Start
     //using Data.Repositories;
     using System.Web.Http;
     using CrossCutting.IOC;
+    using System.Web.Http.Validation;
+    using Ninject.Web.WebApi.Validation;
 
     public static class NinjectWebCommon
     {
@@ -49,6 +51,7 @@ namespace SgqSystem.App_Start
             {
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
+                kernel.Rebind<ModelValidatorProvider>().To<NinjectDefaultModelValidatorProvider>();
 
                 // Install our Ninject-based IDependencyResolver into the Web API config
                 GlobalConfiguration.Configuration.DependencyResolver = new Ninject.WebApi.DependencyResolver.NinjectDependencyResolver(kernel);

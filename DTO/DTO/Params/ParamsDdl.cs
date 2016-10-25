@@ -1,5 +1,6 @@
 ﻿using DTO.Helpers;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace DTO.DTO.Params
@@ -10,9 +11,14 @@ namespace DTO.DTO.Params
         public IEnumerable<SelectListItem> DdlFrequency { get; set; }
         public IEnumerable<SelectListItem> DdlparLevel1 { get; set; }
         public IEnumerable<SelectListItem> DdlparCluster { get; set; }
-        public IEnumerable<SelectListItem> DdlparLevelDefinition { get; set; }
-        public IEnumerable<SelectListItem> DdlParFieldType { get; set; }
         public IEnumerable<SelectListItem> DdlParDepartment { get; set; }
+
+        //[Range(0, 999, ErrorMessage = "É obrigatório selecionar o Nível do Campo.")]
+        public IEnumerable<SelectListItem> DdlparLevelDefinition { get; set; }
+        //[Range(0, 999, ErrorMessage = "É obrigatório selecionar o Tipo, para Nível do Campo.")]
+        public IEnumerable<SelectListItem> DdlParFieldType { get; set; }
+
+
 
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {

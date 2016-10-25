@@ -46,31 +46,38 @@ namespace Data.Repositories
                 SalvaParLevel1(paramLevel1); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
 
-                foreach (var Level1XCluster in listaParLevel1XCluster)
+                if (listaParLevel1XCluster != null)
                 {
-                    SalvaLevel1XCluster(Level1XCluster, paramLevel1.Id); /*Salva NxN Level1XCluster*/
-                    db.SaveChanges(); /*Obtem ID do NxN Level1XCluster*/
+                    foreach (var Level1XCluster in listaParLevel1XCluster)
+                    {
+                        SalvaLevel1XCluster(Level1XCluster, paramLevel1.Id); /*Salva NxN Level1XCluster*/
+                        db.SaveChanges(); /*Obtem ID do NxN Level1XCluster*/
+                    }
                 }
 
-                foreach (var parHeadField in listaParHeadField)
+                if (listaParHeadField != null)
                 {
-                    var ListParMultipleValues = parHeadField.ParMultipleValues;
-                    SalvaParHeadField(parHeadField); /*Salva ParHeadField*/
-                    db.SaveChanges(); /*Obtem id do ParHeadField*/
-
-                    foreach (var parMultipleValues in ListParMultipleValues)
+                    foreach (var parHeadField in listaParHeadField)
                     {
-                        SalvaParMultipleValues(parMultipleValues, parHeadField.Id);
-                        db.SaveChanges();
-                    }
+                        var ListParMultipleValues = parHeadField.ParMultipleValues; /*Variavel temporaria*/
+                        SalvaParHeadField(parHeadField); /*Salva ParHeadField*/
+                        db.SaveChanges(); /*Obtem id do ParHeadField*/
+
+                        foreach (var parMultipleValues in ListParMultipleValues)
+                        {
+                            SalvaParMultipleValues(parMultipleValues, parHeadField.Id);
+                            db.SaveChanges();
+                        }
 
                     int idParLevel1HeaderField;
                     ParLevel1XHeaderField parLevel1HeaderField;
                     /*Verifica se ja existe vinculo ParLevel1 e ParHEaderField na tabela NxN ParLevel1XHeaderField. */
                     CriaParLevel1HeaderField(paramLevel1, parHeadField, out idParLevel1HeaderField, out parLevel1HeaderField);
 
-                    SalvaParLevel1HeaderField(idParLevel1HeaderField, parLevel1HeaderField);/*Salva ParLevel1XHeaderField*/
-                    db.SaveChanges(); /*Obtem id do ParLevel1XHeaderField*/
+                        SalvaParLevel1HeaderField(idParLevel1HeaderField, parLevel1HeaderField);/*Salva ParLevel1XHeaderField*/
+                        db.SaveChanges(); /*Obtem id do ParLevel1XHeaderField*/
+                    }
+
                 }
 
                 ts.Commit();
@@ -82,6 +89,7 @@ namespace Data.Repositories
             if (parMultipleValues.Description == null)
                 parMultipleValues.Description = "";
             parMultipleValues.ParHeaderField_Id = parHeadFieldId;
+            parMultipleValues.ParHeaderField = null;
             if (parMultipleValues.Id == 0)
             {
                 db.ParMultipleValues.Add(parMultipleValues);
@@ -147,6 +155,9 @@ namespace Data.Repositories
         private void SalvaLevel1XCluster(ParLevel1XCluster Level1XCluster, int paramLevel1Id)
         {
             Level1XCluster.ParLevel1_Id = paramLevel1Id;
+            Level1XCluster.ParLevel1 = null;
+            Level1XCluster.ParCluster = null;
+
             if (Level1XCluster.Id == 0)
             {
                 db.ParLevel1XCluster.Add(Level1XCluster);

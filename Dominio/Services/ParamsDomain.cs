@@ -3,7 +3,6 @@ using Dominio.Interfaces.Repositories;
 using DTO.DTO.Params;
 using AutoMapper;
 using System.Collections.Generic;
-using System;
 
 namespace Dominio.Services
 {
@@ -76,6 +75,8 @@ namespace Dominio.Services
         /// <returns></returns>
         public ParamsDTO AddUpdateLevel1(ParamsDTO paramsDto)
         {
+            
+
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);
             List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);

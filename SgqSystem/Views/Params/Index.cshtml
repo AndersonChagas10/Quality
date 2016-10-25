@@ -4,276 +4,116 @@
     ViewBag.Title = "ParLeve1";
     var url = Url.Action("AddUpdateLevel1", "api/ParamsApi"); //URL relativa
     var urlGetLevel1 = Url.Action("GetParLevel1ById", "api/ParamsApi"); //URL relativa
-    Layout = null;
 }
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width" />
-        <title>@ViewBag.Title</title>
 
-        @Styles.Render("~/Content/General")
+<link href="~/Content/css/select2.min.css" rel="stylesheet" />
+<script src="~/Scripts/select2.min.js"></script>
 
-        @Styles.Render("~/Content/Theme")
-        @Styles.Render("~/Content/Erp")
+@Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, "Selecione...", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "parLeve1Select2" })
 
-    </head>
+<div id="ParLevel1">
+    @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
+</div>
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo">
+<script>
 
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @Scripts.Render("~/bundles/modernizr")
-        @Scripts.Render("~/bundles/ScriptTables")
+    var url1 = '@Html.Raw(@url)';
 
-        @Scripts.Render("~/bundles/theme")
-        <div class="page-wrapper">
-
-            @Html.Partial("~/Views/Params/_Navbar.cshtml")
-            <div class="page-container">
-
-                @Html.Partial("~/Views/Params/_RightLayout.cshtml")
-                @Html.Partial("~/Views/Params/_LeftLayout.cshtml")
-
-                <div class="page-content-wrapper">
-                    <!-- BEGIN CONTENT BODY -->
-                    <div class="page-content" style="min-height: 1000px;">
-                        <!-- BEGIN PAGE HEADER-->
-                        <!-- BEGIN PAGE TITLE-->
-                        <h1 class="page-title">
-                            Parameretrization
-                            <small>Construct data collection screen</small>
-                        </h1>
-                        <!-- END PAGE TITLE-->
-                        <!-- BEGIN PAGE BAR -->
-                        <div class="page-bar">
-                            <ul class="page-breadcrumb">
-                                <li>
-                                    <a href="index.html">Home</a>
-                                    <i class="fa fa-angle-right"></i>
-                                </li>
-                                <li>
-                                    <span>Dashboard</span>
-                                </li>
-                            </ul>
-                            <div class="page-toolbar">
-                                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
-                                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                                    <i class="fa fa-calendar"></i>&nbsp;
-                                    <span class="thin uppercase hidden-xs" id="currentDate"></span>&nbsp;
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END PAGE BAR -->
-                        <!-- END PAGE HEADER-->
-                        <div class="row">
-                            <div class="col-lg-6 col-xs-12 col-sm-12">
-                                <div class="portlet light bordered">
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            <span class="caption-subject bold uppercase font-dark">Parameretrization</span>
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body">
-                                        <div class="row">
-                                            <div class="col-xs-3"><button class="btn btn-primary btn-block" id="newLevel1">New Level 1</button></div>
-                                            <div class="col-xs-9">
-                                                <div class="form-group">
-                                                    <label>Select the level</label>
-                                                    @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, "Selecione...", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "parLeve1Select2" })
-                                                </div>
-                                            </div>
-                                            <hr />
-                                        </div>  
-                                        <div id="ParLevel1">
-                                            @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model);
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-xs-12 col-sm-12">
-                                <div class="portlet light bordered">
-                                    <div class="portlet-title tabbable-line">
-                                        <div class="caption">
-                                            <i class="icon-share font-dark"></i>
-                                            <span class="caption-subject font-dark bold uppercase">Demo</span>
-                                        </div>
-                                        <ul class="nav nav-tabs">
-                                            <li class="">
-                                                <a href="#portlet_tab3" data-toggle="tab" aria-expanded="true"> Level 1 </a>
-                                            </li>
-                                            <li class="active">
-                                                <a href="#portlet_tab2" data-toggle="tab" aria-expanded="false"> Level 2 </a>
-                                            </li>
-                                            <li class="">
-                                                <a href="#portlet_tab1" data-toggle="tab" aria-expanded="false"> Level 3 </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="portlet-body">
-                                        <div class="tab-content">
-                                            <div class="tab-pane active" id="portlet_tab1">
-
-                                            </div>
-                                            <div class="tab-pane" id="portlet_tab2">
-
-                                            </div>
-                                            <div class="tab-pane" id="portlet_tab3">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END CONTENT BODY -->
-                </div>
-
-            </div>
-        </div>
-        <script>
-            var monthNames = [
-               '@Resources.Resource.january',
-               '@Resources.Resource.february',
-               '@Resources.Resource.march',
-               '@Resources.Resource.april',
-               '@Resources.Resource.may',
-               '@Resources.Resource.june',
-               '@Resources.Resource.july',
-               '@Resources.Resource.august',
-               '@Resources.Resource.september',
-               '@Resources.Resource.october',
-               '@Resources.Resource.november',
-               '@Resources.Resource.december'];
-
-            closeLeftSidebar();
-
-            function twoDigits(str) {
-                str = ("000" + str).slice(-2);
-                return str;
+    /*
+      Serializa objeto usando bind de property Name
+      $('form').serializeObject();
+    */
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
             }
+        });
+        return o;
+    };
 
-            function watcher() {
-
-                var date = new Date();
-                var day = date.getDate();
-                var monthIndex = date.getMonth();
-                var year = date.getFullYear();
-                var hour = date.getHours();
-                var minute = date.getMinutes();
-                var second = date.getSeconds();
-
-                $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
-
-                setTimeout(watcher, 1000);
-            }
-
-            watcher();
-            
-            //begin modal
-
-            //level 1
-            $("#newLevel1").click(function () {
-                $('#newLevel1Modal').modal('show');
-            });
-
-            $("#btnCloseNewLevel1Modal").click(function () {
-                $('#newLevel1Modal').modal('close');
-            });
-
-            //level 2
-            $("#newLevel2").click(function () {
-                $('#newLevel2Modal').modal('show');
-            });
-
-            $("#btnCloseNewLevel2Modal").click(function () {
-                $('#newLevel2Modal').modal('close');
-            });
-
-            //level 3
-            $("#newLevel3").click(function () {
-                $('#newLevel3Modal').modal('show');
-            });
-
-            $("#btnCloseNewLevel3Modal").click(function () {
-                $('#newLevel3Modal').modal('close');
-            });
-
-            //end modal
-
-            var url1 = '@Html.Raw(@url)';
-
-            /*
-                Serializa objeto usando bind de property Name
-                $('form').serializeObject();
-            */
-            $.fn.serializeObject = function () {
-                var o = {};
-                var a = this.serializeArray();
-                $.each(a, function () {
-                    if (o[this.name] !== undefined) {
-                        if (!o[this.name].push) {
-                            o[this.name] = [o[this.name]];
-                        }
-                        o[this.name].push(this.value || '');
-                    } else {
-                        o[this.name] = this.value || '';
-                    }
-                });
-                return o;
-            };
-
-            /*Inicio Select 2 Level1*/
-            var parLevel1Empty = $('#ParLevel1 > form').clone();
-            var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
-            $('#parLeve1Select2').select2({
-                placeholder: {
-                    id: "-1",
-                    text: "Selecione..."
-                },
-            }).on("select2:select", function (e) {
-
-                if (e.currentTarget.value == "") {
+    /*Inicio Select 2 Level1*/
+    var parLevel1Empty = $('#ParLevel1 > form').clone();
+    var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
+    $('#parLeve1Select2').select2({
+        placeholder: {
+            id: "-1",
+            text: "Selecione..."
+        },
+    }).on("select2:select", function (e) {
+        if (e.currentTarget.value == "") {
+            $('#ParLevel1').empty();
+            $('#ParLevel1').append(parLevel1Empty);
+        } else {
+            $.get('GetParLevel1ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
+                if (obj != null) {
                     $('#ParLevel1').empty();
-                    $('#ParLevel1').append(parLevel1Empty);
-                } else {
-                    $.get('GetParLevel1ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
-                        if (obj != null) {
-                            $('#ParLevel1').empty();
-                            $('#ParLevel1').append(xhr.responseText);
-                        }
-                    });
+                    $('#ParLevel1').append(xhr.responseText);
                 }
+            });
+        }
+    }).on("select2:unselect", function (e) {
+        if (e.currentTarget.value == "") {
+            $('#ParLevel1').empty()
+            $('#ParLevel1').append(parLevel1Empty)
+        }
+    });
+    /*Fim Select 2 Level1*/
 
-            }).on("select2:unselect", function (e) {
+    /*Inicio Submit Level1*/
+    var indexParamsLevel1 = {
 
-                if (e.currentTarget.value == "") {
-                    $('#ParLevel1').empty()
-                    $('#ParLevel1').append(parLevel1Empty)
-                }
+        enviarDadosParaApi: function (e) {
 
-            });;
-            /*Fim Select 2 Level1*/
+            //if (indexParamsLevel1.ValidaLevel1) {
 
-            /*Inicio Submit Level1*/
-            var indexParamsLevel1 = {
+            Cluster.UpdateCounter();
+            Cabecalhos.UpdateCabecalhos()
 
-                enviarDadosParaApi: function (e) {
+            var dados = $('form').serializeObject();
 
-                    var dados = $('form').serializeObject();
+            $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                console.log(objetoReturn);
+                console.log(statusmessage);
+                console.log(respostaCompleta);
+            });
 
-                    $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                        console.log(objetoReturn);
-                        console.log(statusmessage);
-                        console.log(respostaCompleta);
-                    });
+            //}
 
-                },
+        },
+
+        ValidaLevel1: function () {
+            var isValid = true;
+
+            if ($('#paramsDto_parLevel1Dto_Name').val().length == 0) {
+                alert('Campo Nome do Indicador invalido.')
+                isValid = false;
             }
-            /*Fim Submit Level1*/
 
-        </script>
-    </body>
-</html>
+            if ($('#paramsDto_parLevel1Dto_Description').val().length == 0) {
+                alert('Campo Descrição do Indicador invalido.')
+                isValid = false;
+            }
+
+            if ($('#selectConsolidacao option:selected').val() == -1) {
+                alert('Campo Tipo de Consolidação inválido');
+                isValid = false;
+            }
+
+            if ($('#selectConsolidacao option:selected').val() == -1) {
+                alert('Campo Frequencia inválido');
+                isValid = false;
+            }
+            return isValid;
+        }
+    }
+    /*Fim Submit Level1*/
+
+</script>

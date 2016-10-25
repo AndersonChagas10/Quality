@@ -1,5 +1,4 @@
 ﻿using Dominio.Interfaces.Services;
-using DTO.DTO.Params;
 using SgqSystem.ViewModels;
 using System.Web.Mvc;
 

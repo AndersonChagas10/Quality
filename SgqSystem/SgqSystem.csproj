@@ -322,24 +322,20 @@
     </Compile>
     <Compile Include="Handlres\HandleApi.cs" />
     <Compile Include="Handlres\HandleController.cs" />
-    <Compile Include="Helpers\Table.cs" />
+    <Compile Include="Handlres\ValidateModelAttribute.cs" />
     <Compile Include="Helpers\Teste.cs" />
+    <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParGoalMapperProfile - Copy.cs" />
     <Compile Include="Mappers\Params\ParHeaderFieldMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel3GroupMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLevel2MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevelDefinitonMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParCounterMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParMultipleValuesMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParFieldTypeMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel1HeaderField.cs" />
     <Compile Include="Mappers\Params\ParLevel1ClusterMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParLocalMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParGoalMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParClusterGroupMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParClusterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParFrequencyMapperProfile.cs" />
@@ -422,12 +418,6 @@
     <Content Include="Content\bootstrap-datepicker3.min.css" />
     <Content Include="Content\bootstrap-datepicker3.standalone.css" />
     <Content Include="Content\bootstrap-datepicker3.standalone.min.css" />
-    <Content Include="Content\bootstrap-switch\css\bootstrap2\bootstrap-switch.css" />
-    <Content Include="Content\bootstrap-switch\css\bootstrap2\bootstrap-switch.min.css" />
-    <Content Include="Content\bootstrap-switch\css\bootstrap3\bootstrap-switch.css" />
-    <Content Include="Content\bootstrap-switch\css\bootstrap3\bootstrap-switch.min.css" />
-    <Content Include="Content\bootstrap-switch\js\bootstrap-switch.js" />
-    <Content Include="Content\bootstrap-switch\js\bootstrap-switch.min.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -584,7 +574,6 @@
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Content\daterangepicker-bs2.css" />
     <Content Include="Content\daterangepicker-bs3.css" />
-    <Content Include="Content\erp.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Gridmvc.css" />
@@ -1094,6 +1083,7 @@
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_variables.scss" />
     <Content Include="Views\Params\_ParLevel1.cshtml" />
     <Content Include="Views\Params\Index2.cshtml" />
+    <Content Include="Views\Params\IndexTeste.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
