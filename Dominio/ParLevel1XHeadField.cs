@@ -12,16 +12,16 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParLevel3Group
+    public partial class ParLevel1XHeadField
     {
         public int Id { get; set; }
-        public int ParLevel2_Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool IsActive { get; set; }
+        public Nullable<bool> IsActive { get; set; }
+        public int ParLevel1_Id { get; set; }
+        public int ParHeaderField_Id { get; set; }
     
-        public virtual ParLevel2 ParLevel2 { get; set; }
+        public virtual ParHeaderField ParHeaderField { get; set; }
+        public virtual ParLevel1 ParLevel1 { get; set; }
     }
 }

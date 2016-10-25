@@ -12,16 +12,13 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParLevel3Group
+    public partial class ParNotConformityRule
     {
         public int Id { get; set; }
-        public int ParLevel2_Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
-    
-        public virtual ParLevel2 ParLevel2 { get; set; }
+        public string Sufix { get; set; }
     }
 }

@@ -25,7 +25,19 @@ namespace Data.Repositories
         {
             db = Db;
         }
-
+        private void SalvaParLevel1(ParLevel1 paramLevel1)
+        {
+            if (paramLevel1.Id == 0)
+            {
+                db.ParLevel1.Add(paramLevel1);
+            }
+            else
+            {
+                Guard.verifyDate(paramLevel1, "AlterDate");
+                db.ParLevel1.Attach(paramLevel1);
+                db.Entry(paramLevel1).State = EntityState.Modified;
+            }
+        }
         public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster)
         {
             using (var ts = db.Database.BeginTransaction())
@@ -53,7 +65,7 @@ namespace Data.Repositories
                     }
 
                     int idParLevel1HeaderField;
-                    ParLevel1HeaderField parLevel1HeaderField;
+                    ParLevel1XHeaderField parLevel1HeaderField;
                     /*Verifica se ja existe vinculo ParLevel1 e ParHEaderField na tabela NxN ParLevel1XHeaderField. */
                     CriaParLevel1HeaderField(paramLevel1, parHeadField, out idParLevel1HeaderField, out parLevel1HeaderField);
 
@@ -82,14 +94,14 @@ namespace Data.Repositories
             }
         }
 
-        private void CriaParLevel1HeaderField(ParLevel1 paramLevel1, ParHeaderField parHeadField, out int idParLevel1HeaderField, out ParLevel1HeaderField parLevel1HeaderField)
+        private void CriaParLevel1HeaderField(ParLevel1 paramLevel1, ParHeaderField parHeadField, out int idParLevel1HeaderField, out ParLevel1XHeaderField parLevel1HeaderField)
         {
             idParLevel1HeaderField = 0;
-            var verificaSeJaExisteVinculo = db.ParLevel1HeaderField.FirstOrDefault(r => r.ParHeaderField_Id == parHeadField.Id && r.ParLevel1_Id == paramLevel1.Id);
+            var verificaSeJaExisteVinculo = db.ParLevel1XHeaderField.FirstOrDefault(r => r.ParHeaderField_Id == parHeadField.Id && r.ParLevel1_Id == paramLevel1.Id);
             if (verificaSeJaExisteVinculo != null)
                 idParLevel1HeaderField = verificaSeJaExisteVinculo.Id;
 
-            parLevel1HeaderField = new ParLevel1HeaderField()
+            parLevel1HeaderField = new ParLevel1XHeaderField()
             {
                 Id = idParLevel1HeaderField,
                 ParLevel1_Id = paramLevel1.Id,
@@ -97,16 +109,16 @@ namespace Data.Repositories
             };
         }
 
-        private void SalvaParLevel1HeaderField(int idParLevel1HeaderField, ParLevel1HeaderField parLevel1HeaderField)
+        private void SalvaParLevel1HeaderField(int idParLevel1HeaderField, ParLevel1XHeaderField parLevel1HeaderField)
         {
             if (idParLevel1HeaderField == 0)
             {
-                db.ParLevel1HeaderField.Add(parLevel1HeaderField);
+                db.ParLevel1XHeaderField.Add(parLevel1HeaderField);
             }
             else
             {
                 Guard.verifyDate(parLevel1HeaderField, "AlterDate");
-                db.ParLevel1HeaderField.Attach(parLevel1HeaderField);
+                db.ParLevel1XHeaderField.Attach(parLevel1HeaderField);
                 db.Entry(parLevel1HeaderField).State = EntityState.Modified;
             }
         }
@@ -118,7 +130,7 @@ namespace Data.Repositories
             parHeadField.ParMultipleValues = null;
             parHeadField.ParFieldType = null;
             parHeadField.ParLevelDefiniton = null;
-            parHeadField.ParLevel1HeaderField = null;
+            parHeadField.ParLevel1XHeaderField = null;
 
             if (parHeadField.Id == 0)
             {
@@ -148,23 +160,9 @@ namespace Data.Repositories
             }
         }
 
-        private void SalvaParLevel1(ParLevel1 paramLevel1)
+        public void AddUpdateParLevel2(ParLevel2 paramLevel2)
         {
-            if (paramLevel1.Id == 0)
-            {
-                db.ParLevel1.Add(paramLevel1);
-            }
-            else
-            {
-                Guard.verifyDate(paramLevel1, "AlterDate");
-                db.ParLevel1.Attach(paramLevel1);
-                db.Entry(paramLevel1).State = EntityState.Modified;
-            }
-        }
-
-        public void SaveParLevel2(ParLevel2 paramLevel2)
-        {
-            if(paramLevel2.Id == 0)
+            if (paramLevel2.Id == 0)
             {
                 db.ParLevel2.Add(paramLevel2);
             }
@@ -174,12 +172,87 @@ namespace Data.Repositories
                 db.ParLevel2.Attach(paramLevel2);
                 db.Entry(paramLevel2).State = EntityState.Modified;
             }
+
         }
 
-        public void SaveParLevel2(ParLevel2 paramLevel2, List<ParDepartment> ListParDepartment, List<ParFrequency> listParFrequancy)
+        public void SaveParLevel2(ParLevel2 paramLevel2, List<ParLevel3Group> listaParLevel3Group)
         {
-            throw new NotImplementedException();
+            using (var ts = db.Database.BeginTransaction())
+            {
+                AddUpdateParLevel2(paramLevel2); /*Salva paramLevel1*/
+                db.SaveChanges(); //Obtem Id do paramLevel1
+
+                foreach (var Level3Group in listaParLevel3Group)
+                {
+                    AddUpdateParLevel3Group(Level3Group, paramLevel2.Id); /*Salva NxN Level1XCluster*/
+                    db.SaveChanges(); /*Obtem ID do NxN Level1XCluster*/
+                }
+                ts.Commit();
+            }
         }
+
+        private void AddUpdateParLevel3Group(ParLevel3Group paramLevel3Group, int ParLevel2_Id)
+        {
+            paramLevel3Group.ParLevel2_Id = ParLevel2_Id;
+            //if(paramLevel3Group.Description == null)
+            //{
+            //    paramLevel3Group.Description = string.Empty;
+            //}
+            if (paramLevel3Group.Id == 0)
+            {
+                db.ParLevel3Group.Add(paramLevel3Group);
+            }
+            else
+            {
+                Guard.verifyDate(paramLevel3Group, "AlterDate");
+                db.ParLevel3Group.Attach(paramLevel3Group);
+                db.Entry(paramLevel3Group).State = EntityState.Modified;
+            }
+
+        }
+
+        public void SaveParLocal(ParLocal paramLocal)
+        {
+            if (paramLocal.Id == 0)
+            {
+                db.ParLocal.Add(paramLocal);
+            }
+            else
+            {
+                Guard.verifyDate(paramLocal, "AlterDate");
+                db.ParLocal.Attach(paramLocal);
+                db.Entry(paramLocal).State = EntityState.Modified;
+            }
+        }
+
+        public void SaveParCounter(ParCounter paramCounter)
+        {
+            if (paramCounter.Id == 0)
+            {
+                db.ParCounter.Add(paramCounter);
+            }
+            else
+            {
+                Guard.verifyDate(paramCounter, "AlterDate");
+                db.ParCounter.Attach(paramCounter);
+                db.Entry(paramCounter).State = EntityState.Modified;
+            }
+        }
+
+        public void SaveParCounterLocal(ParCounterLocal paramCounterLocal)
+        {
+            if (paramCounterLocal.Id == 0)
+            {
+                db.ParCounterLocal.Add(paramCounterLocal);
+            }
+            else
+            {
+                Guard.verifyDate(paramCounterLocal, "AlterDate");
+                db.ParCounterLocal.Attach(paramCounterLocal);
+                db.Entry(paramCounterLocal).State = EntityState.Modified;
+            }
+        }
+
 
         #region Não implementado
 
