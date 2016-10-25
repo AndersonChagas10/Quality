@@ -26,14 +26,20 @@ namespace SgqSystem.Helpers
         }
 
 
-        public static MvcHtmlString GerarColuna(MvcHtmlString input, MvcHtmlString label, PosicaoLabel posicaoLabel, string info = null)
+        public static MvcHtmlString GerarColuna(MvcHtmlString input, MvcHtmlString label, PosicaoLabel posicaoLabel, MvcHtmlString error = null, string info = null)
         {
             String tr = "";
             String tagInfo = "";
+            String tagError = "";
 
             if (info != null)
             {
                 tagInfo = " <i class='fa fa-question-circle popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
+            }
+
+            if (error != null)
+            {
+                tagError = error.ToString();
             }
 
             if (posicaoLabel == PosicaoLabel.top)
@@ -42,6 +48,7 @@ namespace SgqSystem.Helpers
                         label.ToString() + " " +
                         tagInfo +
                         input.ToString() +
+                        tagError+
                      "</td>";
             }
             else if(posicaoLabel == PosicaoLabel.left)
@@ -53,6 +60,7 @@ namespace SgqSystem.Helpers
                     "</td>" +
                     "<td class='td-erp'>" +
                         input.ToString() +
+                        tagError+
                     "</td>";
             }
             return new MvcHtmlString(tr);
@@ -76,14 +84,20 @@ namespace SgqSystem.Helpers
             return new MvcHtmlString(tr);
         }
 
-        public static MvcHtmlString GerarColunaCheckbox(MvcHtmlString checkbox, MvcHtmlString label, PosicaoLabel posicaoLabel, string info = null)
+        public static MvcHtmlString GerarColunaCheckbox(MvcHtmlString checkbox, MvcHtmlString label,  PosicaoLabel posicaoLabel, MvcHtmlString error = null, string info = null)
         {
             String tr = "";
             String tagInfo = "";
+            String tagError = "";
 
             if (info != null)
             {
                 tagInfo = " <i class='fa fa-question-circle popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
+            }
+
+            if (error != null)
+            {
+                tagError = error.ToString();
             }
 
             if (posicaoLabel == PosicaoLabel.top)
@@ -108,14 +122,20 @@ namespace SgqSystem.Helpers
             return new MvcHtmlString(tr);
         }
 
-        public static MvcHtmlString GerarColunaRadioButton(MvcHtmlString label, MvcHtmlString radio1, MvcHtmlString radio2, String radio1Label, String radio2Label, PosicaoLabel posicaoLabel, string info = null)
+        public static MvcHtmlString GerarColunaRadioButton(MvcHtmlString label, MvcHtmlString radio1, MvcHtmlString radio2, String radio1Label, String radio2Label, PosicaoLabel posicaoLabel, MvcHtmlString error = null, string info = null)
         {
             String tr = "";
             String tagInfo = "";
+            String tagError = "";
 
             if (info != null)
             {
                 tagInfo = " <i class='fa fa-question-circle popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
+            }
+
+            if (error != null)
+            {
+                tagError = error.ToString();
             }
 
             if (posicaoLabel == PosicaoLabel.top)
