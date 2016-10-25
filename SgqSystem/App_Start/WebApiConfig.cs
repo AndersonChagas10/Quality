@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
-using Newtonsoft.Json.Serialization;
 using SgqSystem.Handlres;
 
 namespace SgqSystem
@@ -18,6 +13,7 @@ namespace SgqSystem
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
             config.Filters.Add(new HandleApi());
+            //config.Filters.Add(new ValidateModelAttribute());
 
             // Web API routes
             config.MapHttpAttributeRoutes();

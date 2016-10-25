@@ -249,7 +249,7 @@
   <data name="allow_the_edition_of_the_evaluation_number" xml:space="preserve">
     <value>Allow the edition of the evaluation number</value>
   </data>
-  <data name="allow_the_edition_of_the_goal_of_the_indicator_by_unit" xml:space="preserve">
+  <data name="allow_the_edition_of_the_goal_of_the_level1_by_unit" xml:space="preserve">
     <value>Allow the edition of the goal of the indicator by unit</value>
   </data>
   <data name="allow_the_edition_of_the_sample_number" xml:space="preserve">
@@ -408,10 +408,13 @@
   <data name="allow_level2_group_popover" xml:space="preserve">
     <value>Define if there will be level 2 groups on this level 1.</value>
   </data>
+  <data name="allow_specific_register_by_unit_popover" xml:space="preserve">
+    <value>Define if the the units can edit the level 1. If yes, the field "specific register" will show up to define which registers the units will be able to edit.</value>
+  </data>
   <data name="has_alert" xml:space="preserve">
     <value>Emit alert</value>
   </data>
   <data name="has_alert_popover" xml:space="preserve">
-    <value>Define is this level will emit alert. The rules of the alert will be defined </value>
+    <value>Define is this level will emit alert. The rules of the alert will be defined after the link between level 2 and level 3.</value>
   </data>
 </root>

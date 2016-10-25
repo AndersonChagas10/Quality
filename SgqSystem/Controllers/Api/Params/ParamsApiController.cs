@@ -28,6 +28,7 @@ namespace SgqSystem.Controllers.Api.Params
         #region Metods
 
         [HttpPost]
+        [ValidateModel]
         [Route("AddUpdateLevel1")]
         public ParamsViewModel AddUpdateLevel1([FromBody] ParamsViewModel paramsViewModel)
         {

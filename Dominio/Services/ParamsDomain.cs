@@ -3,7 +3,6 @@ using Dominio.Interfaces.Repositories;
 using DTO.DTO.Params;
 using AutoMapper;
 using System.Collections.Generic;
-using System;
 
 namespace Dominio.Services
 {
