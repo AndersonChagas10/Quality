@@ -74,11 +74,6 @@ namespace Dominio.Services
 
         /// <summary>
         /// Salva parametrização Level1
-        /// 
-        /// Rn1 Valida objeto
-        /// Rn2 Salva objeto
-        /// Rn3 Retorna objeto atualizado.
-        /// 
         /// </summary>
         /// <param name="paramsDto"></param>
         /// <returns></returns>
