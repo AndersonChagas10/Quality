@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Celso\Source\Repos\ddd.bitbucket8\Dominio\SgqEfContext.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Tony\Source\Repos\ddd.bitbucket\Dominio\SgqEfContext.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

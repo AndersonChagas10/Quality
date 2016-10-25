@@ -17,7 +17,7 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParLevel2()
         {
-            this.ParCounterLocal = new HashSet<ParCounterLocal>();
+            this.ParCounterXLocal = new HashSet<ParCounterXLocal>();
             this.ParEvaluation = new HashSet<ParEvaluation>();
             this.ParLevel3Group = new HashSet<ParLevel3Group>();
             this.ParNotConformityRuleXLevel = new HashSet<ParNotConformityRuleXLevel>();
@@ -38,7 +38,7 @@ namespace Dominio
         public bool IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParCounterLocal> ParCounterLocal { get; set; }
+        public virtual ICollection<ParCounterXLocal> ParCounterXLocal { get; set; }
         public virtual ParDepartment ParDepartment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParEvaluation> ParEvaluation { get; set; }

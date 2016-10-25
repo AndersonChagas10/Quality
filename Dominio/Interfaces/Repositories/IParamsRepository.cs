@@ -9,7 +9,7 @@ namespace Dominio.Interfaces.Repositories
 
         void SaveParLocal(ParLocal paramLocal);
         void SaveParCounter(ParCounter paramCounter);
-        void SaveParCounterLocal(ParCounterLocal paramCounterLocal);
+        void SaveParCounterXLocal(ParCounterXLocal paramCounterLocal);
         void SaveParRelapse(ParRelapse paramRelapse);
         void SaveParNotConformityRule(ParNotConformityRule paramNotConformityRule);
         void SaveParNotConformityRuleXLevel(ParNotConformityRuleXLevel paramNotConformityRule);
