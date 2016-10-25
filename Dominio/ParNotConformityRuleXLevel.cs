@@ -14,7 +14,7 @@ namespace Dominio
     
     public partial class ParNotConformityRuleXLevel
     {
-        public Nullable<int> Id { get; set; }
+        public int Id { get; set; }
         public int ParNotConformityRule_Id { get; set; }
         public Nullable<int> ParCompany_Id { get; set; }
         public Nullable<decimal> Value { get; set; }
@@ -26,5 +26,11 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
+    
+        public virtual ParCompany ParCompany { get; set; }
+        public virtual ParLevel1 ParLevel1 { get; set; }
+        public virtual ParLevel2 ParLevel2 { get; set; }
+        public virtual ParLevel3 ParLevel3 { get; set; }
+        public virtual ParNotConformityRule ParNotConformityRule { get; set; }
     }
 }
