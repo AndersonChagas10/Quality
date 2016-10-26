@@ -438,7 +438,23 @@
 
     @*Cabecalho Preview*@
     <div id="cabecalhoPreview">
+        @if (Model.paramsDto.parLevel1Dto.cabecalhosInclusos != null)
+        {
+            foreach (var i in Model.paramsDto.parLevel1Dto.cabecalhosInclusos)
+            {
+                if (i.ParFieldType_Id == 1)
+                {
+                    <label>@i.Name </label>
+                    @Html.DropDownList("i.DropDownList", i.DropDownList, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = i.Id })
+                    @Html.Hidden(i.Name)
+                    @Html.Hidden(i.Description)
+                    @Html.Hidden(i.ParFieldType_Id.ToString())
+                    @Html.Hidden(i.ParLevelDefinition_Id.ToString())
+                    @Html.Hidden(i.LinkNumberEvaluetion.ToString())
+                }
 
+            }
+        }
     </div>
 
     @*btn salvar tudo*@
