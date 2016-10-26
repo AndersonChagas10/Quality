@@ -143,6 +143,7 @@ namespace Dominio.Services
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel2 saveParamLevel2 = Mapper.Map<ParLevel2>(paramsDto.parLevel2Dto);
             List<ParLevel3Group> listaParLevel3Group = Mapper.Map<List<ParLevel3Group>>(paramsDto.listParLevel3GroupDto);
+            List<ParCounterXLocalDTO> listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(paramsDto.listParCounterXLocalDto);
 
             _paramsRepo.SaveParLevel2(saveParamLevel2, listaParLevel3Group);
 
@@ -158,20 +159,6 @@ namespace Dominio.Services
 
         #region Auxiliares
 
-        public ParamsDTO AddUpdateParLocal(ParamsDTO paramsDto)
-        {
-            //paramsDto.parLevel1Dto.IsValid();
-            ParLocal saveParLocal = Mapper.Map<ParLocal>(paramsDto.parLocalDto);
-
-            _paramsRepo.SaveParLocal(saveParLocal);
-
-            paramsDto.parLocalDto.Id = saveParLocal.Id;
-
-            ///*Salva Clueter X*/
-            //SalvarParLevel1XCluster(paramsDto, saveParamLevel1);
-
-            return paramsDto;
-        }
 
         public ParamsDTO AddUpdateParCounter(ParamsDTO paramsDto)
         {
@@ -246,12 +233,22 @@ namespace Dominio.Services
             var DdlParLocal_Level1 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAll().Where(p => p.Level == 1));
             var DdlParLocal_Level2 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAll().Where(p => p.Level == 2));
 
-            var DdbParCounter_Level1 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAll().Where(p => p.Level == 1));
-            var DdbParCounter_Level2 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAll().Where(p => p.Level == 2));
+            var DdlParCounter_Level1 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAll().Where(p => p.Level == 1));
+            var DdlParCounter_Level2 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAll().Where(p => p.Level == 2));
 
 
             var retorno = new ParamsDdl();
-            retorno.SetDdls(DdlParConsolidation, DdlFrequency, DdlparLevel1, DdlparCluster, DdlparLevelDefinition, DdlParFieldType, DdlParDepartment);
+            retorno.SetDdls(DdlParConsolidation, 
+                            DdlFrequency, 
+                            DdlparLevel1, 
+                            DdlparCluster, 
+                            DdlparLevelDefinition, 
+                            DdlParFieldType, 
+                            DdlParDepartment,
+                            DdlParCounter_Level1,
+                            DdlParLocal_Level1,
+                            DdlParCounter_Level2,
+                            DdlParLocal_Level2);
             return retorno;
         }
 
