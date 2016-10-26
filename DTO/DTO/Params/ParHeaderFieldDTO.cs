@@ -1,5 +1,7 @@
 ﻿using DTO.BaseEntity;
+using DTO.Helpers;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace DTO.DTO.Params
 {
@@ -15,5 +17,10 @@ namespace DTO.DTO.Params
         //public ParLevelDefinitionDTO parLevelDefinitionDto { get; set; }
         public List<ParMultipleValuesDTO> parMultipleValuesDto { get; set; }
 
+        public IEnumerable<SelectListItem> DropDownList { get; set; }
+        public void SetMultipleValues()
+        {
+            DropDownList = Guard.CreateDropDownList(DropDownList);
+        }
     }
 }

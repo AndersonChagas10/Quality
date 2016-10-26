@@ -4,6 +4,7 @@ using DTO.DTO.Params;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
+using DTO.DTO;
 
 namespace Dominio.Services
 {
@@ -30,6 +31,10 @@ namespace Dominio.Services
         private IBaseRepository<ParRelapse> _baseParRelapse;
         private IBaseRepository<ParNotConformityRule> _baseParNotConformityRule;
         private IBaseRepository<ParCompany> _baseParCompany;
+        private IBaseRepository<ParHeaderField> _baseRepoParHeaderField;
+        private IBaseRepository<ParLevel1XHeaderField> _baseRepoParLevel1XHeaderField;
+        private IBaseRepository<ParMultipleValues> _baseRepoParMultipleValues;
+
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
 
@@ -48,9 +53,15 @@ namespace Dominio.Services
             IBaseRepository<ParCounterXLocal> baseParCounterXLocal,
             IBaseRepository<ParRelapse> baseParRelapse,
             IBaseRepository<ParNotConformityRule> baseParNotConformityRule,
-            IBaseRepository<ParCompany> baseParCompany)
+            IBaseRepository<ParCompany> baseParCompany,
+            IBaseRepository<ParLevel1XHeaderField> baseRepoParLevel1XHeaderField,
+            IBaseRepository<ParMultipleValues> baseRepoParMultipleValues,
+            IBaseRepository<ParHeaderField> baseRepoParHeaderField)
         {
             _paramsRepo = paramsRepo;
+            _baseRepoParLevel1XHeaderField = baseRepoParLevel1XHeaderField;
+            _baseRepoParMultipleValues = baseRepoParMultipleValues;
+            _baseRepoParHeaderField = baseRepoParHeaderField;
             _baseRepoParLevel1 = baseRepoParLevel1;
             _baseRepoParLevel1XCluster = baseParLevel1XCluster;
             _baseParFrequency = baseParFrequency;
@@ -99,8 +110,8 @@ namespace Dominio.Services
             var retorno = Mapper.Map<ParLevel1DTO>(_baseRepoParLevel1.GetById(idParLevel1));
             
             /*Clusters*/
-            var level1XClusters = _baseRepoParLevel1XCluster.GetAll().Where(r => r.ParLevel1_Id == retorno.Id);
             retorno.clustersInclusos = new List<ParClusterDTO>();
+            var level1XClusters = _baseRepoParLevel1XCluster.GetAll().Where(r => r.ParLevel1_Id == retorno.Id);
             var allClusters = _baseParCluster.GetAll();
             foreach (var clusterDoLevel1 in level1XClusters)
             {
@@ -108,6 +119,17 @@ namespace Dominio.Services
                 retorno.clustersInclusos.Add(cluster);
             }
 
+            /*Cabeçalhos*/
+            retorno.cabecalhosInclusos = new List<ParHeaderFieldDTO>();
+            var level1XCabecalhos = _baseRepoParLevel1XHeaderField.GetAll().Where(r => r.ParLevel1_Id == retorno.Id);
+            var allHeaderField = _baseRepoParHeaderField.GetAll();
+            var allMultipleValues = _baseRepoParMultipleValues.GetAll();
+            foreach (var cabecalhoDoLevel1 in level1XCabecalhos)
+            {
+                var cabecalho = Mapper.Map<ParHeaderFieldDTO>(allHeaderField.FirstOrDefault(r => r.Id == cabecalhoDoLevel1.ParHeaderField_Id));
+                cabecalho.parMultipleValuesDto = Mapper.Map<List<ParMultipleValuesDTO>>(allMultipleValues.Where(r=> r.ParHeaderField_Id == cabecalho.Id));
+                retorno.cabecalhosInclusos.Add(cabecalho);
+            }
 
             return retorno;
         }
