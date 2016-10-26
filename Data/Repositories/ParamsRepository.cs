@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DTO.DTO.Params;
 
 namespace Data.Repositories
 {
@@ -193,22 +194,41 @@ namespace Data.Repositories
                 db.ParLevel2.Attach(paramLevel2);
                 db.Entry(paramLevel2).State = EntityState.Modified;
             }
-
         }
-
-        public void SaveParLevel2(ParLevel2 paramLevel2, List<ParLevel3Group> listaParLevel3Group)
+        public void SaveParLevel2(ParLevel2 saveParamLevel2, List<ParLevel3Group> listaParLevel3Group, List<ParCounterXLocal> listParCounterXLocal)
         {
             using (var ts = db.Database.BeginTransaction())
             {
-                AddUpdateParLevel2(paramLevel2); /*Salva paramLevel1*/
+                AddUpdateParLevel2(saveParamLevel2); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
 
                 foreach (var Level3Group in listaParLevel3Group)
                 {
-                    AddUpdateParLevel3Group(Level3Group, paramLevel2.Id); /*Salva NxN Level1XCluster*/
+                    AddUpdateParLevel3Group(Level3Group, saveParamLevel2.Id); /*Salva NxN Level1XCluster*/
+                    db.SaveChanges(); /*Obtem ID do NxN Level1XCluster*/
+                }
+
+                foreach (var ParCounterXLocal in listParCounterXLocal)
+                {
+                    AddUpdateParCounterXLocal(ParCounterXLocal, saveParamLevel2.Id); /*Salva NxN Level1XCluster*/
                     db.SaveChanges(); /*Obtem ID do NxN Level1XCluster*/
                 }
                 ts.Commit();
+            }
+        }
+
+        private void AddUpdateParCounterXLocal(ParCounterXLocal parCounterXLocal, int ParLevel2_Id)
+        {
+            parCounterXLocal.ParLevel2_Id = ParLevel2_Id;
+            if (parCounterXLocal.Id == 0)
+            {
+                db.ParCounterXLocal.Add(parCounterXLocal);
+            }
+            else
+            {
+                Guard.verifyDate(parCounterXLocal, "AlterDate");
+                db.ParCounterXLocal.Attach(parCounterXLocal);
+                db.Entry(parCounterXLocal).State = EntityState.Modified;
             }
         }
 
@@ -229,7 +249,6 @@ namespace Data.Repositories
                 db.ParLevel3Group.Attach(paramLevel3Group);
                 db.Entry(paramLevel3Group).State = EntityState.Modified;
             }
-
         }
 
         public void SaveParLocal(ParLocal paramLocal)

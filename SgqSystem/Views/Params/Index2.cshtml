@@ -208,8 +208,8 @@
         {
             var indexValue = $('.counterLevel2Class').length;
 
-            var inputHidden = '<input class="counterLevel2Class" type="hidden" name="paramsDto.listParLevel3GroupDto[' + indexValue + '].Name" value="' + idCounter + '" />' +
-                              '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParLevel3GroupDto[' + indexValue + '].Name" value="' + idLocal + '" />';
+            var inputHidden = '<input class="counterLevel2Class" type="hidden" name="paramsDto.listParCounterXLocalDto[' + indexValue + '].ParCounter_Id" value="' + idCounter + '" />' +
+                              '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParCounterXLocalDto[' + indexValue + '].ParLocal_Id" value="' + idLocal + '" />';
 
 
             var elemento = $('<div class="HederLevel2Group" style="margin-left:30px">' + $('#selectCounter option:selected').text() + " | " + $('#selectLocal option:selected').text() + inputHidden + '<button id="btnRemoveHeaderGroup">X</button>' + '</div>');

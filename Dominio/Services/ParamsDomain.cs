@@ -121,9 +121,9 @@ namespace Dominio.Services
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel2 saveParamLevel2 = Mapper.Map<ParLevel2>(paramsDto.parLevel2Dto);
             List<ParLevel3Group> listaParLevel3Group = Mapper.Map<List<ParLevel3Group>>(paramsDto.listParLevel3GroupDto);
-            List<ParCounterXLocalDTO> listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(paramsDto.listParCounterXLocalDto);
+            List<ParCounterXLocal> listParCounterXLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.listParCounterXLocalDto);
 
-            _paramsRepo.SaveParLevel2(saveParamLevel2, listaParLevel3Group);
+            _paramsRepo.SaveParLevel2(saveParamLevel2, listaParLevel3Group, listParCounterXLocal);
 
             paramsDto.parLevel2Dto.Id = saveParamLevel2.Id;
             return paramsDto;
@@ -138,28 +138,28 @@ namespace Dominio.Services
         #region Auxiliares
 
 
-        public ParamsDTO AddUpdateParCounter(ParamsDTO paramsDto)
-        {
-            //paramsDto.parLevel1Dto.IsValid();
-            ParCounter saveParCounter = Mapper.Map<ParCounter>(paramsDto.parCounterDto);
+        //public ParamsDTO AddUpdateParCounter(ParamsDTO paramsDto)
+        //{
+        //    //paramsDto.parLevel1Dto.IsValid();
+        //    ParCounter saveParCounter = Mapper.Map<ParCounter>(paramsDto.parCounterDto);
 
-            _paramsRepo.SaveParCounter(saveParCounter);
+        //    _paramsRepo.SaveParCounter(saveParCounter);
 
-            paramsDto.parCounterDto.Id = saveParCounter.Id;
+        //    paramsDto.parCounterDto.Id = saveParCounter.Id;
 
-            ///*Salva Clueter X*/
-            //SalvarParLevel1XCluster(paramsDto, saveParamLevel1);
+        //    ///*Salva Clueter X*/
+        //    //SalvarParLevel1XCluster(paramsDto, saveParamLevel1);
 
-            return paramsDto;
-        }
+        //    return paramsDto;
+        //}
 
-        public ParamsDTO AddUpdateParCounterXLocal(ParamsDTO paramsDto)
-        {
-            ParCounterXLocal saveParCounterLocal = Mapper.Map<ParCounterXLocal>(paramsDto.parCounterXLocalDto);
-            _paramsRepo.SaveParCounterXLocal(saveParCounterLocal);
-            paramsDto.parCounterXLocalDto.Id = saveParCounterLocal.Id;
-            return paramsDto;
-        }
+        //public ParamsDTO AddUpdateParCounterXLocal(ParamsDTO paramsDto)
+        //{
+        //    ParCounterXLocal saveParCounterLocal = Mapper.Map<ParCounterXLocal>(paramsDto.parCounterXLocalDto);
+        //    _paramsRepo.SaveParCounterXLocal(saveParCounterLocal);
+        //    paramsDto.parCounterXLocalDto.Id = saveParCounterLocal.Id;
+        //    return paramsDto;
+        //}
 
         public ParamsDTO AddUpdateParRelapse(ParamsDTO paramsDto)
         {
