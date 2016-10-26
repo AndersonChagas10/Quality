@@ -8,7 +8,7 @@ namespace Dominio.Interfaces.Services
         ParamsDdl CarregaDropDownsParams();
 
         ParamsDTO AddUpdateLevel1(ParamsDTO paramsDto);
-        ParamsDTO GetLevel1(int IdParLevel1);
+        ParLevel1DTO GetLevel1(int IdParLevel1);
         ParamsDTO AddUpdateLevel2(ParamsDTO paramsDto);
     }
 }

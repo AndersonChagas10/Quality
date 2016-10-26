@@ -30,8 +30,11 @@ namespace SgqSystem.Controllers.Params
         {
             if (id == -1) /*Retorna View Vazia*/
                 return PartialView("_ParLevel1", ViewModel);
-            else         /*Retorna View com Model ParLevel1 encontrado no DB.*/
-                return PartialView("_ParLevel1", new ParamsViewModel());
+
+            var viewModelPreenchido = ViewModel;
+            viewModelPreenchido.paramsDto.parLevel1Dto = _paramDomain.GetLevel1(id);
+            /*Retorna View com Model ParLevel1 encontrado no DB.*/
+            return PartialView("_ParLevel1",  viewModelPreenchido);
         }
 
         public ActionResult Index2()
