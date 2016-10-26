@@ -7,6 +7,7 @@ namespace DTO.DTO.Params
     public class ParLevel1DTO : EntityBase
     {
 
+
         //[Display(Name = "select_the_consolidation_type", ResourceType = typeof(Resource))]
         [Range(0, 999, ErrorMessage = "É obrigatório selecionar o tipo de consolidação.")]
         public int ParConsolidationType_Id { get; set; }
@@ -73,5 +74,10 @@ namespace DTO.DTO.Params
         public ParFrequencyDTO parFrequencyDto { get; set; }
         public List<ParLevel1XHeaderFieldDTO> parLevel1HeaderFieldDto { get; set; }
 
+        #region Props utilizadas para alteração
+
+        public List<ParClusterDTO> clustersInclusos { get; set; } 
+        
+        #endregion
     }
 }

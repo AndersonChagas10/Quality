@@ -94,9 +94,21 @@ namespace Dominio.Services
         /// </summary>
         /// <param name="IdParLevel1"></param>
         /// <returns></returns>
-        public ParamsDTO GetLevel1(int IdParLevel1)
+        public ParLevel1DTO GetLevel1(int idParLevel1)
         {
-            var retorno = new ParamsDTO();
+            var retorno = Mapper.Map<ParLevel1DTO>(_baseRepoParLevel1.GetById(idParLevel1));
+            
+            /*Clusters*/
+            var level1XClusters = _baseRepoParLevel1XCluster.GetAll().Where(r => r.ParLevel1_Id == retorno.Id);
+            retorno.clustersInclusos = new List<ParClusterDTO>();
+            var allClusters = _baseParCluster.GetAll();
+            foreach (var clusterDoLevel1 in level1XClusters)
+            {
+                var cluster = Mapper.Map<ParClusterDTO>(allClusters.FirstOrDefault(r => r.Id == clusterDoLevel1.ParCluster_Id));
+                retorno.clustersInclusos.Add(cluster);
+            }
+
+
             return retorno;
         }
 
