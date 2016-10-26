@@ -141,6 +141,32 @@
                         <tr>
                             <td colspan="2" id="HederLevel2Group"></td>
                         </tr>
+                        <tr style="height:100px;">
+
+                            <td>
+                                <b>Regra de Não conformidade</b> <span class="labelUSA">(USA)</span> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão para salvar o level 2 sem inserir dados (sem não conformidades)')">
+                            </td>
+                            <td>
+
+                                <table>
+                                    <tr>
+                                        <td>Regra</td>
+                                        <td>Valor</td>
+                                        <td></td>
+                                        <td>Reauditoria</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@Html.DropDownList("selectLocal", Model.paramsDdl.DdlParLocal_Level2, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectLocal" })</td>
+                                        <td>@Html.TextBox("inputParRegraNaoConformidade", null, htmlAttributes: new { @Id = "inputParRegraNaoConformidade", @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })</td>
+                                        <td><span class="Sufix"></span></td>
+                                        <td>@Html.CheckBox("chkRegraNaoConformidade")</td>
+                                    </tr>
+                                </table>
+                                <button id="BtnAddContadorMonitoramento" style="float:right;">Add</button>
+                            </td>
+
+                        </tr>
+
                     </tbody>
 
                 </table>
