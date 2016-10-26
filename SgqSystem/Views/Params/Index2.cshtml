@@ -106,6 +106,7 @@
                             </td>
 
                         </tr>
+                        
                         <tr>
                             <td colspan="2">
                                 <b>Grupo</b> <span class="labelUSA">(USA)</span> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão para salvar o level 2 sem inserir dados (sem não conformidades)')">                           
@@ -115,6 +116,30 @@
                         </tr>   
                         <tr>
                             <td colspan="2" id="Level03Group"></td>
+                        </tr>
+                        <tr style="height:100px;">
+                           
+                            <td>
+                                <b>Mostrar contadores do Monitoramento</b> <span class="labelUSA">(USA)</span> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão para salvar o level 2 sem inserir dados (sem não conformidades)')">
+                            </td>
+                            <td>
+
+                                <table>
+                                    <tr>
+                                        <td>Contador do Indicador:</td>
+                                        <td>@Html.DropDownList("selectCounter", Model.paramsDdl.DdlParCounter_Level2, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectCounter" })</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Local:</td>
+                                        <td>@Html.DropDownList("selectLocal", Model.paramsDdl.DdlParLocal_Level2, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectLocal" })</td>
+                                    </tr>
+                                </table>
+                                <button id="BtnAddContadorMonitoramento" style="float:right;">Add</button>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="2" id="HederLevel2Group"></td>
                         </tr>
                     </tbody>
 
@@ -169,27 +194,52 @@
 
         },
     }
-    $('#btnParLevel03GroupInsert').click(function (e) {
+    $('#BtnAddContadorMonitoramento').click(function (e) {
        
+        e.preventDefault();
+
+        var idCounter = $('#selectCounter').val();
+        var idLocal = $('#selectLocal').val();
+        
+        var includeItem = true;
+
+      
+        if(includeItem == true)
+        {
+            var indexValue = $('.counterLevel2Class').length;
+
+            var inputHidden = '<input class="counterLevel2Class" type="hidden" name="paramsDto.listParLevel3GroupDto[' + indexValue + '].Name" value="' + idCounter + '" />' +
+                              '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParLevel3GroupDto[' + indexValue + '].Name" value="' + idLocal + '" />';
+
+
+            var elemento = $('<div class="HederLevel2Group" style="margin-left:30px">' + $('#selectCounter option:selected').text() + " | " + $('#selectLocal option:selected').text() + inputHidden + '<button id="btnRemoveHeaderGroup">X</button>' + '</div>');
+            $('td#HederLevel2Group').append(elemento);
+            $('#selectCounter,  #selectLocal').prop('selectedIndex', 0);
+        }
+
+
+
+    });
+
+    $('#btnParLevel03GroupInsert').click(function (e) {
+
         e.preventDefault();
 
         var inputs = $('input[name="paramsDto.parLevel3GroupDto.Name"]');
         var input = $('#inputParLevel03Name');
-        
+
         var includeItem = true;
 
         inputs.each(function (e) {
 
-            if($(this).val() == input.val())
-            {
+            if ($(this).val() == input.val()) {
                 alert('Já cadastrou esse grupo para o input');
                 includeItem = false;
                 return false;
             }
 
         });
-        if(includeItem == true)
-        {
+        if (includeItem == true) {
             var indexValue = $('.groupLevel03Class').length;
 
             var inputHidden = '<input class="groupLevel03Class" type="hidden" name="paramsDto.listParLevel3GroupDto[' + indexValue + '].Name" value="' + input.val() + '" />'
@@ -201,6 +251,8 @@
 
 
     });
+
+
     $(document).on('click', '#btnRemoveLevel3Group', function (e) {
         e.preventDefault();
         $(this).parents('.level03Group').remove();

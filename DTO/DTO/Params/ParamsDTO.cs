@@ -34,9 +34,9 @@ namespace DTO.DTO.Params
 
         public List<ParLevel3GroupDTO> listParLevel3GroupDto { get; set; }
 
-        public ParLocalDTO parLocalDto { get; set; }
-        public ParCounterDTO parCounterDto { get; set; }
-        public ParCounterXLocalDTO parCounterXLocalDto { get; set; }
+        public List<ParLocalDTO> listParLocalDto { get; set; }
+        public List<ParCounterDTO> listParCounterDto { get; set; }
+        public List<ParCounterXLocalDTO> listParCounterXLocalDto { get; set; }
         public ParRelapseDTO parRelapseDto { get; set; }
         public ParNotConformityRuleDTO parNotConformityRuleDto { get; set; }
         public ParNotConformityRuleXLevelDTO parNotConformityRuleXLevelDto { get; set; }

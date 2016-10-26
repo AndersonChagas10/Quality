@@ -18,7 +18,10 @@ namespace DTO.DTO.Params
         //[Range(0, 999, ErrorMessage = "É obrigatório selecionar o Tipo, para Nível do Campo.")]
         public IEnumerable<SelectListItem> DdlParFieldType { get; set; }
 
-
+        public IEnumerable<SelectListItem> DdlParCounter_Level1 { get; set; }
+        public IEnumerable<SelectListItem> DdlParCounter_Level2 { get; set; }
+        public IEnumerable<SelectListItem> DdlParLocal_Level1 { get; set; }
+        public IEnumerable<SelectListItem> DdlParLocal_Level2 { get; set; }
 
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
@@ -36,9 +39,17 @@ namespace DTO.DTO.Params
             return retorno;
         }
 
-        public void SetDdls(List<ParConsolidationTypeDTO> ddlParConsolidation, List<ParFrequencyDTO> ddlFrequency, List<ParLevel1DTO> ddlparLevel1, 
-                            List<ParClusterDTO> ddlparCluster, List<ParLevelDefinitonDTO> ddlparLevelDefinition, List<ParFieldTypeDTO> ddlParFieldType,
-                            List<ParDepartmentDTO> ddrParDepartment)
+        public void SetDdls(List<ParConsolidationTypeDTO> ddlParConsolidation, 
+                            List<ParFrequencyDTO> ddlFrequency,
+                            List<ParLevel1DTO> ddlparLevel1, 
+                            List<ParClusterDTO> ddlparCluster,
+                            List<ParLevelDefinitonDTO> ddlparLevelDefinition,
+                            List<ParFieldTypeDTO> ddlParFieldType,
+                            List<ParDepartmentDTO> ddlParDepartment,
+                            List<ParCounterDTO> ddlParCounter_Level1,
+                            List<ParLocalDTO> ddlParLocal_Level1,
+                            List<ParCounterDTO> ddlParCounter_Level2,
+                            List<ParLocalDTO> ddlParLocal_Level2)
         {
             DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation);
             DdlFrequency = Guard.CreateDropDownList(ddlFrequency);
@@ -46,7 +57,11 @@ namespace DTO.DTO.Params
             DdlparCluster = Guard.CreateDropDownList(ddlparCluster);
             DdlparLevelDefinition = Guard.CreateDropDownList(ddlparLevelDefinition);
             DdlParFieldType = Guard.CreateDropDownList(ddlParFieldType);
-            DdlParDepartment = Guard.CreateDropDownList(ddrParDepartment);
+            DdlParDepartment = Guard.CreateDropDownList(ddlParDepartment);
+            DdlParCounter_Level1 = Guard.CreateDropDownList(ddlParCounter_Level1);
+            DdlParLocal_Level1 = Guard.CreateDropDownList(ddlParLocal_Level1);
+            DdlParCounter_Level2 = Guard.CreateDropDownList(ddlParCounter_Level2);
+            DdlParLocal_Level2 = Guard.CreateDropDownList(ddlParLocal_Level2);
         }
     }
 }
