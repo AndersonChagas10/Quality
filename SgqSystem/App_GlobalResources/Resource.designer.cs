@@ -241,6 +241,51 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clusters.
+        /// </summary>
+        internal static string clusters {
+            get {
+                return ResourceManager.GetString("clusters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cluster edit/delete.
+        /// </summary>
+        internal static string cluster_edit_delete {
+            get {
+                return ResourceManager.GetString("cluster_edit_delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cluster list.
+        /// </summary>
+        internal static string cluster_list {
+            get {
+                return ResourceManager.GetString("cluster_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cluster name.
+        /// </summary>
+        internal static string cluster_name {
+            get {
+                return ResourceManager.GetString("cluster_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cluster points.
+        /// </summary>
+        internal static string cluster_points {
+            get {
+                return ResourceManager.GetString("cluster_points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conform.
         /// </summary>
         internal static string conform {
@@ -304,11 +349,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string delete {
+            get {
+                return ResourceManager.GetString("delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department.
         /// </summary>
         internal static string department {
             get {
                 return ResourceManager.GetString("department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string edit {
+            get {
+                return ResourceManager.GetString("edit", resourceCulture);
             }
         }
         
@@ -601,6 +664,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Negative.
+        /// </summary>
+        internal static string negative {
+            get {
+                return ResourceManager.GetString("negative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
         internal static string no {
@@ -673,6 +745,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Option.
+        /// </summary>
+        internal static string option {
+            get {
+                return ResourceManager.GetString("option", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string password {
@@ -718,6 +799,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Positive.
+        /// </summary>
+        internal static string positive {
+            get {
+                return ResourceManager.GetString("positive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Positive Value.
         /// </summary>
         internal static string positive_value {
@@ -732,6 +822,24 @@ namespace Resources {
         internal static string present {
             get {
                 return ResourceManager.GetString("present", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Punishment/reward value.
+        /// </summary>
+        internal static string punishment_value {
+            get {
+                return ResourceManager.GetString("punishment_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define the value of the punishment and/or reward on regard of the options according to the last one.
+        /// </summary>
+        internal static string punishment_value_popover {
+            get {
+                return ResourceManager.GetString("punishment_value_popover", resourceCulture);
             }
         }
         

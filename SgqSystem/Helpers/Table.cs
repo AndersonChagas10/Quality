@@ -84,6 +84,24 @@ namespace SgqSystem.Helpers
             return new MvcHtmlString(tr);
         }
 
+        public static MvcHtmlString GerarColunaLabelTitle(MvcHtmlString label, string info = null)
+        {
+            String tr = "";
+            String tagInfo = "";
+
+            if (info != null)
+            {
+                tagInfo = " <i class='fa fa-question-circle popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
+            }
+
+            tr = "<td class='td-erp'><b>" +
+                        label.ToString() + "</b> " +
+                        tagInfo +
+                     "</td>";
+
+            return new MvcHtmlString(tr);
+        }
+
         public static MvcHtmlString GerarColunaCheckbox(MvcHtmlString checkbox, MvcHtmlString label,  PosicaoLabel posicaoLabel, MvcHtmlString error = null, string info = null)
         {
             String tr = "";
