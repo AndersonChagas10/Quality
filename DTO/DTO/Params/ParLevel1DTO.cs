@@ -77,7 +77,9 @@ namespace DTO.DTO.Params
 
         public List<ParClusterDTO> clustersInclusos { get; set; }
         public List<ParHeaderFieldDTO> cabecalhosInclusos { get; set; }
-
+        public List<int> removerParHeaderField { get; set; }
+        public List<int> removerParCluster { get; set; }
+        
         #endregion
     }
 }

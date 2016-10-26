@@ -10,7 +10,7 @@ namespace DTO.DTO.Params
         public int ParCluster_Id { get; set; }
         [Required]
         public decimal Points { get; set; }
-        public bool Active { get; set; }
+        public bool IsActive { get; set; } = true;
 
     }
 }

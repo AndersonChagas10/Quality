@@ -90,12 +90,20 @@ namespace Dominio.Services
         /// <returns></returns>
         public ParamsDTO AddUpdateLevel1(ParamsDTO paramsDto)
         {
+            /*Validação*/
             //paramsDto.parLevel1Dto.IsValid();
+
+            /*Mappers*/
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);
             List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);
             List<ParLevel1XCluster> ListaParLevel1XCluster = Mapper.Map<List<ParLevel1XCluster>>(paramsDto.parLevel1XClusterDto);
+            List<int> removerHeadField = paramsDto.parLevel1Dto.removerParHeaderField;
+            List<int> removerCluster = paramsDto.parLevel1Dto.removerParHeaderField;
 
-            _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster);
+            /*Enviando para repository salvar*/
+            _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField, removerCluster);
+
+            /*Retorno*/
             paramsDto.parLevel1Dto.Id = saveParamLevel1.Id;
             return paramsDto;
         }
@@ -107,6 +115,7 @@ namespace Dominio.Services
         /// <returns></returns>
         public ParLevel1DTO GetLevel1(int idParLevel1)
         {
+            /*ParLevel1*/
             var retorno = Mapper.Map<ParLevel1DTO>(_baseRepoParLevel1.GetById(idParLevel1));
             
             /*Clusters*/
@@ -115,13 +124,13 @@ namespace Dominio.Services
             var allClusters = _baseParCluster.GetAll();
             foreach (var clusterDoLevel1 in level1XClusters)
             {
-                var cluster = Mapper.Map<ParClusterDTO>(allClusters.FirstOrDefault(r => r.Id == clusterDoLevel1.ParCluster_Id));
+                var cluster = Mapper.Map<ParClusterDTO>(allClusters.FirstOrDefault(r => r.Id == clusterDoLevel1.ParCluster_Id && r.IsActive == true));
                 retorno.clustersInclusos.Add(cluster);
             }
 
             /*Cabeçalhos*/
             retorno.cabecalhosInclusos = new List<ParHeaderFieldDTO>();
-            var level1XCabecalhos = _baseRepoParLevel1XHeaderField.GetAll().Where(r => r.ParLevel1_Id == retorno.Id);
+            var level1XCabecalhos = _baseRepoParLevel1XHeaderField.GetAll().Where(r => r.ParLevel1_Id == retorno.Id && r.IsActive == true);
             var allHeaderField = _baseRepoParHeaderField.GetAll();
             var allMultipleValues = _baseRepoParMultipleValues.GetAll();
             foreach (var cabecalhoDoLevel1 in level1XCabecalhos)
@@ -129,6 +138,16 @@ namespace Dominio.Services
                 var cabecalho = Mapper.Map<ParHeaderFieldDTO>(allHeaderField.FirstOrDefault(r => r.Id == cabecalhoDoLevel1.ParHeaderField_Id));
                 cabecalho.parMultipleValuesDto = Mapper.Map<List<ParMultipleValuesDTO>>(allMultipleValues.Where(r=> r.ParHeaderField_Id == cabecalho.Id));
                 retorno.cabecalhosInclusos.Add(cabecalho);
+                if (cabecalho.ParFieldType_Id == 1)
+                    cabecalho.SetMultipleValues();
+                //if (cabecalho.ParFieldType_Id == 1)
+                //    cabecalho.SetMultipleValues();
+                //if (cabecalho.ParFieldType_Id == 1)
+                //    cabecalho.SetMultipleValues();
+                //if (cabecalho.ParFieldType_Id == 1)
+                //    cabecalho.SetMultipleValues();
+                //if (cabecalho.ParFieldType_Id == 1)
+                //    cabecalho.SetMultipleValues();
             }
 
             return retorno;
