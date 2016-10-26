@@ -866,9 +866,12 @@
 
             var cod = "?";
             var nivelDoCampo = $('#headerLevel option:selected').text();
+            var nivelDoCampoVal = $('#headerLevel option:selected').val();
+
             var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
             var vinculado = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "Sim" : "Não";
             var tipo = $('#parFieldType option:selected').text();
+            var tipoVal = $('#parFieldType option:selected').val();
             var opcoes = $('#objMultiplaEscolhaName').val();
             var valor = $('#objMultiplaEscolhaPunishmentValue').val();
             var obj = '<input type="button" value="excluir" id=' + nome + tipo + ' />';
@@ -877,7 +880,8 @@
                 'Name': opcoes,
                 'ParHeaderField_Id': '0',
                 'Description': '',
-                'ParLevelDefinition_Id': $('#headerLevel option:selected').val(),
+                'ParFieldType_Id': tipoVal,
+                'ParLevelDefinition_Id': nivelDoCampoVal,
                 'PunishmentValue': valor
             });
 
@@ -918,13 +922,14 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + $('#parFieldType option:selected').val() + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + $('#paramsDto_parHeaderFieldDto_Name').val() + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="" />';
-            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + $('#headerLevel option:selected').val() + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + Cabecalhos.ParMultiplaEscolhaOpcoes[0].ParLevelDefinition_Id + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"  value="' + Cabecalhos.ParMultiplaEscolhaOpcoes[0].ParFieldType_Id + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, counter) {
                 /*Cria inputs para objeto: */
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].ParHeaderField_Id"     value="' + o.ParHeaderField_Id + '" />';
-                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].ParLevelDefinition_Id"     value="' + o.ParLevelDefinition_Id + '" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].ParLevelDefinition_Id" value="' + Cabecalhos.ParMultiplaEscolhaOpcoes[0].ParLevelDefinition_Id + '" />';
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].Name"                  value="' + o.Name + '" />';
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].Description"           value="' + o.Description + '" />';
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].PunishmentValue"       value="' + o.PunishmentValue + '" />';
@@ -942,9 +947,9 @@
             $('#objMultiplaEscolhaName').val('');
             $('#objMultiplaEscolhaPunishmentValue').val('0');
             
-            $('#parFieldType').val('-1');
+            $('#parFieldType').val('-1').trigger('change');
+            $('#headerLevel').val('-1').trigger('change');
 
-            $('#headerLevel option:selected').val('');
             Cabecalhos.tableMultiplaEscolha.clear().draw();
             $('#divCamposCabecalhoIncluidos').hide();
             Cabecalhos.ParMultiplaEscolhaOpcoes = [];
@@ -991,6 +996,7 @@
 
             var cod = "?";
             var nivelDoCampo = $('#headerLevel option:selected').text();
+            var nivelDoCampoVal = $('#headerLevel option:selected').val();
             var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
             var vinculado = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "Sim" : "Não";
             var tipo = $('#parFieldType option:selected').text();
@@ -1006,7 +1012,8 @@
                 'Name': nameObjBinario1,
                 'ParHeaderField_Id': '0',
                 'Description': '',
-                'ParLevelDefinition_Id': tipoVal,
+                'ParLevelDefinition_Id': nivelDoCampoVal,
+                'ParFieldType_Id': tipoVal,
                 'PunishmentValue': valorObjBinario1,
                 'Conformity': true
             });
@@ -1016,7 +1023,8 @@
                 'Name': nameObjBinario2,
                 'ParHeaderField_Id': '0',
                 'Description': '',
-                'ParLevelDefinition_Id': tipoVal,
+                'ParLevelDefinition_Id': nivelDoCampoVal,
+                'ParFieldType_Id': tipoVal,
                 'PunishmentValue': valorObjBinario2,
                 'Conformity': false
             });
@@ -1056,20 +1064,24 @@
             $('#salvarCabecalho2').val('Salvar ' + $('#parFieldType option:selected').text()).show();
         },
         SalvaBinario: function () {
+            var fieldType = $('#parFieldType option:selected').val();
+            var example = '<div><label class="on-off">';
 
-            var example =  '<div><label class="on-off">';
+            /*Cria preview*/
             Cabecalhos.ParBinario.forEach(function (o, c) {
                 example += o.Name;
                 var a = c == 0 ? 'checked = "checked"' : '';
                 var b = c == 0 ? "true" : "false";
                 example += '<input disable="disabled" ' + a + ' type="radio" value="' + b + '" >'
             });
-            example += '</label>';
 
+            example += '</label>';
+            /*Cria Hiddens*/
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + $('#parFieldType option:selected').val() + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + $('#paramsDto_parHeaderFieldDto_Name').val() + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="" />';
-            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + $('#parFieldType option:selected').val() + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + Cabecalhos.ParBinario[0].ParLevelDefinition_Id + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"  value="' + Cabecalhos.ParBinario[0].ParFieldType_Id + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
 
@@ -1081,6 +1093,7 @@
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].PunishmentValue"       value="' + o.PunishmentValue + '" />';
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].Conformity"            value="' + o.Conformity + '" />';
                 example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].IsActive"              value="true" />';
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].ParLevelDefinition_Id" value="' + o.ParLevelDefinition_Id + '" />';
             });
             example += '</div>';
 
@@ -1094,7 +1107,9 @@
             $('#objBinarioPunishmentValue1').val('0');
             $('#objBinarioPunishmentValue2').val('0');
 
-            $('#parFieldType').val('-1');
+            $('#headerLevel').val('-1').trigger('change');
+            $('#parFieldType').val('-1').trigger('change');
+
             Cabecalhos.tableMultiplaEscolha.clear().draw();
             $('#divCamposCabecalhoIncluidos').hide();
             $('#objBinario').hide();

@@ -134,134 +134,137 @@
         </div>
     </div>
     <script>
-            var monthNames = [
-               '@Resources.Resource.january',
-               '@Resources.Resource.february',
-               '@Resources.Resource.march',
-               '@Resources.Resource.april',
-               '@Resources.Resource.may',
-               '@Resources.Resource.june',
-               '@Resources.Resource.july',
-               '@Resources.Resource.august',
-               '@Resources.Resource.september',
-               '@Resources.Resource.october',
-               '@Resources.Resource.november',
-               '@Resources.Resource.december'];
+        var monthNames = [
+           '@Resources.Resource.january',
+           '@Resources.Resource.february',
+           '@Resources.Resource.march',
+           '@Resources.Resource.april',
+           '@Resources.Resource.may',
+           '@Resources.Resource.june',
+           '@Resources.Resource.july',
+           '@Resources.Resource.august',
+           '@Resources.Resource.september',
+           '@Resources.Resource.october',
+           '@Resources.Resource.november',
+           '@Resources.Resource.december'];
 
-            closeLeftSidebar();
+        closeLeftSidebar();
 
-            function twoDigits(str) {
-                str = ("000" + str).slice(-2);
-                return str;
-            }
+        function twoDigits(str) {
+            str = ("000" + str).slice(-2);
+            return str;
+        }
 
-            function watcher() {
+        function watcher() {
 
-                var date = new Date();
-                var day = date.getDate();
-                var monthIndex = date.getMonth();
-                var year = date.getFullYear();
-                var hour = date.getHours();
-                var minute = date.getMinutes();
-                var second = date.getSeconds();
+            var date = new Date();
+            var day = date.getDate();
+            var monthIndex = date.getMonth();
+            var year = date.getFullYear();
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
 
-                $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
+            $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
 
-                setTimeout(watcher, 1000);
-            }
+            setTimeout(watcher, 1000);
+        }
 
-            watcher();
+        watcher();
 
-            //begin modal
+        //begin modal
 
-            //level 1
-            $("#newLevel1").click(function () {
-                $('#newLevel1Modal').modal('show');
+        //level 1
+        $("#newLevel1").click(function () {
+            $('#newLevel1Modal').modal('show');
+        });
+
+        $("#btnCloseNewLevel1Modal").click(function () {
+            $('#newLevel1Modal').modal('close');
+        });
+
+        //level 2
+        $("#newLevel2").click(function () {
+            $('#newLevel2Modal').modal('show');
+        });
+
+        $("#btnCloseNewLevel2Modal").click(function () {
+            $('#newLevel2Modal').modal('close');
+        });
+
+        //level 3
+        $("#newLevel3").click(function () {
+            $('#newLevel3Modal').modal('show');
+        });
+
+        $("#btnCloseNewLevel3Modal").click(function () {
+            $('#newLevel3Modal').modal('close');
+        });
+
+        //end modal
+
+        var url1 = '@Html.Raw(@url)';
+
+        /*
+            Serializa objeto usando bind de property Name
+            $('form').serializeObject();
+        */
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
             });
+            return o;
+        };
 
-            $("#btnCloseNewLevel1Modal").click(function () {
-                $('#newLevel1Modal').modal('close');
-            });
+        /*Inicio Select 2 Level1*/
+        var parLevel1Empty = $('#ParLevel1 > form').clone();
+        var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
+        $('#parLeve1Select2').select2({
+            placeholder: {
+                id: "-1",
+                text: "Selecione..."
+            },
+        }).on("select2:select", function (e) {
 
-            //level 2
-            $("#newLevel2").click(function () {
-                $('#newLevel2Modal').modal('show');
-            });
-
-            $("#btnCloseNewLevel2Modal").click(function () {
-                $('#newLevel2Modal').modal('close');
-            });
-
-            //level 3
-            $("#newLevel3").click(function () {
-                $('#newLevel3Modal').modal('show');
-            });
-
-            $("#btnCloseNewLevel3Modal").click(function () {
-                $('#newLevel3Modal').modal('close');
-            });
-
-            //end modal
-
-            var url1 = '@Html.Raw(@url)';
-
-            /*
-                Serializa objeto usando bind de property Name
-                $('form').serializeObject();
-            */
-            $.fn.serializeObject = function () {
-                var o = {};
-                var a = this.serializeArray();
-                $.each(a, function () {
-                    if (o[this.name] !== undefined) {
-                        if (!o[this.name].push) {
-                            o[this.name] = [o[this.name]];
-                        }
-                        o[this.name].push(this.value || '');
-                    } else {
-                        o[this.name] = this.value || '';
+            if (e.currentTarget.value == "") {
+                $('#ParLevel1').empty();
+                $('#ParLevel1').append(parLevel1Empty);
+            } else {
+                $.get('GetParLevel1ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
+                    if (obj != null) {
+                        $('#ParLevel1').empty();
+                        $('#ParLevel1').append(xhr.responseText);
                     }
                 });
-                return o;
-            };
+            }
 
-            /*Inicio Select 2 Level1*/
-            var parLevel1Empty = $('#ParLevel1 > form').clone();
-            var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
-            $('#parLeve1Select2').select2({
-                placeholder: {
-                    id: "-1",
-                    text: "Selecione..."
-                },
-            }).on("select2:select", function (e) {
+        }).on("select2:unselect", function (e) {
 
-                if (e.currentTarget.value == "") {
-                    $('#ParLevel1').empty();
-                    $('#ParLevel1').append(parLevel1Empty);
-                } else {
-                    $.get('GetParLevel1ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
-                        if (obj != null) {
-                            $('#ParLevel1').empty();
-                            $('#ParLevel1').append(xhr.responseText);
-                        }
-                    });
-                }
+            if (e.currentTarget.value == "") {
+                $('#ParLevel1').empty()
+                $('#ParLevel1').append(parLevel1Empty)
+            }
 
-            }).on("select2:unselect", function (e) {
+        });;
+        /*Fim Select 2 Level1*/
 
-                if (e.currentTarget.value == "") {
-                    $('#ParLevel1').empty()
-                    $('#ParLevel1').append(parLevel1Empty)
-                }
+        /*Inicio Submit Level1*/
+        var indexParamsLevel1 = {
 
-            });;
-            /*Fim Select 2 Level1*/
+            enviarDadosParaApi: function (e) {
 
-            /*Inicio Submit Level1*/
-            var indexParamsLevel1 = {
-
-                enviarDadosParaApi: function (e) {
-
+                if ($('form').valid()) {
+                    Cabecalhos.UpdateCabecalhos();
+                    Cluster.UpdateCounter();
                     var dados = $('form').serializeObject();
 
                     $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
@@ -269,10 +272,11 @@
                         console.log(statusmessage);
                         console.log(respostaCompleta);
                     });
+                }
 
-                },
-            }
-            /*Fim Submit Level1*/
+            },
+        }
+        /*Fim Submit Level1*/
 
     </script>
 </body>
