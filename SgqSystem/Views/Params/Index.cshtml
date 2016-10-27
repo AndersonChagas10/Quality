@@ -106,7 +106,7 @@
                                                 <hr />
                                             </div>
                                             <div class="panel-group accordion" id="level1_accordion">
-                                                <div class="panel panel-default">
+                                                <div class="panel panel-info">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
                                                             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_accordion" href="#level1_collapse" aria-expanded="false" id="level1Title">  </a>
@@ -123,14 +123,14 @@
                                             </div>   
 
                                             <div class="row">
-                                                <div class="col-xs-3"><button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level2</button></div>
+                                                <div class="col-xs-3"><button class="btn btn-warning btn-block" id="btnNewLevel1">@Resources.Resource.new_level2</button></div>
                                                 <div class="col-xs-9">
                                                     @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })
                                                 </div>
                                                 <hr />
                                             </div>
                                             <div class="panel-group accordion" id="level2_accordion">
-                                                <div class="panel panel-default">
+                                                <div class="panel panel-warning">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
                                                             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_accordion" href="#level2_collapse" aria-expanded="false"> @Resources.Resource.level2 </a>
@@ -147,14 +147,14 @@
                                             </div>  
 
                                             <div class="row">
-                                                <div class="col-xs-3"><button class="btn btn-primary btn-block" id="btnNewLevel3">@Resources.Resource.new_level3</button></div>
+                                                <div class="col-xs-3"><button class="btn btn-danger btn-block" id="btnNewLevel3">@Resources.Resource.new_level3</button></div>
                                                 <div class="col-xs-9">
                                                     @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel3Select2" })
                                                 </div>
                                                 <hr />
                                             </div>
                                             <div class="panel-group accordion" id="level3_accordion">
-                                                <div class="panel panel-default">
+                                                <div class="panel panel-danger">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
                                                             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false"> @Resources.Resource.level3 </a>
@@ -176,7 +176,7 @@
                                         </div>
                                         <div class="tab-pane" id="level2_tab">
                                             <div class="row">
-                                                <div class="col-xs-3"><button class="btn btn-primary btn-block" id="newLevel2">@Resources.Resource.new_level3</button></div>
+                                                <div class="col-xs-3"><button class="btn btn-warning btn-block" id="newLevel2">@Resources.Resource.new_level3</button></div>
                                                 <div class="col-xs-9">
                                                     @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel1, Resources.Resource.select, htmlAttributes: new { @class = "form-control", @id = "parLevel2Select2" })
                                                 </div>
@@ -200,7 +200,7 @@
                                         </div>
                                         <div class="tab-pane" id="level3_tab">
                                             <div class="row">
-                                                <div class="col-xs-3"><button class="btn btn-primary btn-block" id="newLevel3">New Level 3</button></div>
+                                                <div class="col-xs-3"><button class="btn btn-danger btn-block" id="newLevel3">New Level 3</button></div>
                                                 <div class="col-xs-9">
                                                     @Html.DropDownList("paramsDto.parLevel3Selected", Model.paramsDdl.DdlparLevel1, Resources.Resource.select, htmlAttributes: new { @class = "form-control", @id = "parLevel3Select2" })
                                                 </div>
