@@ -32,6 +32,7 @@ namespace Data.Repositories
         #endregion
 
         #region ParLevel1 ParHeadField ParLevel1XCluster ParMultipleValue
+
         public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<int> removerCluster)
         {
             using (var ts = db.Database.BeginTransaction())

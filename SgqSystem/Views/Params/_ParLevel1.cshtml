@@ -5,13 +5,13 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 
-    
+
 
 <!--MODAL-->
 
-    <div id="newLevel1Modal" class="modal fade" tabindex="-1" role="dialog">
-        @using (Html.BeginForm())
-        {
+<div id="newLevel1Modal" class="modal fade" tabindex="-1" role="dialog">
+    @using (Html.BeginForm())
+    {
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -24,7 +24,7 @@
                             <table class="table-erp">
                                 <tbody>
                                     <tr class="row">
-                                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null,null)
+                                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
                                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_name), Table.PosicaoLabel.top, null, null)
                                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_description), Table.PosicaoLabel.top, null, null)
                                     </tr>
@@ -82,7 +82,7 @@
                                                 <tbody>
                                                     <tr class="row">
                                                         @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_clusters), Table.PosicaoLabel.top)
-                                                        @Table.GerarColuna(@Html.Editor("pontosCluster", new { htmlAttributes = new { @value = 0, @type= "number", @style= "max-width: 200px;",  @class = "form-control input-erp" } }), @Html.Label(Resources.Resource.cluster_points), Table.PosicaoLabel.top, null, null)
+                                                        @Table.GerarColuna(@Html.Editor("pontosCluster", new { htmlAttributes = new { @value = 0, @type = "number", @style = "max-width: 200px;", @class = "form-control input-erp" } }), @Html.Label(Resources.Resource.cluster_points), Table.PosicaoLabel.top, null, null)
                                                         <td><input class="btn btn-primary btn-sm" type="button" value="Incluir Cluster" id="btnIncluirCluster" onclick="Cluster.IncluirCluster();" /></td>
                                                     </tr>
                                                 </tbody>
@@ -106,12 +106,29 @@
                                                             <input type="button" class="btn btn-danger btn-sm" value="@Resources.Resource.delete" id="btnExcluirCluster" />
                                                         </td>
                                                     </tr>
+                                                    @if (Model.paramsDto.parLevel1Dto.clustersInclusos != null)
+                                                    {
+                                                        foreach (var i in Model.paramsDto.parLevel1Dto.clustersInclusos)
+                                                        {
+                                                            <tr id="editar">
+                                                                <td id="">@i.ParCluster.Name</td>
+                                                                <td id="">@i.Points.ToString("#")</td>
+                                                                <td id="editarCluster">
+                                                                    @*<input type="button" value="Alterar" id="Cluster.btnEDITARCluster" />*@
+                                                                    <input type="button" value="x" onclick="Cluster.btnINATIVARLevel1XCluster($(this))" />
+                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParCluster", i.Id, htmlAttributes: new { @disabled = "disabled" })
+                                                                    @Html.Hidden("clusterId", i.Id, htmlAttributes: new { @disabled = "disabled", @id = "clusterId" })
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
-                            </div>      
+                            </div>
 
                             <div class="panel-group accordion" id="level1_header_accordion">
                                 <div class="panel panel-default">
@@ -235,23 +252,38 @@
 
                                                 @*Cabecalho Preview*@
                                                 <div id="cabecalhoPreview">
-                                                    @if (Model.paramsDto.parLevel1Dto.cabecalhosInclusos != null)
-                                                    {
-                                                        foreach (var i in Model.paramsDto.parLevel1Dto.cabecalhosInclusos)
+                                                    <div id="alteracao">
+                                                        @if (Model.paramsDto.parLevel1Dto.cabecalhosInclusos != null)
                                                         {
-                                                            if (i.ParFieldType_Id == 1)
+                                                            foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel1Dto.cabecalhosInclusos)
                                                             {
-                                                                <label>@i.Name </label>
-                                                                @Html.DropDownList("i.DropDownList", i.DropDownList, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = i.Id })
-                                                                @Html.Hidden(i.Name)
-                                                                @Html.Hidden(i.Description)
-                                                                @Html.Hidden(i.ParFieldType_Id.ToString())
-                                                                @Html.Hidden(i.ParLevelDefinition_Id.ToString())
-                                                                @Html.Hidden(i.LinkNumberEvaluetion.ToString())
-                                                            }
 
+                                                                if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
+                                                                {
+                                                                    <div>
+                                                                        <label>@parLevel1XHeaderField.ParHeaderField.Name </label>
+                                                                        @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                        @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.ParHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
+                                                                        <input type="button" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
+                                                                    </div>
+                                                                }
+
+                                                                if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
+                                                                {
+                                                                    <div>
+                                                                        @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
+                                                                        {
+                                                                            <label>@radioOpt.Name</label>
+                                                                            @Html.RadioButton("removerParHeaderField", true);
+                                                                        }
+                                                                        @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.ParHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
+                                                                        <input type="button" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
+                                                                    </div>
+                                                                }
+
+                                                            }
                                                         }
-                                                    }
+                                                    </div>
                                                 </div>
 
                                             </div>
@@ -261,7 +293,7 @@
                             </div>
 
 
-                            
+
                         </div>
                     </div>
                 </div>
@@ -271,25 +303,26 @@
                 </div>
             </div>
         </div>
-        }
-    </div>
+    }
+</div>
 
-    <link href="~/Content/DataTables/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/Content/DataTables/jquery.dataTables.min.css" rel="stylesheet" />
 
-    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
 
-    <script>
+<script>
 
-        ///initialize switches
-        $.fn.bootstrapSwitch.defaults.size = 'mini';
-        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
-        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
-        $(".check-box").bootstrapSwitch();
+    ///initialize switches
+    $.fn.bootstrapSwitch.defaults.size = 'mini';
+    $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
+    $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
+    $(".check-box").bootstrapSwitch();
 
-    </script>
+</script>
 
-    <script>
+<script>
 
+    // $(document).ready(function () {
     var Cluster = {
         Counter: 0,
         EventoDdlClusters: function () {
@@ -337,7 +370,7 @@
             novaTr.insertAfter($parentTR);
             novaTr.show();
 
-            Cluster.EventoAlterar(novaTr.find('#btnAlterarCluster' + idCluster).attr('id'), idCluster);
+            //Cluster.EventoAlterar(novaTr.find('#btnAlterarCluster' + idCluster).attr('id'), idCluster);
             Cluster.EventoRemove(novaTr.find('#btnExcluirCluster' + idCluster).attr('id'), idCluster);
             Cluster.Index++;
 
@@ -369,7 +402,7 @@
         },
         UpdateCounter: function () {
             Cluster.Counter = 0;
-            $('#clusterIncluidos > tbody > tr').not('#clustersVazia, #clusters').each(function (c, o) {
+            $('#clusterIncluidos > tbody > tr').not('#clustersVazia, #clusters, #editar').each(function (c, o) {
                 $(o).find('td:first').each(function (cc, oo) {
                     $(oo).find('input').each(function (ccc, ooo) {
                         var parte1 = ooo.name.split('[')[0];
@@ -380,6 +413,19 @@
                     Cluster.Counter++;
                 });
             });
+        },
+
+        CounterRemoveClusterEDICAO: 0,
+        btnINATIVARLevel1XCluster: function (e) {
+            var nameNovo = e.parent().find('input[type="hidden"]').attr("name") + "[" + Cluster.CounterRemoveClusterEDICAO + "]";
+            e.parent().find('input[type="hidden"]').attr("disabled", false).attr("name", nameNovo);
+            e.parents('tr').hide();
+            Cluster.CounterRemoveClusterEDICAO++;
+            console.log(e.parents('tr'));
+        },
+        verificaClustersJsIncluidosParaDesabilitar: function () {
+
+            $('#valueCluster option[value=' + idCluster + ']').attr('disabled', true)
         },
     }
 
@@ -481,8 +527,7 @@
         IncluirMultiplaEscolha: function (e) {
 
             /*Valida se os campos estão preenchidos*/
-            if (Cabecalhos.ValidaMultiplaEscolha() == false)
-            {
+            if (Cabecalhos.ValidaMultiplaEscolha() == false) {
                 setTimeout(Cabecalhos.EscondeMensagemValidacaoCabecalho, 10000);
                 return;
             }
@@ -537,7 +582,7 @@
                             '<option value="-1">Selecione...</option> ';
 
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
-                example +=  '<option value="1">'+o.Name+'</option>';
+                example += '<option value="1">' + o.Name + '</option>';
             });
 
             example += '</select>';
@@ -546,10 +591,10 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + $('#paramsDto_parHeaderFieldDto_Name').val() + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + Cabecalhos.ParMultiplaEscolhaOpcoes[0].ParLevelDefinition_Id + '" />';
-            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"  value="' + Cabecalhos.ParMultiplaEscolhaOpcoes[0].ParFieldType_Id + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + Cabecalhos.ParMultiplaEscolhaOpcoes[0].ParFieldType_Id + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
-            
+
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, counter) {
                 /*Cria inputs para objeto: */
                 for (var key in o) {
@@ -566,7 +611,7 @@
 
             $('#objMultiplaEscolhaName').val('');
             $('#objMultiplaEscolhaPunishmentValue').val('0');
-            
+
             $('#parFieldType').val('-1').trigger('change');
             $('#headerLevel').val('-1').trigger('change');
 
@@ -608,8 +653,7 @@
         IncluirBinario: function (e) {
 
             /*Valida se os campos estão preenchidos*/
-            if (Cabecalhos.ValidaBinario() == false)
-            {
+            if (Cabecalhos.ValidaBinario() == false) {
                 setTimeout(Cabecalhos.EscondeMensagemValidacaoCabecalho, 10000);
                 return;
             }
@@ -742,7 +786,7 @@
 
         UpdateCabecalhos: function () {
             Cabecalhos.Counter = 0;
-            $('#cabecalhoPreview > div').each(function (c, o) {
+            $('#cabecalhoPreview > div').not("#alteracao").each(function (c, o) {
                 $(o).find('input[type=hidden]').each(function (cc, oo) {
                     var parte1 = oo.name.split('[')[0];
                     var parte2 = oo.name.split(']')[1];
@@ -756,6 +800,19 @@
             });
         },
 
+        CounterRemoveCabecalhoEDICAO: 0,
+        RemoveCabecalhoEDICAO: function (e) {
+            e.parent().find('input[type="hidden"]').attr("disabled", false);
+            e.parent().hide();
+            var nameNovo = e.parent().find('input[type="hidden"]').attr("name") + "[" + Cabecalhos.CounterRemoveCabecalhoEDICAO + "]";
+            e.parent().find('input[type="hidden"]').attr("name", nameNovo)
+            Cabecalhos.CounterRemoveCabecalhoEDICAO++;
+            console.log(e.parent());
+        },
+
+        RemoveCabecalhoINCLUSAO: function (e) {
+            e.parent().remove();
+        },
     }
 
     $('#salvarCabecalho1').on('click', Cabecalhos.SalvaMultiplaEscolha);
@@ -765,5 +822,8 @@
     Cabecalhos.hideAllObj();
     $('#parFieldType').on('change', Cabecalhos.TipoChange);
     $('#paramsDto_parHeaderFieldDto_ParFieldType_Id').on('change', Cabecalhos.TipoChange);
+    // });
 
-    </script>
+    Cluster.VerificaShowTable();
+
+</script>
