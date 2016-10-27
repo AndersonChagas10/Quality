@@ -224,6 +224,15 @@
                                                     </table>
                                                 </div>
 
+
+                                                @*Btn salvar cabecalho*@
+                                                <div style="width: 100%; float: left;" id="btnIncluirCabecalho">
+                                                    <input type="button" class="btn btn-primary btn-sm" id="salvarCabecalho" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+                                                    <input type="button" class="btn btn-primary btn-sm" id="salvarCabecalho1" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+                                                    <input type="button" id="salvarCabecalho2" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+                                                    <input type="button" id="salvarCabecalho3" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+                                                </div>
+
                                                 @*Cabecalho Preview*@
                                                 <div id="cabecalhoPreview">
                                                     @if (Model.paramsDto.parLevel1Dto.cabecalhosInclusos != null)
@@ -244,6 +253,7 @@
                                                         }
                                                     }
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
