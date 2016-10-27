@@ -107,7 +107,7 @@ namespace Dominio.Services
             paramsDto.parLevel1Dto.Id = saveParamLevel1.Id;
             return paramsDto;
         }
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -117,41 +117,17 @@ namespace Dominio.Services
         {
             /*ParLevel1*/
             var retorno = Mapper.Map<ParLevel1DTO>(_baseRepoParLevel1.GetById(idParLevel1));
-            
+
             /*Clusters*/
-            retorno.clustersInclusos = new List<ParClusterDTO>();
-            var level1XClusters = _baseRepoParLevel1XCluster.GetAll().Where(r => r.ParLevel1_Id == retorno.Id);
-            var allClusters = _baseParCluster.GetAll();
-            foreach (var clusterDoLevel1 in level1XClusters)
-            {
-                var cluster = Mapper.Map<ParClusterDTO>(allClusters.FirstOrDefault(r => r.Id == clusterDoLevel1.ParCluster_Id && r.IsActive == true));
-                retorno.clustersInclusos.Add(cluster);
-            }
+            retorno.clustersInclusos = Mapper.Map<List<ParLevel1XClusterDTO>>(_baseRepoParLevel1XCluster.GetAll().Where(r => r.ParLevel1_Id == retorno.Id && r.IsActive == true));
 
             /*Cabeçalhos*/
-            retorno.cabecalhosInclusos = new List<ParHeaderFieldDTO>();
-            var level1XCabecalhos = _baseRepoParLevel1XHeaderField.GetAll().Where(r => r.ParLevel1_Id == retorno.Id && r.IsActive == true);
-            var allHeaderField = _baseRepoParHeaderField.GetAll();
-            var allMultipleValues = _baseRepoParMultipleValues.GetAll();
-            foreach (var cabecalhoDoLevel1 in level1XCabecalhos)
-            {
-                var cabecalho = Mapper.Map<ParHeaderFieldDTO>(allHeaderField.FirstOrDefault(r => r.Id == cabecalhoDoLevel1.ParHeaderField_Id));
-                cabecalho.parMultipleValuesDto = Mapper.Map<List<ParMultipleValuesDTO>>(allMultipleValues.Where(r=> r.ParHeaderField_Id == cabecalho.Id));
-                retorno.cabecalhosInclusos.Add(cabecalho);
-                if (cabecalho.ParFieldType_Id == 1)
-                    cabecalho.SetMultipleValues();
-                //if (cabecalho.ParFieldType_Id == 1)
-                //    cabecalho.SetMultipleValues();
-                //if (cabecalho.ParFieldType_Id == 1)
-                //    cabecalho.SetMultipleValues();
-                //if (cabecalho.ParFieldType_Id == 1)
-                //    cabecalho.SetMultipleValues();
-                //if (cabecalho.ParFieldType_Id == 1)
-                //    cabecalho.SetMultipleValues();
-            }
+            retorno.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(_baseRepoParLevel1XHeaderField.GetAll().Where(r => r.ParLevel1_Id == retorno.Id && r.IsActive == true));
 
             return retorno;
         }
+
+
 
         #endregion
 
