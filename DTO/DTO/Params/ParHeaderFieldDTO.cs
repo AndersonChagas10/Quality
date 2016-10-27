@@ -15,12 +15,28 @@ namespace DTO.DTO.Params
         public bool IsActive { get; set; }
 
         //public ParLevelDefinitionDTO parLevelDefinitionDto { get; set; }
+        /*Inclusão*/
         public List<ParMultipleValuesDTO> parMultipleValuesDto { get; set; }
 
-        public IEnumerable<SelectListItem> DropDownList { get; set; }
-        public void SetMultipleValues()
+        /*Alteracao*/
+        public List<ParMultipleValuesDTO> ParMultipleValues { get; set; }
+
+        public IEnumerable<SelectListItem> _DropDownList;
+
+        public IEnumerable<SelectListItem> DropDownList
         {
-            DropDownList = Guard.CreateDropDownList(parMultipleValuesDto);
+            get
+            {
+                if (ParMultipleValues == null)
+                    return _DropDownList;
+                else
+                    return Guard.CreateDropDownList(ParMultipleValues);
+            }
+            set
+            {
+                DropDownList = value;
+            }
         }
+
     }
 }

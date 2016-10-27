@@ -98,7 +98,7 @@ namespace Dominio.Services
             List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);
             List<ParLevel1XCluster> ListaParLevel1XCluster = Mapper.Map<List<ParLevel1XCluster>>(paramsDto.parLevel1XClusterDto);
             List<int> removerHeadField = paramsDto.parLevel1Dto.removerParHeaderField;
-            List<int> removerCluster = paramsDto.parLevel1Dto.removerParHeaderField;
+            List<int> removerCluster = paramsDto.parLevel1Dto.removerParCluster;
 
             /*Enviando para repository salvar*/
             _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField, removerCluster);
@@ -107,7 +107,7 @@ namespace Dominio.Services
             paramsDto.parLevel1Dto.Id = saveParamLevel1.Id;
             return paramsDto;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>

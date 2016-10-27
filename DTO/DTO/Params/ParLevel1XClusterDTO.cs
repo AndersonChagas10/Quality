@@ -12,5 +12,7 @@ namespace DTO.DTO.Params
         public decimal Points { get; set; }
         public bool IsActive { get; set; } = true;
 
+        public ParClusterDTO ParCluster { get; set; }
+
     }
 }
