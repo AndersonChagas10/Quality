@@ -53,6 +53,9 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParNotConformityRuleMapperProfile>();
                 x.AddProfile<ParNotConformityRuleXLevelMapperProfile>();
                 x.AddProfile<ParCompanyMapperProfile>();
+                x.AddProfile<ParLevel3MapperProfile>();
+                x.AddProfile<ParEvaluationMapperProfile>();
+                x.AddProfile<ParSampleMapperProfile>();
 
                 /*
                  Exemplo para configuração do Auto Mapper.

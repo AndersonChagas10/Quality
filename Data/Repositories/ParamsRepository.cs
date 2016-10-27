@@ -195,24 +195,48 @@ namespace Data.Repositories
                 db.Entry(paramLevel2).State = EntityState.Modified;
             }
         }
-        public void SaveParLevel2(ParLevel2 saveParamLevel2, List<ParLevel3Group> listaParLevel3Group, List<ParCounterXLocal> listParCounterXLocal)
+        public void SaveParLevel2(ParLevel2 paramLevel2,
+                                  List<ParLevel3Group> listaParLevel3Group, 
+                                  List<ParCounterXLocal> listParCounterXLocal,
+                                  ParNotConformityRuleXLevel paramNotConformityRuleXLevel,
+                                  ParEvaluation paramEvaluation,
+                                  ParSample paramSample,
+                                  List<ParRelapse> listParRelapse)
         {
             using (var ts = db.Database.BeginTransaction())
             {
-                AddUpdateParLevel2(saveParamLevel2); /*Salva paramLevel1*/
+                AddUpdateParLevel2(paramLevel2); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
 
-                foreach (var Level3Group in listaParLevel3Group)
+                AddUpdateParNotConformityRuleXLevel(paramNotConformityRuleXLevel, 2, ParLevel2_Id: paramLevel2.Id);
+                AddUpdateParEvaluation(paramEvaluation, paramLevel2.Id);
+                AddUpdateParSample(paramSample, paramLevel2.Id);
+
+                if (listaParLevel3Group != null)
                 {
-                    AddUpdateParLevel3Group(Level3Group, saveParamLevel2.Id); /*Salva NxN Level1XCluster*/
-                    db.SaveChanges(); /*Obtem ID do NxN Level1XCluster*/
+                    foreach (var Level3Group in listaParLevel3Group)
+                    {
+                        AddUpdateParLevel3Group(Level3Group, paramLevel2.Id); /*Salva NxN Level1XCluster*/
+                    }
+
+                }
+                if (listParCounterXLocal != null)
+                {
+
+                    foreach (var ParCounterXLocal in listParCounterXLocal)
+                    {
+                        AddUpdateParCounterXLocal(ParCounterXLocal, paramLevel2.Id); /*Salva NxN Level1XCluster*/
+                    }
+                }
+                if (listParRelapse != null)
+                {
+                    foreach (var ParRelapse in listParRelapse)
+                    {
+                        AddUpdateParRelapse(ParRelapse, paramLevel2.Id); /*Salva NxN Level1XCluster*/
+                    }
                 }
 
-                foreach (var ParCounterXLocal in listParCounterXLocal)
-                {
-                    AddUpdateParCounterXLocal(ParCounterXLocal, saveParamLevel2.Id); /*Salva NxN Level1XCluster*/
-                    db.SaveChanges(); /*Obtem ID do NxN Level1XCluster*/
-                }
+                db.SaveChanges();
                 ts.Commit();
             }
         }
@@ -229,6 +253,52 @@ namespace Data.Repositories
                 Guard.verifyDate(parCounterXLocal, "AlterDate");
                 db.ParCounterXLocal.Attach(parCounterXLocal);
                 db.Entry(parCounterXLocal).State = EntityState.Modified;
+            }
+        }
+        private void AddUpdateParRelapse(ParRelapse parRelapse, int ParLevel2_Id)
+        {
+            parRelapse.ParLevel2_Id = ParLevel2_Id;
+            if (parRelapse.Id == 0)
+            {
+                db.ParRelapse.Add(parRelapse);
+            }
+            else
+            {
+                Guard.verifyDate(parRelapse, "AlterDate");
+                db.ParRelapse.Attach(parRelapse);
+                db.Entry(parRelapse).State = EntityState.Modified;
+            }
+        }
+
+
+        private void AddUpdateParEvaluation(ParEvaluation parEvaluation, int ParLevel2_Id)
+        {
+            parEvaluation.ParLevel2_Id = ParLevel2_Id;
+
+            if (parEvaluation.Id == 0)
+            {
+                db.ParEvaluation.Add(parEvaluation);
+            }
+            else
+            {
+                Guard.verifyDate(parEvaluation, "AlterDate");
+                db.ParEvaluation.Attach(parEvaluation);
+                db.Entry(parEvaluation).State = EntityState.Modified;
+            }
+        }
+        private void AddUpdateParSample(ParSample parSample, int ParLevel2_Id)
+        {
+            parSample.ParLevel2_Id = ParLevel2_Id;
+
+            if (parSample.Id == 0)
+            {
+                db.ParSample.Add(parSample);
+            }
+            else
+            {
+                Guard.verifyDate(parSample, "AlterDate");
+                db.ParSample.Attach(parSample);
+                db.Entry(parSample).State = EntityState.Modified;
             }
         }
 
@@ -250,6 +320,31 @@ namespace Data.Repositories
                 db.Entry(paramLevel3Group).State = EntityState.Modified;
             }
         }
+        private void AddUpdateParNotConformityRuleXLevel(ParNotConformityRuleXLevel paramNotConformityRuleXLevel, int Level , int? ParLevel1_Id = null, int? ParLevel2_Id = null, int? ParLevel3_Id = null)
+        {
+            if(ParLevel1_Id == null && ParLevel2_Id == null && ParLevel3_Id == null)
+            {
+                throw new Exception("É necessário Informar O Id do Level1 ou Level2 ou Level3");
+            }
+            paramNotConformityRuleXLevel.Level = Level;
+            paramNotConformityRuleXLevel.ParLevel2_Id = ParLevel2_Id;
+
+            paramNotConformityRuleXLevel.ParLevel1_Id = ParLevel1_Id;
+            paramNotConformityRuleXLevel.ParLevel2_Id = ParLevel2_Id;
+            paramNotConformityRuleXLevel.ParLevel3_Id = ParLevel3_Id;
+
+            if (paramNotConformityRuleXLevel.Id == 0)
+            {
+                db.ParNotConformityRuleXLevel.Add(paramNotConformityRuleXLevel);
+            }
+            else
+            {
+                Guard.verifyDate(paramNotConformityRuleXLevel, "AlterDate");
+                db.ParNotConformityRuleXLevel.Attach(paramNotConformityRuleXLevel);
+                db.Entry(paramNotConformityRuleXLevel).State = EntityState.Modified;
+            }
+        }
+
 
         public void SaveParLocal(ParLocal paramLocal)
         {

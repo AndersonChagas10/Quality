@@ -30,33 +30,38 @@ namespace Dominio.Services
         private IBaseRepository<ParCounterXLocal> _baseParCounterXLocal;
         private IBaseRepository<ParRelapse> _baseParRelapse;
         private IBaseRepository<ParNotConformityRule> _baseParNotConformityRule;
+        private IBaseRepository<ParNotConformityRuleXLevel> _baseParNotConformityRuleXLevel;
         private IBaseRepository<ParCompany> _baseParCompany;
         private IBaseRepository<ParHeaderField> _baseRepoParHeaderField;
         private IBaseRepository<ParLevel1XHeaderField> _baseRepoParLevel1XHeaderField;
         private IBaseRepository<ParMultipleValues> _baseRepoParMultipleValues;
-
+        private IBaseRepository<ParEvaluation> _baseParEvaluation;
+        private IBaseRepository<ParSample> _baseParSample;
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
 
         public ParamsDomain(IBaseRepository<ParLevel1> baseRepoParLevel1,
-            IBaseRepository<ParLevel1XCluster> baseParLevel1XCluster,
-            IBaseRepository<ParFrequency> baseParFrequency,
-            IBaseRepository<ParConsolidationType> baseParConsolidationType,
-            IBaseRepository<ParCluster> baseParCluster,
-            IBaseRepository<ParLevelDefiniton> baseParLevelDefiniton,
-            IBaseRepository<ParFieldType> baseParFieldType,
-            IParamsRepository paramsRepo,
-            IBaseRepository<ParDepartment> baseParDepartment,
-            IBaseRepository<ParLevel3Group> baseParLevel3Group,
-            IBaseRepository<ParLocal> baseParLocal,
-            IBaseRepository<ParCounter> baseParCounter,
-            IBaseRepository<ParCounterXLocal> baseParCounterXLocal,
-            IBaseRepository<ParRelapse> baseParRelapse,
-            IBaseRepository<ParNotConformityRule> baseParNotConformityRule,
-            IBaseRepository<ParCompany> baseParCompany,
-            IBaseRepository<ParLevel1XHeaderField> baseRepoParLevel1XHeaderField,
-            IBaseRepository<ParMultipleValues> baseRepoParMultipleValues,
-            IBaseRepository<ParHeaderField> baseRepoParHeaderField)
+                            IBaseRepository<ParLevel1XCluster> baseParLevel1XCluster,
+                            IBaseRepository<ParFrequency> baseParFrequency,
+                            IBaseRepository<ParConsolidationType> baseParConsolidationType,
+                            IBaseRepository<ParCluster> baseParCluster,
+                            IBaseRepository<ParLevelDefiniton> baseParLevelDefiniton,
+                            IBaseRepository<ParFieldType> baseParFieldType,
+                            IParamsRepository paramsRepo,
+                            IBaseRepository<ParDepartment> baseParDepartment,
+                            IBaseRepository<ParLevel3Group> baseParLevel3Group,
+                            IBaseRepository<ParLocal> baseParLocal,
+                            IBaseRepository<ParCounter> baseParCounter,
+                            IBaseRepository<ParCounterXLocal> baseParCounterXLocal,
+                            IBaseRepository<ParRelapse> baseParRelapse,
+                            IBaseRepository<ParNotConformityRule> baseParNotConformityRule,
+                            IBaseRepository<ParNotConformityRuleXLevel> baseParNotConformityRuleXLevel,
+                            IBaseRepository<ParCompany> baseParCompany,
+                            IBaseRepository<ParLevel1XHeaderField> baseRepoParLevel1XHeaderField,
+                            IBaseRepository<ParMultipleValues> baseRepoParMultipleValues,
+                            IBaseRepository<ParHeaderField> baseRepoParHeaderField,
+                            IBaseRepository<ParEvaluation> baseParEvaluation,
+                            IBaseRepository<ParSample> baseParSample)
         {
             _paramsRepo = paramsRepo;
             _baseRepoParLevel1XHeaderField = baseRepoParLevel1XHeaderField;
@@ -76,7 +81,10 @@ namespace Dominio.Services
             _baseParCounterXLocal = baseParCounterXLocal;
             _baseParRelapse = baseParRelapse;
             _baseParNotConformityRule = baseParNotConformityRule;
+            _baseParNotConformityRuleXLevel = baseParNotConformityRuleXLevel;
             _baseParCompany = baseParCompany;
+            _baseParEvaluation = baseParEvaluation;
+            _baseParSample = baseParSample;
         }
 
         #endregion
@@ -144,8 +152,18 @@ namespace Dominio.Services
             ParLevel2 saveParamLevel2 = Mapper.Map<ParLevel2>(paramsDto.parLevel2Dto);
             List<ParLevel3Group> listaParLevel3Group = Mapper.Map<List<ParLevel3Group>>(paramsDto.listParLevel3GroupDto);
             List<ParCounterXLocal> listParCounterXLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.listParCounterXLocalDto);
+            ParNotConformityRuleXLevel saveParamNotConformityRuleXLevel = Mapper.Map<ParNotConformityRuleXLevel>(paramsDto.parNotConformityRuleXLevelDto);
+            ParEvaluation saveParamEvaluation = Mapper.Map<ParEvaluation>(paramsDto.parEvaluationDto);
+            ParSample saveParamSample = Mapper.Map<ParSample>(paramsDto.parSampleDto);
+            List<ParRelapse> listParRelapse = Mapper.Map<List<ParRelapse>>(paramsDto.listParRelapseDto);
 
-            _paramsRepo.SaveParLevel2(saveParamLevel2, listaParLevel3Group, listParCounterXLocal);
+            _paramsRepo.SaveParLevel2(saveParamLevel2, 
+                                     listaParLevel3Group, 
+                                     listParCounterXLocal, 
+                                     saveParamNotConformityRuleXLevel,
+                                     saveParamEvaluation,
+                                     saveParamSample,
+                                     listParRelapse);
 
             paramsDto.parLevel2Dto.Id = saveParamLevel2.Id;
             return paramsDto;
@@ -183,21 +201,21 @@ namespace Dominio.Services
         //    return paramsDto;
         //}
 
-        public ParamsDTO AddUpdateParRelapse(ParamsDTO paramsDto)
-        {
-            ParRelapse saveParRelapse = Mapper.Map<ParRelapse>(paramsDto.parRelapseDto);
-            _paramsRepo.SaveParRelapse(saveParRelapse);
-            paramsDto.parRelapseDto.Id = saveParRelapse.Id;
-            return paramsDto;
-        }
+        //public ParamsDTO AddUpdateParRelapse(ParamsDTO paramsDto)
+        //{
+        //    ParRelapse saveParRelapse = Mapper.Map<ParRelapse>(paramsDto.parRelapseDto);
+        //    _paramsRepo.SaveParRelapse(saveParRelapse);
+        //    paramsDto.parRelapseDto.Id = saveParRelapse.Id;
+        //    return paramsDto;
+        //}
 
-        public ParamsDTO AddUpdateParNotConformityRule(ParamsDTO paramsDto)
-        {
-            ParNotConformityRule saveParNotConformityRule = Mapper.Map<ParNotConformityRule>(paramsDto.parNotConformityRuleDto);
-            _paramsRepo.SaveParNotConformityRule(saveParNotConformityRule);
-            paramsDto.parNotConformityRuleDto.Id = saveParNotConformityRule.Id;
-            return paramsDto;
-        }
+        //public ParamsDTO AddUpdateParNotConformityRule(ParamsDTO paramsDto)
+        //{
+        //     saveParNotConformityRule = Mapper.Map<ParNotConformityRule>(paramsDto.parNotConformityRuleDto);
+        //    _paramsRepo.SaveParNotConformityRule(saveParNotConformityRule);
+        //    paramsDto.parNotConformityRuleDto.Id = saveParNotConformityRule.Id;
+        //    return paramsDto;
+        //}
 
         public ParamsDTO AddUpdateParNotConformityRuleXLevel(ParamsDTO paramsDto)
         {
@@ -228,7 +246,7 @@ namespace Dominio.Services
             var DdlparLevelDefinition = Mapper.Map<List<ParLevelDefinitonDTO>>(_baseParLevelDefiniton.GetAll());
             var DdlParFieldType = Mapper.Map<List<ParFieldTypeDTO>>(_baseParFieldType.GetAll());
             var DdlParDepartment = Mapper.Map<List<ParDepartmentDTO>>(_baseParDepartment.GetAll());
-
+            var DdlParNotConformityRule = Mapper.Map<List<ParNotConformityRuleDTO>>(_baseParNotConformityRule.GetAll());
 
             var DdlParLocal_Level1 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAll().Where(p => p.Level == 1));
             var DdlParLocal_Level2 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAll().Where(p => p.Level == 2));
@@ -248,7 +266,8 @@ namespace Dominio.Services
                             DdlParCounter_Level1,
                             DdlParLocal_Level1,
                             DdlParCounter_Level2,
-                            DdlParLocal_Level2);
+                            DdlParLocal_Level2,
+                            DdlParNotConformityRule);
             return retorno;
         }
 

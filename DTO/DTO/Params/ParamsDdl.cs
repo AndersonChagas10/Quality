@@ -23,6 +23,8 @@ namespace DTO.DTO.Params
         public IEnumerable<SelectListItem> DdlParLocal_Level1 { get; set; }
         public IEnumerable<SelectListItem> DdlParLocal_Level2 { get; set; }
 
+        public IEnumerable<SelectListItem> DdlParNotConformityRule { get; set; }
+
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
@@ -49,7 +51,8 @@ namespace DTO.DTO.Params
                             List<ParCounterDTO> ddlParCounter_Level1,
                             List<ParLocalDTO> ddlParLocal_Level1,
                             List<ParCounterDTO> ddlParCounter_Level2,
-                            List<ParLocalDTO> ddlParLocal_Level2)
+                            List<ParLocalDTO> ddlParLocal_Level2,
+                            List<ParNotConformityRuleDTO> ddlParNotConformityRule)
         {
             DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation);
             DdlFrequency = Guard.CreateDropDownList(ddlFrequency);
@@ -62,6 +65,7 @@ namespace DTO.DTO.Params
             DdlParLocal_Level1 = Guard.CreateDropDownList(ddlParLocal_Level1);
             DdlParCounter_Level2 = Guard.CreateDropDownList(ddlParCounter_Level2);
             DdlParLocal_Level2 = Guard.CreateDropDownList(ddlParLocal_Level2);
+            DdlParNotConformityRule = Guard.CreateDropDownList(ddlParNotConformityRule);
         }
     }
 }

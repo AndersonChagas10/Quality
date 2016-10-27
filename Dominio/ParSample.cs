@@ -20,7 +20,7 @@ namespace Dominio
         public int Number { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool Active { get; set; }
+        public bool IsActive { get; set; }
     
         public virtual ParCompany ParCompany { get; set; }
         public virtual ParLevel2 ParLevel2 { get; set; }

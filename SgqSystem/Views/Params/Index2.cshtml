@@ -36,7 +36,19 @@
         <div style="padding: 5px; display:inline-table;">
             <b>Descrição :</b>
             @Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Description, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
-        </div>
+        </div>  
+            <br />
+            <div style="padding: 5px; display:inline-table;">
+                <b>Avaliaçoes :</b>
+                @Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.ParCompany_Id, htmlAttributes: new { @Value="1", @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);display:none" })
+                @Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.Number, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
+            </div>
+            <br />
+            <div style="padding: 5px; display:inline-table;">
+                <b>Amostras :</b>
+                @Html.TextBoxFor(m => m.paramsDto.parSampleDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);display:none" })
+                @Html.TextBoxFor(m => m.paramsDto.parSampleDto.Number, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
+            </div>
             <div id="corpoIndicador" style="display:block; margin-top: 10px;">
 
                 <table>
@@ -156,17 +168,60 @@
                                         <td>Reauditoria</td>
                                     </tr>
                                     <tr>
-                                        <td>@Html.DropDownList("selectLocal", Model.paramsDdl.DdlParLocal_Level2, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectLocal" })</td>
-                                        <td>@Html.TextBox("inputParRegraNaoConformidade", null, htmlAttributes: new { @Id = "inputParRegraNaoConformidade", @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })</td>
+                                        @Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);display:none;" })
+                                        @Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Level, htmlAttributes: new { @Value = "2", @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);display:none;" })
+                                        //
+                                        <td>@Html.DropDownList("paramsDto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectNotConformityRule" })</td>
+                                        <td>@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })</td>
                                         <td><span class="Sufix"></span></td>
-                                        <td>@Html.CheckBox("chkRegraNaoConformidade")</td>
+                                        <td>@Html.EditorFor(model => model.paramsDto.parNotConformityRuleXLevelDto.IsReaudit)</td>
                                     </tr>
                                 </table>
-                                <button id="BtnAddContadorMonitoramento" style="float:right;">Add</button>
                             </td>
 
                         </tr>
+                        <tr>
+                            <td>
+                                <b>Possui regra de reincidencia </b> <span class="labelUSA">(USA)</span> <input class="btQuestion" type="button" value="?" onclick="getAlerta('Define se haverá botão para salvar o level 2 sem inserir dados (sem não conformidades)')">
+                            </td>
+                            <td>
+                                <label class="on-off">
+                                    @Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasGroupLevel3)
+                                    <span><a></a></span>
+                                </label>
+                            </td>
 
+                        </tr>
+                        <div id="divFrequenciaReincidencia" style="display:none">
+
+                         <table>
+                             <tbody>
+                                 <tr>
+                                     <td>
+                                         Número da NC
+                                     </td>
+                                     <td>Vigencia</td>
+                                     <td>
+                                         Frequencia
+                                     </td>
+                                     <td></td>
+                                 </tr>
+                                 <tr>
+                                     <td>
+                                         @Html.TextBox("inputNumeroNC")
+                                     </td>
+                                     <td>@Html.TextBox("inputVigencia")</td>
+                                     <td>
+                                         @Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectFrequenciaReincidencia" })
+                                     </td>
+                                     <td><button id="btnAddFrequenciaReincidencia">Add</button></td>
+                                 </tr>
+                                 <tr>
+                                     <td colspan="2" id="RegraReincidenciaGroup"></td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                        </div>
                     </tbody>
 
                 </table>
@@ -277,7 +332,46 @@
 
 
     });
+    $('#btnAddFrequenciaReincidencia').click(function (e) {
 
+        e.preventDefault();
+
+        var NcNumber = $('#inputNumeroNC').val();
+        var Vigencia = $('#inputVigencia').val();
+        var idFrequencia = $('#selectFrequenciaReincidencia').val()
+
+
+
+        var includeItem = true;
+
+
+        if (includeItem == true) {
+            var indexValue = $('.counterRegraReincidenciaClass').length;
+
+            var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
+                              '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
+                              '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
+
+
+            var elemento = $('<div class="RegraReincidenciaGroup" style="margin-left:30px">' + 'Regra ' + (indexValue + 1) + " | " + NcNumber + " | " + Vigencia + " | " + $('#selectFrequenciaReincidencia option:selected').text() + inputHidden + '<button id="btnRemoveHeaderGroup">X</button>' + '</div>');
+            $('td#RegraReincidenciaGroup').append(elemento);
+            $('#selectFrequenciaReincidencia').prop('selectedIndex', 0);
+            $('#inputNumeroNC, #inputVigencia').val("");
+            $('#inputNumeroNC').focus();
+        }
+
+
+
+    });
+
+    //$('#selectNotConformityRule').change(function (e) {
+        
+    //    $('span.sufix').text("");
+    //    if($('#selectNotConformityRule option:selected').attr('sufix'))
+    //    {
+    //        $('span.sufix').text($('#selectNotConformityRule option:selected').attr('sufix'));
+    //    }
+    //});
 
     $(document).on('click', '#btnRemoveLevel3Group', function (e) {
         e.preventDefault();

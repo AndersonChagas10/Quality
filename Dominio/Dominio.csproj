@@ -139,9 +139,6 @@
     <Compile Include="ParLevel1XHeaderField.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ParLevel1XHeadField.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="ParLevel2.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

@@ -37,11 +37,15 @@ namespace DTO.DTO.Params
         public List<ParLocalDTO> listParLocalDto { get; set; }
         public List<ParCounterDTO> listParCounterDto { get; set; }
         public List<ParCounterXLocalDTO> listParCounterXLocalDto { get; set; }
-        public ParRelapseDTO parRelapseDto { get; set; }
+        public List<ParRelapseDTO> listParRelapseDto { get; set; }
         public ParNotConformityRuleDTO parNotConformityRuleDto { get; set; }
         public ParNotConformityRuleXLevelDTO parNotConformityRuleXLevelDto { get; set; }
 
+        public List<ParNotConformityRuleDTO> listParNotConformitRule { get; set; }
+
         public ParCompanyDTO parCompanyDto { get; set; }
+        public ParEvaluationDTO parEvaluationDto { get; set; }
+        public ParSampleDTO parSampleDto { get; set; }
 
     }
 }

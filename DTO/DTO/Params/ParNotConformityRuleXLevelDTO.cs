@@ -11,8 +11,8 @@ namespace DTO.DTO.Params
         public int? ParLevel1_Id { get; set; }
         public int? ParLevel2_Id { get; set; }
         public int? ParLevel3_Id { get; set; }
-        public int? IsReaudit { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsReaudit { get; set; }
+        public bool IsActive { get; set; } = true;
         
         public ParCompanyDTO parCompany { get; set; }
         public ParLevel1DTO parLevel1 { get; set; }
