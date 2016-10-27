@@ -72,59 +72,104 @@
                     <!-- END PAGE BAR -->
                     <!-- END PAGE HEADER-->
                     <div class="row">
-                        <div class="col-lg-6 col-xs-12 col-sm-12">
-                            <div class="portlet light bordered">
-                                <div class="portlet-title">
-                                    <div class="caption">
-                                        <span class="caption-subject bold uppercase font-dark">Parameretrization</span>
-                                    </div>
-                                </div>
-                                <div class="portlet-body">
-                                    <div class="row">
-                                        <div class="col-xs-3"><button class="btn btn-primary btn-block" id="newLevel1">New Level 1</button></div>
-                                        <div class="col-xs-9">
-                                            <div class="form-group">
-                                                <label>Select the level</label>
-                                                @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, "Selecione...", htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "parLeve1Select2" })
-                                            </div>
-                                        </div>
-                                        <hr />
-                                    </div>
-                                    <div id="ParLevel1">
-                                        @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model);
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-xs-12 col-sm-12">
+                        <div class="col-xs-12">
                             <div class="portlet light bordered">
                                 <div class="portlet-title tabbable-line">
                                     <div class="caption">
                                         <i class="icon-share font-dark"></i>
-                                        <span class="caption-subject font-dark bold uppercase">Demo</span>
+                                        <span class="caption-subject font-dark bold uppercase">@Resources.Resource.customization</span>
                                     </div>
                                     <ul class="nav nav-tabs">
-                                        <li class="">
-                                            <a href="#portlet_tab3" data-toggle="tab" aria-expanded="true"> Level 1 </a>
-                                        </li>
                                         <li class="active">
-                                            <a href="#portlet_tab2" data-toggle="tab" aria-expanded="false"> Level 2 </a>
+                                            <a href="#setup_tab" data-toggle="tab" aria-expanded="true"> Setup </a>
                                         </li>
                                         <li class="">
-                                            <a href="#portlet_tab1" data-toggle="tab" aria-expanded="false"> Level 3 </a>
+                                            <a href="#level1_tab" data-toggle="tab" aria-expanded="false"> Level 1 </a>
+                                        </li>
+                                        <li class="">
+                                            <a href="#level2_tab" data-toggle="tab" aria-expanded="false"> Level 2 </a>
+                                        </li>
+                                        <li class="">
+                                            <a href="#level3_tab" data-toggle="tab" aria-expanded="false"> Level 3 </a>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="portlet-body">
                                     <div class="tab-content">
-                                        <div class="tab-pane active" id="portlet_tab1">
+                                        <div class="tab-pane active" id="setup_tab">
 
                                         </div>
-                                        <div class="tab-pane" id="portlet_tab2">
-
+                                        <div class="tab-pane" id="level1_tab">
+                                            <div class="row">
+                                                <div class="col-xs-3"><button class="btn btn-primary btn-block" id="newLevel1">New Level 1</button></div>
+                                                <div class="col-xs-9">
+                                                    @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, Resources.Resource.select, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })
+                                                </div>
+                                                <hr />
+                                                <div class="col-xs-12">
+                                                    <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
+                                                        <h4 class="widget-thumb-heading">Nome do Level 1</h4>
+                                                        <div class="widget-thumb-wrap">
+                                                            <div class="widget-thumb-body">
+                                                                <span class="widget-thumb-title">ID</span>
+                                                                <span class="widget-thumb-subtitle">Tipo de Consolidacao</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                            </div>
+                                            <div id="ParLevel1">
+                                                @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
+                                            </div>
                                         </div>
-                                        <div class="tab-pane" id="portlet_tab3">
-
+                                        <div class="tab-pane" id="level2_tab">
+                                            <div class="row">
+                                                <div class="col-xs-3"><button class="btn btn-primary btn-block" id="newLevel2">New Level 2</button></div>
+                                                <div class="col-xs-9">
+                                                    @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel1, Resources.Resource.select, htmlAttributes: new { @class = "form-control", @id = "parLevel2Select2" })
+                                                </div>
+                                                <hr />
+                                                <div class="col-xs-12">
+                                                    <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
+                                                        <h4 class="widget-thumb-heading">Nome do Level 2</h4>
+                                                        <div class="widget-thumb-wrap">
+                                                            <div class="widget-thumb-body">
+                                                                <span class="widget-thumb-title">ID</span>
+                                                                <span class="widget-thumb-subtitle">Frequencia</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                            </div>
+                                            <div id="ParLevel1">
+                                                @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="level3_tab">
+                                            <div class="row">
+                                                <div class="col-xs-3"><button class="btn btn-primary btn-block" id="newLevel3">New Level 3</button></div>
+                                                <div class="col-xs-9">
+                                                    @Html.DropDownList("paramsDto.parLevel3Selected", Model.paramsDdl.DdlparLevel1, Resources.Resource.select, htmlAttributes: new { @class = "form-control", @id = "parLevel3Select2" })
+                                                </div>
+                                                <hr />
+                                                <div class="col-xs-12">
+                                                    <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
+                                                        <h4 class="widget-thumb-heading">Nome do Level 3</h4>
+                                                        <div class="widget-thumb-wrap">
+                                                            <div class="widget-thumb-body">
+                                                                <span class="widget-thumb-title">ID</span>
+                                                                <span class="widget-thumb-subtitle">Frequencia</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                            </div>
+                                            <div id="ParLevel1">
+                                                @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

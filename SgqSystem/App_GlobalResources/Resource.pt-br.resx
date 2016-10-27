@@ -453,4 +453,7 @@
   <data name="punishment_value_popover" xml:space="preserve">
     <value>Define o valor de punição e/ou premiação atribuído às opções conforme o cadastro anterior</value>
   </data>
+  <data name="customization" xml:space="preserve">
+    <value>Customization</value>
+  </data>
 </root>

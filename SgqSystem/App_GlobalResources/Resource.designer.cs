@@ -322,6 +322,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parametrização.
+        /// </summary>
+        internal static string customization {
+            get {
+                return ResourceManager.GetString("customization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data Collection Reports.
         /// </summary>
         internal static string data_collection_reports {
