@@ -9,6 +9,6 @@ namespace DTO.DTO
         public string Description { get; set; } = "";
         public decimal PunishmentValue { get; set; }
         public bool Conformity { get; set; }
-        public bool Active { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }
