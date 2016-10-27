@@ -459,4 +459,7 @@
   <data name="punishment_value_popover" xml:space="preserve">
     <value>Define the value of the punishment and/or reward on regard of the options according to the last one</value>
   </data>
+  <data name="customization" xml:space="preserve">
+    <value>Parametrização</value>
+  </data>
 </root>
