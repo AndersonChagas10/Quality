@@ -75,8 +75,11 @@ namespace DTO.DTO.Params
 
         #region Props utilizadas para alteração
 
-        public List<ParClusterDTO> clustersInclusos { get; set; }
-        public List<ParHeaderFieldDTO> cabecalhosInclusos { get; set; }
+        public List<ParLevel1XClusterDTO> clustersInclusos { get; set; }
+        public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }
+        public List<int> removerParHeaderField { get; set; }
+        public List<int> removerParCluster { get; set; }
+
 
         #endregion
     }

@@ -336,6 +336,7 @@
     <Compile Include="Mappers\Params\ParSampleMapperProfile - Copy.cs" />
     <Compile Include="Mappers\Params\ParEvaluationMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel1XHeaderFieldMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParNotConformityRuleXLevelMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParRelapseMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParGoalMapperProfile.cs" />

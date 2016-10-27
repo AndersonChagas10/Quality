@@ -417,4 +417,64 @@
   <data name="variable" xml:space="preserve">
     <value>Variável</value>
   </data>
+  <data name="clusters" xml:space="preserve">
+    <value>Clusters</value>
+  </data>
+  <data name="cluster_edit_delete" xml:space="preserve">
+    <value>Editar ou deletar o cluster</value>
+  </data>
+  <data name="cluster_list" xml:space="preserve">
+    <value>Lista de clusters</value>
+  </data>
+  <data name="cluster_name" xml:space="preserve">
+    <value>Nome do cluster</value>
+  </data>
+  <data name="cluster_points" xml:space="preserve">
+    <value>Pontos do cluster</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Excluir</value>
+  </data>
+  <data name="edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="negative" xml:space="preserve">
+    <value>Negativo</value>
+  </data>
+  <data name="option" xml:space="preserve">
+    <value>Opção</value>
+  </data>
+  <data name="positive" xml:space="preserve">
+    <value>Positivo</value>
+  </data>
+  <data name="punishment_value" xml:space="preserve">
+    <value>Valor da punição/recompensa</value>
+  </data>
+  <data name="punishment_value_popover" xml:space="preserve">
+    <value>Define o valor de punição e/ou premiação atribuído às opções conforme o cadastro anterior</value>
+  </data>
+  <data name="customization" xml:space="preserve">
+    <value>Parametrização</value>
+  </data>
+  <data name="edit_level1" xml:space="preserve">
+    <value>Editar nível 1</value>
+  </data>
+  <data name="level1" xml:space="preserve">
+    <value>Nível 1</value>
+  </data>
+  <data name="level2" xml:space="preserve">
+    <value>Nível 2</value>
+  </data>
+  <data name="level3" xml:space="preserve">
+    <value>Nível 3</value>
+  </data>
+  <data name="new_level1" xml:space="preserve">
+    <value>Novo nível 1</value>
+  </data>
+  <data name="new_level2" xml:space="preserve">
+    <value>Novo nível 2</value>
+  </data>
+  <data name="new_level3" xml:space="preserve">
+    <value>Novo nível 3</value>
+  </data>
 </root>

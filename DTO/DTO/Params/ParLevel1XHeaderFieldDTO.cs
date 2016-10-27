@@ -6,8 +6,11 @@ namespace DTO.DTO.Params
     {
         public int ParLevel1_Id { get; set; }
         public int ParHeaderField_Id { get; set; }
-        public bool Active { get; set; }
+        public bool Active { get; set; } = true;
 
+        /*Para inclusão*/
         public ParHeaderFieldDTO parHeaderFieldDto { get; set; }
+        /*Para alteração*/
+        public ParHeaderFieldDTO ParHeaderField { get; set; }
     }
 }

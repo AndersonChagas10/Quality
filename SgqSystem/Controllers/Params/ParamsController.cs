@@ -1,5 +1,7 @@
 ﻿using Dominio.Interfaces.Services;
 using SgqSystem.ViewModels;
+using System.Globalization;
+using System.Threading;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Params
@@ -28,6 +30,9 @@ namespace SgqSystem.Controllers.Params
 
         public ActionResult GetParLevel1ById(int id)
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+
             if (id == -1) /*Retorna View Vazia*/
                 return PartialView("_ParLevel1", ViewModel);
 

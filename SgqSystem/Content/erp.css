@@ -25,3 +25,15 @@
     -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px; 
     -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px; 
 }
+
+.modal-scroll{
+    height: 500px;
+    overflow-y: auto;
+}
+
+.modal-xl{
+    width: 1300px;
+}
+.margin-top{
+    margin-top : 16px;
+}

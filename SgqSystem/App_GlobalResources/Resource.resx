@@ -423,4 +423,64 @@
   <data name="variable" xml:space="preserve">
     <value>Variable</value>
   </data>
+  <data name="clusters" xml:space="preserve">
+    <value>Clusters</value>
+  </data>
+  <data name="cluster_edit_delete" xml:space="preserve">
+    <value>Cluster edit/delete</value>
+  </data>
+  <data name="cluster_list" xml:space="preserve">
+    <value>Cluster list</value>
+  </data>
+  <data name="cluster_name" xml:space="preserve">
+    <value>Cluster name</value>
+  </data>
+  <data name="cluster_points" xml:space="preserve">
+    <value>Cluster points</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="negative" xml:space="preserve">
+    <value>Negative</value>
+  </data>
+  <data name="option" xml:space="preserve">
+    <value>Option</value>
+  </data>
+  <data name="positive" xml:space="preserve">
+    <value>Positive</value>
+  </data>
+  <data name="punishment_value" xml:space="preserve">
+    <value>Punishment/reward value</value>
+  </data>
+  <data name="punishment_value_popover" xml:space="preserve">
+    <value>Define the value of the punishment and/or reward on regard of the options according to the last one</value>
+  </data>
+  <data name="customization" xml:space="preserve">
+    <value>Customization</value>
+  </data>
+  <data name="edit_level1" xml:space="preserve">
+    <value>Edit level 1</value>
+  </data>
+  <data name="level1" xml:space="preserve">
+    <value>Level 1</value>
+  </data>
+  <data name="level2" xml:space="preserve">
+    <value>Level 2</value>
+  </data>
+  <data name="level3" xml:space="preserve">
+    <value>Level 3</value>
+  </data>
+  <data name="new_level1" xml:space="preserve">
+    <value>New level 1</value>
+  </data>
+  <data name="new_level2" xml:space="preserve">
+    <value>New level 2</value>
+  </data>
+  <data name="new_level3" xml:space="preserve">
+    <value>New level 3</value>
+  </data>
 </root>

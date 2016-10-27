@@ -241,6 +241,51 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clusters.
+        /// </summary>
+        internal static string clusters {
+            get {
+                return ResourceManager.GetString("clusters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cluster edit/delete.
+        /// </summary>
+        internal static string cluster_edit_delete {
+            get {
+                return ResourceManager.GetString("cluster_edit_delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cluster list.
+        /// </summary>
+        internal static string cluster_list {
+            get {
+                return ResourceManager.GetString("cluster_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cluster name.
+        /// </summary>
+        internal static string cluster_name {
+            get {
+                return ResourceManager.GetString("cluster_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cluster points.
+        /// </summary>
+        internal static string cluster_points {
+            get {
+                return ResourceManager.GetString("cluster_points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conform.
         /// </summary>
         internal static string conform {
@@ -277,6 +322,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customization.
+        /// </summary>
+        internal static string customization {
+            get {
+                return ResourceManager.GetString("customization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data Collection Reports.
         /// </summary>
         internal static string data_collection_reports {
@@ -304,11 +358,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string delete {
+            get {
+                return ResourceManager.GetString("delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department.
         /// </summary>
         internal static string department {
             get {
                 return ResourceManager.GetString("department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string edit {
+            get {
+                return ResourceManager.GetString("edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit level 1.
+        /// </summary>
+        internal static string edit_level1 {
+            get {
+                return ResourceManager.GetString("edit_level1", resourceCulture);
             }
         }
         
@@ -475,6 +556,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level 1.
+        /// </summary>
+        internal static string level1 {
+            get {
+                return ResourceManager.GetString("level1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 1 Clusters.
         /// </summary>
         internal static string level1_clusters {
@@ -511,6 +601,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level 2.
+        /// </summary>
+        internal static string level2 {
+            get {
+                return ResourceManager.GetString("level2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level2 group.
         /// </summary>
         internal static string level2_group {
@@ -534,6 +633,15 @@ namespace Resources {
         internal static string level2_name {
             get {
                 return ResourceManager.GetString("level2_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 3.
+        /// </summary>
+        internal static string level3 {
+            get {
+                return ResourceManager.GetString("level3", resourceCulture);
             }
         }
         
@@ -597,6 +705,42 @@ namespace Resources {
         internal static string may {
             get {
                 return ResourceManager.GetString("may", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Negative.
+        /// </summary>
+        internal static string negative {
+            get {
+                return ResourceManager.GetString("negative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New level 1.
+        /// </summary>
+        internal static string new_level1 {
+            get {
+                return ResourceManager.GetString("new_level1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New level 2.
+        /// </summary>
+        internal static string new_level2 {
+            get {
+                return ResourceManager.GetString("new_level2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New level 3.
+        /// </summary>
+        internal static string new_level3 {
+            get {
+                return ResourceManager.GetString("new_level3", resourceCulture);
             }
         }
         
@@ -673,6 +817,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Option.
+        /// </summary>
+        internal static string option {
+            get {
+                return ResourceManager.GetString("option", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string password {
@@ -718,6 +871,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Positive.
+        /// </summary>
+        internal static string positive {
+            get {
+                return ResourceManager.GetString("positive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Positive Value.
         /// </summary>
         internal static string positive_value {
@@ -732,6 +894,24 @@ namespace Resources {
         internal static string present {
             get {
                 return ResourceManager.GetString("present", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Punishment/reward value.
+        /// </summary>
+        internal static string punishment_value {
+            get {
+                return ResourceManager.GetString("punishment_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define the value of the punishment and/or reward on regard of the options according to the last one.
+        /// </summary>
+        internal static string punishment_value_popover {
+            get {
+                return ResourceManager.GetString("punishment_value_popover", resourceCulture);
             }
         }
         
