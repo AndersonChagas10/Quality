@@ -322,7 +322,11 @@
                     if (obj != null) {
                         $('#ParLevel1').empty();
                         $('#ParLevel1').append(xhr.responseText);
-                        $('#level1Title').text('#'+$('#paramsDto_parLevel1Dto_Id').val()+' - '+$('#paramsDto_parLevel1Dto_Name').val());
+                    }
+                    if (e.currentTarget.value > 0) {
+                        $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
+                    } else {
+                        $('#level1Title').text('@Resources.Resource.new_level1');
                     }
                 });
             }
