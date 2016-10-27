@@ -14,13 +14,9 @@
     <title>@ViewBag.Title</title>
 
     @Styles.Render("~/Content/General")
-
     @Styles.Render("~/Content/Theme")
     @Styles.Render("~/Content/Erp")
-
-    <link href="@Url.Content("~/Content/DataTables/css/jquery.dataTables.min.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/DataTables/css/buttons.dataTables.min.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/DataTables/css/responsive.dataTables.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/Tables")
 
 </head>
 
@@ -30,8 +26,13 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/ScriptTables")
-
     @Scripts.Render("~/bundles/theme")
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+
     <div class="page-wrapper">
 
         @Html.Partial("~/Views/Params/_Navbar.cshtml")
@@ -103,7 +104,7 @@
                                             <div class="row">
                                                 <div class="col-xs-3"><button class="btn btn-primary btn-block" id="newLevel1">New Level 1</button></div>
                                                 <div class="col-xs-9">
-                                                    @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, Resources.Resource.select, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })
+                                                    @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })
                                                 </div>
                                                 <hr />
                                                 <div class="col-xs-12">
@@ -143,9 +144,9 @@
                                                 </div>
                                                 <hr />
                                             </div>
-                                            <div id="ParLevel1">
+                                            @*<div id="ParLevel1">
                                                 @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
-                                            </div>
+                                            </div>*@
                                         </div>
                                         <div class="tab-pane" id="level3_tab">
                                             <div class="row">
@@ -167,9 +168,9 @@
                                                 </div>
                                                 <hr />
                                             </div>
-                                            <div id="ParLevel1">
+                                            @*<div id="ParLevel1">
                                                 @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
-                                            </div>
+                                            </div>*@
                                         </div>
                                     </div>
                                 </div>
@@ -277,11 +278,11 @@
         /*Inicio Select 2 Level1*/
         var parLevel1Empty = $('#ParLevel1 > form').clone();
         var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
-        $('#parLeve1Select2').select2({
-            placeholder: {
-                id: "-1",
-                text: "Selecione..."
-            },
+        $('#parLevel1Select2').select2({
+            //placeholder: {
+            //    id: "-1",
+            //    text: "Selecione..."
+            //},
         }).on("select2:select", function (e) {
 
             if (e.currentTarget.value == "") {
@@ -303,7 +304,7 @@
                 $('#ParLevel1').append(parLevel1Empty)
             }
 
-        });;
+        });
         /*Fim Select 2 Level1*/
 
         /*Inicio Submit Level1*/
