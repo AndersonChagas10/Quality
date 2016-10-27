@@ -257,7 +257,7 @@
                                                         {
                                                             foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel1Dto.cabecalhosInclusos)
                                                             {
-
+                                                                @*Drop Down carregada do DB*@
                                                                 if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                                 {
                                                                     <div>
@@ -266,10 +266,11 @@
                                                                         @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.ParHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
                                                                         <input type="button" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
                                                                     </div>
-                                                                }
+                                                        }
 
-                                                                if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
-                                                                {
+                                                        @*Radio button carregada do DB*@
+                                                        if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
+                                                        {
                                                                     <div>
                                                                         @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
                                                                         {
@@ -283,6 +284,10 @@
 
                                                             }
                                                         }
+
+
+
+
                                                     </div>
                                                 </div>
 
@@ -505,6 +510,7 @@
             }
         },
 
+        //MULTIPLA ESCOLHA
         Counter: 0,
         ParMultiplaEscolhaOpcoes: [],
         ValidaMultiplaEscolha: function (isValid) {
@@ -620,6 +626,7 @@
             Cabecalhos.ParMultiplaEscolhaOpcoes = [];
         },
 
+        //BINARIO
         CounterParBinario: 0,
         ParBinario: [],
         ValidaBinario: function () {
@@ -784,6 +791,18 @@
             Cabecalhos.ParBinario = [];
         },
 
+        //TEXTO
+
+
+        //INTEGRAÇÕES
+
+
+        //NUMERICO
+
+
+        //DATA
+
+
         UpdateCabecalhos: function () {
             Cabecalhos.Counter = 0;
             $('#cabecalhoPreview > div').not("#alteracao").each(function (c, o) {
@@ -800,6 +819,7 @@
             });
         },
 
+        //EDIÇÃO
         CounterRemoveCabecalhoEDICAO: 0,
         RemoveCabecalhoEDICAO: function (e) {
             e.parent().find('input[type="hidden"]').attr("disabled", false);
@@ -810,6 +830,7 @@
             console.log(e.parent());
         },
 
+        //INCLUSÃO
         RemoveCabecalhoINCLUSAO: function (e) {
             e.parent().remove();
         },
