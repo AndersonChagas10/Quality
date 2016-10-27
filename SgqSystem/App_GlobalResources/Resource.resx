@@ -460,6 +460,27 @@
     <value>Define the value of the punishment and/or reward on regard of the options according to the last one</value>
   </data>
   <data name="customization" xml:space="preserve">
-    <value>Parametrização</value>
+    <value>Customization</value>
+  </data>
+  <data name="edit_level1" xml:space="preserve">
+    <value>Edit level 1</value>
+  </data>
+  <data name="level1" xml:space="preserve">
+    <value>Level 1</value>
+  </data>
+  <data name="level2" xml:space="preserve">
+    <value>Level 2</value>
+  </data>
+  <data name="level3" xml:space="preserve">
+    <value>Level 3</value>
+  </data>
+  <data name="new_level1" xml:space="preserve">
+    <value>New level 1</value>
+  </data>
+  <data name="new_level2" xml:space="preserve">
+    <value>New level 2</value>
+  </data>
+  <data name="new_level3" xml:space="preserve">
+    <value>New level 3</value>
   </data>
 </root>

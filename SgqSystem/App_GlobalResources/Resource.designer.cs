@@ -322,7 +322,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parametrização.
+        ///   Looks up a localized string similar to Customization.
         /// </summary>
         internal static string customization {
             get {
@@ -381,6 +381,15 @@ namespace Resources {
         internal static string edit {
             get {
                 return ResourceManager.GetString("edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit level 1.
+        /// </summary>
+        internal static string edit_level1 {
+            get {
+                return ResourceManager.GetString("edit_level1", resourceCulture);
             }
         }
         
@@ -547,6 +556,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level 1.
+        /// </summary>
+        internal static string level1 {
+            get {
+                return ResourceManager.GetString("level1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 1 Clusters.
         /// </summary>
         internal static string level1_clusters {
@@ -583,6 +601,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level 2.
+        /// </summary>
+        internal static string level2 {
+            get {
+                return ResourceManager.GetString("level2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level2 group.
         /// </summary>
         internal static string level2_group {
@@ -606,6 +633,15 @@ namespace Resources {
         internal static string level2_name {
             get {
                 return ResourceManager.GetString("level2_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 3.
+        /// </summary>
+        internal static string level3 {
+            get {
+                return ResourceManager.GetString("level3", resourceCulture);
             }
         }
         
@@ -678,6 +714,33 @@ namespace Resources {
         internal static string negative {
             get {
                 return ResourceManager.GetString("negative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New level 1.
+        /// </summary>
+        internal static string new_level1 {
+            get {
+                return ResourceManager.GetString("new_level1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New level 2.
+        /// </summary>
+        internal static string new_level2 {
+            get {
+                return ResourceManager.GetString("new_level2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New level 3.
+        /// </summary>
+        internal static string new_level3 {
+            get {
+                return ResourceManager.GetString("new_level3", resourceCulture);
             }
         }
         

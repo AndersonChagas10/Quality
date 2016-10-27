@@ -25,13 +25,14 @@ namespace SgqSystem.Controllers.Params
 
         public ActionResult Index()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
             return View(ViewModel);
         }
 
         public ActionResult GetParLevel1ById(int id)
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+
             if (id == -1) /*Retorna View Vazia*/
                 return PartialView("_ParLevel1", ViewModel);
 
