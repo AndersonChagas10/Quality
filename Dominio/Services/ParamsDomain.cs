@@ -36,6 +36,7 @@ namespace Dominio.Services
         private IBaseRepository<ParMultipleValues> _baseRepoParMultipleValues;
         private IBaseRepository<ParEvaluation> _baseParEvaluation;
         private IBaseRepository<ParSample> _baseParSample;
+        private IBaseRepository<ParLevel3> _baseParLevel3;
         private IBaseRepository<ParCounterXLocal> _baseRepoParCounterXLocal;
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
@@ -62,7 +63,8 @@ namespace Dominio.Services
                             IBaseRepository<ParHeaderField> baseRepoParHeaderField,
                             IBaseRepository<ParEvaluation> baseParEvaluation,
                             IBaseRepository<ParSample> baseParSample,
-                             IBaseRepository<ParCounterXLocal> baseRepoParCounterXLocal)
+                            IBaseRepository<ParLevel3> baseParLevel3,
+                           IBaseRepository<ParCounterXLocal> baseRepoParCounterXLocal)
         {
             _paramsRepo = paramsRepo;
             _baseRepoParCounterXLocal = baseRepoParCounterXLocal;
@@ -87,6 +89,7 @@ namespace Dominio.Services
             _baseParCompany = baseParCompany;
             _baseParEvaluation = baseParEvaluation;
             _baseParSample = baseParSample;
+            _baseParLevel3 = baseParLevel3;
         }
 
         #endregion
@@ -173,6 +176,14 @@ namespace Dominio.Services
         #endregion
 
         #region Level3
+        public ParamsDTO AddUpdateLevel3(ParamsDTO paramsDto)
+        {
+            //paramsDto.parLevel1Dto.IsValid();
+            ParLevel3 saveParamLevel3 = Mapper.Map<ParLevel3>(paramsDto.parLevel3Dto);
+            _paramsRepo.SaveParLevel3(saveParamLevel3);
+            paramsDto.parLevel3Dto.Id = saveParamLevel3.Id;
+            return paramsDto;
+        }
 
         #endregion
 

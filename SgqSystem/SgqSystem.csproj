@@ -1101,6 +1101,7 @@
     <Content Include="Views\Params\IndexTeste.cshtml" />
     <Content Include="Views\Params\_ParLevel2.cshtml" />
     <Content Include="Views\Params\_ParLevel3.cshtml" />
+    <Content Include="Views\Params\Index3.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

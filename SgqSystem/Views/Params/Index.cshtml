@@ -296,10 +296,11 @@
 
             enviarDadosParaApi: function (e) {
 
-                if ($('form').valid()) {
+                if ($('#newLevel1Modal > form').valid()) {
                     Cabecalhos.UpdateCabecalhos();
                     Cluster.UpdateCounter();
-                    var dados = $('form').serializeObject();
+                    Counter.UpdateCounters();
+                    var dados = $('#newLevel1Modal > form').serializeObject();
 
                     $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                         console.log(objetoReturn);
