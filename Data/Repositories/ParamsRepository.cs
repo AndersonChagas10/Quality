@@ -491,7 +491,30 @@ namespace Data.Repositories
             }
         }
 
-      
+        public void SaveParLevel3(ParLevel3 paramLevel3)
+        {
+            using (var ts = db.Database.BeginTransaction())
+            {
+                AddUpdateParLevel3(paramLevel3); /*Salva paramLevel1*/
+                db.SaveChanges(); //Obtem Id do paramLevel1
+                ts.Commit();
+            }
+        }
+        public void AddUpdateParLevel3(ParLevel3 paramLevel3)
+        {
+            if (paramLevel3.Id == 0)
+            {
+                db.ParLevel3.Add(paramLevel3);
+            }
+            else
+            {
+                Guard.verifyDate(paramLevel3, "AlterDate");
+                db.ParLevel3.Attach(paramLevel3);
+                db.Entry(paramLevel3).State = EntityState.Modified;
+            }
+        }
+
+
 
         #region Não implementado
 

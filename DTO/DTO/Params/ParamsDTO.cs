@@ -47,5 +47,7 @@ namespace DTO.DTO.Params
         public ParEvaluationDTO parEvaluationDto { get; set; }
         public ParSampleDTO parSampleDto { get; set; }
 
+        public ParLevel3DTO parLevel3Dto { get; set; }
+
     }
 }

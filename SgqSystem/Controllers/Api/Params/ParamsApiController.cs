@@ -45,6 +45,16 @@ namespace SgqSystem.Controllers.Api.Params
         }
 
 
+
+        [HttpPost]
+        [Route("AddUpdateLevel3")]
+        public ParamsViewModel AddUpdateLevel3([FromBody] ParamsViewModel paramsViewModel)
+        {
+            paramsViewModel.paramsDto = _paramdDomain.AddUpdateLevel3(paramsViewModel.paramsDto);
+            return paramsViewModel;
+        }
+
+
         #endregion
 
     }

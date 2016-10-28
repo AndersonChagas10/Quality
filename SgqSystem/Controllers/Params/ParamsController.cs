@@ -47,5 +47,11 @@ namespace SgqSystem.Controllers.Params
             return View(ViewModel);
         }
 
+        public ActionResult Index3()
+        {
+            return View(ViewModel);
+        }
+
+
     }
 }
