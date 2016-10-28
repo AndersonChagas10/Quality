@@ -340,14 +340,14 @@
                 </div>
 
 
-                <div class="panel-group accordion" id="level1_cluster_accordion">
+                <div class="panel-group accordion" id="level1_counter_accordion">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_cluster_accordion" href="#level1_cluster_collapse" aria-expanded="false"> @Resources.Resource.clusters </a>
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_counter_accordion" href="#level1_counter_collapse" aria-expanded="false"> @Resources.Resource.clusters </a>
                             </h4>
                         </div>
-                        <div id="level1_cluster_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                        <div id="level1_counter_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                             <div class="panel-body">
                                 <table id="camposContador" class="table-erp">
                                     <tbody>
@@ -1040,10 +1040,10 @@
         CreateCounterPreview: function () {
 
             //$('#tblPreviewCounter > tbody').empty();
-
+            $('#tblPreviewCounter > tbody > tr#insert').remove();
             var objHiddenCounter = "";
             Counter.ObjCounters.forEach(function (o, c) {
-                objHiddenCounter += '<tr>';
+                objHiddenCounter += '<tr id="insert" >';
                 objHiddenCounter += '<td>' + o.ParCounter_Name + '</td>';
                 objHiddenCounter += '<td>' + o.ParLocal_Name + '</td>';
                 objHiddenCounter += '<td>&nbsp;<input type="button" value="x" onclick="Counter.RemoveCounter($(this), ' + c + ')" /></td>';
