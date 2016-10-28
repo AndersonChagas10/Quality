@@ -247,7 +247,7 @@
     <value>Permite editar número de avaliações</value>
   </data>
   <data name="allow_the_edition_of_the_goal_of_the_level1_by_unit" xml:space="preserve">
-    <value>Permite editar meta do indicador por unidade</value>
+    <value>Permite editar meta do nível 1 por unidade</value>
   </data>
   <data name="allow_the_edition_of_the_sample_number" xml:space="preserve">
     <value>Permite editar numeros de amostras</value>
@@ -301,7 +301,7 @@
     <value>Valor da meta (%)</value>
   </data>
   <data name="limited_number_of_evaluations" xml:space="preserve">
-    <value>Limited number of evaluations</value>
+    <value>Número de Avaliações Limitados</value>
   </data>
   <data name="points" xml:space="preserve">
     <value>Pontos</value>
@@ -476,5 +476,17 @@
   </data>
   <data name="new_level3" xml:space="preserve">
     <value>Novo nível 3</value>
+  </data>
+  <data name="main_data" xml:space="preserve">
+    <value>Dados Principais</value>
+  </data>
+  <data name="allow_the_edition_of_the_level3_connection" xml:space="preserve">
+    <value>Permite editar vínculo com o nível 3</value>
+  </data>
+  <data name="allow_the_edition_of_the_level3_connection_popover" xml:space="preserve">
+    <value>Define se as unidades poderão editar/criar os vínculos com os níveis 3</value>
+  </data>
+  <data name="link_number_evaluation" xml:space="preserve">
+    <value>Link com o número avaliação</value>
   </data>
 </root>

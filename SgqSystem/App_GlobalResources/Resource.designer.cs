@@ -187,6 +187,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allow the edition of the level 3 connection.
+        /// </summary>
+        internal static string allow_the_edition_of_the_level3_connection {
+            get {
+                return ResourceManager.GetString("allow_the_edition_of_the_level3_connection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define if the units will be able to create/edit the connection with the level 3.
+        /// </summary>
+        internal static string allow_the_edition_of_the_level3_connection_popover {
+            get {
+                return ResourceManager.GetString("allow_the_edition_of_the_level3_connection_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allow the edition of the sample number.
         /// </summary>
         internal static string allow_the_edition_of_the_sample_number {
@@ -655,11 +673,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Número de Avaliações Limitado.
+        ///   Looks up a localized string similar to Limited number of evaluations.
         /// </summary>
         internal static string limited_number_of_evaluations {
             get {
                 return ResourceManager.GetString("limited_number_of_evaluations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link of the evaluation number.
+        /// </summary>
+        internal static string link_number_evaluation {
+            get {
+                return ResourceManager.GetString("link_number_evaluation", resourceCulture);
             }
         }
         
@@ -687,6 +714,15 @@ namespace Resources {
         internal static string log_out {
             get {
                 return ResourceManager.GetString("log_out", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Main data.
+        /// </summary>
+        internal static string main_data {
+            get {
+                return ResourceManager.GetString("main_data", resourceCulture);
             }
         }
         

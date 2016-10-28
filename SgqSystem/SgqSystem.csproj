@@ -588,6 +588,7 @@
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Content\daterangepicker-bs2.css" />
     <Content Include="Content\daterangepicker-bs3.css" />
+    <Content Include="Content\erp.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Gridmvc.css" />
@@ -1098,6 +1099,8 @@
     <Content Include="Views\Params\_ParLevel1.cshtml" />
     <Content Include="Views\Params\Index2.cshtml" />
     <Content Include="Views\Params\IndexTeste.cshtml" />
+    <Content Include="Views\Params\_ParLevel2.cshtml" />
+    <Content Include="Views\Params\_ParLevel3.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -26,7 +26,11 @@ namespace SgqSystem.Helpers
         }
 
 
-        public static MvcHtmlString GerarColuna(MvcHtmlString input, MvcHtmlString label, PosicaoLabel posicaoLabel, MvcHtmlString error = null, string info = null)
+        public static MvcHtmlString GerarColuna(MvcHtmlString input,
+                                                MvcHtmlString label,
+                                                PosicaoLabel posicaoLabel, 
+                                                MvcHtmlString error = null, 
+                                                string info = null)
         {
             String tr = "";
             String tagInfo = "";
@@ -47,8 +51,10 @@ namespace SgqSystem.Helpers
                 tr = "<td class='td-erp'>" +
                         label.ToString() + " " +
                         tagInfo +
+                        "<div>"+
                         input.ToString() +
-                        tagError+
+                        "</div>"+
+                        tagError +
                      "</td>";
             }
             else if(posicaoLabel == PosicaoLabel.left)
@@ -81,6 +87,56 @@ namespace SgqSystem.Helpers
                         tagInfo +
                      "</td>";
 
+            return new MvcHtmlString(tr);
+        }
+
+        public static MvcHtmlString GerarColunaButton(MvcHtmlString input,
+                                                MvcHtmlString label,
+                                                PosicaoLabel posicaoLabel,
+                                                MvcHtmlString error = null,
+                                                string info = null,
+                                                String button = null)
+        {
+            String tr = "";
+            String tagInfo = "";
+            String tagError = "";
+
+            if (info != null)
+            {
+                tagInfo = " <i class='fa fa-question-circle popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
+            }
+
+            if (error != null)
+            {
+                tagError = error.ToString();
+            }
+
+            if (posicaoLabel == PosicaoLabel.top)
+            {
+                tr = "<td class='td-erp'>" +
+                        label.ToString() + " " +
+                        tagInfo +
+                        "<div class=\"input-group\">" +
+                        input.ToString() +
+                        "<span class=\"input-group-btn\">"+
+                        button +
+                        "</span>"+
+                        "</div>" +
+                        tagError +
+                     "</td>";
+            }
+            else if (posicaoLabel == PosicaoLabel.left)
+            {
+                tr =
+                    "<td class='td-erp text-left'>" +
+                        label.ToString() + " " +
+                        tagInfo +
+                    "</td>" +
+                    "<td class='td-erp'>" +
+                        input.ToString() +
+                        tagError +
+                    "</td>";
+            }
             return new MvcHtmlString(tr);
         }
 
@@ -121,8 +177,8 @@ namespace SgqSystem.Helpers
             if (posicaoLabel == PosicaoLabel.top)
             {
                 tr = "<td class='td-erp'>" +
-                        label.ToString() + " " +
-                        tagInfo +
+                        label.ToString() +
+                        tagInfo + " <br>" +
                         checkbox.ToString() +
                      "</td>";
             }
@@ -130,7 +186,7 @@ namespace SgqSystem.Helpers
             {
                 tr =
                     "<td class='td-erp text-left'>" +
-                        label.ToString() + " " +
+                        label.ToString() + 
                         tagInfo +
                     "</td>" +
                     "<td class='td-erp'>" +
@@ -158,14 +214,15 @@ namespace SgqSystem.Helpers
 
             if (posicaoLabel == PosicaoLabel.top)
             {
-                tr = "<div class='icheck - list'><td class='td-erp'>" +
+                tr = "<div class='icheck-list'><td class='td-erp'>" +
                         label.ToString() + " " +
                         tagInfo +
-                        "<div class='radio'><label>"+
+                        "</td><td>" +
+                        "<div class='radio-erp'><label>" +
                         radio1.ToString() +
                         radio1Label +
                         "</label></div>"+
-                        "<div class='radio'><label>" +
+                        "<div class='radio-erp'><label>" +
                         radio2.ToString() +
                         radio2Label +
                         "</label></div>" +
@@ -174,14 +231,14 @@ namespace SgqSystem.Helpers
             else if (posicaoLabel == PosicaoLabel.left)
             {
                 tr =
-                    "<div class='icheck - list'><td class='td-erp'>" +
+                    "<div class='icheck-list'><td class='td-erp'>" +
                         label.ToString() + " " +
-                        tagInfo + "<br>"+
-                        "<label class='radio-inline'>"+
-                        radio1.ToString() + radio1Label.ToString() + "</label>" +
-                        "<label class='radio-inline'>" + 
-                        radio2.ToString() + radio2Label.ToString() + "</label>" +
-                    "</td></div>";
+                        tagInfo + "<br>" +
+                        "</td><td>" +
+                        radio1.ToString() + radio1Label.ToString() +
+                        radio2.ToString() + radio2Label.ToString() + 
+                        "</td>"+
+                    "</div>";
             }
             return new MvcHtmlString(tr);
         }
