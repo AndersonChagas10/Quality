@@ -59,6 +59,13 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParEvaluationMapperProfile>();
                 x.AddProfile<ParSampleMapperProfile>();
 
+
+                /*
+                 *Par Level 3 Mapping
+                 */
+                x.AddProfile<ParLevel3MapperProfile>();
+
+
                 /*
                  Exemplo para configuração do Auto Mapper.
                  */
