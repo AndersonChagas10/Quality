@@ -177,11 +177,15 @@
     <script>
 
         ///initialize switches
-        $.fn.bootstrapSwitch.defaults.size = 'mini';
-        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
-        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
-        $(".check-box").bootstrapSwitch();
 
+        function defacults() {
+            $.fn.bootstrapSwitch.defaults.size = 'mini';
+            $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
+            $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
+            $(".check-box").bootstrapSwitch();
+        }
+
+        defacults();
 
         $('#level1Title').text('@Resources.Resource.new_level1');
         $('#level2Title').text('@Resources.Resource.new_level2');
@@ -303,9 +307,19 @@
                     var dados = $('#newLevel1Modal > form').serializeObject();
 
                     $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                        console.log(objetoReturn);
-                        console.log(statusmessage);
-                        console.log(respostaCompleta);
+                        if (objetoReturn.paramsDto.parLevel1Dto.Id > 0)
+                        {
+                            $.get('GetParLevel1ById/' + objetoReturn.paramsDto.parLevel1Dto.Id, function (obj, responseText, xhr) {
+                                if (obj != null) {
+                                    $('#ParLevel1').empty();
+                                    $('#ParLevel1').append(xhr.responseText);
+                                }
+                                 $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
+                            });
+                            console.log(statusmessage);
+                        }
+                        //console.log(objetoReturn);
+                        //console.log(respostaCompleta);
                     });
                 }
 

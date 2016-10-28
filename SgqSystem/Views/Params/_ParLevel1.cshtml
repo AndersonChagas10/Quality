@@ -414,8 +414,6 @@
         }
     });
 
-
-    // $(document).ready(function () {
     var Cluster = {
         Counter: 0,
         EventoDdlClusters: function () {
@@ -1075,7 +1073,6 @@
 
     }
 
-
     $('#salvarCabecalho1').on('click', Cabecalhos.SalvaMultiplaEscolha);
     $('#salvarCabecalho2').on('click', Cabecalhos.SalvaBinario);
 
@@ -1083,7 +1080,7 @@
     Cabecalhos.hideAllObj();
     $('#parFieldType').on('change', Cabecalhos.TipoChange);
     $('#paramsDto_parHeaderFieldDto_ParFieldType_Id').on('change', Cabecalhos.TipoChange);
-    // });
+    
     $('.table-erp tbody tr').mouseenter(function (e) {
         $('.table-erp tbody tr').removeClass('hover');
         $(this).addClass('hover');
@@ -1094,4 +1091,7 @@
 
     Cluster.VerificaShowTable();
 
+    $(document).ready(function () {
+        defacults();
+    });
 </script>
