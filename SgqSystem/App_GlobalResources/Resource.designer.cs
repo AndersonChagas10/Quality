@@ -430,6 +430,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Evaluation.
+        /// </summary>
+        internal static string evaluation {
+            get {
+                return ResourceManager.GetString("evaluation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to February.
         /// </summary>
         internal static string february {
@@ -624,6 +633,15 @@ namespace Resources {
         internal static string level2 {
             get {
                 return ResourceManager.GetString("level2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 2 description.
+        /// </summary>
+        internal static string level2_description {
+            get {
+                return ResourceManager.GetString("level2_description", resourceCulture);
             }
         }
         
@@ -1011,6 +1029,15 @@ namespace Resources {
         internal static string rule_for_recidivism {
             get {
                 return ResourceManager.GetString("rule_for_recidivism", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sample.
+        /// </summary>
+        internal static string sample {
+            get {
+                return ResourceManager.GetString("sample", resourceCulture);
             }
         }
         

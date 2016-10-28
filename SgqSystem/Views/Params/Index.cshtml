@@ -84,22 +84,13 @@
                                         <li class="active">
                                             <a href="#setup_tab" data-toggle="tab" aria-expanded="true"> Setup </a>
                                         </li>
-                                        @*<li class="">
-                                            <a href="#level1_tab" data-toggle="tab" aria-expanded="false"> Level 1 </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="#level2_tab" data-toggle="tab" aria-expanded="false"> Level 2 </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="#level3_tab" data-toggle="tab" aria-expanded="false"> Level 3 </a>
-                                        </li>*@
                                     </ul>
                                 </div>
                                 <div class="portlet-body">
                                     <div class="tab-content">
                                         <div class="tab-pane active" id="setup_tab">
                                             <div class="row">
-                                                <div class="col-xs-3"><button class="btn btn-primary btn-block" id="btnNewLevel1">New Level 1</button></div>
+                                                <div class="col-xs-3"><button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button></div>
                                                 <div class="col-xs-9">
                                                     @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })
                                                 </div>
@@ -184,6 +175,13 @@
         </div>
     </div>
     <script>
+
+        ///initialize switches
+        $.fn.bootstrapSwitch.defaults.size = 'mini';
+        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
+        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
+        $(".check-box").bootstrapSwitch();
+
 
         $('#level1Title').text('@Resources.Resource.new_level1');
         $('#level2Title').text('@Resources.Resource.new_level2');
