@@ -712,7 +712,7 @@
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, counter) {
                 /*Cria inputs para objeto: */
                 for (var key in o) {
-                    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].' + key.toString() + '"     value="' + o[key].toString() + '" />';
+                    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].' + key + '"     value="' + o[key] + '" />';
                 }
             });
 
