@@ -14,17 +14,19 @@ namespace DTO.DTO.Params
 
         public int parLevel3Selected { get; set; }
 
+
         /*Ja implementados*/
 
         public ParLevel1DTO parLevel1Dto { get; set; }
         public List<ParLevel1XClusterDTO> parLevel1XClusterDto { get; set; }
         public List<ParHeaderFieldDTO> listParHeaderFieldDto { get; set; }
         public List<ParFrequencyDTO> listParFrequencydDto { get; set; }
-
+        public List<ParCounterXLocalDTO> listParCounterXLocal { get; set; }
         public ParHeaderFieldDTO parHeaderFieldDto { get; set; }
         public ParLevel1XHeaderFieldDTO parLevel1HeaderFieldDto { get; set; }
-        
+
         /*Fim Ja implementados */
+
 
         #endregion
 
