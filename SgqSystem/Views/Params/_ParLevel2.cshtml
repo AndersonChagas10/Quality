@@ -33,10 +33,51 @@
                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsEmptyLevel3, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_audit_of_detached_level3), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_audit_of_detached_level3_popover)
                     </tr>
                     <tr class="row">
-                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasShowLevel03, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.level3_group), Table.PosicaoLabel.left, null, null)
+                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasShowLevel03, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.show_group_on_level3), Table.PosicaoLabel.left, null, null)
                     </tr>  
+                    <tr class="row">
+                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasGroupLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_on_level3), Table.PosicaoLabel.left, null, null)
+                    </tr> 
+                    <tr class="row">
+                        @Table.GerarColunaLabel(@Html.Label(Resources.Resource.not_conformity_rule))
+                    </tr>
+                    <tr class="row">
+                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasShowLevel03, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.show_group_on_level3), Table.PosicaoLabel.left, null, null)
+                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasShowLevel03, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.show_group_on_level3), Table.PosicaoLabel.left, null, null)
+                    </tr>
+                    <tr class="row">
+                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasGroupLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_on_level3), Table.PosicaoLabel.left, null, null)
+                    </tr> 
                 </tbody>
             </table>
+
+            <div class="panel-group accordion" id="level2_group_accordion" style="display: none">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_group_accordion" href="#level2_group_collapse" aria-expanded="false"> @Resources.Resource.groups </a>
+                        </h4>
+                    </div>
+                    <div id="level2_group_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                        <div class="panel-body">
+                            <table class="table-erp">
+                                <tbody>
+                                    <tr class="row">
+                                        @Table.GerarColunaButton(@Html.TextBox("inputParLevel03Name", null, htmlAttributes: new { @Id = "inputParLevel03Name", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top, button: "<button class=\"btn btn-primary btn-sm\" id=\"btnParLevel03GroupInsert\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr class="row">
+                                        <td colspan="2" id="Level03Group"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 
@@ -247,144 +288,153 @@
             </div>
 }
 
-            <script>
-                var url1 = '@Html.Raw(url)';
-                /*
-                  Serializa objeto usando bind de property Name
-                  $('form').serializeObject();
-                */
-                $.fn.serializeObject = function () {
-                    var o = {};
-                    var a = this.serializeArray();
-                    $.each(a, function () {
-                        if (o[this.name] !== undefined) {
-                            if (!o[this.name].push) {
-                                o[this.name] = [o[this.name]];
-                            }
-                            o[this.name].push(this.value || '');
-                        } else {
-                            o[this.name] = this.value || '';
-                        }
-                    });
-                    return o;
-                };
+<script>
 
+    $('#paramsDto_parLevel2Dto_HasGroupLevel3').on('switchChange.bootstrapSwitch', function (event, state) {
+        if (state) {
+            $('#level2_group_accordion').fadeIn();
+        } else {
+            $('#level2_group_accordion').fadeOut();
+        }
+    });
 
-                /*Inicio Submit Level1*/
-                var indexParamsLevel2 = {
-
-                    enviarDadosParaApi: function (e) {
-                        var dados = $('form').serializeObject();
-
-                        $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                            console.log(objetoReturn);
-                            console.log(statusmessage);
-                            console.log(respostaCompleta);
-                        });
-
-                    },
+    var url1 = '@Html.Raw(url)';
+    /*
+        Serializa objeto usando bind de property Name
+        $('form').serializeObject();
+    */
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
                 }
-                $('#BtnAddContadorMonitoramento').click(function (e) {
-
-                    e.preventDefault();
-
-                    var idCounter = $('#selectCounter').val();
-                    var idLocal = $('#selectLocal').val();
-
-                    var includeItem = true;
-
-
-                    if (includeItem == true) {
-                        var indexValue = $('.counterLevel2Class').length;
-
-                        var inputHidden = '<input class="counterLevel2Class" type="hidden" name="paramsDto.listParCounterXLocalDto[' + indexValue + '].ParCounter_Id" value="' + idCounter + '" />' +
-                                          '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParCounterXLocalDto[' + indexValue + '].ParLocal_Id" value="' + idLocal + '" />';
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
 
 
-                        var elemento = $('<div class="HederLevel2Group" style="margin-left:30px">' + $('#selectCounter option:selected').text() + " | " + $('#selectLocal option:selected').text() + inputHidden + '<button id="btnRemoveHeaderGroup">X</button>' + '</div>');
-                        $('td#HederLevel2Group').append(elemento);
-                        $('#selectCounter,  #selectLocal').prop('selectedIndex', 0);
-                    }
+    /*Inicio Submit Level1*/
+    var indexParamsLevel2 = {
+
+        enviarDadosParaApi: function (e) {
+            var dados = $('form').serializeObject();
+
+            $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                console.log(objetoReturn);
+                console.log(statusmessage);
+                console.log(respostaCompleta);
+            });
+
+        },
+    }
+    $('#BtnAddContadorMonitoramento').click(function (e) {
+
+        e.preventDefault();
+
+        var idCounter = $('#selectCounter').val();
+        var idLocal = $('#selectLocal').val();
+
+        var includeItem = true;
 
 
+        if (includeItem == true) {
+            var indexValue = $('.counterLevel2Class').length;
 
-                });
-
-                $('#btnParLevel03GroupInsert').click(function (e) {
-
-                    e.preventDefault();
-
-                    var inputs = $('input[name="paramsDto.parLevel3GroupDto.Name"]');
-                    var input = $('#inputParLevel03Name');
-
-                    var includeItem = true;
-
-                    inputs.each(function (e) {
-
-                        if ($(this).val() == input.val()) {
-                            alert('Já cadastrou esse grupo para o input');
-                            includeItem = false;
-                            return false;
-                        }
-
-                    });
-                    if (includeItem == true) {
-                        var indexValue = $('.groupLevel03Class').length;
-
-                        var inputHidden = '<input class="groupLevel03Class" type="hidden" name="paramsDto.listParLevel3GroupDto[' + indexValue + '].Name" value="' + input.val() + '" />'
-                        var elemento = $('<div class="level03Group" style="margin-left:30px">' + input.val() + inputHidden + '<button id="btnRemoveLevel3Group">X</button>' + '</div>');
-                        $('td#Level03Group').append(elemento);
-                        input.val("");
-                    }
-                    input.focus();
+            var inputHidden = '<input class="counterLevel2Class" type="hidden" name="paramsDto.listParCounterXLocalDto[' + indexValue + '].ParCounter_Id" value="' + idCounter + '" />' +
+                                '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParCounterXLocalDto[' + indexValue + '].ParLocal_Id" value="' + idLocal + '" />';
 
 
-                });
-                $('#btnAddFrequenciaReincidencia').click(function (e) {
-
-                    e.preventDefault();
-
-                    var NcNumber = $('#inputNumeroNC').val();
-                    var Vigencia = $('#inputVigencia').val();
-                    var idFrequencia = $('#selectFrequenciaReincidencia').val()
+            var elemento = $('<div class="HederLevel2Group" style="margin-left:30px">' + $('#selectCounter option:selected').text() + " | " + $('#selectLocal option:selected').text() + inputHidden + '<button id="btnRemoveHeaderGroup">X</button>' + '</div>');
+            $('td#HederLevel2Group').append(elemento);
+            $('#selectCounter,  #selectLocal').prop('selectedIndex', 0);
+        }
 
 
 
-                    var includeItem = true;
+    });
+
+    $('#btnParLevel03GroupInsert').click(function (e) {
+
+        e.preventDefault();
+
+        var inputs = $('input[name="paramsDto.parLevel3GroupDto.Name"]');
+        var input = $('#inputParLevel03Name');
+
+        var includeItem = true;
+
+        inputs.each(function (e) {
+
+            if ($(this).val() == input.val()) {
+                alert('Já cadastrou esse grupo para o input');
+                includeItem = false;
+                return false;
+            }
+
+        });
+        if (includeItem == true) {
+            var indexValue = $('.groupLevel03Class').length;
+
+            var inputHidden = '<input class="groupLevel03Class" type="hidden" name="paramsDto.listParLevel3GroupDto[' + indexValue + '].Name" value="' + input.val() + '" />'
+            var elemento = $('<div class="level03Group" style="margin-left:30px">' + input.val() + inputHidden + '<button class=\"btn btn-danger btn-sm\" id="btnRemoveLevel3Group"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</div>');
+            $('td#Level03Group').append(elemento);
+            input.val("");
+        }
+        input.focus();
 
 
-                    if (includeItem == true) {
-                        var indexValue = $('.counterRegraReincidenciaClass').length;
+    });
+    $('#btnAddFrequenciaReincidencia').click(function (e) {
 
-                        var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
-                                          '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
-                                          '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
+        e.preventDefault();
 
-
-                        var elemento = $('<div class="RegraReincidenciaGroup" style="margin-left:30px">' + 'Regra ' + (indexValue + 1) + " | " + NcNumber + " | " + Vigencia + " | " + $('#selectFrequenciaReincidencia option:selected').text() + inputHidden + '<button id="btnRemoveHeaderGroup">X</button>' + '</div>');
-                        $('td#RegraReincidenciaGroup').append(elemento);
-                        $('#selectFrequenciaReincidencia').prop('selectedIndex', 0);
-                        $('#inputNumeroNC, #inputVigencia').val("");
-                        $('#inputNumeroNC').focus();
-                    }
+        var NcNumber = $('#inputNumeroNC').val();
+        var Vigencia = $('#inputVigencia').val();
+        var idFrequencia = $('#selectFrequenciaReincidencia').val()
 
 
 
-                });
+        var includeItem = true;
 
-                //$('#selectNotConformityRule').change(function (e) {
 
-                //    $('span.sufix').text("");
-                //    if($('#selectNotConformityRule option:selected').attr('sufix'))
-                //    {
-                //        $('span.sufix').text($('#selectNotConformityRule option:selected').attr('sufix'));
-                //    }
-                //});
+        if (includeItem == true) {
+            var indexValue = $('.counterRegraReincidenciaClass').length;
 
-                $(document).on('click', '#btnRemoveLevel3Group', function (e) {
-                    e.preventDefault();
-                    $(this).parents('.level03Group').remove();
-                });
-                /*Fim Submit Level1*/
+            var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
+                                '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
+                                '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
 
-            </script>
+
+            var elemento = $('<div class="RegraReincidenciaGroup" style="margin-left:30px">' + 'Regra ' + (indexValue + 1) + " | " + NcNumber + " | " + Vigencia + " | " + $('#selectFrequenciaReincidencia option:selected').text() + inputHidden + '<button id="btnRemoveHeaderGroup">X</button>' + '</div>');
+            $('td#RegraReincidenciaGroup').append(elemento);
+            $('#selectFrequenciaReincidencia').prop('selectedIndex', 0);
+            $('#inputNumeroNC, #inputVigencia').val("");
+            $('#inputNumeroNC').focus();
+        }
+
+
+
+    });
+
+    //$('#selectNotConformityRule').change(function (e) {
+
+    //    $('span.sufix').text("");
+    //    if($('#selectNotConformityRule option:selected').attr('sufix'))
+    //    {
+    //        $('span.sufix').text($('#selectNotConformityRule option:selected').attr('sufix'));
+    //    }
+    //});
+
+    $(document).on('click', '#btnRemoveLevel3Group', function (e) {
+        e.preventDefault();
+        $(this).parents('.level03Group').remove();
+    });
+    /*Fim Submit Level1*/
+
+</script>

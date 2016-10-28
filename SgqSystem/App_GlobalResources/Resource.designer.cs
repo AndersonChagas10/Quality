@@ -502,6 +502,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        internal static string group {
+            get {
+                return ResourceManager.GetString("group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Groups.
+        /// </summary>
+        internal static string groups {
+            get {
+                return ResourceManager.GetString("groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Emit alert.
         /// </summary>
         internal static string has_alert {
@@ -516,6 +534,15 @@ namespace Resources {
         internal static string has_alert_popover {
             get {
                 return ResourceManager.GetString("has_alert_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Has groups on level 3.
+        /// </summary>
+        internal static string has_group_on_level3 {
+            get {
+                return ResourceManager.GetString("has_group_on_level3", resourceCulture);
             }
         }
         
@@ -1128,6 +1155,15 @@ namespace Resources {
         internal static string shift {
             get {
                 return ResourceManager.GetString("shift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show groups on level 3.
+        /// </summary>
+        internal static string show_group_on_level3 {
+            get {
+                return ResourceManager.GetString("show_group_on_level3", resourceCulture);
             }
         }
         
