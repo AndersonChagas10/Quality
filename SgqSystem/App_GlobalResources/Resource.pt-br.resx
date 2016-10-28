@@ -489,4 +489,13 @@
   <data name="link_number_evaluation" xml:space="preserve">
     <value>Link com o número avaliação</value>
   </data>
+  <data name="evaluation" xml:space="preserve">
+    <value>Avaliação</value>
+  </data>
+  <data name="level2_description" xml:space="preserve">
+    <value>Descrição do nível 2</value>
+  </data>
+  <data name="sample" xml:space="preserve">
+    <value>Amostra</value>
+  </data>
 </root>
