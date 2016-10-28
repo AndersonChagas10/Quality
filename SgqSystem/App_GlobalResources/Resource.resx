@@ -498,10 +498,22 @@
   <data name="evaluation" xml:space="preserve">
     <value>Evaluation</value>
   </data>
+  <data name="group" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="groups" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="has_group_on_level3" xml:space="preserve">
+    <value>Has groups on level 3</value>
+  </data>
   <data name="level2_description" xml:space="preserve">
     <value>Level 2 description</value>
   </data>
   <data name="sample" xml:space="preserve">
     <value>Sample</value>
+  </data>
+  <data name="show_group_on_level3" xml:space="preserve">
+    <value>Show groups on level 3</value>
   </data>
 </root>
