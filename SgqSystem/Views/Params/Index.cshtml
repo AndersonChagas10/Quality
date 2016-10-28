@@ -301,6 +301,7 @@
                 if ($('#newLevel1Modal > form').valid()) {
                     Cabecalhos.UpdateCabecalhos();
                     Cluster.UpdateCounter();
+                    Counter.UpdateCounters();
                     var dados = $('#newLevel1Modal > form').serializeObject();
 
                     $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {

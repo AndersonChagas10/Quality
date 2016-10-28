@@ -64,6 +64,7 @@
                     </tbody>
                 </table>
 
+                @*Cluster*@
                 <div class="panel-group accordion" id="level1_cluster_accordion">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -76,9 +77,9 @@
                                 <table class="table-erp">
                                     <tbody>
                                         <tr class="row">
-                                            @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_clusters), Table.PosicaoLabel.top)
-                                            @Table.GerarColunaButton(@Html.Editor("pontosCluster", new { htmlAttributes = new { @value = 0, @type = "number", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.cluster_points), Table.PosicaoLabel.top, button: "<button class=\"btn btn-primary btn-sm inline-block \" type=\"button\" value=\"Incluir Cluster\" id=\"btnIncluirCluster\" onclick=\"Cluster.IncluirCluster();\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-
+                                            @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_clusters), Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(@Html.Editor("pontosCluster", new { htmlAttributes = new { @value = 0, @type = "number", @style = "max-width: 200px;", @class = "form-control input-erp" } }), @Html.Label(Resources.Resource.cluster_points), Table.PosicaoLabel.top, null, null)
+                                            <td><input class="btn btn-primary btn-sm" type="button" value="Incluir Cluster" id="btnIncluirCluster" onclick="Cluster.IncluirCluster();" /></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -88,7 +89,7 @@
                                         <tr>
                                             <th>@Resources.Resource.cluster_name</th>
                                             <th>@Resources.Resource.cluster_points</th>
-                                            <th></th>
+                                            <th>@Resources.Resource.cluster_edit_delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -96,9 +97,9 @@
                                         <tr id="clustersVazia" style="display:none">
                                             <td id="nomeCluster"></td>
                                             <td id="pontosCluster"></td>
-                                            <td id="alterarCluster" class="text-right">
-                                                <button type="button" class="btn btn-primary btn-sm" id="btnAlterarCluster"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                                                <button type="button" class="btn btn-danger btn-sm" id="btnExcluirCluster"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                            <td id="alterarCluster">
+                                                <input type="button" class="btn btn-primary btn-sm" value="@Resources.Resource.edit" id="btnAlterarCluster" />
+                                                <input type="button" class="btn btn-danger btn-sm" value="@Resources.Resource.delete" id="btnExcluirCluster" />
                                             </td>
                                         </tr>
                                         @if (Model.paramsDto.parLevel1Dto.clustersInclusos != null)
@@ -138,7 +139,7 @@
                                 <table id="CamposDoCabecalho" class="table-erp">
                                     <tbody>
                                         <tr class="row">
-                                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parHeaderFieldDto.ParLevelDefinition_Id", Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control input-sm" }), @Html.Label("Nível do Campo"), Table.PosicaoLabel.top, @Html.ErrorManual("nivelCampoCabecalho", "O Nível do Campo deve ser selecionado"), null)
+                                            @Table.GerarColuna(@Html.DropDownList("headerLevel", Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control input-sm" }), @Html.Label("Nível do Campo"), Table.PosicaoLabel.top, @Html.ErrorManual("nivelCampoCabecalho", "O Nível do Campo deve ser selecionado"), null)
                                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parHeaderFieldDto.Name, new { @class = "form-control input-sm" }), @Html.LabelFor(m => m.paramsDto.parHeaderFieldDto.Name), Table.PosicaoLabel.top, @Html.ErrorManual("nomeCampoCabecalho", "O campo Nome deve ser preenchido para Nível do Campo"), null)
                                             @Table.GerarColuna(@Html.DropDownList("parFieldType", Model.paramsDdl.DdlParFieldType, new { @class = "form-control input-sm" }), @Html.Label("Tipo"), Table.PosicaoLabel.top, @Html.ErrorManual("tipoCampoCabecalho", "O campo Tipo deve ser selecionado para Nível do Campo"), null)
                                             @Table.GerarColunaCheckbox(@Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.link_number_evaluation), Table.PosicaoLabel.top, null, null)
@@ -654,7 +655,7 @@
             var nivelDoCampoVal = $('#headerLevel option:selected').val();
 
             var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-            var vinculado = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "Sim" : "Não";
+            var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "Sim" : "Não";
             var tipo = $('#parFieldType option:selected').text();
             var tipoVal = $('#parFieldType option:selected').val();
             var opcoes = $('#objMultiplaEscolhaName').val();
@@ -662,6 +663,7 @@
             var obj = '<input type="button" value="excluir" id=' + nome + tipo + ' />';
             /*Obj*/
             Cabecalhos.ParMultiplaEscolhaOpcoes.push({
+                //'Id': ' ',
                 'Name': opcoes,
                 'ParHeaderField_Id': '0',
                 'Description': '',
@@ -692,21 +694,17 @@
             var example = '<div id=""><label> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label>' +
                             '<select class="" id="" name="" style="padding: 2px;">' +
                             '<option value="-1">Selecione...</option> ';
-
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
                 example += '<option value="1">' + o.Name + '</option>';
             });
-
             example += '</select>';
             example += '&nbsp;<input type="button"  name="" value="x" onclick="Cabecalhos.ExcluirCampoTexto($(this));" />';
 
             /*Cria inputs para objeto: */
-            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + $('#parFieldType option:selected').val() + '" />';
-            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + $('#paramsDto_parHeaderFieldDto_Name').val() + '" />';
-            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="" />';
-            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + Cabecalhos.ParMultiplaEscolhaOpcoes[0].ParLevelDefinition_Id + '" />';
-            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + Cabecalhos.ParMultiplaEscolhaOpcoes[0].ParFieldType_Id + '" />';
-            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') + '"/>';
+            var obj1 = Cabecalhos.ParMultiplaEscolhaOpcoes[0]
+            for (var key in obj1 ) {
+                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].' + key + '"     value="' + obj1[key] + '" />';
+            }
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
 
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, counter) {
@@ -777,7 +775,7 @@
             var nivelDoCampo = $('#headerLevel option:selected').text();
             var nivelDoCampoVal = $('#headerLevel option:selected').val();
             var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-            var vinculado = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') ? "Sim" : "Não";
+            var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "Sim" : "Não";
             var tipo = $('#parFieldType option:selected').text();
             var tipoVal = $('#parFieldType option:selected').val();
 
