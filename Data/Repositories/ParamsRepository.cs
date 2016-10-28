@@ -5,9 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DTO.DTO.Params;
 
 namespace Data.Repositories
 {
@@ -33,18 +30,22 @@ namespace Data.Repositories
 
         #region ParLevel1 ParHeadField ParLevel1XCluster ParMultipleValue
 
-        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<int> removerCluster)
+        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster,
+            List<int> removerHeadField, List<int> removerCluster, List<int> removeCounter, List<ParCounterXLocal> listaParCounterLocal)
         {
-            using (var ts = db.Database.BeginTransaction())
+            using (var ts = db.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
             {
+
                 SalvaParLevel1(paramLevel1); /*Salva paramLevel1*/
 
+                //Clusters
                 if (listaParLevel1XCluster != null)
                 {
                     foreach (var Level1XCluster in listaParLevel1XCluster)
                         SalvaLevel1XCluster(Level1XCluster, paramLevel1.Id); /*Salva NxN Level1XCluster*/
                 }
 
+                //Header Fields
                 if (listaParHeadField != null)
                 {
                     foreach (var parHeadField in listaParHeadField)
@@ -60,14 +61,53 @@ namespace Data.Repositories
                         CriaParLevel1HeaderField(paramLevel1, parHeadField, out idParLevel1HeaderField, out parLevel1HeaderField);
                         SalvaParLevel1HeaderField(idParLevel1HeaderField, parLevel1HeaderField);/*Salva ParLevel1XHeaderField*/
                     }
-
                 }
+
+                //Counters
+                if (listaParCounterLocal != null)
+                {
+                    foreach (var counterDoLevel1 in listaParCounterLocal)
+                    {
+                        SalvaCounterLocalDoLevel1(paramLevel1, counterDoLevel1);
+                    }
+                }
+
 
                 InativaCluster(paramLevel1, removerCluster);
 
                 InativaHeadField(paramLevel1, removerHeadField);
 
+                InativaCounter(paramLevel1, removeCounter);
+
                 ts.Commit();
+            }
+        }
+
+        #region Auxiliares do level1
+
+        #region Inativadores
+
+        private void InativaCounter(ParLevel1 paramLevel1, List<int> removeCounter)
+        {
+            if (removeCounter != null)
+            {
+                if (removeCounter.Count > 0)
+                {
+                    foreach (var idCounter in removeCounter)
+                    {
+                        var objetos = db.ParCounterXLocal.Where(r => r.Id == idCounter);
+
+                        foreach (var marcarObjetoInativo in objetos)
+                        {
+                            marcarObjetoInativo.IsActive = false;
+                            Guard.verifyDate(marcarObjetoInativo, "AlterDate");
+                            db.ParCounterXLocal.Attach(marcarObjetoInativo);
+                            db.Entry(marcarObjetoInativo).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+
+                    }
+                }
             }
         }
 
@@ -77,9 +117,9 @@ namespace Data.Repositories
             {
                 if (removerHeadField.Count > 0)
                 {
-                    foreach (var i in removerHeadField)
+                    foreach (var idHeadField in removerHeadField)
                     {
-                        var objetos = db.ParLevel1XHeaderField.Where(r => r.ParHeaderField_Id == i && r.ParLevel1_Id == paramLevel1.Id);
+                        var objetos = db.ParLevel1XHeaderField.Where(r => r.Id == idHeadField);
 
                         foreach (var marcarObjetoInativo in objetos)
                         {
@@ -101,9 +141,9 @@ namespace Data.Repositories
             {
                 if (removerCluster.Count > 0)
                 {
-                    foreach (var i in removerCluster)
+                    foreach (var idCluster in removerCluster)
                     {
-                        var objetos = db.ParLevel1XCluster.Where(r => r.ParCluster_Id == i && r.ParLevel1_Id == paramLevel1.Id);
+                        var objetos = db.ParLevel1XCluster.Where(r => r.Id == idCluster);
 
                         foreach (var marcarObjetoInativo in objetos)
                         {
@@ -117,6 +157,25 @@ namespace Data.Repositories
                     }
                 }
             }
+        }
+
+        #endregion
+
+        private void SalvaCounterLocalDoLevel1(ParLevel1 paramLevel1, ParCounterXLocal counterDoLevel1)
+        {
+            counterDoLevel1.ParLevel1_Id = paramLevel1.Id;
+
+            if (counterDoLevel1.Id == 0)
+            {
+                db.ParCounterXLocal.Add(counterDoLevel1);
+            }
+            else
+            {
+                Guard.verifyDate(counterDoLevel1, "AlterDate");
+                db.ParCounterXLocal.Attach(counterDoLevel1);
+                db.Entry(counterDoLevel1).State = EntityState.Modified;
+            }
+            db.SaveChanges();
         }
 
         private void SalvaParLevel1(ParLevel1 paramLevel1)
@@ -224,6 +283,8 @@ namespace Data.Repositories
             }
             db.SaveChanges(); /*Obtem ID do NxN Level1XCluster*/
         }
+
+        #endregion
 
         #endregion
 

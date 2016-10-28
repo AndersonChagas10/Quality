@@ -43,7 +43,7 @@
 
             <div class="page-content-wrapper">
                 <!-- BEGIN CONTENT BODY -->
-                <div class="page-content" style="min-height: 1000px;">
+                <div class="page-content" style="min-height: 650px;">
                     <!-- BEGIN PAGE HEADER-->
                     <!-- BEGIN PAGE TITLE-->
                     <h1 class="page-title">
@@ -138,8 +138,8 @@
                                                     </div>
                                                     <div id="level2_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
-                                                            <div id="ParLevel1">
-                                                                @*Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)*@
+                                                            <div id="ParLevel2">
+                                                                @Html.Partial("~/Views/Params/_ParLevel2.cshtml", Model)
                                                             </div>
                                                         </div>
                                                     </div>
@@ -162,65 +162,14 @@
                                                     </div>
                                                     <div id="level3_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
-                                                            <div id="ParLevel1">
-                                                                @*Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)*@
+                                                            <div id="ParLevel3">
+                                                                @Html.Partial("~/Views/Params/_ParLevel3.cshtml", Model)
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>  
                                             
-                                        </div>
-
-                                        <div class="tab-pane" id="level1_tab">
-                                        </div>
-                                        <div class="tab-pane" id="level2_tab">
-                                            <div class="row">
-                                                <div class="col-xs-3"><button class="btn btn-warning btn-block" id="newLevel2">@Resources.Resource.new_level3</button></div>
-                                                <div class="col-xs-9">
-                                                    @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel1, Resources.Resource.select, htmlAttributes: new { @class = "form-control", @id = "parLevel2Select2" })
-                                                </div>
-                                                <hr />
-                                                <div class="col-xs-12">
-                                                    <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
-                                                        <h4 class="widget-thumb-heading">Nome do Level 2</h4>
-                                                        <div class="widget-thumb-wrap">
-                                                            <div class="widget-thumb-body">
-                                                                <span class="widget-thumb-title">ID</span>
-                                                                <span class="widget-thumb-subtitle">Frequencia</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr />
-                                            </div>
-                                            @*<div id="ParLevel1">
-                                                @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
-                                            </div>*@
-                                        </div>
-                                        <div class="tab-pane" id="level3_tab">
-                                            <div class="row">
-                                                <div class="col-xs-3"><button class="btn btn-danger btn-block" id="newLevel3">New Level 3</button></div>
-                                                <div class="col-xs-9">
-                                                    @Html.DropDownList("paramsDto.parLevel3Selected", Model.paramsDdl.DdlparLevel1, Resources.Resource.select, htmlAttributes: new { @class = "form-control", @id = "parLevel3Select2" })
-                                                </div>
-                                                <hr />
-                                                <div class="col-xs-12">
-                                                    <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
-                                                        <h4 class="widget-thumb-heading">Nome do Level 3</h4>
-                                                        <div class="widget-thumb-wrap">
-                                                            <div class="widget-thumb-body">
-                                                                <span class="widget-thumb-title">ID</span>
-                                                                <span class="widget-thumb-subtitle">Frequencia</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr />
-                                            </div>
-                                            @*<div id="ParLevel1">
-                                                @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
-                                            </div>*@
                                         </div>
 
                                     </div>
@@ -237,6 +186,8 @@
     <script>
 
         $('#level1Title').text('@Resources.Resource.new_level1');
+        $('#level2Title').text('@Resources.Resource.new_level2');
+        $('#level3Title').text('@Resources.Resource.new_level3');
 
         $('#btnNewLevel1').click(function () {
             $('#parLevel1Select2').val('-1').trigger('select2:select').change();

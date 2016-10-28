@@ -4,7 +4,6 @@ using DTO.DTO.Params;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
-using DTO.DTO;
 
 namespace Dominio.Services
 {
@@ -38,6 +37,7 @@ namespace Dominio.Services
         private IBaseRepository<ParEvaluation> _baseParEvaluation;
         private IBaseRepository<ParSample> _baseParSample;
         private IBaseRepository<ParLevel3> _baseParLevel3;
+        private IBaseRepository<ParCounterXLocal> _baseRepoParCounterXLocal;
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
 
@@ -64,8 +64,10 @@ namespace Dominio.Services
                             IBaseRepository<ParEvaluation> baseParEvaluation,
                             IBaseRepository<ParSample> baseParSample,
                             IBaseRepository<ParLevel3> baseParLevel3)
+                           IBaseRepository<ParCounterXLocal> baseRepoParCounterXLocal)
         {
             _paramsRepo = paramsRepo;
+            _baseRepoParCounterXLocal = baseRepoParCounterXLocal;
             _baseRepoParLevel1XHeaderField = baseRepoParLevel1XHeaderField;
             _baseRepoParMultipleValues = baseRepoParMultipleValues;
             _baseRepoParHeaderField = baseRepoParHeaderField;
@@ -104,15 +106,17 @@ namespace Dominio.Services
             /*Validação*/
             //paramsDto.parLevel1Dto.IsValid();
 
-            /*Mappers*/
+            /*Mappers: mapeia elementos que vão ser salvos*/
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);
             List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);
             List<ParLevel1XCluster> ListaParLevel1XCluster = Mapper.Map<List<ParLevel1XCluster>>(paramsDto.parLevel1XClusterDto);
+            List<ParCounterXLocal> ListaParCounterLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.listParCounterXLocal);
             List<int> removerHeadField = paramsDto.parLevel1Dto.removerParHeaderField;
             List<int> removerCluster = paramsDto.parLevel1Dto.removerParCluster;
+            List<int> removeCounter = paramsDto.parLevel1Dto.removerParCounterXlocal;
 
-            /*Enviando para repository salvar*/
-            _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField, removerCluster);
+            /*Enviando para repository salvar, envia todos, pois como existe transaction, faz rolback de tudo se der erro.*/
+            _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField, removerCluster, removeCounter, ListaParCounterLocal);
 
             /*Retorno*/
             paramsDto.parLevel1Dto.Id = saveParamLevel1.Id;
@@ -135,12 +139,14 @@ namespace Dominio.Services
             /*Cabeçalhos*/
             retorno.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(_baseRepoParLevel1XHeaderField.GetAll().Where(r => r.ParLevel1_Id == retorno.Id && r.IsActive == true));
 
+            /*Contadores*/
+            retorno.contadoresIncluidos = Mapper.Map<List<ParCounterXLocalDTO>>(_baseRepoParCounterXLocal.GetAll().Where(r => r.ParLevel1_Id == retorno.Id && r.IsActive == true));
+
             return retorno;
         }
 
-
-
         #endregion
+
 
         #region Level2
 
