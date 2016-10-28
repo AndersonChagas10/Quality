@@ -63,7 +63,7 @@ namespace Dominio.Services
                             IBaseRepository<ParHeaderField> baseRepoParHeaderField,
                             IBaseRepository<ParEvaluation> baseParEvaluation,
                             IBaseRepository<ParSample> baseParSample,
-                            IBaseRepository<ParLevel3> baseParLevel3)
+                            IBaseRepository<ParLevel3> baseParLevel3,
                            IBaseRepository<ParCounterXLocal> baseRepoParCounterXLocal)
         {
             _paramsRepo = paramsRepo;
