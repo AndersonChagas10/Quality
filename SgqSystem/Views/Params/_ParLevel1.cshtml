@@ -284,6 +284,46 @@
                                     </div>
                                 </div>
 
+
+                                <table id="camposContador" class="table-erp">
+                                    <tbody>
+                                        <tr class="row">
+                                            @Html.Label("Counter")
+                                            @Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp" })
+                                            @Html.Label("Local")
+                                            @Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp" })
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <input type="button" id="btnSaveCounter" onclick="Counter.SaveCounter(false);" class="btn btn-primary" value="Inserir Contador" />
+                                <div id="counterHidden"></div>
+                                <div id="counterEditHidden"></div>
+
+                                <table id="tblPreviewCounter">
+                                    <thead>
+                                        <tr>
+                                            <th>ParCounter</th>
+                                            <th>ParLocal</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.paramsDto.parLevel1Dto.contadoresIncluidos != null)
+                                        {
+                                            foreach (var contadoresEditar in Model.paramsDto.parLevel1Dto.contadoresIncluidos)
+                                            {
+                                                <tr>
+                                                    <td>@contadoresEditar.ParCounter.Name</td>
+                                                    <td>@contadoresEditar.ParLocal.Name</td>
+                                                    <td>&nbsp;<input type="button" value="x" onclick="Counter.RemoveCounterEdicao($(this), @contadoresEditar.Id)" /></td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+
                             </div>
                         </div>
                     </div>
@@ -829,6 +869,75 @@
             e.parent().remove();
         },
     }
+
+
+    var Counter = {
+        ObjCounters: [],
+        ObjCounterRemove: [],
+        SaveCounter: function (edicao) {
+            Counter.ObjCounters.push({
+                Id: null,
+                ParLocal_Id: $('#parLocal  option:selected').val(),
+                ParCounter_Id: $('#parCounter option:selected').val(),
+                ParLevel1_Id: $('#paramsDto_parLevel1Dto_Id').val(),
+                Edicao: edicao,
+                ParLocal_Name: $('#parCounter option:selected').text(),
+                ParCounter_Name: $('#parLocal option:selected').text(),
+            });
+            Counter.CreateCounterPreview();
+        },
+        CreateCounterPreview: function () {
+
+            //$('#tblPreviewCounter > tbody').empty();
+
+            var objHiddenCounter = "";
+            Counter.ObjCounters.forEach(function (o, c) {
+                objHiddenCounter += '<tr>';
+                objHiddenCounter += '<td>' + o.ParCounter_Name + '</td>';
+                objHiddenCounter += '<td>' + o.ParLocal_Name + '</td>';
+                objHiddenCounter += '<td>&nbsp;<input type="button" value="x" onclick="Counter.RemoveCounter($(this), ' + c + ')" /></td>';
+                objHiddenCounter += '</tr>';
+            });
+
+            $('#tblPreviewCounter > tbody').append(objHiddenCounter);
+
+        },
+        UpdateCounters: function () {
+
+            /*Objetos Inseridos*/
+            $('#counterHidden').empty();
+            var objHiddenCounter = "";
+            Counter.ObjCounters.forEach(function (o, c) {
+                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParCounter_Id" type="hidden" value="' + o.ParCounter_Id + '" />'
+                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLocal_Id" type="hidden"  value="' + o.ParLocal_Id + '" />'
+                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLevel1_Id" type="hidden"  value="' + o.ParLevel1_Id + '" />'
+            });
+            $('#counterHidden').append(objHiddenCounter);
+
+            /*Objetos removidos*/
+            $('#counterEditHidden').empty();
+
+            var objHiddenCounter = "";
+            Counter.ObjCounterRemove.forEach(function (o, c) {
+                objHiddenCounter += '<input name="paramsDto.parLevel1Dto.removerParCounterXlocal[' + c + ']" type="hidden" value="' + o.Id + '" />'
+            });
+
+            $('#counterEditHidden').append(objHiddenCounter);
+        },
+        RemoveCounter: function (e, c) {
+            e.parents('tr').remove();
+            Counter.ObjCounters.splice(c, 1);
+        },
+        RemoveCounterEdicao: function (e, id) {
+            e.parents('tr').hide();
+
+            Counter.ObjCounterRemove.push({ Id: id })
+
+
+        },
+
+    }
+
 
     $('#salvarCabecalho1').on('click', Cabecalhos.SalvaMultiplaEscolha);
     $('#salvarCabecalho2').on('click', Cabecalhos.SalvaBinario);

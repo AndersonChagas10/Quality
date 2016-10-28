@@ -6,7 +6,8 @@ namespace DTO.DTO.Params
 {
     public class ParLevel1DTO : EntityBase
     {
-        
+
+
         //[Display(Name = "select_the_consolidation_type", ResourceType = typeof(Resource))]
         [Range(0, 999, ErrorMessage = "É obrigatório selecionar o tipo de consolidação.")]
         public int ParConsolidationType_Id { get; set; }
@@ -79,7 +80,8 @@ namespace DTO.DTO.Params
         public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }
         public List<int> removerParHeaderField { get; set; }
         public List<int> removerParCluster { get; set; }
-
+        public List<int> removerParCounterXlocal { get; set; }
+        public List<ParCounterXLocalDTO> contadoresIncluidos { get; set; }
 
         #endregion
     }

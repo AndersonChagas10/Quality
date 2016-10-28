@@ -17,7 +17,7 @@ namespace Dominio
         public int Id { get; set; }
         public int ParLocal_Id { get; set; }
         public int ParCounter_Id { get; set; }
-        public Nullable<int> ParLeve1_Id { get; set; }
+        public Nullable<int> ParLevel1_Id { get; set; }
         public Nullable<int> ParLevel2_Id { get; set; }
         public Nullable<int> ParLevel3_Id { get; set; }
         public System.DateTime AddDate { get; set; }
