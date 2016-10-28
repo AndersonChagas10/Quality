@@ -37,7 +37,13 @@ namespace Dominio.Services
         private IBaseRepository<ParEvaluation> _baseParEvaluation;
         private IBaseRepository<ParSample> _baseParSample;
         private IBaseRepository<ParLevel3> _baseParLevel3;
+        private IBaseRepository<ParLevel3Value> _baseParLevel3Value;
+        private IBaseRepository<ParLevel3InputType> _baseParLevel3InputType;
+        private IBaseRepository<ParLevel3BoolFalse> _baseParLevel3BoolFalse;
+        private IBaseRepository<ParLevel3BoolTrue> _baseParLevel3BoolTrue;
         private IBaseRepository<ParCounterXLocal> _baseRepoParCounterXLocal;
+        private IBaseRepository<ParMeasurementUnit> _baseParMeasurementUnit;
+
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
 
@@ -64,7 +70,12 @@ namespace Dominio.Services
                             IBaseRepository<ParEvaluation> baseParEvaluation,
                             IBaseRepository<ParSample> baseParSample,
                             IBaseRepository<ParLevel3> baseParLevel3,
-                           IBaseRepository<ParCounterXLocal> baseRepoParCounterXLocal)
+                            IBaseRepository<ParLevel3Value> baseParLevel3Value,
+                            IBaseRepository<ParLevel3InputType> baseParLevel3InputType,
+                            IBaseRepository<ParCounterXLocal> baseRepoParCounterXLocal,
+                            IBaseRepository<ParMeasurementUnit> baseParMeasurementUnit,
+                            IBaseRepository<ParLevel3BoolFalse> baseParLevel3BoolFalse,
+                            IBaseRepository<ParLevel3BoolTrue> baseParLevel3BoolTrue)
         {
             _paramsRepo = paramsRepo;
             _baseRepoParCounterXLocal = baseRepoParCounterXLocal;
@@ -90,6 +101,11 @@ namespace Dominio.Services
             _baseParEvaluation = baseParEvaluation;
             _baseParSample = baseParSample;
             _baseParLevel3 = baseParLevel3;
+            _baseParLevel3Value = baseParLevel3Value;
+            _baseParLevel3InputType = baseParLevel3InputType;
+            _baseParMeasurementUnit = baseParMeasurementUnit;
+            _baseParLevel3BoolFalse = baseParLevel3BoolFalse;
+            _baseParLevel3BoolTrue = baseParLevel3BoolTrue;
         }
 
         #endregion
@@ -266,6 +282,11 @@ namespace Dominio.Services
             var DdlParCounter_Level1 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAll().Where(p => p.Level == 1));
             var DdlParCounter_Level2 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAll().Where(p => p.Level == 2));
 
+            var DdlParLevel3InputType = Mapper.Map<List<ParLevel3InputTypeDTO>>(_baseParLevel3InputType.GetAll());
+            var DdlParMeasurementUnit = Mapper.Map<List<ParMeasurementUnitDTO>>(_baseParMeasurementUnit.GetAll());
+
+            var DdlParLevel3BoolFalse = Mapper.Map<List<ParLevel3BoolFalseDTO>>(_baseParLevel3BoolFalse.GetAll());
+            var DdlParLevel3BoolTrue = Mapper.Map<List<ParLevel3BoolTrueDTO>>(_baseParLevel3BoolTrue.GetAll());
 
             var retorno = new ParamsDdl();
             retorno.SetDdls(DdlParConsolidation, 
@@ -279,7 +300,11 @@ namespace Dominio.Services
                             DdlParLocal_Level1,
                             DdlParCounter_Level2,
                             DdlParLocal_Level2,
-                            DdlParNotConformityRule);
+                            DdlParNotConformityRule,
+                            DdlParLevel3InputType,
+                            DdlParMeasurementUnit,
+                            DdlParLevel3BoolFalse,
+                            DdlParLevel3BoolTrue);
             return retorno;
         }
 

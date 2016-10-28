@@ -50,6 +50,6 @@ namespace DTO.DTO.Params
         public ParSampleDTO parSampleDto { get; set; }
 
         public ParLevel3DTO parLevel3Dto { get; set; }
-
+        public ParLevel3ValueDTO parLevel3Value { get; set; }
     }
 }

@@ -25,6 +25,11 @@ namespace DTO.DTO.Params
 
         public IEnumerable<SelectListItem> DdlParNotConformityRule { get; set; }
 
+        public IEnumerable<SelectListItem> DdlParLevel3InputType { get; set; }
+        public IEnumerable<SelectListItem> DdlParMeasurementUnit { get; set; }
+        public IEnumerable<SelectListItem> DdlParLevel3BoolFalse { get; set; }
+        public IEnumerable<SelectListItem> DdlParLevel3BoolTrue { get; set; }
+
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
@@ -52,7 +57,11 @@ namespace DTO.DTO.Params
                             List<ParLocalDTO> ddlParLocal_Level1,
                             List<ParCounterDTO> ddlParCounter_Level2,
                             List<ParLocalDTO> ddlParLocal_Level2,
-                            List<ParNotConformityRuleDTO> ddlParNotConformityRule)
+                            List<ParNotConformityRuleDTO> ddlParNotConformityRule,
+                            List<ParLevel3InputTypeDTO> ddlParLevel3InptType,
+                            List<ParMeasurementUnitDTO> ddlParMeasurementUnit,
+                            List<ParLevel3BoolFalseDTO> ddlParLevel3BoolFalse,
+                            List<ParLevel3BoolTrueDTO> ddlParLevel3BoolTrue)
         {
             DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation);
             DdlFrequency = Guard.CreateDropDownList(ddlFrequency);
@@ -66,6 +75,10 @@ namespace DTO.DTO.Params
             DdlParCounter_Level2 = Guard.CreateDropDownList(ddlParCounter_Level2);
             DdlParLocal_Level2 = Guard.CreateDropDownList(ddlParLocal_Level2);
             DdlParNotConformityRule = Guard.CreateDropDownList(ddlParNotConformityRule);
+            DdlParLevel3InputType = Guard.CreateDropDownList(ddlParLevel3InptType);
+            DdlParMeasurementUnit = Guard.CreateDropDownList(ddlParMeasurementUnit);
+            DdlParLevel3BoolFalse = Guard.CreateDropDownList(ddlParLevel3BoolFalse);
+            DdlParLevel3BoolTrue = Guard.CreateDropDownList(ddlParLevel3BoolTrue);
         }
     }
 }

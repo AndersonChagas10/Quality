@@ -39,9 +39,42 @@
                 <b>Descrição :</b>
                 @Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
             </div>
+            <br />
             <div style="padding: 5px; display:inline-table;">
                 <b>Tipo de Dados de Entrada :</b>
-                
+                @Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectTipoInput" })
+
+            </div>
+            <div id="ParIntervalos">
+                <h2>Intervalos</h2>
+                <div style="padding: 5px; display:inline-table;">
+                    <b>Unidades de Medidas</b>
+                    @Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectUnidadeDeMedidas" })
+                </div>
+                <div style="padding: 5px; display:inline-table;">
+                    <b>Limite Inferior :</b>
+                    @Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMin, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
+                </div>
+                <div style="padding: 5px; display:inline-table;">
+                    <b>Limite Inferior :</b>
+                    @Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMax, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
+                </div>
+                <div style="padding: 5px; display:inline-table;">
+                    <b>Valores Entre </b>
+                    @Html.EditorFor(model => model.paramsDto.parLevel3Value.AcceptableValueBetween)
+                </div>  
+
+            </div>
+            <div id="ParBinarios">
+                <h2>Binários</h2>
+                <div style="padding: 5px; display:inline-table;">
+                    <b>Valor Positivo (Conforme)</b>
+                    @Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConforme" })
+                </div>
+                <div style="padding: 5px; display:inline-table;">
+                    <b>Valor Negativo (Não Conforme)</b>
+                    @Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectNaoConforme" })
+                </div>
             </div>
         </div>
         <div style="width: 100%; float: left;">
