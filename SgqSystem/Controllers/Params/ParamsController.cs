@@ -65,15 +65,15 @@ namespace SgqSystem.Controllers.Params
         }
 
 
-        //public ActionResult Index2()
-        //{
-        //    return View(ViewModel);
-        //}
+        public ActionResult Index2()
+        {
+            return View(ViewModel);
+        }
 
-        //public ActionResult Index3()
-        //{
-        //    return View(ViewModel);
-        //}
+        public ActionResult Index3()
+        {
+            return View(ViewModel);
+        }
 
 
     }

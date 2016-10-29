@@ -63,6 +63,8 @@ namespace SgqSystem.Mappers
                  *Par Level 3 Mapping
                  */
                 x.AddProfile<ParLevel3MapperProfile>();
+                x.AddProfile<ParLevel3ValueMapperProfile>();
+
                 x.AddProfile<ParLevel3inputTypeMapperProfile>();
                 x.AddProfile<ParMeasurementUnitMapperProfile>();
                 x.AddProfile<ParLevel3BoolFalseMapperProfile>();

@@ -552,12 +552,16 @@ namespace Data.Repositories
             }
         }
 
-        public void SaveParLevel3(ParLevel3 paramLevel3)
+        public void SaveParLevel3(ParLevel3 paramLevel3,
+                                  ParLevel3Value paramLevel3Value)
         {
             using (var ts = db.Database.BeginTransaction())
             {
                 AddUpdateParLevel3(paramLevel3); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
+
+                AddUpdateParLevel3Value(paramLevel3Value, paramLevel3.Id);
+                db.SaveChanges();
                 ts.Commit();
             }
         }
@@ -575,8 +579,11 @@ namespace Data.Repositories
             }
         }
 
-        public void AddUpdateParLevel3Value(ParLevel3Value paramLevel3Value, int ParLevel3_Id   )
+        public void AddUpdateParLevel3Value(ParLevel3Value paramLevel3Value, int ParLevel3_Id)
         {
+
+            paramLevel3Value.ParCompany_Id = 1;
+            paramLevel3Value.ParLevel3_Id = ParLevel3_Id;
             if (paramLevel3Value.Id == 0)
             {
                 db.ParLevel3Value.Add(paramLevel3Value);
