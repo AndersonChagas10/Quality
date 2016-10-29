@@ -216,7 +216,9 @@ namespace Dominio.Services
         {
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel3 saveParamLevel3 = Mapper.Map<ParLevel3>(paramsDto.parLevel3Dto);
-            _paramsRepo.SaveParLevel3(saveParamLevel3);
+            ParLevel3Value saveParamLevel3Value = Mapper.Map<ParLevel3Value>(paramsDto.parLevel3Value);
+
+            _paramsRepo.SaveParLevel3(saveParamLevel3, saveParamLevel3Value);
             paramsDto.parLevel3Dto.Id = saveParamLevel3.Id;
             return paramsDto;
         }

@@ -493,7 +493,7 @@
           <Property Name="ParLevel3BoolFalse_Id" Type="int" />
           <Property Name="ParLevel3BoolTrue_Id" Type="int" />
           <Property Name="ParCompany_Id" Type="int" Nullable="false" />
-          <Property Name="ParMeasurementUnit_Id" Type="int" Nullable="false" />
+          <Property Name="ParMeasurementUnit_Id" Type="int" />
           <Property Name="AcceptableValueBetween" Type="bit" />
           <Property Name="IntervalMin" Type="decimal" Precision="10" Scale="5" />
           <Property Name="IntervalMax" Type="decimal" Precision="10" Scale="5" />
@@ -1215,7 +1215,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParLevel3Value_ParMeasurementUnit">
-          <End Role="ParMeasurementUnit" Type="Self.ParMeasurementUnit" Multiplicity="1" />
+          <End Role="ParMeasurementUnit" Type="Self.ParMeasurementUnit" Multiplicity="0..1" />
           <End Role="ParLevel3Value" Type="Self.ParLevel3Value" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParMeasurementUnit">
@@ -2557,7 +2557,7 @@
           <Property Name="ParLevel3BoolFalse_Id" Type="Int32" />
           <Property Name="ParLevel3BoolTrue_Id" Type="Int32" />
           <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParMeasurementUnit_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParMeasurementUnit_Id" Type="Int32" />
           <Property Name="AcceptableValueBetween" Type="Boolean" />
           <Property Name="IntervalMin" Type="Decimal" Precision="10" Scale="5" />
           <Property Name="IntervalMax" Type="Decimal" Precision="10" Scale="5" />
@@ -3442,7 +3442,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParLevel3Value_ParMeasurementUnit">
-          <End Type="SgqDbModel.ParMeasurementUnit" Role="ParMeasurementUnit" Multiplicity="1" />
+          <End Type="SgqDbModel.ParMeasurementUnit" Role="ParMeasurementUnit" Multiplicity="0..1" />
           <End Type="SgqDbModel.ParLevel3Value" Role="ParLevel3Value" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParMeasurementUnit">
