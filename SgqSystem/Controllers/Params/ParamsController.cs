@@ -42,15 +42,38 @@ namespace SgqSystem.Controllers.Params
             return PartialView("_ParLevel1",  viewModelPreenchido);
         }
 
-        public ActionResult Index2()
+        public ActionResult GetParLevel2ById(int id)
         {
-            return View(ViewModel);
+            if (id == -1) /*Retorna View Vazia*/
+                return PartialView("_ParLevel2", ViewModel);
+
+            var viewModelPreenchido = ViewModel;
+            viewModelPreenchido.paramsDto.parLevel2Dto = _paramDomain.GetLevel2(id);
+            /*Retorna View com Model ParLevel2 encontrado no DB.*/
+            return PartialView("_ParLevel2", viewModelPreenchido);
         }
 
-        public ActionResult Index3()
+        public ActionResult GetParLevel3ById(int id)
         {
-            return View(ViewModel);
+            if (id == -1) /*Retorna View Vazia*/
+                return PartialView("_ParLevel3", ViewModel);
+
+            var viewModelPreenchido = ViewModel;
+            viewModelPreenchido.paramsDto.parLevel3Dto = _paramDomain.GetLevel3(id);
+            /*Retorna View com Model ParLevel3 encontrado no DB.*/
+            return PartialView("_ParLevel3", viewModelPreenchido);
         }
+
+
+        //public ActionResult Index2()
+        //{
+        //    return View(ViewModel);
+        //}
+
+        //public ActionResult Index3()
+        //{
+        //    return View(ViewModel);
+        //}
 
 
     }

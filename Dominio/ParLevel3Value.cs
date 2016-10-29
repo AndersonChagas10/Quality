@@ -16,14 +16,17 @@ namespace Dominio
     {
         public int Id { get; set; }
         public int ParLevel3_Id { get; set; }
-        public int ParLevel3BoolFalse_Id { get; set; }
-        public int ParLevel3BoolTrue_Id { get; set; }
         public int ParLevel3InputType_Id { get; set; }
+        public Nullable<int> ParLevel3BoolFalse_Id { get; set; }
+        public Nullable<int> ParLevel3BoolTrue_Id { get; set; }
         public int ParCompany_Id { get; set; }
         public int ParMeasurementUnit_Id { get; set; }
+        public Nullable<bool> AcceptableValueBetween { get; set; }
+        public Nullable<decimal> IntervalMin { get; set; }
+        public Nullable<decimal> IntervalMax { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool Active { get; set; }
+        public bool IsActive { get; set; }
     
         public virtual ParCompany ParCompany { get; set; }
         public virtual ParLevel3 ParLevel3 { get; set; }

@@ -575,7 +575,19 @@ namespace Data.Repositories
             }
         }
 
-
+        public void AddUpdateParLevel3Value(ParLevel3Value paramLevel3Value, int ParLevel3_Id   )
+        {
+            if (paramLevel3Value.Id == 0)
+            {
+                db.ParLevel3Value.Add(paramLevel3Value);
+            }
+            else
+            {
+                Guard.verifyDate(paramLevel3Value, "AlterDate");
+                db.ParLevel3Value.Attach(paramLevel3Value);
+                db.Entry(paramLevel3Value).State = EntityState.Modified;
+            }
+        }
 
         #region Não implementado
 

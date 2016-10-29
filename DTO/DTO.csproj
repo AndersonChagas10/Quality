@@ -89,6 +89,11 @@
     <Compile Include="DTO\Params\ParDepartmentDTO.cs" />
     <Compile Include="DTO\Params\ParCounterDTO.cs" />
     <Compile Include="DTO\Params\ParCounterXLocalDTO.cs" />
+    <Compile Include="DTO\Params\ParMeasurementUnitDTO.cs" />
+    <Compile Include="DTO\Params\ParLevel3BoolTrueDTO.cs" />
+    <Compile Include="DTO\Params\ParLevel3BoolFalseDTO.cs" />
+    <Compile Include="DTO\Params\ParLevel3ValueDTO.cs" />
+    <Compile Include="DTO\Params\ParLevel3InputTypeDTO.cs" />
     <Compile Include="DTO\Params\ParSampleDTO.cs" />
     <Compile Include="DTO\Params\ParEvaluation.cs" />
     <Compile Include="DTO\Params\ParNotConformityRuleXLevelDTO.cs" />

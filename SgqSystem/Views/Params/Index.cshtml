@@ -4,6 +4,8 @@
     ViewBag.Title = "ParLeve1";
     var url = Url.Action("AddUpdateLevel1", "api/ParamsApi"); //URL relativa
     var urlGetLevel1 = Url.Action("GetParLevel1ById", "api/ParamsApi"); //URL relativa
+    var urlGetLevel2 = Url.Action("GetParLevel2ById", "api/ParamsApi"); //URL relativa
+    var urlGetLevel3 = Url.Action("GetParLevel3ById", "api/ParamsApi"); //URL relativa
     Layout = null;
 }
 <!DOCTYPE html>
@@ -111,12 +113,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>   
+                                            </div>
 
                                             <div class="row">
                                                 <div class="col-xs-3"><button class="btn btn-warning btn-block" id="btnNewLevel1">@Resources.Resource.new_level2</button></div>
                                                 <div class="col-xs-9">
-                                                    @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })
+                                                    @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control", @id = "parLevel2Select2" })
                                                 </div>
                                                 <hr />
                                             </div>
@@ -135,12 +137,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>  
+                                            </div>
 
                                             <div class="row">
                                                 <div class="col-xs-3"><button class="btn btn-danger btn-block" id="btnNewLevel3">@Resources.Resource.new_level3</button></div>
                                                 <div class="col-xs-9">
-                                                    @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel3Select2" })
+                                                    @Html.DropDownList("paramsDto.parLevel3Selected", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control", @id = "parLevel3Select2" })
                                                 </div>
                                                 <hr />
                                             </div>
@@ -159,8 +161,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>  
-                                            
+                                            </div>
+
                                         </div>
 
                                     </div>
@@ -256,9 +258,16 @@
             return o;
         };
 
-        /*Inicio Select 2 Level1*/
         var parLevel1Empty = $('#ParLevel1 > form').clone();
+        var parLevel2Empty = $('#ParLevel2 > form').clone();
+        var parLevel3Empty = $('#ParLevel3 > form').clone();
+
         var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
+        var urlGetLevel2 = '@Html.Raw(@urlGetLevel2)';
+        var urlGetLevel3 = '@Html.Raw(@urlGetLevel3)';
+
+
+        /*Inicio Select 2 Level1*/
         $('#parLevel1Select2').select2({
             //placeholder: {
             //    id: "-1",
@@ -293,7 +302,84 @@
             }
 
         });
+
         /*Fim Select 2 Level1*/
+
+
+        /*Inicio Select 2 Level2*/
+        $('#parLevel2Select2').select2({
+            //placeholder: {
+            //    id: "-1",
+            //    text: "Selecione..."
+            //},
+        }).on("select2:select", function (e) {
+
+            if (e.currentTarget.value == "") {
+                $('#ParLevel2').empty();
+                $('#ParLevel2').append(parLevel2Empty);
+                $('#level2Title').text('@Resources.Resource.new_level2');
+            } else {
+                $.get('GetParLevel2ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
+                    if (obj != null) {
+                        $('#ParLevel2').empty();
+                        $('#ParLevel2').append(xhr.responseText);
+                    }
+                    if (e.currentTarget.value > 0) {
+                        $('#level2Title').text('#' + $('#paramsDto_parLevel2Dto_Id').val() + ' - ' + $('#paramsDto_parLevel2Dto_Name').val());
+                    } else {
+                        $('#level2Title').text('@Resources.Resource.new_level2');
+                    }
+                });
+            }
+
+        }).on("select2:unselect", function (e) {
+
+            if (e.currentTarget.value == "") {
+                $('#ParLevel2').empty()
+                $('#ParLevel2').append(parLevel2Empty)
+                $('#level2Title').text('@Resources.Resource.new_level2');
+            }
+
+        });
+        /*Fim Select 2 Level2*/
+
+
+        /*Inicio Select 2 Level3*/
+        $('#parLevel3Select2').select2({
+            //placeholder: {
+            //    id: "-1",
+            //    text: "Selecione..."
+            //},
+        }).on("select2:select", function (e) {
+
+            if (e.currentTarget.value == "") {
+                $('#ParLevel3').empty();
+                $('#ParLevel3').append(parLevel3Empty);
+                $('#level3Title').text('@Resources.Resource.new_level3');
+            } else {
+                $.get('GetParLevel3ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
+                    if (obj != null) {
+                        $('#ParLevel3').empty();
+                        $('#ParLevel3').append(xhr.responseText);
+                    }
+                    if (e.currentTarget.value > 0) {
+                        $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
+                    } else {
+                        $('#level3Title').text('@Resources.Resource.new_level3');
+                    }
+                });
+            }
+
+        }).on("select2:unselect", function (e) {
+
+            if (e.currentTarget.value == "") {
+                $('#ParLevel3').empty()
+                $('#ParLevel3').append(parLevel3Empty)
+                $('#level3Title').text('@Resources.Resource.new_level3');
+            }
+
+        });
+        /*Fim Select 2 Level3*/
 
         /*Inicio Submit Level1*/
         var indexParamsLevel1 = {
@@ -307,14 +393,13 @@
                     var dados = $('#newLevel1Modal > form').serializeObject();
 
                     $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                        if (objetoReturn.paramsDto.parLevel1Dto.Id > 0)
-                        {
+                        if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
                             $.get('GetParLevel1ById/' + objetoReturn.paramsDto.parLevel1Dto.Id, function (obj, responseText, xhr) {
                                 if (obj != null) {
                                     $('#ParLevel1').empty();
                                     $('#ParLevel1').append(xhr.responseText);
                                 }
-                                 $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
+                                $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
                             });
                             console.log(statusmessage);
                         }
@@ -326,6 +411,68 @@
             },
         }
         /*Fim Submit Level1*/
+
+        /*Inicio Submit Level2*/
+        var indexParamsLevel2 = {
+
+            enviarDadosParaApi: function (e) {
+
+                if ($('#newLevel2Modal > form').valid()) {
+                    Cabecalhos.UpdateCabecalhos();
+                    Cluster.UpdateCounter();
+                    Counter.UpdateCounters();
+                    var dados = $('#newLevel2Modal > form').serializeObject();
+
+                    $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                        if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
+                            $.get('GetParLevel2ById/' + objetoReturn.paramsDto.parLevel2Dto.Id, function (obj, responseText, xhr) {
+                                if (obj != null) {
+                                    $('#ParLevel2').empty();
+                                    $('#ParLevel2').append(xhr.responseText);
+                                }
+                                $('#level2Title').text('#' + $('#paramsDto_parLevel2Dto_Id').val() + ' - ' + $('#paramsDto_parLevel2Dto_Name').val());
+                            });
+                            console.log(statusmessage);
+                        }
+                        //console.log(objetoReturn);
+                        //console.log(respostaCompleta);
+                    });
+                }
+
+            },
+        }
+        /*Fim Submit Level2*/
+
+        /*Inicio Submit Level3*/
+        var indexParamsLevel3 = {
+
+            enviarDadosParaApi: function (e) {
+
+                if ($('#newLevel3Modal > form').valid()) {
+                    Cabecalhos.UpdateCabecalhos();
+                    Cluster.UpdateCounter();
+                    Counter.UpdateCounters();
+                    var dados = $('#newLevel3Modal > form').serializeObject();
+
+                    $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                        if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
+                            $.get('GetParLevel3ById/' + objetoReturn.paramsDto.parLevel3Dto.Id, function (obj, responseText, xhr) {
+                                if (obj != null) {
+                                    $('#ParLevel3').empty();
+                                    $('#ParLevel3').append(xhr.responseText);
+                                }
+                                $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
+                            });
+                            console.log(statusmessage);
+                        }
+                        //console.log(objetoReturn);
+                        //console.log(respostaCompleta);
+                    });
+                }
+
+            },
+        }
+        /*Fim Submit Level3*/
 
     </script>
 </body>

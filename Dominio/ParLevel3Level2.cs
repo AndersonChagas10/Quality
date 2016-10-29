@@ -14,6 +14,12 @@ namespace Dominio
     
     public partial class ParLevel3Level2
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParLevel3Level2()
+        {
+            this.ParLevel3Level2Level1 = new HashSet<ParLevel3Level2Level1>();
+        }
+    
         public int Id { get; set; }
         public int ParLevel2_Id { get; set; }
         public int ParLevel3_Id { get; set; }
@@ -22,5 +28,11 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool Active { get; set; }
+    
+        public virtual ParLevel2 ParLevel2 { get; set; }
+        public virtual ParLevel3 ParLevel3 { get; set; }
+        public virtual ParLevel3Group ParLevel3Group { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParLevel3Level2Level1> ParLevel3Level2Level1 { get; set; }
     }
 }

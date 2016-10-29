@@ -20,5 +20,8 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool Active { get; set; }
+    
+        public virtual ParLevel1 ParLevel1 { get; set; }
+        public virtual ParLevel3Level2 ParLevel3Level2 { get; set; }
     }
 }

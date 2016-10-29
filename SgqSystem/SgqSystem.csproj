@@ -333,7 +333,11 @@
     <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParSampleMapperProfile - Copy.cs" />
+    <Compile Include="Mappers\Params\ParLevel3BoolFalseMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3BoolTrueMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3InputTypeMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParMeasurementUnitMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParSampleMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParEvaluationMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel1XHeaderFieldMapperProfile.cs" />

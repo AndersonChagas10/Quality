@@ -55,7 +55,6 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParNotConformityRuleMapperProfile>();
                 x.AddProfile<ParNotConformityRuleXLevelMapperProfile>();
                 x.AddProfile<ParCompanyMapperProfile>();
-                x.AddProfile<ParLevel3MapperProfile>();
                 x.AddProfile<ParEvaluationMapperProfile>();
                 x.AddProfile<ParSampleMapperProfile>();
 
@@ -64,8 +63,10 @@ namespace SgqSystem.Mappers
                  *Par Level 3 Mapping
                  */
                 x.AddProfile<ParLevel3MapperProfile>();
-
-
+                x.AddProfile<ParLevel3inputTypeMapperProfile>();
+                x.AddProfile<ParMeasurementUnitMapperProfile>();
+                x.AddProfile<ParLevel3BoolFalseMapperProfile>();
+                x.AddProfile<ParLevel3BoolTrueMapperProfile>();
                 /*
                  Exemplo para configuração do Auto Mapper.
                  */

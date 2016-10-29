@@ -424,7 +424,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParLevel3BoolTrue">
           <Key>
@@ -434,7 +434,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParLevel3Group">
           <Key>
@@ -457,7 +457,7 @@
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParLevel3Level2">
           <Key>
@@ -489,14 +489,17 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParLevel3_Id" Type="int" Nullable="false" />
-          <Property Name="ParLevel3BoolFalse_Id" Type="int" Nullable="false" />
-          <Property Name="ParLevel3BoolTrue_Id" Type="int" Nullable="false" />
           <Property Name="ParLevel3InputType_Id" Type="int" Nullable="false" />
+          <Property Name="ParLevel3BoolFalse_Id" Type="int" />
+          <Property Name="ParLevel3BoolTrue_Id" Type="int" />
           <Property Name="ParCompany_Id" Type="int" Nullable="false" />
           <Property Name="ParMeasurementUnit_Id" Type="int" Nullable="false" />
+          <Property Name="AcceptableValueBetween" Type="bit" />
+          <Property Name="IntervalMin" Type="decimal" Precision="10" Scale="5" />
+          <Property Name="IntervalMax" Type="decimal" Precision="10" Scale="5" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParLevelDefiniton">
           <Key>
@@ -529,7 +532,7 @@
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParMultipleValues">
           <Key>
@@ -1091,6 +1094,66 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParLevel3Level2_ParLevel2">
+          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="1" />
+          <End Role="ParLevel3Level2" Type="Self.ParLevel3Level2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2">
+              <PropertyRef Name="ParLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Level2_ParLevel3">
+          <End Role="ParLevel3" Type="Self.ParLevel3" Multiplicity="1" />
+          <End Role="ParLevel3Level2" Type="Self.ParLevel3Level2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2">
+              <PropertyRef Name="ParLevel3_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Level2_ParLevel3Group">
+          <End Role="ParLevel3Group" Type="Self.ParLevel3Group" Multiplicity="1" />
+          <End Role="ParLevel3Level2" Type="Self.ParLevel3Level2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3Group">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2">
+              <PropertyRef Name="ParLevel3Group_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Level2Level1_ParLevel1">
+          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="1" />
+          <End Role="ParLevel3Level2Level1" Type="Self.ParLevel3Level2Level1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2Level1">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Level2Level1_ParLevel3Level2">
+          <End Role="ParLevel3Level2" Type="Self.ParLevel3Level2" Multiplicity="1" />
+          <End Role="ParLevel3Level2Level1" Type="Self.ParLevel3Level2Level1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3Level2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2Level1">
+              <PropertyRef Name="ParLevel3Level2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParLevel3Value_ParCompany">
           <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="1" />
           <End Role="ParLevel3Value" Type="Self.ParLevel3Value" Multiplicity="*" />
@@ -1116,7 +1179,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParLevel3Value_ParLevel3BoolFalse">
-          <End Role="ParLevel3BoolFalse" Type="Self.ParLevel3BoolFalse" Multiplicity="1" />
+          <End Role="ParLevel3BoolFalse" Type="Self.ParLevel3BoolFalse" Multiplicity="0..1" />
           <End Role="ParLevel3Value" Type="Self.ParLevel3Value" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParLevel3BoolFalse">
@@ -1128,7 +1191,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParLevel3Value_ParLevel3BoolTrue">
-          <End Role="ParLevel3BoolTrue" Type="Self.ParLevel3BoolTrue" Multiplicity="1" />
+          <End Role="ParLevel3BoolTrue" Type="Self.ParLevel3BoolTrue" Multiplicity="0..1" />
           <End Role="ParLevel3Value" Type="Self.ParLevel3Value" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParLevel3BoolTrue">
@@ -1522,6 +1585,26 @@
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParLevel3Group" EntitySet="ParLevel3Group" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2_ParLevel2" Association="Self.FK_ParLevel3Level2_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2_ParLevel3" Association="Self.FK_ParLevel3Level2_ParLevel3">
+            <End Role="ParLevel3" EntitySet="ParLevel3" />
+            <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2_ParLevel3Group" Association="Self.FK_ParLevel3Level2_ParLevel3Group">
+            <End Role="ParLevel3Group" EntitySet="ParLevel3Group" />
+            <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2Level1_ParLevel1" Association="Self.FK_ParLevel3Level2Level1_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel3Level2Level1" EntitySet="ParLevel3Level2Level1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2Level1_ParLevel3Level2" Association="Self.FK_ParLevel3Level2Level1_ParLevel3Level2">
+            <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
+            <End Role="ParLevel3Level2Level1" EntitySet="ParLevel3Level2Level1" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParLevel3Value_ParCompany" Association="Self.FK_ParLevel3Value_ParCompany">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="ParLevel3Value" EntitySet="ParLevel3Value" />
@@ -1814,6 +1897,10 @@
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ParLevel1XHeaderField" EntitySet="ParLevel1XHeaderField" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2Level1_ParLevel1" Association="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel3Level2Level1" EntitySet="ParLevel3Level2Level1" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParNotConformityRuleXLevel_ParLevel1" Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ParNotConformityRuleXLevel" EntitySet="ParNotConformityRuleXLevel" />
@@ -1826,6 +1913,10 @@
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParLevel3Group" EntitySet="ParLevel3Group" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2_ParLevel2" Association="SgqDbModel.FK_ParLevel3Level2_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParNotConformityRuleXLevel_ParLevel2" Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel2">
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParNotConformityRuleXLevel" EntitySet="ParNotConformityRuleXLevel" />
@@ -1837,6 +1928,10 @@
           <AssociationSet Name="FK_ParSample_ParLevel2" Association="SgqDbModel.FK_ParSample_ParLevel2">
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParSample" EntitySet="ParSample" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2_ParLevel3" Association="SgqDbModel.FK_ParLevel3Level2_ParLevel3">
+            <End Role="ParLevel3" EntitySet="ParLevel3" />
+            <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel3Value_ParLevel3" Association="SgqDbModel.FK_ParLevel3Value_ParLevel3">
             <End Role="ParLevel3" EntitySet="ParLevel3" />
@@ -1858,9 +1953,17 @@
             <End Role="ParLevel3BoolTrue" EntitySet="ParLevel3BoolTrue" />
             <End Role="ParLevel3Value" EntitySet="ParLevel3Value" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2_ParLevel3Group" Association="SgqDbModel.FK_ParLevel3Level2_ParLevel3Group">
+            <End Role="ParLevel3Group" EntitySet="ParLevel3Group" />
+            <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParLevel3Value_ParLevel3InputType" Association="SgqDbModel.FK_ParLevel3Value_ParLevel3InputType">
             <End Role="ParLevel3InputType" EntitySet="ParLevel3InputType" />
             <End Role="ParLevel3Value" EntitySet="ParLevel3Value" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2Level1_ParLevel3Level2" Association="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel3Level2">
+            <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
+            <End Role="ParLevel3Level2Level1" EntitySet="ParLevel3Level2Level1" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel3Value_ParMeasurementUnit" Association="SgqDbModel.FK_ParLevel3Value_ParMeasurementUnit">
             <End Role="ParMeasurementUnit" EntitySet="ParMeasurementUnit" />
@@ -2294,6 +2397,7 @@
           <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParLevel1_ParFrequency" FromRole="ParLevel1" ToRole="ParFrequency" />
           <NavigationProperty Name="ParLevel1XCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XCluster" />
           <NavigationProperty Name="ParLevel1XHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XHeaderField" />
+          <NavigationProperty Name="ParLevel3Level2Level1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel3Level2Level1" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" FromRole="ParLevel1" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel1" FromRole="ParLevel1" ToRole="ParRelapse" />
         </EntityType>
@@ -2344,6 +2448,7 @@
           <NavigationProperty Name="ParEvaluation" Relationship="SgqDbModel.FK_ParEvaluation_ParLevel2" FromRole="ParLevel2" ToRole="ParEvaluation" />
           <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParLevel2_ParFrequency" FromRole="ParLevel2" ToRole="ParFrequency" />
           <NavigationProperty Name="ParLevel3Group" Relationship="SgqDbModel.FK_ParLevel3Group_ParLevel2" FromRole="ParLevel2" ToRole="ParLevel3Group" />
+          <NavigationProperty Name="ParLevel3Level2" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel2" FromRole="ParLevel2" ToRole="ParLevel3Level2" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel2" FromRole="ParLevel2" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel2" FromRole="ParLevel2" ToRole="ParRelapse" />
           <NavigationProperty Name="ParSample" Relationship="SgqDbModel.FK_ParSample_ParLevel2" FromRole="ParLevel2" ToRole="ParSample" />
@@ -2359,6 +2464,7 @@
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParCounterXLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel3" FromRole="ParLevel3" ToRole="ParCounterXLocal" />
+          <NavigationProperty Name="ParLevel3Level2" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel3" FromRole="ParLevel3" ToRole="ParLevel3Level2" />
           <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3" FromRole="ParLevel3" ToRole="ParLevel3Value" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel3" FromRole="ParLevel3" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel3" FromRole="ParLevel3" ToRole="ParRelapse" />
@@ -2371,7 +2477,7 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolFalse" FromRole="ParLevel3BoolFalse" ToRole="ParLevel3Value" />
         </EntityType>
         <EntityType Name="ParLevel3BoolTrue">
@@ -2382,7 +2488,7 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolTrue" FromRole="ParLevel3BoolTrue" ToRole="ParLevel3Value" />
         </EntityType>
         <EntityType Name="ParLevel3Group">
@@ -2397,6 +2503,7 @@
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParLevel3Group_ParLevel2" FromRole="ParLevel3Group" ToRole="ParLevel2" />
+          <NavigationProperty Name="ParLevel3Level2" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel3Group" FromRole="ParLevel3Group" ToRole="ParLevel3Level2" />
         </EntityType>
         <EntityType Name="ParLevel3InputType">
           <Key>
@@ -2407,7 +2514,7 @@
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3InputType" FromRole="ParLevel3InputType" ToRole="ParLevel3Value" />
         </EntityType>
         <EntityType Name="ParLevel3Level2">
@@ -2422,6 +2529,10 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel2" FromRole="ParLevel3Level2" ToRole="ParLevel2" />
+          <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel3" FromRole="ParLevel3Level2" ToRole="ParLevel3" />
+          <NavigationProperty Name="ParLevel3Group" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel3Group" FromRole="ParLevel3Level2" ToRole="ParLevel3Group" />
+          <NavigationProperty Name="ParLevel3Level2Level1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel3Level2" FromRole="ParLevel3Level2" ToRole="ParLevel3Level2Level1" />
         </EntityType>
         <EntityType Name="ParLevel3Level2Level1">
           <Key>
@@ -2433,6 +2544,8 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" FromRole="ParLevel3Level2Level1" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParLevel3Level2" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel3Level2" FromRole="ParLevel3Level2Level1" ToRole="ParLevel3Level2" />
         </EntityType>
         <EntityType Name="ParLevel3Value">
           <Key>
@@ -2440,14 +2553,17 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParLevel3_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel3BoolFalse_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel3BoolTrue_Id" Type="Int32" Nullable="false" />
           <Property Name="ParLevel3InputType_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel3BoolFalse_Id" Type="Int32" />
+          <Property Name="ParLevel3BoolTrue_Id" Type="Int32" />
           <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
           <Property Name="ParMeasurementUnit_Id" Type="Int32" Nullable="false" />
+          <Property Name="AcceptableValueBetween" Type="Boolean" />
+          <Property Name="IntervalMin" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="IntervalMax" Type="Decimal" Precision="10" Scale="5" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParLevel3Value_ParCompany" FromRole="ParLevel3Value" ToRole="ParCompany" />
           <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3" FromRole="ParLevel3Value" ToRole="ParLevel3" />
           <NavigationProperty Name="ParLevel3BoolFalse" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolFalse" FromRole="ParLevel3Value" ToRole="ParLevel3BoolFalse" />
@@ -2488,7 +2604,7 @@
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParMeasurementUnit" FromRole="ParMeasurementUnit" ToRole="ParLevel3Value" />
         </EntityType>
         <EntityType Name="ParMultipleValues">
@@ -3121,6 +3237,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParLevel3Level2Level1_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel3Level2Level1" Role="ParLevel3Level2Level1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2Level1">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParNotConformityRuleXLevel_ParLevel1">
           <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
           <End Type="SgqDbModel.ParNotConformityRuleXLevel" Role="ParNotConformityRuleXLevel" Multiplicity="*" />
@@ -3153,6 +3281,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ParLevel3Group">
+              <PropertyRef Name="ParLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Level2_ParLevel2">
+          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel3Level2" Role="ParLevel3Level2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2">
               <PropertyRef Name="ParLevel2_Id" />
             </Dependent>
           </ReferentialConstraint>
@@ -3193,6 +3333,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParLevel3Level2_ParLevel3">
+          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel3Level2" Role="ParLevel3Level2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2">
+              <PropertyRef Name="ParLevel3_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParLevel3Value_ParLevel3">
           <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="1" />
           <End Type="SgqDbModel.ParLevel3Value" Role="ParLevel3Value" Multiplicity="*" />
@@ -3230,7 +3382,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParLevel3Value_ParLevel3BoolFalse">
-          <End Type="SgqDbModel.ParLevel3BoolFalse" Role="ParLevel3BoolFalse" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel3BoolFalse" Role="ParLevel3BoolFalse" Multiplicity="0..1" />
           <End Type="SgqDbModel.ParLevel3Value" Role="ParLevel3Value" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParLevel3BoolFalse">
@@ -3242,7 +3394,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParLevel3Value_ParLevel3BoolTrue">
-          <End Type="SgqDbModel.ParLevel3BoolTrue" Role="ParLevel3BoolTrue" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel3BoolTrue" Role="ParLevel3BoolTrue" Multiplicity="0..1" />
           <End Type="SgqDbModel.ParLevel3Value" Role="ParLevel3Value" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParLevel3BoolTrue">
@@ -3250,6 +3402,18 @@
             </Principal>
             <Dependent Role="ParLevel3Value">
               <PropertyRef Name="ParLevel3BoolTrue_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Level2_ParLevel3Group">
+          <End Type="SgqDbModel.ParLevel3Group" Role="ParLevel3Group" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel3Level2" Role="ParLevel3Level2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3Group">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2">
+              <PropertyRef Name="ParLevel3Group_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3262,6 +3426,18 @@
             </Principal>
             <Dependent Role="ParLevel3Value">
               <PropertyRef Name="ParLevel3InputType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Level2Level1_ParLevel3Level2">
+          <End Type="SgqDbModel.ParLevel3Level2" Role="ParLevel3Level2" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel3Level2Level1" Role="ParLevel3Level2Level1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3Level2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2Level1">
+              <PropertyRef Name="ParLevel3Level2_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3764,7 +3940,7 @@
           <EntitySetMapping Name="ParLevel3BoolFalse">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel3BoolFalse">
               <MappingFragment StoreEntitySet="ParLevel3BoolFalse">
-                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3775,7 +3951,7 @@
           <EntitySetMapping Name="ParLevel3BoolTrue">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel3BoolTrue">
               <MappingFragment StoreEntitySet="ParLevel3BoolTrue">
-                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3799,7 +3975,7 @@
           <EntitySetMapping Name="ParLevel3InputType">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel3InputType">
               <MappingFragment StoreEntitySet="ParLevel3InputType">
-                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -3837,14 +4013,17 @@
           <EntitySetMapping Name="ParLevel3Value">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel3Value">
               <MappingFragment StoreEntitySet="ParLevel3Value">
-                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="IntervalMax" ColumnName="IntervalMax" />
+                <ScalarProperty Name="IntervalMin" ColumnName="IntervalMin" />
+                <ScalarProperty Name="AcceptableValueBetween" ColumnName="AcceptableValueBetween" />
                 <ScalarProperty Name="ParMeasurementUnit_Id" ColumnName="ParMeasurementUnit_Id" />
                 <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
-                <ScalarProperty Name="ParLevel3InputType_Id" ColumnName="ParLevel3InputType_Id" />
                 <ScalarProperty Name="ParLevel3BoolTrue_Id" ColumnName="ParLevel3BoolTrue_Id" />
                 <ScalarProperty Name="ParLevel3BoolFalse_Id" ColumnName="ParLevel3BoolFalse_Id" />
+                <ScalarProperty Name="ParLevel3InputType_Id" ColumnName="ParLevel3InputType_Id" />
                 <ScalarProperty Name="ParLevel3_Id" ColumnName="ParLevel3_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -3877,7 +4056,7 @@
           <EntitySetMapping Name="ParMeasurementUnit">
             <EntityTypeMapping TypeName="SgqDbModel.ParMeasurementUnit">
               <MappingFragment StoreEntitySet="ParMeasurementUnit">
-                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
