@@ -540,4 +540,28 @@
   <data name="validation" xml:space="preserve">
     <value>Vigência</value>
   </data>
+  <data name="data_type_entry" xml:space="preserve">
+    <value>Tipo de Dados de Entrada</value>
+  </data>
+  <data name="maximum_range" xml:space="preserve">
+    <value>Máximo do Intervalo</value>
+  </data>
+  <data name="measurement_unit" xml:space="preserve">
+    <value>Unidade de Medida</value>
+  </data>
+  <data name="minimum_range" xml:space="preserve">
+    <value>Mínimo do Intervalo</value>
+  </data>
+  <data name="negative_value" xml:space="preserve">
+    <value>Valor negativo</value>
+  </data>
+  <data name="positive_negative" xml:space="preserve">
+    <value>Positivo / Negativo</value>
+  </data>
+  <data name="save" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="values_between" xml:space="preserve">
+    <value>Valores entre</value>
+  </data>
 </root>

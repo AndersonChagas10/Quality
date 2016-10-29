@@ -546,4 +546,28 @@
   <data name="validation" xml:space="preserve">
     <value>Validation</value>
   </data>
+  <data name="data_type_entry" xml:space="preserve">
+    <value>Data type entry</value>
+  </data>
+  <data name="maximum_range" xml:space="preserve">
+    <value>Maximum range</value>
+  </data>
+  <data name="measurement_unit" xml:space="preserve">
+    <value>Measurement Unit</value>
+  </data>
+  <data name="minimum_range" xml:space="preserve">
+    <value>Minimum range</value>
+  </data>
+  <data name="negative_value" xml:space="preserve">
+    <value>Negative value</value>
+  </data>
+  <data name="positive_negative" xml:space="preserve">
+    <value>Positive / Negative</value>
+  </data>
+  <data name="save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="values_between" xml:space="preserve">
+    <value>Values between</value>
+  </data>
 </root>

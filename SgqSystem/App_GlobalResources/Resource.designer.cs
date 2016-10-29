@@ -376,6 +376,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data type entry.
+        /// </summary>
+        internal static string data_type_entry {
+            get {
+                return ResourceManager.GetString("data_type_entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
         internal static string date {
@@ -826,6 +835,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum range.
+        /// </summary>
+        internal static string maximum_range {
+            get {
+                return ResourceManager.GetString("maximum_range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to May.
         /// </summary>
         internal static string may {
@@ -835,11 +853,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Measurement Unit.
+        /// </summary>
+        internal static string measurement_unit {
+            get {
+                return ResourceManager.GetString("measurement_unit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum range.
+        /// </summary>
+        internal static string minimum_range {
+            get {
+                return ResourceManager.GetString("minimum_range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Negative.
         /// </summary>
         internal static string negative {
             get {
                 return ResourceManager.GetString("negative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Negative value.
+        /// </summary>
+        internal static string negative_value {
+            get {
+                return ResourceManager.GetString("negative_value", resourceCulture);
             }
         }
         
@@ -1015,6 +1060,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Positive / Negative.
+        /// </summary>
+        internal static string positive_negative {
+            get {
+                return ResourceManager.GetString("positive_negative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Positive Value.
         /// </summary>
         internal static string positive_value {
@@ -1128,6 +1182,15 @@ namespace Resources {
         internal static string sample {
             get {
                 return ResourceManager.GetString("sample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        internal static string save {
+            get {
+                return ResourceManager.GetString("save", resourceCulture);
             }
         }
         
@@ -1317,6 +1380,15 @@ namespace Resources {
         internal static string value {
             get {
                 return ResourceManager.GetString("value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Values between.
+        /// </summary>
+        internal static string values_between {
+            get {
+                return ResourceManager.GetString("values_between", resourceCulture);
             }
         }
         

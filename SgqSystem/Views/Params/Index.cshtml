@@ -197,6 +197,10 @@
             $('#parLevel1Select2').val('-1').trigger('select2:select').change();
         });
 
+        $('button').click(function (e) {
+            e.preventDefault();
+        });
+
         var monthNames = [
            '@Resources.Resource.january',
            '@Resources.Resource.february',
