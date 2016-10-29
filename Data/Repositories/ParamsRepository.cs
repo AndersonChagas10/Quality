@@ -595,36 +595,59 @@ namespace Data.Repositories
                 db.Entry(paramLevel3Value).State = EntityState.Modified;
             }
         }
+        public void AddUpdateParLevel3Level2(ParLevel3Level2 paramParLevel3Level2)
+        {
 
-        #region Não implementado
+            if (paramParLevel3Level2.Id == 0)
+            {
+                db.ParLevel3Level2.Add(paramParLevel3Level2);
+            }
+            else
+            {
+                Guard.verifyDate(paramParLevel3Level2, "AlterDate");
+                db.ParLevel3Level2.Attach(paramParLevel3Level2);
+                db.Entry(paramParLevel3Level2).State = EntityState.Modified;
+            }
+        }
+        public void SaveParLevel3Level2(ParLevel3Level2 paramLevel3Level2)
+        {
+            using (var ts = db.Database.BeginTransaction())
+            {
+                AddUpdateParLevel3Level2(paramLevel3Level2); /*Salva paramLevel1*/
+                db.SaveChanges(); //Obtem Id do paramLevel1
+                ts.Commit();
+            }
+        }
 
-        //private DbSet<ParLevel1> EntityParLevel1 { get { return db.Set<ParLevel1>(); } }
-        //private void SaveOrUpdate<T>(T obj, DbSet context)
-        //{
-        //    if (obj.GetType().GetProperty("Id") != null)
-        //    {
-        //        var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
-        //        if (id > 0)
-        //            Update(obj, context);
-        //        else
-        //            Add(obj, context);
-        //    }
-        //    db.SaveChanges();
-        //}
+            #region Não implementado
 
-        //public void Update<T>(T obj, DbSet context)
-        //{
-        //    Guard.verifyDate(obj, "AlterDate");
-        //    context.Attach(obj);
-        //    db.Entry<ParLevel1>(obj).State = EntityState.Modified;
-        //}
+            //private DbSet<ParLevel1> EntityParLevel1 { get { return db.Set<ParLevel1>(); } }
+            //private void SaveOrUpdate<T>(T obj, DbSet context)
+            //{
+            //    if (obj.GetType().GetProperty("Id") != null)
+            //    {
+            //        var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
+            //        if (id > 0)
+            //            Update(obj, context);
+            //        else
+            //            Add(obj, context);
+            //    }
+            //    db.SaveChanges();
+            //}
 
-        //public void Add<T>(T obj, DbSet context)
-        //{
-        //    Guard.verifyDate(obj, "AddDate");
-        //    context.Add(obj);
-        //} 
+            //public void Update<T>(T obj, DbSet context)
+            //{
+            //    Guard.verifyDate(obj, "AlterDate");
+            //    context.Attach(obj);
+            //    db.Entry<ParLevel1>(obj).State = EntityState.Modified;
+            //}
 
-        #endregion
-    }
+            //public void Add<T>(T obj, DbSet context)
+            //{
+            //    Guard.verifyDate(obj, "AddDate");
+            //    context.Add(obj);
+            //} 
+
+            #endregion
+        }
 }
