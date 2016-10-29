@@ -516,4 +516,34 @@
   <data name="show_group_on_level3" xml:space="preserve">
     <value>Show groups on level 3</value>
   </data>
+  <data name="counter" xml:space="preserve">
+    <value>Counter</value>
+  </data>
+  <data name="counters" xml:space="preserve">
+    <value>Counters</value>
+  </data>
+  <data name="level3_description" xml:space="preserve">
+    <value>Level 3 description</value>
+  </data>
+  <data name="level3_name" xml:space="preserve">
+    <value>Level 3 name</value>
+  </data>
+  <data name="local" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="number_nc" xml:space="preserve">
+    <value>Number of not conformity</value>
+  </data>
+  <data name="repetition" xml:space="preserve">
+    <value>Repetition</value>
+  </data>
+  <data name="save_level2" xml:space="preserve">
+    <value>Save level 2</value>
+  </data>
+  <data name="save_level3" xml:space="preserve">
+    <value>Save level 3</value>
+  </data>
+  <data name="validation" xml:space="preserve">
+    <value>Validation</value>
+  </data>
 </root>

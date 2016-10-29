@@ -1,1 +1,118 @@
-﻿
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+@using SgqSystem.Helpers
+@{
+    ViewBag.Title = "ParLeve3";
+    var url = Url.Action("AddUpdateLevel3", "api/ParamsApi"); //URL relativa
+    var urlGetLevel1 = Url.Action("GetParLevel1ById", "api/ParamsApi"); //URL relativa
+}
+
+@using (Html.BeginForm())
+{
+   <div class="row">
+       <div class="col-lg-12">
+           <table class="table-erp">
+               <tr class="row hide">
+                    @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Id),@Html.Label("Id (para testes)"), Table.PosicaoLabel.top)
+               </tr>
+               <tr class="row">
+                                      @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level3_name), Table.PosicaoLabel.top)
+                                   @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level3_description), Table.PosicaoLabel.top)
+               </tr>
+               <tr class="row">
+               </tr>
+           </table>
+        </div>
+    </div>
+                       <div id = "cadatrosTarefas" class="hide">
+
+
+                           <div style = "padding: 5px; display:inline-table;">
+                               <b> Nome :</b>
+                                @*@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm")*@
+                           </div>
+                           <br>
+                           <div style = "padding: 5px; display:inline-table;">
+                               <b> Descrição :</b>
+                                @*@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm")*@
+                           </div>
+                           <br />
+                           <div style = "padding: 5px; display:inline-table;">
+                               <b> Tipo de Dados de Entrada:</b>
+                                @*@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectTipoInput" })*@
+
+                           </div>
+                           <div id="ParIntervalos">
+                               <h2>Intervalos</h2>
+                               <div style="padding: 5px; display:inline-table;">
+                                   <b>Unidades de Medidas</b>
+                                    @*@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectUnidadeDeMedidas" })*@
+                               </div>
+                               <div style="padding: 5px; display:inline-table;">
+                                   <b>Limite Inferior :</b>
+                                    @*@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMin, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })*@
+                               </div>
+                               <div style="padding: 5px; display:inline-table;">
+                                   <b>Limite Inferior :</b>
+                                    @*@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMax, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })*@
+                               </div>
+                               <div style="padding: 5px; display:inline-table;">
+                                   <b>Valores Entre</b>
+                                    @*@Html.EditorFor(model => model.paramsDto.parLevel3Value.AcceptableValueBetween)*@
+                               </div>
+
+                           </div>
+                           <div id="ParBinarios">
+                               <h2>Binários</h2>
+                               <div style="padding: 5px; display:inline-table;">
+                                   <b>Valor Positivo (Conforme)</b>
+                                    @*@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectConforme" })*@
+                               </div>
+                               <div style="padding: 5px; display:inline-table;">
+                                   <b>Valor Negativo (Não Conforme)</b>
+                                    @*@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = "selectNaoConforme" })*@
+                               </div>
+                           </div>
+                       </div>
+                       <div style="width: 100%; float: left;">
+                           <input type="button" value="Salvar o Indicador" onclick="indexParamsLevel2.enviarDadosParaApi();" style="font-size: small; padding: 10px; font-weight: bold;">
+                       </div>
+
+                        }
+
+                       <script>
+                            var url1 = '@Html.Raw(url)';
+                            /*
+                              Serializa objeto usando bind de property Name
+                              $('form').serializeObject();
+                            */
+                            $.fn.serializeObject = function () {
+                                var o = {};
+                                var a = this.serializeArray();
+                                $.each(a, function () {
+                                    if (o[this.name] !== undefined) {
+                                        if (!o[this.name].push) {
+                                            o[this.name] = [o[this.name]];
+                                        }
+                                        o[this.name].push(this.value || '');
+                                    } else {
+                                        o[this.name] = this.value || '';
+                                    }
+                                });
+                                return o;
+                            };
+
+                            /*Inicio Submit Level3*/
+                            var indexParamsLevel2 = {
+
+                                enviarDadosParaApi: function (e) {
+                                    var dados = $('form').serializeObject();
+
+                                    $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                                        console.log(objetoReturn);
+                                        console.log(statusmessage);
+                                        console.log(respostaCompleta);
+                                    });
+
+                                },
+                            }
+                       </script>

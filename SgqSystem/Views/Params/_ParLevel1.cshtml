@@ -345,7 +345,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_counter_accordion" href="#level1_counter_collapse" aria-expanded="false"> @Resources.Resource.clusters </a>
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_counter_accordion" href="#level1_counter_collapse" aria-expanded="false"> @Resources.Resource.counters </a>
                             </h4>
                         </div>
                         <div id="level1_counter_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -353,19 +353,17 @@
                                 <table id="camposContador" class="table-erp">
                                     <tbody>
                                         <tr class="row">
-                                            @Html.Label("Counter")
-                                            @Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp" })
-                                            @Html.Label("Local")
-                                            @Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp" })
+                                            @Table.GerarColuna(@Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
+                                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button : "<button id=\"btnSaveCounter\" onclick=\"Counter.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>
 
-                                <input type="button" id="btnSaveCounter" onclick="Counter.SaveCounter(false);" class="btn btn-primary" value="Inserir Contador" />
+                                
                                 <div id="counterHidden"></div>
                                 <div id="counterEditHidden"></div>
 
-                                <table id="tblPreviewCounter">
+                                <table id="tblPreviewCounter" class="table-erp table table">
                                     <thead>
                                         <tr>
                                             <th>ParCounter</th>
@@ -381,23 +379,18 @@
                                                 <tr>
                                                     <td>@contadoresEditar.ParCounter.Name</td>
                                                     <td>@contadoresEditar.ParLocal.Name</td>
-                                                    <td>&nbsp;<input type="button" value="x" onclick="Counter.RemoveCounterEdicao($(this), @contadoresEditar.Id)" /></td>
+                                                    <td>&nbsp;<button class="btn btn-danger btn-sm" onclick="Counter.RemoveCounterEdicao($(this), @contadoresEditar.Id)"><i class="fa fa-times" aria-hidden="true"></i></button></td>
                                                 </tr>
                                             }
                                         }
                                     </tbody>
                                 </table>
-
-
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
+                
                 <input type="button" id="btnSaveNewLevel1Modal" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary" value="Save level 1" />
-
             </div>
         </div>
 
@@ -1030,7 +1023,7 @@
                 objHiddenCounter += '<tr id="insert" >';
                 objHiddenCounter += '<td>' + o.ParCounter_Name + '</td>';
                 objHiddenCounter += '<td>' + o.ParLocal_Name + '</td>';
-                objHiddenCounter += '<td>&nbsp;<input type="button" value="x" onclick="Counter.RemoveCounter($(this), ' + c + ')" /></td>';
+                objHiddenCounter += '<td>&nbsp;<button class="btn btn-danger btn-sm" onclick="Counter.RemoveCounter($(this), ' + c + ')"><i class=\"fa fa-times\" aria-hidden=\"true\"></button></td>';
                 objHiddenCounter += '</tr>';
             });
 
@@ -1064,6 +1057,7 @@
             Counter.ObjCounters.splice(c, 1);
         },
         RemoveCounterEdicao: function (e, id) {
+            e.preventDefaut();
             e.parents('tr').hide();
 
             Counter.ObjCounterRemove.push({ Id: id })

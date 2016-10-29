@@ -510,4 +510,34 @@
   <data name="show_group_on_level3" xml:space="preserve">
     <value>Mostrar agrupamentos no nível 3</value>
   </data>
+  <data name="counter" xml:space="preserve">
+    <value>Contador</value>
+  </data>
+  <data name="counters" xml:space="preserve">
+    <value>Contadores</value>
+  </data>
+  <data name="level3_description" xml:space="preserve">
+    <value>Descrição do nível 3</value>
+  </data>
+  <data name="level3_name" xml:space="preserve">
+    <value>Nome do nível 3</value>
+  </data>
+  <data name="local" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="number_nc" xml:space="preserve">
+    <value>Número de NC</value>
+  </data>
+  <data name="repetition" xml:space="preserve">
+    <value>Reincidência</value>
+  </data>
+  <data name="save_level2" xml:space="preserve">
+    <value>Salvar nível 2</value>
+  </data>
+  <data name="save_level3" xml:space="preserve">
+    <value>Salvar nível 3</value>
+  </data>
+  <data name="validation" xml:space="preserve">
+    <value>Vigência</value>
+  </data>
 </root>

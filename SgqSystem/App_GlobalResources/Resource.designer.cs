@@ -340,6 +340,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Counter.
+        /// </summary>
+        internal static string counter {
+            get {
+                return ResourceManager.GetString("counter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Counters.
+        /// </summary>
+        internal static string counters {
+            get {
+                return ResourceManager.GetString("counters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customization.
         /// </summary>
         internal static string customization {
@@ -709,11 +727,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level 3 description.
+        /// </summary>
+        internal static string level3_description {
+            get {
+                return ResourceManager.GetString("level3_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 3 Group.
         /// </summary>
         internal static string level3_group {
             get {
                 return ResourceManager.GetString("level3_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 3 name.
+        /// </summary>
+        internal static string level3_name {
+            get {
+                return ResourceManager.GetString("level3_name", resourceCulture);
             }
         }
         
@@ -732,6 +768,15 @@ namespace Resources {
         internal static string link_number_evaluation {
             get {
                 return ResourceManager.GetString("link_number_evaluation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local.
+        /// </summary>
+        internal static string local {
+            get {
+                return ResourceManager.GetString("local", resourceCulture);
             }
         }
         
@@ -876,6 +921,15 @@ namespace Resources {
         internal static string november {
             get {
                 return ResourceManager.GetString("november", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of not conformity.
+        /// </summary>
+        internal static string number_nc {
+            get {
+                return ResourceManager.GetString("number_nc", resourceCulture);
             }
         }
         
@@ -1033,6 +1087,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Repetition.
+        /// </summary>
+        internal static string repetition {
+            get {
+                return ResourceManager.GetString("repetition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reports.
         /// </summary>
         internal static string reports {
@@ -1101,6 +1164,24 @@ namespace Resources {
         internal static string save_button_on_level3_popover {
             get {
                 return ResourceManager.GetString("save_button_on_level3_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save level 2.
+        /// </summary>
+        internal static string save_level2 {
+            get {
+                return ResourceManager.GetString("save_level2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save level 3.
+        /// </summary>
+        internal static string save_level3 {
+            get {
+                return ResourceManager.GetString("save_level3", resourceCulture);
             }
         }
         
@@ -1218,6 +1299,15 @@ namespace Resources {
         internal static string username {
             get {
                 return ResourceManager.GetString("username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation.
+        /// </summary>
+        internal static string validation {
+            get {
+                return ResourceManager.GetString("validation", resourceCulture);
             }
         }
         
