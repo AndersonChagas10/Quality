@@ -3,145 +3,146 @@
 @{
     ViewBag.Title = "ParLeve3";
     var url = Url.Action("AddUpdateLevel3", "api/ParamsApi"); //URL relativa
-    var urlGetLevel1 = Url.Action("GetParLevel1ById", "api/ParamsApi"); //URL relativa
+    var urlGetLevel1 = Url.Action("GetParLevel3ById", "api/ParamsApi"); //URL relativa
 }
+<div id="newLevel3Modal">
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table-erp">
+                    <tr class="row hide">
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Id), @Html.Label("Id (para testes)"), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row">
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level3_name), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level3_description), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "form-control input-sm", @id = "selectTipoInput" }), @Html.Label(Resources.Resource.data_type_entry), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row ParIntervalos" style="display: none;">
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row ParIntervalos" style="display: none;">
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMin, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMax, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
+                        <td style="display: none;">
+                            <label>@Resources.Resource.values_between</label>
+                            <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
+                        </td>
+                    </tr>
 
-@using (Html.BeginForm())
-{
-   <div class="row">
-       <div class="col-lg-12">
-           <table class="table-erp">
-               <tr class="row hide">
-                    @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Id),@Html.Label("Id (para testes)"), Table.PosicaoLabel.top)
-               </tr>
-               <tr class="row">
-                    @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level3_name), Table.PosicaoLabel.top)
-                    @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level3_description), Table.PosicaoLabel.top)
-                   @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "form-control input-sm", @id = "selectTipoInput" }), @Html.Label(Resources.Resource.data_type_entry), Table.PosicaoLabel.top)
-               </tr>
-               <tr class="row ParIntervalos" style="display: none;">
-                   @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top)
-               </tr>
-               <tr class="row ParIntervalos" style="display: none;">
-                    @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMin, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                    @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMax, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
-                    <td style="display: none;">
-                        <label>@Resources.Resource.values_between</label>
-                        <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
-                    </td>
-               </tr>
-        
-               <tr class="row ParBinarios" style="display: none;">
-                   @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
-                   @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top)
-                   <td>
-                       <button id="btnPositiveNegative" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></button>
-                   </td>
-               </tr>
-           </table>
-        </div>
+                    <tr class="row ParBinarios" style="display: none;">
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top)
+                        <td>
+                            <button id="btnPositiveNegative" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></button>
+                        </td>
+                    </tr>
+                </table>
+                <button onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level3</button>
     </div>
+</div>
     <!-- Modal -->
-    <div class="modal fade" id="modalPositiveNegative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog  modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.positive_negative</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12">@Resources.Resource.positive_value</div>
-                        <div class="col-xs-12"><input class="form-control input-sm" id="modalInputPositive" /></div>
-                        <div class="col-xs-12">@Resources.Resource.negative_value</div>
-                        <div class="col-xs-12"><input class="form-control input-sm" id="modalInputNegative" /></div>
+        <div class="modal fade" id="modalPositiveNegative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog  modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">@Resources.Resource.positive_negative</h4>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">@Resources.Resource.save</button>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">@Resources.Resource.positive_value</div>
+                            <div class="col-xs-12"><input class="form-control input-sm" id="modalInputPositive" /></div>
+                            <div class="col-xs-12">@Resources.Resource.negative_value</div>
+                            <div class="col-xs-12"><input class="form-control input-sm" id="modalInputNegative" /></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">@Resources.Resource.save</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-}
-
-<script>
-    $('#btnPositiveNegative').click(function (e) {
-        $('#modalPositiveNegative').modal({ backdrop: false });
-    });
-    $(document).on('input', '#paramsDto_parLevel3Value_IntervalMin', function (e) {
-        $('span.IntervalValorMin').text($(this).val())
-        parIntervalosTypeCreate();
-    });
-    $(document).on('input', '#paramsDto_parLevel3Value_IntervalMax', function (e) {
-        $('span.IntervalValorMax').text($(this).val())
-        parIntervalosTypeCreate();
-    });
-    function parIntervalosTypeCreate() {
-        if (!$("#paramsDto_parLevel3Value_IntervalMin").val() == "" && !$("#paramsDto_parLevel3Value_IntervalMax").empty() == "") {
-            var options =
-                "<option value='0'>" +
-                    "O valor e aceitavel quando esta entre " + $("#paramsDto_parLevel3Value_IntervalMin").val() + " e " + $("#paramsDto_parLevel3Value_IntervalMax").val() +
-                "</option>" +
-                "<option value='1'>" +
-                    "O valor e aceitavel quando e menor que " + $("#paramsDto_parLevel3Value_IntervalMin").val() + " ou maior que " + $("#paramsDto_parLevel3Value_IntervalMax").val() +
-                "</option>";
-
-            $('#parIntervalosType').empty();
-            $('#parIntervalosType').append(options);
-            $("#parIntervalosType").parents("td").show();
-        } else {
-            $("#parIntervalosType").parents("td").hide();
-        }
     }
-    $('#selectTipoInput').change(function () {
-        //Binários
-        if ($("#selectTipoInput option:selected").val() == "1") {
-            $('.ParIntervalos').hide();
-            $('.ParBinarios').fadeIn();
-        }
-        //Intervalos
-        if ($("#selectTipoInput option:selected").val() == "3") {
-            $('.ParBinarios').hide();
-            $('.ParIntervalos').fadeIn();
-        }
-    });
+    </div>
+    <script>
+        $('#btnPositiveNegative').click(function (e) {
+            $('#modalPositiveNegative').modal({ backdrop: false });
+        });
+        $(document).on('input', '#paramsDto_parLevel3Value_IntervalMin', function (e) {
+            $('span.IntervalValorMin').text($(this).val())
+            parIntervalosTypeCreate();
+        });
+        $(document).on('input', '#paramsDto_parLevel3Value_IntervalMax', function (e) {
+            $('span.IntervalValorMax').text($(this).val())
+            parIntervalosTypeCreate();
+        });
+        function parIntervalosTypeCreate() {
+            if (!$("#paramsDto_parLevel3Value_IntervalMin").val() == "" && !$("#paramsDto_parLevel3Value_IntervalMax").empty() == "") {
+                var options =
+                    "<option value='0'>" +
+                        "O valor e aceitavel quando esta entre " + $("#paramsDto_parLevel3Value_IntervalMin").val() + " e " + $("#paramsDto_parLevel3Value_IntervalMax").val() +
+                    "</option>" +
+                    "<option value='1'>" +
+                        "O valor e aceitavel quando e menor que " + $("#paramsDto_parLevel3Value_IntervalMin").val() + " ou maior que " + $("#paramsDto_parLevel3Value_IntervalMax").val() +
+                    "</option>";
 
-    var url1 = '@Html.Raw(url)';
-    /*
-        Serializa objeto usando bind de property Name
-        $('form').serializeObject();
-    */
-    $.fn.serializeObject = function () {
-        var o = {};
-        var a = this.serializeArray();
-        $.each(a, function () {
-            if (o[this.name] !== undefined) {
-                if (!o[this.name].push) {
-                    o[this.name] = [o[this.name]];
-                }
-                o[this.name].push(this.value || '');
+                $('#parIntervalosType').empty();
+                $('#parIntervalosType').append(options);
+                $("#parIntervalosType").parents("td").show();
             } else {
-                o[this.name] = this.value || '';
+                $("#parIntervalosType").parents("td").hide();
+            }
+        }
+        $('#selectTipoInput').change(function () {
+            //Binários
+            if ($("#selectTipoInput option:selected").val() == "1") {
+                $('.ParIntervalos').hide();
+                $('.ParBinarios').fadeIn();
+            }
+            //Intervalos
+            if ($("#selectTipoInput option:selected").val() == "3") {
+                $('.ParBinarios').hide();
+                $('.ParIntervalos').fadeIn();
             }
         });
-        return o;
-    };
 
-    /*Inicio Submit Level3*/
-    var indexParamsLevel2 = {
-
-        enviarDadosParaApi: function (e) {
-            var dados = $('form').serializeObject();
-
-            $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                console.log(objetoReturn);
-                console.log(statusmessage);
-                console.log(respostaCompleta);
+        var url1 = '@Html.Raw(url)';
+        /*
+            Serializa objeto usando bind de property Name
+            $('form').serializeObject();
+        */
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
             });
+            return o;
+        };
 
-        },
-    }
-</script>
+        /*Inicio Submit Level3*/
+        var indexParamsLevel3 = {
+
+            enviarDadosParaApi: function (e) {
+                var dados = $('form').serializeObject();
+
+                $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                    console.log(objetoReturn);
+                    console.log(statusmessage);
+                    console.log(respostaCompleta);
+                });
+
+            },
+        }
+    </script>
