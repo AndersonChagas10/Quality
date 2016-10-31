@@ -138,16 +138,16 @@
                                     <tbody>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.DropDownList("selectCounter", Model.paramsDdl.DdlParCounter_Level2, htmlAttributes: new { @class = "form-control input-erp input-sm", @id = "selectCounter" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
-                                            @Table.GerarColunaButton(@Html.DropDownList("selectLocal", Model.paramsDdl.DdlParLocal_Level2, htmlAttributes: new { @class = "form-control input-erp input-sm", @id = "selectLocal" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button: "<button id=\"btnSaveCounter\" type=\"button\" onclick=\"Counter.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                            @Table.GerarColunaButton(@Html.DropDownList("selectLocal", Model.paramsDdl.DdlParLocal_Level2, htmlAttributes: new { @class = "form-control input-erp input-sm", @id = "selectLocal" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button: "<button id=\"btnSaveCounter\" type=\"button\" onclick=\"CounterLevel2.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>
 
 
-                                <div id="counterHidden"></div>
-                                <div id="counterEditHidden"></div>
+                                <div id="counterHidden2"></div>
+                                <div id="counterEditHidden2"></div>
 
-                                <table id="tblPreviewCounter" class="table-erp table table">
+                                <table id="tblPreviewCounter2" class="table-erp table table">
                                     <thead>
                                         <tr>
                                             <th>ParCounter</th>
@@ -163,7 +163,7 @@
                                                 <tr>
                                                     <td>@contadoresEditar.ParCounter.Name </td>
                                                     <td>@contadoresEditar.ParLocal.Name </td>
-                                                    <td>&nbsp;<button class="btn btn-danger btn-sm" onclick="Counter.RemoveCounterEdicao($(this), @contadoresEditar.Id)"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                    <td>&nbsp;<button class="btn btn-danger btn-sm" onclick="CounterLevel2.RemoveCounterEdicao($(this), @contadoresEditar.Id)"><i class="fa fa-times" aria-hidden="true"></i></button></td>
                                                 </tr>
                                             }
                                         }
@@ -235,6 +235,72 @@
 
 
         });
+
+        var CounterLevel2 = {
+            ObjCounters: [],
+            ObjCounterRemove: [],
+            SaveCounter: function (edicao) {
+                CounterLevel2.ObjCounters.push({
+                    Id: null,
+                    ParLocal_Id: $('#selectLocal  option:selected').val(),
+                    ParCounter_Id: $('#selectCounter option:selected').val(),
+                    ParLevel1_Id: $('#paramsDto_parLevel2Dto_Id').val(),
+                    Edicao: edicao,
+                    ParLocal_Name: $('#selectLocal option:selected').text(),
+                    ParCounter_Name: $('#selectCounter option:selected').text(),
+                });
+                CounterLevel2.CreateCounterPreview();
+            },
+            CreateCounterPreview: function () {
+
+                //$('#tblPreviewCounter2 > tbody').empty();
+                $('#tblPreviewCounter2 > tbody > tr#insert').remove();
+                var objHiddenCounter = "";
+                CounterLevel2.ObjCounters.forEach(function (o, c) {
+                    objHiddenCounter += '<tr id="insert" >';
+                    objHiddenCounter += '<td>' + o.ParCounter_Name + '</td>';
+                    objHiddenCounter += '<td>' + o.ParLocal_Name + '</td>';
+                    objHiddenCounter += '<td>&nbsp;<button class="btn btn-danger btn-sm" onclick="CounterLevel2.RemoveCounter($(this), ' + c + ')"><i class=\"fa fa-times\" aria-hidden=\"true\"></button></td>';
+                    objHiddenCounter += '</tr>';
+                });
+
+                $('#tblPreviewCounter2 > tbody').append(objHiddenCounter);
+
+            },
+            UpdateCounters: function () {
+
+                /*Objetos Inseridos*/
+                $('#counterHidden2').empty();
+                var objHiddenCounter = "";
+                CounterLevel2.ObjCounters.forEach(function (o, c) {
+                    objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParCounter_Id" type="hidden" value="' + o.ParCounter_Id + '" />'
+                    objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLocal_Id" type="hidden"  value="' + o.ParLocal_Id + '" />'
+                    objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLevel2_Id" type="hidden"  value="' + o.ParLevel1_Id + '" />'
+                });
+                $('#counterHidden2').append(objHiddenCounter);
+
+                /*Objetos removidos*/
+                $('#counterEditHidden2').empty();
+
+                var objHiddenCounter = "";
+                CounterLevel2.ObjCounterRemove.forEach(function (o, c) {
+                    objHiddenCounter += '<input name="paramsDto.parLevel2Dto.removerParCounterXlocal[' + c + ']" type="hidden" value="' + o.Id + '" />'
+                });
+
+                $('#counterEditHidden2').append(objHiddenCounter);
+            },
+            RemoveCounter: function (e, c) {
+                e.parents('tr').remove();
+                CounterLevel2.ObjCounters.splice(c, 1);
+            },
+            RemoveCounterEdicao: function (e, id) {
+                e.preventDefaut();
+                e.parents('tr').hide();
+
+                CounterLevel2.ObjCounterRemove.push({ Id: id })
+            },
+
+        }
 
         $('#btnParLevel03GroupInsert').click(function (e) {
 
