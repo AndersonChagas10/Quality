@@ -53,5 +53,17 @@ namespace DTO.DTO.Params
         public ParLevel3ValueDTO parLevel3Value { get; set; }
 
         public ParLevel3Level2DTO parLevel3Level2 {get;set;}
+
+
+        #region Vinculo Level1 Level2
+
+        #endregion
+
+        #region Vinculo Level2 Level3
+
+        public ParLevel3Level2DTO parLevel3Level2Dto { get; set; }
+
+        #endregion
+
     }
 }

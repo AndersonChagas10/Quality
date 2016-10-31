@@ -564,4 +564,7 @@
   <data name="values_between" xml:space="preserve">
     <value>Valores entre</value>
   </data>
+  <data name="include_options" xml:space="preserve">
+    <value>Incluir opção</value>
+  </data>
 </root>

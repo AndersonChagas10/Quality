@@ -303,6 +303,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
+    <Compile Include="Controllers\Exemplo\HtmlTesteController.cs" />
     <Compile Include="Controllers\Globalization\GlobalizationController.cs" />
     <Compile Include="Controllers\Login\AccesDeniedController.cs" />
     <Compile Include="Controllers\Api\File\FileController.cs" />
@@ -332,12 +333,14 @@
     <Compile Include="Mappers\Params\ParCounterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3Level2Level1MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3ValueMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel1XClusterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3BoolFalseMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3BoolTrueMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3InputTypeMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParMeasurementUnitMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel3Level2MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParSampleMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParEvaluationMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3MapperProfile.cs" />
@@ -445,6 +448,7 @@
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\css\select2.css" />
     <Content Include="Content\css\select2.min.css" />
+    <Content Include="Content\datatables.min.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.min.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap4.css" />
@@ -792,6 +796,7 @@
     <Content Include="Scripts\DataTables\dataTables.keyTable.min.js" />
     <Content Include="Scripts\DataTables\dataTables.material.js" />
     <Content Include="Scripts\DataTables\dataTables.material.min.js" />
+    <Content Include="Scripts\DataTables\datatables.min.js" />
     <Content Include="Scripts\DataTables\dataTables.responsive.js" />
     <Content Include="Scripts\DataTables\dataTables.responsive.min.js" />
     <Content Include="Scripts\DataTables\dataTables.rowReorder.js" />
@@ -1107,6 +1112,7 @@
     <Content Include="Views\Params\_ParLevel2.cshtml" />
     <Content Include="Views\Params\_ParLevel3.cshtml" />
     <Content Include="Views\Params\Index3.cshtml" />
+    <Content Include="Views\HtmlTeste\_IndexTeste.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

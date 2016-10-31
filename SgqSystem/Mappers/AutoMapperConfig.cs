@@ -41,6 +41,7 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParLevelDefinitonMapperProfile>();
                 x.AddProfile<ParMultipleValuesMapperProfile>();
                 x.AddProfile<ParLevel1XHeaderFieldMapperProfile>();
+                x.AddProfile<ParLevel3Level2Level1MapperProfile>();
 
 
                 /*
@@ -69,6 +70,8 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParMeasurementUnitMapperProfile>();
                 x.AddProfile<ParLevel3BoolFalseMapperProfile>();
                 x.AddProfile<ParLevel3BoolTrueMapperProfile>();
+                x.AddProfile<ParLevel3Level2MapperProfile>();
+
                 /*
                  Exemplo para configuração do Auto Mapper.
                  */
