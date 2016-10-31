@@ -2,7 +2,9 @@
 
 @{
     ViewBag.Title = "ParLeve1";
-    var url = Url.Action("AddUpdateLevel1", "api/ParamsApi"); //URL relativa
+    var url1 = Url.Action("AddUpdateLevel1", "api/ParamsApi"); //URL relativa
+    var url2 = Url.Action("AddUpdateLevel2", "api/ParamsApi"); //URL relativa
+    var url3 = Url.Action("AddUpdateLevel3", "api/ParamsApi"); //URL relativa
     var urlGetLevel1 = Url.Action("GetParLevel1ById", "api/ParamsApi"); //URL relativa
     var urlGetLevel2 = Url.Action("GetParLevel2ById", "api/ParamsApi"); //URL relativa
     var urlGetLevel3 = Url.Action("GetParLevel3ById", "api/ParamsApi"); //URL relativa
@@ -102,7 +104,7 @@
                                                 <div class="panel panel-info">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
-                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_accordion" href="#level1_collapse" aria-expanded="false" id="level1Title">  </a>
+                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_accordion" href="#level1_collapse" aria-expanded="false" id="level1Title"> @Resources.Resource.new_level1 </a>
                                                         </h4>
                                                     </div>
                                                     <div id="level1_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -126,7 +128,7 @@
                                                 <div class="panel panel-warning">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
-                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_accordion" href="#level2_collapse" aria-expanded="false"> @Resources.Resource.level2 </a>
+                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_accordion" href="#level2_collapse" aria-expanded="false"  id="level2Title"> @Resources.Resource.new_level2 </a>
                                                         </h4>
                                                     </div>
                                                     <div id="level2_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -150,7 +152,7 @@
                                                 <div class="panel panel-danger">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
-                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false"> @Resources.Resource.level3 </a>
+                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false" id="level3Title"> @Resources.Resource.new_level3 </a>
                                                         </h4>
                                                     </div>
                                                     <div id="level3_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -189,15 +191,11 @@
 
         defacults();
 
-        $('#level1Title').text('@Resources.Resource.new_level1');
-        $('#level2Title').text('@Resources.Resource.new_level2');
-        $('#level3Title').text('@Resources.Resource.new_level3');
-
         $('#btnNewLevel1').click(function () {
             $('#parLevel1Select2').val('-1').trigger('select2:select').change();
         });
 
-      
+
         var monthNames = [
            '@Resources.Resource.january',
            '@Resources.Resource.february',
@@ -237,7 +235,9 @@
         watcher();
 
 
-        var url1 = '@Html.Raw(@url)';
+        var url1 = '@Html.Raw(@url1)';
+        var url2 = '@Html.Raw(@url2)';
+        var url3 = '@Html.Raw(@url3)';
 
         /*
             Serializa objeto usando bind de property Name
@@ -424,7 +424,7 @@
                     Counter.UpdateCounters();
                     var dados = $('#newLevel2Modal > form').serializeObject();
 
-                    $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                    $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                         if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
                             $.get('GetParLevel2ById/' + objetoReturn.paramsDto.parLevel2Dto.Id, function (obj, responseText, xhr) {
                                 if (obj != null) {
@@ -450,12 +450,10 @@
             enviarDadosParaApi: function (e) {
 
                 if ($('#newLevel3Modal > form').valid()) {
-                    Cabecalhos.UpdateCabecalhos();
-                    Cluster.UpdateCounter();
-                    Counter.UpdateCounters();
+
                     var dados = $('#newLevel3Modal > form').serializeObject();
 
-                    $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                    $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                         if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
                             $.get('GetParLevel3ById/' + objetoReturn.paramsDto.parLevel3Dto.Id, function (obj, responseText, xhr) {
                                 if (obj != null) {

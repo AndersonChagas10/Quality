@@ -39,7 +39,7 @@
                         </td>
                     </tr>
                 </table>
-                <button onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level3</button>
+                <button type="button" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level3</button>
     </div>
 </div>
     <!-- Modal -->
@@ -131,18 +131,18 @@
             return o;
         };
 
-        /*Inicio Submit Level3*/
-        var indexParamsLevel3 = {
+        ///*Inicio Submit Level3*/
+        //var indexParamsLevel3 = {
 
-            enviarDadosParaApi: function (e) {
-                var dados = $('form').serializeObject();
+        //    enviarDadosParaApi: function (e) {
+        //        var dados = $('form').serializeObject();
 
-                $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                    console.log(objetoReturn);
-                    console.log(statusmessage);
-                    console.log(respostaCompleta);
-                });
+        //        $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+        //            console.log(objetoReturn);
+        //            console.log(statusmessage);
+        //            console.log(respostaCompleta);
+        //        });
 
-            },
-        }
+        //    },
+        //}
     </script>
