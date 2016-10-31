@@ -396,7 +396,7 @@
                 if ($('#newLevel1Modal > form').valid()) {
                     Cabecalhos.UpdateCabecalhos();
                     Cluster.UpdateCounter();
-                    Counter.UpdateCounters();
+                    CounterLevel1.UpdateCounters();
                     var dados = $('#newLevel1Modal > form').serializeObject();
 
                     $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
@@ -427,7 +427,7 @@
                 if ($('#newLevel2Modal > form')) {
                     Cabecalhos.UpdateCabecalhos();
                     Cluster.UpdateCounter();
-                    Counter.UpdateCounters();
+                    CounterLevel2.UpdateCounters();
                     var dados = $('#newLevel2Modal > form').serializeObject();
 
                     $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
@@ -458,7 +458,7 @@
                 if ($('#newLevel3Modal > form').valid()) {
                     Cabecalhos.UpdateCabecalhos();
                     Cluster.UpdateCounter();
-                    Counter.UpdateCounters();
+                    //Counter.UpdateCounters();
                     var dados = $('#newLevel3Modal > form').serializeObject();
 
                     $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
