@@ -35,14 +35,14 @@
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top)
                         <td>
-                            <button id="btnPositiveNegative" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></button>
+                            <button type="button" id="btnPositiveNegative" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></button>
                         </td>
                     </tr>
                 </table>
                 <button type="button" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level3</button>
-    </div>
-</div>
-    <!-- Modal -->
+            </div>
+        </div>
+        <!-- Modal -->
         <div class="modal fade" id="modalPositiveNegative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog  modal-sm" role="document">
                 <div class="modal-content">

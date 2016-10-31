@@ -111,7 +111,7 @@
                                                     <td id="">@i.Points.ToString("#")</td>
                                                     <td id="editarCluster">
                                                         @*<input type="button" value="Alterar" id="Cluster.btnEDITARCluster" />*@
-                                                        <input type="button" value="x" onclick="Cluster.btnINATIVARLevel1XCluster($(this))" />
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="Cluster.btnINATIVARLevel1XCluster($(this))"><i class="fa fa-times"></i></button>
                                                         @Html.Hidden("paramsDto.parLevel1Dto.removerParCluster", i.Id, htmlAttributes: new { @disabled = "disabled" })
                                                         @Html.Hidden("clusterId", i.Id, htmlAttributes: new { @disabled = "disabled", @id = "clusterId" })
 
@@ -166,40 +166,36 @@
                                     <div id="objBinario" style="display:none;">
                                         <table id="tblBinario">
                                             <tbody>
-                                                <tr>
-                                                    <td></td>
+                                                <tr class="row">
+                                                    <td class="td-erp"></td>
                                                     @Table.GerarColunaLabel(@Html.Label(Resources.Resource.value))
                                                     @Table.GerarColunaLabel(@Html.Label(Resources.Resource.punishment_value), Resources.Resource.punishment_value_popover)
                                                 </tr>
-                                                <tr id="positivo">
+                                                <tr class="row" id="positivo">
+                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.positive))
                                                     <td>
-                                                        @Table.GerarColunaLabel(@Html.Label(Resources.Resource.positive))
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" id="objBinarioPunishmentName1">
+                                                        <input type="text" id="objBinarioPunishmentName1" class="form-control input-sm">
                                                         @Html.ErrorManual("punishmentNameCabecalho1", "O campo Nome deve ser preechido para o Cabecalho.")
                                                     </td>
                                                     <td>
-                                                        <input type="number" id="objBinarioPunishmentValue1" style="width: 50px;">
+                                                        <input type="number" id="objBinarioPunishmentValue1" class="form-control input-sm">
                                                         @Html.ErrorManual("punishmentValueCabecalho1", "O campo Punição/Premiação deve ser selecionado para o Cabecalho.")
                                                     </td>
                                                 </tr>
-                                                <tr id="negativo">
+                                                <tr class="row" id="negativo">
+                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.negative))
                                                     <td>
-                                                        @Table.GerarColunaLabel(@Html.Label(Resources.Resource.negative))
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" id="objBinarioPunishmentName2">
+                                                        <input type="text" id="objBinarioPunishmentName2" class="form-control input-sm">
                                                         @Html.ErrorManual("punishmentNameCabecalho2", "O campo Nome deve ser preechido para o Cabecalho.")
                                                     </td>
                                                     <td>
-                                                        <input type="number" id="objBinarioPunishmentValue2" style="width: 50px;">
+                                                        <input type="number" id="objBinarioPunishmentValue2"  class="form-control input-sm">
                                                         @Html.ErrorManual("punishmentValueCabecalho2", "O campo Punição/Premiação deve ser selecionado para o Cabecalho.")
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <input type="button" value="Incluir opção" id="btnIncluirCluster" onclick="Cabecalhos.IncluirBinario();" />
+                                                        <button class="btn btn-primary btn-sm" type="button" id="btnIncluirCluster" onclick="Cabecalhos.IncluirBinario();">@Resources.Resource.include_options</button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -224,7 +220,7 @@
 
                                     @*tabela cabecalho itens inputados*@
                                     <div id="divCamposCabecalhoIncluidos" style="display:none;">
-                                        <table id="camposCabecalhoIncluidos">
+                                        <table id="camposCabecalhoIncluidos" style="table table-condensed table-responsive no-margin margin-top">
                                             <thead>
                                                 <tr>
                                                     <th>Cod.</th>
@@ -354,12 +350,11 @@
                                     <tbody>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
-                                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button : "<button id=\"btnSaveCounter\" onclick=\"CounterLevel1.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button : "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"CounterLevel1.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>
-
-                                
+                                                               
                                 <div id="counterHidden1"></div>
                                 <div id="counterEditHidden1"></div>
 
@@ -379,7 +374,7 @@
                                                 <tr>
                                                     <td>@contadoresEditar.ParCounter.Name</td>
                                                     <td>@contadoresEditar.ParLocal.Name</td>
-                                                    <td>&nbsp;<button class="btn btn-danger btn-sm" onclick="CounterLevel1.RemoveCounterEdicao($(this), @contadoresEditar.Id)"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                    <td>&nbsp;<button type="button" class="btn btn-danger btn-sm" onclick="CounterLevel1.RemoveCounterEdicao($(this), @contadoresEditar.Id)"><i class="fa fa-times" aria-hidden="true"></i></button></td>
                                                 </tr>
                                             }
                                         }
@@ -639,7 +634,7 @@
             var tipoVal = $('#parFieldType option:selected').val();
             var opcoes = $('#objMultiplaEscolhaName').val();
             var valor = $('#objMultiplaEscolhaPunishmentValue').val();
-            var obj = '<input type="button" value="excluir" id=' + nome + tipo + ' />';
+            var obj = '<button class="btn btn-danger btn-sm" type="button" value="excluir" id=' + nome + tipo + '>'+'@Resources.Resource.delete'+'</button>';
             /*Obj*/
             Cabecalhos.ParMultiplaEscolhaOpcoes.push({
                 //'Id': ' ',

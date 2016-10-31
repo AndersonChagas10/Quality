@@ -601,6 +601,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Include options.
+        /// </summary>
+        internal static string include_options {
+            get {
+                return ResourceManager.GetString("include_options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to January.
         /// </summary>
         internal static string january {
