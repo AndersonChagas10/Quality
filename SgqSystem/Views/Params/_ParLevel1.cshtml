@@ -12,7 +12,7 @@
                 <table class="table-erp">
                     <tbody>
                         <tr class="row hide">
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id, new { @class = "form-control input-sm" ,@id="idLevel1"}), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
                         </tr>
                         <tr class="row">
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_name), Table.PosicaoLabel.top, null, null)
