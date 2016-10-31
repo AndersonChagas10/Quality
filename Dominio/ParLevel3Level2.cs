@@ -23,7 +23,7 @@ namespace Dominio
         public int Id { get; set; }
         public int ParLevel2_Id { get; set; }
         public int ParLevel3_Id { get; set; }
-        public int ParLevel3Group_Id { get; set; }
+        public Nullable<int> ParLevel3Group_Id { get; set; }
         public decimal Weight { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }

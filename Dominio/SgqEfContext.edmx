@@ -284,7 +284,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParCompany_Id" Type="int" Nullable="false" />
           <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
           <Property Name="Number" Type="int" Nullable="false" />
@@ -466,7 +466,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
           <Property Name="ParLevel3_Id" Type="int" Nullable="false" />
-          <Property Name="ParLevel3Group_Id" Type="int" Nullable="false" />
+          <Property Name="ParLevel3Group_Id" Type="int" />
           <Property Name="Weight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
@@ -476,7 +476,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParLevel3Level2_Id" Type="int" Nullable="false" />
           <Property Name="ParLevel1_Id" Type="int" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -563,7 +563,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParNotConformityRule_Id" Type="int" Nullable="false" />
           <Property Name="ParCompany_Id" Type="int" />
           <Property Name="Value" Type="decimal" Precision="10" Scale="5" />
@@ -595,7 +595,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParCompany_Id" Type="int" Nullable="false" />
           <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
           <Property Name="Number" Type="int" Nullable="false" />
@@ -1119,7 +1119,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParLevel3Level2_ParLevel3Group">
-          <End Role="ParLevel3Group" Type="Self.ParLevel3Group" Multiplicity="1" />
+          <End Role="ParLevel3Group" Type="Self.ParLevel3Group" Multiplicity="0..1" />
           <End Role="ParLevel3Level2" Type="Self.ParLevel3Level2" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParLevel3Group">
@@ -2301,7 +2301,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
           <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
           <Property Name="Number" Type="Int32" Nullable="false" />
@@ -2524,7 +2524,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
           <Property Name="ParLevel3_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel3Group_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel3Group_Id" Type="Int32" />
           <Property Name="Weight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
@@ -2538,7 +2538,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParLevel3Level2_Id" Type="Int32" Nullable="false" />
           <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
@@ -2638,7 +2638,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParNotConformityRule_Id" Type="Int32" Nullable="false" />
           <Property Name="ParCompany_Id" Type="Int32" />
           <Property Name="Value" Type="Decimal" Precision="10" Scale="5" />
@@ -2679,7 +2679,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
           <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
           <Property Name="Number" Type="Int32" Nullable="false" />
@@ -3406,7 +3406,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParLevel3Level2_ParLevel3Group">
-          <End Type="SgqDbModel.ParLevel3Group" Role="ParLevel3Group" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel3Group" Role="ParLevel3Group" Multiplicity="0..1" />
           <End Type="SgqDbModel.ParLevel3Level2" Role="ParLevel3Level2" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParLevel3Group">

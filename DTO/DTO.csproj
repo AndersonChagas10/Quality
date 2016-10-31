@@ -90,6 +90,7 @@
     <Compile Include="DTO\Params\ParCounterDTO.cs" />
     <Compile Include="DTO\Params\ParCounterXLocalDTO.cs" />
     <Compile Include="DTO\Params\ParLevel3Level2DTO.cs" />
+    <Compile Include="DTO\Params\ParLevel3Level2Level1DTO.cs" />
     <Compile Include="DTO\Params\ParMeasurementUnitDTO.cs" />
     <Compile Include="DTO\Params\ParLevel3BoolTrueDTO.cs" />
     <Compile Include="DTO\Params\ParLevel3BoolFalseDTO.cs" />

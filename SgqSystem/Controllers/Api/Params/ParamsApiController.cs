@@ -57,5 +57,32 @@ namespace SgqSystem.Controllers.Api.Params
 
         #endregion
 
+
+        #region Vinculo Level3 com Level2
+
+        [HttpGet]
+        [Route("AddVinculoL3L2/{idLevel2}/{idLevel3}/{peso}")]
+        public ParLevel3Level2DTO AddVinculoL3L2(int idLevel2, int idLevel3, int peso)
+        {
+            return _paramdDomain.AddVinculoL3L2(idLevel2, idLevel3, peso);
+            //return paramsViewModel;
+        }
+
+
+        #endregion
+
+        #region Vinculo Level1 com Level2
+
+        [HttpGet]
+        [Route("AddVinculoL1L2/{idLevel1}/{idLevel2Level3}")]
+        public ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2Level3)
+        {
+            return _paramdDomain.AddVinculoL1L2(idLevel1, idLevel2Level3);
+            //return paramsViewModel;
+        }
+
+
+        #endregion
+
     }
 }

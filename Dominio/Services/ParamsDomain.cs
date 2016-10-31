@@ -4,6 +4,7 @@ using DTO.DTO.Params;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Dominio.Services
 {
@@ -45,6 +46,8 @@ namespace Dominio.Services
         private IBaseRepository<ParCounterXLocal> _baseRepoParCounterXLocal;
         private IBaseRepository<ParMeasurementUnit> _baseParMeasurementUnit;
         private IBaseRepository<ParLevel3Level2> _baseParLevel3Level2;
+        private IBaseRepository<ParLevel3Level2> _baseRepoParLevel3Level2;
+        private IBaseRepository<ParLevel3Level2Level1> _baseRepoParLevel3Level2Level1;
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
 
@@ -78,7 +81,9 @@ namespace Dominio.Services
                             IBaseRepository<ParMeasurementUnit> baseParMeasurementUnit,
                             IBaseRepository<ParLevel3BoolFalse> baseParLevel3BoolFalse,
                             IBaseRepository<ParLevel3BoolTrue> baseParLevel3BoolTrue,
-                            IBaseRepository<ParLevel3Level2> baseParLevel3Level2)
+                            IBaseRepository<ParLevel3Level2> baseParLevel3Level2,
+                            IBaseRepository<ParLevel3Level2> baseRepoParLevel3Level2,
+                            IBaseRepository<ParLevel3Level2Level1> baseRepoParLevel3Level2Level1)
         {
             _paramsRepo = paramsRepo;
             _baseRepoParCounterXLocal = baseRepoParCounterXLocal;
@@ -111,6 +116,8 @@ namespace Dominio.Services
             _baseParLevel3BoolFalse = baseParLevel3BoolFalse;
             _baseParLevel3BoolTrue = baseParLevel3BoolTrue;
             _baseParLevel3Level2 = baseParLevel3Level2;
+            _baseRepoParLevel3Level2 = baseRepoParLevel3Level2;
+            _baseRepoParLevel3Level2Level1 = baseRepoParLevel3Level2Level1;
         }
 
         #endregion
@@ -182,9 +189,9 @@ namespace Dominio.Services
             ParSample saveParamSample = Mapper.Map<ParSample>(paramsDto.parSampleDto);
             List<ParRelapse> listParRelapse = Mapper.Map<List<ParRelapse>>(paramsDto.listParRelapseDto);
 
-            _paramsRepo.SaveParLevel2(saveParamLevel2, 
-                                     listaParLevel3Group, 
-                                     listParCounterXLocal, 
+            _paramsRepo.SaveParLevel2(saveParamLevel2,
+                                     listaParLevel3Group,
+                                     listParCounterXLocal,
                                      saveParamNotConformityRuleXLevel,
                                      saveParamEvaluation,
                                      saveParamSample,
@@ -333,14 +340,14 @@ namespace Dominio.Services
             var DdlParLevel3BoolTrue = Mapper.Map<List<ParLevel3BoolTrueDTO>>(_baseParLevel3BoolTrue.GetAll());
 
             var retorno = new ParamsDdl();
-            retorno.SetDdls(DdlParConsolidation, 
-                            DdlFrequency, 
+            retorno.SetDdls(DdlParConsolidation,
+                            DdlFrequency,
                             DdlparLevel1,
                             DdlparLevel2,
                             DdlparLevel3,
-                            DdlparCluster, 
-                            DdlparLevelDefinition, 
-                            DdlParFieldType, 
+                            DdlparCluster,
+                            DdlparLevelDefinition,
+                            DdlParFieldType,
                             DdlParDepartment,
                             DdlParCounter_Level1,
                             DdlParLocal_Level1,
@@ -353,6 +360,51 @@ namespace Dominio.Services
                             DdlParLevel3BoolTrue);
             return retorno;
         }
+
+
+
+        #region Vinculo L3L2
+
+        public ParLevel3Level2DTO AddVinculoL3L2(int idLevel2, int idLevel3, int peso)
+        {
+            ParLevel3Level2 objLelvel2Level3ToSave;
+            var level2 = _baseRepoParLevel2.GetById(idLevel2);
+
+            if (peso <= 0)
+                peso = 1;
+
+            objLelvel2Level3ToSave = new ParLevel3Level2()
+            {
+                ParLevel2_Id = idLevel2,
+                ParLevel3_Id = idLevel3,
+                Weight = peso,
+            };
+
+            if (level2.HasGroupLevel3)
+            {
+                //objLelvel2Level3ToSave.ParLevel3Group_Id = level2.ParLevel3Group;
+            }
+        
+
+            _baseRepoParLevel3Level2.AddOrUpdate(objLelvel2Level3ToSave);
+            ParLevel3Level2DTO objtReturn = Mapper.Map<ParLevel3Level2DTO>(objLelvel2Level3ToSave);
+            return objtReturn;
+        }
+
+        public ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2Level3)
+        {
+            var objToSave = new ParLevel3Level2Level1()
+            {
+                ParLevel1_Id = idLevel1,
+                ParLevel3Level2_Id = idLevel2Level3
+            };
+
+            _baseRepoParLevel3Level2Level1.AddOrUpdate(objToSave);
+
+            return Mapper.Map<ParLevel3Level2Level1DTO>(objToSave);
+        }
+
+        #endregion
 
         #endregion
     }
