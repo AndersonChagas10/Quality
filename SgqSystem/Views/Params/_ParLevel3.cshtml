@@ -2,8 +2,8 @@
 @using SgqSystem.Helpers
 @{
     ViewBag.Title = "ParLeve3";
-    var url = Url.Action("AddUpdateLevel3", "api/ParamsApi"); //URL relativa
-    var urlGetLevel1 = Url.Action("GetParLevel3ById", "api/ParamsApi"); //URL relativa
+  //  var url = Url.Action("AddUpdateLevel3", "api/ParamsApi"); //URL relativa
+  //  var urlGetLevel1 = Url.Action("GetParLevel3ById", "api/ParamsApi"); //URL relativa
 }
 <div id="newLevel3Modal">
     @using (Html.BeginForm())
@@ -110,26 +110,25 @@
             }
         });
 
-        var url1 = '@Html.Raw(url)';
         /*
             Serializa objeto usando bind de property Name
             $('form').serializeObject();
         */
-        $.fn.serializeObject = function () {
-            var o = {};
-            var a = this.serializeArray();
-            $.each(a, function () {
-                if (o[this.name] !== undefined) {
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
-                    }
-                    o[this.name].push(this.value || '');
-                } else {
-                    o[this.name] = this.value || '';
-                }
-            });
-            return o;
-        };
+        //$.fn.serializeObject = function () {
+        //    var o = {};
+        //    var a = this.serializeArray();
+        //    $.each(a, function () {
+        //        if (o[this.name] !== undefined) {
+        //            if (!o[this.name].push) {
+        //                o[this.name] = [o[this.name]];
+        //            }
+        //            o[this.name].push(this.value || '');
+        //        } else {
+        //            o[this.name] = this.value || '';
+        //        }
+        //    });
+        //    return o;
+        //};
 
         ///*Inicio Submit Level3*/
         //var indexParamsLevel3 = {

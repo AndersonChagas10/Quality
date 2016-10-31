@@ -138,7 +138,7 @@
                                     <tbody>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.DropDownList("selectCounter", Model.paramsDdl.DdlParCounter_Level2, htmlAttributes: new { @class = "form-control input-erp input-sm", @id = "selectCounter" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
-                                            @Table.GerarColunaButton(@Html.DropDownList("selectLocal", Model.paramsDdl.DdlParLocal_Level2, htmlAttributes: new { @class = "form-control input-erp input-sm", @id = "selectLocal" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button: "<button id=\"btnSaveCounter\" onclick=\"Counter.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                            @Table.GerarColunaButton(@Html.DropDownList("selectLocal", Model.paramsDdl.DdlParLocal_Level2, htmlAttributes: new { @class = "form-control input-erp input-sm", @id = "selectLocal" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button: "<button id=\"btnSaveCounter\" type=\"button\" onclick=\"Counter.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>
@@ -173,7 +173,7 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level2</button>
+                <button  type="button" onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level2</button>
             </div>
         </div>
     }
@@ -210,20 +210,6 @@
         };
 
 
-        /*Inicio Submit Level1*/
-        var indexParamsLevel2 = {
-
-            enviarDadosParaApi: function (e) {
-                var dados = $('form').serializeObject();
-
-                $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                    console.log(objetoReturn);
-                    console.log(statusmessage);
-                    console.log(respostaCompleta);
-                });
-
-            },
-        }
         $('#BtnAddContadorMonitoramento').click(function (e) {
 
             e.preventDefault();

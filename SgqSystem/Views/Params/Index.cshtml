@@ -2,7 +2,9 @@
 
 @{
     ViewBag.Title = "ParLeve1";
-    var url = Url.Action("AddUpdateLevel1", "api/ParamsApi"); //URL relativa
+    var url1 = Url.Action("AddUpdateLevel1", "api/ParamsApi"); //URL relativa
+    var url2 = Url.Action("AddUpdateLevel2", "api/ParamsApi"); //URL relativa
+    var url3 = Url.Action("AddUpdateLevel3", "api/ParamsApi"); //URL relativa
     var urlGetLevel1 = Url.Action("GetParLevel1ById", "api/ParamsApi"); //URL relativa
     var urlGetLevel2 = Url.Action("GetParLevel2ById", "api/ParamsApi"); //URL relativa
     var urlGetLevel3 = Url.Action("GetParLevel3ById", "api/ParamsApi"); //URL relativa
@@ -199,7 +201,7 @@
             $('#parLevel1Select2').val('-1').trigger('select2:select').change();
         });
 
-      
+
         var monthNames = [
            '@Resources.Resource.january',
            '@Resources.Resource.february',
@@ -239,7 +241,9 @@
         watcher();
 
 
-        var url1 = '@Html.Raw(@url)';
+        var url1 = '@Html.Raw(@url1)';
+        var url2 = '@Html.Raw(@url2)';
+        var url3 = '@Html.Raw(@url3)';
 
         /*
             Serializa objeto usando bind de property Name
@@ -420,13 +424,13 @@
 
             enviarDadosParaApi: function (e) {
 
-                if ($('#newLevel2Modal > form').valid()) {
+                if ($('#newLevel2Modal > form')) {
                     Cabecalhos.UpdateCabecalhos();
                     Cluster.UpdateCounter();
                     Counter.UpdateCounters();
                     var dados = $('#newLevel2Modal > form').serializeObject();
 
-                    $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                    $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                         if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
                             $.get('GetParLevel2ById/' + objetoReturn.paramsDto.parLevel2Dto.Id, function (obj, responseText, xhr) {
                                 if (obj != null) {
@@ -457,7 +461,7 @@
                     Counter.UpdateCounters();
                     var dados = $('#newLevel3Modal > form').serializeObject();
 
-                    $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                    $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                         if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
                             $.get('GetParLevel3ById/' + objetoReturn.paramsDto.parLevel3Dto.Id, function (obj, responseText, xhr) {
                                 if (obj != null) {
@@ -485,7 +489,7 @@
                 if($('#idLevel1').val() != null)
                     if ($('#idLevel1').val() > 0)
                     {
-                        alert("a");     
+                        alert("a");
 
                     }
 
