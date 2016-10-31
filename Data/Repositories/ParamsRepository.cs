@@ -290,6 +290,11 @@ namespace Data.Repositories
 
         public void AddUpdateParLevel2(ParLevel2 paramLevel2)
         {
+            //Mock
+            if (paramLevel2.ParDepartment_Id == null)
+            {
+                paramLevel2.ParDepartment_Id = 1;
+            }
             if (paramLevel2.Id == 0)
             {
                 db.ParLevel2.Add(paramLevel2);
@@ -581,7 +586,10 @@ namespace Data.Repositories
 
         public void AddUpdateParLevel3Value(ParLevel3Value paramLevel3Value, int ParLevel3_Id)
         {
-
+            if(paramLevel3Value.ParMeasurementUnit_Id == -1)
+            {
+                paramLevel3Value.ParMeasurementUnit_Id = null;
+            }
             paramLevel3Value.ParCompany_Id = 1;
             paramLevel3Value.ParLevel3_Id = ParLevel3_Id;
             if (paramLevel3Value.Id == 0)
