@@ -127,6 +127,7 @@
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
                                                             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_accordion" href="#level2_collapse" aria-expanded="false"> @Resources.Resource.level2 </a>
+                                                            <a id="vinculoLevel1">Vincular ao nivel 1</a>
                                                         </h4>
                                                     </div>
                                                     <div id="level2_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -151,6 +152,7 @@
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
                                                             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false"> @Resources.Resource.level3 </a>
+                                                            <a id="vinculoLevel2">Vincular ao nivel 2</a>
                                                         </h4>
                                                     </div>
                                                     <div id="level3_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -474,6 +476,27 @@
             },
         }
         /*Fim Submit Level3*/
+
+
+        /*Vincula Level 3 ao level2*/
+        $('#vinculoLevel1').on('click', function (e) {
+
+            if($('#idLevel1').val() != undefined)
+                if($('#idLevel1').val() != null)
+                    if ($('#idLevel1').val() > 0)
+                    {
+                        alert("a");     
+
+                    }
+
+
+        });
+
+        /*Vincula Level 2 ao level1*/
+        $('#vinculoLevel2').on('click', function (e) {
+            alert("b");
+
+        });
 
     </script>
 </body>

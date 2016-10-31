@@ -16,8 +16,8 @@ namespace Dominio.Services
         #region Constructor
         /*Repo Genericos, carregam ddls*/
         private IBaseRepository<ParLevel1> _baseRepoParLevel1;
-        private IBaseRepository<ParLevel1> _baseRepoParLevel2;
-        private IBaseRepository<ParLevel1> _baseRepoParLevel3;
+        private IBaseRepository<ParLevel2> _baseRepoParLevel2;
+        private IBaseRepository<ParLevel3> _baseRepoParLevel3;
         private IBaseRepository<ParLevel1XCluster> _baseRepoParLevel1XCluster;
         private IBaseRepository<ParFrequency> _baseParFrequency;
         private IBaseRepository<ParConsolidationType> _baseParConsolidationType;
@@ -38,7 +38,6 @@ namespace Dominio.Services
         private IBaseRepository<ParMultipleValues> _baseRepoParMultipleValues;
         private IBaseRepository<ParEvaluation> _baseParEvaluation;
         private IBaseRepository<ParSample> _baseParSample;
-        private IBaseRepository<ParLevel3> _baseParLevel3;
         private IBaseRepository<ParLevel3Value> _baseParLevel3Value;
         private IBaseRepository<ParLevel3InputType> _baseParLevel3InputType;
         private IBaseRepository<ParLevel3BoolFalse> _baseParLevel3BoolFalse;
@@ -50,8 +49,8 @@ namespace Dominio.Services
         private IParamsRepository _paramsRepo;
 
         public ParamsDomain(IBaseRepository<ParLevel1> baseRepoParLevel1,
-                            IBaseRepository<ParLevel1> baseRepoParLevel2,
-                            IBaseRepository<ParLevel1> baseRepoParLevel3,
+                            IBaseRepository<ParLevel2> baseRepoParLevel2,
+                            IBaseRepository<ParLevel3> baseRepoParLevel3,
                             IBaseRepository<ParLevel1XCluster> baseParLevel1XCluster,
                             IBaseRepository<ParFrequency> baseParFrequency,
                             IBaseRepository<ParConsolidationType> baseParConsolidationType,
@@ -73,7 +72,6 @@ namespace Dominio.Services
                             IBaseRepository<ParHeaderField> baseRepoParHeaderField,
                             IBaseRepository<ParEvaluation> baseParEvaluation,
                             IBaseRepository<ParSample> baseParSample,
-                            IBaseRepository<ParLevel3> baseParLevel3,
                             IBaseRepository<ParLevel3Value> baseParLevel3Value,
                             IBaseRepository<ParLevel3InputType> baseParLevel3InputType,
                             IBaseRepository<ParCounterXLocal> baseRepoParCounterXLocal,
@@ -107,7 +105,6 @@ namespace Dominio.Services
             _baseParCompany = baseParCompany;
             _baseParEvaluation = baseParEvaluation;
             _baseParSample = baseParSample;
-            _baseParLevel3 = baseParLevel3;
             _baseParLevel3Value = baseParLevel3Value;
             _baseParLevel3InputType = baseParLevel3InputType;
             _baseParMeasurementUnit = baseParMeasurementUnit;
