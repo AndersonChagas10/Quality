@@ -303,6 +303,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
+    <Compile Include="Controllers\Exemplo\HtmlTesteController.cs" />
     <Compile Include="Controllers\Globalization\GlobalizationController.cs" />
     <Compile Include="Controllers\Login\AccesDeniedController.cs" />
     <Compile Include="Controllers\Api\File\FileController.cs" />
@@ -1109,6 +1110,7 @@
     <Content Include="Views\Params\_ParLevel2.cshtml" />
     <Content Include="Views\Params\_ParLevel3.cshtml" />
     <Content Include="Views\Params\Index3.cshtml" />
+    <Content Include="Views\HtmlTeste\_IndexTeste.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
