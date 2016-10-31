@@ -44,6 +44,8 @@
                             @Table.GerarColunaLabel(@Html.Label(Resources.Resource.not_conformity_rule))
                         </tr>
                         <tr class="row">
+
+                            
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.rule), Table.PosicaoLabel.top)
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
                         </tr>
