@@ -22,6 +22,7 @@ namespace SgqSystem
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/ScriptTables").Include(
+                    //"~/Scripts/DataTables/datatables.min.js",
                     "~/Scripts/DataTables/jquery.dataTables.min.js",
                     "~/Scripts/DataTables/dataTables.buttons.min.js",
                     "~/Scripts/DataTables/buttons.flash.min.js",
@@ -31,8 +32,8 @@ namespace SgqSystem
                     "~/Scripts/DataTables/buttons.html5.min.js",
                     "~/Scripts/DataTables/buttons.print.min.js",
                     "~/Scripts/DataTables/buttons.colVis.min.js",
-                    "~/Scripts/DataTables/buttons.print.min.js",
-                    "~/Scripts/DataTables/dataTables.responsive.min.js"
+                    "~/Scripts/DataTables/buttons.print.min.js"
+                    //"~/Scripts/DataTables/dataTables.responsive.min.js"
                     //"~/Scripts/jbs.jquery.dataTables.configuration.js",
                     //"~/Scripts/dataTable.CRUD.js",
                     ));
@@ -56,6 +57,7 @@ namespace SgqSystem
 
 
             bundles.Add(new StyleBundle("~/Content/Tables").Include(
+                    //"~/Content/datatables.min.css",
                     "~/Content/DataTables/css/jquery.dataTables.min.css",
                     "~/Content/DataTables/css/buttons.dataTables.min.css",
                     "~/SgqSystem/Scripts/theme/select2/dist/css/select2.min.css" 
