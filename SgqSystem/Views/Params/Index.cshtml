@@ -540,7 +540,7 @@
             var level2Selecionado = $('#parLevel2Select2 option:selected');
             var idLevel3Level2 = 0;
 
-            if (idLevel2 == null || idLevel2 == undefined || idLevel2 <= 0) {
+            if (idLevel2 == null || idLevel2 == undefined || idLevel2 <= 0 || idLevel1 == undefined || idLevel1 == null || idLevel1 <= 0) {
                 alert('O level 2 deve estar salvo e vinculado a um level3 para ser Vinculado ao Level1.')
                 return;
             }
@@ -553,6 +553,7 @@
                     $.get(vinculoL1L2 + '/' + idLevel1 + '/' + idLevel3Level2, function (obj, responseText, xhr) {
                         if (obj != null) {
                             console.log(obj);
+                            console.log("Vinculado L3 com L2 ID" + obj.Id);
                         }
                     });
                 }
@@ -576,6 +577,7 @@
                             if (obj != null) {
                                 //console.log(obj)
                                 level2Selecionado.data('l2l3', obj);
+                                console.log("Vinculado L3 com L2 ID" + obj.Id);
                             }
                         });
 

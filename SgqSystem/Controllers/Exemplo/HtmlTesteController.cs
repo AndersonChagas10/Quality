@@ -5,6 +5,7 @@ namespace SgqSystem.Controllers.Exemplo
 {
     public class HtmlTesteController : Controller
     {
+        [HttpPost]
         public ActionResult GetParLevel1ById()
         {
             return PartialView("_IndexTeste", new CollectionHtmlDTO());
