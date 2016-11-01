@@ -24,6 +24,7 @@
     @Styles.Render("~/Content/Theme")
     @Styles.Render("~/Content/Erp")
     @Styles.Render("~/Content/Tables")
+    @Styles.Render("~/Content/select2css")
 
 </head>
 
@@ -34,11 +35,10 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/ScriptTables")
     @Scripts.Render("~/bundles/theme")
+    @Scripts.Render("~/bundles/select2js")
 
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
-
 
     <div class="page-wrapper">
 
@@ -122,8 +122,9 @@
 
                                             <div class="row">
                                                 <div class="col-xs-3"><button class="btn btn-warning btn-block" id="btnNewLevel1">@Resources.Resource.new_level2</button></div>
-                                                <div class="col-xs-9">
-                                                    @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control", @id = "parLevel2Select2" })
+                                                <div class="col-xs-9" id="partialSelectLevel2">
+                                                    @*@Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control", @id = "parLevel2Select2" })*@
+                                                    @Html.Partial("~/Views/Params/_SelectBoxLevel2.cshtml", Model)
                                                 </div>
                                                 <hr />
                                             </div>
@@ -147,8 +148,9 @@
 
                                             <div class="row">
                                                 <div class="col-xs-3"><button class="btn btn-danger btn-block" id="btnNewLevel3">@Resources.Resource.new_level3</button></div>
-                                                <div class="col-xs-9">
-                                                    @Html.DropDownList("paramsDto.parLevel3Selected", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control", @id = "parLevel3Select2" })
+                                                <div class="col-xs-9" id="partialSelectLevel3">
+                                                    @*@Html.DropDownList("paramsDto.parLevel3Selected", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control", @id = "parLevel3Select2" })*@
+                                                    @Html.Partial("~/Views/Params/_SelectBoxLevel3.cshtml", Model)
                                                 </div>
                                                 <hr />
                                             </div>
@@ -334,6 +336,7 @@
                             if (obj != null) {
                                 $('#ParLevel1').empty();
                                 $('#ParLevel1').append(xhr.responseText);
+                                UpdateSelect2Level2(e.currentTarget.value);
                             }
                             if (e.currentTarget.value > 0) {
                                 $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
@@ -356,87 +359,46 @@
         }
         indexParamsLevel1.select2();
 
-
-        /*Inicio Select 2 Level2*/
-        $('#parLevel2Select2').select2({
-            //placeholder: {
-            //    id: "-1",
-            //    text: "Selecione..."
-            //},
-        }).on("select2:select", function (e) {
-
-            if (e.currentTarget.value == "") {
-                $('#ParLevel2').empty();
-                $('#ParLevel2').append(parLevel2Empty);
-                $('#level2Title').text('@Resources.Resource.new_level2');
-            } else {
-                $.get('GetParLevel2ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
-                    if (obj != null) {
-                        $('#ParLevel2').empty();
-                        $('#ParLevel2').append(xhr.responseText);
-                    }
-                    if (e.currentTarget.value > 0) {
-                        $('#level2Title').text('#' + $('#paramsDto_parLevel2Dto_Id').val() + ' - ' + $('#paramsDto_parLevel2Dto_Name').val());
-                    } else {
-                        $('#level2Title').text('@Resources.Resource.new_level2');
-                    }
-                });
-            }
-
-        }).on("select2:unselect", function (e) {
-
-            if (e.currentTarget.value == "") {
-                $('#ParLevel2').empty()
-                $('#ParLevel2').append(parLevel2Empty)
-                $('#level2Title').text('@Resources.Resource.new_level2');
-            }
-
-        });
-        /*Fim Select 2 Level2*/
-
-
-        /*Inicio Select 2 Level3*/
-        $('#parLevel3Select2').select2({
-            //placeholder: {
-            //    id: "-1",
-            //    text: "Selecione..."
-            //},
-        }).on("select2:select", function (e) {
-
-            if (e.currentTarget.value == "") {
-                $('#ParLevel3').empty();
-                $('#ParLevel3').append(parLevel3Empty);
-                $('#level3Title').text('@Resources.Resource.new_level3');
-            } else {
-                $.get('GetParLevel3ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
-                    if (obj != null) {
-                        $('#ParLevel3').empty();
-                        $('#ParLevel3').append(xhr.responseText);
-                    }
-                    if (e.currentTarget.value > 0) {
-                        $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
-                    } else {
-                        $('#level3Title').text('@Resources.Resource.new_level3');
-                    }
-                });
-            }
-
-        }).on("select2:unselect", function (e) {
-
-            if (e.currentTarget.value == "") {
-                $('#ParLevel3').empty()
-                $('#ParLevel3').append(parLevel3Empty)
-                $('#level3Title').text('@Resources.Resource.new_level3');
-            }
-
-        });
-        /*Fim Select 2 Level3*/
-
-       
-
-        /*Inicio Submit Level2*/
+        /*LEVEL 2*/
         var indexParamsLevel2 = {
+            new_level1: '@Resources.Resource.new_level2',
+            select2: function () {
+                $('#parLevel2Select2').select2({
+                    //placeholder: {
+                    //    id: "-1",
+                    //    text: "Selecione..."
+                    //},
+                }).on("select2:select", function (e) {
 
+                    if (e.currentTarget.value == "") {
+                        $('#ParLevel2').empty();
+                        $('#ParLevel2').append(parLevel2Empty);
+                        $('#level2Title').text(indexParamsLevel1.new_level1);
+                    } else {
+                        $.get('GetParLevel2ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
+                            if (obj != null) {
+                                $('#ParLevel2').empty();
+                                $('#ParLevel2').append(xhr.responseText);
+                                UpdateSelect2Level3(e.currentTarget.value);
+                            }
+                            if (e.currentTarget.value > 0) {
+                                $('#level2Title').text('#' + $('#paramsDto_parLevel2Dto_Id').val() + ' - ' + $('#paramsDto_parLevel2Dto_Name').val());
+                            } else {
+                                $('#level2Title').text(indexParamsLevel1.new_level1);
+                            }
+                        });
+                    }
+
+                }).on("select2:unselect", function (e) {
+
+                    if (e.currentTarget.value == "") {
+                        $('#ParLevel2').empty()
+                        $('#ParLevel2').append(parLevel2Empty)
+                        $('#level2Title').text(indexParamsLevel1.new_level1);
+                    }
+
+                });
+            },
             enviarDadosParaApi: function (e) {
 
                 if ($('#newLevel2Modal > form')) {
@@ -477,11 +439,47 @@
 
             },
         }
-        /*Fim Submit Level2*/
+        indexParamsLevel2.select2();
 
-        /*Inicio Submit Level3*/
+        /*LEVEL 3*/
         var indexParamsLevel3 = {
+            newLevel3: '@Resources.Resource.new_level3',
+            select2: function(){
+                $('#parLevel3Select2').select2({
+                    //placeholder: {
+                    //    id: "-1",
+                    //    text: "Selecione..."
+                    //},
+                }).on("select2:select", function (e) {
 
+                    if (e.currentTarget.value == "") {
+                        $('#ParLevel3').empty();
+                        $('#ParLevel3').append(parLevel3Empty);
+                        $('#level3Title').text(indexParamsLevel3.newLevel3);
+                    } else {
+                        $.get('GetParLevel3ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
+                            if (obj != null) {
+                                $('#ParLevel3').empty();
+                                $('#ParLevel3').append(xhr.responseText);
+                            }
+                            if (e.currentTarget.value > 0) {
+                                $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
+                            } else {
+                                $('#level3Title').text(indexParamsLevel3.newLevel3);
+                            }
+                        });
+                    }
+
+                }).on("select2:unselect", function (e) {
+
+                    if (e.currentTarget.value == "") {
+                        $('#ParLevel3').empty()
+                        $('#ParLevel3').append(parLevel3Empty)
+                        $('#level3Title').text(indexParamsLevel3.newLevel3);
+                    }
+
+                });
+            },
             enviarDadosParaApi: function (e) {
 
                 if ($('#newLevel3Modal > form').valid()) {
@@ -528,8 +526,7 @@
 
             },
         }
-        /*Fim Submit Level3*/
-
+        indexParamsLevel3.select2();
 
         /*Vincula Level 3 ao level2*/
         var vinculoL1L2 = '@Html.Raw(@vinculoL1L2)';
@@ -583,6 +580,22 @@
 
                     }
         });
+
+
+
+        function UpdateSelect2Level2(idLevel1) {
+            //$('#parLevel2Select2').select2("destroy").remove();
+            $('#partialSelectLevel2').load('UpdateSelectLevel2?id=' + idLevel1, function () {
+                indexParamsLevel2.select2();
+            });
+        }
+
+        function UpdateSelect2Level3(idLevel2) {
+            $('#parLevel3Select2').select2("destroy")
+            $('#partialSelectLevel3').load('UpdateSelectLevel3?id=' + idLevel2, function () {
+                indexParamsLevel3.select2();
+            });
+        }
 
     </script>
 </body>

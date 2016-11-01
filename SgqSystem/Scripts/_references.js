@@ -1,5 +1,6 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="../admin-lte/js/app.min.js" />
+/// <reference path="../content/bootstrap-switch/js/bootstrap-switch.js" />
 /// <reference path="../datacollect/a.js" />
 /// <reference path="aes.js" />
 /// <reference path="ai.0.15.0-build58334.js" />

@@ -189,7 +189,7 @@
                                                         @Html.ErrorManual("punishmentNameCabecalho2", "O campo Nome deve ser preechido para o Cabecalho.")
                                                     </td>
                                                     <td>
-                                                        <input type="number" id="objBinarioPunishmentValue2"  class="form-control input-sm">
+                                                        <input type="number" id="objBinarioPunishmentValue2" class="form-control input-sm">
                                                         @Html.ErrorManual("punishmentValueCabecalho2", "O campo Punição/Premiação deve ser selecionado para o Cabecalho.")
                                                     </td>
                                                 </tr>
@@ -350,11 +350,11 @@
                                     <tbody>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
-                                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button : "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"CounterLevel1.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"CounterLevel1.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>
-                                                               
+
                                 <div id="counterHidden1"></div>
                                 <div id="counterEditHidden1"></div>
 
@@ -384,15 +384,18 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <input type="button" id="btnSaveNewLevel1Modal" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary" value="Save level 1" />
             </div>
         </div>
-
+       
     }
 </div>
 
 <script>
+
+    var vinculosL2L3 = (@Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.listParLevel3Level2Level1Dto)));
+
 
     $('#paramsDto_parLevel1Dto_IsSpecific').on('switchChange.bootstrapSwitch', function (event, state) {
         if (state) {
@@ -1067,7 +1070,7 @@
     Cabecalhos.hideAllObj();
     $('#parFieldType').on('change', Cabecalhos.TipoChange);
     $('#paramsDto_parHeaderFieldDto_ParFieldType_Id').on('change', Cabecalhos.TipoChange);
-    
+
     $('.table-erp tbody tr').mouseenter(function (e) {
         $('.table-erp tbody tr').removeClass('hover');
         $(this).addClass('hover');
@@ -1079,6 +1082,10 @@
     Cluster.VerificaShowTable();
 
     $(document).ready(function () {
+
         defaults();
+
+        //verificaVinculos();
+
     });
 </script>

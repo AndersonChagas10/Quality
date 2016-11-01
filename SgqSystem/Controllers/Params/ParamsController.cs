@@ -33,13 +33,32 @@ namespace SgqSystem.Controllers.Params
 
         public ActionResult GetParLevel1ById(int id)
         {
-            if (id == -1) /*Retorna View Vazia*/
+            if (id == -1)/*Retorna View Vazia*/
                 return PartialView("_ParLevel1", ViewModel);
 
-            var viewModelPreenchido = ViewModel;
-            viewModelPreenchido.paramsDto.parLevel1Dto = _paramDomain.GetLevel1(id);
+            ViewModel.paramsDto.parLevel1Dto = _paramDomain.GetLevel1(id);
             /*Retorna View com Model ParLevel1 encontrado no DB.*/
-            return PartialView("_ParLevel1",  viewModelPreenchido);
+            return PartialView("_ParLevel1", ViewModel);
+        }
+
+        [HttpGet]
+        public ActionResult UpdateSelectLevel2(int id)
+        {
+            if (id == -1)/*Retorna View Vazia*/
+                return PartialView("_SelectBoxLevel2", ViewModel);
+
+            ViewModel.paramsDto.parLevel1Dto = _paramDomain.GetLevel1(id);
+            return PartialView("_SelectBoxLevel2", ViewModel);
+        }
+
+        [HttpGet]
+        public ActionResult UpdateSelectLevel3(int id)
+        {
+            if (id == -1)/*Retorna View Vazia*/
+                return PartialView("_SelectBoxLevel3", ViewModel);
+
+            ViewModel.paramsDto.parLevel2Dto = _paramDomain.GetLevel2(id);
+            return PartialView("_SelectBoxLevel3", ViewModel);
         }
 
         public ActionResult GetParLevel2ById(int id)

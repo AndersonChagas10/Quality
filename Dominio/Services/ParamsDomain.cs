@@ -170,6 +170,10 @@ namespace Dominio.Services
             /*Contadores*/
             retorno.contadoresIncluidos = Mapper.Map<List<ParCounterXLocalDTO>>(_baseRepoParCounterXLocal.GetAll().Where(r => r.ParLevel1_Id == retorno.Id && r.IsActive == true));
 
+            /*Level 2 e 3 vinculados*/
+            retorno.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(_baseRepoParLevel3Level2Level1.GetAll().Where(r => r.ParLevel1_Id == retorno.Id).ToList());
+            retorno.CreateSelectListParamsViewModelListLevel(Mapper.Map <List<ParLevel2DTO>>(_baseRepoParLevel2.GetAll()), retorno.listParLevel3Level2Level1Dto);
+
             return retorno;
         }
 
@@ -211,6 +215,10 @@ namespace Dominio.Services
         {
             /*ParLevel2*/
             var retorno = Mapper.Map<ParLevel2DTO>(_baseRepoParLevel2.GetById(idParLevel2));
+
+            /*Level 2 e 3 vinculados*/
+            retorno.listParLevel3Level2Dto = Mapper.Map<List<ParLevel3Level2DTO>>(_baseRepoParLevel3Level2.GetAll().Where(r => r.ParLevel2_Id == retorno.Id).ToList());
+            retorno.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3.GetAll()), retorno.listParLevel3Level2Dto);
 
             return retorno;
         }
@@ -340,6 +348,7 @@ namespace Dominio.Services
             var DdlParLevel3BoolTrue = Mapper.Map<List<ParLevel3BoolTrueDTO>>(_baseParLevel3BoolTrue.GetAll());
 
             var retorno = new ParamsDdl();
+
             retorno.SetDdls(DdlParConsolidation,
                             DdlFrequency,
                             DdlparLevel1,
@@ -357,7 +366,8 @@ namespace Dominio.Services
                             DdlParLevel3InputType,
                             DdlParMeasurementUnit,
                             DdlParLevel3BoolFalse,
-                            DdlParLevel3BoolTrue);
+                            DdlParLevel3BoolTrue
+                            );
             return retorno;
         }
 
