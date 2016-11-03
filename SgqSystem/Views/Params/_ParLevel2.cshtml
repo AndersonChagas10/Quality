@@ -158,17 +158,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @*@if (Model.paramsDto.parLevel1Dto.contadoresIncluidos != null)
+                                        @if (Model.paramsDto.listParCounterXLocal != null)
                                         {
-                                            foreach (var contadoresEditar in Model.paramsDto.parLevel1Dto.contadoresIncluidos)
+                                            foreach (var cl in Model.paramsDto.listParCounterXLocal)
                                             {
-                                                <tr>
-                                                    <td>@contadoresEditar.ParCounter.Name </td>
-                                                    <td>@contadoresEditar.ParLocal.Name </td>
-                                                    <td>&nbsp;<button type="button" class="btn btn-danger btn-sm" onclick="CounterLevel2.RemoveCounterEdicao($(this), @contadoresEditar.Id)"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                <tr id="@cl.Id">
+                                                    <td>@cl.ParCounter.Name </td>
+                                                    <td>@cl.ParLocal.Name</td>
+                                                    <td>&nbsp;<button type="button" class="btn btn-danger btn-sm" onclick="CounterLevel2.RemoveCounterEdicao()"><i class="fa fa-times" aria-hidden="true"></i></button></td>
                                                 </tr>
                                             }
-                                        }*@
+                                        }
                                     </tbody>
                                 </table>
                             </div>
@@ -378,6 +378,12 @@
         $(document).on('click', '#btnRemoveLevel3Group', function (e) {
             e.preventDefault();
             $(this).parents('.level03Group').remove();
+        });
+        $(document).ready(function () {
+
+            defaults();
+
+
         });
         /*Fim Submit Level1*/
 
