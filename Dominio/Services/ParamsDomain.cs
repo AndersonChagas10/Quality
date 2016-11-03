@@ -222,6 +222,12 @@ namespace Dominio.Services
             level2.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3.GetAll()), level2.listParLevel3Level2Dto);
 
             paramsDto.parEvaluationDto = Mapper.Map<ParEvaluationDTO>(_baseParEvaluation.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id));
+            paramsDto.parSampleDto = Mapper.Map<ParSampleDTO>(_baseParSample.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id));
+            paramsDto.parNotConformityRuleXLevelDto = Mapper.Map<ParNotConformityRuleXLevelDTO>(_baseParNotConformityRuleXLevel.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id));
+
+
+
+            //parNotConformityRuleXLevelDto
             paramsDto.parLevel2Dto = level2;
 
             return paramsDto;
