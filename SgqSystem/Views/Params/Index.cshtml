@@ -1,4 +1,5 @@
 ﻿@model SgqSystem.ViewModels.ParamsViewModel
+@using SgqSystem.Helpers
 
 @{
     ViewBag.Title = "ParLeve1";
@@ -167,6 +168,33 @@
                                                             <div id="ParLevel3">
                                                                 @Html.Partial("~/Views/Params/_ParLevel3.cshtml", Model)
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-group accordion" id="level3level2_accordion">
+                                                <div class="panel panel-success">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3level2_accordion" href="#level3level2_collapse" aria-expanded="false"> Vinculo Level3 com Level 2 </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="level3level2_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                        <div class="panel-body">
+                                                            <div id="ParLevel3level2">
+                                                                <table class="table-erp">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            @Table.GerarColuna(@Html.Label("Nivel 2"), @Html.Label("Nivel 2 Label"), Table.PosicaoLabel.top, null, null)
+                                                                            @Table.GerarColuna(@Html.Label("Nivel 3"), @Html.Label("Nivel 3 Label"), Table.PosicaoLabel.top, null, null)
+                                                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Level2.Weight, new { @class = "form-control input-sm" }), @Html.Label("Peso"), Table.PosicaoLabel.top, null, null)
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="3"><button>Ok</button></td>
+                                                                        </tr>
+
+                                                                    </tbody>
+                                                                </table>                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -396,7 +424,6 @@
                         $('#ParLevel2').append(parLevel2Empty)
                         $('#level2Title').text(indexParamsLevel1.new_level1);
                     }
-
                 });
             },
             enviarDadosParaApi: function (e) {
