@@ -47,3 +47,9 @@
 .padding-left{
     padding-left: 32px;
 }
+.margin-button{
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}

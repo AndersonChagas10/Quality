@@ -8,7 +8,7 @@ namespace SgqSystem.Controllers.Exemplo
         [HttpPost]
         public ActionResult GetParLevel1ById()
         {
-            return PartialView("_IndexTeste", new CollectionHtmlDTO());
+            return PartialView("_IndexTeste");
         }
     }
 }
