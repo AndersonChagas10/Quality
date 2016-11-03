@@ -33,33 +33,52 @@ namespace SgqSystem.Controllers.Params
 
         public ActionResult GetParLevel1ById(int id)
         {
-            if (id == -1) /*Retorna View Vazia*/
+            if (id == -1)/*Retorna View Vazia*/
                 return PartialView("_ParLevel1", ViewModel);
 
-            var viewModelPreenchido = ViewModel;
-            viewModelPreenchido.paramsDto.parLevel1Dto = _paramDomain.GetLevel1(id);
+            ViewModel.paramsDto.parLevel1Dto = _paramDomain.GetLevel1(id);
             /*Retorna View com Model ParLevel1 encontrado no DB.*/
-            return PartialView("_ParLevel1",  viewModelPreenchido);
+            return PartialView("_ParLevel1", ViewModel);
+        }
+
+        [HttpGet]
+        public ActionResult UpdateSelectLevel2(int id)
+        {
+            if (id == -1)/*Retorna View Vazia*/
+                return PartialView("_SelectBoxLevel2", ViewModel);
+
+            ViewModel.paramsDto.parLevel1Dto = _paramDomain.GetLevel1(id);
+            return PartialView("_SelectBoxLevel2", ViewModel);
+        }
+
+        [HttpGet]
+        public ActionResult UpdateSelectLevel3(int id)
+        {
+            if (id == -1)/*Retorna View Vazia*/
+                return PartialView("_SelectBoxLevel3", ViewModel);
+
+            ViewModel.paramsDto = _paramDomain.GetLevel2(id);
+            return PartialView("_SelectBoxLevel3", ViewModel);
         }
 
         public ActionResult GetParLevel2ById(int id)
         {
-            if (id == -1) /*Retorna View Vazia*/
+            if (id <= 0) /*Retorna View Vazia*/
                 return PartialView("_ParLevel2", ViewModel);
 
             var viewModelPreenchido = ViewModel;
-            viewModelPreenchido.paramsDto.parLevel2Dto = _paramDomain.GetLevel2(id);
+            viewModelPreenchido.paramsDto = _paramDomain.GetLevel2(id);
             /*Retorna View com Model ParLevel2 encontrado no DB.*/
             return PartialView("_ParLevel2", viewModelPreenchido);
         }
 
-        public ActionResult GetParLevel3ById(int id)
+        public ActionResult GetParLevel3ById(int id, int idParLevel2)
         {
-            if (id == -1) /*Retorna View Vazia*/
+            if (id <= 0) /*Retorna View Vazia*/
                 return PartialView("_ParLevel3", ViewModel);
 
             var viewModelPreenchido = ViewModel;
-            viewModelPreenchido.paramsDto.parLevel3Dto = _paramDomain.GetLevel3(id);
+            viewModelPreenchido.paramsDto.parLevel3Dto = _paramDomain.GetLevel3(id, idParLevel2);
             /*Retorna View com Model ParLevel3 encontrado no DB.*/
             return PartialView("_ParLevel3", viewModelPreenchido);
         }

@@ -301,6 +301,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
     <Compile Include="Controllers\Exemplo\HtmlTesteController.cs" />
@@ -440,6 +441,12 @@
     <Content Include="Content\bootstrap-datepicker3.min.css" />
     <Content Include="Content\bootstrap-datepicker3.standalone.css" />
     <Content Include="Content\bootstrap-datepicker3.standalone.min.css" />
+    <Content Include="Content\bootstrap-switch\css\bootstrap2\bootstrap-switch.css" />
+    <Content Include="Content\bootstrap-switch\css\bootstrap2\bootstrap-switch.min.css" />
+    <Content Include="Content\bootstrap-switch\css\bootstrap3\bootstrap-switch.css" />
+    <Content Include="Content\bootstrap-switch\css\bootstrap3\bootstrap-switch.min.css" />
+    <Content Include="Content\bootstrap-switch\js\bootstrap-switch.js" />
+    <Content Include="Content\bootstrap-switch\js\bootstrap-switch.min.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -605,6 +612,7 @@
     <Content Include="Content\gridmvc.datepicker.min.css" />
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
+    <Content Include="Content\select2.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -872,6 +880,7 @@
     <Content Include="Scripts\highcharts\4.2.0\themes\skies.js" />
     <None Include="Properties\PublishProfiles\DeployUsbNaVPN.pubxml" />
     <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
+    <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\PublishEUA.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
@@ -1113,6 +1122,11 @@
     <Content Include="Views\Params\_ParLevel3.cshtml" />
     <Content Include="Views\Params\Index3.cshtml" />
     <Content Include="Views\HtmlTeste\_IndexTeste.cshtml" />
+    <Content Include="Views\Params\_SelectBoxLevel2.cshtml" />
+    <Content Include="Views\Params\_SelectBoxLevel3.cshtml" />
+    <Content Include="Views\Params\_LeftLayout.cshtml" />
+    <Content Include="Views\Params\_Navbar.cshtml" />
+    <Content Include="Views\Params\_RightLayout.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

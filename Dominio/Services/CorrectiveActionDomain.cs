@@ -127,9 +127,9 @@ namespace Dominio.Services
 
                 var resultMapped = Mapper.Map<CorrectiveActionDTO>(result);
 
-                resultMapped.NameSlaughter = _userSgq.FirstOrDefault(r => r.Id == result.SlaughterId).Name;
-                resultMapped.NameTechinical = _userSgq.FirstOrDefault(r => r.Id == result.TechinicalId).Name;
-                resultMapped.AuditorName = _userSgq.FirstOrDefault(r => r.Id == result.AuditorId).Name;
+                resultMapped.NameSlaughter = _userSgq.FirstOrDefault(r => r.Id == result.SlaughterId).FullName;
+                resultMapped.NameTechinical = _userSgq.FirstOrDefault(r => r.Id == result.TechinicalId).FullName;
+                resultMapped.AuditorName = _userSgq.FirstOrDefault(r => r.Id == result.AuditorId).FullName;
 
                 resultMapped.Level01Id = result.CollectionLevel02.Level01Id;
                 resultMapped.Level02Id = result.CollectionLevel02.Level02Id;

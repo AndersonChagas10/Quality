@@ -170,6 +170,10 @@ namespace Dominio.Services
             /*Contadores*/
             retorno.contadoresIncluidos = Mapper.Map<List<ParCounterXLocalDTO>>(_baseRepoParCounterXLocal.GetAll().Where(r => r.ParLevel1_Id == retorno.Id && r.IsActive == true));
 
+            /*Level 2 e 3 vinculados*/
+            retorno.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(_baseRepoParLevel3Level2Level1.GetAll().Where(r => r.ParLevel1_Id == retorno.Id).ToList());
+            retorno.CreateSelectListParamsViewModelListLevel(Mapper.Map <List<ParLevel2DTO>>(_baseRepoParLevel2.GetAll()), retorno.listParLevel3Level2Level1Dto);
+
             return retorno;
         }
 
@@ -183,7 +187,7 @@ namespace Dominio.Services
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel2 saveParamLevel2 = Mapper.Map<ParLevel2>(paramsDto.parLevel2Dto);
             List<ParLevel3Group> listaParLevel3Group = Mapper.Map<List<ParLevel3Group>>(paramsDto.listParLevel3GroupDto);
-            List<ParCounterXLocal> listParCounterXLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.listParCounterXLocalDto);
+            List<ParCounterXLocal> listParCounterXLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.listParCounterXLocal);
             ParNotConformityRuleXLevel saveParamNotConformityRuleXLevel = Mapper.Map<ParNotConformityRuleXLevel>(paramsDto.parNotConformityRuleXLevelDto);
             ParEvaluation saveParamEvaluation = Mapper.Map<ParEvaluation>(paramsDto.parEvaluationDto);
             ParSample saveParamSample = Mapper.Map<ParSample>(paramsDto.parSampleDto);
@@ -207,12 +211,26 @@ namespace Dominio.Services
         /// </summary>
         /// <param name="IdParLevel2"></param>
         /// <returns></returns>
-        public ParLevel2DTO GetLevel2(int idParLevel2)
+        public ParamsDTO GetLevel2(int idParLevel2)
         {
             /*ParLevel2*/
-            var retorno = Mapper.Map<ParLevel2DTO>(_baseRepoParLevel2.GetById(idParLevel2));
+            var paramsDto = new ParamsDTO();
+            var level2 = Mapper.Map<ParLevel2DTO>(_baseRepoParLevel2.GetById(idParLevel2));
 
-            return retorno;
+            /*Level 2 e 3 vinculados*/
+            level2.listParLevel3Level2Dto = Mapper.Map<List<ParLevel3Level2DTO>>(_baseRepoParLevel3Level2.GetAll().Where(r => r.ParLevel2_Id == level2.Id).ToList());
+            level2.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3.GetAll()), level2.listParLevel3Level2Dto);
+
+            paramsDto.parEvaluationDto = Mapper.Map<ParEvaluationDTO>(_baseParEvaluation.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id));
+            paramsDto.parSampleDto = Mapper.Map<ParSampleDTO>(_baseParSample.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id));
+            paramsDto.parNotConformityRuleXLevelDto = Mapper.Map<ParNotConformityRuleXLevelDTO>(_baseParNotConformityRuleXLevel.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id));
+
+
+
+            //parNotConformityRuleXLevelDto
+            paramsDto.parLevel2Dto = level2;
+
+            return paramsDto;
         }
 
         #endregion
@@ -242,10 +260,19 @@ namespace Dominio.Services
         /// </summary>
         /// <param name="IdParLevel2"></param>
         /// <returns></returns>
-        public ParLevel3DTO GetLevel3(int idParLevel3)
+        public ParLevel3DTO GetLevel3(int idParLevel3, int idParLevel2)
         {
             /*ParLevel3*/
             var retorno = Mapper.Map<ParLevel3DTO>(_baseRepoParLevel3.GetById(idParLevel3));
+            retorno.ponstoDoVinculo = 1;
+            if (idParLevel2 > 0)
+            {
+                var results = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3);
+                if (results != null)
+                {
+                    retorno.ponstoDoVinculo = results.Weight;
+                }
+            }
 
             return retorno;
         }
@@ -317,10 +344,12 @@ namespace Dominio.Services
         public ParamsDdl CarregaDropDownsParams()
         {
             var DdlParConsolidation = Mapper.Map<List<ParConsolidationTypeDTO>>(_baseParConsolidationType.GetAll());
+
             var DdlFrequency = Mapper.Map<List<ParFrequencyDTO>>(_baseParFrequency.GetAll());
             var DdlparLevel1 = Mapper.Map<List<ParLevel1DTO>>(_baseRepoParLevel1.GetAll());
             var DdlparLevel2 = Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2.GetAll());
             var DdlparLevel3 = Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3.GetAll());
+
             var DdlparCluster = Mapper.Map<List<ParClusterDTO>>(_baseParCluster.GetAll());
             var DdlparLevelDefinition = Mapper.Map<List<ParLevelDefinitonDTO>>(_baseParLevelDefiniton.GetAll());
             var DdlParFieldType = Mapper.Map<List<ParFieldTypeDTO>>(_baseParFieldType.GetAll());
@@ -340,11 +369,16 @@ namespace Dominio.Services
             var DdlParLevel3BoolTrue = Mapper.Map<List<ParLevel3BoolTrueDTO>>(_baseParLevel3BoolTrue.GetAll());
 
             var retorno = new ParamsDdl();
+
+            retorno.SetDdlsNivel123(DdlparLevel1,
+                            DdlparLevel2,
+                            DdlparLevel3);
+
             retorno.SetDdls(DdlParConsolidation,
                             DdlFrequency,
-                            DdlparLevel1,
-                            DdlparLevel2,
-                            DdlparLevel3,
+                            //DdlparLevel1,
+                            //DdlparLevel2,
+                            //DdlparLevel3,
                             DdlparCluster,
                             DdlparLevelDefinition,
                             DdlParFieldType,
@@ -357,15 +391,16 @@ namespace Dominio.Services
                             DdlParLevel3InputType,
                             DdlParMeasurementUnit,
                             DdlParLevel3BoolFalse,
-                            DdlParLevel3BoolTrue);
+                            DdlParLevel3BoolTrue
+                            );
             return retorno;
         }
 
-
+        #endregion
 
         #region Vinculo L3L2
 
-        public ParLevel3Level2DTO AddVinculoL3L2(int idLevel2, int idLevel3, int peso)
+        public ParLevel3Level2DTO AddVinculoL3L2(int idLevel2, int idLevel3, decimal peso)
         {
             ParLevel3Level2 objLelvel2Level3ToSave;
             var level2 = _baseRepoParLevel2.GetById(idLevel2);
@@ -380,24 +415,42 @@ namespace Dominio.Services
                 Weight = peso,
             };
 
-            if (level2.HasGroupLevel3)
+            var existente = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
+            if (existente != null)
+            {
+                objLelvel2Level3ToSave = existente;
+                objLelvel2Level3ToSave.Weight = peso;
+            }
+
+
+
+            if (level2.HasGroupLevel3)// MOCK
             {
                 //objLelvel2Level3ToSave.ParLevel3Group_Id = level2.ParLevel3Group;
             }
-        
+
 
             _baseRepoParLevel3Level2.AddOrUpdate(objLelvel2Level3ToSave);
             ParLevel3Level2DTO objtReturn = Mapper.Map<ParLevel3Level2DTO>(objLelvel2Level3ToSave);
             return objtReturn;
         }
 
-        public ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2Level3)
+        public ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2, int idLevel3)
         {
+            var existsL3L2 = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
+            if (existsL3L2 == null)
+                throw new ExceptionHelper("É necessário vincular o level3 ao level 2 antes de realizar esta operação.");
+
+            var vinculoLevel2Level3 = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
             var objToSave = new ParLevel3Level2Level1()
             {
                 ParLevel1_Id = idLevel1,
-                ParLevel3Level2_Id = idLevel2Level3
+                ParLevel3Level2_Id = vinculoLevel2Level3.Id
             };
+
+            var exists = _baseRepoParLevel3Level2Level1.GetAll().FirstOrDefault(r => r.ParLevel3Level2_Id == vinculoLevel2Level3.Id);
+            if (exists != null)
+                objToSave.Id = exists.Id;
 
             _baseRepoParLevel3Level2Level1.AddOrUpdate(objToSave);
 
@@ -406,6 +459,5 @@ namespace Dominio.Services
 
         #endregion
 
-        #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿using Application.Interface;
+﻿using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
@@ -11,10 +11,10 @@ namespace SgqSystem.Controllers.Api
     public class CorrectiveActionController : ApiController
     {
 
-        private readonly ICorrectiveActionApp _correctiveActionAppService;
-        private readonly IUserApp _userAppService;
+        private readonly ICorrectiveActionDomain _correctiveActionAppService;
+        private readonly IUserDomain _userAppService;
 
-        public CorrectiveActionController(ICorrectiveActionApp correctiveActionAppService, IUserApp userAppService)
+        public CorrectiveActionController(ICorrectiveActionDomain correctiveActionAppService, IUserDomain userAppService)
         {
             _correctiveActionAppService = correctiveActionAppService;
             _userAppService = userAppService;

@@ -13,7 +13,7 @@ namespace SgqSystem.Handlres
         {
 
             LogException(context.Exception);
-            context.Response = context.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, context.Exception.ToString());
+            context.Response = context.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, context.Exception.Message.ToString());
             base.OnException(context);
         }
 

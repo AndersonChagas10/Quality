@@ -42,25 +42,28 @@ namespace SgqSystem
                       "~/Scripts/modernizr-*"));
             
             bundles.Add(new ScriptBundle("~/bundles/theme").Include(
-                        "~/Scripts/theme/select2/dist/js/select2.min.js",
                         "~/Content/bootstrap-switch/js/bootstrap-switch.min.js",
                         "~/Scripts/theme/js/app.min.js"));
-            
+
+            bundles.Add(new ScriptBundle("~/bundles/select2js").Include(
+                     "~/Scripts/select2.min.js"));
+
             #endregion
 
             #region Styles
 
             bundles.Add(new StyleBundle("~/Content/General").Include(
                       "~/Content/bootstrap.css",
-                      //"~/Content/bootstrap-*",C:\Users\Celso\Source\Repos\ddd.bitbucket7\SgqSystem\Content\bootstrap-theme.css
                       "~/Content/bootstrap-theme.min.css.map"));
+
+            bundles.Add(new StyleBundle("~/Content/select2css").Include(
+                   "~/Content/select2.min.css"));
 
 
             bundles.Add(new StyleBundle("~/Content/Tables").Include(
                     //"~/Content/datatables.min.css",
                     "~/Content/DataTables/css/jquery.dataTables.min.css",
-                    "~/Content/DataTables/css/buttons.dataTables.min.css",
-                    "~/SgqSystem/Scripts/theme/select2/dist/css/select2.min.css" 
+                    "~/Content/DataTables/css/buttons.dataTables.min.css"
                 ));
 
             bundles.Add(new StyleBundle("~/Content/Theme").Include(
@@ -68,7 +71,6 @@ namespace SgqSystem
                 "~/Scripts/theme/css/darkblue.min.css",
                 "~/Scripts/theme/font-awesome-4.6.3/css/font-awesome.min.css",
                 "~/Scripts/theme/css/layout.min.css",
-                "~/Scripts/theme/select2/dist/css/select2.min.css",
                 "~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css"
             ));
 

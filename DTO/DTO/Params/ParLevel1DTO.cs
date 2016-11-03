@@ -1,6 +1,8 @@
 ﻿using DTO.BaseEntity;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace DTO.DTO.Params
 {
@@ -82,6 +84,43 @@ namespace DTO.DTO.Params
         public List<int> removerParCluster { get; set; }
         public List<int> removerParCounterXlocal { get; set; }
         public List<ParCounterXLocalDTO> contadoresIncluidos { get; set; }
+
+        public List<ParLevel3Level2Level1DTO> listParLevel3Level2Level1Dto { get; set; }
+
+        public IEnumerable<SelectListItem> DdlLevel2Vinculados { get; set; }
+        
+        public void CreateSelectListParamsViewModelListLevel(List<ParLevel2DTO> listLevel2, List<ParLevel3Level2Level1DTO> listParLevel3Level2Level1Dto)
+        {
+
+            List<SelectListItem> retorno = new List<SelectListItem>();
+            retorno.Insert(0, new SelectListItem() { Text = "Selecione...", Value = "-1" });
+            var counter = 1;
+
+
+            var group = new SelectListGroup() { Name = "Não vinculados:" };
+            var groupSelecionado = new SelectListGroup();
+            foreach (var i in listLevel2)
+            {
+                var text = i.Name;
+                var prop = i.Id;
+                var opt = new SelectListItem() { Text = i.Id.ToString() + " - " + i.Name, Value = i.Id.ToString() };
+                if (listParLevel3Level2Level1Dto.Where(r => r.ParLevel3Level2.ParLevel2_Id == i.Id).Count() > 0)
+                {
+                    groupSelecionado.Name = "Vianculado: " + listParLevel3Level2Level1Dto.FirstOrDefault(r => r.ParLevel3Level2.ParLevel2_Id == i.Id).ParLevel1.Name;
+                    opt.Group = groupSelecionado;
+                }
+                else
+                {
+                    opt.Group = group;
+                }
+
+                retorno.Insert(counter, opt);
+
+                counter++;
+            }
+
+            DdlLevel2Vinculados = retorno;
+        }
 
         #endregion
     }

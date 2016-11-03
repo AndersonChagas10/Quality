@@ -1,0 +1,10 @@
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+
+@if (Model.paramsDto.parLevel1Dto.DdlLevel2Vinculados != null)
+{
+    @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDto.parLevel1Dto.DdlLevel2Vinculados, htmlAttributes: new { @class = "form-control", @id = "parLevel2Select2" , style = "width: 100%" })
+}
+else
+{
+    @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control", @id = "parLevel2Select2" , style = "width: 100%" })
+}
