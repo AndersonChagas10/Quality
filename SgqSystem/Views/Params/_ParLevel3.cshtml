@@ -66,16 +66,37 @@
             </div>
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="modalPontos" role="dialog">
+            <div class="modal-dialog">
 
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+                        @Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.ponstoDoVinculo, new { @class = "form-control input-sm", min = "1" })
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="saveLevel3Level2()" id="savePontos">Vincular</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+                    </div>
+                </div>
 
-
-
-       
+            </div>
+        </div>
 
 
     }
     </div>
     <script>
+
+        $('#modalPontos').appendTo('body');
+
+        $('#modalPontos')
+
         $('#btnPositiveNegative').click(function (e) {
             $('#modalPositiveNegative').modal({ backdrop: false });
         });

@@ -63,7 +63,7 @@ namespace SgqSystem.Controllers.Params
 
         public ActionResult GetParLevel2ById(int id)
         {
-            if (id == -1) /*Retorna View Vazia*/
+            if (id <= 0) /*Retorna View Vazia*/
                 return PartialView("_ParLevel2", ViewModel);
 
             var viewModelPreenchido = ViewModel;
@@ -74,7 +74,7 @@ namespace SgqSystem.Controllers.Params
 
         public ActionResult GetParLevel3ById(int id, int idParLevel2)
         {
-            if (id == -1) /*Retorna View Vazia*/
+            if (id <= 0) /*Retorna View Vazia*/
                 return PartialView("_ParLevel3", ViewModel);
 
             var viewModelPreenchido = ViewModel;
