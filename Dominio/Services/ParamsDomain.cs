@@ -250,10 +250,13 @@ namespace Dominio.Services
         /// </summary>
         /// <param name="IdParLevel2"></param>
         /// <returns></returns>
-        public ParLevel3DTO GetLevel3(int idParLevel3)
+        public ParLevel3DTO GetLevel3(int idParLevel3, int idParLevel2)
         {
             /*ParLevel3*/
             var retorno = Mapper.Map<ParLevel3DTO>(_baseRepoParLevel3.GetById(idParLevel3));
+
+            if (idParLevel2 > 0)
+                retorno.ponstoDoVinculo = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3).Weight;
 
             return retorno;
         }

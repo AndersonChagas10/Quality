@@ -162,7 +162,7 @@
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
                                                             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false"> @Resources.Resource.level3 </a>
-                                                            <a id="vinculoLevel2">Vincular ao nivel 2</a>
+                                                            <a id="vinculoLevel2" data-toggle="modal" data-target="#modalPontos" >Vincular ao nivel 2</a>
                                                         </h4>
                                                     </div>
                                                     <div id="level3_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -211,6 +211,29 @@
                     </div>
                 </div>
                 <!-- END CONTENT BODY -->
+            </div>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="modalPontos" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Modal Header</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="number" min="1" value="1" name="Model.paramsDto.parLevel3Dto.ponstoDoVinculo"/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" >Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
         </div>
@@ -536,7 +559,7 @@
                         $('#ParLevel3').append(parLevel3Empty);
                         $('#level3Title').text(indexParamsLevel3.newLevel3);
                     } else {
-                        $.get('GetParLevel3ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
+                        $.get('GetParLevel3ById/' + e.currentTarget.value + "&", function (obj, responseText, xhr) {
                             if (obj != null) {
                                 $('#ParLevel3').empty();
                                 $('#ParLevel3').append(xhr.responseText);
@@ -562,12 +585,13 @@
             selectNormal: function () {
                 $('#parLevel3Select2').on("change", function () {
                     var valorSelecionado = $('#parLevel3Select2 option:selected').val();
+                    var valorSelecionadoLevel2 = $('#parLevel2Select2 :selected').val();
                     if (valorSelecionado == "") {
                         $('#ParLevel3').empty();
                         $('#ParLevel3').append(parLevel3Empty);
                         $('#level3Title').text(indexParamsLevel3.newLevel3);
                     } else {
-                        $.get('GetParLevel3ById/' + valorSelecionado, function (obj, responseText, xhr) {
+                        $.get('GetParLevel3ById',{id:valorSelecionado , idParLevel2:valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
                             if (obj != null) {
                                 $('#ParLevel3').empty();
                                 $('#ParLevel3').append(xhr.responseText);
@@ -721,6 +745,8 @@
         var vinculoL2L3 = '@Html.Raw(@vinculoL2L3)';
         $('#vinculoLevel2').on('click', function (e) {
 
+            var pontos = OpenModalPontos();
+
             var idLevel2 = $('#paramsDto_parLevel2Dto_Id').val();
             var idLevel3 = $('#paramsDto_parLevel3Dto_Id').val();
             var level2Selecionado = $('#parLevel2Select2 option:selected');
@@ -740,6 +766,14 @@
 
                     }
         });
+
+        function OpenModalPontos() {
+
+            ///*Abree modal*/
+            //$('#modalPontos').modal();
+
+            return $('#pontosVinculo').val();
+        }
 
         function UpdateSelect2Level2(idLevel1) {
             //$('#parLevel2Select2').select2("destroy").remove();
