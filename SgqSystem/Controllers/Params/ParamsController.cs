@@ -57,7 +57,7 @@ namespace SgqSystem.Controllers.Params
             if (id == -1)/*Retorna View Vazia*/
                 return PartialView("_SelectBoxLevel3", ViewModel);
 
-            ViewModel.paramsDto.parLevel2Dto = _paramDomain.GetLevel2(id);
+            ViewModel.paramsDto = _paramDomain.GetLevel2(id);
             return PartialView("_SelectBoxLevel3", ViewModel);
         }
 
@@ -67,7 +67,7 @@ namespace SgqSystem.Controllers.Params
                 return PartialView("_ParLevel2", ViewModel);
 
             var viewModelPreenchido = ViewModel;
-            viewModelPreenchido.paramsDto.parLevel2Dto = _paramDomain.GetLevel2(id);
+            viewModelPreenchido.paramsDto = _paramDomain.GetLevel2(id);
             /*Retorna View com Model ParLevel2 encontrado no DB.*/
             return PartialView("_ParLevel2", viewModelPreenchido);
         }

@@ -211,16 +211,20 @@ namespace Dominio.Services
         /// </summary>
         /// <param name="IdParLevel2"></param>
         /// <returns></returns>
-        public ParLevel2DTO GetLevel2(int idParLevel2)
+        public ParamsDTO GetLevel2(int idParLevel2)
         {
             /*ParLevel2*/
-            var retorno = Mapper.Map<ParLevel2DTO>(_baseRepoParLevel2.GetById(idParLevel2));
+            var paramsDto = new ParamsDTO();
+            var level2 = Mapper.Map<ParLevel2DTO>(_baseRepoParLevel2.GetById(idParLevel2));
 
             /*Level 2 e 3 vinculados*/
-            retorno.listParLevel3Level2Dto = Mapper.Map<List<ParLevel3Level2DTO>>(_baseRepoParLevel3Level2.GetAll().Where(r => r.ParLevel2_Id == retorno.Id).ToList());
-            retorno.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3.GetAll()), retorno.listParLevel3Level2Dto);
+            level2.listParLevel3Level2Dto = Mapper.Map<List<ParLevel3Level2DTO>>(_baseRepoParLevel3Level2.GetAll().Where(r => r.ParLevel2_Id == level2.Id).ToList());
+            level2.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3.GetAll()), level2.listParLevel3Level2Dto);
 
-            return retorno;
+            paramsDto.parEvaluationDto = Mapper.Map<ParEvaluationDTO>(_baseParEvaluation.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id));
+            paramsDto.parLevel2Dto = level2;
+
+            return paramsDto;
         }
 
         #endregion

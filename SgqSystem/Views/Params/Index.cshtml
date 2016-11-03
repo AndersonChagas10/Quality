@@ -706,17 +706,31 @@
 
         }
 
-        function UpdateSelect2Level2(idLevel1) {
+        function UpdateSelect2Level2(idLevel1, idNewLevel2) {
             //$('#parLevel2Select2').select2("destroy").remove();
+            var selecionado = $('#parLevel2Select2 :selected').val();
             $('#partialSelectLevel2').load('UpdateSelectLevel2?id=' + idLevel1, function () {
                 indexParamsLevel2.selectNormal();
+                if (selecionado > 0) {
+                    $('#parLevel2Select2').val(selecionado);
+                }
+                if (idNewLevel2 != undefined) {
+                    $('#parLevel2Select2').val(idNewLevel2);
+                }
             });
         }
 
-        function UpdateSelect2Level3(idLevel2) {
+        function UpdateSelect2Level3(idLevel2, idNewLevel3) {
             //$('#parLevel3Select2').select2("destroy")
+            var selecionado = $('#parLevel3Select2 :selected').val();
             $('#partialSelectLevel3').load('UpdateSelectLevel3?id=' + idLevel2, function () {
                 indexParamsLevel3.selectNormal();
+                if (selecionado > 0) {
+                    $('#parLevel2Select2').val(selecionado);
+                }
+                if (idNewLevel3 != undefined) {
+                    $('#parLevel2Select2').val(idNewLevel3);
+                }
             });
         }
 
