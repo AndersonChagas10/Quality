@@ -325,10 +325,12 @@ namespace Dominio.Services
         public ParamsDdl CarregaDropDownsParams()
         {
             var DdlParConsolidation = Mapper.Map<List<ParConsolidationTypeDTO>>(_baseParConsolidationType.GetAll());
+
             var DdlFrequency = Mapper.Map<List<ParFrequencyDTO>>(_baseParFrequency.GetAll());
             var DdlparLevel1 = Mapper.Map<List<ParLevel1DTO>>(_baseRepoParLevel1.GetAll());
             var DdlparLevel2 = Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2.GetAll());
             var DdlparLevel3 = Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3.GetAll());
+
             var DdlparCluster = Mapper.Map<List<ParClusterDTO>>(_baseParCluster.GetAll());
             var DdlparLevelDefinition = Mapper.Map<List<ParLevelDefinitonDTO>>(_baseParLevelDefiniton.GetAll());
             var DdlParFieldType = Mapper.Map<List<ParFieldTypeDTO>>(_baseParFieldType.GetAll());
@@ -349,11 +351,15 @@ namespace Dominio.Services
 
             var retorno = new ParamsDdl();
 
+            retorno.SetDdlsNivel123(DdlparLevel1,
+                            DdlparLevel2,
+                            DdlparLevel3);
+
             retorno.SetDdls(DdlParConsolidation,
                             DdlFrequency,
-                            DdlparLevel1,
-                            DdlparLevel2,
-                            DdlparLevel3,
+                            //DdlparLevel1,
+                            //DdlparLevel2,
+                            //DdlparLevel3,
                             DdlparCluster,
                             DdlparLevelDefinition,
                             DdlParFieldType,
@@ -401,12 +407,13 @@ namespace Dominio.Services
             return objtReturn;
         }
 
-        public ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2Level3)
+        public ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2, int idLevel3)
         {
+            var vinculoLevel2Level3 = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
             var objToSave = new ParLevel3Level2Level1()
             {
                 ParLevel1_Id = idLevel1,
-                ParLevel3Level2_Id = idLevel2Level3
+                ParLevel3Level2_Id = vinculoLevel2Level3.Id
             };
 
             _baseRepoParLevel3Level2Level1.AddOrUpdate(objToSave);

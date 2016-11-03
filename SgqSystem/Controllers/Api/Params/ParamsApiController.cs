@@ -74,10 +74,10 @@ namespace SgqSystem.Controllers.Api.Params
         #region Vinculo Level1 com Level2
 
         [HttpGet]
-        [Route("AddVinculoL1L2/{idLevel1}/{idLevel2Level3}")]
-        public ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2Level3)
+        [Route("AddVinculoL1L2/{idLevel1}/{idLevel2}/{idLevel3}")]
+        public ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2,int idLevel3)
         {
-            return _paramdDomain.AddVinculoL1L2(idLevel1, idLevel2Level3);
+            return _paramdDomain.AddVinculoL1L2(idLevel1, idLevel2, idLevel3);
             //return paramsViewModel;
         }
 

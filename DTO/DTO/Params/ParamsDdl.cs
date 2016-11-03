@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using System;
+using System.Linq;
 
 namespace DTO.DTO.Params
 {
@@ -51,9 +52,9 @@ namespace DTO.DTO.Params
 
         public void SetDdls(List<ParConsolidationTypeDTO> ddlParConsolidation, 
                             List<ParFrequencyDTO> ddlFrequency,
-                            List<ParLevel1DTO> ddlparLevel1, 
-                            List<ParLevel2DTO> ddlparLevel2, 
-                            List<ParLevel3DTO> ddlparLevel3, 
+                            //List<ParLevel1DTO> ddlparLevel1, 
+                            //List<ParLevel2DTO> ddlparLevel2, 
+                            //List<ParLevel3DTO> ddlparLevel3, 
                             List<ParClusterDTO> ddlparCluster,
                             List<ParLevelDefinitonDTO> ddlparLevelDefinition,
                             List<ParFieldTypeDTO> ddlParFieldType,
@@ -70,9 +71,9 @@ namespace DTO.DTO.Params
         {
             DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation);
             DdlFrequency = Guard.CreateDropDownList(ddlFrequency);
-            DdlparLevel1 = Guard.CreateDropDownList(ddlparLevel1);
-            DdlparLevel2 = Guard.CreateDropDownList(ddlparLevel2);
-            DdlparLevel3 = Guard.CreateDropDownList(ddlparLevel3);
+            //DdlparLevel1 = Guard.CreateDropDownList(ddlparLevel1);
+            //DdlparLevel2 = Guard.CreateDropDownList(ddlparLevel2);
+            //DdlparLevel3 = Guard.CreateDropDownList(ddlparLevel3);
             DdlparCluster = Guard.CreateDropDownList(ddlparCluster);
             DdlparLevelDefinition = Guard.CreateDropDownList(ddlparLevelDefinition);
             DdlParFieldType = Guard.CreateDropDownList(ddlParFieldType);
@@ -88,6 +89,46 @@ namespace DTO.DTO.Params
             DdlParLevel3BoolTrue = Guard.CreateDropDownList(ddlParLevel3BoolTrue);
         }
 
-       
+        public void SetDdlsNivel123(List<ParLevel1DTO> ddlparLevel1, List<ParLevel2DTO> ddlparLevel2, List<ParLevel3DTO> ddlparLevel3)
+        {
+            DdlparLevel1 = CreateSelectListParamsViewModelListLevel(ddlparLevel1);
+            DdlparLevel2 = CreateSelectListParamsViewModelListLevel(ddlparLevel2);
+            DdlparLevel3 = CreateSelectListParamsViewModelListLevel(ddlparLevel3);
+        }
+
+        private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(List<T> lista)
+        {
+
+            List<SelectListItem> retorno = new List<SelectListItem>();
+            retorno.Insert(0, new SelectListItem() { Text = "Selecione...", Value = "-1" });
+            var counter = 1;
+
+
+            var group = new SelectListGroup() { Name = "Não vinculados:" };
+            var groupSelecionado = new SelectListGroup();
+            foreach (var i in lista)
+            {
+
+                var text = i.GetType().GetProperty("Name").GetValue(i) ?? i.GetType().GetProperty("Description").GetValue(i);
+                var prop = i.GetType().GetProperty("Id").GetValue(i);
+                var opt = new SelectListItem() { Text = prop.ToString() + " - " + text, Value = prop.ToString() };
+                //if (listParLevel3Level2Dto.Where(r => r.ParLevel3_Id == i.Id).Count() > 0)
+                //{
+                //    groupSelecionado.Name = "Vianculado: " + listParLevel3Level2Dto.FirstOrDefault(r => r.ParLevel3_Id == i.Id).ParLevel2.Name;
+                //    opt.Group = groupSelecionado;
+                //}
+                //else
+                //{
+                //    opt.Group = group;
+                //}
+
+                retorno.Insert(counter, opt);
+
+                counter++;
+            }
+
+            return retorno;
+        }
+
     }
 }
