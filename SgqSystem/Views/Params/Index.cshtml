@@ -2,6 +2,7 @@
 @using SgqSystem.Helpers
 
 @{
+
     ViewBag.Title = "ParLeve1";
     //URL relativa
     var url1 = Url.Action("AddUpdateLevel1", "api/ParamsApi");
@@ -13,6 +14,7 @@
     var vinculoL2L3 = Url.Action("AddVinculoL3L2", "api/ParamsApi");
     var vinculoL1L2 = Url.Action("AddVinculoL1L2", "api/ParamsApi");
     Layout = null;
+
 }
 <!DOCTYPE html>
 <html>
@@ -160,7 +162,7 @@
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
                                                             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false"> @Resources.Resource.level3 </a>
-                                                            <a id="vinculoLevel2">Vincular ao nivel 2</a>
+                                                            <a id="vinculoLevel2" data-toggle="modal" data-target="#modalPontos">Vincular ao nivel 2</a>
                                                         </h4>
                                                     </div>
                                                     <div id="level3_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -194,7 +196,8 @@
                                                                         </tr>
 
                                                                     </tbody>
-                                                                </table>                                                            </div>
+                                                                </table>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -210,6 +213,9 @@
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
+
+
+          
 
         </div>
     </div>
@@ -344,7 +350,7 @@
 
                             });
 
-                            console.log(statusmessage);
+                            alert(statusmessage);
                         }
                     });
                 }
@@ -383,13 +389,62 @@
                     }
 
                 });
-            }
+            },
+            selectNormal: function () {
+                $('#parLevel1Select2').on("click", function (e) {
+                    var valorSelecionado = $('#parLevel1Select2 option:selected').val();
+                    if (valorSelecionado == "") {
+                        $('#ParLevel1').empty();
+                        $('#ParLevel1').append(parLevel1Empty);
+                        $('#level1Title').text(indexParamsLevel1.new_level1);
+                    } else {
+                        $.get('GetParLevel1ById/' + valorSelecionado, function (obj, responseText, xhr) {
+                            if (obj != null) {
+                                $('#ParLevel1').empty();
+                                $('#ParLevel1').append(xhr.responseText);
+                                UpdateSelect2Level2(valorSelecionado);
+                            }
+                            if (e.currentTarget.value > 0) {
+                                $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
+                            } else {
+                                $('#level1Title').text(indexParamsLevel1.new_level1);
+                            }
+                        });
+                    }
+
+                })
+            },
         }
-        indexParamsLevel1.select2();
+        //indexParamsLevel1.select2();
+        indexParamsLevel1.selectNormal();
 
         /*LEVEL 2*/
         var indexParamsLevel2 = {
             new_level1: '@Resources.Resource.new_level2',
+            selectNormal: function () {
+                $('#parLevel2Select2').on("change", function (e) {
+                    var valorSelecionado = $('#parLevel2Select2 option:selected').val();
+                    if (valorSelecionado == "") {
+                        $('#ParLevel2').empty();
+                        $('#ParLevel2').append(parLevel2Empty);
+                        $('#level2Title').text(indexParamsLevel1.new_level1);
+                    } else {
+                        $.get('GetParLevel2ById/' + valorSelecionado, function (obj, responseText, xhr) {
+                            if (obj != null) {
+                                $('#ParLevel2').empty();
+                                $('#ParLevel2').append(xhr.responseText);
+                                UpdateSelect2Level3(valorSelecionado);
+                            }
+                            if (e.currentTarget.value > 0) {
+                                $('#level2Title').text('#' + $('#paramsDto_parLevel2Dto_Id').val() + ' - ' + $('#paramsDto_parLevel2Dto_Name').val());
+                            } else {
+                                $('#level2Title').text(indexParamsLevel1.new_level1);
+                            }
+                        });
+                    }
+
+                });
+            },
             select2: function () {
                 $('#parLevel2Select2').select2({
                     //placeholder: {
@@ -457,7 +512,7 @@
                                     $("#parLevel2Select2").val(retornoId)
                                 }
                             });
-                            console.log(statusmessage);
+                            alert(statusmessage);
                         }
                         //console.log(objetoReturn);
                         //console.log(respostaCompleta);
@@ -466,12 +521,13 @@
 
             },
         }
-        indexParamsLevel2.select2();
+        //indexParamsLevel2.select2();
+        indexParamsLevel2.selectNormal();
 
         /*LEVEL 3*/
         var indexParamsLevel3 = {
             newLevel3: '@Resources.Resource.new_level3',
-            select2: function(){
+            select2: function () {
                 $('#parLevel3Select2').select2({
                     //placeholder: {
                     //    id: "-1",
@@ -484,7 +540,7 @@
                         $('#ParLevel3').append(parLevel3Empty);
                         $('#level3Title').text(indexParamsLevel3.newLevel3);
                     } else {
-                        $.get('GetParLevel3ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
+                        $.get('GetParLevel3ById/' + e.currentTarget.value + "&", function (obj, responseText, xhr) {
                             if (obj != null) {
                                 $('#ParLevel3').empty();
                                 $('#ParLevel3').append(xhr.responseText);
@@ -507,6 +563,30 @@
 
                 });
             },
+            selectNormal: function () {
+                $('#parLevel3Select2').on("change", function () {
+                    var valorSelecionado = $('#parLevel3Select2 option:selected').val();
+                    var valorSelecionadoLevel2 = $('#parLevel2Select2 :selected').val();
+                    if (valorSelecionado == "") {
+                        $('#ParLevel3').empty();
+                        $('#ParLevel3').append(parLevel3Empty);
+                        $('#level3Title').text(indexParamsLevel3.newLevel3);
+                    } else {
+                        $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
+                            if (obj != null) {
+                                $('#ParLevel3').empty();
+                                $('#ParLevel3').append(xhr.responseText);
+                            }
+                            if (valorSelecionado > 0) {
+                                $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
+                            } else {
+                                $('#level3Title').text(indexParamsLevel3.newLevel3);
+                            }
+                        });
+                    }
+
+                })
+            },
             enviarDadosParaApi: function (e) {
 
                 if ($('#newLevel3Modal > form').valid()) {
@@ -517,7 +597,7 @@
 
                     $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                         if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
-                            $.get('GetParLevel3ById/' + objetoReturn.paramsDto.parLevel3Dto.Id, function (obj, responseText, xhr) {
+                            $.get('GetParLevel3ById', { id: objetoReturn.paramsDto.parLevel3Dto.Id, idParLevel2: $('#paramsDto_parLevel2Dto_Id').val() }, function (obj, responseText, xhr) {
                                 if (obj != null) {
                                     $('#ParLevel3').empty();
                                     $('#ParLevel3').append(xhr.responseText);
@@ -535,15 +615,13 @@
                                     }
                                 } else {
                                     $("#parLevel3Select2").append("<option value=" + retornoId + "> " + retornoName + " </option>")
-                                    $("#parLevel3Select2").val(retornoId)
+                                    $("#parLevel3Select2").val(retornoId);
                                 }
 
                                 //$('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
                             });
 
-                            console.log(statusmessage);
-
-
+                            alert(statusmessage);
 
                         }
                         //console.log(objetoReturn);
@@ -553,7 +631,8 @@
 
             },
         }
-        indexParamsLevel3.select2();
+        //indexParamsLevel3.select2();
+        indexParamsLevel3.selectNormal();
 
         /*Vincula Level 3 ao level2*/
         var vinculoL1L2 = '@Html.Raw(@vinculoL1L2)';
@@ -561,66 +640,83 @@
 
             var idLevel1 = $('#paramsDto_parLevel1Dto_Id').val();
             var idLevel2 = $('#paramsDto_parLevel2Dto_Id').val();//Verifico se tenho um level2 salvo
+            var idLevel3 = $('#paramsDto_parLevel3Dto_Id').val();//Verifico se tenho um level2 salvo
             var level2Selecionado = $('#parLevel2Select2 option:selected');
             var idLevel3Level2 = 0;
 
-            if (idLevel2 == null || idLevel2 == undefined || idLevel2 <= 0 || idLevel1 == undefined || idLevel1 == null || idLevel1 <= 0) {
-                alert('O level 2 deve estar salvo e vinculado a um level3 para ser Vinculado ao Level1.')
+            if (idLevel1 <= 0) {
+                alert("é necessario selecionar um level 1 para realizar este vinculo.");
                 return;
             }
 
-            if (idLevel1 != undefined && idLevel1 != null && idLevel1 > 0) {
-                if (level2Selecionado.data('l2l3') != null) {
-
-                    idLevel3Level2 = level2Selecionado.data('l2l3').Id;
-
-                    $.get(vinculoL1L2 + '/' + idLevel1 + '/' + idLevel3Level2, function (obj, responseText, xhr) {
-                        if (obj != null) {
-                            console.log(obj);
-                            alert("Vinculado L3 com L2 ID: " + obj.Id);
-                        }
-                    });
-                }
+            if (idLevel2 <= 0) {
+                alert("é necessario selecionar um level 2 para realizar este vinculo.");
+                return;
             }
+
+            if (idLevel3 <= 0) {
+                alert("é necessario selecionar um level 3 realizar este vinculo.");
+                return;
+            }
+
+
+            $.get(vinculoL1L2 + '/' + idLevel1 + '/' + idLevel2 + '/' + idLevel3, function (obj, responseText, xhr) {
+                if (obj != null) {
+                    console.log(obj);
+                    alert("Vinculado L3 com L2 ID: " + obj.Id);
+                    UpdateSelect2Level2(idLevel1);
+                }
+            }).fail(function (e, h, x) {
+                alert(e.responseJSON.Message); // or whatever
+            });
 
         });
 
         /*Vincula Level 2 ao level1*/
         var vinculoL2L3 = '@Html.Raw(@vinculoL2L3)';
-        $('#vinculoLevel2').on('click', function (e) {
+        function saveLevel3Level2() {
 
+            /*Level2*/
             var idLevel2 = $('#paramsDto_parLevel2Dto_Id').val();
+            if (idLevel2 == undefined || idLevel2 <= 0 || idLevel2 == null) {
+                alert("É necessario selecionar o level 2");
+                return;
+            }
+
+            /*Level3*/
             var idLevel3 = $('#paramsDto_parLevel3Dto_Id').val();
-            var level2Selecionado = $('#parLevel2Select2 option:selected');
+            if (idLevel3 == undefined || idLevel3 <= 0 || idLevel3 == null) {
+                alert("É necessario selecionar o level 3");
+                return;
+            }
 
-            if (idLevel2 != undefined && idLevel3 != undefined)
-                if (idLevel2 != null && idLevel3 != null)
-                    if (idLevel2 > 0 && idLevel3 > 0) {
+            var peso = $('#paramsDto_parLevel3Dto_ponstoDoVinculo').val().replace(",", ".");
+            if (peso <= 0)
+            {
+                alert("O peso deve ser maior que zero.");
+                return;
+            }
 
-                        $.get(vinculoL2L3 + '/' + idLevel2 + '/' + idLevel3 + '/3', function (obj, responseText, xhr) {
-                            if (obj != null) {
-                                //console.log(obj)
-                                level2Selecionado.data('l2l3', obj);
-                                alert("Vinculado L3 com L2 ID: " + obj.Id);
-                            }
-                        });
+            $.get(vinculoL2L3 + '/' + idLevel2 + '/' + idLevel3 + '/' + peso + '/', function (obj, responseText, xhr) {
+                if (obj != null) {
+                    alert("Vinculado L3 com L2 ID: " + obj.Id);
+                    UpdateSelect2Level3(idLevel2);
+                }
+            });
 
-                    }
-        });
-
-
+        }
 
         function UpdateSelect2Level2(idLevel1) {
             //$('#parLevel2Select2').select2("destroy").remove();
             $('#partialSelectLevel2').load('UpdateSelectLevel2?id=' + idLevel1, function () {
-                indexParamsLevel2.select2();
+                indexParamsLevel2.selectNormal();
             });
         }
 
         function UpdateSelect2Level3(idLevel2) {
-            $('#parLevel3Select2').select2("destroy")
+            //$('#parLevel3Select2').select2("destroy")
             $('#partialSelectLevel3').load('UpdateSelectLevel3?id=' + idLevel2, function () {
-                indexParamsLevel3.select2();
+                indexParamsLevel3.selectNormal();
             });
         }
 
