@@ -187,7 +187,7 @@ namespace Dominio.Services
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel2 saveParamLevel2 = Mapper.Map<ParLevel2>(paramsDto.parLevel2Dto);
             List<ParLevel3Group> listaParLevel3Group = Mapper.Map<List<ParLevel3Group>>(paramsDto.listParLevel3GroupDto);
-            List<ParCounterXLocal> listParCounterXLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.listParCounterXLocalDto);
+            List<ParCounterXLocal> listParCounterXLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.listParCounterXLocal);
             ParNotConformityRuleXLevel saveParamNotConformityRuleXLevel = Mapper.Map<ParNotConformityRuleXLevel>(paramsDto.parNotConformityRuleXLevelDto);
             ParEvaluation saveParamEvaluation = Mapper.Map<ParEvaluation>(paramsDto.parEvaluationDto);
             ParSample saveParamSample = Mapper.Map<ParSample>(paramsDto.parSampleDto);
