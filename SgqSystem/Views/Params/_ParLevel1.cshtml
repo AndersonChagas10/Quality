@@ -581,6 +581,9 @@
                 case 5:
                     Cabecalhos.ShowNumerico();
                     break;
+                case 6:
+                    Cabecalhos.ShowData();
+                    break;
                 default:
                     Cabecalhos.hideAllObj();
             }
@@ -671,14 +674,14 @@
         },
         SalvaMultiplaEscolha: function () {
 
-            var example = '<div id=""><label> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label>' +
-                          '<select class="" id="" name="" style="padding: 2px;">' +
+            var example = '<div id=""><label class="fixed-width"> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label>' +
+                          '<select class="fixed-width" id="" name="" style="padding: 2px;">' +
                           '<option value="-1">Selecione...</option> ';
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
                 example += '<option value="1">' + o.Name + '</option>';
             });
             example += '</select>';
-            example += '&nbsp;<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.ExcluirCampoTexto($(this));" />';
+            example += '&nbsp;<button type="button" class="btn btn-danger btn-xs" name=""  onclick="Cabecalhos.ExcluirCampoTexto($(this));"><i class="fa fa-times"></i></button>';
 
             /*Cria inputs para objeto: */
             var obj1 = Cabecalhos.ParMultiplaEscolhaOpcoes[0]
@@ -862,7 +865,7 @@
         SalvaBinario: function () {
 
             var fieldType = $('#parFieldType option:selected').val();
-            var example = '<div><label class="on-off">';
+            var example = '<div><label class="on-off fixed-width">';
             example += '<label>' + $('#paramsDto_parHeaderFieldDto_Name').val() + ':&nbsp;</label>';
             /*Cria preview*/
             Cabecalhos.ParBinario.forEach(function (o, c) {

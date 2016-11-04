@@ -21,8 +21,6 @@
                     </tr>
                     <tr class="row ParIntervalos" style="display: none;">
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top)
-                    </tr>
-                    <tr class="row ParIntervalos" style="display: none;">
                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMin, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMax, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
                         <td style="display: none;">
@@ -33,7 +31,7 @@
 
                     <tr class="row ParBinarios" style="display: none;">
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
-                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-plus'></i></button>")
+                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
                     </tr>
                 </table>
 
