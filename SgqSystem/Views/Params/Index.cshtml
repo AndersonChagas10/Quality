@@ -764,6 +764,14 @@
             });
         }
 
+        $('.table-erp tbody tr').mouseenter(function (e) {
+            $('.table-erp tbody tr').removeClass('hover');
+            $(this).addClass('hover');
+        });
+        $('.table-erp tbody tr').mouseleave(function (e) {
+            $('.table-erp tbody tr').removeClass('hover');
+        });         
+
     </script>
 </body>
 </html>
