@@ -43,7 +43,7 @@
                         <tr class="row">
                             @Table.GerarColunaLabel(@Html.Label(Resources.Resource.not_conformity_rule))
                         </tr>
-                        <tr class="row">
+                        <tr class="row">                            
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.rule), Table.PosicaoLabel.top)
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
                         </tr>
@@ -65,7 +65,7 @@
                                 <table class="table-erp">
                                     <tbody>
                                         <tr class="row">
-                                            @Table.GerarColunaButton(@Html.TextBox("inputParLevel03Name", null, htmlAttributes: new { @Id = "inputParLevel03Name", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"btnParLevel03GroupInsert\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                            @Table.GerarColunaButton(@Html.TextBox("inputParLevel03Name", null, htmlAttributes: new { @Id = "inputParLevel03Name", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-xs\" id=\"btnParLevel03GroupInsert\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                     <tbody>
@@ -93,11 +93,11 @@
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.TextBox("inputNumeroNC", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.number_nc), Table.PosicaoLabel.top)
                                             @Table.GerarColuna(@Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.validation), Table.PosicaoLabel.top)
-                                            @Table.GerarColunaButton(@Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "selectFrequenciaReincidencia", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-danger btn-sm\" id=\"btnAddFrequenciaReincidencia\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                            @Table.GerarColunaButton(@Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "selectFrequenciaReincidencia", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"btnAddFrequenciaReincidencia\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>
-                                <table class="table-erp table table-bordered table-condensed">
+                                <table class="table-erp table table-condensed">
                                     <thead>
                                         <tr>
                                             <td>@Resources.Resource.rule</td>
@@ -107,7 +107,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="row" id="RegraReincidenciaGroup"></tr>
+                                        <tr id="RegraReincidenciaGroup"></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -150,8 +150,8 @@
                                 <table id="tblPreviewCounter2" class="table-erp table table">
                                     <thead>
                                         <tr>
-                                            <th>ParCounter</th>
-                                            <th>ParLocal</th>
+                                            <th>@Resources.Resource.counter</th>
+                                            <th>@Resources.Resource.local</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -163,7 +163,7 @@
                                                 <tr>
                                                     <td>@contadoresEditar.ParCounter.Name </td>
                                                     <td>@contadoresEditar.ParLocal.Name </td>
-                                                    <td>&nbsp;<button type="button" class="btn btn-danger btn-sm" onclick="CounterLevel2.RemoveCounterEdicao($(this), @contadoresEditar.Id)"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                    <td>&nbsp;<button type="button" class="btn btn-danger btn-xs pull-right" onclick="CounterLevel2.RemoveCounterEdicao($(this), @contadoresEditar.Id)"><i class="fa fa-times" aria-hidden="true"></i></button></td>
                                                 </tr>
                                             }
                                         }*@
@@ -189,10 +189,7 @@
         });
 
         var url1 = '@Html.Raw(url)';
-        /*
-            Serializa objeto usando bind de property Name
-            $('form').serializeObject();
-        */
+        
         $.fn.serializeObject = function () {
             var o = {};
             var a = this.serializeArray();
@@ -208,8 +205,7 @@
             });
             return o;
         };
-
-
+        
         $('#BtnAddContadorMonitoramento').click(function (e) {
 
             e.preventDefault();
@@ -227,12 +223,10 @@
                                     '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParCounterXLocalDto[' + indexValue + '].ParLocal_Id" value="' + idLocal + '" />';
 
 
-                var elemento = $('<div class="HederLevel2Group" style="margin-left:30px">' + $('#selectCounter option:selected').text() + " | " + $('#selectLocal option:selected').text() + inputHidden + '<button type="button" class="btn btn-danger btn-sm" id="btnRemoveHeaderGroup"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</div>');
+                var elemento = $('<div class="HederLevel2Group" style="margin-left:30px">' + $('#selectCounter option:selected').text() + " | " + $('#selectLocal option:selected').text() + inputHidden + '<button type="button" class="btn btn-danger btn-sm pull-right" id="btnRemoveHeaderGroup"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</div>');
                 $('td#HederLevel2Group').append(elemento);
                 $('#selectCounter,  #selectLocal').prop('selectedIndex', 0);
             }
-
-
 
         });
 
@@ -260,7 +254,7 @@
                     objHiddenCounter += '<tr id="insert" >';
                     objHiddenCounter += '<td>' + o.ParCounter_Name + '</td>';
                     objHiddenCounter += '<td>' + o.ParLocal_Name + '</td>';
-                    objHiddenCounter += '<td>&nbsp;<button type="button" class="btn btn-danger btn-sm" onclick="CounterLevel2.RemoveCounter($(this), ' + c + ')"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button></td>';
+                    objHiddenCounter += '<td>&nbsp;<button type="button" class="btn btn-danger btn-xs pull-right" onclick="CounterLevel2.RemoveCounter($(this), ' + c + ')"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button></td>';
                     objHiddenCounter += '</tr>';
                 });
 
@@ -339,11 +333,7 @@
             var NcNumber = $('#inputNumeroNC').val();
             var Vigencia = $('#inputVigencia').val();
             var idFrequencia = $('#selectFrequenciaReincidencia').val()
-
-
-
             var includeItem = true;
-
 
             if (includeItem == true) {
                 var indexValue = $('.counterRegraReincidenciaClass').length;
@@ -352,8 +342,7 @@
                                     '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
                                     '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
 
-
-                var elemento = $('<td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#selectFrequenciaReincidencia option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-sm" id="btnRemoveHeaderGroup"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td>');
+                var elemento = $('<td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#selectFrequenciaReincidencia option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoveHeaderGroup"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td>');
                 $('tr#RegraReincidenciaGroup').append(elemento);
                 $('#selectFrequenciaReincidencia').prop('selectedIndex', 0);
                 $('#inputNumeroNC, #inputVigencia').val("");
@@ -363,16 +352,7 @@
 
 
         });
-
-        //$('#selectNotConformityRule').change(function (e) {
-
-        //    $('span.sufix').text("");
-        //    if($('#selectNotConformityRule option:selected').attr('sufix'))
-        //    {
-        //        $('span.sufix').text($('#selectNotConformityRule option:selected').attr('sufix'));
-        //    }
-        //});
-
+        
         $(document).on('click', '#btnRemoveLevel3Group', function (e) {
             e.preventDefault();
             $(this).parents('.level03Group').remove();

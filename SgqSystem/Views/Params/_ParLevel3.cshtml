@@ -33,13 +33,10 @@
 
                     <tr class="row ParBinarios" style="display: none;">
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top)
-                        <td>
-                            <button type="button" id="btnPositiveNegative" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></button>
-                        </td>
+                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-plus'></i></button>")
                     </tr>
                 </table>
-                <button type="button" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level3</button>
+                <button type="button" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-primary margin-button">@Resources.Resource.save_level3</button>
             </div>
         </div>
         <!-- Modal -->
@@ -137,39 +134,4 @@
                 $('.ParIntervalos').fadeIn();
             }
         });
-
-        /*
-            Serializa objeto usando bind de property Name
-            $('form').serializeObject();
-        */
-        //$.fn.serializeObject = function () {
-        //    var o = {};
-        //    var a = this.serializeArray();
-        //    $.each(a, function () {
-        //        if (o[this.name] !== undefined) {
-        //            if (!o[this.name].push) {
-        //                o[this.name] = [o[this.name]];
-        //            }
-        //            o[this.name].push(this.value || '');
-        //        } else {
-        //            o[this.name] = this.value || '';
-        //        }
-        //    });
-        //    return o;
-        //};
-
-        ///*Inicio Submit Level3*/
-        //var indexParamsLevel3 = {
-
-        //    enviarDadosParaApi: function (e) {
-        //        var dados = $('form').serializeObject();
-
-        //        $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-        //            console.log(objetoReturn);
-        //            console.log(statusmessage);
-        //            console.log(respostaCompleta);
-        //        });
-
-        //    },
-        //}
     </script>
