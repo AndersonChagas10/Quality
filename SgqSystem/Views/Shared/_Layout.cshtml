@@ -48,6 +48,9 @@
                             </ul>
                         </li>
                     </ul>
+                    <ul class="nav navbar-nav">
+                        <li><a href="@Url.Action("Index", "Params")">Params</a></li>
+                    </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#"><span class="glyphicon glyphicon-user"></span>@Session["username"].ToString()</a></li>
                         <li><a href="@Url.Action("LogOut", "UserAuthentication")"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
