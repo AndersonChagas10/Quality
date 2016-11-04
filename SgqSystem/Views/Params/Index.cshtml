@@ -753,13 +753,13 @@
             $.get(vinculoL2L3 + '/' + idLevel2 + '/' + idLevel3 + '/' + peso + '/', function (obj, responseText, xhr) {
                 if (obj != null) {
                     alert("Vinculado L3 com L2 ID: " + obj.Id);
-                    UpdateSelect2Level3(idLevel2);
+                    UpdateSelect2Level3(idLevel2, undefined, function(){$('#parLevel3Select2').trigger('change');});
                 }
             });
 
         }
 
-        function UpdateSelect2Level2(idLevel1, idNewLevel2) {
+        function UpdateSelect2Level2(idLevel1, idNewLevel2, callback) {
             //$('#parLevel2Select2').select2("destroy").remove();
             var selecionado = $('#parLevel2Select2 :selected').val();
             $('#partialSelectLevel2').load('UpdateSelectLevel2?id=' + idLevel1, function () {
@@ -770,10 +770,12 @@
                 if (idNewLevel2 != undefined) {
                     $('#parLevel2Select2').val(idNewLevel2);
                 }
+                if(callback != undefined)
+                    callback();
             });
         }
 
-        function UpdateSelect2Level3(idLevel2, idNewLevel3) {
+        function UpdateSelect2Level3(idLevel2, idNewLevel3, callback) {
             //$('#parLevel3Select2').select2("destroy")
             var selecionado = $('#parLevel3Select2 :selected').val();
             $('#partialSelectLevel3').load('UpdateSelectLevel3?id=' + idLevel2, function () {
@@ -784,6 +786,8 @@
                 if (idNewLevel3 != undefined) {
                     $('#parLevel3Select2').val(idNewLevel3);
                 }
+                if(callback != undefined)
+                    callback();
             });
         }
 
