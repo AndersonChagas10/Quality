@@ -94,7 +94,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <table class="table-erp table table-condensed">
+                                <table class="table-erp table table-condensed" id="reincidenciaTable" style="display: none">
                                     <thead>
                                         <tr>
                                             <th>@Resources.Resource.rule</th>
@@ -144,7 +144,7 @@
                                 <div id="counterHidden2"></div>
                                 <div id="counterEditHidden2"></div>
 
-                                <table id="tblPreviewCounter2" class="table-erp table table">
+                                <table id="tblPreviewCounter2" class="table-erp table table" style="display: none">
                                     <thead>
                                         <tr>
                                             <th>@Resources.Resource.counter</th>
@@ -257,6 +257,11 @@
 
                 $('#tblPreviewCounter2 > tbody').append(objHiddenCounter);
 
+                if (CounterLevel2.ObjCounters.length == 0)
+                    $('#tblPreviewCounter2').hide();
+                else
+                    $('#tblPreviewCounter2').show();
+
             },
             UpdateCounters: function () {
 
@@ -283,6 +288,11 @@
             RemoveCounter: function (e, c) {
                 e.parents('tr').remove();
                 CounterLevel2.ObjCounters.splice(c, 1);
+
+                if(CounterLevel2.ObjCounters.length == 0)
+                    $('#tblPreviewCounter2').hide();
+                else
+                    $('#tblPreviewCounter2').show();
             },
             RemoveCounterEdicao: function (e, id) {
                 e.preventDefaut();
@@ -346,8 +356,10 @@
                 $('#inputNumeroNC').focus();
             }
 
-
-
+            if ($('tr#RegraReincidenciaGroup').length == 0)
+                $('#reincidenciaTable').hide();
+            else
+                $('#reincidenciaTable').show();
         });
         
         $(document).on('click', '#btnRemoveLevel3Group', function (e) {

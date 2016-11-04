@@ -17,6 +17,8 @@ namespace SgqSystem.Controllers.Params
 
         public ParamsController(IParamsDomain paramDomain)
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
             _paramDomain = paramDomain;
             ViewModel = new ParamsViewModel(_paramDomain.CarregaDropDownsParams());/*Cria view model vazio.*/
         }
@@ -25,9 +27,6 @@ namespace SgqSystem.Controllers.Params
 
         public ActionResult Index()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
-
             return View(ViewModel);
         }
 
