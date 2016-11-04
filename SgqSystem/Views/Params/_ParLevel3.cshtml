@@ -33,7 +33,7 @@
 
                     <tr class="row ParBinarios" style="display: none;">
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
-                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-plus'></i></button>")
+                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-plus'></i></button>")
                     </tr>
                 </table>
                 <button type="button" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-primary margin-button">@Resources.Resource.save_level3</button>
@@ -62,6 +62,7 @@
                 </div>
             </div>
         </div>
+        @Html.HiddenFor(m=>m.paramsDto.parLevel3Value.Id)
 
         <!-- Modal -->
         <div class="modal fade" id="modalPontos" role="dialog">
@@ -123,6 +124,18 @@
             }
         }
         $('#selectTipoInput').change(function () {
+
+            if ($("#selectTipoInput option:selected").val() == "-1") {
+
+                $('#selectNaoConforme').val(-1)
+                $('#selectConforme').val(-1)
+                $('#selectUnidadeDeMedidas').val(-1)
+                $('#paramsDto_parLevel3Value_IntervalMin, #paramsDto_parLevel3Value_IntervalMax').val("")
+
+                $('.ParIntervalos').hide();
+                $('.ParBinarios').hide();
+            }
+
             //Binários
             if ($("#selectTipoInput option:selected").val() == "1") {
                 $('.ParIntervalos').hide();
@@ -135,7 +148,6 @@
             }
         });
 
-        $(document).ready(function () {
-            defaults();
-        });
+
+        $('#selectTipoInput').change();
     </script>

@@ -78,7 +78,7 @@ namespace SgqSystem.Controllers.Params
                 return PartialView("_ParLevel3", ViewModel);
 
             var viewModelPreenchido = ViewModel;
-            viewModelPreenchido.paramsDto.parLevel3Dto = _paramDomain.GetLevel3(id, idParLevel2);
+            viewModelPreenchido.paramsDto = _paramDomain.GetLevel3(id, idParLevel2);
             /*Retorna View com Model ParLevel3 encontrado no DB.*/
             return PartialView("_ParLevel3", viewModelPreenchido);
         }
