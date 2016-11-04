@@ -8,6 +8,6 @@ namespace DTO.DTO.Params
         public string Description { get; set; }
         public bool IsActive { get; set; } = true;
 
-        public decimal ponstoDoVinculo { get; set; }
+        public decimal pesoDoVinculo { get; set; }
 }
 }
