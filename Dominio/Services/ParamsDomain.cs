@@ -268,14 +268,14 @@ namespace Dominio.Services
             ParamsDTO retorno = new ParamsDTO();
             /*ParLevel3*/
             var level3 = Mapper.Map<ParLevel3DTO>(_baseRepoParLevel3.GetById(idParLevel3));
-            level3.ponstoDoVinculo = 1;
+            level3.pesoDoVinculo = 1;
 
             if (idParLevel2 > 0)
             {
                 var vinculoLevel3Level2 = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3);
                 if (vinculoLevel3Level2 != null)
                 {
-                    level3.ponstoDoVinculo = vinculoLevel3Level2.Weight;
+                    level3.pesoDoVinculo = vinculoLevel3Level2.Weight;
                 }
             }
 
