@@ -205,7 +205,7 @@ namespace Dominio.Services
             return paramsDto;
         }
 
-
+       
         /// <summary>
         /// 
         /// </summary>
