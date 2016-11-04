@@ -32,14 +32,14 @@
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, null, null)
                         </tr>
                         <tr class="row">
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.not_conformity_rule), Table.PosicaoLabel.top)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
+                        </tr>
+                        <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsEmptyLevel3, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_audit_of_detached_level3), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_audit_of_detached_level3_popover)
                         </tr>
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.left)
-                        </tr>
-                        <tr class="row">                            
-                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.not_conformity_rule), Table.PosicaoLabel.top)
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
                         </tr>
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasShowLevel03, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.show_group_on_level3), Table.PosicaoLabel.left, null, null)
@@ -61,12 +61,12 @@
                             <div class="panel-body">
                                 <table class="table-erp">
                                     <tbody>
-                                        <tr class="row">
+                                        <tr>
                                             @Table.GerarColunaButton(@Html.TextBox("inputParLevel03Name", null, htmlAttributes: new { @Id = "inputParLevel03Name", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"btnParLevel03GroupInsert\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                     <tbody>
-                                        <tr class="row">
+                                        <tr>
                                             <td colspan="2" id="Level03Group"></td>
                                         </tr>
                                         @if (Model.paramsDto.listParLevel3GroupDto != null)
