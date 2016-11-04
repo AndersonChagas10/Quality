@@ -573,4 +573,10 @@
   <data name="include_options" xml:space="preserve">
     <value>Include options</value>
   </data>
+  <data name="attach" xml:space="preserve">
+    <value>Attach</value>
+  </data>
+  <data name="back" xml:space="preserve">
+    <value>Back</value>
+  </data>
 </root>

@@ -1168,7 +1168,7 @@
   <ItemGroup>
     <Content Include="App_GlobalResources\Resource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource.designer.cs</LastGenOutput>
+      <LastGenOutput>Resource1.designer.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

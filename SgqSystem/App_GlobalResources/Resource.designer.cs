@@ -232,6 +232,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attach.
+        /// </summary>
+        internal static string attach {
+            get {
+                return ResourceManager.GetString("attach", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auditor.
         /// </summary>
         internal static string auditor {
@@ -255,6 +264,15 @@ namespace Resources {
         internal static string authenticating {
             get {
                 return ResourceManager.GetString("authenticating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        internal static string back {
+            get {
+                return ResourceManager.GetString("back", resourceCulture);
             }
         }
         
