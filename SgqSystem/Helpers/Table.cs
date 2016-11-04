@@ -38,7 +38,7 @@ namespace SgqSystem.Helpers
 
             if (info != null)
             {
-                tagInfo = " <i class='fa fa-question-circle popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
+                tagInfo = " <i class='fa fa-info-circle fa-lg text-primary popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
             }
 
             if (error != null)
@@ -79,7 +79,7 @@ namespace SgqSystem.Helpers
 
             if (info != null)
             {
-                tagInfo = " <i class='fa fa-question-circle popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
+                tagInfo = " <i class='fa fa-info-circle fa-lg text-primary popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
             }
 
             tr = "<td class='td-erp'>" +
@@ -103,7 +103,7 @@ namespace SgqSystem.Helpers
 
             if (info != null)
             {
-                tagInfo = " <i class='fa fa-question-circle popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
+                tagInfo = " <i class='fa fa-info-circle fa-lg text-primary popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
             }
 
             if (error != null)
@@ -147,7 +147,7 @@ namespace SgqSystem.Helpers
 
             if (info != null)
             {
-                tagInfo = " <i class='fa fa-question-circle popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
+                tagInfo = " <i class='fa fa-info-circle fa-lg text-primary popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
             }
 
             tr = "<td class='td-erp'><b>" +
@@ -166,7 +166,7 @@ namespace SgqSystem.Helpers
 
             if (info != null)
             {
-                tagInfo = " <i class='fa fa-question-circle popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
+                tagInfo = " <i class='fa fa-info-circle fa-lg text-primary popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
             }
 
             if (error != null)
@@ -204,7 +204,7 @@ namespace SgqSystem.Helpers
 
             if (info != null)
             {
-                tagInfo = " <i class='fa fa-question-circle popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
+                tagInfo = " <i class='fa fa-info-circle fa-lg text-primary popovers' data-container='body' data-trigger='hover' data-placement='bottom' data-content='" + info + "' aria-hidden='true'></i>";
             }
 
             if (error != null)

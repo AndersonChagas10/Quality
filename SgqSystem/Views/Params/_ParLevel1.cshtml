@@ -20,7 +20,7 @@
                         </tr>
                         <tr class="row">
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, new { @class = "form-control input-sm", @id = "selectConsolidacao" }), @Html.Label(Resources.Resource.consolidation_type), Table.PosicaoLabel.top, null, Resources.Resource.consolidation_type_popover)
-                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-erp", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, null, Resources.Resource.frequency_popover)
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, null, Resources.Resource.frequency_popover)
                         </tr>
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.save_button_on_level2), Table.PosicaoLabel.left, null, Resources.Resource.save_button_on_level2_popover)
@@ -77,9 +77,8 @@
                                 <table class="table-erp">
                                     <tbody>
                                         <tr class="row">
-                                            @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-erp" }), @Html.Label(Resources.Resource.level1_clusters), Table.PosicaoLabel.top)
-                                            @Table.GerarColuna(@Html.Editor("pontosCluster", new { htmlAttributes = new { @value = 0, @type = "number", @style = "max-width: 200px;", @class = "form-control input-erp" } }), @Html.Label(Resources.Resource.cluster_points), Table.PosicaoLabel.top, null, null)
-                                            <td><input class="btn btn-primary btn-sm" type="button" value="Incluir Cluster" id="btnIncluirCluster" onclick="Cluster.IncluirCluster();" /></td>
+                                            @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_clusters), Table.PosicaoLabel.top)
+                                            @Table.GerarColunaButton(@Html.Editor("pontosCluster", new { htmlAttributes = new { @value = 0, @type = "number", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.cluster_points), Table.PosicaoLabel.top, button: "<button class='btn btn-primary btn-sm' type='button' id='btnIncluirCluster' onclick='Cluster.IncluirCluster();'><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>
@@ -89,7 +88,7 @@
                                         <tr>
                                             <th>@Resources.Resource.cluster_name</th>
                                             <th>@Resources.Resource.cluster_points</th>
-                                            <th>@Resources.Resource.cluster_edit_delete</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -98,8 +97,8 @@
                                             <td id="nomeCluster"></td>
                                             <td id="pontosCluster"></td>
                                             <td id="alterarCluster">
-                                                <input type="button" class="btn btn-primary btn-sm" value="@Resources.Resource.edit" id="btnAlterarCluster" />
-                                                <input type="button" class="btn btn-danger btn-sm" value="@Resources.Resource.delete" id="btnExcluirCluster" />
+                                                <button type="button" class="btn btn-primary btn-xs pull-right" id="btnAlterarCluster"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                                                <button type="button" class="btn btn-danger btn-xs pull-right" id="btnExcluirCluster"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                             </td>
                                         </tr>
                                         @if (Model.paramsDto.parLevel1Dto.clustersInclusos != null)
@@ -111,9 +110,10 @@
                                                     <td id="">@i.Points.ToString("#")</td>
                                                     <td id="editarCluster">
                                                         @*<input type="button" value="Alterar" id="Cluster.btnEDITARCluster" />*@
-                                                        <button type="button" class="btn btn-danger btn-sm" onclick="Cluster.btnINATIVARLevel1XCluster($(this))"><i class="fa fa-times"></i></button>
+                                                        <button type="button" class="btn btn-danger btn-xs" onclick="Cluster.btnINATIVARLevel1XCluster($(this))"><i class="fa fa-times"></i></button>
                                                         @Html.Hidden("paramsDto.parLevel1Dto.removerParCluster", i.Id, htmlAttributes: new { @disabled = "disabled" })
                                                         @Html.Hidden("clusterId", i.Id, htmlAttributes: new { @disabled = "disabled", @id = "clusterId" })
+
                                                     </td>
                                                 </tr>
                                             }
@@ -154,8 +154,7 @@
                                             <tbody>
                                                 <tr class="row">
                                                     @Table.GerarColuna(@Html.Editor("objMultiplaEscolhaName", new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.option), Table.PosicaoLabel.top, @Html.ErrorManual("multiplaEscolhaNameCabecalho", "O campo Opção deve ser preenchido para o Cabeçalho."), null)
-                                                    @Table.GerarColuna(@Html.Editor("objMultiplaEscolhaPunishmentValue", new { htmlAttributes = new { @value = 0, @type = "number", @style = "max-width: 200px;", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.punishment_value), Table.PosicaoLabel.top, @Html.ErrorManual("multiplaEscolhaPunishmentValueCabecalho", "O campo Punição/Premiação deve ser selecionado para o Cabeçalho."), null)
-                                                    <td><input class="btn btn-primary btn-sm" type="button" value="Incluir opção" id="btnIncluirMultiplaEscolha" onclick="Cabecalhos.IncluirMultiplaEscolha();" /></td>
+                                                    @Table.GerarColunaButton(@Html.Editor("objMultiplaEscolhaPunishmentValue", new { htmlAttributes = new { @value = 0, @type = "number", @style = "max-width: 200px;", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.punishment_value), Table.PosicaoLabel.top, @Html.ErrorManual("multiplaEscolhaPunishmentValueCabecalho", "O campo Punição/Premiação deve ser selecionado para o Cabeçalho."), button: "<button class='btn btn-primary btn-sm' type='button' id='btnIncluirMultiplaEscolha' onclick='Cabecalhos.IncluirMultiplaEscolha();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -188,13 +187,11 @@
                                                         @Html.ErrorManual("punishmentNameCabecalho2", "O campo Nome deve ser preechido para o Cabecalho.")
                                                     </td>
                                                     <td>
-                                                        <input type="number" id="objBinarioPunishmentValue2" class="form-control input-sm">
+                                                        <input type="number" id="objBinarioPunishmentValue2"  class="form-control input-sm">
                                                         @Html.ErrorManual("punishmentValueCabecalho2", "O campo Punição/Premiação deve ser selecionado para o Cabecalho.")
                                                     </td>
-                                                </tr>
-                                                <tr>
                                                     <td>
-                                                        <button class="btn btn-primary btn-sm" type="button" id="btnIncluirCluster" onclick="Cabecalhos.IncluirBinario();">@Resources.Resource.include_options</button>
+                                                        <button class="btn btn-primary btn-sm margin-button" type="button" id="btnIncluirCluster" onclick="Cabecalhos.IncluirBinario();"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -219,7 +216,7 @@
 
                                     @*tabela cabecalho itens inputados*@
                                     <div id="divCamposCabecalhoIncluidos" style="display:none;">
-                                        <table id="camposCabecalhoIncluidos" style="table table-condensed table-responsive no-margin margin-top">
+                                        <table id="camposCabecalhoIncluidos" class="table table-condensed table-responsive no-margin margin-top">
                                             <thead>
                                                 <tr>
                                                     <th>Cod.</th>
@@ -251,10 +248,10 @@
 
                                     @*Btn salvar cabecalho*@
                                     <div style="width: 100%; float: left;" id="btnIncluirCabecalho">
-                                        <input type="button" class="btn btn-primary btn-sm" id="salvarCabecalho" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
-                                        <input type="button" class="btn btn-primary btn-sm" id="salvarCabecalho1" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
-                                        <input type="button" id="salvarCabecalho2" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
-                                        <input type="button" id="salvarCabecalho3" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+                                        <input type="button" class="btn btn-primary btn-sm margin-button" id="salvarCabecalho" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+                                        <input type="button" class="btn btn-primary btn-sm margin-button" id="salvarCabecalho1" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+                                        <input type="button" class="btn btn-primary btn-sm margin-button" id="salvarCabecalho2" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+                                        <input type="button" class="btn btn-primary btn-sm margin-button" id="salvarCabecalho3" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
                                     </div>
 
                                     @*Cabecalho Preview Edicao*@
@@ -323,11 +320,14 @@
                                     <div id="cabecalhoPreview">
                                         <div id="textPreview"></div>
                                         <div id="numericPreview"></div>
-                                        <div id="multiplePreview"></div>
+                                        <table class="table">
+                                            <thead></thead>
+                                            <tbody id="multiplePreview">
+
+                                            </tbody>
+                                        </table>
                                         <div id="binPreview"></div>
                                     </div>
-
-
 
                                 </div>
                             </div>
@@ -349,19 +349,19 @@
                                     <tbody>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
-                                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"CounterLevel1.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button : "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"CounterLevel1.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>
-
+                                                               
                                 <div id="counterHidden1"></div>
                                 <div id="counterEditHidden1"></div>
 
                                 <table id="tblPreviewCounter1" class="table-erp table table">
-                                    <thead>
+                                    <thead class="thead-default">
                                         <tr>
-                                            <th>ParCounter</th>
-                                            <th>ParLocal</th>
+                                            <th>@Resources.Resource.counter</th>
+                                            <th>@Resources.Resource.local</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -373,7 +373,7 @@
                                                 <tr>
                                                     <td>@contadoresEditar.ParCounter.Name</td>
                                                     <td>@contadoresEditar.ParLocal.Name</td>
-                                                    <td>&nbsp;<button type="button" class="btn btn-danger btn-sm" onclick="CounterLevel1.RemoveCounterEdicao($(this), @contadoresEditar.Id)"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                    <td>&nbsp;<button type="button" class="btn btn-danger btn-xs pull-right" onclick="CounterLevel1.RemoveCounterEdicao($(this), @contadoresEditar.Id)"><i class="fa fa-times" aria-hidden="true"></i></button></td>
                                                 </tr>
                                             }
                                         }
@@ -383,18 +383,15 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <input type="button" id="btnSaveNewLevel1Modal" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary" value="Save level 1" />
             </div>
         </div>
-       
+
     }
 </div>
 
 <script>
-
-    var vinculosL2L3 = (@Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.listParLevel3Level2Level1Dto)));
-
 
     $('#paramsDto_parLevel1Dto_IsSpecific').on('switchChange.bootstrapSwitch', function (event, state) {
         if (state) {
@@ -445,7 +442,7 @@
             novaTr.find('#pontosCluster').append(pontosCluster)
             novaTr.find('#btnAlterarCluster').attr('id', novaTr.find('#btnAlterarCluster').attr('id') + idCluster);
             novaTr.find('#btnExcluirCluster').attr('id', novaTr.find('#btnExcluirCluster').attr('id') + idCluster);
-            novaTr.attr('id', '');
+            novaTr.attr('id', idCluster);
 
             //$("#tableid tbody:last").append(
             novaTr.insertAfter($parentTR);
@@ -453,6 +450,7 @@
 
             //Cluster.EventoAlterar(novaTr.find('#btnAlterarCluster' + idCluster).attr('id'), idCluster);
             Cluster.EventoRemove(novaTr.find('#btnExcluirCluster' + idCluster).attr('id'), idCluster);
+            Cluster.EventoAlterar(novaTr.find('#btnAlterarCluster' + idCluster).attr('id'), idCluster);
             Cluster.Index++;
 
             $('#valueCluster').val(-1);
@@ -636,7 +634,7 @@
             var tipoVal = $('#parFieldType option:selected').val();
             var opcoes = $('#objMultiplaEscolhaName').val();
             var valor = $('#objMultiplaEscolhaPunishmentValue').val();
-            var obj = '<button class="btn btn-danger btn-sm" type="button" value="excluir" id=' + nome + tipo + '>'+'@Resources.Resource.delete'+'</button>';
+            var obj = '<button class="btn btn-danger btn-xs pull-right" type="button" id=' + nome + tipo + '>' + '<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>' + '</button>';
             /*Obj*/
             Cabecalhos.ParMultiplaEscolhaOpcoes.push({
                 //'Id': ' ',
@@ -667,14 +665,16 @@
         },
         SalvaMultiplaEscolha: function () {
 
-            var example = '<div id=""><label> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label>' +
-                            '<select class="" id="" name="" style="padding: 2px;">' +
+            var example = '<tr>' +
+                            '<td>'+
+                            '<span>' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</span></td>'+
+                            '<td><div class="input-group"><select class="form-control input-sm" id="" name="" >' +
                             '<option value="-1">Selecione...</option> ';
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
                 example += '<option value="1">' + o.Name + '</option>';
             });
-            example += '</select>';
-            example += '&nbsp;<input type="button"  name="" value="x" onclick="Cabecalhos.ExcluirCampoTexto($(this));" />';
+            example += '</select><span class="input-group-btn">';
+            example += '<button type="button" class="btn btn-danger btn-sm" name="" onclick="Cabecalhos.ExcluirCampoTexto($(this));"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button></span></div>';
 
             /*Cria inputs para objeto: */
             var obj1 = Cabecalhos.ParMultiplaEscolhaOpcoes[0]
@@ -690,7 +690,7 @@
                 }
             });
 
-            example += '</div>'
+            example += '</td></tr>'
 
             $('#multiplePreview').append(example);
 
@@ -1020,7 +1020,7 @@
                 objHiddenCounter += '<tr id="insert" >';
                 objHiddenCounter += '<td>' + o.ParCounter_Name + '</td>';
                 objHiddenCounter += '<td>' + o.ParLocal_Name + '</td>';
-                objHiddenCounter += '<td>&nbsp;<button class="btn btn-danger btn-sm" onclick="CounterLevel1.RemoveCounter($(this), ' + c + ')"><i class=\"fa fa-times\" aria-hidden=\"true\"></button></td>';
+                objHiddenCounter += '<td>&nbsp;<button class="btn btn-danger btn-xs pull-right" onclick="CounterLevel1.RemoveCounter($(this), ' + c + ')"><i class=\"fa fa-times\" aria-hidden=\"true\"></button></td>';
                 objHiddenCounter += '</tr>';
             });
 
@@ -1081,11 +1081,7 @@
     Cluster.VerificaShowTable();
 
     $(document).ready(function () {
-
         defaults();
-
-        //verificaVinculos();
-
     });
 
 </script>
