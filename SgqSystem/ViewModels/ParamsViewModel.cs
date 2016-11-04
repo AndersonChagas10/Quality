@@ -23,6 +23,8 @@ namespace SgqSystem.ViewModels
             paramsDto = new ParamsDTO();
             paramsDto.parLevel1Dto = new ParLevel1DTO();
             paramsDto.parLevel2Dto = new ParLevel2DTO();
+            paramsDto.parLevel3Dto = new ParLevel3DTO();
+
             paramsDto.parLevel1XClusterDto = new List<ParLevel1XClusterDTO>();
         }
 

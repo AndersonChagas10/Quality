@@ -249,6 +249,7 @@ namespace Dominio.Services
             paramsDto.parLevel3Dto.Id = saveParamLevel3.Id;
             return paramsDto;
         }
+
         public ParamsDTO AddUpdateLevel3Level2(ParamsDTO paramsDto)
         {
             ParLevel3Level2 saveParamLevel3Leve2 = Mapper.Map<ParLevel3Level2>(paramsDto.parLevel3Level2);
@@ -268,7 +269,6 @@ namespace Dominio.Services
             ParamsDTO retorno = new ParamsDTO();
             /*ParLevel3*/
             var level3 = Mapper.Map<ParLevel3DTO>(_baseRepoParLevel3.GetById(idParLevel3));
-            level3.pesoDoVinculo = 1;
 
             if (idParLevel2 > 0)
             {
@@ -416,8 +416,8 @@ namespace Dominio.Services
             ParLevel3Level2 objLelvel2Level3ToSave;
             var level2 = _baseRepoParLevel2.GetById(idLevel2);
 
-            if (peso <= 0)
-                peso = 1;
+            //if (peso <= 0)
+            //    peso = 1;
 
             objLelvel2Level3ToSave = new ParLevel3Level2()
             {
