@@ -16,6 +16,7 @@
     Layout = null;
 
 }
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,10 +25,18 @@
     <title>@ViewBag.Title</title>
 
     @Styles.Render("~/Content/General")
-    @Styles.Render("~/Content/Theme")
+    @*@Styles.Render("~/Content/Theme")*@
+    @*@Styles.Render("~/Content/Tables")*@
     @Styles.Render("~/Content/Erp")
-    @Styles.Render("~/Content/Tables")
     @Styles.Render("~/Content/select2css")
+
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Scripts/theme/css/components.min.css" rel="stylesheet" />
+    <link href="~/Scripts/theme/css/darkblue.min.css" rel="stylesheet" />
+    <link href="~/Scripts/theme/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Scripts/theme/css/layout.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    
 
 </head>
 
@@ -347,11 +356,11 @@
                                 /*Atualiza Select2*/
                                 if ($("#parLevel1Select2 option:selected").val() == retornoId) {
                                     if ($("#parLevel1Select2 option:selected").text() != retornoName) {
-                                        $("#parLevel1Select2 option:selected").text(retornoName);
-                                        $('#parLevel1Select2').select2();
+                                        $("#parLevel1Select2 option:selected").text(retornoId + ' - ' + retornoName);
+                                        //$('#parLevel1Select2').select2();
                                     }
                                 } else {
-                                    $("#parLevel1Select2").append("<option value=" + retornoId + "> " + retornoName + " </option>")
+                                    $("#parLevel1Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
                                     $("#parLevel1Select2").val(retornoId)
                                 }
 
@@ -511,11 +520,11 @@
                                 /*Atualiza Select2*/
                                 if ($("#parLevel2Select2 option:selected").val() == retornoId) {
                                     if ($("#parLevel2Select2 option:selected").text() != retornoName) {
-                                        $("#parLevel2Select2 option:selected").text(retornoName);
-                                        $('#parLevel2Select2').select2();
+                                        $("#parLevel2Select2 option:selected").text(retornoId + ' - ' + retornoName);
+                                        //$('#parLevel2Select2').select2();
                                     }
                                 } else {
-                                    $("#parLevel2Select2").append("<option value=" + retornoId + "> " + retornoName + " </option>")
+                                    $("#parLevel2Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
                                     $("#parLevel2Select2").val(retornoId)
                                 }
                             });
@@ -602,6 +611,12 @@
                     //  Counter.UpdateCounters();
                     var dados = $('#newLevel3Modal > form').serializeObject();
 
+                    if(dados['paramsDto.parLevel3Value.IntervalMax'] != undefined && dados['paramsDto.parLevel3Value.IntervalMax'] != null)
+                        dados['paramsDto.parLevel3Value.IntervalMax'] = dados['paramsDto.parLevel3Value.IntervalMax'].replace(',', '.');
+
+                    if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
+                        dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
+
                     $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                         if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
                             $.get('GetParLevel3ById', { id: objetoReturn.paramsDto.parLevel3Dto.Id, idParLevel2: $('#paramsDto_parLevel2Dto_Id').val() }, function (obj, responseText, xhr) {
@@ -617,11 +632,11 @@
                                 /*Atualiza Select2*/
                                 if ($("#parLevel3Select2 option:selected").val() == retornoId) {
                                     if ($("#parLevel3Select2 option:selected").text() != retornoName) {
-                                        $("#parLevel3Select2 option:selected").text(retornoName);
-                                        $('#parLevel3Select2').select2();
+                                        $("#parLevel3Select2 option:selected").text(retornoId + ' - ' + retornoName);
+                                        //$('#parLevel3Select2').select2();
                                     }
                                 } else {
-                                    $("#parLevel3Select2").append("<option value=" + retornoId + "> " + retornoName + " </option>")
+                                    $("#parLevel3Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
                                     $("#parLevel3Select2").val(retornoId);
                                 }
 

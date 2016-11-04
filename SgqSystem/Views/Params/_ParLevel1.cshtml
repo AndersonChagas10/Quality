@@ -219,7 +219,7 @@
                                         <table id="camposCabecalhoIncluidos" class="table table-condensed table-responsive no-margin margin-top">
                                             <thead>
                                                 <tr>
-                                                    <th>Cod.</th>
+                                                    @*<th>Cod.</th>*@
                                                     <th>Nivel do campo</th>
                                                     <th>Nome</th>
                                                     <th>Vinculado</th>
@@ -232,7 +232,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <th></th>
+                                                    @*<th></th>*@
                                                     <th></th>
                                                     <th></th>
                                                     <th></th>
@@ -270,7 +270,7 @@
                                                             <label>@parLevel1XHeaderField.ParHeaderField.Name </label>
                                                             @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = parLevel1XHeaderField.ParHeaderField.Id })
                                                             @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                            <input type="button" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
+                                                            <input type="button" class="btn btn-danger btn-xs" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
                                                         </div>
                                                     }
 
@@ -285,7 +285,7 @@
                                                                 @Html.RadioButton("removerParHeaderField", true);
                                                             }
                                                             @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                            <input type="button" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
+                                                            <input type="button" class="btn btn-danger btn-xs" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
                                                         </div>
                                                     }
 
@@ -295,7 +295,7 @@
                                                             <label>@parLevel1XHeaderField.ParHeaderField.Name</label>
                                                             @Html.TextBox("a")
                                                             @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                            <input type="button" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
+                                                            <input type="button" class="btn btn-danger btn-xs" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
                                                         </div>
                                                     }
 
@@ -305,7 +305,7 @@
                                                             <label>@parLevel1XHeaderField.ParHeaderField.Name</label>
                                                             <input type="number" />
                                                             @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                            <input type="button" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
+                                                            <input type="button" class="btn btn-danger btn-xs" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
                                                         </div>
                                                     }
 
@@ -320,12 +320,7 @@
                                     <div id="cabecalhoPreview">
                                         <div id="textPreview"></div>
                                         <div id="numericPreview"></div>
-                                        <table class="table">
-                                            <thead></thead>
-                                            <tbody id="multiplePreview">
-
-                                            </tbody>
-                                        </table>
+                                        <div id="multiplePreview"></div>
                                         <div id="binPreview"></div>
                                     </div>
 
@@ -647,7 +642,7 @@
             });
 
             Cabecalhos.tableMultiplaEscolha.row.add([
-               cod,
+               //cod,
                nivelDoCampo,
                nome,
                vinculado,
@@ -665,16 +660,14 @@
         },
         SalvaMultiplaEscolha: function () {
 
-            var example = '<tr>' +
-                            '<td>'+
-                            '<span>' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</span></td>'+
-                            '<td><div class="input-group"><select class="form-control input-sm" id="" name="" >' +
-                            '<option value="-1">Selecione...</option> ';
+            var example = '<div id=""><label> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label>' +
+                          '<select class="" id="" name="" style="padding: 2px;">' +
+                          '<option value="-1">Selecione...</option> ';
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
                 example += '<option value="1">' + o.Name + '</option>';
             });
-            example += '</select><span class="input-group-btn">';
-            example += '<button type="button" class="btn btn-danger btn-sm" name="" onclick="Cabecalhos.ExcluirCampoTexto($(this));"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button></span></div>';
+            example += '</select>';
+            example += '&nbsp;<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.ExcluirCampoTexto($(this));" />';
 
             /*Cria inputs para objeto: */
             var obj1 = Cabecalhos.ParMultiplaEscolhaOpcoes[0]
@@ -690,7 +683,34 @@
                 }
             });
 
-            example += '</td></tr>'
+            example += '</div>'
+
+            //var example = '<tr>' +
+            //                '<td>'+
+            //                '<span>' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</span></td>'+
+            //                '<td><div class="input-group"><select class="form-control input-sm" id="" name="" >' +
+            //                '<option value="-1">Selecione...</option> ';
+            //Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
+            //    example += '<option value="1">' + o.Name + '</option>';
+            //});
+            //example += '</select><span class="input-group-btn">';
+            //example += '<button type="button" class="btn btn-danger btn-sm" name="" onclick="Cabecalhos.ExcluirCampoTexto($(this));"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button></span></div>';
+
+            ///*Cria inputs para objeto: */
+            //var obj1 = Cabecalhos.ParMultiplaEscolhaOpcoes[0]
+            //for (var key in obj1 ) {
+            //    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].' + key + '"     value="' + obj1[key] + '" />';
+            //}
+            //example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
+
+            //Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, counter) {
+            //    /*Cria inputs para objeto: */
+            //    for (var key in o) {
+            //        example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].' + key + '"     value="' + o[key] + '" />';
+            //    }
+            //});
+
+            //example += '</td></tr>'
 
             $('#multiplePreview').append(example);
 
@@ -746,6 +766,10 @@
                 setTimeout(Cabecalhos.EscondeMensagemValidacaoCabecalho, 10000);
                 return;
             }
+            if($('#headerLevel option:selected').val() == -1){
+                alert('Selecione o Nivel do Cabecalho')
+                return;
+            }
 
             var cod = "?";
             var nivelDoCampo = $('#headerLevel option:selected').text();
@@ -759,7 +783,8 @@
             var valorObjBinario1 = $('#objBinarioPunishmentValue1').val();
             var nameObjBinario2 = $('#objBinarioPunishmentName2').val();
             var valorObjBinario2 = $('#objBinarioPunishmentValue2').val();
-            var obj = '<input type="button" value="excluir" id=' + nome + tipo + ' />';
+            
+            var obj = '<input class="btn btn-danger btn-xs" type="button" value="x" id=' + nome + tipo + ' />';
             /*Obj1*/
             Cabecalhos.ParBinario.push({
                 'Name': nameObjBinario1,
@@ -783,7 +808,7 @@
             });
 
             Cabecalhos.tableMultiplaEscolha.row.add([
-               cod,
+               //cod,
                nivelDoCampo,
                nome,
                vinculado,
@@ -794,7 +819,7 @@
             ]).draw(false);
 
             Cabecalhos.tableMultiplaEscolha.row.add([
-               cod,
+               //cod,
                nivelDoCampo,
                nome,
                vinculado,
@@ -817,6 +842,9 @@
             $('#salvarCabecalho2').val('Salvar ' + $('#parFieldType option:selected').text()).show();
         },
         SalvaBinario: function () {
+
+          
+
             var fieldType = $('#parFieldType option:selected').val();
             var example = '<div><label class="on-off">';
             example += '<label>' + $('#paramsDto_parHeaderFieldDto_Name').val() + ':&nbsp;</label>';
@@ -826,7 +854,6 @@
                 var a = c == 0 ? 'checked = "checked"' : '';
                 var b = c == 0 ? "true" : "false";
                 example += '<input disable="disabled" ' + a + ' type="radio" value="' + b + '" >'
-                example += '&nbsp;<input type="button"  name="" value="x" onclick="Cabecalhos.ExcluirCampoTexto($(this));" />';
             });
 
             example += '</label>';
@@ -845,6 +872,7 @@
                     example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].' + key.toString() + '"     value="' + o[key].toString() + '" />';
                 }
             });
+            example += '&nbsp;<input type="button" class="btn btn-danger btn-xs"  name="" value="x" onclick="Cabecalhos.ExcluirCampoTexto($(this));" />';
             example += '</div>';
 
             $('#binPreview').append(example);
@@ -874,6 +902,17 @@
             $('#btnIncluirCabecalho input').hide();
         },
         IncluirSalvarTexto: function () {
+
+            if($('#headerLevel option:selected').val() == -1){
+                alert('Selecione o Nivel do Cabecalho')
+                return;
+            }
+
+            
+            if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
+                alert('Digite o nome para o Campo Texto');
+                return;
+            }
 
             var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
             var nivelCabecalho = $('#headerLevel option:selected').val();
@@ -922,6 +961,16 @@
             $('#btnIncluirCabecalho input').hide();
         },
         IncluirSalvarNumerico: function () {
+            
+            if($('#headerLevel option:selected').val() == -1){
+                alert('Selecione o Nivel do Cabecalho');
+                return;
+            }
+            
+            if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
+                alert('Digite o nome para o Campo Numerico');
+                return;
+            }
 
             var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
             var nivelCabecalho = $('#headerLevel option:selected').val();
@@ -1054,9 +1103,8 @@
             CounterLevel1.ObjCounters.splice(c, 1);
         },
         RemoveCounterEdicao: function (e, id) {
-            e.preventDefaut();
+            //e.preventDefaut();
             e.parents('tr').hide();
-
             CounterLevel1.ObjCounterRemove.push({ Id: id })
         },
 
@@ -1082,6 +1130,8 @@
 
     $(document).ready(function () {
         defaults();
+        if($('#paramsDto_parLevel1Dto_IsSpecific').is(':checked'))
+            $('.groupCadastroEspecificoUnidade').fadeIn();
     });
 
 </script>

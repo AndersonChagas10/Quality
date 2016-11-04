@@ -238,6 +238,7 @@ namespace Dominio.Services
         #endregion
 
         #region Level3
+
         public ParamsDTO AddUpdateLevel3(ParamsDTO paramsDto)
         {
             //paramsDto.parLevel1Dto.IsValid();
@@ -262,19 +263,27 @@ namespace Dominio.Services
         /// </summary>
         /// <param name="IdParLevel2"></param>
         /// <returns></returns>
-        public ParLevel3DTO GetLevel3(int idParLevel3, int idParLevel2)
+        public ParamsDTO GetLevel3(int idParLevel3, int idParLevel2)
         {
+            ParamsDTO retorno = new ParamsDTO();
             /*ParLevel3*/
-            var retorno = Mapper.Map<ParLevel3DTO>(_baseRepoParLevel3.GetById(idParLevel3));
-            retorno.ponstoDoVinculo = 1;
+            var level3 = Mapper.Map<ParLevel3DTO>(_baseRepoParLevel3.GetById(idParLevel3));
+            level3.ponstoDoVinculo = 1;
+
             if (idParLevel2 > 0)
             {
-                var results = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3);
-                if (results != null)
+                var vinculoLevel3Level2 = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3);
+                if (vinculoLevel3Level2 != null)
                 {
-                    retorno.ponstoDoVinculo = results.Weight;
+                    level3.ponstoDoVinculo = vinculoLevel3Level2.Weight;
                 }
             }
+
+            var parLevel3Value = Mapper.Map<ParLevel3ValueDTO>(_baseParLevel3Value.GetAll().FirstOrDefault(r => r.ParLevel3_Id == level3.Id));
+
+            retorno.parLevel3Dto = level3;
+            retorno.parLevel3Value = parLevel3Value;
+
 
             return retorno;
         }

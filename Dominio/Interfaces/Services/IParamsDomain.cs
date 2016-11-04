@@ -14,7 +14,7 @@ namespace Dominio.Interfaces.Services
         ParamsDTO GetLevel2(int idParLevel2);
 
         ParamsDTO AddUpdateLevel3(ParamsDTO paramsDto);
-        ParLevel3DTO GetLevel3(int idParLevel3, int idParLevel2);
+        ParamsDTO GetLevel3(int idParLevel3, int idParLevel2);
         ParLevel3Level2DTO AddVinculoL3L2(int idLevel2, int idLevel3, decimal peso);
         //ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2Level3);
         ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2, int idLevel3);
