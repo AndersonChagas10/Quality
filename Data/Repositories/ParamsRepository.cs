@@ -586,11 +586,11 @@ namespace Data.Repositories
 
         public void AddUpdateParLevel3Value(ParLevel3Value paramLevel3Value, int ParLevel3_Id)
         {
-            if(paramLevel3Value.ParMeasurementUnit_Id == -1)
+            if (paramLevel3Value.ParMeasurementUnit_Id == -1)
             {
                 paramLevel3Value.ParMeasurementUnit_Id = null;
             }
-            paramLevel3Value.ParCompany_Id = 1;
+            paramLevel3Value.ParCompany_Id = 1;//MOCK
             paramLevel3Value.ParLevel3_Id = ParLevel3_Id;
             if (paramLevel3Value.Id == 0)
             {
