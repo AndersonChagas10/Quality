@@ -393,9 +393,6 @@
   <data name="type_of_data_entry" xml:space="preserve">
     <value>Type of data entry</value>
   </data>
-  <data name="Weigth" xml:space="preserve">
-    <value />
-  </data>
   <data name="yes" xml:space="preserve">
     <value>Yes</value>
   </data>
@@ -578,5 +575,11 @@
   </data>
   <data name="back" xml:space="preserve">
     <value>Back</value>
+  </data>
+  <data name="inform_the_weight_of_the_level3" xml:space="preserve">
+    <value>Inform the weight of the level 3</value>
+  </data>
+  <data name="weight" xml:space="preserve">
+    <value>Weight</value>
   </data>
 </root>
