@@ -72,6 +72,17 @@
                                         <tr class="row">
                                             <td colspan="2" id="Level03Group"></td>
                                         </tr>
+                                        @if (Model.paramsDto.listParLevel3GroupDto != null)
+                                        {
+                                            foreach (var lg in Model.paramsDto.listParLevel3GroupDto)
+                                            {
+                                                <tr id="@lg.Id">
+                                                    <td>@lg.Name</td>
+                                                    <td><button type="button" class=\"btn btn-danger btn-sm\" id="btnRemoveLevel3Group"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                    
+                                                </tr>
+                                            }
+                                        }
                                     </tbody>
                                 </table>
                             </div>
@@ -97,17 +108,32 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <table class="table-erp table table-condensed">
+                                <table class="table-erp table table-condensed" id="tableRepetition">
                                     <thead>
                                         <tr>
                                             <td>@Resources.Resource.rule</td>
                                             <td>@Resources.Resource.number_nc</td>
                                             <td>@Resources.Resource.validation</td>
-                                            <td>@Resources.Resource.frequency</td>
+                                            <td colspan="2">@Resources.Resource.frequency</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr id="RegraReincidenciaGroup"></tr>
+                                        @if (Model.paramsDto.listParRelapseDto != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var rp in Model.paramsDto.listParRelapseDto)
+                                            {
+                                                i++;
+                                                <tr id="@rp.Id">
+                                                    <td>Regra @i</td>
+                                                    <td>@rp.NcNumber</td>
+                                                    <td>@rp.EffectiveLength</td>
+                                                    <td>@rp.parFrequency.Name</td>
+                                                    <td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                </tr>
+                                            }
+                                        }
                                     </tbody>
                                 </table>
                             </div>
@@ -339,18 +365,15 @@
                 var indexValue = $('.counterRegraReincidenciaClass').length;
 
                 var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
-                                    '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
-                                    '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
+                                  '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
+                                  '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
 
-                var elemento = $('<td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#selectFrequenciaReincidencia option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoveHeaderGroup"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td>');
-                $('tr#RegraReincidenciaGroup').append(elemento);
+                var elemento = $('<td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#selectFrequenciaReincidencia option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td>');
+                $('#tableRepetition tbody').append(elemento);
                 $('#selectFrequenciaReincidencia').prop('selectedIndex', 0);
                 $('#inputNumeroNC, #inputVigencia').val("");
                 $('#inputNumeroNC').focus();
             }
-
-
-
         });
         
         $(document).on('click', '#btnRemoveLevel3Group', function (e) {
@@ -362,6 +385,11 @@
             defaults();
 
 
+            if ($('input[name="paramsDto.parLevel2Dto.HasGroupLevel3"]').is(':checked'))
+            {
+
+                $('#level2_group_accordion').fadeIn();
+            }
         });
         /*Fim Submit Level1*/
 
