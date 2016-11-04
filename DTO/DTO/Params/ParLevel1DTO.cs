@@ -106,7 +106,7 @@ namespace DTO.DTO.Params
                 var opt = new SelectListItem() { Text = i.Id.ToString() + " - " + i.Name, Value = i.Id.ToString() };
                 if (listParLevel3Level2Level1Dto.Where(r => r.ParLevel3Level2.ParLevel2_Id == i.Id).Count() > 0)
                 {
-                    groupSelecionado.Name = "Vianculado: " + listParLevel3Level2Level1Dto.FirstOrDefault(r => r.ParLevel3Level2.ParLevel2_Id == i.Id).ParLevel1.Name;
+                    groupSelecionado.Name = "Vinculado: " + listParLevel3Level2Level1Dto.FirstOrDefault(r => r.ParLevel3Level2.ParLevel2_Id == i.Id).ParLevel1.Name;
                     opt.Group = groupSelecionado;
                 }
                 else
