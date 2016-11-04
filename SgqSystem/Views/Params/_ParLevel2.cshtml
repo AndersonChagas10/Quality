@@ -100,10 +100,10 @@
                                 <table class="table-erp table table-condensed">
                                     <thead>
                                         <tr>
-                                            <td>@Resources.Resource.rule</td>
-                                            <td>@Resources.Resource.number_nc</td>
-                                            <td>@Resources.Resource.validation</td>
-                                            <td>@Resources.Resource.frequency</td>
+                                            <th>@Resources.Resource.rule</th>
+                                            <th>@Resources.Resource.number_nc</th>
+                                            <th>@Resources.Resource.validation</th>
+                                            <th>@Resources.Resource.frequency</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -358,5 +358,9 @@
             $(this).parents('.level03Group').remove();
         });
         /*Fim Submit Level1*/
+
+        $(document).ready(function () {
+            defaults();
+        });
 
     </script>

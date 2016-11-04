@@ -98,7 +98,7 @@
                                             <td id="pontosCluster"></td>
                                             <td id="alterarCluster">
                                                 <button type="button" class="btn btn-primary btn-xs pull-right" id="btnAlterarCluster"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                                                <button type="button" class="btn btn-danger btn-xs pull-right" id="btnExcluirCluster"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                                <button type="button" class="btn btn-danger btn-xs pull-right" id="btnExcluirCluster"><i class="fa fa-times" aria-hidden="true"></i></button>
                                             </td>
                                         </tr>
                                         @if (Model.paramsDto.parLevel1Dto.clustersInclusos != null)
@@ -634,7 +634,7 @@
             var tipoVal = $('#parFieldType option:selected').val();
             var opcoes = $('#objMultiplaEscolhaName').val();
             var valor = $('#objMultiplaEscolhaPunishmentValue').val();
-            var obj = '<button class="btn btn-danger btn-xs pull-right" type="button" id=' + nome + tipo + '>' + '<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>' + '</button>';
+            var obj = '<button class="btn btn-danger btn-xs pull-right" type="button" id=' + nome + tipo + '>' + '<i class=\"fa fa-times\" aria-hidden=\"true\"></i>' + '</button>';
             /*Obj*/
             Cabecalhos.ParMultiplaEscolhaOpcoes.push({
                 //'Id': ' ',
@@ -759,7 +759,7 @@
             var valorObjBinario1 = $('#objBinarioPunishmentValue1').val();
             var nameObjBinario2 = $('#objBinarioPunishmentName2').val();
             var valorObjBinario2 = $('#objBinarioPunishmentValue2').val();
-            var obj = '<input type="button" value="excluir" id=' + nome + tipo + ' />';
+            var obj = '<button class="btn btn-danger btn-xs" type="button" id=' + nome + tipo + '><i class="fa fa-times></i></button>"';
             /*Obj1*/
             Cabecalhos.ParBinario.push({
                 'Name': nameObjBinario1,
