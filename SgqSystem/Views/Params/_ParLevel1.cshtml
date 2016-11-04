@@ -609,7 +609,13 @@
         ShowMutiplaEscolha: function () {
             $('#objMultiplaEscolha').show();
             $('#btnIncluirCabecalho input').hide();
-            $('#salvarCabecalho1').val('Salvar ' + $('#parFieldType option:selected').text()).show();
+            $('#salvarCabecalho1').val('Salvar ' + $('#parFieldType option:selected').text());
+            
+            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                $('#salvarCabecalho1').fadeOut();
+            else
+                $('#salvarCabecalho1').fadeIn();
+
         },
         IncluirMultiplaEscolha: function (e) {
 
@@ -629,7 +635,7 @@
             var tipoVal = $('#parFieldType option:selected').val();
             var opcoes = $('#objMultiplaEscolhaName').val();
             var valor = $('#objMultiplaEscolhaPunishmentValue').val();
-            var obj = '<button class="btn btn-danger btn-xs pull-right" type="button" id=' + nome + tipo + '>' + '<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>' + '</button>';
+            var obj = '<button class="btn btn-danger btn-xs pull-right" type="button" id=' + nome + tipo + ' onclick="Cabecalhos.RemoverDaTabela($(this), '+ Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');">' + '<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>' + '</button>';
             /*Obj*/
             Cabecalhos.ParMultiplaEscolhaOpcoes.push({
                 //'Id': ' ',
@@ -656,6 +662,11 @@
 
             $('#objMultiplaEscolhaName').val('');
             $('#objMultiplaEscolhaPunishmentValue').val('0');
+            
+            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                $('#salvarCabecalho1').fadeOut();
+            else
+                $('#salvarCabecalho1').fadeIn();
 
         },
         SalvaMultiplaEscolha: function () {
@@ -672,7 +683,10 @@
             /*Cria inputs para objeto: */
             var obj1 = Cabecalhos.ParMultiplaEscolhaOpcoes[0]
             for (var key in obj1 ) {
-                example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].' + key + '"     value="' + obj1[key] + '" />';
+                if(key == "Name")
+                    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].' + key + '"     value="' + $('#paramsDto_parHeaderFieldDto_Name').val() + '" />';
+                else
+                    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].' + key + '"     value="' + obj1[key] + '" />';
             }
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
 
@@ -726,6 +740,10 @@
             Cabecalhos.tableMultiplaEscolha.clear().draw();
             $('#divCamposCabecalhoIncluidos').hide();
             Cabecalhos.ParMultiplaEscolhaOpcoes = [];
+        },
+        RemoverDaTabela: function(e, indexValueOfArray){
+            Cabecalhos.ParMultiplaEscolhaOpcoes.splice(indexValueOfArray,1);
+            e.parents('tr').remove();
         },
 
         //BINARIO
@@ -842,8 +860,6 @@
             $('#salvarCabecalho2').val('Salvar ' + $('#parFieldType option:selected').text()).show();
         },
         SalvaBinario: function () {
-
-          
 
             var fieldType = $('#parFieldType option:selected').val();
             var example = '<div><label class="on-off">';
