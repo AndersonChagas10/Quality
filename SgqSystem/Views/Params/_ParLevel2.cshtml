@@ -369,13 +369,13 @@
             var includeItem = true;
 
             if (includeItem == true) {
-                var indexValue = $('.counterRegraReincidenciaClass').length;
+                var indexValue = $('#tableRepetition tbody tr').length;
 
                 var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
                                   '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
                                   '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
 
-                var elemento = $('<td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#selectFrequenciaReincidencia option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td>');
+                var elemento = $('<tr><td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#selectFrequenciaReincidencia option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td><tr>');
                 $('#tableRepetition tbody').append(elemento);
                 $('#selectFrequenciaReincidencia').prop('selectedIndex', 0);
                 $('#inputNumeroNC, #inputVigencia').val("");
@@ -395,11 +395,8 @@
         $(document).ready(function () {
 
             defaults();
-
-
             if ($('input[name="paramsDto.parLevel2Dto.HasGroupLevel3"]').is(':checked'))
             {
-
                 $('#level2_group_accordion').fadeIn();
             }
         });
