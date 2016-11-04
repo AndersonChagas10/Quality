@@ -24,11 +24,9 @@ namespace DTO.DTO.Params
 
         public void CreateSelectListParamsViewModelListLevel(List<ParLevel3DTO> listLevel3, List<ParLevel3Level2DTO> listParLevel3Level2Dto)
         {
-
             List<SelectListItem> retorno = new List<SelectListItem>();
             retorno.Insert(0, new SelectListItem() { Text = "Selecione...", Value = "-1" });
             var counter = 1;
-
 
             var group = new SelectListGroup() { Name = "Não vinculados:" };
             var groupSelecionado = new SelectListGroup();

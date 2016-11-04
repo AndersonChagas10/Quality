@@ -98,7 +98,7 @@
                                             <td id="pontosCluster"></td>
                                             <td id="alterarCluster">
                                                 <button type="button" class="btn btn-primary btn-xs pull-right" id="btnAlterarCluster"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                                                <button type="button" class="btn btn-danger btn-xs pull-right" id="btnExcluirCluster"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                                <button type="button" class="btn btn-danger btn-xs pull-right" id="btnExcluirCluster"><i class="fa fa-times" aria-hidden="true"></i></button>
                                             </td>
                                         </tr>
                                         @if (Model.paramsDto.parLevel1Dto.clustersInclusos != null)
@@ -201,17 +201,17 @@
                                     @*Obj Texto*@
                                     <div id="objTexto" style="display:none;">
                                         @*@Table.GerarColuna(@Html.Editor("objTextoName", new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-erp" } }), @Html.Label(Resources.Resource.option), Table.PosicaoLabel.top, @Html.ErrorManual("objTextoName", "*"), null)*@
-                                        <input class="btn btn-primary btn-sm" type="button" value="Incluir Campo Texto" id="btnIncluirTexto" onclick="Cabecalhos.IncluirSalvarTexto();" />
+                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Texto" id="btnIncluirTexto" onclick="Cabecalhos.IncluirSalvarTexto();" />
                                     </div>
 
                                     @*Obj Numerico*@
                                     <div id="objNumerico" style="display:none;">
-                                        <input class="btn btn-primary btn-sm" type="button" value="Incluir Campo Numerico" id="btnIncluirNumerico" onclick="Cabecalhos.IncluirSalvarNumerico();" />
+                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Numerico" id="btnIncluirNumerico" onclick="Cabecalhos.IncluirSalvarNumerico();" />
                                     </div>
 
                                     @*Obj Data*@
                                     <div id="objData" style="display:none;">
-                                        <input class="btn btn-primary btn-sm" type="button" value="Incluir Campo Data" id="btnIncluirData" onclick="Cabecalhos.IncluirSalvarData();" />
+                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Data" id="btnIncluirData" onclick="Cabecalhos.IncluirSalvarData();" />
                                     </div>
 
                                     @*tabela cabecalho itens inputados*@
@@ -257,7 +257,7 @@
                                     @*Cabecalho Preview Edicao*@
                                     <div id="cabecalhoPreviewEDICAO">
 
-                                        <div id="alteracao">
+                                        <div id="alteracao" style="padding: 8px;">
 
                                             @if (Model.paramsDto.parLevel1Dto.cabecalhosInclusos != null)
                                             {
@@ -267,10 +267,10 @@
                                                     if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                     {
                                                         <div>
-                                                            <label>@parLevel1XHeaderField.ParHeaderField.Name </label>
-                                                            @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                            <label class="fixed-width">@parLevel1XHeaderField.ParHeaderField.Name </label>
+                                                            @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class="fixed-width", @style = "padding: 2px;", @id = parLevel1XHeaderField.ParHeaderField.Id })
                                                             @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                            <input type="button" class="btn btn-danger btn-xs" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
+                                                            <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
                                                         </div>
                                                     }
 
@@ -278,34 +278,34 @@
                                                     if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
                                                     {
                                                         <div>
-                                                            <label>@parLevel1XHeaderField.ParHeaderField.Name:</label>
+                                                            <label class="fixed-width">@parLevel1XHeaderField.ParHeaderField.Name:</label>
                                                             @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
                                                             {
                                                                 <label>@radioOpt.Name</label>
-                                                                @Html.RadioButton("removerParHeaderField", true);
+                                                                @Html.RadioButton("removerParHeaderField", true, new { @class = "fixed-width" });
                                                             }
-                                                            @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                            <input type="button" class="btn btn-danger btn-xs" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
+                                                            @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class="fixed-width", @disabled = "disabled" })
+                                                            <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
                                                         </div>
                                                     }
 
                                                     if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
                                                     {
                                                         <div>
-                                                            <label>@parLevel1XHeaderField.ParHeaderField.Name</label>
-                                                            @Html.TextBox("a")
-                                                            @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                            <input type="button" class="btn btn-danger btn-xs" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
+                                                            <label class="fixed-width">@parLevel1XHeaderField.ParHeaderField.Name</label>
+                                                            @Html.TextBox("a", null, new { @class = "fixed-width" })
+                                                            @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new {  @class="fixed-width", @disabled = "disabled" })
+                                                            <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
                                                         </div>
                                                     }
 
                                                     if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
                                                     {
                                                         <div>
-                                                            <label>@parLevel1XHeaderField.ParHeaderField.Name</label>
-                                                            <input type="number" />
-                                                            @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                            <input type="button" class="btn btn-danger btn-xs" value="x" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));" />
+                                                            <label class="fixed-width">@parLevel1XHeaderField.ParHeaderField.Name</label>
+                                                            <input type="number" class="fixed-width"/>
+                                                            @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class="fixed-width", @disabled = "disabled" })
+                                                            <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
                                                         </div>
                                                     }
 
@@ -352,7 +352,7 @@
                                 <div id="counterHidden1"></div>
                                 <div id="counterEditHidden1"></div>
 
-                                <table id="tblPreviewCounter1" class="table-erp table table">
+                                <table id="tblPreviewCounter1" class="table-erp table table" style="display: none;">
                                     <thead class="thead-default">
                                         <tr>
                                             <th>@Resources.Resource.counter</th>
@@ -635,7 +635,7 @@
             var tipoVal = $('#parFieldType option:selected').val();
             var opcoes = $('#objMultiplaEscolhaName').val();
             var valor = $('#objMultiplaEscolhaPunishmentValue').val();
-            var obj = '<button class="btn btn-danger btn-xs pull-right" type="button" id=' + nome + tipo + ' onclick="Cabecalhos.RemoverDaTabela($(this), '+ Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');">' + '<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>' + '</button>';
+            var obj = '<button class="btn btn-danger btn-xs pull-right" type="button" id=' + nome + tipo + '>' + '<i class=\"fa fa-times\" aria-hidden=\"true\"></i>' + '</button>';
             /*Obj*/
             Cabecalhos.ParMultiplaEscolhaOpcoes.push({
                 //'Id': ' ',
@@ -1083,13 +1083,18 @@
             var objHiddenCounter = "";
             CounterLevel1.ObjCounters.forEach(function (o, c) {
                 objHiddenCounter += '<tr id="insert" >';
-                objHiddenCounter += '<td>' + o.ParCounter_Name + '</td>';
                 objHiddenCounter += '<td>' + o.ParLocal_Name + '</td>';
+                objHiddenCounter += '<td>' + o.ParCounter_Name + '</td>';
                 objHiddenCounter += '<td>&nbsp;<button class="btn btn-danger btn-xs pull-right" onclick="CounterLevel1.RemoveCounter($(this), ' + c + ')"><i class=\"fa fa-times\" aria-hidden=\"true\"></button></td>';
                 objHiddenCounter += '</tr>';
             });
 
             $('#tblPreviewCounter1 > tbody').append(objHiddenCounter);
+
+            if(CounterLevel1.ObjCounters.length == 0)
+                $('#tblPreviewCounter1').hide();
+            else
+                $('#tblPreviewCounter1').show();
 
         },
         UpdateCounters: function () {
@@ -1117,6 +1122,11 @@
         RemoveCounter: function (e, c) {
             e.parents('tr').remove();
             CounterLevel1.ObjCounters.splice(c, 1);
+
+            if(CounterLevel1.ObjCounters.length == 0)
+                $('#tblPreviewCounter1').hide();
+            else
+                $('#tblPreviewCounter1').show();
         },
         RemoveCounterEdicao: function (e, id) {
             //e.preventDefaut();
@@ -1133,14 +1143,6 @@
     Cabecalhos.hideAllObj();
     $('#parFieldType').on('change', Cabecalhos.TipoChange);
     $('#paramsDto_parHeaderFieldDto_ParFieldType_Id').on('change', Cabecalhos.TipoChange);
-
-    $('.table-erp tbody tr').mouseenter(function (e) {
-        $('.table-erp tbody tr').removeClass('hover');
-        $(this).addClass('hover');
-    });
-    $('.table-erp tbody tr').mouseleave(function (e) {
-        $('.table-erp tbody tr').removeClass('hover');
-    });
 
     Cluster.VerificaShowTable();
 

@@ -567,4 +567,10 @@
   <data name="include_options" xml:space="preserve">
     <value>Incluir opção</value>
   </data>
+  <data name="attach" xml:space="preserve">
+    <value>Vincular</value>
+  </data>
+  <data name="back" xml:space="preserve">
+    <value>Voltar</value>
+  </data>
 </root>

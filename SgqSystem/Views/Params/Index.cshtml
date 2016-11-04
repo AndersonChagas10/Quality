@@ -133,7 +133,7 @@
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-xs-3"><button class="btn btn-warning btn-block" id="btnNewLevel1">@Resources.Resource.new_level2</button></div>
+                                                <div class="col-xs-3"><button class="btn btn-warning btn-block" id="btnNewLevel2">@Resources.Resource.new_level2</button></div>
                                                 <div class="col-xs-9" id="partialSelectLevel2">
                                                     @*@Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control", @id = "parLevel2Select2" })*@
                                                     @Html.Partial("~/Views/Params/_SelectBoxLevel2.cshtml", Model)
@@ -254,6 +254,17 @@
 
         $('#btnNewLevel1').click(function () {
             $('#parLevel1Select2').val('-1').trigger('select2:select').change();
+            $('#paramsDto_parLevel1Dto_Name').focus();
+        });
+
+        $('#btnNewLevel2').click(function () {
+            $('#parLevel2Select2').val('-1').trigger('select2:select').change();
+            $('#paramsDto_parLevel2Dto_Name').focus();
+        });
+
+        $('#btnNewLevel3').click(function () {
+            $('#parLevel3Select2').val('-1').trigger('select2:select').change();
+            $('#paramsDto_parLevel3Dto_Name').focus();
         });
 
 
@@ -753,6 +764,14 @@
                 }
             });
         }
+
+        $('.table-erp tbody tr').mouseenter(function (e) {
+            $('.table-erp tbody tr').removeClass('hover');
+            $(this).addClass('hover');
+        });
+        $('.table-erp tbody tr').mouseleave(function (e) {
+            $('.table-erp tbody tr').removeClass('hover');
+        });         
 
     </script>
 </body>
