@@ -277,6 +277,10 @@ namespace Dominio.Services
                 {
                     level3.pesoDoVinculo = vinculoLevel3Level2.Weight;
                 }
+                else
+                {
+                    level3.pesoDoVinculo = 0;
+                }
             }
 
             var parLevel3Value = Mapper.Map<ParLevel3ValueDTO>(_baseParLevel3Value.GetAll().FirstOrDefault(r => r.ParLevel3_Id == level3.Id));
