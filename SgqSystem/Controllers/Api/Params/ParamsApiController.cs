@@ -44,7 +44,25 @@ namespace SgqSystem.Controllers.Api.Params
             return paramsViewModel;
         }
 
-
+        [HttpPost]
+        [Route("AddUpdateParLevel3Group")]
+        public ParamsViewModel AddUpdateParLevel3Group([FromBody] ParamsViewModel paramsViewModel)
+        {
+            paramsViewModel.paramsDto = _paramdDomain.AddUpdateLevel2(paramsViewModel.paramsDto);
+            return paramsViewModel;
+        }
+        //[HttpPost]
+        //[Route("AddUpdateParLevel3Group/{Id}")]
+        //public ParLevel3GroupDTO ParLevel3Group(int Id)
+        //{
+        //    return _paramdDomain.RemoveParLevel3Group(Id);
+        //}
+        [HttpPost]
+        [Route("RemoveParLevel3Group/{Id}")]
+        public ParLevel3GroupDTO RemoveParLevel3Group(int Id)
+        {
+            return _paramdDomain.RemoveParLevel3Group(Id);
+        }
 
         [HttpPost]
         [Route("AddUpdateLevel3")]

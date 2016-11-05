@@ -8,10 +8,10 @@
 <div id="newLevel2Modal">
     @using (Html.BeginForm())
     {
-        <div class="row">   
+        <div class="row">
             <div class="col-lg-12">
                 <table class="table-erp">
-                    <tbody> 
+                    <tbody>
                         <tr class="row hide">
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Id, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
@@ -24,9 +24,9 @@
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Description, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_description), Table.PosicaoLabel.top, null, null)
                         </tr>
                         <tr class="row">
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.Number, new { @class = "form-control input-sm" , type="number", min="0" }), @Html.Label(Resources.Resource.evaluation), Table.PosicaoLabel.top, null, null)
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.Number, new { @class = "form-control input-sm" , type = "number" , min = "0" }), @Html.Label(Resources.Resource.sample), Table.PosicaoLabel.top, null, null)
-                        </tr>   
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.Number, new { @class = "form-control input-sm", type = "number", min = "0" }), @Html.Label(Resources.Resource.evaluation), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.Number, new { @class = "form-control input-sm", type = "number", min = "0" }), @Html.Label(Resources.Resource.sample), Table.PosicaoLabel.top, null, null)
+                        </tr>
                         <tr class="row">
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParDepartment_Id", Model.paramsDdl.DdlParDepartment, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.department), Table.PosicaoLabel.top, null, null)
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, null, null)
@@ -53,23 +53,29 @@
                         <div id="level2_group_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                             <div class="panel-body">
                                 <table class="table-erp">
+
                                     <tbody>
                                         <tr>
                                             @Table.GerarColunaButton(@Html.TextBox("inputParLevel03Name", null, htmlAttributes: new { @Id = "inputParLevel03Name", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"btnParLevel03GroupInsert\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
-                                    <tbody>
+                                </table>
+                                <table class="table-erp table table-condensed" id="tableLevel3Group">
+                                    <thead>
                                         <tr>
-                                            <td colspan="2" id="Level03Group"></td>
+                                            <th>Nome do Grupo</th>
+                                            <th></th>
                                         </tr>
+                                    </thead>
+                                    <tbody>
                                         @if (Model.paramsDto.listParLevel3GroupDto != null)
                                         {
                                             foreach (var lg in Model.paramsDto.listParLevel3GroupDto)
                                             {
                                                 <tr id="@lg.Id">
                                                     <td>@lg.Name</td>
-                                                    <td><button type="button" class=\"btn btn-danger btn-sm\" id="btnRemoveLevel3Group"><i class="fa fa-times" aria-hidden="true"></i></button></td>
-                                                    
+                                                    <td><button type="button" class="btn btn-danger btn-sm" id="btnRemoveLevel3GroupAdded"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+
                                                 </tr>
                                             }
                                         }
@@ -212,197 +218,213 @@
                         </div>
                     </div>
                 </div>
-                <button  type="button" onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level2</button>
+                <button type="button" onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level2</button>
             </div>
         </div>
     }
-    </div>
-    <script>
+</div>
+<script>
 
-        $('#paramsDto_parLevel2Dto_HasGroupLevel3').on('switchChange.bootstrapSwitch', function (event, state) {
-            if (state) {
-                $('#level2_group_accordion').fadeIn();
-            } else {
-                $('#level2_group_accordion').fadeOut();
+    $('#paramsDto_parLevel2Dto_HasGroupLevel3').on('switchChange.bootstrapSwitch', function (event, state) {
+        if (state) {
+            $('#level2_group_accordion').fadeIn();
+        } else {
+            $('#level2_group_accordion').fadeOut();
+        }
+    });
+
+
+    $('#BtnAddContadorMonitoramento').click(function (e) {
+
+        e.preventDefault();
+
+        var idCounter = $('#selectCounter').val();
+        var idLocal = $('#selectLocal').val();
+
+        var includeItem = true;
+
+
+        if (includeItem == true) {
+            var indexValue = $('.counterLevel2Class').length;
+
+            var inputHidden = '<input class="counterLevel2Class" type="hidden" name="paramsDto.listParCounterXLocalDto[' + indexValue + '].ParCounter_Id" value="' + idCounter + '" />' +
+                                '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParCounterXLocalDto[' + indexValue + '].ParLocal_Id" value="' + idLocal + '" />';
+
+
+            var elemento = $('<div class="HederLevel2Group" style="margin-left:30px">' + $('#selectCounter option:selected').text() + " | " + $('#selectLocal option:selected').text() + inputHidden + '<button type="button" class="btn btn-danger btn-sm pull-right" id="btnRemoveHeaderGroup"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</div>');
+            $('td#HederLevel2Group').append(elemento);
+            $('#selectCounter,  #selectLocal').prop('selectedIndex', 0);
+        }
+
+    });
+
+    var CounterLevel2 = {
+        ObjCounters: [],
+        ObjCounterRemove: [],
+        SaveCounter: function (edicao) {
+            CounterLevel2.ObjCounters.push({
+                Id: null,
+                ParLocal_Id: $('#selectLocal  option:selected').val(),
+                ParCounter_Id: $('#selectCounter option:selected').val(),
+                ParLevel1_Id: $('#paramsDto_parLevel2Dto_Id').val(),
+                Edicao: edicao,
+                ParLocal_Name: $('#selectLocal option:selected').text(),
+                ParCounter_Name: $('#selectCounter option:selected').text(),
+            });
+            CounterLevel2.CreateCounterPreview();
+        },
+        CreateCounterPreview: function () {
+
+            //$('#tblPreviewCounter2 > tbody').empty();
+            $('#tblPreviewCounter2 > tbody > tr#insert').remove();
+            var objHiddenCounter = "";
+            CounterLevel2.ObjCounters.forEach(function (o, c) {
+                objHiddenCounter += '<tr id="insert" >';
+                objHiddenCounter += '<td>' + o.ParCounter_Name + '</td>';
+                objHiddenCounter += '<td>' + o.ParLocal_Name + '</td>';
+                objHiddenCounter += '<td>&nbsp;<button type="button" class="btn btn-danger btn-xs pull-right" onclick="CounterLevel2.RemoveCounter($(this), ' + c + ')"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button></td>';
+                objHiddenCounter += '</tr>';
+            });
+
+            $('#tblPreviewCounter2 > tbody').append(objHiddenCounter);
+
+            if (CounterLevel2.ObjCounters.length == 0)
+                $('#tblPreviewCounter2').hide();
+            else
+                $('#tblPreviewCounter2').show();
+
+        },
+        UpdateCounters: function () {
+
+            /*Objetos Inseridos*/
+            $('#counterHidden2').empty();
+            var objHiddenCounter = "";
+            CounterLevel2.ObjCounters.forEach(function (o, c) {
+                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParCounter_Id" type="hidden" value="' + o.ParCounter_Id + '" />'
+                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLocal_Id" type="hidden"  value="' + o.ParLocal_Id + '" />'
+                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLevel2_Id" type="hidden"  value="' + o.ParLevel1_Id + '" />'
+            });
+            $('#counterHidden2').append(objHiddenCounter);
+
+            /*Objetos removidos*/
+            $('#counterEditHidden2').empty();
+
+            var objHiddenCounter = "";
+            CounterLevel2.ObjCounterRemove.forEach(function (o, c) {
+                objHiddenCounter += '<input name="paramsDto.parLevel2Dto.removerParCounterXlocal[' + c + ']" type="hidden" value="' + o.Id + '" />'
+            });
+
+            $('#counterEditHidden2').append(objHiddenCounter);
+        },
+        RemoveCounter: function (e, c) {
+            e.parents('tr').remove();
+            CounterLevel2.ObjCounters.splice(c, 1);
+
+            if (CounterLevel2.ObjCounters.length == 0)
+                $('#tblPreviewCounter2').hide();
+            else
+                $('#tblPreviewCounter2').show();
+        },
+        RemoveCounterEdicao: function (e, id) {
+            e.preventDefaut();
+            e.parents('tr').hide();
+
+            CounterLevel2.ObjCounterRemove.push({ Id: id })
+        },
+
+    }
+
+    $('#btnParLevel03GroupInsert').click(function (e) {
+        e.preventDefault();
+
+        var inputs = $('input[name="paramsDto.parLevel3GroupDto.Name"]');
+        var input = $('#inputParLevel03Name');
+
+        var includeItem = true;
+
+        inputs.each(function (e) {
+
+            if ($(this).val() == input.val()) {
+                alert('Já cadastrou esse grupo para o input');
+                includeItem = false;
+                return false;
             }
+
         });
+        if (includeItem == true) {
+            var indexValue = $('.groupLevel03Class').length;
 
-      
-        $('#BtnAddContadorMonitoramento').click(function (e) {
+            var inputHidden = '<input class="groupLevel03Class" type="hidden" name="paramsDto.listParLevel3GroupDto[' + indexValue + '].Name" value="' + input.val() + '" />'
 
-            e.preventDefault();
+            var elemento = $('<tr class="hide"><td>' + input.val() + inputHidden + '</td><td><button type="button" class=\"btn btn-danger btn-xs pull-right\" id="btnRemoveLevel3Group"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button></td></tr>');
 
-            var idCounter = $('#selectCounter').val();
-            var idLocal = $('#selectLocal').val();
+            $('tableLevel3Group').append(elemento);
 
-            var includeItem = true;
+            if ($('select[name="paramsDto.parLevel2Selected"]').val() > 0) {
+                var dados = $('#newLevel2Modal > form').serializeObject();
+                $.post(AddLevel3Group, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                    if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
+                        elemento.removeClass('hide');
+                        input.val("");
 
-
-            if (includeItem == true) {
-                var indexValue = $('.counterLevel2Class').length;
-
-                var inputHidden = '<input class="counterLevel2Class" type="hidden" name="paramsDto.listParCounterXLocalDto[' + indexValue + '].ParCounter_Id" value="' + idCounter + '" />' +
-                                    '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParCounterXLocalDto[' + indexValue + '].ParLocal_Id" value="' + idLocal + '" />';
-
-
-                var elemento = $('<div class="HederLevel2Group" style="margin-left:30px">' + $('#selectCounter option:selected').text() + " | " + $('#selectLocal option:selected').text() + inputHidden + '<button type="button" class="btn btn-danger btn-sm pull-right" id="btnRemoveHeaderGroup"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</div>');
-                $('td#HederLevel2Group').append(elemento);
-                $('#selectCounter,  #selectLocal').prop('selectedIndex', 0);
+                    }
+                });
             }
-
-        });
-
-        var CounterLevel2 = {
-            ObjCounters: [],
-            ObjCounterRemove: [],
-            SaveCounter: function (edicao) {
-                CounterLevel2.ObjCounters.push({
-                    Id: null,
-                    ParLocal_Id: $('#selectLocal  option:selected').val(),
-                    ParCounter_Id: $('#selectCounter option:selected').val(),
-                    ParLevel1_Id: $('#paramsDto_parLevel2Dto_Id').val(),
-                    Edicao: edicao,
-                    ParLocal_Name: $('#selectLocal option:selected').text(),
-                    ParCounter_Name: $('#selectCounter option:selected').text(),
-                });
-                CounterLevel2.CreateCounterPreview();
-            },
-            CreateCounterPreview: function () {
-
-                //$('#tblPreviewCounter2 > tbody').empty();
-                $('#tblPreviewCounter2 > tbody > tr#insert').remove();
-                var objHiddenCounter = "";
-                CounterLevel2.ObjCounters.forEach(function (o, c) {
-                    objHiddenCounter += '<tr id="insert" >';
-                    objHiddenCounter += '<td>' + o.ParCounter_Name + '</td>';
-                    objHiddenCounter += '<td>' + o.ParLocal_Name + '</td>';
-                    objHiddenCounter += '<td>&nbsp;<button type="button" class="btn btn-danger btn-xs pull-right" onclick="CounterLevel2.RemoveCounter($(this), ' + c + ')"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button></td>';
-                    objHiddenCounter += '</tr>';
-                });
-
-                $('#tblPreviewCounter2 > tbody').append(objHiddenCounter);
-
-                if (CounterLevel2.ObjCounters.length == 0)
-                    $('#tblPreviewCounter2').hide();
-                else
-                    $('#tblPreviewCounter2').show();
-
-            },
-            UpdateCounters: function () {
-
-                /*Objetos Inseridos*/
-                $('#counterHidden2').empty();
-                var objHiddenCounter = "";
-                CounterLevel2.ObjCounters.forEach(function (o, c) {
-                    objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParCounter_Id" type="hidden" value="' + o.ParCounter_Id + '" />'
-                    objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLocal_Id" type="hidden"  value="' + o.ParLocal_Id + '" />'
-                    objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLevel2_Id" type="hidden"  value="' + o.ParLevel1_Id + '" />'
-                });
-                $('#counterHidden2').append(objHiddenCounter);
-
-                /*Objetos removidos*/
-                $('#counterEditHidden2').empty();
-
-                var objHiddenCounter = "";
-                CounterLevel2.ObjCounterRemove.forEach(function (o, c) {
-                    objHiddenCounter += '<input name="paramsDto.parLevel2Dto.removerParCounterXlocal[' + c + ']" type="hidden" value="' + o.Id + '" />'
-                });
-
-                $('#counterEditHidden2').append(objHiddenCounter);
-            },
-            RemoveCounter: function (e, c) {
-                e.parents('tr').remove();
-                CounterLevel2.ObjCounters.splice(c, 1);
-
-                if(CounterLevel2.ObjCounters.length == 0)
-                    $('#tblPreviewCounter2').hide();
-                else
-                    $('#tblPreviewCounter2').show();
-            },
-            RemoveCounterEdicao: function (e, id) {
-                e.preventDefaut();
-                e.parents('tr').hide();
-
-                CounterLevel2.ObjCounterRemove.push({ Id: id })
-            },
+            else {
+                elemento.removeClass('hide');
+                input.val("");
+            }
 
         }
 
-        $('#btnParLevel03GroupInsert').click(function (e) {
-
-            e.preventDefault();
-
-            var inputs = $('input[name="paramsDto.parLevel3GroupDto.Name"]');
-            var input = $('#inputParLevel03Name');
-
-            var includeItem = true;
-
-            inputs.each(function (e) {
-
-                if ($(this).val() == input.val()) {
-                    alert('Já cadastrou esse grupo para o input');
-                    includeItem = false;
-                    return false;
-                }
-
-            });
-            if (includeItem == true) {
-                var indexValue = $('.groupLevel03Class').length;
-
-                var inputHidden = '<input class="groupLevel03Class" type="hidden" name="paramsDto.listParLevel3GroupDto[' + indexValue + '].Name" value="' + input.val() + '" />'
-                var elemento = $('<div class="level03Group">' + input.val() + inputHidden + '<button type="button" class=\"btn btn-danger btn-xs pull-right\" id="btnRemoveLevel3Group"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '<hr style="margin: 5px 0px"></div>');
-                $('td#Level03Group').append(elemento);
-                input.val("");
-            }
-            input.focus();
+        input.focus();
 
 
-        });
-        $('#btnAddFrequenciaReincidencia').click(function (e) {
+    });
+    $('#btnAddFrequenciaReincidencia').click(function (e) {
 
-            e.preventDefault();
+        e.preventDefault();
 
-            var NcNumber = $('#inputNumeroNC').val();
-            var Vigencia = $('#inputVigencia').val();
-            var idFrequencia = $('#selectFrequenciaReincidencia').val()
-            var includeItem = true;
+        var NcNumber = $('#inputNumeroNC').val();
+        var Vigencia = $('#inputVigencia').val();
+        var idFrequencia = $('#selectFrequenciaReincidencia').val()
+        var includeItem = true;
 
-            if (includeItem == true) {
-                var indexValue = $('#tableRepetition tbody tr').length;
+        if (includeItem == true) {
+            var indexValue = $('#tableRepetition tbody tr').length;
 
-                var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
-                                  '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
-                                  '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
+            var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
+                              '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
+                              '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
 
-                var elemento = $('<tr><td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#selectFrequenciaReincidencia option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td><tr>');
-                $('#tableRepetition tbody').append(elemento);
-                $('#selectFrequenciaReincidencia').prop('selectedIndex', 0);
-                $('#inputNumeroNC, #inputVigencia').val("");
-                $('#inputNumeroNC').focus();
-            }
+            var elemento = $('<tr><td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#selectFrequenciaReincidencia option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td><tr>');
+            $('#tableRepetition tbody').append(elemento);
+            $('#selectFrequenciaReincidencia').prop('selectedIndex', 0);
+            $('#inputNumeroNC, #inputVigencia').val("");
+            $('#inputNumeroNC').focus();
+        }
 
-            if ($('tr#RegraReincidenciaGroup').length == 0)
-                $('#tableRepetition').hide();
-            else
-                $('#tableRepetition').show();
-        });
+        if ($('tr#RegraReincidenciaGroup').length == 0)
+            $('#tableRepetition').hide();
+        else
+            $('#tableRepetition').show();
+    });
 
-        $(document).on('click', '#btnRemoveLevel3Group', function (e) {
-            e.preventDefault();
-            $(this).parents('.level03Group').remove();
-        });
-        $(document).ready(function () {
+    $(document).on('click', '#btnRemoveLevel3Group', function (e) {
+        e.preventDefault();
+        $(this).parents('.level03Group').remove();
+    });
+    $(document).ready(function () {
 
-            defaults();
-            if ($('input[name="paramsDto.parLevel2Dto.HasGroupLevel3"]').is(':checked'))
-            {
-                $('#level2_group_accordion').fadeIn();
-            }
-        });
-        /*Fim Submit Level1*/
+        defaults();
+        if ($('input[name="paramsDto.parLevel2Dto.HasGroupLevel3"]').is(':checked')) {
+            $('#level2_group_accordion').fadeIn();
+        }
+    });
+    /*Fim Submit Level1*/
 
-        $(document).ready(function () {
-            defaults();
-        });
+    $(document).ready(function () {
+        defaults();
+    });
 
-    </script>
+</script>

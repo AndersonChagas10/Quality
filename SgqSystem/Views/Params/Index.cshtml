@@ -13,6 +13,10 @@
     var urlGetLevel3 = Url.Action("GetParLevel3ById", "api/ParamsApi");
     var vinculoL2L3 = Url.Action("AddVinculoL3L2", "api/ParamsApi");
     var vinculoL1L2 = Url.Action("AddVinculoL1L2", "api/ParamsApi");
+
+    var removeLevel3Group = Url.Action("RemoveParLevel3Group", "api/ParamsApi");
+    var AddLevel3Group = Url.Action("AddUpdateParLevel3Group", "api/ParamsApi");
+
     Layout = null;
 
 }
@@ -191,11 +195,11 @@
                                                     </div>
 
                                                     @*<div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false" id="level3Title"> @Resources.Resource.level3 </a>
-                                                            <a id="vinculoLevel2" data-toggle="modal" data-target="#modalPontos">Vincular ao nivel 2</a>
-                                                        </h4>
-                                                    </div>*@
+                                                            <h4 class="panel-title">
+                                                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false" id="level3Title"> @Resources.Resource.level3 </a>
+                                                                <a id="vinculoLevel2" data-toggle="modal" data-target="#modalPontos">Vincular ao nivel 2</a>
+                                                            </h4>
+                                                        </div>*@
                                                     <div id="level3_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
                                                             <div id="ParLevel3">
@@ -332,7 +336,7 @@
         var url1 = '@Html.Raw(@url1)';
         var url2 = '@Html.Raw(@url2)';
         var url3 = '@Html.Raw(@url3)';
-
+        var AddLevel3Group = '@Html.Raw(@AddLevel3Group)';
         /*
             Serializa objeto usando bind de property Name
             $('form').serializeObject();
@@ -360,6 +364,8 @@
         var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
         var urlGetLevel2 = '@Html.Raw(@urlGetLevel2)';
         var urlGetLevel3 = '@Html.Raw(@urlGetLevel3)';
+
+        var removeLevel3Group = '@Html.Raw(@removeLevel3Group)';
 
         /*LEVEL 1*/
         var indexParamsLevel1 = {
@@ -569,9 +575,21 @@
                 }
 
             },
+            removeLevel3Group: function(e, element){
+                $.post(removeLevel3Group + '/' + element.attr('id'), function (obj, responseText, xhr) {
+                    if (obj != null) {
+
+                        element.remove();
+                    }
+                });
+            }
         }
         //indexParamsLevel2.select2();
         indexParamsLevel2.selectNormal();
+        
+        $(document).on('click', '#btnRemoveLevel3GroupAdded', function(e){
+            indexParamsLevel2.removeLevel3Group(e, $(this).parents('tr'));
+        })
 
         /*LEVEL 3*/
         var indexParamsLevel3 = {
@@ -801,7 +819,7 @@
 
     </script>
     <style type="text/css">
-        #camposCabecalhoIncluidos > th,  #camposCabecalhoIncluidos > td {
+        #camposCabecalhoIncluidos > th, #camposCabecalhoIncluidos > td {
             text-align: center;
             padding-left: 10px;
             padding-right: 10px;

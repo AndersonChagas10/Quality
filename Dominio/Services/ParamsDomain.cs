@@ -205,7 +205,17 @@ namespace Dominio.Services
             return paramsDto;
         }
 
-       
+        public ParamsDTO RemoveLevel03Group(int Id)
+        {
+
+            var parLevel3Group = Mapper.Map<ParLevel3Group>(_baseParLevel3Group.GetAll().Where(r => r.Id == Id).FirstOrDefault());
+            if(parLevel3Group != null)
+            {
+                _paramsRepo.RemoveParLevel3Group(parLevel3Group);
+            }
+            return null;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -227,7 +237,7 @@ namespace Dominio.Services
             paramsDto.parNotConformityRuleXLevelDto = Mapper.Map<ParNotConformityRuleXLevelDTO>(_baseParNotConformityRuleXLevel.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id));
             paramsDto.listParLevel3GroupDto = Mapper.Map<List<ParLevel3GroupDTO>>(_baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == level2.Id).ToList());
             paramsDto.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(_baseParRelapse.GetAll().Where(r => r.ParLevel2_Id == level2.Id).ToList());
-            paramsDto.listParLevel3GroupDto = Mapper.Map<List<ParLevel3GroupDTO>>(_baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == level2.Id).ToList());
+            paramsDto.listParLevel3GroupDto = Mapper.Map<List<ParLevel3GroupDTO>>(_baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == level2.Id && r.IsActive == true).ToList());
 
             //parNotConformityRuleXLevelDto
             paramsDto.parLevel2Dto = level2;
@@ -470,6 +480,35 @@ namespace Dominio.Services
             _baseRepoParLevel3Level2Level1.AddOrUpdate(objToSave);
 
             return Mapper.Map<ParLevel3Level2Level1DTO>(objToSave);
+        }
+
+        public ParLevel3GroupDTO RemoveParLevel3Group(int Id)
+        {
+            var parLevel3Group = _baseParLevel3Group.GetAll().FirstOrDefault(r => r.Id == Id);
+            parLevel3Group.IsActive = true;
+            _paramsRepo.RemoveParLevel3Group(parLevel3Group);
+            return Mapper.Map<ParLevel3GroupDTO>(parLevel3Group);
+
+            //if(parLevel3Group != null)
+            //{
+
+            //}               
+
+
+            //var vinculoLevel2Level3 = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
+            //var objToSave = new ParLevel3Level2Level1()
+            //{
+            //    ParLevel1_Id = idLevel1,
+            //    ParLevel3Level2_Id = vinculoLevel2Level3.Id
+            //};
+
+            //var exists = _baseRepoParLevel3Level2Level1.GetAll().FirstOrDefault(r => r.ParLevel3Level2_Id == vinculoLevel2Level3.Id);
+            //if (exists != null)
+            //    objToSave.Id = exists.Id;
+
+            //_baseRepoParLevel3Level2Level1.AddOrUpdate(objToSave);
+
+            //return Mapper.Map<ParLevel3Level2Level1DTO>(objToSave);
         }
 
         #endregion

@@ -12,6 +12,8 @@ namespace Dominio.Interfaces.Services
 
         ParamsDTO AddUpdateLevel2(ParamsDTO paramsDto);
         ParamsDTO GetLevel2(int idParLevel2);
+        ParLevel3GroupDTO RemoveParLevel3Group(int Id);
+
 
         ParamsDTO AddUpdateLevel3(ParamsDTO paramsDto);
         ParamsDTO GetLevel3(int idParLevel3, int idParLevel2);

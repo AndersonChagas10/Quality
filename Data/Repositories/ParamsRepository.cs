@@ -351,7 +351,15 @@ namespace Data.Repositories
                 ts.Commit();
             }
         }
-
+        public void RemoveParLevel03Group(int Id)
+        {
+            var parLevel3Group = db.ParLevel3Group.Where(r => r.Id == Id).FirstOrDefault();
+            if(parLevel3Group != null)
+            {
+                parLevel3Group.IsActive = false;
+                AddUpdateParLevel3Group(parLevel3Group, parLevel3Group.ParLevel2_Id);
+            }
+        }
         private void AddUpdateParCounterXLocal(ParCounterXLocal parCounterXLocal, int ParLevel2_Id)
         {
             parCounterXLocal.ParLevel2_Id = ParLevel2_Id;
@@ -426,9 +434,18 @@ namespace Data.Repositories
             }
             else
             {
+                //var parLevel3Group = (from p in db.ParLevel3Group
+                //                      where p.Id == paramLevel3Group.Id
+                //                      select p).FirstOrDefault();
+                //parLevel3Group.IsActive = false;
+                //parLevel3Group.AlterDate = DateTime.Now;
+
+
+
                 Guard.verifyDate(paramLevel3Group, "AlterDate");
                 db.ParLevel3Group.Attach(paramLevel3Group);
                 db.Entry(paramLevel3Group).State = EntityState.Modified;
+                //db.SaveChanges();
             }
         }
         private void AddUpdateParNotConformityRuleXLevel(ParNotConformityRuleXLevel paramNotConformityRuleXLevel, int Level , int? ParLevel1_Id = null, int? ParLevel2_Id = null, int? ParLevel3_Id = null)
@@ -627,35 +644,41 @@ namespace Data.Repositories
             }
         }
 
-            #region Não implementado
-
-            //private DbSet<ParLevel1> EntityParLevel1 { get { return db.Set<ParLevel1>(); } }
-            //private void SaveOrUpdate<T>(T obj, DbSet context)
-            //{
-            //    if (obj.GetType().GetProperty("Id") != null)
-            //    {
-            //        var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
-            //        if (id > 0)
-            //            Update(obj, context);
-            //        else
-            //            Add(obj, context);
-            //    }
-            //    db.SaveChanges();
-            //}
-
-            //public void Update<T>(T obj, DbSet context)
-            //{
-            //    Guard.verifyDate(obj, "AlterDate");
-            //    context.Attach(obj);
-            //    db.Entry<ParLevel1>(obj).State = EntityState.Modified;
-            //}
-
-            //public void Add<T>(T obj, DbSet context)
-            //{
-            //    Guard.verifyDate(obj, "AddDate");
-            //    context.Add(obj);
-            //} 
-
-            #endregion
+        public void RemoveParLevel3Group(ParLevel3Group paramLevel03group)
+        {
+            paramLevel03group.IsActive = false;
+            AddUpdateParLevel3Group(paramLevel03group, paramLevel03group.Id);
         }
+
+        #region Não implementado
+
+        //private DbSet<ParLevel1> EntityParLevel1 { get { return db.Set<ParLevel1>(); } }
+        //private void SaveOrUpdate<T>(T obj, DbSet context)
+        //{
+        //    if (obj.GetType().GetProperty("Id") != null)
+        //    {
+        //        var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
+        //        if (id > 0)
+        //            Update(obj, context);
+        //        else
+        //            Add(obj, context);
+        //    }
+        //    db.SaveChanges();
+        //}
+
+        //public void Update<T>(T obj, DbSet context)
+        //{
+        //    Guard.verifyDate(obj, "AlterDate");
+        //    context.Attach(obj);
+        //    db.Entry<ParLevel1>(obj).State = EntityState.Modified;
+        //}
+
+        //public void Add<T>(T obj, DbSet context)
+        //{
+        //    Guard.verifyDate(obj, "AddDate");
+        //    context.Add(obj);
+        //} 
+
+        #endregion
+    }
 }

@@ -328,6 +328,12 @@
             $('td#Level03Group').append(elemento);
             input.val("");
         }
+        $.post(removeLevel3Group + '/' + element.attr('id'), function (obj, responseText, xhr) {
+            if (obj != null) {
+
+                element.remove();
+            }
+        });
         input.focus();
 
 

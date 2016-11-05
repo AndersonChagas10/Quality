@@ -13,6 +13,9 @@ namespace Dominio.Interfaces.Repositories
                            ParEvaluation paramEvaluation,
                            ParSample paramSample,
                            List<ParRelapse> paramRelapse);
+
+        void RemoveParLevel3Group(ParLevel3Group paramLevel03group);
+
         void SaveParLocal(ParLocal paramLocal);
         void SaveParCounter(ParCounter paramCounter);
         void SaveParCounterXLocal(ParCounterXLocal paramCounterLocal);
