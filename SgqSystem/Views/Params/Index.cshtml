@@ -335,6 +335,16 @@
         var url2 = '@Html.Raw(@url2)';
         var url3 = '@Html.Raw(@url3)';
 
+        var Geral = {
+            TableShow: function(tableId, listEmpty){
+                if(!listEmpty){
+                    $(tableId).hide();
+                }else{
+                    $(tableId).show();
+                }
+            }
+        }
+
         /*
             Serializa objeto usando bind de property Name
             $('form').serializeObject();
@@ -428,6 +438,8 @@
                             } else {
                                 $('#level1Title').text(indexParamsLevel1.new_level1);
                             }
+
+                            updateAllTables();
                         });
                     }
 
@@ -460,6 +472,8 @@
                             } else {
                                 $('#level1Title').text(indexParamsLevel1.new_level1);
                             }
+
+                            updateAllTables();
                         });
                     }
 
@@ -802,6 +816,7 @@
         });
 
     </script>
+
     <style type="text/css">
         #camposCabecalhoIncluidos > th,  #camposCabecalhoIncluidos > td {
             text-align: center;

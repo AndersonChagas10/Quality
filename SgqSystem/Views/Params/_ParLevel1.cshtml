@@ -1235,6 +1235,14 @@
         defaults();
         if($('#paramsDto_parLevel1Dto_IsSpecific').is(':checked'))
             $('.groupCadastroEspecificoUnidade').fadeIn();
+
+
+        //Geral.TableShow();
     });
+
+    function updateAllTables(){
+        Geral.TableShow($('#clusterIncluidos'), $('#clusterIncluidos > tbody').children('tr').length <= 2);
+        Geral.TableShow($('#tblPreviewCounter1'), $('#tblPreviewCounter1 > tbody').children('tr').length == 0);
+    }
 
 </script>
