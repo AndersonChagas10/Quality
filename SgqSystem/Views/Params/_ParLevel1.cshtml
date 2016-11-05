@@ -378,6 +378,80 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="panel-group accordion" id="level1_repetition_accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_repetition_accordion" href="#level1_repetition_collapse" aria-expanded="false"> @Resources.Resource.repetition</a>
+                            </h4>
+                        </div>
+                        <div id="level1_repetition_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                            <div class="panel-body">
+                                <table class="table-erp">
+                                    <tbody>
+                                        <tr class="row">
+                                            @Table.GerarColuna(@Html.TextBox("inputNumeroNC", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.number_nc), Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(@Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.validation), Table.PosicaoLabel.top)
+                                            @Table.GerarColunaButton(@Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "selectFrequenciaReincidencia", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"btnAddFrequenciaReincidencia\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table-erp table table-condensed" id="tableRepetition">
+                                    <thead>
+                                        <tr>
+                                            <td>@Resources.Resource.rule</td>
+                                            <td>@Resources.Resource.number_nc</td>
+                                            <td>@Resources.Resource.validation</td>
+                                            <td colspan="2">@Resources.Resource.frequency</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="RegraReincidenciaGroup"></tr>
+                                        @if (Model.paramsDto.listParRelapseDto != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var rp in Model.paramsDto.listParRelapseDto)
+                                            {
+                                                i++;
+                                                <tr id="@rp.Id">
+                                                    <td>Regra @i</td>
+                                                    <td>@rp.NcNumber</td>
+                                                    <td>@rp.EffectiveLength</td>
+                                                    <td>@rp.parFrequency.Name</td>
+                                                    <td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-group accordion" id="level1_nc_accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_nc_accordion" href="#level1_nc_collapse" aria-expanded="false"> @Resources.Resource.not_conformity_rule</a>
+                            </h4>
+                        </div>
+                        <div id="level1_nc_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                            <div class="panel-body">
+                                <table class="table-erp">
+                                    <tbody>
+                                        <tr class="row">
+                                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.not_conformity_rule), Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
+                                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <input type="button" id="btnSaveNewLevel1Modal" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary" value="Save level 1" />
             </div>

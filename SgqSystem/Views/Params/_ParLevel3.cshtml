@@ -20,7 +20,7 @@
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "form-control input-sm", @id = "selectTipoInput" }), @Html.Label(Resources.Resource.data_type_entry), Table.PosicaoLabel.top)
                     </tr>
                     <tr class="row ParIntervalos" style="display: none;">
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top)
+                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMin, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMax, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
                         <td style="display: none;">
@@ -34,6 +34,57 @@
                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
                     </tr>
                 </table>
+
+                <div class="panel-group accordion" id="level3_repetition_accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_repetition_accordion" href="#level3_repetition_collapse" aria-expanded="false"> @Resources.Resource.repetition</a>
+                            </h4>
+                        </div>
+                        <div id="level3_repetition_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                            <div class="panel-body">
+                                <table class="table-erp">
+                                    <tbody>
+                                        <tr class="row">
+                                            @Table.GerarColuna(@Html.TextBox("inputNumeroNC", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.number_nc), Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(@Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.validation), Table.PosicaoLabel.top)
+                                            @Table.GerarColunaButton(@Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "selectFrequenciaReincidencia", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"btnAddFrequenciaReincidencia\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table-erp table table-condensed" id="tableRepetition">
+                                    <thead>
+                                        <tr>
+                                            <td>@Resources.Resource.rule</td>
+                                            <td>@Resources.Resource.number_nc</td>
+                                            <td>@Resources.Resource.validation</td>
+                                            <td colspan="2">@Resources.Resource.frequency</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="RegraReincidenciaGroup"></tr>
+                                        @if (Model.paramsDto.listParRelapseDto != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var rp in Model.paramsDto.listParRelapseDto)
+                                            {
+                                                i++;
+                                                <tr id="@rp.Id">
+                                                    <td>Regra @i</td>
+                                                    <td>@rp.NcNumber</td>
+                                                    <td>@rp.EffectiveLength</td>
+                                                    <td>@rp.parFrequency.Name</td>
+                                                    <td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <label id="pesoDefinido" style="display:none" ></label>
 
@@ -64,6 +115,28 @@
             </div>
         </div>
         @Html.HiddenFor(m=>m.paramsDto.parLevel3Value.Id)
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog  modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">@Resources.Resource.measurement_unit</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
+                            <div class="col-xs-12"><input class="form-control input-sm" id="modalInputMeasurementUnit" /></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">@Resources.Resource.save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal -->
         <div class="modal fade" id="modalPontos" role="dialog">
@@ -101,7 +174,9 @@
 
         $('#modalPontos').appendTo('body');
 
-        $('#modalPontos')
+        $('#btnUnidadeMedida').click(function (e) {
+            $('#modalUnidadeMedida').modal({ backdrop: false });
+        });
 
         $('#btnPositiveNegative').click(function (e) {
             $('#modalPositiveNegative').modal({ backdrop: false });
@@ -148,11 +223,17 @@
             if ($("#selectTipoInput option:selected").val() == "1") {
                 $('.ParIntervalos').hide();
                 $('.ParBinarios').fadeIn();
+                $('#selectUnidadeDeMedidas').val(-1);
+                $('#paramsDto_parLevel3Value_IntervalMin').val("");
+                $('#paramsDto_parLevel3Value_IntervalMax').val("");
+                $('#parIntervalosType').empty().parents('td').hide();
             }
             //Intervalos
             if ($("#selectTipoInput option:selected").val() == "3") {
                 $('.ParBinarios').hide();
                 $('.ParIntervalos').fadeIn();
+                $('#selectConforme').val(-1);
+                $('#selectNaoConforme').val(-1);
             }
         });
 
