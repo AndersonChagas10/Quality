@@ -64,7 +64,6 @@
                     </tbody>
                 </table>
 
-                @*Cluster*@
                 <div class="panel-group accordion" id="level1_cluster_accordion">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -329,7 +328,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div class="panel-group accordion" id="level1_counter_accordion">
                     <div class="panel panel-default">
@@ -615,6 +613,8 @@
             $('#btnIncluirCabecalho input').hide();
             $('#btnIncluirTexto').hide();
             $('#btnIncluirNumerico').hide();
+            $('#btnIncluirData').hide();
+            $('#btnIncluirIntegracoes').hide();
 
             /*Esconde mensagens*/
             Cabecalhos.EscondeMensagemValidacaoCabecalho();
@@ -1045,7 +1045,11 @@
         },
 
         //INTEGRAÇÕES
-
+        ShowIntegracoes: function () {
+            $('#btnIncluirNumerico').show();
+            $('#objNumerico').show();
+            $('#btnIncluirCabecalho input').hide();
+        },
 
         //NUMERICO
         ShowNumerico: function () {
@@ -1103,7 +1107,11 @@
         },
 
         //DATA
-
+        ShowData: function () {
+            $('#btnIncluirCabecalho input').hide();
+            $('#btnIncluirData').show();
+            $('#objData').show();
+        },
 
         UpdateCabecalhos: function () {
             Cabecalhos.Counter = 0;
