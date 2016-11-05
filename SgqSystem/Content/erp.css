@@ -33,9 +33,6 @@
 .inline-block{
     display: inline-block;
 }
-.input-group{
-    max-width: 250px;
-}
 .table-erp tbody tr.hover td:first-child label
 {
     color: #000000;

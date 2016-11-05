@@ -147,14 +147,13 @@
                                             <div class="panel-group accordion" id="level2_accordion">
                                                 <div class="panel panel-warning">
                                                     <div class="panel-heading">
-
                                                         <div class="row panel-title">
-                                                            <div class="col-md-11">
+                                                            <div class="col-xs-8">
                                                                 <h4 class="panel-title">
                                                                     <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_accordion" href="#level2_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.level2 </a>
                                                                 </h4>
                                                             </div>
-                                                            <div class="col-md-1">
+                                                            <div class="col-xs-4">
                                                                 <button id="vinculoLevel1" class="btn btn-warning pull-right" style="height: 42px;" title="Vincular ao Level 1"><span class="glyphicon glyphicon-link"></span></button>
                                                             </div>
                                                         </div>
@@ -183,12 +182,12 @@
                                                     <div class="panel-heading">
 
                                                         <div class="row panel-title">
-                                                            <div class="col-md-11">
+                                                            <div class="col-xs-8">
                                                                 <h4 class="panel-title">
                                                                     <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false" id="level3Title"> @Resources.Resource.level3 </a>
                                                                 </h4>
                                                             </div>
-                                                            <div class="col-md-1">
+                                                            <div class="col-xs-4">
                                                                 <button id="vinculoLevel2" data-toggle="modal" data-target="#modalPontos" class="btn btn-danger pull-right" style="height: 42px;" title="Vincular ao Level 2"><span class="glyphicon glyphicon-link"></span></button>
                                                             </div>
                                                         </div>
@@ -280,16 +279,19 @@
 
         $('#btnNewLevel1').click(function () {
             $('#parLevel1Select2').val('-1').trigger('select2:select').change();
+            $('#level1_collapse').collapse('show');
             $('#paramsDto_parLevel1Dto_Name').focus();
         });
 
         $('#btnNewLevel2').click(function () {
             $('#parLevel2Select2').val('-1').trigger('select2:select').change();
+            $('#level2_collapse').collapse('show');
             $('#paramsDto_parLevel2Dto_Name').focus();
         });
 
         $('#btnNewLevel3').click(function () {
             $('#parLevel3Select2').val('-1').trigger('select2:select').change();
+            $('#level3_collapse').collapse('show');
             $('#paramsDto_parLevel3Dto_Name').focus();
         });
 
@@ -336,7 +338,19 @@
         var url1 = '@Html.Raw(@url1)';
         var url2 = '@Html.Raw(@url2)';
         var url3 = '@Html.Raw(@url3)';
-        var AddLevel3Group = '@Html.Raw(@AddLevel3Group)';
+       var AddLevel3Group = '@Html.Raw(@AddLevel3Group)';
+
+
+        var Geral = {
+            TableShow: function(tableId, listEmpty){
+                if(!listEmpty){
+                    $(tableId).hide();
+                }else{
+                    $(tableId).show();
+                }
+            }
+        }
+
         /*
             Serializa objeto usando bind de property Name
             $('form').serializeObject();
@@ -432,6 +446,8 @@
                             } else {
                                 $('#level1Title').text(indexParamsLevel1.new_level1);
                             }
+
+                            updateAllTables();
                         });
                     }
 
@@ -464,6 +480,8 @@
                             } else {
                                 $('#level1Title').text(indexParamsLevel1.new_level1);
                             }
+
+                            updateAllTables();
                         });
                     }
 
@@ -586,7 +604,7 @@
         }
         //indexParamsLevel2.select2();
         indexParamsLevel2.selectNormal();
-        
+
         $(document).on('click', '#btnRemoveLevel3GroupAdded', function(e){
             indexParamsLevel2.removeLevel3Group(e, $(this).parents('tr'));
         })
@@ -818,6 +836,7 @@
         });
 
     </script>
+
     <style type="text/css">
         #camposCabecalhoIncluidos > th, #camposCabecalhoIncluidos > td {
             text-align: center;
