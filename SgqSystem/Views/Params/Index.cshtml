@@ -264,11 +264,7 @@
             $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
             $(".check-box").bootstrapSwitch();
         }
-
-        $('[data-toggle="popover"]').popover();
-
-        defaults();
-
+        
         var t1 = @Html.Raw(Json.Encode(@Resources.Resource.new_level1));
         var t2 = @Html.Raw(Json.Encode(@Resources.Resource.new_level2));
         var t3 = @Html.Raw(Json.Encode(@Resources.Resource.new_level3));
@@ -842,6 +838,12 @@
                 }
             });
         }
+
+        $(document).ready(function () {
+            $('[data-toggle="popover"]').popover();
+        });
+
+        
 
     </script>
 
