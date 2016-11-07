@@ -104,7 +104,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <table class="table-erp table table-condensed" id="tableRepetition">
+                                <table class="table-erp table table-condensed" id="tableRepetition" style="display: none;">
                                     <thead>
                                         <tr>
                                             <td>@Resources.Resource.rule</td>
@@ -254,6 +254,8 @@
             var elemento = $('<div class="HederLevel2Group" style="margin-left:30px">' + $('#selectCounter option:selected').text() + " | " + $('#selectLocal option:selected').text() + inputHidden + '<button type="button" class="btn btn-danger btn-sm pull-right" id="btnRemoveHeaderGroup"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</div>');
             $('td#HederLevel2Group').append(elemento);
             $('#selectCounter,  #selectLocal').prop('selectedIndex', 0);
+
+            updateAllTables();
         }
 
     });
@@ -288,11 +290,7 @@
 
             $('#tblPreviewCounter2 > tbody').append(objHiddenCounter);
 
-            if (CounterLevel2.ObjCounters.length == 0)
-                $('#tblPreviewCounter2').hide();
-            else
-                $('#tblPreviewCounter2').show();
-
+            updateAllTables();
         },
         UpdateCounters: function () {
 
@@ -320,10 +318,7 @@
             e.parents('tr').remove();
             CounterLevel2.ObjCounters.splice(c, 1);
 
-            if (CounterLevel2.ObjCounters.length == 0)
-                $('#tblPreviewCounter2').hide();
-            else
-                $('#tblPreviewCounter2').show();
+            updateAllTables();
         },
         RemoveCounterEdicao: function (e, id) {
             e.preventDefaut();
@@ -379,6 +374,7 @@
 
         input.focus();
 
+        updateAllTables();
 
     });
     $('#btnAddFrequenciaReincidencia').click(function (e) {
@@ -402,17 +398,17 @@
             $('#selectFrequenciaReincidencia').prop('selectedIndex', 0);
             $('#inputNumeroNC, #inputVigencia').val("");
             $('#inputNumeroNC').focus();
+
+            updateAllTables();
         }
 
-        if ($('tr#RegraReincidenciaGroup').length == 0)
-            $('#tableRepetition').hide();
-        else
-            $('#tableRepetition').show();
     });
 
     $(document).on('click', '#btnRemoveLevel3Group', function (e) {
         e.preventDefault();
         $(this).parents('.level03Group').remove();
+
+        updateAllTables();
     });
     $(document).ready(function () {
 
@@ -425,6 +421,8 @@
 
     $(document).ready(function () {
         defaults();
+
+        updateAllTables();
     });
 
 </script>
