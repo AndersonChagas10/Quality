@@ -21,13 +21,13 @@ namespace DTO.DTO.Params
         //[Display(Name = "level1_name", ResourceType = typeof(Resource))]
         [Required(ErrorMessage = "O Nome deverá ter no mínimo 3 e máximo 10 caracteres.")]
         [MinLength(3, ErrorMessage = "O tamanho mínimo do Nome são 3 caracteres.")]
-        [MaxLength(140, ErrorMessage = "O tamanho máximo do Nome são 10 caracteres.")]
+        [MaxLength(140, ErrorMessage = "O tamanho máximo do Nome são 140 caracteres.")]
         public string Name { get; set; }
 
         //[Display(Name = "level1_description", ResourceType = typeof(Resource))]
         [Required(ErrorMessage = "O Nome deverá ter no mínimo 3 e máximo 10 caracteres.")]
         [MinLength(3, ErrorMessage = "O tamanho mínimo do Nome são 3 caracteres.")]
-        [MaxLength(140, ErrorMessage = "O tamanho máximo do Nome são 10 caracteres.")]
+        [MaxLength(140, ErrorMessage = "O tamanho máximo do Nome são 140 caracteres.")]
         public string Description { get; set; }
 
         //[Display(Name = "save_button_on_level2", ResourceType = typeof(Resource))]
