@@ -482,11 +482,13 @@ namespace Dominio.Services
             return Mapper.Map<ParLevel3Level2Level1DTO>(objToSave);
         }
 
+        
         public ParLevel3GroupDTO RemoveParLevel3Group(int Id)
         {
             var parLevel3Group = _baseParLevel3Group.GetAll().FirstOrDefault(r => r.Id == Id);
             parLevel3Group.IsActive = false;
-            _paramsRepo.RemoveParLevel3Group(parLevel3Group);
+            _baseParLevel3Group.AddOrUpdate(parLevel3Group);
+            //_paramsRepo.RemoveParLevel3Group(parLevel3Group);
             return Mapper.Map<ParLevel3GroupDTO>(parLevel3Group);
 
             //if(parLevel3Group != null)
