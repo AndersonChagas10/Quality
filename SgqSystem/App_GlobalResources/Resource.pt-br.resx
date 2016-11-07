@@ -576,4 +576,7 @@
   <data name="weight" xml:space="preserve">
     <value>Peso</value>
   </data>
+  <data name="defined_weight" xml:space="preserve">
+    <value>Peso definido</value>
+  </data>
 </root>
