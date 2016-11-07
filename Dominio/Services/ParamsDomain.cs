@@ -485,7 +485,7 @@ namespace Dominio.Services
         public ParLevel3GroupDTO RemoveParLevel3Group(int Id)
         {
             var parLevel3Group = _baseParLevel3Group.GetAll().FirstOrDefault(r => r.Id == Id);
-            parLevel3Group.IsActive = true;
+            parLevel3Group.IsActive = false;
             _paramsRepo.RemoveParLevel3Group(parLevel3Group);
             return Mapper.Map<ParLevel3GroupDTO>(parLevel3Group);
 

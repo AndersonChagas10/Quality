@@ -74,7 +74,7 @@
                                             {
                                                 <tr id="@lg.Id">
                                                     <td>@lg.Name</td>
-                                                    <td><button type="button" class="btn btn-danger btn-sm" id="btnRemoveLevel3GroupAdded"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                    <td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoveLevel3GroupAdded"><i class="fa fa-times" aria-hidden="true"></i></button></td>
 
                                                 </tr>
                                             }
@@ -358,7 +358,7 @@
 
             var elemento = $('<tr class="hide"><td>' + input.val() + inputHidden + '</td><td><button type="button" class=\"btn btn-danger btn-xs pull-right\" id="btnRemoveLevel3Group"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button></td></tr>');
 
-            $('tableLevel3Group').append(elemento);
+            $('#tableLevel3Group').append(elemento);
 
             if ($('select[name="paramsDto.parLevel2Selected"]').val() > 0) {
                 var dados = $('#newLevel2Modal > form').serializeObject();

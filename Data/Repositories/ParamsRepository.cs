@@ -423,7 +423,7 @@ namespace Data.Repositories
 
         private void AddUpdateParLevel3Group(ParLevel3Group paramLevel3Group, int ParLevel2_Id)
         {
-            paramLevel3Group.ParLevel2_Id = ParLevel2_Id;
+                paramLevel3Group.ParLevel2_Id = ParLevel2_Id;
             //if(paramLevel3Group.Description == null)
             //{
             //    paramLevel3Group.Description = string.Empty;
@@ -441,7 +441,8 @@ namespace Data.Repositories
                 //parLevel3Group.AlterDate = DateTime.Now;
 
 
-
+                paramLevel3Group.ParLevel2 = null;
+                paramLevel3Group.ParLevel3Level2 = null;
                 Guard.verifyDate(paramLevel3Group, "AlterDate");
                 db.ParLevel3Group.Attach(paramLevel3Group);
                 db.Entry(paramLevel3Group).State = EntityState.Modified;
