@@ -647,8 +647,10 @@ namespace Data.Repositories
 
         public void RemoveParLevel3Group(ParLevel3Group paramLevel03group)
         {
-            paramLevel03group.IsActive = false;
-            AddUpdateParLevel3Group(paramLevel03group, paramLevel03group.Id);
+            Guard.verifyDate(paramLevel03group, "AlterDate");
+            db.ParLevel3Group.Attach(paramLevel03group);
+            db.Entry(paramLevel03group).State = EntityState.Modified;
+            db.SaveChanges();
         }
 
         #region Não implementado
