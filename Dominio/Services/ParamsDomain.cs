@@ -5,6 +5,9 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 
 namespace Dominio.Services
 {
@@ -144,11 +147,38 @@ namespace Dominio.Services
             List<int> removeCounter = paramsDto.parLevel1Dto.removerParCounterXlocal;
 
             /*Enviando para repository salvar, envia todos, pois como existe transaction, faz rolback de tudo se der erro.*/
-            _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField, removerCluster, removeCounter, ListaParCounterLocal);
+            try
+            {
+                _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField, removerCluster, removeCounter, ListaParCounterLocal);
+
+            }
+            catch (DbUpdateException e)
+            {
+                VerifyUniqueName(saveParamLevel1, e);
+            }
 
             /*Retorno*/
             paramsDto.parLevel1Dto.Id = saveParamLevel1.Id;
             return paramsDto;
+        }
+
+        private static void VerifyUniqueName<T>(T obj, DbUpdateException e)
+        {
+            if (e.InnerException != null)
+                if (e.InnerException.InnerException != null)
+                {
+                    SqlException innerException = e.InnerException.InnerException as SqlException;
+                    if (innerException != null && (innerException.Number == 2627 || innerException.Number == 2601))
+                    {
+                        if (innerException.Message.IndexOf("Name") > 0)
+                            throw new ExceptionHelper("O Nome: " + obj.GetType().GetProperty("Name").GetValue(obj) + " já existe.");
+                    }
+                    else
+                    {
+                        throw e;
+                    }
+
+                }
         }
 
         /// <summary>
@@ -179,7 +209,6 @@ namespace Dominio.Services
 
         #endregion
 
-
         #region Level2
 
         public ParamsDTO AddUpdateLevel2(ParamsDTO paramsDto)
@@ -193,13 +222,20 @@ namespace Dominio.Services
             ParSample saveParamSample = Mapper.Map<ParSample>(paramsDto.parSampleDto);
             List<ParRelapse> listParRelapse = Mapper.Map<List<ParRelapse>>(paramsDto.listParRelapseDto);
 
-            _paramsRepo.SaveParLevel2(saveParamLevel2,
-                                     listaParLevel3Group,
-                                     listParCounterXLocal,
-                                     saveParamNotConformityRuleXLevel,
-                                     saveParamEvaluation,
-                                     saveParamSample,
-                                     listParRelapse);
+            try
+            {
+                _paramsRepo.SaveParLevel2(saveParamLevel2,
+                                           listaParLevel3Group,
+                                           listParCounterXLocal,
+                                           saveParamNotConformityRuleXLevel,
+                                           saveParamEvaluation,
+                                           saveParamSample,
+                                           listParRelapse);
+            }
+            catch (DbUpdateException e)
+            {
+                VerifyUniqueName(saveParamLevel2, e);
+            }
 
             paramsDto.parLevel2Dto.Id = saveParamLevel2.Id;
             return paramsDto;
@@ -255,7 +291,15 @@ namespace Dominio.Services
             ParLevel3 saveParamLevel3 = Mapper.Map<ParLevel3>(paramsDto.parLevel3Dto);
             ParLevel3Value saveParamLevel3Value = Mapper.Map<ParLevel3Value>(paramsDto.parLevel3Value);
 
-            _paramsRepo.SaveParLevel3(saveParamLevel3, saveParamLevel3Value);
+            try
+            {
+                _paramsRepo.SaveParLevel3(saveParamLevel3, saveParamLevel3Value);
+            }
+            catch (DbUpdateException e)
+            {
+                VerifyUniqueName(saveParamLevel3, e);
+            }
+
             paramsDto.parLevel3Dto.Id = saveParamLevel3.Id;
             return paramsDto;
         }

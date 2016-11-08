@@ -1,4 +1,5 @@
-﻿using Dominio.Interfaces.Services;
+﻿using Dominio;
+using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
@@ -83,7 +84,18 @@ namespace SgqSystem.Controllers.Api
 
         #endregion
 
-        #region Lock BETA TRAVA CLIENTE QUANDO ALGUM TABLET ESTIVER SINCRONIZANDO.
+        #region Bkp
+
+        [HttpPost]
+        [Route("api/Sync/SaveBkp")]
+        public int SaveBkp([FromBody] BkpCollection bkpCollection)
+        {
+            return _saveConsolidateDataCollectionDomain.SaveBkp(bkpCollection);
+        }
+
+        #endregion
+
+            #region Lock BETA TRAVA CLIENTE QUANDO ALGUM TABLET ESTIVER SINCRONIZANDO.
 
         [HttpPost]
         [Route("api/Sync/Lock")]

@@ -33,6 +33,7 @@
     @*@Styles.Render("~/Content/Tables")*@
     @Styles.Render("~/Content/Erp")
     @Styles.Render("~/Content/select2css")
+    @Styles.Render("~/Content/DatePikerContentCss")
 
     <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="~/Scripts/theme/css/components.min.css" rel="stylesheet" />
@@ -40,6 +41,21 @@
     <link href="~/Scripts/theme/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Scripts/theme/css/layout.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    
+    @*<style type="text/css">
+        #camposCabecalhoIncluidos > th, #camposCabecalhoIncluidos > td {
+            text-align: center;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        #camposCabecalhoIncluidos > table.dataTable {
+            margin: 0;
+            clear: both;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+    </style>*@
 
 
 </head>
@@ -52,6 +68,7 @@
     @Scripts.Render("~/bundles/ScriptTables")
     @Scripts.Render("~/bundles/theme")
     @Scripts.Render("~/bundles/select2js")
+    @Scripts.Render("~/bundles/DatePikerContent")
 
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
@@ -295,7 +312,6 @@
             $('#paramsDto_parLevel3Dto_Name').focus();
         });
 
-
         var monthNames = [
            '@Resources.Resource.january',
            '@Resources.Resource.february',
@@ -334,12 +350,10 @@
 
         watcher();
 
-
         var url1 = '@Html.Raw(@url1)';
         var url2 = '@Html.Raw(@url2)';
         var url3 = '@Html.Raw(@url3)';
        var AddLevel3Group = '@Html.Raw(@AddLevel3Group)';
-
 
         var Geral = {
             TableShow: function(tableId, listEmpty){
@@ -421,48 +435,50 @@
 
                             alert(statusmessage);
                         }
+                    }).fail(function (e, h, x) {
+                        alert(e.responseJSON.Message);
                     });
                 }
 
             },
             select2: function () {
-                $('#parLevel1Select2').select2({
+                //$('#parLevel1Select2').select2({
 
-                }).on("select2:select", function (e) {
+                //}).on("select2:select", function (e) {
 
-                    if (e.currentTarget.value == "") {
-                        $('#ParLevel1').empty();
-                        $('#ParLevel1').append(parLevel1Empty);
-                        $('#level1Title').text(indexParamsLevel1.new_level1);
-                    } else {
-                        $.get('GetParLevel1ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
-                            if (obj != null) {
-                                $('#ParLevel1').empty();
-                                $('#ParLevel1').append(xhr.responseText);
-                                UpdateSelect2Level2(e.currentTarget.value);
-                            }
-                            if (e.currentTarget.value > 0) {
-                                $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
-                            } else {
-                                $('#level1Title').text(indexParamsLevel1.new_level1);
-                            }
+                //    if (e.currentTarget.value == "") {
+                //        $('#ParLevel1').empty();
+                //        $('#ParLevel1').append(parLevel1Empty);
+                //        $('#level1Title').text(indexParamsLevel1.new_level1);
+                //    } else {
+                //        $.get('GetParLevel1ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
+                //            if (obj != null) {
+                //                $('#ParLevel1').empty();
+                //                $('#ParLevel1').append(xhr.responseText);
+                //                UpdateSelect2Level2(e.currentTarget.value);
+                //            }
+                //            if (e.currentTarget.value > 0) {
+                //                $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
+                //            } else {
+                //                $('#level1Title').text(indexParamsLevel1.new_level1);
+                //            }
 
-                            updateAllTables();
-                        });
-                    }
+                //            updateAllTables();
+                //        });
+                //    }
 
-                }).on("select2:unselect", function (e) {
+                //}).on("select2:unselect", function (e) {
 
-                    if (e.currentTarget.value == "") {
-                        $('#ParLevel1').empty()
-                        $('#ParLevel1').append(parLevel1Empty)
-                        $('#level1Title').text(indexParamsLevel1.new_level1);
-                    }
+                //    if (e.currentTarget.value == "") {
+                //        $('#ParLevel1').empty()
+                //        $('#ParLevel1').append(parLevel1Empty)
+                //        $('#level1Title').text(indexParamsLevel1.new_level1);
+                //    }
 
-                });
+                //});
             },
             selectNormal: function () {
-                $('#parLevel1Select2').on("click", function (e) {
+                $('#parLevel1Select2').on("change", function (e) {
                     var valorSelecionado = $('#parLevel1Select2 option:selected').val();
                     if (valorSelecionado == "") {
                         $('#ParLevel1').empty();
@@ -589,6 +605,8 @@
                         }
                         //console.log(objetoReturn);
                         //console.log(respostaCompleta);
+                    }).fail(function (e, h, x) {
+                        alert(e.responseJSON.Message);
                     });
                 }
 
@@ -715,6 +733,8 @@
                             alert(statusmessage);
 
                         }
+                    }).fail(function (e, h, x) {
+                        alert(e.responseJSON.Message);
                     });
                 }
 
@@ -837,19 +857,6 @@
 
     </script>
 
-    <style type="text/css">
-        #camposCabecalhoIncluidos > th, #camposCabecalhoIncluidos > td {
-            text-align: center;
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-
-        #camposCabecalhoIncluidos > table.dataTable {
-            margin: 0;
-            clear: both;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-    </style>
+   
 </body>
 </html>

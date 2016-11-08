@@ -39,6 +39,7 @@ namespace DTO.DTO
             ValidaBaseEntity();
 
             #region DateConsolidation
+
             if (rootObject.nextRoot[0].datetime != null)
             {
                 var dataCorrigida = rootObject.nextRoot[0].datetime.Split(':');
@@ -52,7 +53,7 @@ namespace DTO.DTO
             Guard.ForValidFk(DepartmentId, "Unit Id must be valid, in ConsolidationLevel01DTO.");
 
             //MOCK
-            rootObject.unidadeid = "1";
+            //rootObject.unidadeid = "1";
             UnitId = Guard.ConverteValor<int>(rootObject.unidadeid, "Level01.unidadeid");//int.Parse(rootObject.unidadeid);
             Guard.ForValidFk(UnitId, "Unit Id must be valid, in ConsolidationLevel01DTO.");
 
