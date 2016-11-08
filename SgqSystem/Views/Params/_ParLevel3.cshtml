@@ -63,7 +63,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr id="RegraReincidenciaGroup"></tr>
+                                        <tr id="RegraReincidenciaGroup" class="example"></tr>
                                         @if (Model.paramsDto.listParRelapseDto != null)
                                         {
                                             int i = 0;
@@ -86,7 +86,9 @@
                     </div>
                 </div>
 
-                <label id="pesoDefinido" style="display:none" ></label>
+                <div id="painelPeso" class="panel panel-default" style="padding: 0px 16px; display:none;">
+                    <h5><b>@Resources.Resource.defined_weight: </b> <label id="pesoDefinido"></label></h5>
+                </div>
 
                 <button type="button" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-primary margin-button">@Resources.Resource.save_level3</button>
             </div>
@@ -170,7 +172,8 @@
         var hasPeso = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.pesoDoVinculo));
         $('#paramsDto_parLevel3Dto_pesoDoVinculo').val(hasPeso);
 
-        $('#pesoDefinido').html('Peso do Vinculo: ' + hasPeso).show();
+        $('#pesoDefinido').html(hasPeso).show();
+        $('#painelPeso').show();
 
         $('#modalPontos').appendTo('body');
 
@@ -238,5 +241,12 @@
         });
 
         $('#selectTipoInput').change();
+
+        $(document).ready(function () {
+
+            updateAllTables();
+
+            $('[data-toggle="popover"]').popover();
+        });
 
     </script>

@@ -582,4 +582,16 @@
   <data name="weight" xml:space="preserve">
     <value>Weight</value>
   </data>
+  <data name="defined_weight" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="error_select_consolidation" xml:space="preserve">
+    <value>The select of the type of the consolidation is obligatory.</value>
+  </data>
+  <data name="save_level1" xml:space="preserve">
+    <value>Save level 1</value>
+  </data>
+  <data name="saving_the_level1" xml:space="preserve">
+    <value>Saving the level 1</value>
+  </data>
 </root>

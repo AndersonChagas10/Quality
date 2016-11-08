@@ -75,7 +75,6 @@ namespace SgqSystem.Controllers.Api.Params
 
         #endregion
 
-
         #region Vinculo Level3 com Level2
 
         [HttpGet]
