@@ -15,16 +15,12 @@
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
                         </tr>
                         <tr class="row">
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_name), Table.PosicaoLabel.top, null, null)
-                            @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.Name)
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_description), Table.PosicaoLabel.top, null, null)
-                            @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.Description)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_name), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.Name, null, new { @class = "text-danger" }))
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_description), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.Description, null, new { @class = "text-danger" }))
                         </tr>
                         <tr class="row">
-                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, new { @class = "form-control input-sm", @id = "selectConsolidacao" }), @Html.Label(Resources.Resource.consolidation_type), Table.PosicaoLabel.top, null, Resources.Resource.consolidation_type_popover)
-                            @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id)
-                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, null, Resources.Resource.frequency_popover)
-                            @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id)
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, new { @class = "form-control input-sm", @id = "selectConsolidacao" }), @Html.Label(Resources.Resource.consolidation_type), Table.PosicaoLabel.top, info: Resources.Resource.consolidation_type_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, null, new { @class = "text-danger" }))
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
                         </tr>
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.save_button_on_level2), Table.PosicaoLabel.left, null, Resources.Resource.save_button_on_level2_popover)
@@ -86,7 +82,7 @@
                                     </tbody>
                                 </table>
                                 @*Tabela de Cluster Incluidos*@
-                                <table id="clusterIncluidos" class="table table-condensed table-responsive no-margin margin-top" style="display:none">
+                                <table id="clusterIncluidos" class="table table-condensed table-responsive no-margin margin-top" style="display: none;">
                                     <thead>
                                         <tr>
                                             <th>@Resources.Resource.cluster_name</th>
@@ -95,8 +91,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr id="clusters"></tr>
-                                        <tr id="clustersVazia" style="display:none">
+                                        <tr id="clusters" class="example"></tr>
+                                        <tr id="clustersVazia" style="display:none" class="example">
                                             <td id="nomeCluster"></td>
                                             <td id="pontosCluster"></td>
                                             <td id="alterarCluster">
@@ -408,7 +404,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <table class="table-erp table table-condensed" id="tableRepetition">
+                                <table class="table-erp table table-condensed" id="tableRepetition" style="display: none;">
                                     <thead>
                                         <tr>
                                             <td>@Resources.Resource.rule</td>
@@ -418,7 +414,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr id="RegraReincidenciaGroup"></tr>
+                                        <tr id="RegraReincidenciaGroup" class="example"></tr>
                                         @if (Model.paramsDto.listParRelapseDto != null)
                                         {
                                             int i = 0;
@@ -462,12 +458,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <input type="button" id="btnSaveNewLevel1Modal" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary" value="Save level 1" />
+                </div>                
+                <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
         </div>
-
     }
 </div>
 
@@ -514,6 +508,7 @@
 
             /**/
             var novaTr = $parentTR.clone()
+            $(novaTr).removeClass('example');
             var idCluster = $('#valueCluster option:selected').val();
             var nomeCluster = $('#valueCluster option:selected').text();
             var pontosCluster = $('#pontosCluster').val();
@@ -541,13 +536,11 @@
             $('#valueCluster option[value=' + idCluster + ']').attr('disabled', true)
             //Cluster.Counter++;
             Cluster.VerificaShowTable();
+
+            updateAllTables();
         },
         VerificaShowTable: function () {
-            if ($('#clusterIncluidos > tbody > tr').length > 2) {
-                $('#clusterIncluidos').show();
-            } else {
-                $('#clusterIncluidos').hide();
-            }
+            
         },
         EventoRemove: function (btnSelector, idCluster) {
             $('#' + btnSelector).click(function () {
@@ -555,6 +548,7 @@
                 $(this).parents('tr').first().remove();
                 Cluster.VerificaShowTable();
             });
+            updateAllTables();
         },
         EventoAlterar: function (btnSelector, idCluster) {
             $('#' + btnSelector).click(function () {
@@ -761,6 +755,8 @@
             else
                 $('#salvarCabecalho1').fadeIn();
 
+            updateAllTables();
+
         },
         SalvaMultiplaEscolha: function () {
 
@@ -833,10 +829,14 @@
             Cabecalhos.tableMultiplaEscolha.clear().draw();
             $('#divCamposCabecalhoIncluidos').hide();
             Cabecalhos.ParMultiplaEscolhaOpcoes = [];
+
+            updateAllTables();
         },
         RemoverDaTabela: function(e, indexValueOfArray){
             Cabecalhos.ParMultiplaEscolhaOpcoes.splice(indexValueOfArray,1);
             e.parents('tr').remove();
+
+            updateAllTables();
         },
 
         //BINARIO
@@ -946,6 +946,8 @@
             $('#objBinarioPunishmentName2').val('');
             $('#objBinarioPunishmentValue1').val('0');
             $('#objBinarioPunishmentValue2').val('0');
+
+            updateAllTables();
         },
         ShowBinario: function () {
             $('#objBinario').show();
@@ -1002,6 +1004,8 @@
             $('#objBinario').hide();
             $('#salvarCabecalho2').hide();
             Cabecalhos.ParBinario = [];
+
+            updateAllTables();
         },
 
         //TEXTO
@@ -1038,6 +1042,8 @@
                 isDataDefined: isData
             });
 
+            updateAllTables();
+
         },
         AtualizaPreviewCampotexto: function (o) {
 
@@ -1068,6 +1074,7 @@
         },
         ExcluirCampoTexto: function (e) {
             e.parent().remove();
+            updateAllTables();
         },
 
         //INTEGRAÇÕES
@@ -1108,6 +1115,8 @@
                 Description: "",
                 Link: linkedNumberEvaluation
             });
+
+            updateAllTables();
 
         },
         AtualizaPreviewCampoNumerico: function (o) {
@@ -1164,6 +1173,7 @@
             e.parent().hide();
             Cabecalhos.CounterRemoveCabecalhoEDICAO++;
             console.log(e.parent());
+            updateAllTables();
         },
 
         //INCLUSÃO
@@ -1202,10 +1212,7 @@
 
             $('#tblPreviewCounter1 > tbody').append(objHiddenCounter);
 
-            if(CounterLevel1.ObjCounters.length == 0)
-                $('#tblPreviewCounter1').hide();
-            else
-                $('#tblPreviewCounter1').show();
+            updateAllTables();
 
         },
         UpdateCounters: function () {
@@ -1234,10 +1241,7 @@
             e.parents('tr').remove();
             CounterLevel1.ObjCounters.splice(c, 1);
 
-            if(CounterLevel1.ObjCounters.length == 0)
-                $('#tblPreviewCounter1').hide();
-            else
-                $('#tblPreviewCounter1').show();
+            updateAllTables();
         },
         RemoveCounterEdicao: function (e, id) {
             //e.preventDefaut();
@@ -1258,17 +1262,18 @@
     Cluster.VerificaShowTable();
 
     $(document).ready(function () {
+
         defaults();
+
         if($('#paramsDto_parLevel1Dto_IsSpecific').is(':checked'))
             $('.groupCadastroEspecificoUnidade').fadeIn();
+        
+        updateAllTables();
+
+        $('[data-toggle="popover"]').popover();
 
         SingleCallendar.IntiFullCallendarByClass('dataInput');
         //Geral.TableShow();
     });
-
-    function updateAllTables(){
-        Geral.TableShow($('#clusterIncluidos'), $('#clusterIncluidos > tbody').children('tr').length <= 2);
-        Geral.TableShow($('#tblPreviewCounter1'), $('#tblPreviewCounter1 > tbody').children('tr').length == 0);
-    }
 
 </script>

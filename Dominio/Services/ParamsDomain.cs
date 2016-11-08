@@ -534,27 +534,6 @@ namespace Dominio.Services
             _baseParLevel3Group.AddOrUpdate(parLevel3Group);
             //_paramsRepo.RemoveParLevel3Group(parLevel3Group);
             return Mapper.Map<ParLevel3GroupDTO>(parLevel3Group);
-
-            //if(parLevel3Group != null)
-            //{
-
-            //}               
-
-
-            //var vinculoLevel2Level3 = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
-            //var objToSave = new ParLevel3Level2Level1()
-            //{
-            //    ParLevel1_Id = idLevel1,
-            //    ParLevel3Level2_Id = vinculoLevel2Level3.Id
-            //};
-
-            //var exists = _baseRepoParLevel3Level2Level1.GetAll().FirstOrDefault(r => r.ParLevel3Level2_Id == vinculoLevel2Level3.Id);
-            //if (exists != null)
-            //    objToSave.Id = exists.Id;
-
-            //_baseRepoParLevel3Level2Level1.AddOrUpdate(objToSave);
-
-            //return Mapper.Map<ParLevel3Level2Level1DTO>(objToSave);
         }
 
         #endregion
