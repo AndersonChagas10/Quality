@@ -31,7 +31,8 @@ namespace Data.Repositories
         #region ParLevel1 ParHeadField ParLevel1XCluster ParMultipleValue
 
         public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster,
-            List<int> removerHeadField, List<int> removerCluster, List<int> removeCounter, List<ParCounterXLocal> listaParCounterLocal)
+            List<int> removerHeadField, List<int> removerCluster, List<int> removeCounter, List<ParCounterXLocal> listaParCounterLocal, 
+            ParNotConformityRuleXLevel nonCoformitRule)
         {
             using (var ts = db.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
             {
@@ -72,6 +73,8 @@ namespace Data.Repositories
                     }
                 }
 
+                if (nonCoformitRule != null)
+                    SaveNonConformityRule(nonCoformitRule, paramLevel1.Id);
 
                 InativaCluster(paramLevel1, removerCluster);
 
@@ -80,6 +83,29 @@ namespace Data.Repositories
                 InativaCounter(paramLevel1, removeCounter);
 
                 ts.Commit();
+            }
+        }
+
+        private void SaveNonConformityRule(ParNotConformityRuleXLevel nonCoformitRule, int parLevel1Id)
+        {
+            if (nonCoformitRule.ParNotConformityRule_Id >= 0)
+            {
+                //MOCK
+                nonCoformitRule.ParCompany_Id = 1;
+
+                nonCoformitRule.ParLevel1_Id = parLevel1Id;
+
+                if (nonCoformitRule.Id == 0)
+                {
+                    db.ParNotConformityRuleXLevel.Add(nonCoformitRule);
+                }
+                else
+                {
+                    Guard.verifyDate(nonCoformitRule, "AlterDate");
+                    db.ParNotConformityRuleXLevel.Attach(nonCoformitRule);
+                    db.Entry(nonCoformitRule).State = EntityState.Modified;
+                }
+                db.SaveChanges();
             }
         }
 

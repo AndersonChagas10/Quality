@@ -426,6 +426,11 @@
         updateAllTables();
 
         $('[data-toggle="popover"]').popover();
+
+        var parLevel2 = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel2Dto));
+        
+        $('#pesoDefinido').html(parLevel2.pesoDoVinculoSelecionado);
+        
     });
 
 </script>

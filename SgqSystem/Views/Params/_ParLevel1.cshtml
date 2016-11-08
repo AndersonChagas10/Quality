@@ -186,7 +186,7 @@
                                                         @Html.ErrorManual("punishmentNameCabecalho2", "O campo Nome deve ser preechido para o Cabecalho.")
                                                     </td>
                                                     <td>
-                                                        <input type="number" id="objBinarioPunishmentValue2"  class="form-control input-sm">
+                                                        <input type="number" id="objBinarioPunishmentValue2" class="form-control input-sm">
                                                         @Html.ErrorManual("punishmentValueCabecalho2", "O campo Punição/Premiação deve ser selecionado para o Cabecalho.")
                                                     </td>
                                                     <td>
@@ -267,7 +267,7 @@
                                                     {
                                                         <div>
                                                             <label class="fixed-width">@parLevel1XHeaderField.ParHeaderField.Name </label>
-                                                            @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class="fixed-width", @style = "padding: 2px;", @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                            @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "fixed-width", @style = "padding: 2px;", @id = parLevel1XHeaderField.ParHeaderField.Id })
                                                             @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
                                                             <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
                                                         </div>
@@ -283,7 +283,7 @@
                                                                 <label>@radioOpt.Name</label>
                                                                 @Html.RadioButton("removerParHeaderField", true, new { @class = "fixed-width" });
                                                             }
-                                                            @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class="fixed-width", @disabled = "disabled" })
+                                                            @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "fixed-width", @disabled = "disabled" })
                                                             <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
                                                         </div>
                                                     }
@@ -293,7 +293,7 @@
                                                         <div>
                                                             <label class="fixed-width">@parLevel1XHeaderField.ParHeaderField.Name</label>
                                                             @Html.TextBox("a", null, new { @class = "fixed-width" })
-                                                            @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new {  @class="fixed-width", @disabled = "disabled" })
+                                                            @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "fixed-width", @disabled = "disabled" })
                                                             <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
                                                         </div>
                                                     }
@@ -302,8 +302,8 @@
                                                     {
                                                         <div>
                                                             <label class="fixed-width">@parLevel1XHeaderField.ParHeaderField.Name</label>
-                                                            <input type="number" class="fixed-width"/>
-                                                            @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class="fixed-width", @disabled = "disabled" })
+                                                            <input type="number" class="fixed-width" />
+                                                            @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "fixed-width", @disabled = "disabled" })
                                                             <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
                                                         </div>
                                                     }
@@ -351,11 +351,11 @@
                                     <tbody>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
-                                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button : "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"CounterLevel1.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"CounterLevel1.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>
-                                                               
+
                                 <div id="counterHidden1"></div>
                                 <div id="counterEditHidden1"></div>
 
@@ -449,16 +449,17 @@
                                 <table class="table-erp">
                                     <tbody>
                                         <tr class="row">
-                                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.not_conformity_rule), Table.PosicaoLabel.top)
-                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
-                                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
+                                            @Html.HiddenFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Id)
+                                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.not_conformity_rule), Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
+                                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                </div>                
+                </div>
                 <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
         </div>
@@ -540,7 +541,7 @@
             updateAllTables();
         },
         VerificaShowTable: function () {
-            
+
         },
         EventoRemove: function (btnSelector, idCluster) {
             $('#' + btnSelector).click(function () {
@@ -586,6 +587,27 @@
     }
 
     var Cabecalhos = {
+
+        //ParMultipleValues: new {
+        //    Id: '',
+        //    ParHeaderField_Id: '',
+        //    Name: '',
+        //    Description: '',
+        //    PunishmentValue: '',
+        //    Conformity: '',
+        //    IsActive: true,
+        //},
+        //ParHeaderField: new {
+        //    Id: '',
+        //    ParFieldType_Id: '',
+        //    Name: '',
+        //    Description: '',
+        //    ParLevelDefinition_Id: '',
+        //    LinkNumberEvaluetion: '',
+        //    IsActive: true,
+        //    ParMultipleValues: []
+        //},
+        ListaDeCabecalhos: [],
 
         listParHeaderFieldDto: [],
 
@@ -697,7 +719,7 @@
             $('#objMultiplaEscolha').show();
             $('#btnIncluirCabecalho input').hide();
             $('#salvarCabecalho1').val('Salvar ' + $('#parFieldType option:selected').text());
-            
+
             if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
                 $('#salvarCabecalho1').fadeOut();
             else
@@ -734,6 +756,7 @@
                 'PunishmentValue': valor
             });
 
+            /*Table*/
             Cabecalhos.tableMultiplaEscolha.row.add([
                //cod,
                nivelDoCampo,
@@ -749,13 +772,23 @@
 
             $('#objMultiplaEscolhaName').val('');
             $('#objMultiplaEscolhaPunishmentValue').val('0');
-            
+
             if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
                 $('#salvarCabecalho1').fadeOut();
             else
                 $('#salvarCabecalho1').fadeIn();
 
             updateAllTables();
+
+            //var tempData = Cabecalhos.ParMultipleValues;
+            //tempData.Id =
+            //tempData.Name = opcoes
+            //tempData.Description = ''
+            //tempData.ParHeaderField_Id =  '0',
+            //tempData.PunishmentValue = valor
+            //tempData.ParHeaderField_Id = tipoVal
+
+            //Cabecalhos.ParHeaderField.ParMultipleValues.push(ParMultipleValues)
 
         },
         SalvaMultiplaEscolha: function () {
@@ -894,7 +927,7 @@
             var valorObjBinario1 = $('#objBinarioPunishmentValue1').val();
             var nameObjBinario2 = $('#objBinarioPunishmentName2').val();
             var valorObjBinario2 = $('#objBinarioPunishmentValue2').val();
-            
+
             var obj = '<input class="btn btn-danger btn-xs" type="button" value="x" id=' + nome + tipo + ' />';
             /*Obj1*/
             Cabecalhos.ParBinario.push({
@@ -1021,7 +1054,7 @@
                 return;
             }
 
-            
+
             if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
                 alert('Digite o nome para o Campo Texto');
                 return;
@@ -1091,12 +1124,12 @@
             $('#btnIncluirCabecalho input').hide();
         },
         IncluirSalvarNumerico: function () {
-            
+
             if($('#headerLevel option:selected').val() == -1){
                 alert('Selecione o Nivel do Cabecalho');
                 return;
             }
-            
+
             if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
                 alert('Digite o nome para o Campo Numerico');
                 return;
@@ -1267,12 +1300,19 @@
 
         if($('#paramsDto_parLevel1Dto_IsSpecific').is(':checked'))
             $('.groupCadastroEspecificoUnidade').fadeIn();
-        
+
         updateAllTables();
 
         $('[data-toggle="popover"]').popover();
 
         SingleCallendar.IntiFullCallendarByClass('dataInput');
+
+        var parLevel1 = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto));
+        if(parLevel1.parNotConformityRuleXLevelDto.ParNotConformityRule_Id > 0)
+            $('#newLevel1Modal').find('#selectNotConformityRule').val(parLevel1.parNotConformityRuleXLevelDto.ParNotConformityRule_Id).change();
+
+        $('#newLevel1Modal').find('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(parLevel1.parNotConformityRuleXLevelDto.Value)
+
         //Geral.TableShow();
     });
 

@@ -521,7 +521,7 @@
                         $('#ParLevel2').append(parLevel2Empty);
                         $('#level2Title').text(indexParamsLevel2.new_level2);
                     } else {
-                        $.get('GetParLevel2ById/' + valorSelecionado, function (obj, responseText, xhr) {
+                        $.get('GetParLevel2ById',{  level2Id: valorSelecionado, level3Id: $('#paramsDto_parLevel3Dto_Id').val()}, function (obj, responseText, xhr) {
                             if (obj != null) {
                                 $('#ParLevel2').empty();
                                 $('#ParLevel2').append(xhr.responseText);
@@ -534,6 +534,7 @@
                             }
                         });
                     }
+
 
                 });
             },

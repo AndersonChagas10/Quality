@@ -7,6 +7,8 @@ namespace DTO.DTO.Params
 {
     public class ParLevel2DTO : EntityBase
     {
+        public decimal pesoDoVinculoSelecionado;
+
         public int ParFrequency_Id { get; set; }
         public int ParDepartment_Id { get; set; }
         public string Name { get; set; }
