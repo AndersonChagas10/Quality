@@ -312,13 +312,11 @@
         var includeItem = true;
 
         inputs.each(function (e) {
-
             if ($(this).val() == input.val()) {
                 alert('Já cadastrou esse grupo para o input');
                 includeItem = false;
                 return false;
             }
-
         });
         if (includeItem == true) {
             var indexValue = $('.groupLevel03Class').length;
@@ -335,8 +333,6 @@
             }
         });
         input.focus();
-
-
     });
     $('#btnAddFrequenciaReincidencia').click(function (e) {
 

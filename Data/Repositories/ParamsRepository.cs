@@ -423,31 +423,19 @@ namespace Data.Repositories
 
         private void AddUpdateParLevel3Group(ParLevel3Group paramLevel3Group, int ParLevel2_Id)
         {
-                paramLevel3Group.ParLevel2_Id = ParLevel2_Id;
-            //if(paramLevel3Group.Description == null)
-            //{
-            //    paramLevel3Group.Description = string.Empty;
-            //}
+            paramLevel3Group.ParLevel2_Id = ParLevel2_Id;
             if (paramLevel3Group.Id == 0)
             {
                 db.ParLevel3Group.Add(paramLevel3Group);
             }
             else
             {
-                //var parLevel3Group = (from p in db.ParLevel3Group
-                //                      where p.Id == paramLevel3Group.Id
-                //                      select p).FirstOrDefault();
-                //parLevel3Group.IsActive = false;
-                //parLevel3Group.AlterDate = DateTime.Now;
-
-
                 paramLevel3Group.ParLevel2 = null;
                 paramLevel3Group.ParLevel3Level2 = null;
                 Guard.verifyDate(paramLevel3Group, "AlterDate");
                 db.ParLevel3Group.Attach(paramLevel3Group);
                 db.Entry(paramLevel3Group).State = EntityState.Modified;
-                //db.SaveChanges();
-            }
+             }
         }
         private void AddUpdateParNotConformityRuleXLevel(ParNotConformityRuleXLevel paramNotConformityRuleXLevel, int Level , int? ParLevel1_Id = null, int? ParLevel2_Id = null, int? ParLevel3_Id = null)
         {
