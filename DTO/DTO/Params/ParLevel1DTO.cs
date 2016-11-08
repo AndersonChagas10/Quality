@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Web.Mvc;
 
 namespace DTO.DTO.Params
 {
     public class ParLevel1DTO : EntityBase
     {
-
 
         //[Display(Name = "select_the_consolidation_type", ResourceType = typeof(Resource))]
         [Range(0, 999, ErrorMessage = "É obrigatório selecionar o tipo de consolidação.")]

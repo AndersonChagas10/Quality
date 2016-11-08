@@ -381,8 +381,13 @@
         var indexParamsLevel1 = {
             new_level1: @Html.Raw(Json.Encode(@Resources.Resource.new_level1)),
             enviarDadosParaApi: function (e) {
-
+                
                 if ($('#newLevel1Modal > form').valid()) {
+
+                    var $btn = $('#btnSaveNewLevel1Modal');
+                    $btn.button('loading');
+
+
                     Cabecalhos.UpdateCabecalhos();
                     Cluster.UpdateCounter();
                     CounterLevel1.UpdateCounters();
@@ -392,6 +397,8 @@
                         if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
 
                             $.get('GetParLevel1ById/' + objetoReturn.paramsDto.parLevel1Dto.Id, function (obj, responseText, xhr) {
+
+                                
 
                                 if (obj != null) {
                                     $('#ParLevel1').empty();
@@ -417,6 +424,7 @@
 
                             alert(statusmessage);
                         }
+                        $btn.button('reset');
                     });
                 }
 
