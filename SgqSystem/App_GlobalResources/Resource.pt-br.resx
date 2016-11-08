@@ -588,4 +588,10 @@
   <data name="saving_the_level1" xml:space="preserve">
     <value>Salvando o nível 1</value>
   </data>
+  <data name="saving_the_level2" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="saving_the_level3" xml:space="preserve">
+    <value>Salvando o nível 3</value>
+  </data>
 </root>
