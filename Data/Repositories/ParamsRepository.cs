@@ -574,7 +574,11 @@ namespace Data.Repositories
                 db.Entry(paramCompany).State = EntityState.Modified;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="paramLevel3"></param>
+        /// <param name="paramLevel3Value"></param>
         public void SaveParLevel3(ParLevel3 paramLevel3,
                                   ParLevel3Value paramLevel3Value)
         {
