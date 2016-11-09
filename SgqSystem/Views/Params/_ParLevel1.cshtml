@@ -987,9 +987,9 @@
             ]).draw(false);
 
             if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
-                $('#salvarCabecalho1').fadeOut();
+                $('#salvarCabecalho2').fadeOut();
             else
-                $('#salvarCabecalho1').fadeIn();
+                $('#salvarCabecalho2').fadeIn();
 
             $('#divCamposCabecalhoIncluidos').show();
 
@@ -1004,6 +1004,11 @@
             $('#objBinario').show();
             $('#btnIncluirCabecalho input').hide();
             $('#salvarCabecalho2').val('Salvar ' + $('#parFieldType option:selected').text()).show();
+
+            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                $('#salvarCabecalho2').fadeOut();
+            else
+                $('#salvarCabecalho2').fadeIn();
         },
         SalvaBinario: function () {
 
