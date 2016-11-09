@@ -609,7 +609,7 @@
                     CounterLevel2.UpdateCounters();
                     var dados = $('#newLevel2Modal > form').serializeObject();
 
-                    openLoader('@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level2))');
+                    openLoader(@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level2)));
                     $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                         closeLoader();
                         var $btn = $('#btnSaveNewLevel2');
@@ -650,7 +650,7 @@
 
             },
             removeLevel3Group: function(e, element){
-                openLoader('@Html.Raw(Json.Encode(@Resources.Resource.removing_the_level3_group))');
+                openLoader(@Html.Raw(Json.Encode(@Resources.Resource.removing_the_level3_group)));
                 $.post(removeLevel3Group + '/' + element.attr('id'), function (obj, responseText, xhr) {
                     closeLoader();
                     if (obj != null) {
@@ -748,7 +748,7 @@
                     if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
                         dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
 
-                    openLoader('@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level3))');
+                    openLoader(@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level3)));
                     $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                         closeLoader();
                         var $btn = $('#btnSaveNewLevel3');

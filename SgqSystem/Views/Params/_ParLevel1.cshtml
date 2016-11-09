@@ -254,7 +254,7 @@
                                     </div>
 
                                     @*Cabecalho Preview Edicao*@
-                                    <div id="cabecalhoPreviewEDICAO">
+                                    <div id="cabecalhoPreviewEDICAO" class="table">
 
                                         <div id="alteracao" style="padding: 8px;">
 
@@ -264,8 +264,8 @@
 
 
                                     @*Cabecalho Preview inclusao*@
-                                    <div id="cabecalhoPreview">
-                                        <table id="tableCabecalhosPreview">
+                                    <div id="cabecalhoPreview" class="table">
+                                        <table id="tableCabecalhosPreview" class="table">
                                             <thead>
                                                 <tr>
                                                     <th>Nível do campo</th>
@@ -288,7 +288,7 @@
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
-                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "", @style = "padding: 2px;", @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
                                                                 </td>
                                                                 <td><button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button></td>
@@ -321,7 +321,7 @@
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
-                                                                    @Html.TextBox("a", null, new { @class = "fixed-width" })
+                                                                    @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                                 </td>
                                                                 <td><button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button></td>
@@ -335,7 +335,7 @@
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
-                                                                    <input type="number" class="fixed-width" />
+                                                                    <input type="number" class="fixed-width form-control input-sm" />
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                                 </td>
                                                                 <td><button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button></td>
@@ -348,7 +348,7 @@
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
-                                                                    <input type="text" class="dataInput active">
+                                                                    <input type="text" class="dataInput active form-control input-sm">
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                                 </td>
                                                                 <td><button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button></td>
@@ -488,8 +488,8 @@
                                     <tbody>
                                         <tr class="row">
                                             @Html.HiddenFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Id)
-                                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.not_conformity_rule), Table.PosicaoLabel.top)
-                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.not_conformity_rule), Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm fixed-width", type = "number", min = "0" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
                                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
                                         </tr>
                                     </tbody>
@@ -626,7 +626,7 @@
 
     var Cabecalhos = {
 
-        BtnExcluir:  '<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this));">',
+        BtnExcluir:  '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this));"><i class="fa fa-times"></i></button>',
         BtnExcluir2: '<button type="button" class="btn btn-danger btn-xs" name=""  onclick="Cabecalhos.RemoverDaTabela($(this));"><i class="fa fa-times"></i></button>',
         //ParMultipleValues: new {
         //    Id: '',
@@ -843,7 +843,7 @@
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class="fixed-width"> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
                        '<td id=""><label class="fixed-width"> ' + $('#parFieldType :selected').text() + '</label></td>' + // Tipo
-                          '<td><select class="" id="" name="" style="padding: 2px;">' + //Preview
+                          '<td><select class="" id="" name="" class="form-control input-sm fixed-width" >' + //Preview
                           '<option value="-1">Selecione...</option> ';
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
                 example += '<option value="1">' + o.Name + '</option>';
@@ -1044,7 +1044,7 @@
             example += '</td>';
 
             example += '<td>';
-            example += '&nbsp;<input type="button" class="btn btn-danger btn-xs"  name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this));" />';
+            example += '&nbsp;<input type="button" class="btn btn-danger btn-xs"  name="" onclick="Cabecalhos.RemoverDaTabela($(this));"><i class="fa fa-times"></i></button>';
             //example += '</div>';
             example += '</td>';
 
@@ -1116,9 +1116,9 @@
             //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
             if(o.isDataDefined){
-                example += '<input type="text" class="dataInput"/>';//Input Date
+                example += '<input type="text" class="dataInput form-control input-sm fixed-width"/>';//Input Date
             }else{
-                example += '<input type="text" />';//Input
+                example += '<input type="text" class="form-control input-sm fixed-width" />';//Input
             }
 
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
@@ -1197,7 +1197,7 @@
             //var example = '<div>';
             //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
-            example += '<input type="number" />';//Input
+            example += '<input class="form-control input-sm fixed-width" type="number" />';//Input
 
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
