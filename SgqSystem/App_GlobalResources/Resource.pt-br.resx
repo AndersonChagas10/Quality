@@ -594,4 +594,7 @@
   <data name="saving_the_level3" xml:space="preserve">
     <value>Salvando o nível 3</value>
   </data>
+  <data name="info" xml:space="preserve">
+    <value>Info</value>
+  </data>
 </root>

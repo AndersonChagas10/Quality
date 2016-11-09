@@ -249,8 +249,21 @@
                 <!-- END CONTENT BODY -->
             </div>
 
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
+        <div class="modal-dialog">
 
-
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">@Resources.Resource.weight</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="modalLoaderMessage"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>  Message </div>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -290,6 +303,7 @@
             $('#level3_collapse').collapse('show');
             $('#paramsDto_parLevel3Dto_Name').focus();
         });
+
 
 
         var monthNames = [
@@ -376,6 +390,14 @@
         var urlGetLevel3 = '@Html.Raw(@urlGetLevel3)';
 
         var removeLevel3Group = '@Html.Raw(@removeLevel3Group)';
+
+        var openLoader = function(){
+            $('#modalLoader').modal({ backdrop: false });
+        }
+
+        var closeLoader = function(){
+            $('#modalLoader').modal('hide');
+        }
 
         /*LEVEL 1*/
         var indexParamsLevel1 = {
