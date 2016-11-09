@@ -21,6 +21,10 @@ namespace DTO.DTO.Params
         /*Alteracao*/
         public List<ParMultipleValuesDTO> ParMultipleValues { get; set; }
 
+        public ParLevelDefinitonDTO ParLevelDefiniton { get; set; }
+
+        public ParFieldTypeDTO ParFieldType { get; set; }
+
         public IEnumerable<SelectListItem> _DropDownList;
 
         public IEnumerable<SelectListItem> DropDownList
