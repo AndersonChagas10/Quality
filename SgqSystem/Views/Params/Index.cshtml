@@ -257,11 +257,8 @@
 
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">@Resources.Resource.weight</h4>
-                </div>
                 <div class="modal-body">
-                    <div id="modalLoaderMessage"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>  Message </div>
+                    <div class="row"><div class="col-xs-1"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></div>  <div class="col-xs-11" id="modalLoaderMessage">Message </div></div>
                 </div>
             </div>
 
@@ -277,7 +274,7 @@
             $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
             $(".check-box").bootstrapSwitch();
         }
-        
+
         var t1 = @Html.Raw(Json.Encode(@Resources.Resource.new_level1));
         var t2 = @Html.Raw(Json.Encode(@Resources.Resource.new_level2));
         var t3 = @Html.Raw(Json.Encode(@Resources.Resource.new_level3));
@@ -391,8 +388,9 @@
 
         var removeLevel3Group = '@Html.Raw(@removeLevel3Group)';
 
-        var openLoader = function(){
+        var openLoader = function(message){
             $('#modalLoader').modal({ backdrop: false });
+            $('#modalLoaderMessage').text(message);
         }
 
         var closeLoader = function(){
@@ -403,7 +401,7 @@
         var indexParamsLevel1 = {
             new_level1: @Html.Raw(Json.Encode(@Resources.Resource.new_level1)),
             enviarDadosParaApi: function (e) {
-                
+
                 if ($('#newLevel1Modal > form').valid()) {
 
                     var $btn = $('#btnSaveNewLevel1');
@@ -414,12 +412,14 @@
                     CounterLevel1.UpdateCounters();
                     var dados = $('#newLevel1Modal > form').serializeObject();
 
+                    openLoader('@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level1))');
                     $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                        closeLoader();
                         if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
-
+                            openLoader('@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level1))');
                             $.get('GetParLevel1ById/' + objetoReturn.paramsDto.parLevel1Dto.Id, function (obj, responseText, xhr) {
+                                closeLoader();
 
-                                
 
                                 if (obj != null) {
                                     $('#ParLevel1').empty();
@@ -585,13 +585,16 @@
                     CounterLevel2.UpdateCounters();
                     var dados = $('#newLevel2Modal > form').serializeObject();
 
+                    openLoader('@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level2))');
                     $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-
+                        closeLoader();
                         var $btn = $('#btnSaveNewLevel2');
                         $btn.button('loading');
 
                         if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
+                            openLoader('@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2))');
                             $.get('GetParLevel2ById/' + objetoReturn.paramsDto.parLevel2Dto.Id, function (obj, responseText, xhr) {
+                                closeLoader();
                                 if (obj != null) {
                                     $('#ParLevel2').empty();
                                     $('#ParLevel2').append(xhr.responseText);
@@ -623,7 +626,9 @@
 
             },
             removeLevel3Group: function(e, element){
+                openLoader('@Html.Raw(Json.Encode(@Resources.Resource.removing_the_level3_group))');
                 $.post(removeLevel3Group + '/' + element.attr('id'), function (obj, responseText, xhr) {
+                    closeLoader();
                     if (obj != null) {
 
                         element.remove();
@@ -715,13 +720,16 @@
                     if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
                         dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
 
+                    openLoader('@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level3))');
                     $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-
+                        closeLoader();
                         var $btn = $('#btnSaveNewLevel3');
                         $btn.button('loading');
 
                         if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
+                            openLoader('@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level3))');
                             $.get('GetParLevel3ById', { id: objetoReturn.paramsDto.parLevel3Dto.Id, idParLevel2: $('#paramsDto_parLevel2Dto_Id').val() }, function (obj, responseText, xhr) {
+                                closeLoader();
                                 if (obj != null) {
                                     $('#ParLevel3').empty();
                                     $('#ParLevel3').append(xhr.responseText);
@@ -884,7 +892,7 @@
             $('[data-toggle="popover"]').popover();
         });
 
-        
+
 
     </script>
 

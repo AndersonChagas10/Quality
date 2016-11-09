@@ -597,4 +597,16 @@
   <data name="info" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="loading_the_level1" xml:space="preserve">
+    <value>Carregando o nível 1</value>
+  </data>
+  <data name="loading_the_level2" xml:space="preserve">
+    <value>Carregando o nível 2</value>
+  </data>
+  <data name="loading_the_level3" xml:space="preserve">
+    <value>Carregando o nível 3</value>
+  </data>
+  <data name="removing_the_level3_group" xml:space="preserve">
+    <value>Removendo o grupo do nível 3</value>
+  </data>
 </root>
