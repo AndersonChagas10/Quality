@@ -18,11 +18,46 @@ namespace DTO
             LogException(e);
         }
 
-        //public CreateLog(Exception e, object obj, string prefix, string mensagemExtra = "")
-        //{
-        //    GlobalDiagnosticsContext.Clear();
-        //    LogException(e, obj, prefix, mensagemExtra);
-        //}
+        #region Colleta
+
+        public CreateLog(Exception exception, int user_Id, int period, int shift, string html, object json)
+        {
+            LogExceptionColleta(exception, user_Id, period, shift, html, json);
+        }
+
+        private void LogExceptionColleta(Exception _ex, int user_Id, int period, int shift, string html, object json)
+        {
+
+            mensagem = _ex.Message;
+            mensagemExcecao = mensagem + " " + _ex.Message;
+            inner = innerMessage;
+
+            CreateStackTrace(_ex);
+            CreateInnerStacktrace(_ex);
+
+            var logger = LogManager.GetLogger("BkpCollectionLogger");
+
+            /*
+              < parameter name = "@User_Id" layout = " ${gdc:User_Id}" />
+              < parameter name = "@Period" layout = " ${gdc:Period}" />
+              < parameter name = "@Shift" layout = " ${gdc:Shift}" />
+              < parameter name = "@Html" layout = " ${gdc:Html}" />
+              < parameter name = "@Json" layout = " ${gdc:Json}" />
+              < parameter name = "@Stack_Trace" layout = " ${gdc:StackTrace}" />
+            */
+
+            GlobalDiagnosticsContext.Set("User_Id", user_Id);
+            GlobalDiagnosticsContext.Set("Period", period);
+            GlobalDiagnosticsContext.Set("Shift", shift);
+            GlobalDiagnosticsContext.Set("Html", html);
+            GlobalDiagnosticsContext.Set("Json", ToJson(json).ToString());
+            GlobalDiagnosticsContext.Set("StackTrace", stackTrace);
+
+            logger.Warn(_ex, mensagemExcecao, json);
+
+        } 
+
+        #endregion
 
         public CreateLog(Exception exception, object obj)
         {
@@ -79,6 +114,8 @@ namespace DTO
             logger.Warn(_ex, mensagemExcecao, obj);
             
         }
+
+      
 
         public string ToJson(object value)
         {

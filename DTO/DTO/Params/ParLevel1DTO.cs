@@ -75,6 +75,8 @@ namespace DTO.DTO.Params
         public ParConsolidationTypeDTO parConsolidationTypeDto { get; set; }
         public ParFrequencyDTO parFrequencyDto { get; set; }
         public List<ParLevel1XHeaderFieldDTO> parLevel1HeaderFieldDto { get; set; }
+        public ParNotConformityRuleXLevelDTO parNotConformityRuleXLevelDto { get; set; }
+
 
         #region Props utilizadas para alteração
 

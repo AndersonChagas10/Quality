@@ -48,6 +48,11 @@ namespace SgqSystem
             bundles.Add(new ScriptBundle("~/bundles/select2js").Include(
                      "~/Scripts/select2.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/DatePikerContent").Include(
+                    "~/Scripts/moment.min.js",
+                    "~/Scripts/daterangepicker.js",
+                    "~/Scripts/DatePikerReady.js"));
+
             #endregion
 
             #region Styles
@@ -78,6 +83,8 @@ namespace SgqSystem
                 "~/Content/erp.css"
             ));
 
+            bundles.Add(new StyleBundle("~/Content/DatePikerContentCss").Include(
+                    "~/Content/daterangepicker-bs3.css"));
 
             #endregion
 
