@@ -627,6 +627,7 @@
     var Cabecalhos = {
 
         BtnExcluir:  '<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this));">',
+        
         BtnExcluir2: '<button type="button" class="btn btn-danger btn-xs" name=""  onclick="Cabecalhos.RemoverDaTabela($(this));"><i class="fa fa-times"></i></button>',
         //ParMultipleValues: new {
         //    Id: '',
@@ -784,7 +785,7 @@
             var tipoVal = $('#parFieldType option:selected').val();
             var opcoes = $('#objMultiplaEscolhaName').val();
             var valor = $('#objMultiplaEscolhaPunishmentValue').val();
-            var obj = Cabecalhos.BtnExcluir;
+            var obj = '<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');" />';//Btn excluir;
 
             /*Obj*/
             Cabecalhos.ParMultiplaEscolhaOpcoes.push({
@@ -869,7 +870,8 @@
 
             example += '</td>'
             example += '<td>&nbsp;' + Cabecalhos.BtnExcluir + '</td></tr>';//Btn excluir
-
+            
+             
             $('#tableCabecalhosPreview').append(example);
 
             /*Limpa formulario Header*/
@@ -941,7 +943,8 @@
             var valorObjBinario1 = $('#objBinarioPunishmentValue1').val();
             var valorObjBinario2 = $('#objBinarioPunishmentValue2').val();
 
-            var obj = Cabecalhos.BtnExcluir;
+            var obj = '<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length + ', true);" />';//Btn excluir;
+
             /*Obj1*/
             Cabecalhos.ParBinario.push({
                 'Name': nameObjBinario1,
@@ -952,6 +955,8 @@
                 'PunishmentValue': valorObjBinario1,
                 'Conformity': true
             });
+
+            var obj2 = '<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length + ', true);" />';//Btn excluir;
 
             /*Obj2*/
             Cabecalhos.ParBinario.push({
@@ -983,7 +988,7 @@
                tipo,
                nameObjBinario2,
                valorObjBinario2,
-               obj
+               obj2
             ]).draw(false);
 
             if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
@@ -1043,10 +1048,7 @@
             });
             example += '</td>';
 
-            example += '<td>';
-            example += '&nbsp;<input type="button" class="btn btn-danger btn-xs"  name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this));" />';
-            //example += '</div>';
-            example += '</td>';
+            example += '<td>&nbsp;' + Cabecalhos.BtnExcluir + '</td></tr>';//Btn excluir
 
             $('#tableCabecalhosPreview').append(example);
 
@@ -1252,10 +1254,16 @@
             updateAllTables();
         },
 
-        RemoverDaTabela: function(e, indexValueOfArray){
-            //Cabecalhos.ParMultiplaEscolhaOpcoes.splice(indexValueOfArray,1);
-            e.parents('tr').remove();
+        RemoverDaTabela: function(e, indexValueOfArray, isBinario){
+            if(indexValueOfArray != undefined && isBinario == undefined)
+                Cabecalhos.ParMultiplaEscolhaOpcoes.splice(indexValueOfArray,1);
 
+            if(indexValueOfArray != undefined && isBinario != undefined)
+                Cabecalhos.ParBinario.splice(indexValueOfArray,1);
+
+
+            Cabecalhos.tableMultiplaEscolha.row( e.parents('tr') ).remove().draw();
+           
             updateAllTables();
         },
 
