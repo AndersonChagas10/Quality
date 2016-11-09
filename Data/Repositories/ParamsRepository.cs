@@ -31,7 +31,8 @@ namespace Data.Repositories
         #region ParLevel1 ParHeadField ParLevel1XCluster ParMultipleValue
 
         public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster,
-            List<int> removerHeadField, List<int> removerCluster, List<int> removeCounter, List<ParCounterXLocal> listaParCounterLocal)
+            List<int> removerHeadField, List<int> removerCluster, List<int> removeCounter, List<ParCounterXLocal> listaParCounterLocal, 
+            ParNotConformityRuleXLevel nonCoformitRule)
         {
             using (var ts = db.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
             {
@@ -72,6 +73,8 @@ namespace Data.Repositories
                     }
                 }
 
+                if (nonCoformitRule != null)
+                    SaveNonConformityRule(nonCoformitRule, paramLevel1.Id);
 
                 InativaCluster(paramLevel1, removerCluster);
 
@@ -80,6 +83,29 @@ namespace Data.Repositories
                 InativaCounter(paramLevel1, removeCounter);
 
                 ts.Commit();
+            }
+        }
+
+        private void SaveNonConformityRule(ParNotConformityRuleXLevel nonCoformitRule, int parLevel1Id)
+        {
+            if (nonCoformitRule.ParNotConformityRule_Id >= 0)
+            {
+                //MOCK
+                nonCoformitRule.ParCompany_Id = 1;
+
+                nonCoformitRule.ParLevel1_Id = parLevel1Id;
+
+                if (nonCoformitRule.Id == 0)
+                {
+                    db.ParNotConformityRuleXLevel.Add(nonCoformitRule);
+                }
+                else
+                {
+                    Guard.verifyDate(nonCoformitRule, "AlterDate");
+                    db.ParNotConformityRuleXLevel.Attach(nonCoformitRule);
+                    db.Entry(nonCoformitRule).State = EntityState.Modified;
+                }
+                db.SaveChanges();
             }
         }
 
@@ -288,24 +314,6 @@ namespace Data.Repositories
 
         #endregion
 
-        public void AddUpdateParLevel2(ParLevel2 paramLevel2)
-        {
-            //Mock
-            if (paramLevel2.ParDepartment_Id == null)
-            {
-                paramLevel2.ParDepartment_Id = 1;
-            }
-            if (paramLevel2.Id == 0)
-            {
-                db.ParLevel2.Add(paramLevel2);
-            }
-            else
-            {
-                Guard.verifyDate(paramLevel2, "AlterDate");
-                db.ParLevel2.Attach(paramLevel2);
-                db.Entry(paramLevel2).State = EntityState.Modified;
-            }
-        }
         public void SaveParLevel2(ParLevel2 paramLevel2,
                                   List<ParLevel3Group> listaParLevel3Group, 
                                   List<ParCounterXLocal> listParCounterXLocal,
@@ -351,6 +359,7 @@ namespace Data.Repositories
                 ts.Commit();
             }
         }
+
         public void RemoveParLevel03Group(int Id)
         {
             var parLevel3Group = db.ParLevel3Group.Where(r => r.Id == Id).FirstOrDefault();
@@ -360,6 +369,7 @@ namespace Data.Repositories
                 AddUpdateParLevel3Group(parLevel3Group, parLevel3Group.ParLevel2_Id);
             }
         }
+
         private void AddUpdateParCounterXLocal(ParCounterXLocal parCounterXLocal, int ParLevel2_Id)
         {
             parCounterXLocal.ParLevel2_Id = ParLevel2_Id;
@@ -374,6 +384,7 @@ namespace Data.Repositories
                 db.Entry(parCounterXLocal).State = EntityState.Modified;
             }
         }
+
         private void AddUpdateParRelapse(ParRelapse parRelapse, int ParLevel2_Id)
         {
             parRelapse.ParLevel2_Id = ParLevel2_Id;
@@ -389,6 +400,24 @@ namespace Data.Repositories
             }
         }
 
+        public void AddUpdateParLevel2(ParLevel2 paramLevel2)
+        {
+            //Mock
+            if (paramLevel2.ParDepartment_Id == null)
+            {
+                paramLevel2.ParDepartment_Id = 1;
+            }
+            if (paramLevel2.Id == 0)
+            {
+                db.ParLevel2.Add(paramLevel2);
+            }
+            else
+            {
+                Guard.verifyDate(paramLevel2, "AlterDate");
+                db.ParLevel2.Attach(paramLevel2);
+                db.Entry(paramLevel2).State = EntityState.Modified;
+            }
+        }
 
         private void AddUpdateParEvaluation(ParEvaluation parEvaluation, int ParLevel2_Id)
         {
@@ -405,6 +434,7 @@ namespace Data.Repositories
                 db.Entry(parEvaluation).State = EntityState.Modified;
             }
         }
+
         private void AddUpdateParSample(ParSample parSample, int ParLevel2_Id)
         {
             parSample.ParLevel2_Id = ParLevel2_Id;
@@ -437,6 +467,7 @@ namespace Data.Repositories
                 db.Entry(paramLevel3Group).State = EntityState.Modified;
              }
         }
+
         private void AddUpdateParNotConformityRuleXLevel(ParNotConformityRuleXLevel paramNotConformityRuleXLevel, int Level , int? ParLevel1_Id = null, int? ParLevel2_Id = null, int? ParLevel3_Id = null)
         {
             if(ParLevel1_Id == null && ParLevel2_Id == null && ParLevel3_Id == null)
@@ -461,7 +492,6 @@ namespace Data.Repositories
                 db.Entry(paramNotConformityRuleXLevel).State = EntityState.Modified;
             }
         }
-
 
         public void SaveParLocal(ParLocal paramLocal)
         {

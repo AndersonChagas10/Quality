@@ -5,6 +5,20 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="SgqDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BkpCollection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User_Id" Type="int" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Shift" Type="int" Nullable="false" />
+          <Property Name="Period" Type="int" Nullable="false" />
+          <Property Name="Html" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Error" Type="nvarchar(max)" />
+          <Property Name="Json" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="CollectionHtml">
           <Key>
             <PropertyRef Name="Id" />
@@ -1395,6 +1409,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="SgqDbModelStoreContainer">
+          <EntitySet Name="BkpCollection" EntityType="Self.BkpCollection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionHtml" EntityType="Self.CollectionHtml" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionLevel02" EntityType="Self.CollectionLevel02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionLevel03" EntityType="Self.CollectionLevel03" Schema="dbo" store:Type="Tables" />
@@ -1981,6 +1996,7 @@
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="UnitUser" EntitySet="UnitUser" />
           </AssociationSet>
+          <EntitySet Name="BkpCollection" EntityType="SgqDbModel.BkpCollection" />
         </EntityContainer>
         <EntityType Name="CollectionHtml">
           <Key>
@@ -3489,6 +3505,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="BkpCollection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_Id" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="Period" Type="Int32" Nullable="false" />
+          <Property Name="Html" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Error" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Json" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4226,6 +4256,21 @@
                 <ScalarProperty Name="AcessDate" ColumnName="AcessDate" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BkpCollection">
+            <EntityTypeMapping TypeName="SgqDbModel.BkpCollection">
+              <MappingFragment StoreEntitySet="BkpCollection">
+                <ScalarProperty Name="Json" ColumnName="Json" />
+                <ScalarProperty Name="Error" ColumnName="Error" />
+                <ScalarProperty Name="Html" ColumnName="Html" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -5,6 +5,9 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 
 namespace Dominio.Services
 {
@@ -139,16 +142,44 @@ namespace Dominio.Services
             List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);
             List<ParLevel1XCluster> ListaParLevel1XCluster = Mapper.Map<List<ParLevel1XCluster>>(paramsDto.parLevel1XClusterDto);
             List<ParCounterXLocal> ListaParCounterLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.listParCounterXLocal);
+            ParNotConformityRuleXLevel nonCoformitRule = Mapper.Map<ParNotConformityRuleXLevel>(paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto);
             List<int> removerHeadField = paramsDto.parLevel1Dto.removerParHeaderField;
             List<int> removerCluster = paramsDto.parLevel1Dto.removerParCluster;
             List<int> removeCounter = paramsDto.parLevel1Dto.removerParCounterXlocal;
 
             /*Enviando para repository salvar, envia todos, pois como existe transaction, faz rolback de tudo se der erro.*/
-            _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField, removerCluster, removeCounter, ListaParCounterLocal);
+            try
+            {
+                _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField, removerCluster, removeCounter, ListaParCounterLocal, nonCoformitRule);
+
+            }
+            catch (DbUpdateException e)
+            {
+                VerifyUniqueName(saveParamLevel1, e);
+            }
 
             /*Retorno*/
             paramsDto.parLevel1Dto.Id = saveParamLevel1.Id;
             return paramsDto;
+        }
+
+        private static void VerifyUniqueName<T>(T obj, DbUpdateException e)
+        {
+            if (e.InnerException != null)
+                if (e.InnerException.InnerException != null)
+                {
+                    SqlException innerException = e.InnerException.InnerException as SqlException;
+                    if (innerException != null && (innerException.Number == 2627 || innerException.Number == 2601))
+                    {
+                        if (innerException.Message.IndexOf("Name") > 0)
+                            throw new ExceptionHelper("O Nome: " + obj.GetType().GetProperty("Name").GetValue(obj) + " já existe.");
+                    }
+                    else
+                    {
+                        throw e;
+                    }
+
+                }
         }
 
         /// <summary>
@@ -174,11 +205,13 @@ namespace Dominio.Services
             retorno.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(_baseRepoParLevel3Level2Level1.GetAll().Where(r => r.ParLevel1_Id == retorno.Id).ToList());
             retorno.CreateSelectListParamsViewModelListLevel(Mapper.Map <List<ParLevel2DTO>>(_baseRepoParLevel2.GetAll()), retorno.listParLevel3Level2Level1Dto);
 
+            //non conf
+            retorno.parNotConformityRuleXLevelDto = Mapper.Map<ParNotConformityRuleXLevelDTO>(_baseParNotConformityRuleXLevel.GetAll().FirstOrDefault(r => r.ParLevel1_Id == retorno.Id)) ?? new ParNotConformityRuleXLevelDTO();
+
             return retorno;
         }
 
         #endregion
-
 
         #region Level2
 
@@ -193,13 +226,20 @@ namespace Dominio.Services
             ParSample saveParamSample = Mapper.Map<ParSample>(paramsDto.parSampleDto);
             List<ParRelapse> listParRelapse = Mapper.Map<List<ParRelapse>>(paramsDto.listParRelapseDto);
 
-            _paramsRepo.SaveParLevel2(saveParamLevel2,
-                                     listaParLevel3Group,
-                                     listParCounterXLocal,
-                                     saveParamNotConformityRuleXLevel,
-                                     saveParamEvaluation,
-                                     saveParamSample,
-                                     listParRelapse);
+            try
+            {
+                _paramsRepo.SaveParLevel2(saveParamLevel2,
+                                           listaParLevel3Group,
+                                           listParCounterXLocal,
+                                           saveParamNotConformityRuleXLevel,
+                                           saveParamEvaluation,
+                                           saveParamSample,
+                                           listParRelapse);
+            }
+            catch (DbUpdateException e)
+            {
+                VerifyUniqueName(saveParamLevel2, e);
+            }
 
             paramsDto.parLevel2Dto.Id = saveParamLevel2.Id;
             return paramsDto;
@@ -221,7 +261,7 @@ namespace Dominio.Services
         /// </summary>
         /// <param name="IdParLevel2"></param>
         /// <returns></returns>
-        public ParamsDTO GetLevel2(int idParLevel2)
+        public ParamsDTO GetLevel2(int idParLevel2, int? level3Id = 0)
         {
             /*ParLevel2*/
             var paramsDto = new ParamsDTO();
@@ -239,6 +279,16 @@ namespace Dominio.Services
             paramsDto.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(_baseParRelapse.GetAll().Where(r => r.ParLevel2_Id == level2.Id).ToList());
             paramsDto.listParLevel3GroupDto = Mapper.Map<List<ParLevel3GroupDTO>>(_baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == level2.Id && r.IsActive == true).ToList());
 
+            var vinculoLevel3Level2 = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == level3Id);
+            if (vinculoLevel3Level2 != null)
+            {
+                level2.pesoDoVinculoSelecionado = vinculoLevel3Level2.Weight;
+            }
+            else
+            {
+                level2.pesoDoVinculoSelecionado = 0;
+            }
+
             //parNotConformityRuleXLevelDto
             paramsDto.parLevel2Dto = level2;
 
@@ -255,7 +305,15 @@ namespace Dominio.Services
             ParLevel3 saveParamLevel3 = Mapper.Map<ParLevel3>(paramsDto.parLevel3Dto);
             ParLevel3Value saveParamLevel3Value = Mapper.Map<ParLevel3Value>(paramsDto.parLevel3Value);
 
-            _paramsRepo.SaveParLevel3(saveParamLevel3, saveParamLevel3Value);
+            try
+            {
+                _paramsRepo.SaveParLevel3(saveParamLevel3, saveParamLevel3Value);
+            }
+            catch (DbUpdateException e)
+            {
+                VerifyUniqueName(saveParamLevel3, e);
+            }
+
             paramsDto.parLevel3Dto.Id = saveParamLevel3.Id;
             return paramsDto;
         }

@@ -6,7 +6,6 @@ using DTO.DTO;
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 
@@ -27,6 +26,7 @@ namespace Dominio.Services
         private IBaseRepository<ConsolidationLevel02> _baseRepoConsolidationL2;
         private IBaseRepository<CollectionHtml> _baseRepoCollectionHtml;
         private IBaseRepository<CorrectiveAction> _baseRepoCorrectiveAction;
+        private IBaseRepository<BkpCollection> _baseRepoBkpCollection;
         private IGetDataResultRepository<ConsolidationLevel01> _consolidationLevel01RepositoryGET;
         private IGetDataResultRepository<ConsolidationLevel02> _consolidationLevel02RepositoryGET;
         private IGetDataResultRepository<CollectionLevel02> _collectionLevel02RepositoryGET;
@@ -59,12 +59,14 @@ namespace Dominio.Services
             IGetDataResultRepository<CollectionLevel02> collectionLevel02RepositoryGET,
             IGetDataResultRepository<CollectionLevel03> collectionLevel03RepositoryGET,
             IGetDataResultRepository<CollectionHtml> baseRepoCollectionHtmlGET,
-            ISaveCollectionRepo saveCollectionRepo
+            ISaveCollectionRepo saveCollectionRepo,
+            IBaseRepository<BkpCollection> baseRepoBkpCollection
             )
         {
             //_collectionLevel02Repo = collectionLevel02Repo;
             //_baseRepoCollectionL2 = baseRepoCollectionL2;
             //_baseRepoCollectionL3 = baseRepoCollectionL3;
+            _baseRepoBkpCollection = baseRepoBkpCollection;
             _consolidationLevel01RepositoryGET = consolidationLevel01RepositoryGET;
             _consolidationLevel02RepositoryGET = consolidationLevel02RepositoryGET;
             _collectionLevel02RepositoryGET = collectionLevel02RepositoryGET;
@@ -245,6 +247,19 @@ namespace Dominio.Services
             }
 
         }
+
+        public int SaveBkp(BkpCollection bkpCollection) {
+            try
+            {
+                _baseRepoBkpCollection.AddOrUpdate(bkpCollection);
+            }
+            catch (Exception e)
+            {
+                new CreateLog(new Exception("Erro ao gerar bkp da coleta: " + bkpCollection.Error, e), bkpCollection.User_Id, bkpCollection.Period, bkpCollection.Shift, bkpCollection.Html, bkpCollection.Json );
+            }
+            return bkpCollection.Id;
+        }
+
 
         #region Auxiliares e Validações
 

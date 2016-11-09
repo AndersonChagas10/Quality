@@ -1,5 +1,4 @@
 ﻿using DTO.DTO;
-using System.Collections.Generic;
 using DTO.Helpers;
 
 namespace Dominio.Interfaces.Services
@@ -9,5 +8,6 @@ namespace Dominio.Interfaces.Services
         //ObjectConsildationDTO SendData();
         GenericReturn<SyncDTO> SetDataToSincyAuditConsolidated(SyncDTO syncConsolidado);
         GenericReturn<SyncDTO> SaveHtml(SyncDTO objToSync);
+        int SaveBkp(BkpCollection bkpCollection);
     }
 }

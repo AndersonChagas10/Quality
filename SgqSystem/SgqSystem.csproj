@@ -832,6 +832,7 @@
     <Content Include="Scripts\DataTables\responsive.semanticui.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
     <Content Include="Scripts\DataTables\vfs_fonts.js" />
+    <Content Include="Scripts\DatePikerReady.js" />
     <Content Include="Scripts\daterangepicker.js" />
     <Content Include="Scripts\enc-base64.js" />
     <Content Include="Scripts\enc-utf16.js" />

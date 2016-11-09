@@ -49,6 +49,7 @@
 /// <reference path="datatables/responsive.jqueryui.min.js" />
 /// <reference path="datatables/responsive.semanticui.min.js" />
 /// <reference path="datatables/vfs_fonts.js" />
+/// <reference path="datepikerready.js" />
 /// <reference path="daterangepicker.js" />
 /// <reference path="enc-base64.js" />
 /// <reference path="enc-utf16.js" />

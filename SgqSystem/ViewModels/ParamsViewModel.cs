@@ -21,7 +21,9 @@ namespace SgqSystem.ViewModels
         {
             this.paramsDdl = paramsDdl;
             paramsDto = new ParamsDTO();
+            paramsDto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();
             paramsDto.parLevel1Dto = new ParLevel1DTO();
+            paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();
             paramsDto.parLevel2Dto = new ParLevel2DTO();
             paramsDto.parLevel3Dto = new ParLevel3DTO();
 
