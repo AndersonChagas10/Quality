@@ -51,6 +51,7 @@ namespace Dominio.Services
         private IBaseRepository<ParLevel3Level2> _baseParLevel3Level2;
         private IBaseRepository<ParLevel3Level2> _baseRepoParLevel3Level2;
         private IBaseRepository<ParLevel3Level2Level1> _baseRepoParLevel3Level2Level1;
+        private IParLevel3Repository _repoParLevel3;
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
 
@@ -86,7 +87,8 @@ namespace Dominio.Services
                             IBaseRepository<ParLevel3BoolTrue> baseParLevel3BoolTrue,
                             IBaseRepository<ParLevel3Level2> baseParLevel3Level2,
                             IBaseRepository<ParLevel3Level2> baseRepoParLevel3Level2,
-                            IBaseRepository<ParLevel3Level2Level1> baseRepoParLevel3Level2Level1)
+                            IBaseRepository<ParLevel3Level2Level1> baseRepoParLevel3Level2Level1,
+                            IParLevel3Repository repoParLevel3)
         {
             _paramsRepo = paramsRepo;
             _baseRepoParCounterXLocal = baseRepoParCounterXLocal;
@@ -121,6 +123,7 @@ namespace Dominio.Services
             _baseParLevel3Level2 = baseParLevel3Level2;
             _baseRepoParLevel3Level2 = baseRepoParLevel3Level2;
             _baseRepoParLevel3Level2Level1 = baseRepoParLevel3Level2Level1;
+            _repoParLevel3 = repoParLevel3;
         }
 
         #endregion
@@ -609,7 +612,14 @@ namespace Dominio.Services
             foreach (var ParLevel3Level2Level1Dto in retorno.listParLevel3Level2Level1Dto)
             {
                 retorno.listParLevel2Colleta.Add(ParLevel3Level2Level1Dto.ParLevel3Level2.ParLevel2);
+                var parLevel3Level2DoLevel2 = _repoParLevel3.GetLevel3VinculadoLevel2(retorno.Id);
+
                 retorno.listParLevel2Colleta.LastOrDefault().listaParLevel3Colleta = new List<ParLevel3DTO>();
+                foreach (var level3Level2 in parLevel3Level2DoLevel2)
+                {
+                    retorno.listParLevel2Colleta.LastOrDefault().listaParLevel3Colleta.Add(Mapper.Map<ParLevel3DTO>(_baseRepoParLevel3.GetById(level3Level2.ParLevel3_Id)));
+                }
+
             }
 
             //non conf
