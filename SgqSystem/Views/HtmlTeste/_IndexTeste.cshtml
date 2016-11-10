@@ -3760,8 +3760,16 @@
             $('.painel .defects').text(level02.attr('defects'));
             defectLimitCheck();
 
-            level03.children('.level03Group[level01id=' + $('.level01.selected').attr('id') + ']').removeClass('hide');
 
+
+            if(level02.attr('id'))
+            {
+                level03.children('.level03Group[level01id=' + $('.level01.selected').attr('id') + '][level02id=' +  $('.level02.selected').attr('id') + ']').removeClass('hide');
+            }
+            else
+            {
+                level03.children('.level03Group[level01id=' + $('.level01.selected').attr('id') + ']').removeClass('hide');
+            }
             breadCrumb($('.level01List .selected').text(), $('.level02List .level02.selected span.levelName').text());
             $('.btnCA').addClass('hide');
 
@@ -7790,7 +7798,7 @@
 
     function CreateLevel3(listLevel3Item, idLevel1, idLevel2, groupName) {
 
-        var htmlLevel3 = '<div class="level03Group hide" level01Id="' + idLevel1 + '"><ul class="list-group">';
+        var htmlLevel3 = '<div class="level03Group hide" level01Id="' + idLevel1 + '" level02Id="' + idLevel2 + '"><ul class="list-group">';
 
          
         listLevel3Item.forEach(function(o, c){
