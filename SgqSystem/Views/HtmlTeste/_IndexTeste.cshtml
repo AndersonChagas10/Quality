@@ -1,4 +1,6 @@
-﻿<div class="login">
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+
+<div class="login">
     <div class="head"></div>
     <form class="form-signin">
         <h2 id="changePrefix" class="form-signin-heading">Please sign in</h2>
@@ -14,7 +16,9 @@
 
         <button class="btn btn-lg btn-primary btn-block marginTop10" type="submit" data-loading-text="Authenticating..." id="btnLogin" disabled>Sign in</button>
         <div id="messageError" class="alert alert-danger hide" role="alert">
-            <span class="icon-remove-sign"></span>    <strong>Error! </strong><span id="mensagemErro"> </span>
+            <span class="icon-remove-sign"></span>
+            <strong>Error! </strong>
+            <span id="mensagemErro"> </span>
         </div>
         <div class="divLoadFiles">
             <span class="messageLoading">
@@ -29,8 +33,11 @@
         </div>
     </form>
     <div class="foot" style="text-align:center">
-        <br /><br /><br />
-        <span id="versionLogin" class="">Version: <span class="number"></span></span> - <span id="ambienteLogin" class=""><span class="base"></span></span>
+        <br />
+        <br />
+        <br />
+        <span id="versionLogin" class="">Version: <span class="number"></span></span> -
+        <span id="ambienteLogin" class=""><span class="base"></span></span>
 
 
     </div>
@@ -54,15 +61,26 @@
                         <div class="row">
                             <div class="col-xs-6" id="CorrectiveActionTaken">
                                 <b class="font16">Corrective Action Taken:<br /></b>
-                                <b>Date/Time:</b> <span id="datetime"></span><br />
-                                <b>Auditor: </b><span id="auditor"></span><br />
-                                <b>Shift: </b><span id="shift"></span><br />
+                                <b>Date/Time:</b>
+                                <span id="datetime"></span>
+                                <br />
+                                <b>Auditor: </b>
+                                <span id="auditor"></span>
+                                <br />
+                                <b>Shift: </b>
+                                <span id="shift"></span>
+                                <br />
                             </div>
                             <div class="col-xs-6" id="AuditInformation">
                                 <b class="font16">Audit Information:<br /></b>
-                                <b>Audit: </b><span id="auditText"></span><br />
-                                <b>Start Time: </b><span id="starttime"></span><br />
-                                <b>Period: </b><span id="correctivePeriod"></span>
+                                <b>Audit: </b>
+                                <span id="auditText"></span>
+                                <br />
+                                <b>Start Time: </b>
+                                <span id="starttime"></span>
+                                <br />
+                                <b>Period: </b>
+                                <span id="correctivePeriod"></span>
                             </div>
                         </div>
                     </div>
@@ -142,7 +160,9 @@
                         <input type="password" class="form-control" id="signaturePassword">
                     </div>
                     <div id="messageError" class="alert alert-danger hide" role="alert">
-                        <span class="icon-remove-sign"></span>    <strong>Error! </strong><span id="mensagemErro"> </span>
+                        <span class="icon-remove-sign"></span>
+                        <strong>Error! </strong>
+                        <span id="mensagemErro"> </span>
                     </div>
                     <div id="messageAlert" class="alert alert-info hide" role="alert">
                         <span id="mensagemAlerta" class="icon-info-sign"></span>
@@ -164,7 +184,9 @@
 <div class="message padding20" style="display:none">
     <h1 class="head">Titulo</h1>
     <div class="body font16">Mensagem</div>
-    <div class="foot"><button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button></div>
+    <div class="foot">
+        <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button>
+    </div>
 </div>
 
 <div class="App hide" breadMainLevel="Slaughter">
@@ -208,7 +230,9 @@
             <div class="navbar-header" style="width: 100%">
                 <a class="navbar-brand" id="SGQName" href="#"><i class="fa fa-chevron-left hide iconReturn" aria-hidden="true"></i> Data Collection</a>
                 <div class="buttonMenu navbar-brand hide" id="btnShowImage" level01id="2">Show Image</div>
-                <div id="btnMore" class="iconMoreMenu pull-right" style="padding: 12px;"><i class="fa fa-ellipsis-v iconMoreMenu" aria-hidden="true"></i></div>
+                <div id="btnMore" class="iconMoreMenu pull-right" style="padding: 12px;">
+                    <i class="fa fa-ellipsis-v iconMoreMenu" aria-hidden="true"></i>
+                </div>
             </div>
         </div>
     </div>
@@ -220,7 +244,8 @@
             <div class="painel padding5">
                 <div class="row">
                     <div class="col-xs-4">
-                        <span class="atualDate">05/25/2015 00:00</span> <br />
+                        <span class="atualDate">05/25/2015 00:00</span>
+                        <br />
                         <span class="shift">Shift A</span>
                     </div>
                     <div class="col-xs-4">
@@ -301,10 +326,12 @@
                             <span class="shift">Shift A</span>
                         </div>
                         <div class="labelPainel hide" level01id="2">
-                            <strong>Total Defects:</strong> <span class="totalDefects">0</span>
+                            <strong>Total Defects:</strong>
+                            <span class="totalDefects">0</span>
                         </div>
                         <div class="labelPainel hide" level01id="3">
-                            <strong>Sets Done: </strong><span class="setsDone">0</span>
+                            <strong>Sets Done: </strong>
+                            <span class="setsDone">0</span>
                         </div>
                         <div class="labelPainel hide">
                             <span class="Completed">Completed</span>
@@ -352,10 +379,12 @@
                             <input type="number" id="inputMudScore" class="form-control" placeholder="Mud Score" />
                         </div>
                         <div class="labelPainel hide" level01id="3">
-                            <strong>Sides With Defects: </strong><span class="sideWithErrors">0</span>
+                            <strong>Sides With Defects: </strong>
+                            <span class="sideWithErrors">0</span>
                         </div>
                         <div class="labelPainel hide" level01id="3">
-                            <strong>3 or More Defects: </strong><span class="more3Defects">0</span>
+                            <strong>3 or More Defects: </strong>
+                            <span class="more3Defects">0</span>
                         </div>
                     </div>
                 </div>
@@ -1636,16 +1665,19 @@
                             <span class="shift">Shift A</span>
                         </div>
                         <div class="labelPainel hide" level01id="2">
-                            <strong>Total Defects:</strong> <span class="totalDefects">0</span>
+                            <strong>Total Defects:</strong>
+                            <span class="totalDefects">0</span>
                         </div>
                         <!--<div class="labelPainel hide" level01id="2">
                             <strong>Consec Failures in Area:</strong> <span class="consecutiveFailure">0</span>
                         </div>-->
                         <div class="labelPainel hide" level01id="2">
-                            <strong>Defects:</strong> <span class="defects">0</span>
+                            <strong>Defects:</strong>
+                            <span class="defects">0</span>
                         </div>
                         <div class="labelPainel hide" level01id="3">
-                            <strong>Sets Done: </strong> <span class="setsDone">0</span>
+                            <strong>Sets Done: </strong>
+                            <span class="setsDone">0</span>
                         </div>
                         <div class="labelPainel hide">
                             <span class="Completed">Completed</span>
@@ -1662,7 +1694,9 @@
                             <span class="period">Period</span>
                         </div>
                         <div class="labelPainel hide">
-                            Phase <span class="labelPhase"></span> <span class="reauditNumberPhase"></span>
+                            Phase
+                            <span class="labelPhase"></span>
+                            <span class="reauditNumberPhase"></span>
                         </div>
                         <div class="labelPainel hide" level01id="1">
                             <span class="biasedUnbiased">biasedUnbiased</span>
@@ -1671,37 +1705,47 @@
                     </div>
                     <div class="col-xs-3">
                         <div class="labelPainel hide" level01id="2">
-                            <strong>Cattle Type: </strong><span class="cattleType">CattleType</span>
+                            <strong>Cattle Type: </strong>
+                            <span class="cattleType">CattleType</span>
                         </div>
                         <div class="labelPainel hide" level01id="2">
-                            <strong>Chain Speedy: </strong><span class="chainSpeed">chainSpeed</span>
+                            <strong>Chain Speedy: </strong>
+                            <span class="chainSpeed">chainSpeed</span>
                         </div>
                         <div class="labelPainel hide" level01id="3">
-                            <strong>Sides With Defects: </strong><span class="sideWithErrors">0</span>
+                            <strong>Sides With Defects: </strong>
+                            <span class="sideWithErrors">0</span>
                         </div>
                         <div class="labelPainel hide" level01id="3">
-                            <strong>3 or More Defects :</strong> <span class="more3Defects">0</span>
+                            <strong>3 or More Defects :</strong>
+                            <span class="more3Defects">0</span>
                         </div>
                         <div class="labelPainel hide" level01id="3">
-                            <strong>Defects :</strong> <span class="sideErros">0</span>
+                            <strong>Defects :</strong>
+                            <span class="sideErros">0</span>
                         </div>
                     </div>
                     <div class="col-xs-3">
                         <div class="labelPainel hide" level01id="2">
-                            <strong>Lot Number #:</strong><span class="lotNumber">lotNumber</span>
+                            <strong>Lot Number #:</strong>
+                            <span class="lotNumber">lotNumber</span>
                         </div>
                         <div class="labelPainel hide" level01id="2">
-                            <strong>Mud Score: </strong><span class="mudScore">mudScore</span>
+                            <strong>Mud Score: </strong>
+                            <span class="mudScore">mudScore</span>
                         </div>
                         <div class="labelPainel hide" level01id="3">
-                            <strong>Current Set: </strong> <span style="font-size:20px;font-weight:bold;color:#2a9def" class="setAtual">1</span>
+                            <strong>Current Set: </strong>
+                            <span style="font-size:20px;font-weight:bold;color:#2a9def" class="setAtual">1</span>
                         </div>
                         <div class="labelPainel hide" level01id="3">
-                            <strong>Current Side: </strong> <span style="font-size:20px;font-weight:bold;color:#2a9def" - class="sideAtual">1</span>
+                            <strong>Current Side: </strong>
+                            <span style="font-size:20px;font-weight:bold;color:#2a9def" - class="sideAtual">1</span>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="cca level03Group hide" level01Id="2">
 
                 <ul class="list-group">
@@ -1710,7 +1754,9 @@
                             <div class="col-xs-6">Specks</div>
                             <div class="col-xs-6 text-center">
                                 <div class="input-group input-group-sm width200 pull-right">
-                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                    <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                    <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                 </div>
                             </div>
                         </div>
@@ -1721,7 +1767,9 @@
                             <div class="col-xs-6">Dressing</div>
                             <div class="col-xs-6 text-center">
                                 <div class="input-group input-group-sm width200 pull-right">
-                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                    <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                    <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                 </div>
                             </div>
                         </div>
@@ -1732,7 +1780,9 @@
                             <div class="col-xs-6">Single Hairs</div>
                             <div class="col-xs-6 text-center">
                                 <div class="input-group input-group-sm width200 pull-right">
-                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                    <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                    <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                 </div>
                             </div>
                         </div>
@@ -1743,7 +1793,9 @@
                             <div class="col-xs-6">Clusters</div>
                             <div class="col-xs-6 text-center">
                                 <div class="input-group input-group-sm width200 pull-right">
-                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                    <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                    <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                 </div>
                             </div>
                         </div>
@@ -1754,7 +1806,9 @@
                             <div class="col-xs-6">Hide</div>
                             <div class="col-xs-6 text-center">
                                 <div class="input-group input-group-sm width200 pull-right">
-                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                    <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                    <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                    <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                 </div>
                             </div>
                         </div>
@@ -1787,7 +1841,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -1800,7 +1856,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -1813,7 +1871,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -1844,7 +1904,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -1857,7 +1919,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -1870,7 +1934,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -1902,7 +1968,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -1916,7 +1984,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -1929,7 +1999,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -1959,7 +2031,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -1972,7 +2046,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -1985,7 +2061,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -2016,7 +2094,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -2030,7 +2110,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -2044,7 +2126,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -2076,7 +2160,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -2090,7 +2176,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -2104,7 +2192,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -2136,7 +2226,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -2150,7 +2242,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -2163,7 +2257,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -2195,7 +2291,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -2209,7 +2307,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -2223,7 +2323,9 @@
                                         </div>
                                         <div class="col-xs-6 text-center">
                                             <div class="input-group input-group-sm width200 pull-right">
-                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                                <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span>
+                                                <input value="0" min="0" type="number" class="form-control text-center levelValue">
+                                                <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                                             </div>
                                         </div>
                                     </div>
@@ -2420,7 +2522,9 @@
     <button class="btn btn-lg btn-danger btnCA hide">Corrective Action</button><!--Corrective Action-->
     <footer class="footer">
         <p style="color: white; margin-left: 16px; margin-right: 16px; margin-top: 12px;">
-            <span class="user">Admin</span> - <span class="unit">Colorado</span>  <span class="urlPrefix"></span>
+            <span class="user">Admin</span> -
+            <span class="unit">Colorado</span>
+            <span class="urlPrefix"></span>
             <span class="status pull-right"></span>
             <div class="progress">
                 <div class="statusProgress progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
@@ -2459,7 +2563,7 @@
     //***************Apontamento Api´s********************************
     var urlPreffix = urlServidorDeveloper;
 
-   
+
     //teste update
     //assim que todos os arquivos foram carregados
     $(document).ready(function () {
@@ -2621,7 +2725,7 @@
         return "Warning! If you proceed you will loose information";
     });
 
-    
+
 
     function evaluateDoneReturn(elementConf, lastEvaluate, lastSample) {
         if (elementConf.attr('totalsets')) {
@@ -2638,7 +2742,7 @@
             return evaluate;
         }
     }
-
+    /**/
     $(document).on('click', '.level01List .level01', function (e) {
         //Seleciona o Nivel 01
         var level01 = $(this);
@@ -2781,6 +2885,7 @@
         showLevel02(level01);
 
     });
+
     function getPhases(level01) {
         var resultsLevel01Phase = $('.level01Result[level01id=' + level01.attr('id') + '][reaudit=false][shift=' + $('.App').attr('shift') + '][completed=completed]:last');
 
@@ -3620,7 +3725,6 @@
 
         });
     }
-
 
     //function level02Configure() {
     //    $('.level02[completed]').parents('li').addClass('bgCompleted');
@@ -6064,7 +6168,7 @@
 
                 //Oculto o contador.
                 level01Buttons.children('.reauditCount').addClass('hide');
-                
+
                 //Informa ao usuário que terminou a reauditoria
                 openMessageModal('Re-audit completed', $('#selectPeriod option[value=' + resultStarReaudit.attr('period') + ']').text() + ' re-audit completed!');
 
@@ -6198,13 +6302,13 @@
 
                 //Oculto o contador.
                 level01Buttons.children('.reauditCount').addClass('hide');
-                
+
                 //Informa ao usuário que terminou a reauditoria
                 openMessageModal('Re-audit completed', $('#selectPeriod option[value=' + resultStarReaudit.attr('period') + ']').text() + ' re-audit completed!');
 
             }
         }
-        
+
         createFileResult();
 
         //Reseto o periodo
@@ -6217,7 +6321,7 @@
 
     });
     $(document).on('click', '#btnSalvarLevel02HTP', function (e) {
-        
+
         //Verifica o level01 Selecionado.
         var level01 = $('.level01.selected');
 
@@ -6893,7 +6997,7 @@
             }, onErrorCreateFile);
         }, onErrorLoadFs);
     }
-    
+
     //cria o arquivo de sincronizacao se nao existir
     function onErrorCreateSyncFile(callback, user) {
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
@@ -6902,670 +7006,811 @@
             }, onErrorCreateFile);
         }, onErrorLoadFs);
     }
-    
+
 </script>
 
 <!--SyncData-->
 <script>
 
-function MakeObject2(element, ListName, objectReturn) {
-    //debugMessage('Start MakeObject2');
-    objectReturn[ListName] = [];
-    element.each(function (e) {
+    function MakeObject2(element, ListName, objectReturn) {
+        //debugMessage('Start MakeObject2');
+        objectReturn[ListName] = [];
+        element.each(function (e) {
 
-        var level01Result = $(this).getAttributes();
-        var level02Results = $(this).children('.level02Result[sync=false]');
-        level01Result['nextRoot'] = [];
+            var level01Result = $(this).getAttributes();
+            var level02Results = $(this).children('.level02Result[sync=false]');
+            level01Result['nextRoot'] = [];
 
-        level02Results.each(function (e) {
+            level02Results.each(function (e) {
 
-            var level02Result = $(this).getAttributes();
-            var level03Results = $(this).children('.level03Result');
-            level01Result.nextRoot.push(level02Result);
-            level02Result['nextnextRoot'] = [];
+                var level02Result = $(this).getAttributes();
+                var level03Results = $(this).children('.level03Result');
+                level01Result.nextRoot.push(level02Result);
+                level02Result['nextnextRoot'] = [];
 
-            level03Results.each(function (e) {
+                level03Results.each(function (e) {
 
-                var level03Result = $(this).getAttributes();
-                level02Result.nextnextRoot.push(level03Result);
+                    var level03Result = $(this).getAttributes();
+                    level02Result.nextnextRoot.push(level03Result);
+
+                });
 
             });
+
+            objectReturn[ListName].push(level01Result);
 
         });
-
-        objectReturn[ListName].push(level01Result);
-
-    });
-}
-
-(function ($) {
-    $.fn.getAttributes = function () {
-        var attributes = {};
-        if (this.length) {
-            $.each(this[0].attributes, function (index, attr) {
-                if (!(attr.value == "undefined" || attr.value == "null")) { attributes[attr.name] = attr.value; }
-            });
-        }
-
-        return attributes;
-    };
-})(jQuery);
-
-function MakeResult(Obj, selector) {
-    MakeObject2(selector, 'Root', Obj);
-    console.log('Done.');
-}
-
-$(document).ready(function () {
-    ping();
-});
-
-function Sync() {
-
-    SyncEnvia();
-}
-
-function SyncEnvia() {
-
-    counter = 0;
-    var counterSync = 0;
-
-    statusMessage('Sync started...');
-    var ObjListaLevel1 = {};
-
-
-    var objetoToSend = $('.level01Result');
-
-    if ($(objetoToSend).children('div[sync=false]').length) {
-        MakeResult(ObjListaLevel1, objetoToSend);
-    } else {
-        GetToSyncNoOffLineData("SyncEnvia");
     }
 
-    $.each(ObjListaLevel1.Root, function (c, o) {
-
-        var smallerObject = {};
-        smallerObject['Root'] = [];
-        if (!!o.correctiveactioncomplete || o.nextRoot != undefined) {
-            if (o.nextRoot != undefined) {
-                o['correctiveactioncomplete'] = [];
-                $.each(o.nextRoot, function (cc, oo) {
-                    if (!!oo.correctiveActionComplete || !!oo.correctiveactioncomplete) {
-                        var tempCA = {}
-                        var idCorrectiveAction = oo.idcorrectiveaction;
-                        if (!idCorrectiveAction) {
-                            idCorrectiveAction = oo.idCorrectiveAction;
-                        }
-                        MakeObject2($('.Results > .correctiveAction[idcorrectiveaction=' + idCorrectiveAction + ']'), 'a', tempCA);
-                        o['correctiveactioncomplete'].push(tempCA.a[0]);
-                    }
+    (function ($) {
+        $.fn.getAttributes = function () {
+            var attributes = {};
+            if (this.length) {
+                $.each(this[0].attributes, function (index, attr) {
+                    if (!(attr.value == "undefined" || attr.value == "null")) { attributes[attr.name] = attr.value; }
                 });
             }
+
+            return attributes;
+        };
+    })(jQuery);
+
+    function MakeResult(Obj, selector) {
+        MakeObject2(selector, 'Root', Obj);
+        console.log('Done.');
+    }
+
+    $(document).ready(function () {
+        ping();
+    });
+
+    function Sync() {
+
+        SyncEnvia();
+    }
+
+    function SyncEnvia() {
+
+        counter = 0;
+        var counterSync = 0;
+
+        statusMessage('Sync started...');
+        var ObjListaLevel1 = {};
+
+
+        var objetoToSend = $('.level01Result');
+
+        if ($(objetoToSend).children('div[sync=false]').length) {
+            MakeResult(ObjListaLevel1, objetoToSend);
+        } else {
+            GetToSyncNoOffLineData("SyncEnvia");
         }
 
-        smallerObject.Root.push(o);
-        smallerObject['lockPattern'] = $('.App').attr('userid');
-        if (smallerObject.Root[0].nextRoot != undefined && smallerObject.Root[0].nextRoot.length > 0) {
+        $.each(ObjListaLevel1.Root, function (c, o) {
 
-            $.post(urlPreffix + "/api/Sync/SetDataAuditConsolidated", smallerObject, function (r) {
-                if (r.Mensagem.indexOf('All Data') > 0) {
-                    if(r.Retorno != null){
-                        var listaLevel02ComId = r.Retorno.ListToSave[0].collectionLevel02DTO;
-                        listaLevel02ComId.forEach(function (o, c) {
-                            var variavel = new Date(o.CollectionDate);
-                            var mes = variavel.getUTCMonth() + 1;
-                            mes = variavel.getUTCMonth() + 1;
-                            mes = mes.toString();
-                            if (mes.length < 2) {
-                                mes = "0" + mes;
+            var smallerObject = {};
+            smallerObject['Root'] = [];
+            if (!!o.correctiveactioncomplete || o.nextRoot != undefined) {
+                if (o.nextRoot != undefined) {
+                    o['correctiveactioncomplete'] = [];
+                    $.each(o.nextRoot, function (cc, oo) {
+                        if (!!oo.correctiveActionComplete || !!oo.correctiveactioncomplete) {
+                            var tempCA = {}
+                            var idCorrectiveAction = oo.idcorrectiveaction;
+                            if (!idCorrectiveAction) {
+                                idCorrectiveAction = oo.idCorrectiveAction;
                             }
-                            var dia = variavel.getUTCDate().toString()
-                            if (dia.length < 2) {
-                                dia = "0" + dia;
-                            }
-                            var data2 = mes + dia + variavel.getUTCFullYear().toString();
-                            var a = '.level01Result[level01Id=' + r.IdSaved + '] .level02Result[level02id=' + o.Level02Id + '][evaluate=' + o.EvaluationNumber + '][shift=' + o.Shift + '][period=' + o.Period + '][date=' + data2 + '][sample=' + o.Sample + '][phase=' + o.Phase + '][reaudit=' + o.ReauditIs + '][reauditNumber=' + o.ReauditNumber + ']';
-                            $(a).attr('id', o.Id).attr('sync', true);
-                            //syncModalPer(counterSync++);
-                            if (o.CorrectiveActionSaved != null) {
-                                var CA = o.CorrectiveActionSaved;
-                                var CaSearch = '.correctiveAction[idcorrectiveaction="' + o.CorrectiveActionId + '"][shift="' + o.Shift + '"][period="' + o.Period + '"][unidadeid="' + r.Retorno.ListToSave[0].UnitId + '"][immediatecorrectiveaction="' + CA.ImmediateCorrectiveAction + '"][preventativemeasure="' + CA.PreventativeMeasure + '"][productdisposition="' + CA.ProductDisposition + '"]';
-                                $(CaSearch).attr('CollectionLevel02Id', CA.CollectionLevel02Id).attr('Id', CA.Id).attr("idcorrectiveaction", CA.Id).attr('sync', true);
-                                $(a).attr("idcorrectiveaction", CA.Id);
-                            }
-                            o.collectionLevel03DTO.forEach(function (oo, cc) {
-                                $('.level01Result[level01Id=' + r.IdSaved + '] .level02Result[id=' + o.Id + '] .level03Result[level03id=' + oo.Level03Id + ']').attr('id', oo.Id);
-                            });
-                        });
-                    } else {
-                        $('.level02Result').attr('sync', true);
-                    }
+                            MakeObject2($('.Results > .correctiveAction[idcorrectiveaction=' + idCorrectiveAction + ']'), 'a', tempCA);
+                            o['correctiveactioncomplete'].push(tempCA.a[0]);
+                        }
+                    });
                 }
-                console.log("smallerObject metod start> ", 'background: #222; color: Red')
-                console.log(r.Mensagem);
-                console.log(r);
-                console.log(r.Result);
-                console.log("smallerObject metod end> ", 'background: #222; color: Red')
+            }
+
+            smallerObject.Root.push(o);
+            smallerObject['lockPattern'] = $('.App').attr('userid');
+            if (smallerObject.Root[0].nextRoot != undefined && smallerObject.Root[0].nextRoot.length > 0) {
+
+                $.post(urlPreffix + "/api/Sync/SetDataAuditConsolidated", smallerObject, function (r) {
+                    if (r.Mensagem.indexOf('All Data') > 0) {
+                        if(r.Retorno != null){
+                            var listaLevel02ComId = r.Retorno.ListToSave[0].collectionLevel02DTO;
+                            listaLevel02ComId.forEach(function (o, c) {
+                                var variavel = new Date(o.CollectionDate);
+                                var mes = variavel.getUTCMonth() + 1;
+                                mes = variavel.getUTCMonth() + 1;
+                                mes = mes.toString();
+                                if (mes.length < 2) {
+                                    mes = "0" + mes;
+                                }
+                                var dia = variavel.getUTCDate().toString()
+                                if (dia.length < 2) {
+                                    dia = "0" + dia;
+                                }
+                                var data2 = mes + dia + variavel.getUTCFullYear().toString();
+                                var a = '.level01Result[level01Id=' + r.IdSaved + '] .level02Result[level02id=' + o.Level02Id + '][evaluate=' + o.EvaluationNumber + '][shift=' + o.Shift + '][period=' + o.Period + '][date=' + data2 + '][sample=' + o.Sample + '][phase=' + o.Phase + '][reaudit=' + o.ReauditIs + '][reauditNumber=' + o.ReauditNumber + ']';
+                                $(a).attr('id', o.Id).attr('sync', true);
+                                //syncModalPer(counterSync++);
+                                if (o.CorrectiveActionSaved != null) {
+                                    var CA = o.CorrectiveActionSaved;
+                                    var CaSearch = '.correctiveAction[idcorrectiveaction="' + o.CorrectiveActionId + '"][shift="' + o.Shift + '"][period="' + o.Period + '"][unidadeid="' + r.Retorno.ListToSave[0].UnitId + '"][immediatecorrectiveaction="' + CA.ImmediateCorrectiveAction + '"][preventativemeasure="' + CA.PreventativeMeasure + '"][productdisposition="' + CA.ProductDisposition + '"]';
+                                    $(CaSearch).attr('CollectionLevel02Id', CA.CollectionLevel02Id).attr('Id', CA.Id).attr("idcorrectiveaction", CA.Id).attr('sync', true);
+                                    $(a).attr("idcorrectiveaction", CA.Id);
+                                }
+                                o.collectionLevel03DTO.forEach(function (oo, cc) {
+                                    $('.level01Result[level01Id=' + r.IdSaved + '] .level02Result[id=' + o.Id + '] .level03Result[level03id=' + oo.Level03Id + ']').attr('id', oo.Id);
+                                });
+                            });
+                        } else {
+                            $('.level02Result').attr('sync', true);
+                        }
+                    }
+                    console.log("smallerObject metod start> ", 'background: #222; color: Red')
+                    console.log(r.Mensagem);
+                    console.log(r);
+                    console.log(r.Result);
+                    console.log("smallerObject metod end> ", 'background: #222; color: Red')
+                    counter++;
+                    if (ObjListaLevel1.Root.length == counter) { GetToSyncNoOffLineData("SyncEnvia"); }
+                });
+            }
+            else {
                 counter++;
                 if (ObjListaLevel1.Root.length == counter) { GetToSyncNoOffLineData("SyncEnvia"); }
-            });
-        }
-        else {
-            counter++;
-            if (ObjListaLevel1.Root.length == counter) { GetToSyncNoOffLineData("SyncEnvia"); }
-        }
-    });
+            }
+        });
 
-    setLastSync();
-
-}
-
-function updateWindow() {
-
-    if ($('.level02List').is(':visible')) {
-        var level01 = $('.level01.selected');
-        var result = $('.level01Result.selected');
-
-        if (!result.length) {
-
-            result = getLastResultPeriod(level01);
-
-        }
-        periodReset();
-        resultPreencher(result);
-        showLevel02(level01);
+        setLastSync();
 
     }
-    else if ($('.level01List').is(':visible')) {
-        $('#selectPeriod').trigger('change');
+
+    function updateWindow() {
+
+        if ($('.level02List').is(':visible')) {
+            var level01 = $('.level01.selected');
+            var result = $('.level01Result.selected');
+
+            if (!result.length) {
+
+                result = getLastResultPeriod(level01);
+
+            }
+            periodReset();
+            resultPreencher(result);
+            showLevel02(level01);
+
+        }
+        else if ($('.level01List').is(':visible')) {
+            $('#selectPeriod').trigger('change');
+        }
+
+    }
+    function sendHtml(caller) {
+
+        var htmlObject = {};
+        htmlObject['html'] = $('.Results').html();
+        htmlObject['idUnidade'] = $('.App').attr('unidadeid');
+        htmlObject['lockPattern'] = $('.App').attr('userid');
+
+        var stringDateApp = $('.App').attr('date');
+        htmlObject['CollectionHtml'] = {
+            Html: '',
+            Period: parseInt($('.App').attr('period')),
+            Shift: parseInt($('#shift option:selected').val()),
+            CollectionDateFormatado: !!stringDateApp ? stringDateApp.substring(0, 2) + "/" + stringDateApp.substring(2, 4) + "/" + stringDateApp.substring(4, 8) : '',
+            UnitId: parseInt($('.App').attr('unidadeid')),
+        };
+
+        $.post(urlPreffix + "/api/Sync/SaveHtml", htmlObject, function (r) {
+
+
+            console.log("sendHtml start caller: " + caller);
+            if (!!r.Mensagem && r.MensagemExcecao == null) {
+                console.log(r.Mensagem);
+                statusMessage('Successfully synced.');
+            }
+            if (!!r.MensagemExcecao) {
+                console.log(r);
+                statusMessage('Sync failed.');
+                return false;
+            }
+            mensagemSyncHide();
+
+            console.log("sendHtml end caller: " + caller);
+            //$.post(urlPreffix + 'api/Sync/unLock')
+        });
+    }
+    function mensagemSyncHide() {
+        $('.msgSync').removeClass('msgSync').fadeOut("fast");
+
     }
 
-}
-function sendHtml(caller) {
+    function GetToSyncNoOffLineData(caller) {
 
-    var htmlObject = {};
-    htmlObject['html'] = $('.Results').html();
-    htmlObject['idUnidade'] = $('.App').attr('unidadeid');
-    htmlObject['lockPattern'] = $('.App').attr('userid');
-
-    var stringDateApp = $('.App').attr('date');
-    htmlObject['CollectionHtml'] = {
-        Html: '',
-        Period: parseInt($('.App').attr('period')),
-        Shift: parseInt($('#shift option:selected').val()),
-        CollectionDateFormatado: !!stringDateApp ? stringDateApp.substring(0, 2) + "/" + stringDateApp.substring(2, 4) + "/" + stringDateApp.substring(4, 8) : '',
-        UnitId: parseInt($('.App').attr('unidadeid')),
-    };
-
-    $.post(urlPreffix + "/api/Sync/SaveHtml", htmlObject, function (r) {
-        
-
-        console.log("sendHtml start caller: " + caller);
-        if (!!r.Mensagem && r.MensagemExcecao == null) {
-            console.log(r.Mensagem);
-            statusMessage('Successfully synced.');
+        var idUnidade = $('.App').attr('unidadeid');
+        var lockPattern = $('.App').attr('userid');
+        var objToSend = { 'idUnidade': idUnidade, 'lockPattern': lockPattern }
+        objToSend['CollectionHtml'] = {
+            Shift: $('#shift option:selected').val(),
+            UnitId: $('.App').attr('unidadeid')
         }
-        if (!!r.MensagemExcecao) {
+
+        $.post(urlPreffix + "/api/Sync/GetHtmlLastEntry", objToSend, function (r) {
+            console.log("GetToSyncNoOffLineData start caller: " + caller);
             console.log(r);
-            statusMessage('Sync failed.');
-            return false;
-        }
-        mensagemSyncHide();
-
-        console.log("sendHtml end caller: " + caller);
-        //$.post(urlPreffix + 'api/Sync/unLock')
-    });
-}
-function mensagemSyncHide() {
-    $('.msgSync').removeClass('msgSync').fadeOut("fast");
-
-}
-
-function GetToSyncNoOffLineData(caller) {
-
-    var idUnidade = $('.App').attr('unidadeid');
-    var lockPattern = $('.App').attr('userid');
-    var objToSend = { 'idUnidade': idUnidade, 'lockPattern': lockPattern }
-    objToSend['CollectionHtml'] = {
-        Shift: $('#shift option:selected').val(),
-        UnitId: $('.App').attr('unidadeid')
+            if (r.Retorno != null) {
+                Merge(r);
+            }
+            //automaticSync = setTimeout(startAutomaticSync, 120000);
+            console.log("GetToSyncNoOffLineData end caller: " + caller);
+        });
     }
 
-    $.post(urlPreffix + "/api/Sync/GetHtmlLastEntry", objToSend, function (r) {
-        console.log("GetToSyncNoOffLineData start caller: " + caller);
-        console.log(r);
-        if (r.Retorno != null) {
-            Merge(r);
-        }
-        //automaticSync = setTimeout(startAutomaticSync, 120000);
-        console.log("GetToSyncNoOffLineData end caller: " + caller);
-    });
-}
+    function statusMessage(message) {
+        $('.status').text(message);
+        setTimeout(function () {
+            $('.status').empty();
+        }, 10000);
 
-function statusMessage(message) {
-    $('.status').text(message);
-    setTimeout(function () {
-        $('.status').empty();
-    }, 10000);
+    }
 
-}
+    var waitingDialog = waitingDialog || (function ($) {
+        'use strict';
 
-var waitingDialog = waitingDialog || (function ($) {
-    'use strict';
+        // Creating modal dialog's DOM
+        var $dialog = $(
+            '<div class="fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">' +
+            '<div class="modal-dialog modal-m">' +
+            '<div class="modal-content">' +
+                '<div class="modal-header"><h3 style="margin:0;"></h3></div>' +
+                '<div class="modal-body">' +
+                    '<div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%"></div></div>' +
+                '</div>' +
+            '</div></div></div>');
 
-    // Creating modal dialog's DOM
-    var $dialog = $(
-        '<div class="fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">' +
-        '<div class="modal-dialog modal-m">' +
-        '<div class="modal-content">' +
-            '<div class="modal-header"><h3 style="margin:0;"></h3></div>' +
-            '<div class="modal-body">' +
-                '<div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%"></div></div>' +
-            '</div>' +
-        '</div></div></div>');
+        return {
+            show: function (message, options) {
+                // Assigning defaults
+                if (typeof options === 'undefined') {
+                    options = {};
+                }
+                if (typeof message === 'undefined') {
+                    message = 'Loading';
+                }
+                var settings = $.extend({
+                    dialogSize: 'm',
+                    progressType: '',
+                    onHide: null // This callback runs after the dialog was hidden
+                }, options);
 
-    return {
-        show: function (message, options) {
-            // Assigning defaults
-            if (typeof options === 'undefined') {
-                options = {};
+                // Configuring dialog
+                $dialog.find('.modal-dialog').attr('class', 'modal-dialog').addClass('modal-' + settings.dialogSize);
+                $dialog.find('.progress-bar').attr('class', 'progress-bar');
+                if (settings.progressType) {
+                    $dialog.find('.progress-bar').addClass('progress-bar-' + settings.progressType);
+                }
+                $dialog.find('h3').text(message);
+                // Adding callbacks
+                if (typeof settings.onHide === 'function') {
+                    $dialog.off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
+                        settings.onHide.call($dialog);
+                    });
+                }
+                // Opening dialog
+                $dialog.modal();
+            },
+            /**
+             * Closes dialog
+             */
+            hide: function () {
+                $dialog.modal('hide');
             }
-            if (typeof message === 'undefined') {
-                message = 'Loading';
-            }
-            var settings = $.extend({
-                dialogSize: 'm',
-                progressType: '',
-                onHide: null // This callback runs after the dialog was hidden
-            }, options);
+        };
 
-            // Configuring dialog
-            $dialog.find('.modal-dialog').attr('class', 'modal-dialog').addClass('modal-' + settings.dialogSize);
-            $dialog.find('.progress-bar').attr('class', 'progress-bar');
-            if (settings.progressType) {
-                $dialog.find('.progress-bar').addClass('progress-bar-' + settings.progressType);
-            }
-            $dialog.find('h3').text(message);
-            // Adding callbacks
-            if (typeof settings.onHide === 'function') {
-                $dialog.off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
-                    settings.onHide.call($dialog);
-                });
-            }
-            // Opening dialog
-            $dialog.modal();
-        },
-        /**
-         * Closes dialog
-         */
-        hide: function () {
-            $dialog.modal('hide');
-        }
-    };
+    })(jQuery);
 
-})(jQuery);
+    var connectionServer = false;
 
-var connectionServer = false;
-
-function ping() {
-    //connectionServer = true;
-    $.ajax({
-        url: urlPreffix,
-        success: function (result) {
-            if (result)
-                connectionServer = true;
-            else
+    function ping() {
+        //connectionServer = true;
+        $.ajax({
+            url: urlPreffix,
+            success: function (result) {
+                if (result)
+                    connectionServer = true;
+                else
+                    connectionServer = false;
+            },
+            error: function (result) {
                 connectionServer = false;
-        },
-        error: function (result) {
-            connectionServer = false;
-        }
-    });
+            }
+        });
 
-    setTimeout(ping, 5000);
-}
-
-
-function Merge(r) {
-
-    var results = $(r.Retorno.html);
-
-    if ($('.level01Result').length == 0) {
-
-        var resultsValidos = results.children('.level01Result, .correctiveAction')
-
-        appendDevice(resultsValidos, $('.Results'));
-        removeElementosNaoUtilizados();
-        //Saio do método.
-        return true;
+        setTimeout(ping, 5000);
     }
-    var objResultsLevel01 = results.children('div');
-
-    //Percorro os objetos
-    objResultsLevel01.each(function (e) {
-
-        //tem hora que tem resultado de level02Result, então por hora se tiver sai do loop
 
 
-        //Instanciamos o objeto da lista
-        var objLevel1 = $(this);
+    function Merge(r) {
 
+        var results = $(r.Retorno.html);
 
-        //Pegamos o atributo Class
-        var classe = $(objLevel1).attr('class');
-        //Pegamos o level01Id
-        var level01id = $(objLevel1).attr('level01id');
+        if ($('.level01Result').length == 0) {
 
-        //if (level01id) {  }
+            var resultsValidos = results.children('.level01Result, .correctiveAction')
 
-        if (classe == 'level02Result') {
-
+            appendDevice(resultsValidos, $('.Results'));
+            removeElementosNaoUtilizados();
+            //Saio do método.
             return true;
         }
+        var objResultsLevel01 = results.children('div');
+
+        //Percorro os objetos
+        objResultsLevel01.each(function (e) {
+
+            //tem hora que tem resultado de level02Result, então por hora se tiver sai do loop
 
 
-        //Se o objeto for uma ação corretiva
-        if (classe == 'correctiveAction') {
+            //Instanciamos o objeto da lista
+            var objLevel1 = $(this);
 
-            var unidadeId = $(objLevel1).attr('unidadeid');
-            var auditorId = $(objLevel1).attr('auditorid');
-            var shift = $(objLevel1).attr('shift');
-            var period = $(objLevel1).attr('period');
-            var idCorrectiveAction = $(objLevel1).attr('idcorrectiveaction');
-            var idCorrectiveActionDB = $(objLevel1).attr('Id');
-            var idLevel02CaSaved = $(objLevel1).attr('collectionlevel02id');
 
-            var searchCA = "";
+            //Pegamos o atributo Class
+            var classe = $(objLevel1).attr('class');
+            //Pegamos o level01Id
+            var level01id = $(objLevel1).attr('level01id');
 
-            //Se Existe o idCorrectiveActionDB
-            if (!!idCorrectiveActionDB) {
-                //Procuramos pelo id
-                searchCA = $('.correctiveAction[id=' + idCorrectiveActionDB + ']');
-            } else {
-                //Se não existir procuramos pelos atributos
-                searchCA = '.correctiveAction[unidadeid="' + unidadeId + '"][auditorid="' + auditorId + '"][shift="' + shift + '"][period="' + period + '"][idcorrectiveaction="' + idCorrectiveAction + '"]';
+            //if (level01id) {  }
+
+            if (classe == 'level02Result') {
+
+                return true;
             }
 
 
-            var correctiveAction = $(searchCA);
+            //Se o objeto for uma ação corretiva
+            if (classe == 'correctiveAction') {
+
+                var unidadeId = $(objLevel1).attr('unidadeid');
+                var auditorId = $(objLevel1).attr('auditorid');
+                var shift = $(objLevel1).attr('shift');
+                var period = $(objLevel1).attr('period');
+                var idCorrectiveAction = $(objLevel1).attr('idcorrectiveaction');
+                var idCorrectiveActionDB = $(objLevel1).attr('Id');
+                var idLevel02CaSaved = $(objLevel1).attr('collectionlevel02id');
+
+                var searchCA = "";
+
+                //Se Existe o idCorrectiveActionDB
+                if (!!idCorrectiveActionDB) {
+                    //Procuramos pelo id
+                    searchCA = $('.correctiveAction[id=' + idCorrectiveActionDB + ']');
+                } else {
+                    //Se não existir procuramos pelos atributos
+                    searchCA = '.correctiveAction[unidadeid="' + unidadeId + '"][auditorid="' + auditorId + '"][shift="' + shift + '"][period="' + period + '"][idcorrectiveaction="' + idCorrectiveAction + '"]';
+                }
 
 
-            //Se não existe ação corretiva incluir nos resultadoz
-            if (correctiveAction.length == 0) {
-                appendDevice(objLevel1, $('.Results'));
-                return;
-            }
-
-            ////
-
-            ///Colocar o else da ação corretiva para comparar
-            ///
+                var correctiveAction = $(searchCA);
 
 
-        } else {
-
-            //Se o objeto não for uma ação corretiva
-            var evaluate = $(objLevel1).attr('evaluate');
-            var reaudit = $(objLevel1).attr('reaudit');
-            var period = $(objLevel1).attr('period');
-            var shift = $(objLevel1).attr('shift');
-            var date = $(objLevel1).attr('date');
-            var unidadeid = $(objLevel1).attr('unidadeid');
-
-            //Pesquisa pelos atributos
-            var searchL01R = '.level01Result[level01id=' + level01id + '][evaluate=' + evaluate + '][reaudit=' + reaudit + '][period=' + period + '][shift=' + shift + '][date=' + date + '][unidadeid=' + unidadeid + ']';
-            var level01Result = $(searchL01R);
-
-            //Se não existir o elemento
-            if (level01Result.length == 0) {
-                appendDevice(objLevel1, $('.Results'));
-            }
-            else if (level01Result.length == 1) {
-
-
-                if (level01Result[0].isEqualNode(objLevel1[0])) {
+                //Se não existe ação corretiva incluir nos resultadoz
+                if (correctiveAction.length == 0) {
+                    appendDevice(objLevel1, $('.Results'));
                     return;
                 }
-                else {
-                    var substituirlevel01Result = false;
 
-                    var dataAtual = stringToTime(level01Result.attr('datetime'));
-                    var dataElementoDb = stringToTime(objLevel1.attr('datetime'));
+                ////
 
-                    var completedSampleDB = objLevel1.attr('completedsample');
-                    var completedSampleResult = level01Result.attr('completedsample');
-
-                    var completeDB = objLevel1.attr('completed');
-                    var completeResult = level01Result.attr('completed');
+                ///Colocar o else da ação corretiva para comparar
+                ///
 
 
-                    var sampleDB = parseInt(objLevel1.attr('lastsample'));
-                    var sampleResult = parseInt(level01Result.attr('lastsample'));
+            } else {
+
+                //Se o objeto não for uma ação corretiva
+                var evaluate = $(objLevel1).attr('evaluate');
+                var reaudit = $(objLevel1).attr('reaudit');
+                var period = $(objLevel1).attr('period');
+                var shift = $(objLevel1).attr('shift');
+                var date = $(objLevel1).attr('date');
+                var unidadeid = $(objLevel1).attr('unidadeid');
+
+                //Pesquisa pelos atributos
+                var searchL01R = '.level01Result[level01id=' + level01id + '][evaluate=' + evaluate + '][reaudit=' + reaudit + '][period=' + period + '][shift=' + shift + '][date=' + date + '][unidadeid=' + unidadeid + ']';
+                var level01Result = $(searchL01R);
+
+                //Se não existir o elemento
+                if (level01Result.length == 0) {
+                    appendDevice(objLevel1, $('.Results'));
+                }
+                else if (level01Result.length == 1) {
 
 
-
-                    //Se a amostra for completa no banco e não for completa no resultado.
-                    if (!!completedSampleDB && !(!!completedSampleResult)) {
-                        //Subistitui o resultado.
-                        substituirlevel01Result = true;
-                    }
-
-                    //Se o resultado for completo no banco e não for completa no resultado.
-                    if (!!completeDB && !(!!completeResult)) {
-                        //Subistitui o resultado.
-                        substituirlevel01Result = true;
-                    }
-
-
-                    if (substituirlevel01Result == false && sampleDB > sampleResult) {
-                        substituirlevel01Result = true;
-                    }
-                    //Se a dataObjeto for maior
-                    if (dataAtual > dataElementoDb) {
-                        substituirlevel01Result = false;
-                    }
-                    if (substituirlevel01Result == true) {
-                        //Adiciono o elemento do banco após o elemento do aplicativo.
-                        afterDevice(objLevel1, level01Result);
-                        //Removo o elemento do aplicado.
-                        level01Result.remove();
+                    if (level01Result[0].isEqualNode(objLevel1[0])) {
+                        return;
                     }
                     else {
-                        MergeLevel02Result(objLevel1, level01Result);
-                    }
+                        var substituirlevel01Result = false;
 
+                        var dataAtual = stringToTime(level01Result.attr('datetime'));
+                        var dataElementoDb = stringToTime(objLevel1.attr('datetime'));
+
+                        var completedSampleDB = objLevel1.attr('completedsample');
+                        var completedSampleResult = level01Result.attr('completedsample');
+
+                        var completeDB = objLevel1.attr('completed');
+                        var completeResult = level01Result.attr('completed');
+
+
+                        var sampleDB = parseInt(objLevel1.attr('lastsample'));
+                        var sampleResult = parseInt(level01Result.attr('lastsample'));
+
+
+
+                        //Se a amostra for completa no banco e não for completa no resultado.
+                        if (!!completedSampleDB && !(!!completedSampleResult)) {
+                            //Subistitui o resultado.
+                            substituirlevel01Result = true;
+                        }
+
+                        //Se o resultado for completo no banco e não for completa no resultado.
+                        if (!!completeDB && !(!!completeResult)) {
+                            //Subistitui o resultado.
+                            substituirlevel01Result = true;
+                        }
+
+
+                        if (substituirlevel01Result == false && sampleDB > sampleResult) {
+                            substituirlevel01Result = true;
+                        }
+                        //Se a dataObjeto for maior
+                        if (dataAtual > dataElementoDb) {
+                            substituirlevel01Result = false;
+                        }
+                        if (substituirlevel01Result == true) {
+                            //Adiciono o elemento do banco após o elemento do aplicativo.
+                            afterDevice(objLevel1, level01Result);
+                            //Removo o elemento do aplicado.
+                            level01Result.remove();
+                        }
+                        else {
+                            MergeLevel02Result(objLevel1, level01Result);
+                        }
+
+                    }
                 }
             }
-        }
-
-    });
-
-    removeElementosNaoUtilizados();
-
-}
-
-function removeElementosNaoUtilizados() {
-    var level01Check = $('.level01');
-    var periods = $('#selectPeriod option[value!=0]');
-
-    level01Check.each(function (e) {
-
-        var level01 = $(this);
-
-        periods.each(function (e) {
-
-            var period = $(this).attr('value');
-
-            if (level01.attr('havephases')) {
-                var results = $('.Results .level01Result[level01id=' + level01.attr('id') + '][period=' + period + '][reaudit=false]:not(:last)');
-                var resultLast = $('.Results .level01Result[level01id=' + level01.attr('id') + '][period=' + period + '][reaudit=false]:last');
-
-                var resultsReaudit = $('.Results .level01Result[level01id=' + level01.attr('id') + '][period=' + period + '][reaudit=true]:not(:last)');
-                var resultLastReaudit = $('.Results .level01Result[level01id=' + level01.attr('id') + '][period=' + period + '][reaudit=true]:last');
-
-                results.removeClass('selected');
-                resultLast.removeClass('selected');
-
-                resultsReaudit.removeClass('selected');
-                resultLastReaudit.removeClass('selected');
-
-
-                results.each(function (e) {
-                    var result = $(this);
-                    if (!result.attr('havecorrectiveaction') && !result.attr('havereaudit') && (result.attr('completed') || (result.attr('completedsample') && resultLast.attr('completed'))) && !result.children('div[sync=false]').length) {
-                        result.remove();
-                    }
-                });
-
-                resultsReaudit.each(function (e) {
-                    var result = $(this);
-                    if (!resultsReaudit.attr('havecorrectiveaction') && !resultsReaudit.attr('havereaudit') && (resultsReaudit.attr('completed') || (resultsReaudit.attr('completedsample') && resultLastReaudit.attr('completed'))) && !resultsReaudit.children('div[sync=false]').length) {
-                        resultsReaudit.remove();
-                    }
-                });
-            }
-            else {
-                var results = $('.Results .level01Result[level01id=' + level01.attr('id') + '][period=' + period + ']:not(:last)');
-                var resultLast = $('.Results .level01Result[level01id=' + level01.attr('id') + '][period=' + period + ']:last');
-                results.removeClass('selected');
-
-                results.each(function (e) {
-                    var result = $(this);
-                    if (!result.attr('havecorrectiveaction') && !result.attr('havereaudit') && (result.attr('completed') || (result.attr('completedsample') && resultLast.attr('completed'))) && !result.children('div[sync=false]').length) {
-                        result.remove();
-                    }
-                });
-            }
-            //if (results.length > 0) {
-
-            //    results.find('[havecorrectiveaction!=havecorrectiveaction][havereaudit!=havereaudit]').remove();
-            //}
 
         });
 
-        $('.correctiveAction[sync=true]').remove();
-    });
+        removeElementosNaoUtilizados();
 
-    sendHtml("GetToSyncNoOffLineData");
-    createFileResult();
-    updateWindow();
-}
+    }
 
-function MergeLevel02Result(objLevel1, level01Result) {
-    //Se existe o Level01Result Instanciamos os objetos do level02
-    var objectsLevel02 = objLevel1.children('div');
-    var atualizaDataLevel01 = false;
+    function removeElementosNaoUtilizados() {
+        var level01Check = $('.level01');
+        var periods = $('#selectPeriod option[value!=0]');
 
-    //// Instancio um contador
-    //var counter = 0
+        level01Check.each(function (e) {
 
-    //Percorremos os level02Result
-    objectsLevel02.each(function (e) {
-        var objLevel2 = $(this);
-        var id = objLevel2.attr("level02id");
-        var shift = objLevel2.attr("shift");
-        var period = objLevel2.attr("period");
-        var date = objLevel2.attr("date");
-        var reaudit = objLevel2.attr("reaudit");
-        var phase = objLevel2.attr("phase");
-        var reauditNumber = objLevel2.attr("reauditNumber");
-        var evaluate = objLevel2.attr('evaluate');
-        var sample = objLevel2.attr("sample");
-        var level02Result = level01Result.children('.level02Result[level02id=' + id + '][shift=' + shift + '][period=' + period + '][date=' + date + '][sample=' + sample + '][phase=' + phase + '][reaudit=' + reaudit + '][reauditNumber=' + reauditNumber + ']');
-        
-        if (level02Result.length > 0) {
-            if (level02Result[0].isEqualNode(objLevel2[0])) {
-                //Não faz nada
-            }
-            else {
+            var level01 = $(this);
+
+            periods.each(function (e) {
+
+                var period = $(this).attr('value');
+
+                if (level01.attr('havephases')) {
+                    var results = $('.Results .level01Result[level01id=' + level01.attr('id') + '][period=' + period + '][reaudit=false]:not(:last)');
+                    var resultLast = $('.Results .level01Result[level01id=' + level01.attr('id') + '][period=' + period + '][reaudit=false]:last');
+
+                    var resultsReaudit = $('.Results .level01Result[level01id=' + level01.attr('id') + '][period=' + period + '][reaudit=true]:not(:last)');
+                    var resultLastReaudit = $('.Results .level01Result[level01id=' + level01.attr('id') + '][period=' + period + '][reaudit=true]:last');
+
+                    results.removeClass('selected');
+                    resultLast.removeClass('selected');
+
+                    resultsReaudit.removeClass('selected');
+                    resultLastReaudit.removeClass('selected');
 
 
-                var dataAtual = stringToTime(level02Result.attr('datetime'));
-                var dataElementoDb = stringToTime(objLevel2.attr('datetime'));
-                if (dataElementoDb > dataAtual) {
+                    results.each(function (e) {
+                        var result = $(this);
+                        if (!result.attr('havecorrectiveaction') && !result.attr('havereaudit') && (result.attr('completed') || (result.attr('completedsample') && resultLast.attr('completed'))) && !result.children('div[sync=false]').length) {
+                            result.remove();
+                        }
+                    });
 
-                    //Adiciono o elemento do banco após o elemento do aplicativo.
-                    afterDevice(objLevel2, level02Result);
-                    //Removo o elemento do aplicado.
-                    level02Result.remove();
+                    resultsReaudit.each(function (e) {
+                        var result = $(this);
+                        if (!resultsReaudit.attr('havecorrectiveaction') && !resultsReaudit.attr('havereaudit') && (resultsReaudit.attr('completed') || (resultsReaudit.attr('completedsample') && resultLastReaudit.attr('completed'))) && !resultsReaudit.children('div[sync=false]').length) {
+                            resultsReaudit.remove();
+                        }
+                    });
                 }
                 else {
+                    var results = $('.Results .level01Result[level01id=' + level01.attr('id') + '][period=' + period + ']:not(:last)');
+                    var resultLast = $('.Results .level01Result[level01id=' + level01.attr('id') + '][period=' + period + ']:last');
+                    results.removeClass('selected');
 
+                    results.each(function (e) {
+                        var result = $(this);
+                        if (!result.attr('havecorrectiveaction') && !result.attr('havereaudit') && (result.attr('completed') || (result.attr('completedsample') && resultLast.attr('completed'))) && !result.children('div[sync=false]').length) {
+                            result.remove();
+                        }
+                    });
                 }
+                //if (results.length > 0) {
 
-            }
-
-        } else {
-
-            //Se não existe o level02Result adiciono ele no local correto
-
-            var sampleObjDB = parseInt(objLevel2.attr('sample'));
-
-
-            var dataAtual = stringToTime(level01Result.attr('datetime'));
-            var dataElementoDb = stringToTime(objLevel1.attr('datetime'));
-
-
-
-            var resultados = level01Result.children('.level02Result');
-            resultados.each(function (e) {
-
-                var result = $(this);
-                var sampleObjResult = parseInt(result.attr('sample'));
-
-                //1
-                //2
-                if (sampleObjDB < sampleObjResult) {
-                    beforeDevice(objLevel2, result);
-                    atualizaDataLevel01 = true;
-                    return false;
-                }
-                else if (sampleObjDB > sampleObjResult) {
-                    atualizaDataLevel01 = true;
-                    afterDevice(objLevel2, result);
-                    return false;
-                }
-                else if (sampleObjDB = sampleObjResult) {
-                    atualizaDataLevel01 = true;
-                    appendDevice(objLevel2, level01Result);
-                    return false;
-                }
-                else {
-                    console.log('Merge não previsto');
-                }
+                //    results.find('[havecorrectiveaction!=havecorrectiveaction][havereaudit!=havereaudit]').remove();
+                //}
 
             });
 
+            $('.correctiveAction[sync=true]').remove();
+        });
+
+        sendHtml("GetToSyncNoOffLineData");
+        createFileResult();
+        updateWindow();
+    }
+
+    function MergeLevel02Result(objLevel1, level01Result) {
+        //Se existe o Level01Result Instanciamos os objetos do level02
+        var objectsLevel02 = objLevel1.children('div');
+        var atualizaDataLevel01 = false;
+
+        //// Instancio um contador
+        //var counter = 0
+
+        //Percorremos os level02Result
+        objectsLevel02.each(function (e) {
+            var objLevel2 = $(this);
+            var id = objLevel2.attr("level02id");
+            var shift = objLevel2.attr("shift");
+            var period = objLevel2.attr("period");
+            var date = objLevel2.attr("date");
+            var reaudit = objLevel2.attr("reaudit");
+            var phase = objLevel2.attr("phase");
+            var reauditNumber = objLevel2.attr("reauditNumber");
+            var evaluate = objLevel2.attr('evaluate');
+            var sample = objLevel2.attr("sample");
+            var level02Result = level01Result.children('.level02Result[level02id=' + id + '][shift=' + shift + '][period=' + period + '][date=' + date + '][sample=' + sample + '][phase=' + phase + '][reaudit=' + reaudit + '][reauditNumber=' + reauditNumber + ']');
+
+            if (level02Result.length > 0) {
+                if (level02Result[0].isEqualNode(objLevel2[0])) {
+                    //Não faz nada
+                }
+                else {
+
+
+                    var dataAtual = stringToTime(level02Result.attr('datetime'));
+                    var dataElementoDb = stringToTime(objLevel2.attr('datetime'));
+                    if (dataElementoDb > dataAtual) {
+
+                        //Adiciono o elemento do banco após o elemento do aplicativo.
+                        afterDevice(objLevel2, level02Result);
+                        //Removo o elemento do aplicado.
+                        level02Result.remove();
+                    }
+                    else {
+
+                    }
+
+                }
+
+            } else {
+
+                //Se não existe o level02Result adiciono ele no local correto
+
+                var sampleObjDB = parseInt(objLevel2.attr('sample'));
+
+
+                var dataAtual = stringToTime(level01Result.attr('datetime'));
+                var dataElementoDb = stringToTime(objLevel1.attr('datetime'));
+
+
+
+                var resultados = level01Result.children('.level02Result');
+                resultados.each(function (e) {
+
+                    var result = $(this);
+                    var sampleObjResult = parseInt(result.attr('sample'));
+
+                    //1
+                    //2
+                    if (sampleObjDB < sampleObjResult) {
+                        beforeDevice(objLevel2, result);
+                        atualizaDataLevel01 = true;
+                        return false;
+                    }
+                    else if (sampleObjDB > sampleObjResult) {
+                        atualizaDataLevel01 = true;
+                        afterDevice(objLevel2, result);
+                        return false;
+                    }
+                    else if (sampleObjDB = sampleObjResult) {
+                        atualizaDataLevel01 = true;
+                        appendDevice(objLevel2, level01Result);
+                        return false;
+                    }
+                    else {
+                        console.log('Merge não previsto');
+                    }
+
+                });
+
+            }
+
+        });
+        if (atualizaDataLevel01 == true) {
+            level01Result.attr('datetime', objLevel1.attr('datetime'));
+        }
+        if (objLevel1.attr('correctiveactioncomplete')) {
+            level01Result.attr('correctiveactioncomplete', objLevel1.attr('correctiveactioncomplete')).removeAttr('havecorrectiveaction');
         }
 
+        if (objLevel1.attr('completereaudit')) {
+            level01Result.attr('completereaudit', objLevel1.attr('completereaudit')).removeAttr('havereaudit');
+        }
+
+
+    }
+    function ordenarElementos(elemento, parametro) {
+        elemento.sort(function (a, b) {
+            var contentA = parseInt($(a).attr(parametro));
+            var contentB = parseInt($(b).attr(parametro));
+            return (contentA < contentB) ? -1 : (contentA > contentB) ? 1 : 0;
+        });
+    }
+    //Format String = "09/05/2016 11:17".
+    function stringToTime(string) {
+        var d1 = string.replace(/[/]/g, '').replace(/[:]/g, '').replace(/[ ]/g, '');
+        return parseInt(d1);
+    }
+    function cleanResults() {
+        var results = $('.Results .level01Result, .Results .correctiveAction');
+        $('.Results').html(results);
+    }
+
+
+
+
+
+    var level1  = @Html.Raw(Json.Encode(@Model.paramsDto.collectionObject));
+
+    level1.forEach(function(o, c){
+
+        o.DdlLevel2Vinculados = null;
+        o.listParLevel3Level2Level1Dto = null;
+
+        /*Temporario*/
+        //o.cabecalhosInclusos = null;
+        //o.contadoresIncluidos = null;
+        //o.listParRelapseDto = null;
+        //o.parNotConformityRuleXLevelDto = null;
+
     });
-    if (atualizaDataLevel01 == true) {
-        level01Result.attr('datetime', objLevel1.attr('datetime'));
-    }
-    if (objLevel1.attr('correctiveactioncomplete')) {
-        level01Result.attr('correctiveactioncomplete', objLevel1.attr('correctiveactioncomplete')).removeAttr('havecorrectiveaction');
-    }
 
-    if (objLevel1.attr('completereaudit')) {
-        level01Result.attr('completereaudit', objLevel1.attr('completereaudit')).removeAttr('havereaudit');
-    }
+    function CreateLevel1Group(listLevel1) {
 
 
-}
-function ordenarElementos(elemento, parametro) {
-    elemento.sort(function (a, b) {
-        var contentA = parseInt($(a).attr(parametro));
-        var contentB = parseInt($(b).attr(parametro));
-        return (contentA < contentB) ? -1 : (contentA > contentB) ? 1 : 0;
-    });
-}
-//Format String = "09/05/2016 11:17".
-function stringToTime(string) {
-    var d1 = string.replace(/[/]/g, '').replace(/[:]/g, '').replace(/[ ]/g, '');
-    return parseInt(d1);
-}
-function cleanResults() {
-    var results = $('.Results .level01Result, .Results .correctiveAction');
-    $('.Results').html(results);
-}
+        listLevel1.forEach(function(o, c){
+
+            var itemGroupLevel1 = '<li class="list-group-item">                                                                                                                     '+
+              '   <div class="row">                                                                                                                                                 '+
+              '       <a href="#" id="' + o.Id + '" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" savelevel02="saveLevel02" minreauditnumber="1" consecutivefailure="false">  '+
+              '           <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>                  '+
+              '           <span class="levelName">' + o.Name + '</span>                                                                                                             '+
+              '       </a>                                                                                                                                                          '+
+              '       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">                                                                                                    '+
+              '           <div class="pull-right">                                                                                                                                  '+
+              '               <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>                          '+
+              '               <button class="btn btn-primary btnReaudit hide">Reaudit <span class="reauditPeriod fontBold"></span></button>                                         '+
+              '               <!--<span class=" cursorPointer   "><button class=""></span></button></span>-->                                                                       '+
+              '               <!--<span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>-->                                   '+
+              '                                                                                                                                                                     '+
+              '           </div>                                                                                                                                                    '+
+              '       </div>                                                                                                                                                        '+
+              '   </div>                                                                                                                                                            '+
+              '</li>';
+
+            $('#level01List').append(itemGroupLevel1);
+
+            CreateLevel2ListgroupSemAgrupamento(o.listParLevel2Colleta, o.Id);
+
+        });
+
+    }
+
+    /*Tipo Are1 Area 2....*/
+    function CreateLevel2ListgroupSemAgrupamento(listLevel2Item, idLevel1) {
+
+        var level2Item = '<div class="list-group level02Group hide" level01Id="' + idLevel1 + '">       '+
+                  + '<div class="headDescription">                                                      '+
+                  + '    <div class="row">                                                              '+
+                  + '        <div class="col-xs-5 col-sm-5 col-sm-5 col-lg-5 pull-right">               '+
+                  + '            <span class="spanTitle">Defects</span>                                 '+
+                  + '        </div>                                                                     '+
+                  + '        <div class="col-xs-7 col-sm-7 col-sm-7 col-lg-7 hide">                     '+
+                  + '            <span class="spanTitle pull-right">Consec Failures</span>              '+
+                  + '        </div>                                                                     '+
+                  + '    </div>                                                                         '+
+                  + '</div>';
+
+
+        listLevel2Item.forEach(function(o, c){
+
+            level2Item += '<li class="list-group-item">                                                                                                  ' +
+            + '   <div class="row">                                                                                                                         ' +
+            + '       <a href="#" id="' + o.Id + '" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-6" levelerrorlimit="1" defects="0" reauditnumber="0">  ' +
+            + '           <span class="icons">                                                                                                              ' +
+            + '               <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>                 ' +
+            + '               <i class="fa fa-exclamation font22 iconsArea red areaNotComplete" aria-hidden="true" title="Not Complete"></i>                ' +
+            + '           </span>                                                                                                                           ' +
+            + '           <span class="levelName">' + o.Name + '</span>                                                                                     ' +
+            + '       </a>                                                                                                                                  ' +
+            + '       <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">                                                                            ' +
+            + '           <div class="hide">                                                                                                                ' +
+            + '               <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>                                                     ' +
+            + '           </div>                                                                                                                            ' +
+            + '       </div>                                                                                                                                ' +
+            + '       <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">                                                                            ' +
+            + '           <div>                                                                                                                             ' +
+            + '               <a href="#" class="defects iconsArea font22">0</a>                                                                            ' +
+            + '           </div>                                                                                                                            ' +
+            + '       </div>                                                                                                                                ' +
+            + '       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 userInfo">                                                                            ' +
+            + '           <div class="pull-right">                                                                                                          ' +
+            + '               <button class="btn btn-success hide btnAreaSaveConfirm">                                                                      ' +
+            + '                   <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>                         ' +
+            + '               </button>                                                                                                                     ' +
+            + '               <button class="btn btn-primary btnAreaSave">                                                                                  ' +
+            + '                   <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>                     ' +
+            + '               </button>                                                                                                                     ' +
+            + '               <button class="btn btn-warning btnNotAvaliable na">                                                                           ' +
+            + '                   <span class="cursorPointer iconsArea font18">N/A</span>                                                                   ' +
+            + '               </button>                                                                                                                     ' +
+            + '               <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>          ' +
+            + '           </div>                                                                                                                            ' +
+            + '       </div>                                                                                                                                ' +
+            + '   </div>                                                                                                                                    ' +
+            + ' li>';
+
+            //CreateLevel3Listgroup(o.listParLevel3Colleta);
+        });
+
+        level2Item += '<button id="btnSalvarLevel02CCA" class="btn btn-default level02Confirm hide">Salvar</button></div>';
+
+        $('#level02List').append(level2Item);
+    }
+
+    /*Tipo Are1 > Level3 ,Area 2 > level3....*/
+    function CreateLevel3Listgroup(listLevel3Item) {
+        listLevel3Item.forEach(function(o, c){
+
+            var level3Item = '<li id="' + o.Id + '" class="list-group-item level03">                                                                                  '+
+    + '     <div class="row">                                                                                                           '+
+    + '         <div class="col-xs-6">' + o.Name + '</div>                                                                              '+
+    + '         <div class="col-xs-6 text-center">                                                                                      '+
+    + '             <div class="input-group input-group-sm width200 pull-right">                                                        '+
+    + '                 <span class="input-group-btn btn-minus">                                                                        '+
+    + '                      <button class="btn btn-default" type="button">                                                             '+
+    + '                          <i class="fa fa-minus" aria-hidden="true"></i>                                                         '+
+    + '                          </button></span><input value="0" min="0" type="number" class="form-control text-center levelValue">    '+
+    + '                          <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button">                  '+
+    + '                          <i class="fa fa-plus" aria-hidden="true"></i>                                                          '+
+    + '                      </button>                                                                                                  '+
+    + '                  </span>                                                                                                        '+
+    + '             </div>                                                                                                              '+
+    + '         </div>                                                                                                                  '+
+    + '     </div>                                                                                                                      '+
+    + ' </li>';
+
+            $('#level03List').append(level3Item)
+        });
+    }
+
+    //console.log(teste);
+
 </script>
