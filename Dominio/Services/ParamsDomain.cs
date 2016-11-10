@@ -572,7 +572,7 @@ namespace Dominio.Services
         {
             var retorno = new List<ParLevel1DTO>();
 
-            var listLevel1 = _baseRepoParLevel1.GetAll();
+            var listLevel1 = _baseRepoParLevel1.GetAll().Where(r => r.IsActive == true);
 
             foreach (var level1 in listLevel1)
             {
@@ -604,6 +604,13 @@ namespace Dominio.Services
             /*Level 2 e 3 vinculados*/
             retorno.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(_baseRepoParLevel3Level2Level1.GetAll().Where(r => r.ParLevel1_Id == retorno.Id).ToList());
             retorno.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2.GetAll()), retorno.listParLevel3Level2Level1Dto);
+
+            retorno.listParLevel2Colleta = new List<ParLevel2DTO>();
+            foreach (var ParLevel3Level2Level1Dto in retorno.listParLevel3Level2Level1Dto)
+            {
+                retorno.listParLevel2Colleta.Add(ParLevel3Level2Level1Dto.ParLevel3Level2.ParLevel2);
+                retorno.listParLevel2Colleta.LastOrDefault().listaParLevel3Colleta = new List<ParLevel3DTO>();
+            }
 
             //non conf
             retorno.parNotConformityRuleXLevelDto = Mapper.Map<ParNotConformityRuleXLevelDTO>(_baseParNotConformityRuleXLevel.GetAll().FirstOrDefault(r => r.ParLevel1_Id == retorno.Id)) ?? new ParNotConformityRuleXLevelDTO();

@@ -3,12 +3,57 @@
 
 
 ola
+<div class="list-group" id="groupLevel1">
 
+</div>
 
 
 <script>
-    var teste  = @Html.Raw(Json.Encode(@Model.paramsDto.collectionObject));
 
-    console.log(teste);
+    var level1  = @Html.Raw(Json.Encode(@Model.paramsDto.collectionObject));
+    
+    level1.forEach(function(o, c){
+        
+        o.DdlLevel2Vinculados = null;
+        o.listParLevel3Level2Level1Dto = null;
+
+        /*Temporario*/
+        //o.cabecalhosInclusos = null;
+        //o.contadoresIncluidos = null;
+        //o.listParRelapseDto = null;
+        //o.parNotConformityRuleXLevelDto = null;
+
+    });
+
+    function CreateLevel1Group(listLevel1) {
+
+        listLevel1.forEach(function(o, c){
+            
+         var itemGroupLevel1 = '<li class="list-group-item">                                                                                                    '+
+           '   <div class="row">                                                                                                                                '+
+           '       <a href="#" id="' + o.Id + '" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" savelevel02="saveLevel02" minreauditnumber="1" consecutivefailure="false"> '+
+           '           <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>  '+
+           '           <span class="levelName">' + o.Name + '</span>                                                                                             '+
+           '       </a>                                                                                                                                          '+
+           '       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">                                                                                    '+
+           '           <div class="pull-right">                                                                                                                  '+
+           '               <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>          '+
+           '               <button class="btn btn-primary btnReaudit hide">Reaudit <span class="reauditPeriod fontBold"></span></button>                         '+
+           '               <!--<span class=" cursorPointer   "><button class=""></span></button></span>-->                                                       '+
+           '               <!--<span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>-->                   '+
+           '                                                                                                                                                     '+
+           '           </div>                                                                                                                                    '+
+           '       </div>                                                                                                                                        '+
+           '   </div>                                                                                                                                            '+
+           '</li>';
+
+         $('#groupLevel1').append(itemGroupLevel1);
+
+        });
+    
+    }
+
+
+    //console.log(teste);
 
 </script>

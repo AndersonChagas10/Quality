@@ -9,6 +9,7 @@ namespace DTO.DTO.Params
 {
     public class ParLevel1DTO : EntityBase
     {
+        public List<ParLevel2DTO> listParLevel2Colleta;
 
         //[Display(Name = "select_the_consolidation_type", ResourceType = typeof(Resource))]
         [Range(0, 999, ErrorMessage = "É obrigatório selecionar o tipo de consolidação.")]
