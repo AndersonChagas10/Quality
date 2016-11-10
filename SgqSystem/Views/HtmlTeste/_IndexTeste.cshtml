@@ -262,57 +262,9 @@
                 </div>
             </div>
             <div class="list-group">
-                <li class="list-group-item">
-                    <div class="row">
-                        <a href="#" id="2" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02" minReauditNumber="1" consecutivefailure="false">
-                            <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>
-                            <span class="levelName">Carcass Contamination Audit</span>
-                        </a>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                            <div class="pull-right">
-                                <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>
-                                <button class="btn btn-primary btnReaudit hide">Reaudit <span class="reauditPeriod fontBold"></span></button>
-                                <!--<span class=" cursorPointer   "><button class=""></span></button></span>-->
-                                <!--<span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>-->
 
-                            </div>
-                        </div>
-                    </div>
-                </li>
 
-                <li class="list-group-item">
-                    <div class="row">
-                        <a href="#" id="3" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02" minReauditNumber="1" haveevaluates="haveevaluates" getresultlevel01="getresultlevel01">
-
-                            <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>
-                            <span class="levelName">CFF (Cut, Fold and Flaps) Audit</span>
-
-                        </a>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                            <div class="pull-right">
-                                <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>
-                                <button class="btn btn-primary btnReaudit hide">Reaudit <span class="reauditPeriod fontBold"></span></button>
-
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="list-group-item">
-                    <div class="row">
-                        <a href="#" id="1" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02" havephases="havephases" minreauditnumber="1">
-
-                            <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>
-                            <span class="levelName">HTP (Harvest Task Procedure) Audit</span>
-                        </a>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                            <div class="pull-right">
-                                <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>
-                                <button class="btn btn-primary btnReaudit hide">Reaudit <span class="reauditPeriod fontBold"></span></button>
-                            </div>
-                        </div>
-                    </div>
-                </li>
+               
 
             </div>
 
@@ -390,7 +342,7 @@
                 </div>
             </div>
 
-            <div class="list-group level02Group hide" level01Id="2">
+            @*<div class="list-group level02Group hide" level01Id="2">
                 <div class="headDescription">
                     <div class="row">
                         <div class="col-xs-5 col-sm-5 col-sm-5 col-lg-5 pull-right">
@@ -1653,7 +1605,7 @@
                 </li>
                 <button id="btnSalvarLevel02HTP" class="btn btn-default level02Confirm hide">Salvar</button>
 
-            </div>
+            </div>*@
 
         </div>
         <div class="level03List hide">
@@ -7684,11 +7636,6 @@
         o.DdlLevel2Vinculados = null;
         o.listParLevel3Level2Level1Dto = null;
 
-        /*Temporario*/
-        //o.cabecalhosInclusos = null;
-        //o.contadoresIncluidos = null;
-        //o.listParRelapseDto = null;
-        //o.parNotConformityRuleXLevelDto = null;
 
     });
 
@@ -7715,15 +7662,13 @@
               '   </div>                                                                                                                                                            '+
               '</li>';
 
-            $('#level01List').append(itemGroupLevel1);
+            $('.level01List .list-group').append(itemGroupLevel1);
 
             CreateLevel2ListgroupSemAgrupamento(o.listParLevel2Colleta, o.Id);
 
         });
-
     }
 
-    /*Tipo Are1 Area 2....*/
     function CreateLevel2ListgroupSemAgrupamento(listLevel2Item, idLevel1) {
 
         var level2Item = '<div class="list-group level02Group hide" level01Id="' + idLevel1 + '">       '+
@@ -7782,10 +7727,9 @@
 
         level2Item += '<button id="btnSalvarLevel02CCA" class="btn btn-default level02Confirm hide">Salvar</button></div>';
 
-        $('#level02List').append(level2Item);
+        $('.level02List').append(level2Item);
     }
 
-    /*Tipo Are1 > Level3 ,Area 2 > level3....*/
     function CreateLevel3Listgroup(listLevel3Item) {
         listLevel3Item.forEach(function(o, c){
 
@@ -7807,7 +7751,7 @@
     + '     </div>                                                                                                                      '+
     + ' </li>';
 
-            $('#level03List').append(level3Item)
+            $('.level03List').append(level3Item)
         });
     }
 

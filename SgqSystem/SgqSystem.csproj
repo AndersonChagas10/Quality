@@ -1129,6 +1129,7 @@
     <Content Include="Views\Params\_Navbar.cshtml" />
     <Content Include="Views\Params\_RightLayout.cshtml" />
     <Content Include="Views\Params\_ParLevel1Collection.cshtml" />
+    <Content Include="Views\Params\ParamsLevel1.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
