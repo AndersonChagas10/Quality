@@ -53,11 +53,14 @@
                 </div>
                 <div style="padding: 5px; display:inline-table;">
                     <b>Limite Inferior :</b>
-                    @Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMin, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
+                    @Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMin, htmlAttributes: new { id= "parLevel3Value_IntervalMin", @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
                 </div>
                 <div style="padding: 5px; display:inline-table;">
                     <b>Limite Inferior :</b>
                     @Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMax, htmlAttributes: new { @class = "", @style = "padding: 2px; width: 300px; background-color: rgb(255, 255, 255);" })
+                </div>
+                <div id="IntervalLavel">
+                    <span></span>
                 </div>
                 <div style="padding: 5px; display:inline-table;">
                     <b>Valores Entre </b>

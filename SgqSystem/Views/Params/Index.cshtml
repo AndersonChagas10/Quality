@@ -266,8 +266,18 @@
                 <!-- END CONTENT BODY -->
             </div>
 
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
+        <div class="modal-dialog">
 
-
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row"><div class="col-xs-1"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></div>  <div class="col-xs-11" id="modalLoaderMessage">Message </div></div>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -281,7 +291,7 @@
             $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
             $(".check-box").bootstrapSwitch();
         }
-        
+
         var t1 = @Html.Raw(Json.Encode(@Resources.Resource.new_level1));
         var t2 = @Html.Raw(Json.Encode(@Resources.Resource.new_level2));
         var t3 = @Html.Raw(Json.Encode(@Resources.Resource.new_level3));
@@ -391,11 +401,20 @@
 
         var removeLevel3Group = '@Html.Raw(@removeLevel3Group)';
 
+        var openLoader = function(message){
+            $('#modalLoader').modal({ backdrop: false });
+            $('#modalLoaderMessage').text(message);
+        }
+
+        var closeLoader = function(){
+            $('#modalLoader').modal('hide');
+        }
+
         /*LEVEL 1*/
         var indexParamsLevel1 = {
             new_level1: @Html.Raw(Json.Encode(@Resources.Resource.new_level1)),
             enviarDadosParaApi: function (e) {
-                
+
                 if ($('#newLevel1Modal > form').valid()) {
 
                     var $btn = $('#btnSaveNewLevel1');
@@ -406,12 +425,14 @@
                     CounterLevel1.UpdateCounters();
                     var dados = $('#newLevel1Modal > form').serializeObject();
 
+                    openLoader(@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level1)));
                     $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                        closeLoader();
                         if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
-
+                            openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level1)));
                             $.get('GetParLevel1ById/' + objetoReturn.paramsDto.parLevel1Dto.Id, function (obj, responseText, xhr) {
+                                closeLoader();
 
-                                
 
                                 if (obj != null) {
                                     $('#ParLevel1').empty();
@@ -435,7 +456,7 @@
 
                             });
 
-                            alert(statusmessage);
+                            //alert(statusmessage);
                         }
                         $btn.button('reset');
                     }).fail(function (e, h, x) {
@@ -488,7 +509,9 @@
                         $('#ParLevel1').append(parLevel1Empty);
                         $('#level1Title').text(indexParamsLevel1.new_level1);
                     } else {
+                        openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level1)));
                         $.get('GetParLevel1ById/' + valorSelecionado, function (obj, responseText, xhr) {
+                            closeLoader();
                             if (obj != null) {
                                 $('#ParLevel1').empty();
                                 $('#ParLevel1').append(xhr.responseText);
@@ -521,7 +544,9 @@
                         $('#ParLevel2').append(parLevel2Empty);
                         $('#level2Title').text(indexParamsLevel2.new_level2);
                     } else {
+                        openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2)));
                         $.get('GetParLevel2ById',{  level2Id: valorSelecionado, level3Id: $('#paramsDto_parLevel3Dto_Id').val()}, function (obj, responseText, xhr) {
+                            closeLoader();
                             if (obj != null) {
                                 $('#ParLevel2').empty();
                                 $('#ParLevel2').append(xhr.responseText);
@@ -551,7 +576,9 @@
                         $('#ParLevel2').append(parLevel2Empty);
                         $('#level2Title').text(indexParamsLevel2.new_level2);
                     } else {
+                        openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2)));
                         $.get('GetParLevel2ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
+                            closeLoader();
                             if (obj != null) {
                                 $('#ParLevel2').empty();
                                 $('#ParLevel2').append(xhr.responseText);
@@ -582,13 +609,16 @@
                     CounterLevel2.UpdateCounters();
                     var dados = $('#newLevel2Modal > form').serializeObject();
 
+                    openLoader(@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level2)));
                     $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-
+                        closeLoader();
                         var $btn = $('#btnSaveNewLevel2');
                         $btn.button('loading');
 
                         if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
+                            openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2)));
                             $.get('GetParLevel2ById/' + objetoReturn.paramsDto.parLevel2Dto.Id, function (obj, responseText, xhr) {
+                                closeLoader();
                                 if (obj != null) {
                                     $('#ParLevel2').empty();
                                     $('#ParLevel2').append(xhr.responseText);
@@ -609,7 +639,7 @@
                                     $("#parLevel2Select2").val(retornoId)
                                 }
                             });
-                            alert(statusmessage);
+                            //alert(statusmessage);
                         }
                         //console.log(objetoReturn);
                         //console.log(respostaCompleta);
@@ -620,7 +650,9 @@
 
             },
             removeLevel3Group: function(e, element){
+                openLoader(@Html.Raw(Json.Encode(@Resources.Resource.removing_the_level3_group)));
                 $.post(removeLevel3Group + '/' + element.attr('id'), function (obj, responseText, xhr) {
+                    closeLoader();
                     if (obj != null) {
 
                         element.remove();
@@ -651,7 +683,9 @@
                         $('#ParLevel3').append(parLevel3Empty);
                         $('#level3Title').text(indexParamsLevel3.newLevel3);
                     } else {
+                        openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level3)));
                         $.get('GetParLevel3ById/' + e.currentTarget.value + "&", function (obj, responseText, xhr) {
+                            closeLoader();
                             if (obj != null) {
                                 $('#ParLevel3').empty();
                                 $('#ParLevel3').append(xhr.responseText);
@@ -683,7 +717,9 @@
                         $('#ParLevel3').append(parLevel3Empty);
                         $('#level3Title').text(indexParamsLevel3.newLevel3);
                     } else {
+                        openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level3)));
                         $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
+                            closeLoader();
                             if (obj != null) {
                                 $('#ParLevel3').empty();
                                 $('#ParLevel3').append(xhr.responseText);
@@ -712,13 +748,16 @@
                     if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
                         dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
 
+                    openLoader(@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level3)));
                     $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-
+                        closeLoader();
                         var $btn = $('#btnSaveNewLevel3');
                         $btn.button('loading');
 
                         if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
+                            openLoader(@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level3)));
                             $.get('GetParLevel3ById', { id: objetoReturn.paramsDto.parLevel3Dto.Id, idParLevel2: $('#paramsDto_parLevel2Dto_Id').val() }, function (obj, responseText, xhr) {
+                                closeLoader();
                                 if (obj != null) {
                                     $('#ParLevel3').empty();
                                     $('#ParLevel3').append(xhr.responseText);
@@ -742,7 +781,7 @@
                                 //$('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
                             });
 
-                            alert(statusmessage);
+                            //alert(statusmessage);
 
                         }
                     }).fail(function (e, h, x) {
@@ -881,7 +920,7 @@
             $('[data-toggle="popover"]').popover();
         });
 
-        
+
 
     </script>
 
