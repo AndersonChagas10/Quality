@@ -7647,10 +7647,9 @@
 
     });
 
-    function CreateHeader(level, cabecalhosInclusos){
+    function CreateHeader(levelHeader, cabecalhosInclusos){
 
-        var header = '<div class="painel padding5">                                             '+
-                     '   <div class="row">                                                      ';
+        var header = '<div class="row">                                                      ';
 
 
         cabecalhosInclusos.forEach(function(o, c){
@@ -7658,7 +7657,11 @@
             switch(o.ParHeaderField.ParFieldType.Id){
                 case 1:
                     //Multipla Escolha 
-                    header +=   '<div class="col-xs-3"><input type="number" placeholder="'+o.ParHeaderField.Name+'" class="form-control input-sm" id="selectPeriod"/></div>';
+                    header += '<div class="col-xs-3"><select class="form-control input-sm" name="DropDownList">';
+                    o.ParHeaderField.DropDownList.forEach(function(p, i){
+                        header += '<option value="'+p.Value+'">'+p.Text+'</option>';
+                    });
+                    header += '</select></div>';
                     break;
                 case 2:
                     //Integrações
@@ -7666,33 +7669,33 @@
                     break;
                 case 3:
                     //Binario
-
+                    header += '<div class="col-xs-3"><select class="form-control input-sm" name="DropDownList">';
+                    o.ParHeaderField.DropDownList.forEach(function(p, i){
+                        if(p.Value > 0)
+                            header += '<option value="'+p.Value+'">'+p.Text+'</option>';
+                    });
+                    header += '</select></div>';
                     break;
                 case 4:
                     //Texto
-
+                    header +=   '<div class="col-xs-3"><input type="text" placeholder="'+o.ParHeaderField.Name+'" class="form-control input-sm" id="'+o.ParHeaderField.Id+'"/></div>';
                     break;
                 case 5:
                     //Numerico
-                    header +=   '<div class="col-xs-3"><input type="number" placeholder="'+o.ParHeaderField.Name+'" class="form-control input-sm" id="selectPeriod"/></div>';
+                    header +=   '<div class="col-xs-3"><input type="number" placeholder="'+o.ParHeaderField.Name+'" class="form-control input-sm" id="'+o.ParHeaderField.Id+'"/></div>';
                     break;
                 case 6:
                     //Data
-
+                    header +=   '<div class="col-xs-3"><input type="date" placeholder="'+o.ParHeaderField.Name+'" class="form-control input-sm" id="'+o.ParHeaderField.Id+'"/></div>';
                     break;
             }
-
-            
-            
-
-
             });
 
 
-            header += '       </div>                                                             '+
-                     '   </div>                                                                 ';
+            header += '</div>';
 
-        appendDevice(header, levelHeader);
+            $(levelHeader).empty();
+            appendDevice($(header), $(levelHeader));
 
     }
 
