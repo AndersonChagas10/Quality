@@ -7829,20 +7829,20 @@
                         '    <div class="panel panel-default">                                                                                                                                   ' +
                         '        <div class="panel-heading level02" role="tab" id="headingOne" level02id=" ' + level2Id + ' " reauditnumber="0" defects="0">                                     ' +
                         '            <h4 class="panel-title">                                                                                                                                    ' +
-                        '                <a role="button" data-toggle="collapse" data-parent="#accordion' + level2Id + '" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">  ' +
+                        '                <a role="button" data-toggle="collapse" data-parent="#accordion' + level2Id + '" href="#collapseOne' + level2Id + '" aria-expanded="true" aria-controls="collapseOne">  ' +
                         '                    <span class="levelName"> ' + Level2Name + ' </span>                                                                                                 ' +
                         '                </a>                                                                                                                                                    ' +
                         '            </h4>                                                                                                                                                       ' +
                         '        </div>                                                                                                                                                          ' +
-                        '        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">                                                             ' +
+                        '        <div id="collapseOne' + level2Id + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">                                                             ' +
                         '            <div class="panel-body">';
 
         listLevel3.forEach(function(o, c){
 
-                            level2Item +=  '<div id="' + o.Id + '" class="level03">                                                                                                ' +
+                            level2Item +=  '<div id="' + o.Id + '" class="level03">                                                                                     ' +
                                            '     <div class="row">                                                                                                      ' +
                                            '         <div class="col-xs-6">                                                                                             ' +
-                                           '             <span class="levelName">'+ o.Name +'</span>                                                                            ' +
+                                           '             <span class="levelName">'+ o.Name +'</span>                                                                    ' +
                                            '         </div>                                                                                                             ' +
                                            '         <div class="col-xs-6 text-center">                                                                                 ' +
                                            '             <div class="input-group input-group-sm width200 pull-right">                                                   ' +
