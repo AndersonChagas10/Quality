@@ -269,7 +269,7 @@
         </div>
     </div>
     <!-- Modal Loader -->
-    <div class="modal fade" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
+    <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -282,7 +282,7 @@
         </div>
     </div>
     <!-- Modal Confirm -->
-    <div class="modal fade" id="modalConfirm" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
+    <div class="modal fade modalConfirm" id="modalConfirm" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
         <div class="modal-dialog">            
             <!-- Modal content-->
             <div class="modal-content">
@@ -341,6 +341,9 @@
         $('#level1Title').text(t1);
         $('#level2Title').text(t2);
         $('#level3Title').text(t3);
+
+        $modalLoader = $('#modalLoader').clone();
+        $modalConfirm = $('#modalConfirm').clone();
 
         $('#btnNewLevel1').click(function () {
             $('#parLevel1Select2').val('-1').trigger('select2:select').change();
@@ -450,16 +453,20 @@
             var removeLevel3Group = '@Html.Raw(@removeLevel3Group)';
 
             var openLoader = function(message){
+                $('.modalLoader').remove();
+                $('body').append($modalLoader);
                 $('#modalLoader').modal({ backdrop: false });
                 $('#modalLoaderMessage').text(message);
             }
 
             var closeLoader = function(){
-                $('#modalLoader').modal('hide');
+                $('.modalLoader').remove();
             }
 
             var openConfirm = function(message, callbackYes, callbackNo){
-                $('#modalConfirm').modal({ backdrop: false });
+                $('.modalConfirm').remove();
+                $('body').append($modalConfirm);
+                $('#modalConfirm').modal({backdrop: false });
                 $('#modalConfirmMessage').text(message);
 
                 if(callbackYes){
@@ -476,7 +483,7 @@
             }
 
             var closeConfirm = function(){
-                $('#modalConfirm').modal('hide');
+                $('.modalConfirm').remove();
             }
                    
 
@@ -626,7 +633,10 @@
                     initialFormLevel1 = $($('form')[0]).clone();
                 });
 
-                $('#modalConfirm').modal('hide');
+                //closeConfirm();
+
+                $('#parLevel2Select2').val('-1').trigger('select2:select').change();
+                $('#parLevel3Select2').val('-1').trigger('select2:select').change();
             }
         }
 
@@ -661,14 +671,10 @@
                         }
                         });
 
-                    $('#modalConfirm').modal('hide');
+                    closeConfirm();
                 },
                 select2: function () {
                     $('#parLevel2Select2').select2({
-                        //placeholder: {
-                        //    id: "-1",
-                        //    text: "Selecione..."
-                        //},
                     }).on("select2:select", function (e) {
 
                         if (e.currentTarget.value == "") {
@@ -676,7 +682,8 @@
                             $('#ParLevel2').append(parLevel2Empty);
                             $('#level2Title').text(indexParamsLevel2.new_level2);
                         } else {
-                            openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2)));
+                            var message = @Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2));
+                            openLoader(message);
                             $.get('GetParLevel2ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
                                 closeLoader();
                                 if (obj != null) {
@@ -690,7 +697,7 @@
                                     $('#level2Title').text(indexParamsLevel2.new_level2);
                                 }
 
-                                initialFormLevel2 = $($('form')[1]);
+                                initialFormLevel2 = $($('form')[1]).clone();
                             });
                         }
 
@@ -741,7 +748,7 @@
                                         $("#parLevel2Select2").val(retornoId)
                                     }
 
-                                    initialFormLevel2 = $($('form')[1]);
+                                    initialFormLevel2 = $($('form')[1]).clone();
                                 });
                                 //alert(statusmessage);
                             }
@@ -785,9 +792,11 @@
                     } else {
                         $('#level2Title').text(indexParamsLevel2.new_level2);
                     }
-                    initialFormLevel2 = $($('form')[1]);
+                    initialFormLevel2 = $($('form')[1]).clone();
 
+                    closeConfirm();
 
+                    $('#parLevel3Select2').val('-1').trigger('select2:select').change();
                 });
             }
         }
@@ -828,7 +837,7 @@
                                     $('#level3Title').text(indexParamsLevel3.newLevel3);
                                 }
 
-                                initialFormLevel3 = $($('form')[2]);
+                                initialFormLevel3 = $($('form')[2]).clone();
                             });
                         }
 
@@ -861,11 +870,10 @@
                                         closeConfirm();
                                     });
                             }else{
-                                selectLevel2();
+                                selectLevel3();
                             }
                         });
 
-                    $('#modalConfirm').modal('hide');
                 },
                 enviarDadosParaApi: function (e) {
 
@@ -913,7 +921,7 @@
 
                                     //$('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
 
-                                    initialFormLevel3 = $($('form')[2]);
+                                    initialFormLevel3 = $($('form')[2]).clone();
                                 });
 
                                 //alert(statusmessage);
@@ -951,8 +959,9 @@
                         $('#level3Title').text(indexParamsLevel3.newLevel3);
                     }
 
-                    initialFormLevel3 = $($('form')[2]);
+                    initialFormLevel3 = $($('form')[2]).clone();
                 });
+
             }
         }
 

@@ -7639,6 +7639,55 @@
 
     });
 
+    function CreateHeader(level, cabecalhosInclusos){
+
+        var header = '<div class="painel padding5">                                             '+
+                     '   <div class="row">                                                      ';
+
+
+        cabecalhosInclusos.forEach(function(o, c){
+
+            switch(o.ParHeaderField.ParFieldType.Id){
+                case 1:
+                    //Multipla Escolha 
+                    header +=   '<div class="col-xs-3"><input type="number" placeholder="'+o.ParHeaderField.Name+'" class="form-control input-sm" id="selectPeriod"/></div>';
+                    break;
+                case 2:
+                    //Integrações
+
+                    break;
+                case 3:
+                    //Binario
+
+                    break;
+                case 4:
+                    //Texto
+
+                    break;
+                case 5:
+                    //Numerico
+                    header +=   '<div class="col-xs-3"><input type="number" placeholder="'+o.ParHeaderField.Name+'" class="form-control input-sm" id="selectPeriod"/></div>';
+                    break;
+                case 6:
+                    //Data
+
+                    break;
+            }
+
+            
+            
+
+
+            });
+
+
+            header += '       </div>                                                             '+
+                     '   </div>                                                                 ';
+
+        appendDevice(header, levelHeader);
+
+    }
+
     function CreateLevel1Group(listLevel1) {
 
         listLevel1.forEach(function(o, c){
