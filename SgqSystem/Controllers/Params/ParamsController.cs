@@ -111,7 +111,7 @@ namespace SgqSystem.Controllers.Params
             ViewModel.paramsDto.collectionObject = _paramDomain.GetAllLevel1();
 
             /*Retorna View com Model ParLevel1 encontrado no DB.*/
-            return View("_ParLevel1Collection", ViewModel);
+            return View("_IndexTeste", ViewModel);
         }
 
         #endregion
