@@ -2,8 +2,8 @@
 @using SgqSystem.Helpers
 @{
     ViewBag.Title = "ParLeve3";
-  //  var url = Url.Action("AddUpdateLevel3", "api/ParamsApi"); //URL relativa
-  //  var urlGetLevel1 = Url.Action("GetParLevel3ById", "api/ParamsApi"); //URL relativa
+    //  var url = Url.Action("AddUpdateLevel3", "api/ParamsApi"); //URL relativa
+    //  var urlGetLevel1 = Url.Action("GetParLevel3ById", "api/ParamsApi"); //URL relativa
 }
 <div id="newLevel3Modal">
     @using (Html.BeginForm())
@@ -21,14 +21,19 @@
                     </tr>
                     <tr class="row ParIntervalos" style="display: none;">
                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMin, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMax, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMin, htmlAttributes: new { id = "parLevel3Value_IntervalMin", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMax, htmlAttributes: new { id = "parLevel3Value_IntervalMax", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
                         <td style="display: none;">
                             <label>@Resources.Resource.values_between</label>
                             <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
                         </td>
                     </tr>
-
+                    <tr class="row" style="display:none;padding:10px;">
+                        <td colspan="3">
+                            *
+                            <span id="ParIntervalosLabel"></span>
+                        </td>
+                    </tr>
                     <tr class="row ParBinarios" style="display: none;">
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
@@ -75,7 +80,9 @@
                                                     <td>@rp.NcNumber</td>
                                                     <td>@rp.EffectiveLength</td>
                                                     <td>@rp.parFrequency.Name</td>
-                                                    <td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                                    </td>
                                                 </tr>
                                             }
                                         }
@@ -87,7 +94,10 @@
                 </div>
 
                 <div id="painelPeso" class="panel panel-default" style="padding: 0px 16px; display:none;">
-                    <h5><b>@Resources.Resource.defined_weight: </b> <label id="pesoDefinido"></label></h5>
+                    <h5>
+                        <b>@Resources.Resource.defined_weight: </b>
+                        <label id="pesoDefinido"></label>
+                    </h5>
                 </div>
 
                 <button type="button" id="btnSaveNewLevel3" data-loading-text="@Resources.Resource.saving_the_level3" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-primary margin-button">@Resources.Resource.save_level3</button>
@@ -104,9 +114,13 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-xs-12">@Resources.Resource.positive_value</div>
-                            <div class="col-xs-12"><input class="form-control input-sm" id="modalInputPositive" /></div>
+                            <div class="col-xs-12">
+                                <input class="form-control input-sm" id="modalInputPositive" />
+                            </div>
                             <div class="col-xs-12">@Resources.Resource.negative_value</div>
-                            <div class="col-xs-12"><input class="form-control input-sm" id="modalInputNegative" /></div>
+                            <div class="col-xs-12">
+                                <input class="form-control input-sm" id="modalInputNegative" />
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -116,7 +130,7 @@
                 </div>
             </div>
         </div>
-        @Html.HiddenFor(m=>m.paramsDto.parLevel3Value.Id)
+        @Html.HiddenFor(m => m.paramsDto.parLevel3Value.Id)
 
         <!-- Modal -->
         <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -129,7 +143,9 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
-                            <div class="col-xs-12"><input class="form-control input-sm" id="modalInputMeasurementUnit" /></div>
+                            <div class="col-xs-12">
+                                <input class="form-control input-sm" id="modalInputMeasurementUnit" />
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -148,7 +164,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">@Resources.Resource.weight</h4><small>@Resources.Resource.inform_the_weight_of_the_level3</small>
+                        <h4 class="modal-title">@Resources.Resource.weight</h4>
+                        <small>@Resources.Resource.inform_the_weight_of_the_level3</small>
                     </div>
                     <div class="modal-body">
                         @Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.pesoDoVinculo, new { @class = "form-control input-sm" })
@@ -166,87 +183,140 @@
     }
 
 
-    </div>
-    <script>
+</div>
+<script>
 
-        var hasPeso = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.pesoDoVinculo));
-        $('#paramsDto_parLevel3Dto_pesoDoVinculo').val(hasPeso);
+    var hasPeso = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.pesoDoVinculo));
+    $('#paramsDto_parLevel3Dto_pesoDoVinculo').val(hasPeso);
 
-        $('#pesoDefinido').html(hasPeso).show();
-        $('#painelPeso').show();
+    $('#pesoDefinido').html(hasPeso).show();
+    $('#painelPeso').show();
 
-        $('#modalPontos').appendTo('body');
+    $('#modalPontos').appendTo('body');
 
-        $('#btnUnidadeMedida').click(function (e) {
-            $('#modalUnidadeMedida').modal({ backdrop: false });
-        });
+    $('#btnUnidadeMedida').click(function (e) {
+        $('#modalUnidadeMedida').modal({ backdrop: false });
+    });
 
-        $('#btnPositiveNegative').click(function (e) {
-            $('#modalPositiveNegative').modal({ backdrop: false });
-        });
-        $(document).on('input', '#paramsDto_parLevel3Value_IntervalMin', function (e) {
-            $('span.IntervalValorMin').text($(this).val())
-            parIntervalosTypeCreate();
-        });
-        $(document).on('input', '#paramsDto_parLevel3Value_IntervalMax', function (e) {
-            $('span.IntervalValorMax').text($(this).val())
-            parIntervalosTypeCreate();
-        });
-        function parIntervalosTypeCreate() {
-            if (!$("#paramsDto_parLevel3Value_IntervalMin").val() == "" && !$("#paramsDto_parLevel3Value_IntervalMax").empty() == "") {
-                var options =
-                    "<option value='0'>" +
-                        "O valor e aceitavel quando esta entre " + $("#paramsDto_parLevel3Value_IntervalMin").val() + " e " + $("#paramsDto_parLevel3Value_IntervalMax").val() +
-                    "</option>" +
-                    "<option value='1'>" +
-                        "O valor e aceitavel quando e menor que " + $("#paramsDto_parLevel3Value_IntervalMin").val() + " ou maior que " + $("#paramsDto_parLevel3Value_IntervalMax").val() +
-                    "</option>";
-
-                $('#parIntervalosType').empty();
-                $('#parIntervalosType').append(options);
-                $("#parIntervalosType").parents("td").show();
-            } else {
-                $("#parIntervalosType").parents("td").hide();
-            }
+    $('#btnPositiveNegative').click(function (e) {
+        $('#modalPositiveNegative').modal({ backdrop: false });
+    });
+    $(document).on('input', '#parLevel3Value_IntervalMin', function (e) {
+        //se os dois campos estão nulos
+        parIntervalosTypeCreate();
+        if($(this).val() == "" && $('#parLevel3Value_IntervalMax').val() == "")
+        {
+            //ocultamos
+            $('#ParIntervalosLabel').text("").parents('tr').fadeIn();
+            return true;
         }
-        $('#selectTipoInput').change(function () {
+        //se o primeiro campo está vazio e o segundo não
+        else if($(this).val() == "" && $('#parLevel3Value_IntervalMax').val() != "")
+        {
+            $('#parLevel3Value_IntervalMax').trigger('input');
+            return true;
+        }
+        //Se o segundo campo está vazio
+        else if($('#parLevel3Value_IntervalMax').val() == "")
+        {
+            $('#ParIntervalosLabel').text("O valor aceitável deve ser igual ou maior que " + $(this).val()).parents('tr').fadeIn();
+        }
+        //se os dois campos estão preenchidos
+        else
+        {
+            $('#ParIntervalosLabel').text(level03ValueIntervalWriter($(this).val(), $('#parLevel3Value_IntervalMax').val())).parents('tr').fadeIn();
+        }
+        
+       
+      
+    });
+    function level03ValueIntervalWriter(valueMin, valueMax) {
+        return "O valor aceitável deve ser menor que " + valueMin + " e maior que " + valueMax;
+    }
+    $(document).on('input', '#parLevel3Value_IntervalMax', function (e) {
+        parIntervalosTypeCreate();
 
-            if ($("#selectTipoInput option:selected").val() == "-1") {
+        //se os dois campos estão nulos
+        if($(this).val() == "" && $('#parLevel3Value_IntervalMin').val() == "")
+        {
+            //ocultamos
+            $('#ParIntervalosLabel').text("").parents('tr').fadeIn();
+            return true;
+        }
+            //se o primeiro campo está vazio e o segundo não
+        else if($(this).val() == "" && $('#parLevel3Value_IntervalMin').val() != "")
+        {
+            $('#parLevel3Value_IntervalMin').trigger('input');
+            return true;
+        }
+            //Se o segundo campo está vazio
+        else if($('#parLevel3Value_IntervalMin').val() == "")
+        {
+            $('#ParIntervalosLabel').text("O valor aceitável deve ser igual ou menor que " + $(this).val()).parents('tr').fadeIn();
+        }
+            //se os dois campos estão preenchidos
+        else
+        {
+            $('#ParIntervalosLabel').text(level03ValueIntervalWriter($('#parLevel3Value_IntervalMin').val(), $(this).val())).parents('tr').fadeIn();
+        }
+    });
+   
+    function parIntervalosTypeCreate() {
 
-                $('#selectNaoConforme').val(-1)
-                $('#selectConforme').val(-1)
-                $('#selectUnidadeDeMedidas').val(-1)
-                $('#paramsDto_parLevel3Value_IntervalMin, #paramsDto_parLevel3Value_IntervalMax').val("")
+        if (!$("#parLevel3Value_IntervalMin").val() == "" && !$("#parLevel3Value_IntervalMax").val() == "") {
+            var options =
+                "<option value='0'>" +
+                    "O valor e aceitavel quando esta entre " + $("#parLevel3Value_IntervalMin").val() + " e " + $("#parLevel3Value_IntervalMax").val() +
+                "</option>" +
+                "<option value='1'>" +
+                    "O valor e aceitavel quando e menor que " + $("#parLevel3Value_IntervalMin").val() + " ou maior que " + $("#parLevel3Value_IntervalMax").val() +
+                "</option>";
 
-                $('.ParIntervalos').hide();
-                $('.ParBinarios').hide();
-            }
+            $('#parIntervalosType').empty();
+            $('#parIntervalosType').append(options);
+            $("#parIntervalosType").parents("td").show();
+        } else {
+            $("#parIntervalosType").parents("td").hide();
+        }
+    }
+    $('#selectTipoInput').change(function () {
 
-            //Binários
-            if ($("#selectTipoInput option:selected").val() == "1") {
-                $('.ParIntervalos').hide();
-                $('.ParBinarios').fadeIn();
-                $('#selectUnidadeDeMedidas').val(-1);
-                $('#paramsDto_parLevel3Value_IntervalMin').val("");
-                $('#paramsDto_parLevel3Value_IntervalMax').val("");
-                $('#parIntervalosType').empty().parents('td').hide();
-            }
-            //Intervalos
-            if ($("#selectTipoInput option:selected").val() == "3") {
-                $('.ParBinarios').hide();
-                $('.ParIntervalos').fadeIn();
-                $('#selectConforme').val(-1);
-                $('#selectNaoConforme').val(-1);
-            }
-        });
+        if ($("#selectTipoInput option:selected").val() == "-1") {
 
-        $('#selectTipoInput').change();
+            $('#selectNaoConforme').val(-1)
+            $('#selectConforme').val(-1)
+            $('#selectUnidadeDeMedidas').val(-1)
+            $('#paramsDto_parLevel3Value_IntervalMin, #paramsDto_parLevel3Value_IntervalMax').val("")
 
-        $(document).ready(function () {
+            $('.ParIntervalos').hide();
+            $('.ParBinarios').hide();
+        }
 
-            updateAllTables();
+        //Binários
+        if ($("#selectTipoInput option:selected").val() == "1") {
+            $('.ParIntervalos').hide();
+            $('.ParBinarios').fadeIn();
+            $('#selectUnidadeDeMedidas').val(-1);
+            $('#paramsDto_parLevel3Value_IntervalMin').val("");
+            $('#paramsDto_parLevel3Value_IntervalMax').val("");
+            $('#parIntervalosType').empty().parents('td').hide();
+        }
+        //Intervalos
+        if ($("#selectTipoInput option:selected").val() == "3") {
+            $('.ParBinarios').hide();
+            $('.ParIntervalos').fadeIn();
+            $('#selectConforme').val(-1);
+            $('#selectNaoConforme').val(-1);
+        }
+    });
 
-            $('[data-toggle="popover"]').popover();
-        });
+    $('#selectTipoInput').change();
 
-    </script>
+    $(document).ready(function () {
+
+        updateAllTables();
+
+        $('[data-toggle="popover"]').popover();
+    });
+
+</script>
