@@ -30,6 +30,8 @@ namespace SgqSystem.Controllers.Params
             return View(ViewModel);
         }
 
+        #region Get L1, L2 e L3
+
         public ActionResult GetParLevel1ById(int id)
         {
             if (id == -1)/*Retorna View Vazia*/
@@ -38,26 +40,6 @@ namespace SgqSystem.Controllers.Params
             ViewModel.paramsDto.parLevel1Dto = _paramDomain.GetLevel1(id);
             /*Retorna View com Model ParLevel1 encontrado no DB.*/
             return PartialView("_ParLevel1", ViewModel);
-        }
-
-        [HttpGet]
-        public ActionResult UpdateSelectLevel2(int id)
-        {
-            if (id == -1)/*Retorna View Vazia*/
-                return PartialView("_SelectBoxLevel2", ViewModel);
-
-            ViewModel.paramsDto.parLevel1Dto = _paramDomain.GetLevel1(id);
-            return PartialView("_SelectBoxLevel2", ViewModel);
-        }
-
-        [HttpGet]
-        public ActionResult UpdateSelectLevel3(int id)
-        {
-            if (id == -1)/*Retorna View Vazia*/
-                return PartialView("_SelectBoxLevel3", ViewModel);
-
-            ViewModel.paramsDto = _paramDomain.GetLevel2(id);
-            return PartialView("_SelectBoxLevel3", ViewModel);
         }
 
         public ActionResult GetParLevel2ById(int level2Id, int level3Id)
@@ -82,6 +64,33 @@ namespace SgqSystem.Controllers.Params
             return PartialView("_ParLevel3", viewModelPreenchido);
         }
 
+        #endregion
+
+        #region Update Select Box
+
+        [HttpGet]
+        public ActionResult UpdateSelectLevel2(int id)
+        {
+            if (id == -1)/*Retorna View Vazia*/
+                return PartialView("_SelectBoxLevel2", ViewModel);
+
+            ViewModel.paramsDto.parLevel1Dto = _paramDomain.GetLevel1(id);
+            return PartialView("_SelectBoxLevel2", ViewModel);
+        }
+
+        [HttpGet]
+        public ActionResult UpdateSelectLevel3(int id)
+        {
+            if (id == -1)/*Retorna View Vazia*/
+                return PartialView("_SelectBoxLevel3", ViewModel);
+
+            ViewModel.paramsDto = _paramDomain.GetLevel2(id);
+            return PartialView("_SelectBoxLevel3", ViewModel);
+        }
+
+        #endregion
+        
+        #region Testes
 
         public ActionResult Index2()
         {
@@ -93,6 +102,18 @@ namespace SgqSystem.Controllers.Params
             return View(ViewModel);
         }
 
+        #endregion
 
+        #region Get Tela Parametrizada
+
+        public ActionResult GetCollectionLevel1()
+        {
+            ViewModel.paramsDto.collectionObject = _paramDomain.GetAllLevel1();
+
+            /*Retorna View com Model ParLevel1 encontrado no DB.*/
+            return View("_ParLevel1Collection", ViewModel);
+        }
+
+        #endregion
     }
 }

@@ -1,9 +1,12 @@
 ﻿using DTO.DTO.Params;
+using System.Collections.Generic;
 
 namespace Dominio.Interfaces.Services
 {
     public interface IParamsDomain
     {
+
+        List<ParLevel1DTO> GetAllLevel1();
 
         ParamsDdl CarregaDropDownsParams();
 

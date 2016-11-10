@@ -85,7 +85,9 @@ namespace DTO.DTO.Params
         public List<int> removerParHeaderField { get; set; }
         public List<int> removerParCluster { get; set; }
         public List<int> removerParCounterXlocal { get; set; }
+        public List<int> removeReincidencia { get; set; }
         public List<ParCounterXLocalDTO> contadoresIncluidos { get; set; }
+        public List<ParRelapseDTO> listParRelapseDto { get; set; }
 
         public List<ParLevel3Level2Level1DTO> listParLevel3Level2Level1Dto { get; set; }
 

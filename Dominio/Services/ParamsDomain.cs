@@ -138,19 +138,23 @@ namespace Dominio.Services
             //paramsDto.parLevel1Dto.IsValid();
 
             /*Mappers: mapeia elementos que vão ser salvos*/
-            ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);
-            List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);
-            List<ParLevel1XCluster> ListaParLevel1XCluster = Mapper.Map<List<ParLevel1XCluster>>(paramsDto.parLevel1XClusterDto);
-            List<ParCounterXLocal> ListaParCounterLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.listParCounterXLocal);
-            ParNotConformityRuleXLevel nonCoformitRule = Mapper.Map<ParNotConformityRuleXLevel>(paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto);
+            ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);                                                                  //ParLevel1
+            List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);                                 //Cabeçalhos do Level1
+            List<ParLevel1XCluster> ListaParLevel1XCluster = Mapper.Map<List<ParLevel1XCluster>>(paramsDto.parLevel1XClusterDto);                       //Clusters do Level1
+            List<ParCounterXLocal> ListaParCounterLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.listParCounterXLocal);                           //Contadores do Level1
+            List<ParRelapse> listaReincidencia = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel1Dto.listParRelapseDto);                                //Reincidencia do Level1
+            ParNotConformityRuleXLevel nonCoformitRule = Mapper.Map<ParNotConformityRuleXLevel>(paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto);  //Regra de NC do Level1
+
             List<int> removerHeadField = paramsDto.parLevel1Dto.removerParHeaderField;
             List<int> removerCluster = paramsDto.parLevel1Dto.removerParCluster;
             List<int> removeCounter = paramsDto.parLevel1Dto.removerParCounterXlocal;
+            List<int> removeReincidencia = paramsDto.parLevel1Dto.removeReincidencia;
 
             /*Enviando para repository salvar, envia todos, pois como existe transaction, faz rolback de tudo se der erro.*/
             try
             {
-                _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField, removerCluster, removeCounter, ListaParCounterLocal, nonCoformitRule);
+                _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField, removerCluster
+                                            , removeCounter, ListaParCounterLocal, nonCoformitRule, listaReincidencia, removeReincidencia);
 
             }
             catch (DbUpdateException e)
@@ -205,8 +209,17 @@ namespace Dominio.Services
             retorno.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(_baseRepoParLevel3Level2Level1.GetAll().Where(r => r.ParLevel1_Id == retorno.Id).ToList());
             retorno.CreateSelectListParamsViewModelListLevel(Mapper.Map <List<ParLevel2DTO>>(_baseRepoParLevel2.GetAll()), retorno.listParLevel3Level2Level1Dto);
 
+            foreach (var i in retorno.listParLevel3Level2Level1Dto)
+            {
+                var idLevel2 = i.ParLevel3Level2.ParLevel2_Id;
+                _baseRepoParLevel3Level2.GetAll().Where(r => r.ParLevel2_Id == idLevel2);
+            }
+
             //non conf
             retorno.parNotConformityRuleXLevelDto = Mapper.Map<ParNotConformityRuleXLevelDTO>(_baseParNotConformityRuleXLevel.GetAll().FirstOrDefault(r => r.ParLevel1_Id == retorno.Id)) ?? new ParNotConformityRuleXLevelDTO();
+
+            /*Reincidencia*/
+            retorno.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(_baseParRelapse.GetAll().Where(r => r.ParLevel1_Id == retorno.Id));
 
             return retorno;
         }
@@ -550,7 +563,60 @@ namespace Dominio.Services
             return Mapper.Map<ParLevel3GroupDTO>(parLevel3Group);
         }
 
+
         #endregion
+
+        #region Collection
+
+        public List<ParLevel1DTO> GetAllLevel1()
+        {
+            var retorno = new List<ParLevel1DTO>();
+
+            var listLevel1 = _baseRepoParLevel1.GetAll();
+
+            foreach (var level1 in listLevel1)
+            {
+               retorno.Add(GetLevel1TelaColeta(level1.Id));
+            }
+
+            return retorno;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="IdParLevel1"></param>
+        /// <returns></returns>
+        public ParLevel1DTO GetLevel1TelaColeta(int idParLevel1)
+        {
+            /*ParLevel1*/
+            var retorno = Mapper.Map<ParLevel1DTO>(_baseRepoParLevel1.GetById(idParLevel1));
+
+            /*Clusters*/
+            retorno.clustersInclusos = Mapper.Map<List<ParLevel1XClusterDTO>>(_baseRepoParLevel1XCluster.GetAll().Where(r => r.ParLevel1_Id == retorno.Id && r.IsActive == true));
+
+            /*Cabeçalhos*/
+            retorno.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(_baseRepoParLevel1XHeaderField.GetAll().Where(r => r.ParLevel1_Id == retorno.Id && r.IsActive == true));
+
+            /*Contadores*/
+            retorno.contadoresIncluidos = Mapper.Map<List<ParCounterXLocalDTO>>(_baseRepoParCounterXLocal.GetAll().Where(r => r.ParLevel1_Id == retorno.Id && r.IsActive == true));
+
+            /*Level 2 e 3 vinculados*/
+            retorno.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(_baseRepoParLevel3Level2Level1.GetAll().Where(r => r.ParLevel1_Id == retorno.Id).ToList());
+            retorno.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2.GetAll()), retorno.listParLevel3Level2Level1Dto);
+
+            //non conf
+            retorno.parNotConformityRuleXLevelDto = Mapper.Map<ParNotConformityRuleXLevelDTO>(_baseParNotConformityRuleXLevel.GetAll().FirstOrDefault(r => r.ParLevel1_Id == retorno.Id)) ?? new ParNotConformityRuleXLevelDTO();
+
+            /*Reincidencia*/
+            retorno.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(_baseParRelapse.GetAll().Where(r => r.ParLevel1_Id == retorno.Id));
+
+            return retorno;
+        }
+
+
+        #endregion
+
 
     }
 }
