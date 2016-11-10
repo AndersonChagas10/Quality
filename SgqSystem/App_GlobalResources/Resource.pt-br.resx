@@ -609,4 +609,7 @@
   <data name="removing_the_level3_group" xml:space="preserve">
     <value>Removendo o grupo do nível 3</value>
   </data>
+  <data name="confirm_the_action" xml:space="preserve">
+    <value>Confirme essa ação</value>
+  </data>
 </root>
