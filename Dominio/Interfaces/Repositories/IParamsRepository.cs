@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using DTO.DTO.Params;
 
 namespace Dominio.Interfaces.Repositories
 {
     public interface IParamsRepository
     {
-        void SaveParLevel1(ParLevel1 saveParamLevel1, List<ParHeaderField> listaParHEadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<int> removerCluster, List<int> removeCounter, List<ParCounterXLocal> listaParCounterLocal, ParNotConformityRuleXLevel nonCoformitRule);
+        void SaveParLevel1(ParLevel1 saveParamLevel1, List<ParHeaderField> listaParHEadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<int> removerCluster, List<int> removeCounter, List<ParCounterXLocal> listaParCounterLocal, ParNotConformityRuleXLevel nonCoformitRule, List<ParRelapse> listaReincidencia, List<int> removeReincidencia);
+        
         void SaveParLevel2(ParLevel2 paramLevel1, 
                            List<ParLevel3Group> listaParLevel3Group, 
                            List<ParCounterXLocal> listParCounterXLocal, 

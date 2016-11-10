@@ -1128,6 +1128,7 @@
     <Content Include="Views\Params\_LeftLayout.cshtml" />
     <Content Include="Views\Params\_Navbar.cshtml" />
     <Content Include="Views\Params\_RightLayout.cshtml" />
+    <Content Include="Views\Params\_ParLevel1Collection.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

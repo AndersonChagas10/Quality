@@ -42,6 +42,7 @@ namespace SgqSystem.ViewModels
         #endregion
 
         public ParamsDTO paramsDto { get; set; }
+
         public ParamsDdl paramsDdl { get; set; }
 
     }

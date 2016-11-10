@@ -30,6 +30,7 @@ namespace DTO.DTO.Params
 
         #endregion
 
+        #region Organizar.
         public List<ParDepartmentDTO> listParDepartmentdDto { get; set; }
 
         public ParLevel2DTO parLevel2Dto { get; set; }
@@ -52,7 +53,16 @@ namespace DTO.DTO.Params
         public ParLevel3DTO parLevel3Dto { get; set; }
         public ParLevel3ValueDTO parLevel3Value { get; set; }
 
-        public ParLevel3Level2DTO parLevel3Level2 {get;set;}
+        public ParLevel3Level2DTO parLevel3Level2 { get; set; }
+
+        #endregion
+
+        #region Collection
+
+        public List<ParLevel1DTO> collectionObject { get; set; }
+
+        #endregion
+
 
     }
 }
