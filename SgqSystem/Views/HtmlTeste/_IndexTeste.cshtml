@@ -7671,16 +7671,16 @@
     function CreateLevel2Listgroup(listLevel2Item, idLevel1, level1Name) {
 
        var level2Item = '<div class="list-group level02Group hide" level01Id="' + idLevel1 + '">       '+
-                 '<div class="headDescription">                                                      '+
-                 '    <div class="row">                                                              '+
-                 '        <div class="col-xs-5 col-sm-5 col-sm-5 col-lg-5 pull-right">               '+
-                 '            <span class="spanTitle">Defects</span>                                 '+
-                 '        </div>                                                                     '+
-                 '        <div class="col-xs-7 col-sm-7 col-sm-7 col-lg-7 hide">                     '+
-                 '            <span class="spanTitle pull-right">Consec Failures</span>              '+
-                 '        </div>                                                                     '+
-                 '    </div>                                                                         '+
-                 '</div>';
+                             '<div class="headDescription">                                                      '+
+                             '    <div class="row">                                                              '+
+                             '        <div class="col-xs-5 col-sm-5 col-sm-5 col-lg-5 pull-right">               '+
+                             '            <span class="spanTitle">Defects</span>                                 '+
+                             '        </div>                                                                     '+
+                             '        <div class="col-xs-7 col-sm-7 col-sm-7 col-lg-7 hide">                     '+
+                             '            <span class="spanTitle pull-right">Consec Failures</span>              '+
+                             '        </div>                                                                     '+
+                             '    </div>                                                                         '+
+                             '</div>';
 
 
        var isCreated = false;
@@ -7790,12 +7790,12 @@
 
     function CreateLevel3(listLevel3Item, idLevel1, idLevel2, groupName) {
 
-        var level3Item = '<div class="level03Group hide" level01Id="' + idLevel1 + '"><ul class="list-group">';
+        var htmlLevel3 = '<div class="level03Group hide" level01Id="' + idLevel1 + '"><ul class="list-group">';
 
          
         listLevel3Item.forEach(function(o, c){
 
-            level3Item += '<li id="' + o.Id + '" class="list-group-item level03">                                                                                  '+
+            htmlLevel3 += '<li id="' + o.Id + '" class="list-group-item level03">                                                                                  '+
                 '     <div class="row">                                                                                                           '+
                 '         <div class="col-xs-6">' + o.Name + '</div>                                                                              '+
                 '         <div class="col-xs-6 text-center">                                                                                      '+
@@ -7815,9 +7815,9 @@
 
         });
 
-        level3Item += '</ul><button id="btnSalvarCCA" class="btn btn-default level03Confirm hide">Salvar</button></div>';
+        htmlLevel3 += '</ul><button id="btnSalvarCCA" class="btn btn-default level03Confirm hide">Salvar</button></div>';
         
-        $('.level03List').append(listLevel3Item)
+        $('.level03List').append(htmlLevel3)
 
     }
 
@@ -7866,8 +7866,8 @@
             '       </div>';
 
 
+        $('.level03List > [level01id=' + level1Id + ']').append($(level2Item));
 
-        $('.level03List').append(level2Item)
 
     }
     
