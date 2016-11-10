@@ -609,15 +609,18 @@ namespace Dominio.Services
             retorno.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2.GetAll()), retorno.listParLevel3Level2Level1Dto);
 
             retorno.listParLevel2Colleta = new List<ParLevel2DTO>();
-            foreach (var ParLevel3Level2Level1Dto in retorno.listParLevel3Level2Level1Dto)
+            foreach (var ParLevel3Level2Level1Dto in retorno.listParLevel3Level2Level1Dto.Distinct())
             {
-                retorno.listParLevel2Colleta.Add(ParLevel3Level2Level1Dto.ParLevel3Level2.ParLevel2);
+                if (!retorno.listParLevel2Colleta.Any(r=> r.Id == ParLevel3Level2Level1Dto.ParLevel3Level2.ParLevel2.Id)) {
+                    retorno.listParLevel2Colleta.Add(ParLevel3Level2Level1Dto.ParLevel3Level2.ParLevel2);
+                }
                 var parLevel3Level2DoLevel2 = _repoParLevel3.GetLevel3VinculadoLevel2(retorno.Id);
 
                 retorno.listParLevel2Colleta.LastOrDefault().listaParLevel3Colleta = new List<ParLevel3DTO>();
-                foreach (var level3Level2 in parLevel3Level2DoLevel2)
+                foreach (var level3Level2 in parLevel3Level2DoLevel2.Where(r=>r.ParLevel2_Id == ParLevel3Level2Level1Dto.ParLevel3Level2.ParLevel2.Id))
                 {
-                    retorno.listParLevel2Colleta.LastOrDefault().listaParLevel3Colleta.Add(Mapper.Map<ParLevel3DTO>(_baseRepoParLevel3.GetById(level3Level2.ParLevel3_Id)));
+                    if(!retorno.listParLevel2Colleta.LastOrDefault().listaParLevel3Colleta.Any(r=> r.Id == level3Level2.ParLevel3_Id))
+                        retorno.listParLevel2Colleta.LastOrDefault().listaParLevel3Colleta.Add(Mapper.Map<ParLevel3DTO>(_baseRepoParLevel3.GetById(level3Level2.ParLevel3_Id)));
                 }
 
             }

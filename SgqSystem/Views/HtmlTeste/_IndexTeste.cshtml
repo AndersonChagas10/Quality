@@ -3760,8 +3760,16 @@
             $('.painel .defects').text(level02.attr('defects'));
             defectLimitCheck();
 
-            level03.children('.level03Group[level01id=' + $('.level01.selected').attr('id') + ']').removeClass('hide');
 
+
+            if(level02.attr('id'))
+            {
+                level03.children('.level03Group[level01id=' + $('.level01.selected').attr('id') + '][level02id=' +  $('.level02.selected').attr('id') + ']').removeClass('hide');
+            }
+            else
+            {
+                level03.children('.level03Group[level01id=' + $('.level01.selected').attr('id') + ']').removeClass('hide');
+            }
             breadCrumb($('.level01List .selected').text(), $('.level02List .level02.selected span.levelName').text());
             $('.btnCA').addClass('hide');
 
@@ -7720,24 +7728,23 @@
     function CreateLevel2Listgroup(listLevel2Item, idLevel1, level1Name) {
 
        var level2Item = '<div class="list-group level02Group hide" level01Id="' + idLevel1 + '">       '+
-                 '<div class="headDescription">                                                      '+
-                 '    <div class="row">                                                              '+
-                 '        <div class="col-xs-5 col-sm-5 col-sm-5 col-lg-5 pull-right">               '+
-                 '            <span class="spanTitle">Defects</span>                                 '+
-                 '        </div>                                                                     '+
-                 '        <div class="col-xs-7 col-sm-7 col-sm-7 col-lg-7 hide">                     '+
-                 '            <span class="spanTitle pull-right">Consec Failures</span>              '+
-                 '        </div>                                                                     '+
-                 '    </div>                                                                         '+
-                 '</div>';
+                             '<div class="headDescription">                                                      '+
+                             '    <div class="row">                                                              '+
+                             '        <div class="col-xs-5 col-sm-5 col-sm-5 col-lg-5 pull-right">               '+
+                             '            <span class="spanTitle">Defects</span>                                 '+
+                             '        </div>                                                                     '+
+                             '        <div class="col-xs-7 col-sm-7 col-sm-7 col-lg-7 hide">                     '+
+                             '            <span class="spanTitle pull-right">Consec Failures</span>              '+
+                             '        </div>                                                                     '+
+                             '    </div>                                                                         '+
+                             '</div>';
 
 
+       var isCreated = false;
        listLevel2Item.forEach(function(o, c){
 
-           var isCreated = false;
-
-           if(o.HasGroupLevel3){
-               
+           if(o.HasShowLevel03){
+               var cabecalhoLevel3 = '';
                if (!isCreated) {
     
                    level2Item += '<li class="list-group-item">                                                                                                  ' +
@@ -7776,10 +7783,18 @@
                  '   </div>                                                                                                                                    ' +
                  ' </li>';
 
+                   cabecalhoLevel3 += '<div class="level03Group" level01id="' + idLevel1 + '">                                                                                                                              ' +
+                                          '<div class="marginBottom10">                                                                                                                                            ' +
+                                          '    <button class="btn btn-default button-expand marginRight10"><i class="fa fa-expand" aria-hidden="true"></i> Expand All</button>                                     ' +
+                                          '    <button class="btn btn-default button-collapse"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>                                             ' +
+                                          '</div>';  
+                   cabecalhoLevel3 += '</div>';
+                   $('.level03List').append(cabecalhoLevel3)
                   isCreated = true;
                }
 
-               CriaLevel3AgrupadoPorLevel2();
+               CriaLevel3AgrupadoPorLevel2(o.listaParLevel3Colleta, o.Name, o.Id, idLevel1, cabecalhoLevel3);
+              
 
            } else {
 
@@ -7823,8 +7838,6 @@
 
             }
 
-          
-
         });
 
         level2Item += '<button id="btnSalvarLevel02CCA" class="btn btn-default level02Confirm hide">Salvar</button></div>';
@@ -7834,12 +7847,12 @@
 
     function CreateLevel3(listLevel3Item, idLevel1, idLevel2, groupName) {
 
-        var level3Item = '<div class="level03Group hide" level01Id="' + idLevel1 + '"><ul class="list-group">';
+        var htmlLevel3 = '<div class="level03Group hide" level01Id="' + idLevel1 + '" level02Id="' + idLevel2 + '"><ul class="list-group">';
 
          
         listLevel3Item.forEach(function(o, c){
 
-            level3Item += '<li id="' + o.Id + '" class="list-group-item level03">                                                                                  '+
+            htmlLevel3 += '<li id="' + o.Id + '" class="list-group-item level03">                                                                                  '+
                 '     <div class="row">                                                                                                           '+
                 '         <div class="col-xs-6">' + o.Name + '</div>                                                                              '+
                 '         <div class="col-xs-6 text-center">                                                                                      '+
@@ -7859,59 +7872,59 @@
 
         });
 
-        level3Item += '</ul><button id="btnSalvarCCA" class="btn btn-default level03Confirm hide">Salvar</button></div>';
+        htmlLevel3 += '</ul><button id="btnSalvarCCA" class="btn btn-default level03Confirm hide">Salvar</button></div>';
         
-        $('.level03List').append(listLevel3Item)
+        $('.level03List').append(htmlLevel3)
 
     }
 
     //console.log(teste);
 
-    function CriaLevel3AgrupadoPorLevel2(listLevel3) {
+    function CriaLevel3AgrupadoPorLevel2(listLevel3, Level2Name, level2Id, level1Id, cabecalho) {
     
-        var level2Item = '<div class="cff level03Group" level01id="3">                                                                                                          ' +
-                           '<div class="marginBottom10">                                                                                                                             ' +
-                           '    <button class="btn btn-default button-expand marginRight10"><i class="fa fa-expand" aria-hidden="true"></i> Expand All</button>                      ' +
-                           '    <button class="btn btn-default button-collapse"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>                              ' +
-                           '</div>                                                                                                                                                   ' +
-                           '<div class="panel-group" id="accordion40" role="tablist" aria-multiselectable="true">                                                                    ' +
-                           '    <div class="panel panel-default">                                                                                                                    ' +
-                           '        <div class="panel-heading level02" role="tab" id="headingOne" level02id=" ' + level2Id + ' " reauditnumber="0" defects="0">                      ' +
-                           '            <h4 class="panel-title">                                                                                                                     ' +
-                           '                <a role="button" data-toggle="collapse" data-parent="#accordion40" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne"> ' +
-                           '                    <span class="levelName"> ' + Level2Name + ' </span>                                                                                  ' +
-                           '                </a>                                                                                                                                     ' +
-                           '            </h4>                                                                                                                                        ' +
-                           '        </div>                                                                                                                                           ' +
-                           '        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">                                              ' +
-                           '            <div class="panel-body">';
+        var level2Item = '<div class="panel-group" id="accordion' + level2Id + '" role="tablist" aria-multiselectable="true">                                                                     ' +
+                        '    <div class="panel panel-default">                                                                                                                                   ' +
+                        '        <div class="panel-heading level02" role="tab" id="headingOne" level02id=" ' + level2Id + ' " reauditnumber="0" defects="0">                                     ' +
+                        '            <h4 class="panel-title">                                                                                                                                    ' +
+                        '                <a role="button" data-toggle="collapse" data-parent="#accordion' + level2Id + '" href="#collapseOne' + level2Id + '" aria-expanded="true" aria-controls="collapseOne">  ' +
+                        '                    <span class="levelName"> ' + Level2Name + ' </span>                                                                                                 ' +
+                        '                </a>                                                                                                                                                    ' +
+                        '            </h4>                                                                                                                                                       ' +
+                        '        </div>                                                                                                                                                          ' +
+                        '        <div id="collapseOne' + level2Id + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">                                                             ' +
+                        '            <div class="panel-body">';
 
-        listLevel3Item.forEach(function(o, c){
+        listLevel3.forEach(function(o, c){
 
-            level2Item += '<div id="6" class="level03">                                                                                                 ' +
-                          '     <div class="row">                                                                                                       ' +
-                          '         <div class="col-xs-6">                                                                                              ' +
-                          '             <span class="levelName">Cuts</span>                                                                             ' +
-                          '         </div>                                                                                                              ' +
-                          '         <div class="col-xs-6 text-center">                                                                                  ' +
-                          '             <div class="input-group input-group-sm width200 pull-right">                                                    ' +
-                          '                 <span class="input-group-btn btn-minus hide">                                                               ' +
-                          '                     <button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button>   ' +
-                          '                 </span>                                                                                                     ' +
-                          '                 <input value="0" min="0" type="number" class="form-control text-center levelValue" disabled="disabled">     ' +
-                          '                 <span class="input-group-btn btn-plus hide">                                                                ' +
-                          '                     <button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button>    ' +
-                          '                 </span>                                                                                                     ' +
-                          '             </div>                                                                                                          ' +
-                          '         </div>                                                                                                              ' +
-                          '     </div>                                                                                                                  ' +
-                          ' </div>';
+                            level2Item +=  '<div id="' + o.Id + '" class="level03">                                                                                     ' +
+                                           '     <div class="row">                                                                                                      ' +
+                                           '         <div class="col-xs-6">                                                                                             ' +
+                                           '             <span class="levelName">'+ o.Name +'</span>                                                                    ' +
+                                           '         </div>                                                                                                             ' +
+                                           '         <div class="col-xs-6 text-center">                                                                                 ' +
+                                           '             <div class="input-group input-group-sm width200 pull-right">                                                   ' +
+                                           '                 <span class="input-group-btn btn-minus hide">                                                              ' +
+                                           '                     <button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button>  ' +
+                                           '                 </span>                                                                                                    ' +
+                                           '                 <input value="0" min="0" type="number" class="form-control text-center levelValue" disabled="disabled">    ' +
+                                           '                 <span class="input-group-btn btn-plus hide">                                                               ' +
+                                           '                     <button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button>   ' +
+                                           '                 </span>                                                                                                    ' +
+                                           '             </div>                                                                                                         ' +
+                                           '         </div>                                                                                                             ' +
+                                           '     </div>                                                                                                                 ' +
+                                           ' </div>';
 
         });
                                        
-        level2Item += '</div></div><button id="btnSalvarCFF" class="btn btn-default level03Confirm hide">Salvar</button></div>';
+        level2Item += '              </div>'+
+            '                </div>'+
+            '           </div>'+
+            '       </div>';
 
-        $('.level03List').append(level2Item)
+
+        $('.level03List > [level01id=' + level1Id + ']').append($(level2Item));
+
 
     }
     
