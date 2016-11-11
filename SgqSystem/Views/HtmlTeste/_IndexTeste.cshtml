@@ -7744,6 +7744,7 @@
 
 
         var isCreated = false;
+        var gruposJaAdicionados = {};
         listLevel2Item.forEach(function(o, c){
 
             /*Ex CFF*/
@@ -7855,26 +7856,23 @@
 
                     var groupLevel3 = '';
                     /*Adiciono os que possuem group*/
-                    var gruposJaAdicionados = {};
+                    
                     listParLevel3Level2Level1Dto.forEach(function(level3Level2Leve1, counter){
                         if(level3Level2Leve1.ParLevel3Level2.ParLevel2.Id == o.Id && level3Level2Leve1.ParLevel3Level2.ParLevel3Group != null){
 
-                            if(gruposJaAdicionados[level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Id] == undefined){
-                                groupLevel3 +=  '<div class="panel panel-default">                                                                                                                                                ' +
-                                            '      <div class="panel-heading level02" role="tab" id="headingOne" level02id="40" reauditnumber="0" defects="0">                                                                 ' +
-                                            '          <h4 class="panel-title">                                                                                                                                                ' +
-                                            '              <a role="button" data-toggle="collapse" data-parent="#accordion40" href="#collapsehOne' + level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Id + '" aria-expanded="true" aria-controls="collapsehOne" class="">  ' +
-                                            '                  ' + level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Name + '                                                                                                                                              ' +
-                                            '              </a>                                                                                                                                                                ' +
-                                            '          </h4>                                                                                                                                                                   ' +
-                                            '      </div>                                                                                                                                                                      ' +
-                                            '      <div id="collapsehOne' + level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Id + '" class="panel-collapse in" role="tabpanel" aria-labelledby="headingOne" style="height: auto;">                                         ' +
-                                            '          <div class="panel-body panelGroupLevel3'+ level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Id +'" id=""> '+
-                                            '           </div>            ' +
-                                            '      </div>      ' +
-                                            '  </div>';
-                                gruposJaAdicionados[level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Id] = true;;
-                            }
+                            groupLevel3 +=  '<div class="panel panel-default">                                                                                                                                                ' +
+                                        '      <div class="panel-heading level02" role="tab" id="headingOne" level02id="40" reauditnumber="0" defects="0">                                                                 ' +
+                                        '          <h4 class="panel-title">                                                                                                                                                ' +
+                                        '              <a role="button" data-toggle="collapse" data-parent="#accordion40" href="#collapsehOne' + level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Id + '" aria-expanded="true" aria-controls="collapsehOne" class="">  ' +
+                                        '                  ' + level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Name + '                                                                                                                                              ' +
+                                        '              </a>                                                                                                                                                                ' +
+                                        '          </h4>                                                                                                                                                                   ' +
+                                        '      </div>                                                                                                                                                                      ' +
+                                        '      <div id="collapsehOne' + level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Id + '" class="panel-collapse in" role="tabpanel" aria-labelledby="headingOne" style="height: auto;">                                         ' +
+                                        '          <div class="panel-body panelGroupLevel3'+ level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Id +'" id=""> '+
+                                        '           </div>            ' +
+                                        '      </div>      ' +
+                                        '  </div>';
 
                         }
                     });
