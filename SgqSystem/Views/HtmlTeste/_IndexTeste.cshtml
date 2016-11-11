@@ -7741,12 +7741,12 @@
             $('.level01List .list-group').append(itemGroupLevel1);
 
 
-            CreateLevel2Listgroup(o.listParLevel2Colleta, o.Id, o.Name, o.listParLevel3Level2Level1Dto);
+            CreateLevel2Listgroup(o.listParLevel2Colleta, o.Id, o.Name, o.listParLevel3Level2Level1Dto, o.HasSaveLevel2, o.HasNoApplicableLevel2);
 
         });
     }
 
-    function CreateLevel2Listgroup(listLevel2Item, idLevel1, level1Name, listParLevel3Level2Level1Dto) {
+    function CreateLevel2Listgroup(listLevel2Item, idLevel1, level1Name, listParLevel3Level2Level1Dto, saveLevel2, naLevel2) {
 
         var level2Item = '<div class="list-group level02Group hide" level01Id="' + idLevel1 + '">       '+
                               '<div class="headDescription">                                                      '+
@@ -7817,7 +7817,7 @@
 
             } else {/*Ex CCA*/
 
-                level2Item += CriaItemLevel2TipoCCA(o);
+                level2Item += CriaItemLevel2TipoCCA(o, saveLevel2, naLevel2);
                 
                 if(o.ParLevel3Group.length == 0){
                     CreateLevel3(o.listaParLevel3Colleta, idLevel1, o.Id);
@@ -7902,18 +7902,30 @@
         $('.level02List').append(level2Item);
     }
 
-    function CriaItemLevel2TipoCCA(o) {
+    function CriaItemLevel2TipoCCA(o, saveLevel2, naLevel2) {
     
-        var btnAreaSave =    '               <button class="btn btn-success hide btnAreaSaveConfirm">                                                                      ' +
+        var btnAreaSave = '';
+
+        if(saveLevel2 ==  true)
+        {
+            btnAreaSave =    '               <button class="btn btn-success hide btnAreaSaveConfirm">                                                                      ' +
                              '                   <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>                         ' +
                              '               </button>                                                                                                                     ' +
                              '               <button class="btn btn-primary btnAreaSave">                                                                                  ' +
                              '                   <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>                     ' +
                              '               </button>                                                                                                                     ';
+        }
 
-        var btnNA =          '               <button class="btn btn-warning btnNotAvaliable na">                                                                           ' +
-                             '                   <span class="cursorPointer iconsArea font18">N/A</span>                                                                   ' +
-                             '               </button>                                                                                                                     ' ;
+        var btnNA = '';
+
+        if(naLevel2 ==  true)
+        {
+            var btnNA =          '               <button class="btn btn-warning btnNotAvaliable na">                                                                           ' +
+                                 '                   <span class="cursorPointer iconsArea font18">N/A</span>                                                                   ' +
+                                 '               </button>                                                                                                                     ' ;
+
+        }
+
 
 
 
