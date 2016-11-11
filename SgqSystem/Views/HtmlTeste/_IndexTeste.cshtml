@@ -7904,7 +7904,20 @@
 
     function CriaItemLevel2TipoCCA(o) {
     
-        return '<li class="list-group-item">                                                                                                  ' +
+        var btnAreaSave =    '               <button class="btn btn-success hide btnAreaSaveConfirm">                                                                      ' +
+                             '                   <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>                         ' +
+                             '               </button>                                                                                                                     ' +
+                             '               <button class="btn btn-primary btnAreaSave">                                                                                  ' +
+                             '                   <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>                     ' +
+                             '               </button>                                                                                                                     ';
+
+        var btnNA =          '               <button class="btn btn-warning btnNotAvaliable na">                                                                           ' +
+                             '                   <span class="cursorPointer iconsArea font18">N/A</span>                                                                   ' +
+                             '               </button>                                                                                                                     ' ;
+
+
+
+        return '<li class="list-group-item">                                                                                                               ' +
              '   <div class="row">                                                                                                                         ' +
              '       <a href="#" id="' + o.Id + '" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-6" levelerrorlimit="1" defects="0" reauditnumber="0">  ' +
              '           <span class="icons">                                                                                                              ' +
@@ -7925,15 +7938,8 @@
              '       </div>                                                                                                                                ' +
              '       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 userInfo">                                                                            ' +
              '           <div class="pull-right">                                                                                                          ' +
-             '               <button class="btn btn-success hide btnAreaSaveConfirm">                                                                      ' +
-             '                   <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>                         ' +
-             '               </button>                                                                                                                     ' +
-             '               <button class="btn btn-primary btnAreaSave">                                                                                  ' +
-             '                   <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>                     ' +
-             '               </button>                                                                                                                     ' +
-             '               <button class="btn btn-warning btnNotAvaliable na">                                                                           ' +
-             '                   <span class="cursorPointer iconsArea font18">N/A</span>                                                                   ' +
-             '               </button>                                                                                                                     ' +
+              btnAreaSave                                                                                                                                    +
+              btnNA                                                                                                                                          +
              '               <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>          ' +
              '           </div>                                                                                                                            ' +
              '       </div>                                                                                                                                ' +
