@@ -439,6 +439,9 @@
         var parLevel2 = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel2Dto));
         
         $('#pesoDefinido').html(parLevel2.pesoDoVinculoSelecionado);
+
+        ///initialize form
+        initialFormLevel2 = $($('form')[1]).clone();
         
     });
 
