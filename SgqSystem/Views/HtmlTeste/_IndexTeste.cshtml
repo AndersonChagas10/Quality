@@ -4271,7 +4271,7 @@
         var response = level03.children('.row').children('div').children('span.response');
         //acho que demvemos fazer um atrivuto direto no level03 para nao ficar tentando executar para todos
         if (response.attr('value') == '0') {
-            response.text('Yes').attr('value', '1');
+            response.text(response.attr('booltrueName')).attr('value', '1');
 
             //verificar se exite mais level03 excedido
             //se nao existir remove a regra de limite execido do level02 e zero os deveitos
@@ -4287,7 +4287,7 @@
             //$('#accordion').children('.panel').children('.collapse').collapse('show');
             level02.attr('limitexceeded', 'limitexceeded').parents('li').addClass('bgLimitExceeded');
             level03.addClass('lightred').attr('notConform', 'notCoform');
-            response.text('No').attr('value', '0');
+            response.text(response.attr('boolfalseName')).attr('value', '0');
         }
 
         level02.attr('defects', $('.level03[notConform]').length);
@@ -4484,7 +4484,7 @@
         });
 
         $('.level03Group[level01id=' + level02Group.attr('level01id') + '] .level03').removeClass('lightred').removeAttr('notconform');
-        $('.level03Group[level01id=' + level02Group.attr('level01id') + '] .level03 .row div span.response').attr('value', '1').text('Yes');
+        $('.level03Group[level01id=' + level02Group.attr('level01id') + '] .level03 .row div span.response').attr('value', '0').trigger('click');
         $('.level03Group[level01id=' + level02Group.attr('level01id') + '] .level03 textarea').val('');
     }
 
@@ -7851,13 +7851,15 @@
                                                 '      <div id="collapsehOne' + group.Id + '" class="panel-collapse in" role="tabpanel" aria-labelledby="headingOne" style="height: auto;">                                        ' +
                                                 '          <div class="panel-body panelGroupLevel3'+ group.Id +'" id="">';
 
-                                level3.forEach(function(l3, counterL3){
-                                    groupLevel3 +=   ' <div id="' + l3.ParLevel3Level2.ParLevel3.Id + '" class="level03 boolean">' +
+                                level3.forEach(function(obj, counterL3){
+                                    var l3 = obj.ParLevel3Level2.ParLevel3;
+
+                                    groupLevel3 +=   ' <div id="' + l3.Id + '" class="level03 boolean">' +
                                                     '   <div class="row">' +
-                                                    '        <div class="col-xs-9">' + l3.ParLevel3Level2.ParLevel3.Name + '</div>' +
+                                                    '        <div class="col-xs-9">' + l3.Name + '</div>' +
                                                     '        <div class="col-xs-3 text-center">' +
-                                                    '            <span value="1" class="pull-right marginRight30 response">Yes</span>' +
-                                                    '        </div>' +
+                                                    '            <span value="1" booltrueName="' + l3.ParLevel3Value[0].ParLevel3BoolTrue.Name + '" boolfalseName="' + l3.ParLevel3Value[0].ParLevel3BoolFalse.Name + '" class="pull-right marginRight30 response">' + l3.ParLevel3Value[0].ParLevel3BoolTrue.Name + '</span>' +
+                                                    '        </div>' + 
                                                     '    </div>' +
                                                     '</div>';
                                 });
