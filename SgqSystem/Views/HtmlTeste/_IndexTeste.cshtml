@@ -2833,10 +2833,20 @@
         if (level01.attr('havephases')) {
             getPhases(level01);
         }
+
+        CreateHeader($('.level02List .painel'), getLevel1($(this).attr('id')).cabecalhosInclusos);
+
         //Mostra o level02Group.
         showLevel02(level01);
 
     });
+
+    function getLevel1(id){
+        for(var i = 0; i < level1.length; i++){
+            if(level1[i].Id == id)
+                return level1[i];
+        }
+    }
 
     function getPhases(level01) {
         var resultsLevel01Phase = $('.level01Result[level01id=' + level01.attr('id') + '][reaudit=false][shift=' + $('.App').attr('shift') + '][completed=completed]:last');
@@ -7658,8 +7668,14 @@
                 case 1:
                     //Multipla Escolha
                     header += '<div class="col-xs-3"><select class="form-control input-sm" name="DropDownList">';
+                    var nameHeader = o.ParHeaderField.Name;
                     o.ParHeaderField.DropDownList.forEach(function(p, i){
-                        header += '<option value="'+p.Value+'">'+p.Text+'</option>';
+                        if(p.Value <= 0 ){
+                            header += '<option value="'+p.Value+'"> @Resources.Resource.select '+nameHeader+'</option>';
+                        }else{
+                            header += '<option value="'+p.Value+'">'+p.Text+'</option>';
+                        }
+                        
                     });
                     header += '</select></div>';
                     break;
@@ -7702,6 +7718,7 @@
     function CreateLevel1Group(listLevel1) {
 
         listLevel1.forEach(function(o, c){
+
 
             var itemGroupLevel1 = '<li class="list-group-item">                                                                                                                     '+
               '   <div class="row">                                                                                                                                                 '+
