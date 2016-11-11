@@ -9,7 +9,7 @@ namespace SgqSystem.Mappers
         public ParMeasurementUnitMapperProfile()
         {
             CreateMap<ParMeasurementUnit, ParMeasurementUnitDTO>();
-            CreateMap<ParMeasurementUnitDTO, ParMeasurementUnitDTO>();
+            CreateMap<ParMeasurementUnitDTO, ParMeasurementUnit>();
         }
     }
 }
