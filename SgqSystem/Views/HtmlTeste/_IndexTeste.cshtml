@@ -4259,7 +4259,10 @@
         $(this).parents('.level03Group').children('.panel-group').children('.panel').children('.in').collapse('hide');
     });
     //colocar uma forma de identificar campos yes or not
-    $(document).on('click', '.level03Group[level01id=1] .level03', function (e) {
+    function boolan() {
+    
+    }
+    $(document).on('click', '.level03.boolean', function (e) {
 
         var level02 = $('.level02.selected');
 
@@ -4267,32 +4270,29 @@
 
         var response = level03.children('.row').children('div').children('span.response');
         //acho que demvemos fazer um atrivuto direto no level03 para nao ficar tentando executar para todos
-        if (response.length) {
+        if (response.attr('value') == '0') {
+            response.text('Yes').attr('value', '1');
 
-            if (response.attr('value') == '0') {
-                response.text('Yes').attr('value', '1');
-
-                //verificar se exite mais level03 excedido
-                //se nao existir remove a regra de limite execido do level02 e zero os deveitos
-                level03.removeClass('lightred').removeAttr('notconform');
-                if ($('.level03Group[level01id=1] .level03[notConform]').length == 0) {
-                    level02.removeAttr('limitexceeded').parents('li').removeClass('bgLimitExceeded');
-                }
-
-            }
-            else {
-
-                // $('.panel-group').children('.panel').children('.collapse').collapse('show');
-                //$('#accordion').children('.panel').children('.collapse').collapse('show');
-                level02.attr('limitexceeded', 'limitexceeded').parents('li').addClass('bgLimitExceeded');
-                level03.addClass('lightred').attr('notConform', 'notCoform');
-                response.text('No').attr('value', '0');
+            //verificar se exite mais level03 excedido
+            //se nao existir remove a regra de limite execido do level02 e zero os deveitos
+            level03.removeClass('lightred').removeAttr('notconform');
+            if ($('.level03Group[level01id=1] .level03[notConform]').length == 0) {
+                level02.removeAttr('limitexceeded').parents('li').removeClass('bgLimitExceeded');
             }
 
-            level02.attr('defects', $('.level03[notConform]').length);
-            level02.attr('level03' + $(this).attr('id'), response.attr('value'));
-            // level02Configure();
         }
+        else {
+
+            // $('.panel-group').children('.panel').children('.collapse').collapse('show');
+            //$('#accordion').children('.panel').children('.collapse').collapse('show');
+            level02.attr('limitexceeded', 'limitexceeded').parents('li').addClass('bgLimitExceeded');
+            level03.addClass('lightred').attr('notConform', 'notCoform');
+            response.text('No').attr('value', '0');
+        }
+
+        level02.attr('defects', $('.level03[notConform]').length);
+        level02.attr('level03' + $(this).attr('id'), response.attr('value'));
+        // level02Configure();
 
     });
     $(document).on('click', '.na', function (e) {
@@ -4484,7 +4484,7 @@
         });
 
         $('.level03Group[level01id=' + level02Group.attr('level01id') + '] .level03').removeClass('lightred').removeAttr('notconform');
-        $('.level03Group[level01id=' + level02Group.attr('level01id') + '] .level03 .row div span.response').attr('value', '0').text('Yes');
+        $('.level03Group[level01id=' + level02Group.attr('level01id') + '] .level03 .row div span.response').attr('value', '1').text('Yes');
         $('.level03Group[level01id=' + level02Group.attr('level01id') + '] .level03 textarea').val('');
     }
 
@@ -7828,23 +7828,51 @@
                         
                         var group = level3Level2Leve1.ParLevel3Level2.ParLevel3Group;
                         
+                        
                         if(group != null){
-                            groupLevel3 +=  '<div class="panel panel-default panelGroupLevel3'+ group.Id +'" >                                                                                                                                                ' +
-                                            '      <div class="panel-heading level02" role="tab" id="headingOne" level02id="40" reauditnumber="0" defects="0">                                                                 ' +
-                                            '          <h4 class="panel-title">                                                                                                                                                ' +
-                                            '              <a role="button" data-toggle="collapse" data-parent="#accordion40" href="#collapsehOne' + group.Id + '" aria-expanded="true" aria-controls="collapsehOne" class="">  ' +
-                                            '                  ' + group.Name + '                                                                                                                                              ' +
-                                            '              </a>                                                                                                                                                                ' +
-                                            '          </h4>                                                                                                                                                                   ' +
-                                            '      </div>                                                                                                                                                                      ' +
-                                            '      <div id="collapsehOne' + group.Id + '" class="panel-collapse in" role="tabpanel" aria-labelledby="headingOne" style="height: auto;">                                         ' +
-                                            '          <div class="panel-body panelGroupLevel3'+ group.Id +'" id=""> '+
-                                            '           </div>            ' +
-                                            '      </div>      ' +
-                                            '  </div>';
+                            
+                            var level3 = jQuery.grep(listParLevel3Level2Level1, function( n ) {
+                                if(n.ParLevel3Level2.ParLevel3Group != null){
+                                    return (n.ParLevel3Level2.ParLevel3Group.Id == group.Id);
+                                }
+                            });
+                            var groupSearch  = $(groupLevel3).find('.panelGroupLevel3'+ group.Id).length;
+                            if(!groupSearch){
+
+
+                                groupLevel3 +=  '<div class="panel panel-default panelGroupLevel3'+ group.Id +'" >                                                                                                                                                ' +
+                                                '      <div class="panel-heading level02" role="tab" id="headingOne" level02id="40" reauditnumber="0" defects="0">                                                                 ' +
+                                                '          <h4 class="panel-title">                                                                                                                                                ' +
+                                                '              <a role="button" data-toggle="collapse" data-parent="#accordion40" href="#collapsehOne' + group.Id + '" aria-expanded="true" aria-controls="collapsehOne" class=""> ' +
+                                                '                  ' + group.Name + '                                                                                                                                              ' +
+                                                '              </a>                                                                                                                                                                ' +
+                                                '          </h4>                                                                                                                                                                   ' +
+                                                '      </div>                                                                                                                                                                      ' +
+                                                '      <div id="collapsehOne' + group.Id + '" class="panel-collapse in" role="tabpanel" aria-labelledby="headingOne" style="height: auto;">                                        ' +
+                                                '          <div class="panel-body panelGroupLevel3'+ group.Id +'" id="">';
+
+                                level3.forEach(function(l3, counterL3){
+                                    groupLevel3 +=   ' <div id="' + l3.ParLevel3Level2.ParLevel3.Id + '" class="level03 boolean">' +
+                                                    '   <div class="row">' +
+                                                    '        <div class="col-xs-9">' + l3.ParLevel3Level2.ParLevel3.Name + '</div>' +
+                                                    '        <div class="col-xs-3 text-center">' +
+                                                    '            <span value="1" class="pull-right marginRight30 response">Yes</span>' +
+                                                    '        </div>' +
+                                                    '    </div>' +
+                                                    '</div>';
+                                });
+
+                                groupLevel3 +=    '           </div>                                                                                                                                                               ' +
+                                                '      </div>                                                                                                                                                                      ' +
+                                                '</div>';
+
+                            }
+
                         }
 
                     });
+
+
 
                     $('.level03List > [level01id=' + idLevel1 + '][level02id=' + o.Id + ']').append($(groupLevel3));
 
