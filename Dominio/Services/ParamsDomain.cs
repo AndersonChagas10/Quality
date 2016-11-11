@@ -348,7 +348,7 @@ namespace Dominio.Services
         /// </summary>
         /// <param name="IdParLevel2"></param>
         /// <returns></returns>
-        public ParamsDTO GetLevel3(int idParLevel3, int idParLevel2)
+        public ParamsDTO GetLevel3(int idParLevel3, int? idParLevel2 = 0)
         {
             ParamsDTO retorno = new ParamsDTO();
             /*ParLevel3*/
