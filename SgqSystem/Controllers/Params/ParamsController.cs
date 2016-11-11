@@ -42,7 +42,7 @@ namespace SgqSystem.Controllers.Params
             return PartialView("_ParLevel1", ViewModel);
         }
 
-        public ActionResult GetParLevel2ById(int level2Id, int level3Id)
+        public ActionResult GetParLevel2ById(int level2Id, int? level3Id)
         {
             if (level2Id <= 0) /*Retorna View Vazia*/
                 return PartialView("_ParLevel2", ViewModel);
@@ -53,7 +53,7 @@ namespace SgqSystem.Controllers.Params
             return PartialView("_ParLevel2", viewModelPreenchido);
         }
 
-        public ActionResult GetParLevel3ById(int id, int idParLevel2)
+        public ActionResult GetParLevel3ById(int id, int? idParLevel2 = 0)
         {
             if (id <= 0) /*Retorna View Vazia*/
                 return PartialView("_ParLevel3", ViewModel);
