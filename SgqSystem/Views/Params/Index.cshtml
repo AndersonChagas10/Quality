@@ -452,17 +452,26 @@
 
             var removeLevel3Group = '@Html.Raw(@removeLevel3Group)';
 
+            var loaderMessages = [];
             var openLoader = function(message){
-                $('.modalLoader').remove();
-                $('body').append($modalLoader);
-                $('#modalLoader').modal({ backdrop: false });
-                $('#modalLoaderMessage').text(message);
+                if(loaderMessages.length == 0){
+                    $('.modalLoader').remove();
+                    $('body').append($modalLoader);
+                    $('#modalLoader').modal({ backdrop: false });
+                    $('#modalLoaderMessage').text(message);
+                    loaderMessages.push(message);
+                }else{
+                    loaderMessages.push(message);
+                }
             }
 
             var closeLoader = function(){
-                $('.modalLoader').remove();
+                loaderMessages.splice(0, 1);
+                if(loaderMessages.length == 0){
+                    $('.modalLoader').remove();
+                }
             }
-
+            
             var openConfirm = function(message, callbackYes, callbackNo){
                 $('.modalConfirm').remove();
                 $('body').append($modalConfirm);
@@ -608,15 +617,19 @@
             }
 
         var selectLevel1 = function(){
+            closeConfirm();            
+            openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level1)));
+
             var valorSelecionado = $('#parLevel1Select2 option:selected').val();
             if (valorSelecionado == "") {
                 $('#ParLevel1').empty();
                 $('#ParLevel1').append(parLevel1Empty);
                 $('#level1Title').text(indexParamsLevel1.new_level1);
+
+                initialFormLevel1 = $($('form')[0]).clone();
+                closeLoader();
             } else {
-                openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level1)));
                 $.get('GetParLevel1ById/' + valorSelecionado, function (obj, responseText, xhr) {
-                    closeLoader();
                     if (obj != null) {
                         $('#ParLevel1').empty();
                         $('#ParLevel1').append(xhr.responseText);
@@ -631,6 +644,9 @@
                     updateAllTables();
 
                     initialFormLevel1 = $($('form')[0]).clone();
+
+                    closeLoader();
+                    
                 });
 
                 //closeConfirm();
@@ -773,15 +789,20 @@
             }
 
         var selectLevel2 = function(){
+
+            closeConfirm();
+            openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2)));
+            
             var valorSelecionado = $('#parLevel2Select2 option:selected').val();
             if (valorSelecionado == "") {
                 $('#ParLevel2').empty();
                 $('#ParLevel2').append(parLevel2Empty);
                 $('#level2Title').text(indexParamsLevel2.new_level2);
+
+                initialFormLevel2 = $($('form')[1]).clone();
+                closeLoader();
             } else {
-                openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2)));
                 $.get('GetParLevel2ById',{  level2Id: valorSelecionado, level3Id: $('#paramsDto_parLevel3Dto_Id').val()}, function (obj, responseText, xhr) {
-                    closeLoader();
                     if (obj != null) {
                         $('#ParLevel2').empty();
                         $('#ParLevel2').append(xhr.responseText);
@@ -794,9 +815,9 @@
                     }
                     initialFormLevel2 = $($('form')[1]).clone();
 
-                    closeConfirm();
-
                     $('#parLevel3Select2').val('-1').trigger('select2:select').change();
+                    closeLoader();
+                        
                 });
             }
         }
@@ -939,16 +960,22 @@
 
 
         var selectLevel3 = function(){
+
+            closeConfirm();
+            openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level3)));
+
             var valorSelecionado = $('#parLevel3Select2 option:selected').val();
             var valorSelecionadoLevel2 = $('#parLevel2Select2 :selected').val();
             if (valorSelecionado == "") {
                 $('#ParLevel3').empty();
                 $('#ParLevel3').append(parLevel3Empty);
                 $('#level3Title').text(indexParamsLevel3.newLevel3);
+
+                initialFormLevel3 = $($('form')[2]).clone();
+                closeLoader();
             } else {
-                openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level3)));
                 $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
-                    closeLoader();
+                    
                     if (obj != null) {
                         $('#ParLevel3').empty();
                         $('#ParLevel3').append(xhr.responseText);
@@ -960,6 +987,8 @@
                     }
 
                     initialFormLevel3 = $($('form')[2]).clone();
+                    
+                    closeLoader();
                 });
 
             }
@@ -1042,9 +1071,9 @@
                 var selecionado = $('#parLevel2Select2 :selected').val();
                 $('#partialSelectLevel2').load('UpdateSelectLevel2?id=' + idLevel1, function () {
                     indexParamsLevel2.selectNormal();
-                    if (selecionado > 0) {
-                        $('#parLevel2Select2').val(selecionado);
-                    }
+                    //if (selecionado > 0) {
+                    //    $('#parLevel2Select2').val(selecionado);
+                    //}
                     if (idNewLevel2 != undefined) {
                         $('#parLevel2Select2').val(idNewLevel2);
                     }
@@ -1058,9 +1087,9 @@
                 var selecionado = $('#parLevel3Select2 :selected').val();
                 $('#partialSelectLevel3').load('UpdateSelectLevel3?id=' + idLevel2, function () {
                     indexParamsLevel3.selectNormal();
-                    if (selecionado > 0) {
-                        $('#parLevel3Select2').val(selecionado);
-                    }
+                    //if (selecionado > 0) {
+                    //    $('#parLevel3Select2').val(selecionado);
+                    //}
                     if (idNewLevel3 != undefined) {
                         $('#parLevel3Select2').val(idNewLevel3);
                     }
