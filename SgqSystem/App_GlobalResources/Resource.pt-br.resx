@@ -286,7 +286,7 @@
     <value>Regra</value>
   </data>
   <data name="select" xml:space="preserve">
-    <value>Selecione...</value>
+    <value>Selecione</value>
   </data>
   <data name="show_level1_counters" xml:space="preserve">
     <value>Mostrar contadores do nível 1</value>
