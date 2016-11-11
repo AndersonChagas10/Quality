@@ -7723,6 +7723,7 @@
 
             $('.level01List .list-group').append(itemGroupLevel1);
 
+
             CreateLevel2Listgroup(o.listParLevel2Colleta, o.Id, o.Name, o.listParLevel3Level2Level1Dto);
 
         });
@@ -7742,13 +7743,11 @@
                               '    </div>                                                                         '+
                               '</div>';
 
-
         var isCreated = false;
-        var gruposJaAdicionados = {};
         listLevel2Item.forEach(function(o, c){
 
-            /*Ex CFF*/
-            if(o.HasShowLevel03){
+            if(o.HasShowLevel03){/*Ex CFF*/
+
                 var cabecalhoLevel3 = '';
                 if (!isCreated) {
 
@@ -7797,13 +7796,72 @@
                     $('.level03List').append(cabecalhoLevel3)
                     isCreated = true;
                 }
-
                 CriaLevel3AgrupadoPorLevel2(o.listaParLevel3Colleta, o.Name, o.Id, idLevel1, cabecalhoLevel3);
-
 
             } else {/*Ex CCA*/
 
-                level2Item += '<li class="list-group-item">                                                                                                  ' +
+                level2Item += CriaItemLevel2TipoCCA(o);
+                
+                if(o.ParLevel3Group.length == 0){
+                    CreateLevel3(o.listaParLevel3Colleta, idLevel1, o.Id);
+                } 
+                else {
+
+                    var listParLevel3Level2Level1 = jQuery.grep(listParLevel3Level2Level1Dto, function( n ) {
+                        return ( n.ParLevel3Level2.ParLevel2_Id ==  o.Id );
+                    });
+
+                    var level03Group = '<div class="level03Group" level01id="' + idLevel1 + '" level02id="' + o.Id + '">                                                         ' +
+                                          '<div class="marginBottom10">                                                                                                          ' +
+                                          '    <button class="btn btn-default button-expand marginRight10"><i class="fa fa-expand" aria-hidden="true"></i> Expand All</button>   ' +
+                                          '    <button class="btn btn-default button-collapse"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>           ' +
+                                          '</div>                                                                                                                                ' +
+                                          '<button id="btnSalvarHTP" class="btn btn-default level03Confirm hide">Salvar</button>                                                 ' +
+                                       '</div> ';
+
+                    $('.level03List').append(level03Group);
+
+                    var groupLevel3 = '';
+                    
+                    /*Adiciono os que possuem group*/
+                    listParLevel3Level2Level1.forEach(function(level3Level2Leve1, counter){
+                        
+                        var group = level3Level2Leve1.ParLevel3Level2.ParLevel3Group;
+                        
+                        if(group != null){
+                            groupLevel3 +=  '<div class="panel panel-default panelGroupLevel3'+ group.Id +'" >                                                                                                                                                ' +
+                                            '      <div class="panel-heading level02" role="tab" id="headingOne" level02id="40" reauditnumber="0" defects="0">                                                                 ' +
+                                            '          <h4 class="panel-title">                                                                                                                                                ' +
+                                            '              <a role="button" data-toggle="collapse" data-parent="#accordion40" href="#collapsehOne' + group.Id + '" aria-expanded="true" aria-controls="collapsehOne" class="">  ' +
+                                            '                  ' + group.Name + '                                                                                                                                              ' +
+                                            '              </a>                                                                                                                                                                ' +
+                                            '          </h4>                                                                                                                                                                   ' +
+                                            '      </div>                                                                                                                                                                      ' +
+                                            '      <div id="collapsehOne' + group.Id + '" class="panel-collapse in" role="tabpanel" aria-labelledby="headingOne" style="height: auto;">                                         ' +
+                                            '          <div class="panel-body panelGroupLevel3'+ group.Id +'" id=""> '+
+                                            '           </div>            ' +
+                                            '      </div>      ' +
+                                            '  </div>';
+                        }
+
+                    });
+
+                    $('.level03List > [level01id=' + idLevel1 + '][level02id=' + o.Id + ']').append($(groupLevel3));
+
+                }
+
+            }
+
+        });
+
+        level2Item += '<button id="btnSalvarLevel02CCA" class="btn btn-default level02Confirm hide">Salvar</button></div>';
+
+        $('.level02List').append(level2Item);
+    }
+
+    function CriaItemLevel2TipoCCA(o) {
+    
+        return '<li class="list-group-item">                                                                                                  ' +
              '   <div class="row">                                                                                                                         ' +
              '       <a href="#" id="' + o.Id + '" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-6" levelerrorlimit="1" defects="0" reauditnumber="0">  ' +
              '           <span class="icons">                                                                                                              ' +
@@ -7838,55 +7896,6 @@
              '       </div>                                                                                                                                ' +
              '   </div>                                                                                                                                    ' +
              ' </li>';
-
-                if(o.ParLevel3Group.length == 0){
-                    CreateLevel3(o.listaParLevel3Colleta, idLevel1, o.Id);
-                }
-                else{
-
-                    var level03Group = '<div class="level03Group" level01id="' + idLevel1 + '" level02id="' + o.Id + '">                                                         ' +
-                                          '<div class="marginBottom10">                                                                                                          ' +
-                                          '    <button class="btn btn-default button-expand marginRight10"><i class="fa fa-expand" aria-hidden="true"></i> Expand All</button>   ' +
-                                          '    <button class="btn btn-default button-collapse"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>           ' +
-                                          '</div>                                                                                                                                ' +
-                                          '<button id="btnSalvarHTP" class="btn btn-default level03Confirm hide">Salvar</button>                                                 ' +
-                                       '</div> ';
-
-                    $('.level03List').append(level03Group);
-
-                    var groupLevel3 = '';
-                    /*Adiciono os que possuem group*/
-                    
-                    listParLevel3Level2Level1Dto.forEach(function(level3Level2Leve1, counter){
-                        if(level3Level2Leve1.ParLevel3Level2.ParLevel2.Id == o.Id && level3Level2Leve1.ParLevel3Level2.ParLevel3Group != null){
-
-                            groupLevel3 +=  '<div class="panel panel-default">                                                                                                                                                ' +
-                                        '      <div class="panel-heading level02" role="tab" id="headingOne" level02id="40" reauditnumber="0" defects="0">                                                                 ' +
-                                        '          <h4 class="panel-title">                                                                                                                                                ' +
-                                        '              <a role="button" data-toggle="collapse" data-parent="#accordion40" href="#collapsehOne' + level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Id + '" aria-expanded="true" aria-controls="collapsehOne" class="">  ' +
-                                        '                  ' + level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Name + '                                                                                                                                              ' +
-                                        '              </a>                                                                                                                                                                ' +
-                                        '          </h4>                                                                                                                                                                   ' +
-                                        '      </div>                                                                                                                                                                      ' +
-                                        '      <div id="collapsehOne' + level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Id + '" class="panel-collapse in" role="tabpanel" aria-labelledby="headingOne" style="height: auto;">                                         ' +
-                                        '          <div class="panel-body panelGroupLevel3'+ level3Level2Leve1.ParLevel3Level2.ParLevel3Group.Id +'" id=""> '+
-                                        '           </div>            ' +
-                                        '      </div>      ' +
-                                        '  </div>';
-
-                        }
-                    });
-
-                    $('.level03List > [level01id=' + idLevel1 + ']').append($(groupLevel3));
-                }
-
-            }
-
-        });
-
-        level2Item += '<button id="btnSalvarLevel02CCA" class="btn btn-default level02Confirm hide">Salvar</button></div>';
-
-        $('.level02List').append(level2Item);
     }
 
     /*Ex CCA*/
