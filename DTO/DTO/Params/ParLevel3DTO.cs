@@ -1,4 +1,5 @@
 ﻿using DTO.BaseEntity;
+using System.Collections.Generic;
 
 namespace DTO.DTO.Params
 {
@@ -9,5 +10,6 @@ namespace DTO.DTO.Params
         public bool IsActive { get; set; } = true;
 
         public decimal pesoDoVinculo { get; set; }
-}
+        public virtual List<ParLevel3ValueDTO> ParLevel3Value { get; set; }
+    }
 }

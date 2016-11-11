@@ -23,6 +23,9 @@ namespace DTO.DTO.Params
         public ParFrequencyDTO parFrequencyDto { get; set; }
         public List<ParLevel3Level2DTO> listParLevel3Level2Dto { get; set; }
 
+        public List<ParLevel3GroupDTO> ParLevel3Group { get; set; }
+        //public List<ParLevel3Level2DTO> ParLevel3Level2 { get; set; }
+
         public IEnumerable<SelectListItem> DdlLevel3Vinculados { get; set; }
 
         public void CreateSelectListParamsViewModelListLevel(List<ParLevel3DTO> listLevel3, List<ParLevel3Level2DTO> listParLevel3Level2Dto)

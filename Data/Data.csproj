@@ -56,6 +56,7 @@
     <Compile Include="Repositories\CorrectiveActionRepository.cs" />
     <Compile Include="Repositories\GetDataResultRepository.cs" />
     <Compile Include="Repositories\ParamsRepository.cs" />
+    <Compile Include="Repositories\ParLevel3Repository.cs" />
     <Compile Include="Repositories\RelatorioColetaRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\SaveCollectionRepo.cs" />
