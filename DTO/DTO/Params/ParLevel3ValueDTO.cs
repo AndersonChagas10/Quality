@@ -17,10 +17,10 @@ namespace DTO.DTO.Params
 
         //public ParCompanyDTO parCompany { get; set; }
         //public ParLevel3DTO parLevel3 { get; set; }
-        //public ParLevel3BoolFalseDTO parLevel3BoolFalse { get; set; }
-        //public ParLevel3BoolTrueDTO parLevel3BoolTrue { get; set; }
-        //public ParLevel3InputTypeDTO parLevel3InputType { get; set; }
-        //public ParMeasurementUnitDTO parMeasurementUnit { get; set; }
+        public ParLevel3BoolFalseDTO ParLevel3BoolFalse { get; set; }
+        public ParLevel3BoolTrueDTO ParLevel3BoolTrue { get; set; }
+        public ParLevel3InputTypeDTO ParLevel3InputType { get; set; }
+        public ParMeasurementUnitDTO ParMeasurementUnit { get; set; }
 
     }
 }
