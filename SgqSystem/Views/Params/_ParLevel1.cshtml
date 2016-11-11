@@ -557,6 +557,22 @@
         }
     });
 
+    function defaults() {
+        $.fn.bootstrapSwitch.defaults.size = 'small';
+        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
+        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
+        $(".check-box").bootstrapSwitch();
+    }
+
+    function updateAllTables(){
+        $('table').each(function (e) {
+            if ($(this).children('tbody').children('tr').not(".example").length > 0) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
     var Cluster = {
         Counter: 0,
         EventoDdlClusters: function () {

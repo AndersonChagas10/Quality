@@ -419,18 +419,15 @@
 
         updateAllTables();
     });
-    $(document).ready(function () {
-
-        defaults();
-        if ($('input[name="paramsDto.parLevel2Dto.HasGroupLevel3"]').is(':checked')) {
-            $('#level2_group_accordion').fadeIn();
-        }
-    });
     /*Fim Submit Level1*/
 
     $(document).ready(function () {
 
         defaults();
+
+        if ($('input[name="paramsDto.parLevel2Dto.HasGroupLevel3"]').is(':checked')) {
+            $('#level2_group_accordion').fadeIn();
+        }
 
         updateAllTables();
 
