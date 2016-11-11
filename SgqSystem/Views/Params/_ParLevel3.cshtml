@@ -201,75 +201,92 @@
     $('#btnPositiveNegative').click(function (e) {
         $('#modalPositiveNegative').modal({ backdrop: false });
     });
-    $(document).on('input', '#parLevel3Value_IntervalMin', function (e) {
-        //se os dois campos estão nulos
-        parIntervalosTypeCreate();
-        if($(this).val() == "" && $('#parLevel3Value_IntervalMax').val() == "")
-        {
-            //ocultamos
-            $('#ParIntervalosLabel').text("").parents('tr').fadeIn();
-            return true;
-        }
-        //se o primeiro campo está vazio e o segundo não
-        else if($(this).val() == "" && $('#parLevel3Value_IntervalMax').val() != "")
-        {
-            $('#parLevel3Value_IntervalMax').trigger('input');
-            return true;
-        }
-        //Se o segundo campo está vazio
-        else if($('#parLevel3Value_IntervalMax').val() == "")
-        {
-            $('#ParIntervalosLabel').text("O valor aceitável deve ser igual ou maior que " + $(this).val()).parents('tr').fadeIn();
-        }
-        //se os dois campos estão preenchidos
-        else
-        {
-            $('#ParIntervalosLabel').text(level03ValueIntervalWriter($(this).val(), $('#parLevel3Value_IntervalMax').val())).parents('tr').fadeIn();
-        }
+
+    $(document).on('input', '#parLevel3Value_IntervalMax', function (e) {
         
-       
+        changeCombo();
       
     });
+
+    $(document).on('input', '#parLevel3Value_IntervalMin', function (e) {
+        
+        changeCombo();
+      
+    });
+
+    function changeCombo(){
+        //se os dois campos estão nulos
+        parIntervalosTypeCreate();        
+    }
+
     function level03ValueIntervalWriter(valueMin, valueMax) {
         return "O valor aceitável deve ser menor que " + valueMin + " e maior que " + valueMax;
     }
-    $(document).on('input', '#parLevel3Value_IntervalMax', function (e) {
-        parIntervalosTypeCreate();
+    //$(document).on('input', '#parLevel3Value_IntervalMax', function (e) {
+    //    parIntervalosTypeCreate();
 
-        //se os dois campos estão nulos
-        if($(this).val() == "" && $('#parLevel3Value_IntervalMin').val() == "")
-        {
-            //ocultamos
-            $('#ParIntervalosLabel').text("").parents('tr').fadeIn();
-            return true;
-        }
-            //se o primeiro campo está vazio e o segundo não
-        else if($(this).val() == "" && $('#parLevel3Value_IntervalMin').val() != "")
-        {
-            $('#parLevel3Value_IntervalMin').trigger('input');
-            return true;
-        }
-            //Se o segundo campo está vazio
-        else if($('#parLevel3Value_IntervalMin').val() == "")
-        {
-            $('#ParIntervalosLabel').text("O valor aceitável deve ser igual ou menor que " + $(this).val()).parents('tr').fadeIn();
-        }
-            //se os dois campos estão preenchidos
-        else
-        {
-            $('#ParIntervalosLabel').text(level03ValueIntervalWriter($('#parLevel3Value_IntervalMin').val(), $(this).val())).parents('tr').fadeIn();
-        }
-    });
+    //    //se os dois campos estão nulos
+    //    if($(this).val() == "" && $('#parLevel3Value_IntervalMin').val() == "")
+    //    {
+    //        //ocultamos
+    //        $('#ParIntervalosLabel').text("").parents('tr').fadeIn();
+    //        return true;
+    //    }
+    //        //se o primeiro campo está vazio e o segundo não
+    //    else if($(this).val() == "" && $('#parLevel3Value_IntervalMin').val() != "")
+    //    {
+    //        $('#parLevel3Value_IntervalMin').trigger('input');
+    //        return true;
+    //    }
+    //        //Se o segundo campo está vazio
+    //    else if($('#parLevel3Value_IntervalMin').val() == "")
+    //    {
+    //        $('#ParIntervalosLabel').text("O valor aceitável deve ser igual ou menor que " + $(this).val()).parents('tr').fadeIn();
+    //    }
+    //        //se os dois campos estão preenchidos
+    //    else
+    //    {
+    //        $('#ParIntervalosLabel').text(level03ValueIntervalWriter($('#parLevel3Value_IntervalMin').val(), $(this).val())).parents('tr').fadeIn();
+    //    }
+    //});
    
     function parIntervalosTypeCreate() {
 
-        if (!$("#parLevel3Value_IntervalMin").val() == "" && !$("#parLevel3Value_IntervalMax").val() == "") {
+        var value = "";
+        if($('#selectUnidadeDeMedidas :selected').val() > 0)
+            value = $('#selectUnidadeDeMedidas :selected').text();
+
+        if ($("#parLevel3Value_IntervalMin").val() == "" && !$("#parLevel3Value_IntervalMax").val() == "") {
+            var options =''
+                "<option value='0'>" +
+                    "O valor aceitável deve ser igual ou maior que " + $("#parLevel3Value_IntervalMax").val()+" "+ value+
+                "</option>";
+
+            $('#parIntervalosType').empty();
+            $('#parIntervalosType').append(options);
+            $("#parIntervalosType").parents("td").show();
+
+        }
+
+        else if (!$("#parLevel3Value_IntervalMin").val() == "" && $("#parLevel3Value_IntervalMax").val() == "") {
             var options =
                 "<option value='0'>" +
-                    "O valor e aceitavel quando esta entre " + $("#parLevel3Value_IntervalMin").val() + " e " + $("#parLevel3Value_IntervalMax").val() +
+                    "O valor aceitável deve ser igual ou maior que " + $("#parLevel3Value_IntervalMin").val()+" "+ value+
+                "</option>";
+
+            $('#parIntervalosType').empty();
+            $('#parIntervalosType').append(options);
+            $("#parIntervalosType").parents("td").show();
+
+        }
+
+        else if (!$("#parLevel3Value_IntervalMin").val() == "" && !$("#parLevel3Value_IntervalMax").val() == "") {
+            var options =
+                "<option value='0'>" +
+                    "O valor e aceitavel quando esta entre " + $("#parLevel3Value_IntervalMin").val() + " e " + $("#parLevel3Value_IntervalMax").val() +" "+ value+
                 "</option>" +
                 "<option value='1'>" +
-                    "O valor e aceitavel quando e menor que " + $("#parLevel3Value_IntervalMin").val() + " ou maior que " + $("#parLevel3Value_IntervalMax").val() +
+                    "O valor e aceitavel quando e menor que " + $("#parLevel3Value_IntervalMin").val() + " ou maior que " + $("#parLevel3Value_IntervalMax").val() +" "+ value+
                 "</option>";
 
             $('#parIntervalosType').empty();

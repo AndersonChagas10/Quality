@@ -742,7 +742,7 @@
 
                             if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
                                 openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2)));
-                                $.get('GetParLevel2ById/' + objetoReturn.paramsDto.parLevel2Dto.Id, function (obj, responseText, xhr) {
+                                $.get('GetParLevel2ById',{  level2Id: objetoReturn.paramsDto.parLevel2Dto.Id, level3Id: 0}, function (obj, responseText, xhr) {
                                     closeLoader();
                                     if (obj != null) {
                                         $('#ParLevel2').empty();
@@ -1105,16 +1105,6 @@
             $('.table-erp tbody tr').mouseleave(function (e) {
                 $('.table-erp tbody tr').removeClass('hover');
             });
-
-            function updateAllTables(){
-                $('table').each(function (e) {
-                    if ($(this).children('tbody').children('tr').not(".example").length > 0) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
 
             var initialFormLevel1 = null;
             var initialFormLevel2 = null;
