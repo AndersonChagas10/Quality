@@ -9,6 +9,7 @@ namespace DTO.DTO.Params
     {
         public decimal pesoDoVinculoSelecionado;
         public List<ParLevel3DTO> listaParLevel3Colleta;
+        public List<ParCounterXLocalDTO> listParCounterXLocal { get; set; }
 
         public int ParFrequency_Id { get; set; }
         public int ParDepartment_Id { get; set; }

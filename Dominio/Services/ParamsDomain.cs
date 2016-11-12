@@ -289,6 +289,8 @@ namespace Dominio.Services
             level2.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3.GetAll()), level2.listParLevel3Level2Dto);
 
             paramsDto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(_baseParCounterXLocal.GetAll().Where(r => r.ParLevel2_Id == level2.Id && r.IsActive == true).ToList());
+            level2.listParCounterXLocal = paramsDto.listParCounterXLocal;
+
             paramsDto.parEvaluationDto = Mapper.Map<ParEvaluationDTO>(_baseParEvaluation.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id && r.IsActive == true));
             paramsDto.parSampleDto = Mapper.Map<ParSampleDTO>(_baseParSample.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id && r.IsActive == true));
             paramsDto.parNotConformityRuleXLevelDto = Mapper.Map<ParNotConformityRuleXLevelDTO>(_baseParNotConformityRuleXLevel.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id && r.IsActive == true));
