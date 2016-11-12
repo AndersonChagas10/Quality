@@ -518,14 +518,14 @@
                                             foreach (var rp in Model.paramsDto.parLevel1Dto.listParRelapseDto)
                                             {
                                                 i++;
-                                                <tr id="@rp.Id">
+                                                <tr id="@rp.Id" class="existent">
                                                     <td>Regra @i</td>
                                                     <td>@rp.NcNumber</td>
                                                     <td>@rp.EffectiveLength</td>
                                                     <td>@rp.parFrequency.Name</td>
                                                     <td>
                                                         @Html.Hidden("paramsDto.parLevel1Dto.removeReincidencia", rp.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                        <button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                                        <button type="button" class="btn btn-danger btn-xs pull-right" onclick="removeReincidencia($(this))" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button>
                                                     </td>
                                                 </tr>
                                             }
@@ -1413,9 +1413,35 @@
 
     Cluster.VerificaShowTable();
 
+    var counterReincidencia = 0;
+    function removeReincidencia(e) {
+        e.parents('tr').find('input[type="hidden"]').attr("disabled", false).attr("name", e.parents('tr').find('input[type="hidden"]').attr('name') + "[" + counterReincidencia + "]");
+        e.parents('tr').hide();
+        counterReincidencia++;
+        console.log(e.parents('tr'));
+        updateAllTables();
+    }
+
     $('#l1BtnAddFrequenciaReincidencia').click(function (e) {
 
         e.preventDefault();
+        if($('#l1SelectFrequenciaReincidencia :selected').val() <= 0)
+        {
+            alert('É necessário selecionar a Frequência');
+            return;
+        }
+
+        if($('#l1InputNumeroNC').val().length <= 0)
+        {
+            alert('É necessário informar o Número de NC');
+            return;
+        }
+
+        if($('#l1InputVigencia').val().length <= 0)
+        {
+            alert('É necessário selecionar a Vigência');
+            return;
+        }
 
         var NcNumber = $('#l1InputNumeroNC').val();
         var Vigencia = $('#l1InputVigencia').val();
@@ -1423,7 +1449,7 @@
         var includeItem = true;
 
         if (includeItem == true) {
-            var indexValue = $('#l1TableRepetition tbody tr').length -1;
+            var indexValue = $('#l1TableRepetition tbody tr').not('.existent').length -1;
 
             var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.parLevel1Dto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
                               '<input class="LocalLevel2Class" type="hidden" name="paramsDto.parLevel1Dto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
