@@ -646,6 +646,8 @@
                     initialFormLevel1 = $($('form')[0]).clone();
 
                     closeLoader();
+
+                    reloadPopovers();
                     
                 });
 
@@ -817,6 +819,8 @@
 
                     $('#parLevel3Select2').val('-1').trigger('select2:select').change();
                     closeLoader();
+
+                    reloadPopovers();
                         
                 });
             }
@@ -989,6 +993,8 @@
                     initialFormLevel3 = $($('form')[2]).clone();
                     
                     closeLoader();
+
+                    reloadPopovers();
                 });
 
             }
@@ -1111,7 +1117,7 @@
             var initialFormLevel3 = null;
 
             $(document).ready(function () {
-                $('[data-toggle="popover"]').popover();
+                reloadPopovers();
             });
 
 

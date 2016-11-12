@@ -84,7 +84,7 @@ namespace Data.Repositories
 
                 InativaCounter(paramLevel1, removeCounter);
 
-                InativaReincidencia(paramLevel1, removeReincidencia);
+                InativaReincidencia(removeReincidencia);
 
                 ts.Commit();
             }
@@ -165,15 +165,16 @@ namespace Data.Repositories
                 }
             }
         }
-        private void InativaReincidencia(ParLevel1 paramLevel1, List<int> removeReincidencia)
+
+        private void InativaReincidencia(List<int> removeReincidencia)
         {
             if (removeReincidencia != null)
             {
                 if (removeReincidencia.Count > 0)
                 {
-                    foreach (var idCluster in removeReincidencia)
+                    foreach (var idReincidencia in removeReincidencia)
                     {
-                        var objetos = db.ParRelapse.Where(r => r.Id == idCluster);
+                        var objetos = db.ParRelapse.Where(r => r.Id == idReincidencia);
 
                         foreach (var marcarObjetoInativo in objetos)
                         {
@@ -358,13 +359,7 @@ namespace Data.Repositories
 
         #endregion
 
-        public void SaveParLevel2(ParLevel2 paramLevel2,
-                                  List<ParLevel3Group> listaParLevel3Group, 
-                                  List<ParCounterXLocal> listParCounterXLocal,
-                                  ParNotConformityRuleXLevel paramNotConformityRuleXLevel,
-                                  ParEvaluation paramEvaluation,
-                                  ParSample paramSample,
-                                  List<ParRelapse> listParRelapse)
+        public void SaveParLevel2(ParLevel2 paramLevel2, List<ParLevel3Group> listaParLevel3Group, List<ParCounterXLocal> listParCounterXLocal, ParNotConformityRuleXLevel paramNotConformityRuleXLevel, ParEvaluation paramEvaluation, ParSample paramSample, List<ParRelapse> listParRelapse, List<int> listParRelapseRemove)
         {
             using (var ts = db.Database.BeginTransaction())
             {
@@ -398,6 +393,8 @@ namespace Data.Repositories
                         AddUpdateParRelapse(ParRelapse, paramLevel2.Id); /*Salva NxN Level1XCluster*/
                     }
                 }
+
+                InativaReincidencia(listParRelapseRemove);
 
                 db.SaveChanges();
                 ts.Commit();
@@ -726,6 +723,7 @@ namespace Data.Repositories
             db.Entry(paramLevel03group).State = EntityState.Modified;
             db.SaveChanges();
         }
+
 
         #region Não implementado
 
