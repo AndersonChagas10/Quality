@@ -379,7 +379,10 @@ namespace Dominio.Services
 
             level3.listGroupsLevel2 = new List<ParLevel3GroupDTO>();
             level3.listGroupsLevel2 = Mapper.Map<List<ParLevel3GroupDTO>>(_baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList());
-            level3.groupLevel2Selected = _baseParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == level3.Id).ParLevel3Group_Id;
+
+            var parLevel3Level2 = _baseParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == level3.Id);
+            if(parLevel3Level2 != null)
+                level3.groupLevel2Selected = _baseParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == level3.Id).ParLevel3Group_Id;
 
             retorno.parLevel3Dto = level3;
             retorno.parLevel3Value = parLevel3Value;
@@ -532,6 +535,7 @@ namespace Dominio.Services
             {
                 objLelvel2Level3ToSave = existente;
                 objLelvel2Level3ToSave.Weight = peso;
+                objLelvel2Level3ToSave.ParLevel3Group_Id = groupLevel2;
             }
 
 
