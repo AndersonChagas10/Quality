@@ -1,5 +1,6 @@
 ﻿using DTO.BaseEntity;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DTO.DTO.Params
 {
@@ -48,6 +49,9 @@ namespace DTO.DTO.Params
         
 
         public ParCompanyDTO parCompanyDto { get; set; }
+
+        
+        
         public ParEvaluationDTO parEvaluationDto { get; set; }
         public ParSampleDTO parSampleDto { get; set; }
 

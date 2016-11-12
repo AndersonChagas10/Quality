@@ -1,11 +1,15 @@
 ﻿using DTO.BaseEntity;
+using System.ComponentModel.DataAnnotations;
 
 namespace DTO.DTO.Params
 {
     public class ParLevel3ValueDTO : EntityBase
     {
         public int ParLevel3_Id { get; set; }
+
+        [Range(0, 9999999999, ErrorMessage = "Tipo de Dados de Entrada deve ser selecionado.")]
         public int ParLevel3InputType_Id { get; set; }
+
         public int? ParLevel3BoolFalse_Id { get; set; }
         public int? ParLevel3BoolTrue_Id { get; set; }
         public int ParCompany_Id { get; set; }

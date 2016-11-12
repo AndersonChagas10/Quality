@@ -12,11 +12,11 @@ namespace DTO.DTO.Params
         public List<ParLevel2DTO> listParLevel2Colleta;
 
         //[Display(Name = "select_the_consolidation_type", ResourceType = typeof(Resource))]
-        [Range(0, 999, ErrorMessage = "É obrigatório selecionar o tipo de consolidação.")]
+        [Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar o tipo de consolidação.")]
         public int ParConsolidationType_Id { get; set; }
 
         //[Display(Name = "select_the_frequency", ResourceType = typeof(Resource))]
-        [Range(0, 999, ErrorMessage = "É obrigatório selecionar a frequencia.")]
+        [Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar a frequencia.")]
         public int ParFrequency_Id { get; set; }
 
         //[Display(Name = "level1_name", ResourceType = typeof(Resource))]
@@ -26,9 +26,9 @@ namespace DTO.DTO.Params
         public string Name { get; set; }
 
         //[Display(Name = "level1_description", ResourceType = typeof(Resource))]
-        [Required(ErrorMessage = "O Nome deverá ter no mínimo 3 e máximo 10 caracteres.")]
-        [MinLength(3, ErrorMessage = "O tamanho mínimo do Nome são 3 caracteres.")]
-        [MaxLength(140, ErrorMessage = "O tamanho máximo do Nome são 140 caracteres.")]
+        [Required(ErrorMessage = "A Descrição deverá ter no mínimo 3 e máximo 10 caracteres.")]
+        [MinLength(3, ErrorMessage = "O tamanho mínimo da Descrição deve ser 3 caracteres.")]
+        [MaxLength(140, ErrorMessage = "O tamanho máximo da Descrição deve ser no 140 caracteres.")]
         public string Description { get; set; }
 
         //[Display(Name = "save_button_on_level2", ResourceType = typeof(Resource))]
