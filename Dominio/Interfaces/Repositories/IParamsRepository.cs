@@ -5,14 +5,8 @@ namespace Dominio.Interfaces.Repositories
     public interface IParamsRepository
     {
         void SaveParLevel1(ParLevel1 saveParamLevel1, List<ParHeaderField> listaParHEadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<int> removerCluster, List<int> removeCounter, List<ParCounterXLocal> listaParCounterLocal, ParNotConformityRuleXLevel nonCoformitRule, List<ParRelapse> listaReincidencia, List<int> removeReincidencia);
+        void SaveParLevel2(ParLevel2 saveParamLevel2, List<ParLevel3Group> listaParLevel3Group, List<ParCounterXLocal> listParCounterXLocal, ParNotConformityRuleXLevel saveParamNotConformityRuleXLevel, ParEvaluation saveParamEvaluation, ParSample saveParamSample, List<ParRelapse> listParRelapse, List<int> listParRelapseRemove);
         
-        void SaveParLevel2(ParLevel2 paramLevel1, 
-                           List<ParLevel3Group> listaParLevel3Group, 
-                           List<ParCounterXLocal> listParCounterXLocal, 
-                           ParNotConformityRuleXLevel paramNotConformityRuleXLevel,
-                           ParEvaluation paramEvaluation,
-                           ParSample paramSample,
-                           List<ParRelapse> paramRelapse);
 
         void RemoveParLevel3Group(ParLevel3Group paramLevel03group);
 
