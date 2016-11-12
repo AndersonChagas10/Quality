@@ -349,7 +349,6 @@ namespace Dominio.Services
             return paramsDto;
         }
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -394,7 +393,6 @@ namespace Dominio.Services
         #endregion
 
         #region Auxiliares
-
 
         //public ParamsDTO AddUpdateParCounter(ParamsDTO paramsDto)
         //{
