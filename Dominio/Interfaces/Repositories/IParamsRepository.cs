@@ -18,8 +18,7 @@ namespace Dominio.Interfaces.Repositories
         void SaveParNotConformityRuleXLevel(ParNotConformityRuleXLevel paramNotConformityRule);
         void SaveParCompany(ParCompany paramCompany);
 
-        void SaveParLevel3(ParLevel3 paramLevel3, ParLevel3Value paramLevel3Value);
-
+        void SaveParLevel3(ParLevel3 saveParamLevel3, ParLevel3Value saveParamLevel3Value, List<ParRelapse> listParRelapse, List<int> listParRelapseRemove);
         void SaveParLevel3Level2(ParLevel3Level2 paramLevel3Level2);
         //void SaveParLevel3Group(List<ParLevel3Group> paramLevel3Group, int ParLevel2_Id);
     }
