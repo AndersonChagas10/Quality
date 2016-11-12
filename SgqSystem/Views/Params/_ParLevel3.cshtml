@@ -15,9 +15,22 @@
                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Id), @Html.Label("Id (para testes)"), Table.PosicaoLabel.top)
                     </tr>
                     <tr class="row">
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level3_name), Table.PosicaoLabel.top)
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level3_description), Table.PosicaoLabel.top)
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "form-control input-sm", @id = "selectTipoInput" }), @Html.Label(Resources.Resource.data_type_entry), Table.PosicaoLabel.top)
+
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm" })
+                            , @Html.Label(Resources.Resource.level3_name)
+                            , Table.PosicaoLabel.top
+                            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }))
+
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm" })
+                            , @Html.Label(Resources.Resource.level3_description)
+                            , Table.PosicaoLabel.top
+                            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }))
+
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "form-control input-sm", @id = "selectTipoInput" })
+                           , @Html.Label(Resources.Resource.data_type_entry)
+                           , Table.PosicaoLabel.top
+                           , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }))
+
                     </tr>
                     <tr class="row ParIntervalos" style="display: none;">
                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")

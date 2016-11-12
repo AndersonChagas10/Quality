@@ -535,7 +535,7 @@ namespace Dominio.Services
             {
                 objLelvel2Level3ToSave = existente;
                 objLelvel2Level3ToSave.Weight = peso;
-                objLelvel2Level3ToSave.ParLevel3Group_Id = groupLevel2;
+                objLelvel2Level3ToSave.ParLevel3Group_Id = groupLevel2 == 0 ? null : groupLevel2;
             }
 
 

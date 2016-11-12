@@ -646,7 +646,8 @@
                     closeLoader();
 
                     reloadPopovers();
-                    
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
                 });
 
                 //closeConfirm();
@@ -728,7 +729,7 @@
                 },
                 enviarDadosParaApi: function (e) {
 
-                    if ($('#newLevel2Modal > form')) {
+                    if ($('#newLevel1Modal > form').valid()) {
                         //Cabecalhos.UpdateCabecalhos();
                         //Cluster.UpdateCounter();
                         CounterLevel2.UpdateCounters();
@@ -820,7 +821,9 @@
                     closeLoader();
 
                     reloadPopovers();
-                        
+
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
                 });
             }
         }
@@ -995,6 +998,9 @@
                     closeLoader();
 
                     reloadPopovers();
+
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
                 });
 
             }
