@@ -25,7 +25,7 @@ namespace SgqSystem.ViewModels
             paramsDto.parLevel1Dto = new ParLevel1DTO();
             paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();
             paramsDto.parLevel2Dto = new ParLevel2DTO();
-            paramsDto.parLevel3Dto = new ParLevel3DTO();
+            paramsDto.parLevel3Dto = new ParLevel3DTO() { listGroupsLevel2 = new List<ParLevel3GroupDTO>() };
 
             paramsDto.parLevel1XClusterDto = new List<ParLevel1XClusterDTO>();
         }

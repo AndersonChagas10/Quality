@@ -45,6 +45,7 @@ namespace DTO.DTO.Params
         public ParNotConformityRuleXLevelDTO parNotConformityRuleXLevelDto { get; set; }
 
         public List<ParNotConformityRuleDTO> listParNotConformitRule { get; set; }
+        
 
         public ParCompanyDTO parCompanyDto { get; set; }
         public ParEvaluationDTO parEvaluationDto { get; set; }
@@ -52,7 +53,7 @@ namespace DTO.DTO.Params
 
         public ParLevel3DTO parLevel3Dto { get; set; }
         public ParLevel3ValueDTO parLevel3Value { get; set; }
-
+        
         public ParLevel3Level2DTO parLevel3Level2 { get; set; }
 
         #endregion

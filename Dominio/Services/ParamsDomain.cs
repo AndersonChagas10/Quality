@@ -375,6 +375,10 @@ namespace Dominio.Services
             var parLevel3Value = Mapper.Map<ParLevel3ValueDTO>(_baseParLevel3Value.GetAll().FirstOrDefault(r => r.ParLevel3_Id == level3.Id));
             level3.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(_baseParRelapse.GetAll().Where(r => r.ParLevel3_Id == level3.Id && r.IsActive == true).ToList());
 
+            level3.listGroupsLevel2 = new List<ParLevel3GroupDTO>();
+            level3.listGroupsLevel2 = Mapper.Map<List<ParLevel3GroupDTO>>(_baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList());
+            level3.groupLevel2Selected = _baseParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == level3.Id).ParLevel3Group_Id;
+
             retorno.parLevel3Dto = level3;
             retorno.parLevel3Value = parLevel3Value;
 
@@ -505,7 +509,7 @@ namespace Dominio.Services
 
         #region Vinculo L3L2
 
-        public ParLevel3Level2DTO AddVinculoL3L2(int idLevel2, int idLevel3, decimal peso)
+        public ParLevel3Level2DTO AddVinculoL3L2(int idLevel2, int idLevel3, decimal peso, int? groupLevel2 = 0)
         {
             ParLevel3Level2 objLelvel2Level3ToSave;
             var level2 = _baseRepoParLevel2.GetById(idLevel2);
@@ -518,6 +522,7 @@ namespace Dominio.Services
                 ParLevel2_Id = idLevel2,
                 ParLevel3_Id = idLevel3,
                 Weight = peso,
+                ParLevel3Group_Id = groupLevel2
             };
 
             var existente = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
@@ -525,13 +530,6 @@ namespace Dominio.Services
             {
                 objLelvel2Level3ToSave = existente;
                 objLelvel2Level3ToSave.Weight = peso;
-            }
-
-
-
-            if (level2.HasGroupLevel3)// MOCK
-            {
-                //objLelvel2Level3ToSave.ParLevel3Group_Id = level2.ParLevel3Group;
             }
 
 

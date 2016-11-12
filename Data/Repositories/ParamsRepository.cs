@@ -452,7 +452,6 @@ namespace Data.Repositories
                 db.SaveChanges();
                 ts.Commit();
 
-
                 if (listParRelapse != null)
                     foreach (var parRelapse in listParRelapse)
                        SaveReincidenciaLevel3(parRelapse, paramLevel3.Id);

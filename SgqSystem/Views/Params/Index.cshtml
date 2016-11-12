@@ -550,6 +550,7 @@
                             }
                             $btn.button('reset');
                         }).fail(function (e, h, x) {
+                            closeLoader();
                             alert(e.responseJSON.Message);
                         });
                     }
@@ -773,6 +774,7 @@
                             //console.log(objetoReturn);
                             //console.log(respostaCompleta);
                         }).fail(function (e, h, x) {
+                            closeLoader();
                             alert(e.responseJSON.Message);
                         });
                     }
@@ -953,6 +955,7 @@
 
                             }
                         }).fail(function (e, h, x) {
+                            closeLoader();
                             alert(e.responseJSON.Message);
                         });
                     }
@@ -1057,13 +1060,17 @@
                 }
 
                 var peso = $('#paramsDto_parLevel3Dto_pesoDoVinculo').val().replace(",", ".");
-                if (peso <= 0)
-                {
+                if (peso <= 0){
                     alert("O peso deve ser maior que zero.");
                     return;
                 }
 
-                $.get(vinculoL2L3 + '/' + idLevel2 + '/' + idLevel3 + '/' + peso + '/', function (obj, responseText, xhr) {
+                var  groupoLevel2 = $('#paramsDto_parLevel3Dto_listGroupsLevel2 :selected').val();
+                if( $('#paramsDto_parLevel3Dto_listGroupsLevel2 :selected').val().length == 0){
+                    groupoLevel2 = 0;
+                }
+
+                $.get(vinculoL2L3 + '/' + idLevel2 + '/' + idLevel3 + '/' + peso + '/' + groupoLevel2 + '/', function (obj, responseText, xhr) {
                     if (obj != null) {
                         alert("Vinculado L3 com L2 ID: " + obj.Id);
                         UpdateSelect2Level3(idLevel2, undefined, function(){$('#parLevel3Select2').trigger('change');});

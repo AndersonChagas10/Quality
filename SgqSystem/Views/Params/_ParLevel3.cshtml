@@ -178,10 +178,12 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">@Resources.Resource.weight</h4>
-                        <small>@Resources.Resource.inform_the_weight_of_the_level3</small>
                     </div>
                     <div class="modal-body">
+                        <small>@Resources.Resource.inform_the_weight_of_the_level3</small>
                         @Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.pesoDoVinculo, new { @class = "form-control input-sm" })
+                        <small>Grupo do level2</small>
+                        @Html.DropDownListFor(m => m.paramsDto.parLevel3Dto.listGroupsLevel2, new SelectList(Model.paramsDto.parLevel3Dto.listGroupsLevel2, dataValueField:"Id", dataTextField:"Name" ), "Selecione...", new { @class = "form-control input-sm" })
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="saveLevel3Level2()" id="savePontos">@Resources.Resource.attach</button>
@@ -200,6 +202,8 @@
 <script>
 
     var hasPeso = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.pesoDoVinculo));
+    var grouLevel2Selected = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.groupLevel2Selected));
+
     $('#paramsDto_parLevel3Dto_pesoDoVinculo').val(hasPeso);
 
     $('#pesoDefinido').html(hasPeso).show();
@@ -255,10 +259,9 @@
         }
 
     });
+    
     /*Fim Reincidencia*/
-
-    $('#modalPontos').appendTo('body');
-
+    
     $('#btnUnidadeMedida').click(function (e) {
         $('#modalUnidadeMedida').modal({ backdrop: false });
     });
@@ -422,6 +425,12 @@
     });
 
     $(document).ready(function () {
+
+        var modalPontos = $('#modalPontos').detach();
+        $('body > #modalPontos').remove();
+        modalPontos.appendTo('body');
+        if(grouLevel2Selected > 0)
+            $('#paramsDto_parLevel3Dto_listGroupsLevel2').val(grouLevel2Selected)
 
         updateAllTables();
 
