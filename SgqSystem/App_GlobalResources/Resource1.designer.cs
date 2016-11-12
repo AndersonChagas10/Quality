@@ -1447,7 +1447,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show groups on level 3.
+        ///   Looks up a localized string similar to Show Level 3 Grouped With Level 2.
         /// </summary>
         internal static string show_group_on_level3 {
             get {

@@ -505,7 +505,7 @@
     <value>Amostra</value>
   </data>
   <data name="show_group_on_level3" xml:space="preserve">
-    <value>Mostrar agrupamentos no nível 3</value>
+    <value>Mostrar Level 3 Agrupado Com Level 2</value>
   </data>
   <data name="counter" xml:space="preserve">
     <value>Contador</value>
