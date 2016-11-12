@@ -233,7 +233,7 @@
                                                 <tr id="@cl.Id">
                                                     <td>@cl.ParCounter.Name </td>
                                                     <td>@cl.ParLocal.Name</td>
-                                                    <td>&nbsp;<button type="button" class="btn btn-danger btn-sm" onclick="CounterLevel2.RemoveCounterEdicao()"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                    <td>&nbsp;<button type="button" class="btn btn-danger btn-sm" onclick="CounterLevel2.RemoveCounterEdicao($(this), @cl.Id)"><i class="fa fa-times" aria-hidden="true"></i></button></td>
                                                 </tr>
                                             }
                                         }
@@ -243,7 +243,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" id="btnSaveNewLevel2" data-loading-text="@Resources.Resource.saving_the_level2" onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level2</button>
+                <button type="button" id="btnSaveNewLevel2" data-loading-text="@Resources.Resource.saving_the_level2" onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-warning">@Resources.Resource.save_level2</button>
             </div>
         </div>
     }
@@ -347,7 +347,7 @@
             updateAllTables();
         },
         RemoveCounterEdicao: function (e, id) {
-            e.preventDefaut();
+            //e.preventDefaut();
             e.parents('tr').hide();
 
             CounterLevel2.ObjCounterRemove.push({ Id: id })
