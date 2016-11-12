@@ -52,13 +52,13 @@
                                 <table class="table-erp">
                                     <tbody>
                                         <tr class="row">
-                                            @Table.GerarColuna(@Html.TextBox("inputNumeroNC", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.number_nc), Table.PosicaoLabel.top)
-                                            @Table.GerarColuna(@Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.validation), Table.PosicaoLabel.top)
-                                            @Table.GerarColunaButton(@Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "selectFrequenciaReincidencia", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"btnAddFrequenciaReincidencia\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                            @Table.GerarColuna(@Html.TextBox("inputNumeroNCLevel3", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.number_nc), Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(@Html.TextBox("inputVigenciaLevel3", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.validation), Table.PosicaoLabel.top)
+                                            @Table.GerarColunaButton(@Html.DropDownList("selectFrequenciaReincidenciaLevel3", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "selectFrequenciaReincidenciaLevel3", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"btnAddFrequenciaReincidenciaLevel3\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>
-                                <table class="table-erp table table-condensed" id="tableRepetition">
+                                <table class="table-erp table table-condensed" id="tableRepetitionLevel3">
                                     <thead>
                                         <tr>
                                             <td>@Resources.Resource.rule</td>
@@ -68,7 +68,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr id="RegraReincidenciaGroup" class="example"></tr>
+                                        <tr id="RegraReincidenciaGroupLevel3" class="example"></tr>
                                         @if (Model.paramsDto.listParRelapseDto != null)
                                         {
                                             int i = 0;
@@ -81,7 +81,7 @@
                                                     <td>@rp.EffectiveLength</td>
                                                     <td>@rp.parFrequency.Name</td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                                        <button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidenciaLevel3"><i class="fa fa-times" aria-hidden="true"></i></button>
                                                     </td>
                                                 </tr>
                                             }
@@ -100,7 +100,7 @@
                     </h5>
                 </div>
 
-                <button type="button" id="btnSaveNewLevel3" data-loading-text="@Resources.Resource.saving_the_level3" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-primary margin-button">@Resources.Resource.save_level3</button>
+                <button type="button" id="btnSaveNewLevel3" data-loading-text="@Resources.Resource.saving_the_level3" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-danger margin-button">@Resources.Resource.save_level3</button>
             </div>
         </div>
         <!-- Modal -->
@@ -328,6 +328,33 @@
     });
 
     $('#selectTipoInput').change();
+
+    $('#btnAddFrequenciaReincidenciaLevel3').click(function (e) {
+    
+        e.preventDefault();
+    
+        var NcNumber = $('#inputNumeroNCLevel3').val();
+        var Vigencia = $('#inputVigenciaLevel3').val();
+        var idFrequencia = $('#selectFrequenciaReincidenciaLevel3').val()
+        var includeItem = true;
+    
+        if (includeItem == true) {
+            var indexValue = $('#tableRepetitionLevel3 tbody tr').length;
+    
+            var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
+                              '<input class="LocalLevel3Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
+                              '<input class="LocalLevel3Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
+    
+            var elemento = $('<tr><td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#selectFrequenciaReincidenciaLevel3 option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidenciaLevel3"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td><tr>');
+            $('#tableRepetitionLevel3 tbody').append(elemento);
+            $('#selectFrequenciaReincidenciaLevel3').prop('selectedIndex', 0);
+            $('#inputNumeroNCLevel3, #inputVigencia').val("");
+            $('#inputNumeroNCLevel3').focus();
+    
+            updateAllTables();
+        }
+    
+    });
 
     $(document).ready(function () {
 

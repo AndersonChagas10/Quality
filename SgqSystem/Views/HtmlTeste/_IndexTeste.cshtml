@@ -7967,38 +7967,38 @@
 
         listLevel3Item.forEach(function(o, c){
 
-            //if(o.ParLevel3Value.ParLevel3InputType.Id == 1)//Binario
-            //{
-            //    htmlLevel3 +=   ' <div id="' + o.Id + '" class="level03">' +
-            //                    '   <div class="row">' +
-            //                    '        <div class="col-xs-9">' + o.Name + '</div>' +
-            //                    '        <div class="col-xs-3 text-center">' +
-            //                    '            <span value="1" class="pull-right marginRight30 response">Yes</span>' +
-            //                    '        </div>' +
-            //                    '    </div>' +
-            //                    '</div>';
+            if(o.ParLevel3Value[0].ParLevel3InputType.Id == 1)//Binario
+            {
+                htmlLevel3 +=   '<li id="' + o.Id + '" class="list-group-item level03">' +
+                                '   <div class="row">' +
+                                '        <div class="col-xs-9">' + o.Name + '</div>' +
+                                '        <div class="col-xs-3 text-center">' +
+                                '            <span value="1" class="pull-right marginRight30 response">'+o.ParLevel3Value[0].ParLevel3BoolTrue.Name+'</span>' +
+                                '        </div>' +
+                                '    </div>' +
+                                '</li>';
 
-            //}
-            //else
-            //{
-            htmlLevel3 += '<li id="' + o.Id + '" class="list-group-item level03">                                                                                  '+
-         '     <div class="row">                                                                                                           '+
-         '         <div class="col-xs-6">' + o.Name + '</div>                                                                              '+
-         '         <div class="col-xs-6 text-center">                                                                                      '+
-         '             <div class="input-group input-group-sm width200 pull-right">                                                        '+
-         '                 <span class="input-group-btn btn-minus">                                                                        '+
-         '                      <button class="btn btn-default" type="button">                                                             '+
-         '                          <i class="fa fa-minus" aria-hidden="true"></i>                                                         '+
-         '                          </button></span><input value="0" min="0" type="number" class="form-control text-center levelValue">    '+
-         '                          <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button">                  '+
-         '                          <i class="fa fa-plus" aria-hidden="true"></i>                                                          '+
-         '                      </button>                                                                                                  '+
-         '                  </span>                                                                                                        '+
-         '             </div>                                                                                                              '+
-         '         </div>                                                                                                                  '+
-         '     </div>                                                                                                                      '+
-         ' </li>';
-            //}
+            }else{
+
+                htmlLevel3 +=   '<li id="' + o.Id + '" class="list-group-item level03">                                                              '+
+                                '     <div class="row">                                                                                                           '+
+                                '         <div class="col-xs-6">' + o.Name + '</div>                                                                              '+
+                                '         <div class="col-xs-6 text-center">                                                                                      '+
+                                '             <div class="input-group input-group-sm width200 pull-right">                                                        '+
+                                '                 <span class="input-group-btn btn-minus">                                                                        '+
+                                '                      <button class="btn btn-default" type="button">                                                             '+
+                                '                          <i class="fa fa-minus" aria-hidden="true"></i>                                                         '+
+                                '                          </button></span><input value="0" min="0" type="number" class="form-control text-center levelValue">    '+
+                                '                          <span class="input-group-btn btn-plus"><button class="btn btn-default" type="button">                  '+
+                                '                          <i class="fa fa-plus" aria-hidden="true"></i>                                                          '+
+                                '                      </button>                                                                                                  '+
+                                '                  </span>                                                                                                        '+
+                                '             </div>                                                                                                              '+
+                                '         </div>                                                                                                                  '+
+                                '     </div>                                                                                                                      '+
+                                ' </li>';
+
+            }
 
         });
 

@@ -98,13 +98,13 @@
                                 <table class="table-erp">
                                     <tbody>
                                         <tr class="row">
-                                            @Table.GerarColuna(@Html.TextBox("inputNumeroNC", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.number_nc), Table.PosicaoLabel.top)
-                                            @Table.GerarColuna(@Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.validation), Table.PosicaoLabel.top)
-                                            @Table.GerarColunaButton(@Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "selectFrequenciaReincidencia", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"btnAddFrequenciaReincidencia\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                            @Table.GerarColuna(@Html.TextBox("inputNumeroNCLevel2", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.number_nc), Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(@Html.TextBox("inputVigenciaLevel2", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.validation), Table.PosicaoLabel.top)
+                                            @Table.GerarColunaButton(@Html.DropDownList("selectFrequenciaReincidenciaLevel2", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "selectFrequenciaReincidenciaLevel2", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"btnAddFrequenciaReincidenciaLevel2\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>
-                                <table class="table-erp table table-condensed" id="tableRepetition" style="display: none;">
+                                <table class="table-erp table table-condensed" id="tableRepetitionLevel2" style="display: none;">
                                     <thead>
                                         <tr>
                                             <td>@Resources.Resource.rule</td>
@@ -114,7 +114,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr id="RegraReincidenciaGroup" class="example"></tr>
+                                        <tr id="RegraReincidenciaGroupLevel2" class="example"></tr>
                                         @if (Model.paramsDto.listParRelapseDto != null)
                                         {
                                             int i = 0;
@@ -126,7 +126,7 @@
                                                     <td>@rp.NcNumber</td>
                                                     <td>@rp.EffectiveLength</td>
                                                     <td>@rp.parFrequency.Name</td>
-                                                    <td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                    <td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidenciaLevel2"><i class="fa fa-times" aria-hidden="true"></i></button></td>
                                                 </tr>
                                             }
                                         }
@@ -227,7 +227,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" id="btnSaveNewLevel2" data-loading-text="@Resources.Resource.saving_the_level2" onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level2</button>
+                <button type="button" id="btnSaveNewLevel2" data-loading-text="@Resources.Resource.saving_the_level2" onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-warning">@Resources.Resource.save_level2</button>
             </div>
         </div>
     }
@@ -386,27 +386,27 @@
         updateAllTables();
 
     });
-    $('#btnAddFrequenciaReincidencia').click(function (e) {
+    $('#btnAddFrequenciaReincidenciaLevel2').click(function (e) {
 
         e.preventDefault();
 
-        var NcNumber = $('#inputNumeroNC').val();
-        var Vigencia = $('#inputVigencia').val();
-        var idFrequencia = $('#selectFrequenciaReincidencia').val()
+        var NcNumber = $('#inputNumeroNCLevel2').val();
+        var Vigencia = $('#inputVigenciaLevel2').val();
+        var idFrequencia = $('#selectFrequenciaReincidenciaLevel2').val()
         var includeItem = true;
 
         if (includeItem == true) {
-            var indexValue = $('#tableRepetition tbody tr').length;
+            var indexValue = $('#tableRepetitionLevel2 tbody tr').length;
 
             var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
                               '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
                               '<input class="LocalLevel2Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
 
-            var elemento = $('<tr><td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#selectFrequenciaReincidencia option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidencia"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td><tr>');
-            $('#tableRepetition tbody').append(elemento);
-            $('#selectFrequenciaReincidencia').prop('selectedIndex', 0);
-            $('#inputNumeroNC, #inputVigencia').val("");
-            $('#inputNumeroNC').focus();
+            var elemento = $('<tr><td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#selectFrequenciaReincidenciaLevel2 option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidenciaLevel2"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td><tr>');
+            $('#tableRepetitionLevel2 tbody').append(elemento);
+            $('#selectFrequenciaReincidenciaLevel2').prop('selectedIndex', 0);
+            $('#inputNumeroNCLevel2, #inputVigencia').val("");
+            $('#inputNumeroNCLevel2').focus();
 
             updateAllTables();
         }
