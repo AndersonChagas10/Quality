@@ -622,6 +622,8 @@ namespace Dominio.Services
             foreach (var ParLevel3Level2Level1Dto in retorno.listParLevel3Level2Level1Dto.Distinct())
             {
                 if (!retorno.listParLevel2Colleta.Any(r=> r.Id == ParLevel3Level2Level1Dto.ParLevel3Level2.ParLevel2.Id)) {
+                    ParLevel3Level2Level1Dto.ParLevel3Level2.ParLevel2.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(_baseParCounterXLocal.GetAll().Where(r => r.ParLevel2_Id == ParLevel3Level2Level1Dto.ParLevel3Level2.ParLevel2.Id && r.IsActive == true).ToList());
+
                     retorno.listParLevel2Colleta.Add(ParLevel3Level2Level1Dto.ParLevel3Level2.ParLevel2);
                 }
                 var parLevel3Level2DoLevel2 = _repoParLevel3.GetLevel3VinculadoLevel2(retorno.Id);
