@@ -261,6 +261,12 @@
                     </div>
                 </div>
             </div>
+            @*Heder do Level1*@
+            <div class="row">
+                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5"></div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"></div>
+            </div>
             <div class="list-group">
 
 
@@ -7717,16 +7723,23 @@
 
     function CreateLevel1Group(listLevel1) {
 
+        //As colunhas do Level1 estão relacionadas as @*Heder do Level1*@ no Html. Caso alterar o tanho das divs aqui deve ser alterada no HTML também
         listLevel1.forEach(function(o, c){
 
 
             var itemGroupLevel1 = '<li class="list-group-item">                                                                                                                     '+
               '   <div class="row">                                                                                                                                                 '+
-              '       <a href="#" id="' + o.Id + '" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" savelevel02="saveLevel02" minreauditnumber="1" consecutivefailure="false">  '+
+              //Level Button
+              '       <a href="#" id="' + o.Id + '" class="level01 col-xs-5 col-sm-5 col-md-5 col-lg-5" savelevel02="saveLevel02" minreauditnumber="1" consecutivefailure="false">  '+
               '           <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>                  '+
               '           <span class="levelName">' + o.Name + '</span>                                                                                                             '+
               '       </a>                                                                                                                                                          '+
-              '       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">                                                                                                    '+
+              //Counters Level1 Line
+              '       <div class="counters level01 col-xs-4 col-sm-4 col-md-4 col-lg-4">                                                                                            '+  
+              
+              '       </div>                                                                                                                                                        '+       
+              //Buttons Level1
+              '       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 userInfo">                                                                                                    '+
               '           <div class="pull-right">                                                                                                                                  '+
               '               <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>                          '+
               '               <button class="btn btn-primary btnReaudit hide">Reaudit <span class="reauditPeriod fontBold"></span></button>                                         '+
@@ -7768,25 +7781,28 @@
                 var cabecalhoLevel3 = '';
                 if (!isCreated) {
 
-                    level2Item += '<li class="list-group-item">                                                                                                  ' +
+                    level2Item += '<li class="list-group-item">                                                                                                 ' +
                   '   <div class="row">                                                                                                                         ' +
-                  '       <a href="#" id="" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-6" levelerrorlimit="1" defects="0" reauditnumber="0">  ' +
+                  '       <a href="#" id="" class="level02 col-xs-3 col-sm-3 col-md-3 col-lg-4" levelerrorlimit="1" defects="0" reauditnumber="0">              ' +
                   '           <span class="icons">                                                                                                              ' +
                   '               <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>                 ' +
                   '               <i class="fa fa-exclamation font22 iconsArea red areaNotComplete" aria-hidden="true" title="Not Complete"></i>                ' +
                   '           </span>                                                                                                                           ' +
-                  '           <span class="levelName">' + level1Name + '</span>                                                                                     ' +
+                  '           <span class="levelName">' + level1Name + '</span>                                                                                 ' +
                   '       </a>                                                                                                                                  ' +
+                  
                   '       <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">                                                                            ' +
                   '           <div class="hide">                                                                                                                ' +
                   '               <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>                                                     ' +
                   '           </div>                                                                                                                            ' +
                   '       </div>                                                                                                                                ' +
+                 
                   '       <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">                                                                            ' +
                   '           <div>                                                                                                                             ' +
                   '               <a href="#" class="defects iconsArea font22">0</a>                                                                            ' +
                   '           </div>                                                                                                                            ' +
                   '       </div>                                                                                                                                ' +
+                
                   '       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 userInfo">                                                                            ' +
                   '           <div class="pull-right">                                                                                                          ' +
                   '               <button class="btn btn-success hide btnAreaSaveConfirm">                                                                      ' +
