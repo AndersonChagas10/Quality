@@ -404,6 +404,7 @@
 
     });
 
+    /*Reincidencia*/
     var counterReincidencial2 = 0;
     function l2RemoveReincidencia(e) {
         e.parents('tr').find('input[type="hidden"]').attr("disabled", false).attr("name", e.parents('tr').find('input[type="hidden"]').attr('name') + "[" + counterReincidencial2 + "]");
@@ -453,6 +454,7 @@
         }
 
     });
+    /*Fim Reincidencia*/
 
     $(document).on('click', '#btnRemoveLevel3Group', function (e) {
         e.preventDefault();

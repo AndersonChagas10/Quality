@@ -52,13 +52,25 @@
                                 <table class="table-erp">
                                     <tbody>
                                         <tr class="row">
-                                            @Table.GerarColuna(@Html.TextBox("inputNumeroNCLevel3", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.number_nc), Table.PosicaoLabel.top)
-                                            @Table.GerarColuna(@Html.TextBox("inputVigenciaLevel3", null, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.validation), Table.PosicaoLabel.top)
-                                            @Table.GerarColunaButton(@Html.DropDownList("selectFrequenciaReincidenciaLevel3", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "selectFrequenciaReincidenciaLevel3", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"btnAddFrequenciaReincidenciaLevel3\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                            @Table.GerarColuna(
+                                                @Html.TextBox("inputNumeroNC", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number", @Id = "l3InputNumeroNC" })
+                                                , @Html.Label(Resources.Resource.number_nc)
+                                                , Table.PosicaoLabel.top)
+
+                                            @Table.GerarColuna(
+                                                @Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number", @Id = "l3InputVigencia" })
+                                                , @Html.Label(Resources.Resource.validation)
+                                                , Table.PosicaoLabel.top)
+
+                                            @Table.GerarColunaButton(
+                                                @Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "l3SelectFrequenciaReincidencia", @class = "form-control input-sm" })
+                                                , @Html.Label(Resources.Resource.frequency)
+                                                , Table.PosicaoLabel.top
+                                                , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"l3BtnAddFrequenciaReincidencia\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>
-                                <table class="table-erp table table-condensed" id="tableRepetitionLevel3">
+                                <table class="table-erp table table-condensed" id="l3TableRepetition">
                                     <thead>
                                         <tr>
                                             <td>@Resources.Resource.rule</td>
@@ -68,20 +80,21 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr id="RegraReincidenciaGroupLevel3" class="example"></tr>
-                                        @if (Model.paramsDto.listParRelapseDto != null)
+                                        <tr id="RegraReincidenciaGroup" class="example"></tr>
+                                        @if (Model.paramsDto.parLevel3Dto.listParRelapseDto != null)
                                         {
                                             int i = 0;
-                                            foreach (var rp in Model.paramsDto.listParRelapseDto)
+                                            foreach (var rp in Model.paramsDto.parLevel3Dto.listParRelapseDto)
                                             {
                                                 i++;
-                                                <tr id="@rp.Id">
+                                                <tr id="@rp.Id" class="existent">
                                                     <td>Regra @i</td>
                                                     <td>@rp.NcNumber</td>
                                                     <td>@rp.EffectiveLength</td>
                                                     <td>@rp.parFrequency.Name</td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidenciaLevel3"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                                        @Html.Hidden("paramsDto.parLevel3Dto.removeReincidencia", rp.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                        <button type="button" class="btn btn-danger btn-xs pull-right" onclick="l3RemoveReincidencia($(this))" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button>
                                                     </td>
                                                 </tr>
                                             }
@@ -191,6 +204,58 @@
 
     $('#pesoDefinido').html(hasPeso).show();
     $('#painelPeso').show();
+
+    /*Reincidencia*/
+    var counterReincidencial3 = 0;
+    function l3RemoveReincidencia(e) {
+        e.parents('tr').find('input[type="hidden"]').attr("disabled", false).attr("name", e.parents('tr').find('input[type="hidden"]').attr('name') + "[" + counterReincidencial3 + "]");
+        e.parents('tr').hide();
+        counterReincidencial3++;
+        console.log(e.parents('tr'));
+        updateAllTables();
+    }
+
+    $('#l3BtnAddFrequenciaReincidencia').click(function (e) {
+
+        e.preventDefault();
+        if($('#l3SelectFrequenciaReincidencia :selected').val() <= 0){
+            alert('É necessário selecionar a Frequência');
+            return;
+        }
+
+        if($('#l3InputNumeroNC').val().length <= 0){
+            alert('É necessário informar o Número de NC');
+            return;
+        }
+
+        if($('#l3InputVigencia').val().length <= 0){
+            alert('É necessário selecionar a Vigência');
+            return;
+        }
+
+        var NcNumber = $('#l3InputNumeroNC').val();
+        var Vigencia = $('#l3InputVigencia').val();
+        var idFrequencia = $('#l3SelectFrequenciaReincidencia').val()
+        var includeItem = true;
+
+        if (includeItem == true) {
+            var indexValue = $('#l3TableRepetition tbody tr').not('.existent').length -1;
+
+            var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.parLevel3Dto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
+                              '<input class="LocalLevel3Class" type="hidden" name="paramsDto.parLevel3Dto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
+                              '<input class="LocalLevel3Class" type="hidden" name="paramsDto.parLevel3Dto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
+
+            var elemento = $('<tr><td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#l3SelectFrequenciaReincidencia option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" onclick="RemoverReincidencia($(this));"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td><tr>');
+            $('#l3TableRepetition > tbody').append(elemento[0]);
+            $('#l3SelectFrequenciaReincidencia').prop('selectedIndex', 0);
+            $('#l3InputNumeroNC, #l3InputVigencia').val("");
+            $('#l3InputNumeroNC').focus();
+
+            updateAllTables();
+        }
+
+    });
+    /*Fim Reincidencia*/
 
     $('#modalPontos').appendTo('body');
 
