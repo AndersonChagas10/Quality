@@ -713,43 +713,45 @@
 
                 closeConfirm();
             },
+            loading:  @Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2)),
             select2: function () {
-                $('#parLevel2Select2').select2({
-                }).on("select2:select", function (e) {
+                //$('#parLevel2Select2').select2({
+                //}).on("select2:select", function (e) {
 
-                    if (e.currentTarget.value == "") {
-                        $('#ParLevel2').empty();
-                        $('#ParLevel2').append(parLevel2Empty);
-                        $('#level2Title').text(indexParamsLevel2.new_level2);
-                    } else {
-                        var message = @Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2));
-                        openLoader(message);
-                        $.get('GetParLevel2ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
-                            closeLoader();
-                            if (obj != null) {
-                                $('#ParLevel2').empty();
-                                $('#ParLevel2').append(xhr.responseText);
-                                UpdateSelect2Level3(e.currentTarget.value);
-                            }
-                            if (e.currentTarget.value > 0) {
-                                $('#level2Title').text('#' + $('#paramsDto_parLevel2Dto_Id').val() + ' - ' + $('#paramsDto_parLevel2Dto_Name').val());
-                            } else {
-                                $('#level2Title').text(indexParamsLevel2.new_level2);
-                            }
+                //    if (e.currentTarget.value == "") {
+                //        $('#ParLevel2').empty();
+                //        $('#ParLevel2').append(parLevel2Empty);
+                //        $('#level2Title').text(indexParamsLevel2.new_level2);
+                //    } else {
+                //        var message = indexParamsLevel2.loading;
+                //        openLoader(message);
+                //        $.get('GetParLevel2ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
+                //            closeLoader();
+                //            if (obj != null) {
+                //                $('#ParLevel2').empty();
+                //                $('#ParLevel2').append(xhr.responseText);
+                //                UpdateSelect2Level3(e.currentTarget.value);
+                //            }
+                //            if (e.currentTarget.value > 0) {
+                //                $('#level2Title').text('#' + $('#paramsDto_parLevel2Dto_Id').val() + ' - ' + $('#paramsDto_parLevel2Dto_Name').val());
+                //            } else {
+                //                $('#level2Title').text(indexParamsLevel2.new_level2);
+                //            }
 
-                            initialFormLevel2 = $($('form')[1]).clone();
-                        });
-                    }
+                //            initialFormLevel2 = $($('form')[1]).clone();
+                //        });
+                //    }
 
-                }).on("select2:unselect", function (e) {
+                //}).on("select2:unselect", function (e) {
 
-                    if (e.currentTarget.value == "") {
-                        $('#ParLevel2').empty()
-                        $('#ParLevel2').append(parLevel2Empty)
-                        $('#level2Title').text(indexParamsLevel2.new_level2);
-                    }
-                });
+                //    if (e.currentTarget.value == "") {
+                //        $('#ParLevel2').empty()
+                //        $('#ParLevel2').append(parLevel2Empty)
+                //        $('#level2Title').text(indexParamsLevel2.new_level2);
+                //    }
+                //});
             },
+            saving: @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level2)),
             enviarDadosParaApi: function (e) {
                 $("form").each(function () { $.data($(this)[0], 'validator', false); });
                 $.validator.unobtrusive.parse("form");
@@ -760,7 +762,7 @@
                     CounterLevel2.UpdateCounters();
                     var dados = $('#newLevel2Modal > form').serializeObject();
 
-                    openLoader(@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level2)));
+                    openLoader();
                     $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                         closeLoader();
                         var $btn = $('#btnSaveNewLevel2');

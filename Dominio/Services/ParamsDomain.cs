@@ -525,7 +525,7 @@ namespace Dominio.Services
                 ParLevel2_Id = idLevel2,
                 ParLevel3_Id = idLevel3,
                 Weight = peso,
-                ParLevel3Group_Id = groupLevel2
+                ParLevel3Group_Id = groupLevel2 == 0 ? null : groupLevel2
             };
 
             var existente = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
