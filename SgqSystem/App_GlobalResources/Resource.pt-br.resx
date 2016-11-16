@@ -612,4 +612,7 @@
   <data name="confirm_the_action" xml:space="preserve">
     <value>Confirme essa ação</value>
   </data>
+  <data name="samples_per_evaluation" xml:space="preserve">
+    <value>Amostras por Avaliação</value>
+  </data>
 </root>

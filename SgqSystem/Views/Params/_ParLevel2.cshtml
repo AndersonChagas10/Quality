@@ -59,7 +59,7 @@
                                    , error: @Html.ValidationMessageFor(m => m.paramsDto.parEvaluationDto.Number, null, new { @class = "text-danger" }))
 
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.Number, new { @class = "form-control input-sm", type = "number", min = "0" })
-                                   , @Html.Label(Resources.Resource.sample)
+                                   , @Html.Label(Resources.Resource.samples_per_evaluation)
                                    , Table.PosicaoLabel.top
                                    , error: @Html.ValidationMessageFor(m => m.paramsDto.parSampleDto.Number, null, new { @class = "text-danger" }))
 

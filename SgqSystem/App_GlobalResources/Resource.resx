@@ -618,4 +618,7 @@
   <data name="confirm_the_action" xml:space="preserve">
     <value>Confirm the action</value>
   </data>
+  <data name="samples_per_evaluation" xml:space="preserve">
+    <value>Samples per Evaluation</value>
+  </data>
 </root>
