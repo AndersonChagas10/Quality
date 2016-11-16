@@ -412,7 +412,8 @@
         inputs.each(function (e) {
 
             if ($(this).val() == input.val()) {
-                alert('Já cadastrou esse grupo para o input');
+                openMessageModal("Alerta", "Já cadastrou esse grupo para o input");
+                //alert('Já cadastrou esse grupo para o input');
                 includeItem = false;
                 return false;
             }
@@ -464,17 +465,20 @@
 
         e.preventDefault();
         if($('#l2SelectFrequenciaReincidencia :selected').val() <= 0){
-            alert('É necessário selecionar a Frequência');
+            openMessageModal("Alerta", "É necessário selecionar a Frequência");
+            //alert('É necessário selecionar a Frequência');
             return;
         }
 
         if($('#l2InputNumeroNC').val().length <= 0){
-            alert('É necessário informar o Número de NC');
+            openMessageModal("Alerta", "É necessário informar o Número de NC");
+            //alert('É necessário informar o Número de NC');
             return;
         }
 
         if($('#l2InputVigencia').val().length <= 0){
-            alert('É necessário selecionar a Vigência');
+            openMessageModal("Alerta", "É necessário selecionar a Vigência");
+            //alert('É necessário selecionar a Vigência');
             return;
         }
 

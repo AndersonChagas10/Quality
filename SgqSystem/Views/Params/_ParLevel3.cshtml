@@ -250,17 +250,20 @@
 
         e.preventDefault();
         if($('#l3SelectFrequenciaReincidencia :selected').val() <= 0){
-            alert('É necessário selecionar a Frequência');
+            openMessageModal("Alerta", "É necessário selecionar a Frequência");
+            //alert('É necessário selecionar a Frequência');
             return;
         }
 
         if($('#l3InputNumeroNC').val().length <= 0){
-            alert('É necessário informar o Número de NC');
+            openMessageModal("Alerta", "É necessário informar o Número de NC");
+            //alert('É necessário informar o Número de NC');
             return;
         }
 
         if($('#l3InputVigencia').val().length <= 0){
-            alert('É necessário selecionar a Vigência');
+            openMessageModal("Alerta", "É necessário selecionar a Vigência");
+            //alert('É necessário selecionar a Vigência');
             return;
         }
 
