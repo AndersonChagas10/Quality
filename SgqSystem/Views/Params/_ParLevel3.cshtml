@@ -53,7 +53,7 @@
                     </tr>
                 </table>
 
-                <div class="panel-group accordion" id="level3_repetition_accordion">
+                <div class="panel-group accordion margin-top" id="level3_repetition_accordion">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -116,6 +116,14 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default margin-top">
+                    <div class="panel-heading"><h4 style="margin: 0px; padding: 10px 15px;">@Resources.Resource.weight</h4></div>
+                    <div class="panel-body">
+                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.pesoDoVinculo, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.inform_the_weight_of_the_level3), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.DropDownListFor(m => m.paramsDto.parLevel3Dto.listGroupsLevel2, new SelectList(Model.paramsDto.parLevel3Dto.listGroupsLevel2, dataValueField: "Id", dataTextField: "Name"), Resources.Resource.select+"...", new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_group), Table.PosicaoLabel.top)
                     </div>
                 </div>
 
@@ -182,7 +190,7 @@
             </div>
         </div>
 
-        <!-- Modal -->
+        @*<!-- Modal -->
         <div class="modal fade" id="modalPontos" role="dialog">
             <div class="modal-dialog">
 
@@ -205,7 +213,7 @@
                 </div>
 
             </div>
-        </div>
+        </div>*@
 
 
     }
