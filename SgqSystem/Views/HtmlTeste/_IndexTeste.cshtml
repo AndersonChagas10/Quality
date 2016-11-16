@@ -4282,10 +4282,10 @@
 
     });
     $(document).on('click', '.button-expand', function (e) {
-        $(this).parents('.level03Group').children('.panel-group').children('.panel').children('.collapse').collapse('show');
+        $('.panel-collapse').collapse('show');
     });
     $(document).on('click', '.button-collapse', function (e) {
-        $(this).parents('.level03Group').children('.panel-group').children('.panel').children('.in').collapse('hide');
+        $('.panel-collapse').collapse('hide');
     });
  
     $(document).on('click', '.level03.boolean', function (e) {

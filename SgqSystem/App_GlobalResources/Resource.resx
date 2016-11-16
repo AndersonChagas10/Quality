@@ -618,6 +618,9 @@
   <data name="confirm_the_action" xml:space="preserve">
     <value>Confirm the action</value>
   </data>
+  <data name="alert_rule" xml:space="preserve">
+    <value>Alert Rule</value>
+  </data>
   <data name="samples_per_evaluation" xml:space="preserve">
     <value>Samples per Evaluation</value>
   </data>
