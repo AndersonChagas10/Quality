@@ -3825,7 +3825,7 @@
             //$('.painel.painelLevel03:visible:last').parent().addClass('col-xs-' + (($($('.painel.painelLevel03')).parent('.hide').length * 3) + 3)).removeClass('smallPaddingRight');
         });
 
-        CreateHeader(levelHeader, cabecalhosInclusos, contadoresIncluidos)
+        //CreateHeader(levelHeader, cabecalhosInclusos, contadoresIncluidos)
 
     }
 
@@ -7732,11 +7732,11 @@
                 switch (o.ParCounter.Id) {
                     case 21: 
                         parCounterName = "Nº AV PL";
-                        valueCounter = o.ParamEvaluation.Number;
+                        //valueCounter = o.ParamEvaluation.Number;
                         break;
                     case 22: 
                         parCounterName = "Nº AM PL"
-                        valueCounter = o.ParamSample.Number;
+                        //valueCounter = o.ParamSample.Number;
                         break;
                     case 23: 
                         parCounterName = "TOT AV"
@@ -7966,8 +7966,7 @@
                     /*Adiciono os que possuem group*/
                     listParLevel3Level2Level1.forEach(function(level3Level2Leve1, counter){
                         
-                        var group = level3Level2Leve1.ParLevel3Level2.ParLevel3Group;
-                        
+                        var group = level3Level2Leve1.ParLevel3Level2.ParLevel3Group;                        
                         
                         if(group != null){
                             
@@ -7994,15 +7993,33 @@
                                 level3.forEach(function(obj, counterL3){
                                     var l3 = obj.ParLevel3Level2.ParLevel3;
 
+                                    //intervalos
+                                    if(l3.ParLevel3Value[0].ParLevel3InputType.Id == 3){
 
-                                    groupLevel3 +=   ' <div id="' + l3.Id + '" class="level03 boolean">' +
-                                                    '   <div class="row">' +
-                                                    '        <div class="col-xs-9">' + l3.Name + '</div>' +
-                                                    '        <div class="col-xs-3 text-center">' +
-                                                    '            <span value="1" booltrueName="' + l3.ParLevel3Value[0].ParLevel3BoolTrue.Name + '" boolfalseName="' + l3.ParLevel3Value[0].ParLevel3BoolFalse.Name + '" class="pull-right marginRight30 response">' + l3.ParLevel3Value[0].ParLevel3BoolTrue.Name + '</span>' +
-                                                    '        </div>' + 
-                                                    '    </div>' +
-                                                    '</div>';
+                                        groupLevel3 +=   ' <div id="' + l3.Id + '" class="level03">' +
+                                                        '   <div class="row">' +
+                                                        '        <div class="col-xs-9">' + l3.Name + '</div>' +
+                                                        '        <div class="col-xs-3 text-center">' +
+                                                        '           <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>'+
+                                                        '        </div>' + 
+                                                        '    </div>' +
+                                                        '</div>';
+
+                                    }
+                                    //binarios
+                                    else if (l3.ParLevel3Value[0].ParLevel3InputType.Id == 1){
+
+                                        groupLevel3 +=   ' <div id="' + l3.Id + '" class="level03 boolean">' +
+                                                         '   <div class="row">' +
+                                                         '        <div class="col-xs-9">' + l3.Name + '</div>' +
+                                                         '        <div class="col-xs-3 text-center">' +
+                                                         '          <div class="input-group input-group-sm width200 pull-right">'+
+                                                         '            <span value="1" booltrueName="' + l3.ParLevel3Value[0].ParLevel3BoolTrue.Name + '" boolfalseName="' + l3.ParLevel3Value[0].ParLevel3BoolFalse.Name + '" class="pull-right marginRight30 response">' + l3.ParLevel3Value[0].ParLevel3BoolTrue.Name + '</span>' +
+                                                         '          </div>' + 
+                                                         '        </div>' + 
+                                                         '    </div>' +
+                                                         '</div>';
+                                    }
                                 });
 
                                 groupLevel3 +=    '           </div>                                                                                                                                                               ' +
