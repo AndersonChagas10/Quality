@@ -41,6 +41,9 @@ namespace DTO.DTO.Params
 
 
         public List<ParLevel3GroupDTO> ParLevel3Group { get; set; }
+        public ParEvaluationDTO ParamEvaluation { get; set; }
+        public ParSampleDTO ParamSample { get; set; }
+
         //public List<ParLevel3Level2DTO> ParLevel3Level2 { get; set; }
 
         public IEnumerable<SelectListItem> DdlLevel3Vinculados { get; set; }

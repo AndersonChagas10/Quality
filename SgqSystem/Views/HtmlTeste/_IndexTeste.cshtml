@@ -2840,7 +2840,7 @@
             getPhases(level01);
         }
 
-        CreateHeader($('.level02List .painel'), getLevel1($(this).attr('id')).cabecalhosInclusos);
+        CreateHeader($('.level02List .painel'), getLevel1($(this).attr('id')).cabecalhosInclusos, getLevel1($(this).attr('id')).contadoresIncluidos);
 
         //Mostra o level02Group.
         showLevel02(level01);
@@ -2851,6 +2851,16 @@
         for(var i = 0; i < level1.length; i++){
             if(level1[i].Id == id)
                 return level1[i];
+        }
+    }
+
+    function getLevel2(level01id, level02id){
+        for(var i = 0; i < level1.length; i++){
+            var level2list = level1[i].listParLevel2Colleta;
+            for(var j = 0; j < level2list.length; j++){
+                if(level2list[j].Id == level02id)
+                    return level2list[j];
+            }
         }
     }
 
@@ -3046,6 +3056,7 @@
 
     }
     $(document).on('click', '.level02List .level02', function (e) {
+        CreateHeader($('.level03List .painel'), getLevel2($(this).parents('.level02Group').attr('level01id'), $(this).attr('id')).cabecalhosInclusos, getLevel2($(this).parents('.level02Group').attr('level01id'), $(this).attr('id')).listParCounterXLocal);
         showLevel03($(this));
     });
 
@@ -3813,6 +3824,8 @@
 
             //$('.painel.painelLevel03:visible:last').parent().addClass('col-xs-' + (($($('.painel.painelLevel03')).parent('.hide').length * 3) + 3)).removeClass('smallPaddingRight');
         });
+
+        CreateHeader(levelHeader, cabecalhosInclusos, contadoresIncluidos)
 
     }
 
@@ -7657,56 +7670,109 @@
 
     });
 
-    function CreateHeader(levelHeader, cabecalhosInclusos){
+    function CreateHeader(levelHeader, cabecalhosInclusos, contadoresIncluidos){
 
         var header = '<div class="row">                                                      ';
 
+        if(cabecalhosInclusos){
+            cabecalhosInclusos.forEach(function(o, c){
 
-        cabecalhosInclusos.forEach(function(o, c){
-
-            switch(o.ParHeaderField.ParFieldType.Id){
-                case 1:
-                    //Multipla Escolha
-                    header += '<div class="col-xs-3"><select class="form-control input-sm" name="DropDownList">';
-                    var nameHeader = o.ParHeaderField.Name;
-                    o.ParHeaderField.DropDownList.forEach(function(p, i){
-                        if(p.Value <= 0 ){
-                            header += '<option value="'+p.Value+'"> @Resources.Resource.select '+nameHeader+'</option>';
-                        }else{
-                            header += '<option value="'+p.Value+'">'+p.Text+'</option>';
-                        }
+                switch(o.ParHeaderField.ParFieldType.Id){
+                    case 1:
+                        //Multipla Escolha
+                        header += '<div class="col-xs-3"><select class="form-control input-sm" name="DropDownList">';
+                        var nameHeader = o.ParHeaderField.Name;
+                        o.ParHeaderField.DropDownList.forEach(function(p, i){
+                            if(p.Value <= 0 ){
+                                header += '<option value="'+p.Value+'"> @Resources.Resource.select '+nameHeader+'</option>';
+                            }else{
+                                header += '<option value="'+p.Value+'">'+p.Text+'</option>';
+                            }
                         
-                    });
-                    header += '</select></div>';
-                    break;
-                case 2:
-                    //Integrações
+                        });
+                        header += '</select></div>';
+                        break;
+                    case 2:
+                        //Integrações
 
-                    break;
-                case 3:
-                    //Binario
-                    header += '<div class="col-xs-3"><select class="form-control input-sm" name="DropDownList">';
-                    o.ParHeaderField.DropDownList.forEach(function(p, i){
-                        if(p.Value > 0)
-                            header += '<option value="'+p.Value+'">'+p.Text+'</option>';
-                    });
-                    header += '</select></div>';
-                    break;
-                case 4:
-                    //Texto
-                    header +=   '<div class="col-xs-3"><input type="text" placeholder="'+o.ParHeaderField.Name+'" class="form-control input-sm" id="'+o.ParHeaderField.Id+'"/></div>';
-                    break;
-                case 5:
-                    //Numerico
-                    header +=   '<div class="col-xs-3"><input type="number" placeholder="'+o.ParHeaderField.Name+'" class="form-control input-sm" id="'+o.ParHeaderField.Id+'"/></div>';
-                    break;
-                case 6:
-                    //Data
-                    header +=   '<div class="col-xs-3"><input type="date" placeholder="'+o.ParHeaderField.Name+'" class="form-control input-sm" id="'+o.ParHeaderField.Id+'"/></div>';
-                    break;
-            }
-        });
+                        break;
+                    case 3:
+                        //Binario
+                        header += '<div class="col-xs-3"><select class="form-control input-sm" name="DropDownList">';
+                        o.ParHeaderField.DropDownList.forEach(function(p, i){
+                            if(p.Value > 0)
+                                header += '<option value="'+p.Value+'">'+p.Text+'</option>';
+                        });
+                        header += '</select></div>';
+                        break;
+                    case 4:
+                        //Texto
+                        header +=   '<div class="col-xs-3"><input type="text" placeholder="'+o.ParHeaderField.Name+'" class="form-control input-sm" id="'+o.ParHeaderField.Id+'"/></div>';
+                        break;
+                    case 5:
+                        //Numerico
+                        header +=   '<div class="col-xs-3"><input type="number" placeholder="'+o.ParHeaderField.Name+'" class="form-control input-sm" id="'+o.ParHeaderField.Id+'"/></div>';
+                        break;
+                    case 6:
+                        //Data
+                        header +=   '<div class="col-xs-3"><input type="date" placeholder="'+o.ParHeaderField.Name+'" class="form-control input-sm" id="'+o.ParHeaderField.Id+'"/></div>';
+                        break;
+                }
+            });
+        }       
 
+        if(contadoresIncluidos){
+            contadoresIncluidos.forEach(function(o, c){
+
+                var countersLevel2 = "";
+                var parCounterName = o.ParCounter.Name;
+                var title = o.ParCounter.Name;
+                var valueCounter = "0";
+        
+                switch (o.ParCounter.Id) {
+                    case 21: 
+                        parCounterName = "Nº AV PL";
+                        valueCounter = o.ParamEvaluation.Number;
+                        break;
+                    case 22: 
+                        parCounterName = "Nº AM PL"
+                        valueCounter = o.ParamSample.Number;
+                        break;
+                    case 23: 
+                        parCounterName = "TOT AV"
+                        break;
+                    case 24: 
+                        parCounterName = "TS AV"
+                        break;
+                    case 25: 
+                        parCounterName = "TOT NC"
+                        break;
+                    case 27: 
+                        parCounterName = "Nº AM."
+                        break;
+                    case 29: 
+                        parCounterName = "Nº AV."
+                        break;
+                    case 30:
+                        parCounterName = "AV RL/AV PL"
+                        //valueCounter = "0/" + o.ParamEvaluation.Number;///precisa ser retornado do banco
+
+                        break;
+                    case 31:
+                        parCounterName = "AM RL/AV PL"
+                        //valueCounter =  "0/" + o.ParamSample.Number;///precisa ser retornado do banco
+
+                        break;
+                    default:
+        
+                }
+
+
+                countersLevel2 += " <div class='col-xs-4'><span style='cursor:help; margin-left: 20px'><b title='" + title + "'> " + parCounterName + ":</b><span> " + valueCounter + " </span></span></div>";
+
+                header +=   countersLevel2;
+            });
+        }        
 
         header += '</div>';
 
@@ -7720,6 +7786,7 @@
         //As colunhas do Level1 estão relacionadas as @*Heder do Level1*@ no Html. Caso alterar o tanho das divs aqui deve ser alterada no HTML também
         listLevel1.forEach(function(o, c){
 
+            
 
             var itemGroupLevel1 = '<li class="list-group-item" style="padding-bottom:0">                                                                                                                     '+
               '   <div class="row">                                                                                                                                                 '+
@@ -7756,20 +7823,61 @@
 
     function CreateLevel2Listgroup(listLevel2Item, idLevel1, level1Name, listParLevel3Level2Level1Dto, saveLevel2, naLevel2) {
 
-        var level2Item = '<div class="list-group level02Group hide" level01Id="' + idLevel1 + '">       '+
-                              '<div class="headDescription">                                                      '+
-                              '    <div class="row">                                                              '+
-                              '        <div class="col-xs-5 col-sm-5 col-sm-5 col-lg-5 pull-right">               '+
-                              '            <span class="spanTitle">Defects</span>                                 '+
-                              '        </div>                                                                     '+
-                              '        <div class="col-xs-7 col-sm-7 col-sm-7 col-lg-7 hide">                     '+
-                              '            <span class="spanTitle pull-right">Consec Failures</span>              '+
-                              '        </div>                                                                     '+
-                              '    </div>                                                                         '+
-                              '</div>';
+        var level2Item = '<div class="list-group level02Group hide" level01Id="' + idLevel1 + '">       ';
+
+        
 
         var isCreated = false;
         listLevel2Item.forEach(function(o, c){
+
+            var countersLevel2 = "";
+            o.listParCounterXLocal.forEach(function(p, c){
+
+                var parCounterName = "";
+                var title = p.ParCounter.Name;
+                var valueCounter = "0";
+        
+                switch (p.ParCounter.Id) {
+                    case 21: 
+                        parCounterName = "Nº AV PL";
+                        valueCounter = o.ParamEvaluation.Number;
+                        break;
+                    case 22: 
+                        parCounterName = "Nº AM PL"
+                        valueCounter = o.ParamSample.Number;
+                        break;
+                    case 23: 
+                        parCounterName = "TOT AV"
+                        break;
+                    case 24: 
+                        parCounterName = "TS AV"
+                        break;
+                    case 25: 
+                        parCounterName = "TOT NC"
+                        break;
+                    case 27: 
+                        parCounterName = "Nº AM."
+                        break;
+                    case 29: 
+                        parCounterName = "Nº AV."
+                        break;
+                    case 30:
+                        parCounterName = "AV RL/AV PL"
+                        valueCounter = "0/" + o.ParamEvaluation.Number;
+
+                        break;
+                    case 31:
+                        parCounterName = "AM RL/AV PL"
+                        valueCounter =  "0/" + o.ParamSample.Number;
+
+                        break;
+                    default:
+        
+                }
+
+
+                countersLevel2 += " <span style='cursor:help; margin-left: 20px'><b title='" + title + "'> " + parCounterName + ":</b><span> " + valueCounter + " </span></span>";
+            });
 
             if(o.HasShowLevel03){/*Ex CFF*/
 
@@ -7812,8 +7920,12 @@
                   '               <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>          ' +
                   '           </div>                                                                                                                            ' +
                   '       </div>                                                                                                                                ' +
-                  '   </div>                                                                                                                                    ' +
-                  ' </li>';
+                  '   </div>                                                                                                                                    ' ;
+
+                    level2Item += countersLevel2;
+
+
+                    level2Item += ' </li>';
 
                     cabecalhoLevel3 += '<div class="level03Group" level01id="' + idLevel1 + '">                                                                                                                              ' +
                                            '<div class="marginBottom10">                                                                                                                                            ' +
@@ -7917,6 +8029,7 @@
     function CriaItemLevel2TipoCCA(o, saveLevel2, naLevel2) {
     
         var btnAreaSave = '';
+        var level2Item  = '';
 
         if(saveLevel2 ==  true)
         {
@@ -7937,29 +8050,65 @@
                                  '               </button>                                                                                                                     ' ;
 
         }
+        
+        var countersLevel2 = "";
+        o.listParCounterXLocal.forEach(function(p, c){
+
+            var parCounterName = "";
+            var title = p.ParCounter.Name;
+            var valueCounter = "0";
+        
+            switch (p.ParCounter.Id) {
+                case 21: 
+                    parCounterName = "Nº AV PL";
+                    valueCounter = o.ParamEvaluation.Number;
+                    break;
+                case 22: 
+                    parCounterName = "Nº AM PL"
+                    valueCounter = o.ParamSample.Number;
+                    break;
+                case 23: 
+                    parCounterName = "TOT AV"
+                    break;
+                case 24: 
+                    parCounterName = "TS AV"
+                    break;
+                case 25: 
+                    parCounterName = "TOT NC"
+                    break;
+                case 27: 
+                    parCounterName = "Nº AM."
+                    break;
+                case 29: 
+                    parCounterName = "Nº AV."
+                    break;
+                case 30:
+                    parCounterName = "AV RL/AV PL"
+                    valueCounter = "0/" + o.ParamEvaluation.Number;
+
+                    break;
+                case 31:
+                    parCounterName = "AM RL/AV PL"
+                    valueCounter =  "0/" + o.ParamSample.Number;
+
+                    break;
+                default:
+        
+            }
 
 
+            countersLevel2 += " <span style='cursor:help; margin-left: 20px'><b title='" + title + "'> " + parCounterName + ":</b><span> " + valueCounter + " </span></span>";
+        });
 
-
-        return '<li class="list-group-item">                                                                                                               ' +
+        level2Item +=  '<li class="list-group-item" style="padding-bottom:0">                                                                                                               ' +
              '   <div class="row">                                                                                                                         ' +
-             '       <a href="#" id="' + o.Id + '" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-6" levelerrorlimit="1" defects="0" reauditnumber="0">  ' +
+             '       <a href="#" id="' + o.Id + '" class="level02 col-xs-8 col-sm-8 col-md-8 col-lg-8" levelerrorlimit="1" defects="0" reauditnumber="0">  ' +
              '           <span class="icons">                                                                                                              ' +
              '               <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>                 ' +
              '               <i class="fa fa-exclamation font22 iconsArea red areaNotComplete" aria-hidden="true" title="Not Complete"></i>                ' +
              '           </span>                                                                                                                           ' +
-             '           <span class="levelName">' + o.Name + '</span>                                                                                     ' +
+             '           <span class="levelName" style="font-size:24px;font-family:Verdana !important">' + o.Name + '</span>                                                                                     ' +
              '       </a>                                                                                                                                  ' +
-             '       <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">                                                                            ' +
-             '           <div class="hide">                                                                                                                ' +
-             '               <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>                                                     ' +
-             '           </div>                                                                                                                            ' +
-             '       </div>                                                                                                                                ' +
-             '       <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">                                                                            ' +
-             '           <div>                                                                                                                             ' +
-             '               <a href="#" class="defects iconsArea font22">0</a>                                                                            ' +
-             '           </div>                                                                                                                            ' +
-             '       </div>                                                                                                                                ' +
              '       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 userInfo">                                                                            ' +
              '           <div class="pull-right">                                                                                                          ' +
               btnAreaSave                                                                                                                                    +
@@ -7968,7 +8117,12 @@
              '           </div>                                                                                                                            ' +
              '       </div>                                                                                                                                ' +
              '   </div>                                                                                                                                    ' +
-             ' </li>';
+            '<div class="row"><div class="col-xs-12" style="background-color: #f5f5f5;height: 30px;margin-top:5px; line-height: 30px;font-size:12px;">' +
+              countersLevel2 +
+
+            '</div></div></li>';
+
+            return level2Item;
     }
 
     /*Ex CCA*/
