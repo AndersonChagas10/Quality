@@ -114,6 +114,13 @@
                                 $('#correctiveActionModal  #starttime').html(r.Retorno.StartTimeFormatado);
                                 $('#correctiveActionModal  #correctivePeriod').html(r.Retorno.PeriodName);
 
+
+                                //var ImmediateCorrectiveAction = r.Retorno.ImmediateCorrectiveAction;
+                                //if (ImmediateCorrectiveAction.length > 20)
+                                //{
+                                //    ImmediateCorrectiveAction = ImmediateCorrectiveAction.substring(0, 20) + '...';
+                                //}
+
                                 $('#correctiveActionModal  #DescriptionFailure').html(r.Retorno.DescriptionFailure);
                                 $('#correctiveActionModal  #ImmediateCorrectiveAction').html(r.Retorno.ImmediateCorrectiveAction);
                                 $('#correctiveActionModal  #ProductDisposition').html(r.Retorno.ProductDisposition);
@@ -133,7 +140,11 @@
                     });
                 },
             });
-
+            table.f
+            if (!$('.dataTables_empty').length)
+            {
+                $('#menu-toggle').click();
+            }
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
                     {

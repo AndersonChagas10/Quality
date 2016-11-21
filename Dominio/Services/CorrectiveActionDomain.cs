@@ -65,6 +65,23 @@ namespace Dominio.Services
                     i.level02Name = _listLevel02.FirstOrDefault(r => r.Id == i.Level02Id).Name;
                     i.level01Name = _listLevel01.FirstOrDefault(r => r.Id == i.Level01Id).Name;
 
+                    if (i.DescriptionFailure.Length > 15)
+
+                    {
+                        i.DescriptionFailure = i.DescriptionFailure.Substring(0, 15) + "<span style=\"cursor:pointer\" title=\"" + i.DescriptionFailure + "\">...</span>";
+                    }
+                    if(i.ImmediateCorrectiveAction.Length > 15)
+                    {
+                        i.ImmediateCorrectiveAction = i.ImmediateCorrectiveAction.Substring(0, 15) + "<span style=\"cursor:pointer\" title=\"" + i.ImmediateCorrectiveAction + "\">...</span>";
+                    }
+                    if(i.PreventativeMeasure.Length > 15)
+                    {
+                        i.PreventativeMeasure = i.PreventativeMeasure.Substring(0, 15) + "<span style=\"cursor:pointer\" title=\"" + i.PreventativeMeasure + "\">...</span>"; 
+                    }
+                    if(i.ProductDisposition.Length > 15)
+                    {
+                        i.ProductDisposition = i.ProductDisposition.Substring(0, 15) + "<span style=\"cursor:pointer\" title=\"" + i.ProductDisposition + "\">...</span>";
+                    }
                 }
 
                 return new GenericReturn<List<CorrectiveActionDTO>>(resultMapped);
