@@ -122,10 +122,16 @@
                 <div class="panel panel-default margin-top">
                     <div class="panel-heading"><h4 style="margin: 0px; padding: 10px 15px;">@Resources.Resource.weight</h4></div>
                     <div class="panel-body">
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.pesoDoVinculo, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.inform_the_weight_of_the_level3), Table.PosicaoLabel.top)
-                        @Table.GerarColuna(@Html.DropDownListFor(m => m.paramsDto.parLevel3Dto.listGroupsLevel2, new SelectList(Model.paramsDto.parLevel3Dto.listGroupsLevel2, dataValueField: "Id", dataTextField: "Name"), Resources.Resource.select+"...", new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_group), Table.PosicaoLabel.top)
+                        <table class="table-erp">
+                            <tr>
+                                @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.pesoDoVinculo, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.inform_the_weight_of_the_level3), Table.PosicaoLabel.top)
+                                @Table.GerarColunaButton(@Html.DropDownListFor(m => m.paramsDto.parLevel3Dto.listGroupsLevel2, new SelectList(Model.paramsDto.parLevel3Dto.listGroupsLevel2, dataValueField: "Id", dataTextField: "Name"), Resources.Resource.select + "...", new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_group), Table.PosicaoLabel.top, button: "<button type='button' class='btn btn-primary btn-sm' onclick='saveLevel3Level2()' id='savePontos'>"+Resources.Resource.attach+"</button>")
+                            </tr>
+                        </table>
+                        
                     </div>
                 </div>
+
 
                 <div id="painelPeso" class="panel panel-default" style="padding: 0px 16px; display:none;">
                     <h5>
@@ -244,17 +250,20 @@
 
         e.preventDefault();
         if($('#l3SelectFrequenciaReincidencia :selected').val() <= 0){
-            alert('É necessário selecionar a Frequência');
+            openMessageModal("Alerta", "É necessário selecionar a Frequência");
+            //alert('É necessário selecionar a Frequência');
             return;
         }
 
         if($('#l3InputNumeroNC').val().length <= 0){
-            alert('É necessário informar o Número de NC');
+            openMessageModal("Alerta", "É necessário informar o Número de NC");
+            //alert('É necessário informar o Número de NC');
             return;
         }
 
         if($('#l3InputVigencia').val().length <= 0){
-            alert('É necessário selecionar a Vigência');
+            openMessageModal("Alerta", "É necessário selecionar a Vigência");
+            //alert('É necessário selecionar a Vigência');
             return;
         }
 

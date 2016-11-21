@@ -658,7 +658,8 @@
         EventoAlterar: function (btnSelector, idCluster) {
             $('#' + btnSelector).click(function () {
                 //$(this).parents('tr').first().remove();
-                alert('Nao implmentado');
+                //openMessageModal("Alerta", "É necessário selecionar a Frequência");
+                //alert('Nao implmentado');
             });
         },
         UpdateCounter: function () {
@@ -991,7 +992,8 @@
                 return;
             }
             if($('#headerLevel option:selected').val() == -1){
-                alert('Selecione o Nivel do Cabecalho')
+                openMessageModal("Alerta", "Selecione o Nivel do Cabecalho");
+                //alert('Selecione o Nivel do Cabecalho')
                 return;
             }
 
@@ -1146,13 +1148,15 @@
         IncluirSalvarTexto: function (isData) {
 
             if($('#headerLevel option:selected').val() == -1){
-                alert('Selecione o Nivel do Cabecalho')
+                openMessageModal("Alerta", "Selecione o Nivel do Cabecalho");
+                //alert('Selecione o Nivel do Cabecalho')
                 return;
             }
 
 
             if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
-                alert('Digite o nome para o Campo Texto');
+                openMessageModal("Alerta", "Digite o nome para o Campo Texto");
+                //alert('Digite o nome para o Campo Texto');
                 return;
             }
 
@@ -1229,12 +1233,14 @@
         IncluirSalvarNumerico: function () {
 
             if($('#headerLevel option:selected').val() == -1){
-                alert('Selecione o Nivel do Cabecalho');
+                openMessageModal("Alerta", "Selecione o Nivel do Cabecalho");
+               //lert('Selecione o Nivel do Cabecalho');
                 return;
             }
 
             if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
-                alert('Digite o nome para o Campo Numerico');
+                openMessageModal("Alerta", "Digite o nome para o Campo Numerico");
+                //alert('Digite o nome para o Campo Numerico');
                 return;
             }
 
@@ -1430,19 +1436,24 @@
 
         if($('#l1SelectFrequenciaReincidencia :selected').val() <= 0)
         {
-            alert('É necessário selecionar a Frequência');
+            openMessageModal("Alerta", "É necessário selecionar a Frequência");
+            //alert('É necessário selecionar a Frequência');
             return;
         }
 
         if($('#l1InputNumeroNC').val().length <= 0)
         {
-            alert('É necessário informar o Número de NC');
+            
+            openMessageModal("Alerta", "Selecione o Nivel do Cabecalho");
+            //alert('Selecione o Nivel do Cabecalho');
             return;
         }
 
         if($('#l1InputVigencia').val().length <= 0)
         {
-            alert('É necessário selecionar a Vigência');
+            
+            openMessageModal("Alerta", "É necessário selecionar a Vigência");
+            //alert('É necessário selecionar a Vigência');
             return;
         }
 
