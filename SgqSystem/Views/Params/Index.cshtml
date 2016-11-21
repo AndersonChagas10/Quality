@@ -525,11 +525,13 @@
             var closeConfirm = function(){
                 $('.modalConfirm').remove();
             }
-
-
+        
             /*LEVEL 1*/
             var indexParamsLevel1 = {
                 new_level1: @Html.Raw(Json.Encode(@Resources.Resource.new_level1)),
+                saving_the_level1: @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level1)),
+                loading_the_level1: @Html.Raw(Json.Encode(@Resources.Resource.loading_the_level1)),
+
                 enviarDadosParaApi: function (e) {
 
                     $("form").each(function () { $.data($(this)[0], 'validator', false); });
@@ -545,359 +547,278 @@
                         CounterLevel1.UpdateCounters();
                         var dados = $('#newLevel1Modal > form').serializeObject();
 
-                        openLoader(@Html.Raw(Json.Encode(@Resources.Resource.saving_the_level1)));
+                        openLoader(indexParamsLevel1.saving_the_level1);
+
                         $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+
                             closeLoader();
+
                             if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
-                                openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level1)));
-                                $.get('GetParLevel1ById/' + objetoReturn.paramsDto.parLevel1Dto.Id, function (obj, responseText, xhr) {
-                                    closeLoader();
-
-                                    if (obj != null) {
-                                        $('#ParLevel1').empty();
-                                        $('#ParLevel1').append(xhr.responseText);
-
-                                        $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                                        $.validator.unobtrusive.parse("form");
-                                        $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                                        $.validator.unobtrusive.parse("form");
-                                        $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                                        $.validator.unobtrusive.parse("form");
-
-
-                                    }
-
-                                    var retornoId = $('#paramsDto_parLevel1Dto_Id').val();
-                                    var retornoName = $('#paramsDto_parLevel1Dto_Name').val();
-                                    $('#level1Title').text('#' + retornoId + ' - ' + retornoName); /*Texto do panel*/
-
-                                    /*Atualiza Select2*/
-                                    if ($("#parLevel1Select2 option:selected").val() == retornoId) {
-                                        if ($("#parLevel1Select2 option:selected").text() != retornoName) {
-                                            $("#parLevel1Select2 option:selected").text(retornoId + ' - ' + retornoName);
-                                            //$('#parLevel1Select2').select2();
-                                        }
-                                    } else {
-                                        $("#parLevel1Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
-                                        $("#parLevel1Select2").val(retornoId)
-                                    }
-
-                                    initialFormLevel1 = $($('form')[0]).clone();
-
-                                });
-
-
+                                openLoader(indexParamsLevel1.loading_the_level1);
+                                indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
                                 openMessageModal("Alerta", statusmessage);
-                                //alert(statusmessage);
                             }
                             $btn.button('reset');
                         }).fail(function (e, h, x) {
                             closeLoader();
+                            $btn.button('reset');
                             openMessageModal("Alerta", e.responseJSON.Message);
-                            //alert(e.responseJSON.Message);
                         });
                     }
 
-                },
-                select2: function () {
-                    //$('#parLevel1Select2').select2({
-
-                    //}).on("select2:select", function (e) {
-
-                    //    if (e.currentTarget.value == "") {
-                    //        $('#ParLevel1').empty();
-                    //        $('#ParLevel1').append(parLevel1Empty);
-                    //        $('#level1Title').text(indexParamsLevel1.new_level1);
-                    //    } else {
-                    //        $.get('GetParLevel1ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
-                    //            if (obj != null) {
-                    //                $('#ParLevel1').empty();
-                    //                $('#ParLevel1').append(xhr.responseText);
-                    //                UpdateSelect2Level2(e.currentTarget.value);
-                    //            }
-                    //            if (e.currentTarget.value > 0) {
-                    //                $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
-                    //            } else {
-                    //                $('#level1Title').text(indexParamsLevel1.new_level1);
-                    //            }
-
-                    //            updateAllTables();
-                    //        });
-                    //    }
-
-                    //}).on("select2:unselect", function (e) {
-
-                    //    if (e.currentTarget.value == "") {
-                    //        $('#ParLevel1').empty()
-                    //        $('#ParLevel1').append(parLevel1Empty)
-                    //        $('#level1Title').text(indexParamsLevel1.new_level1);
-                    //    }
-
-                    //});
-                },
+                },/*Envia os dados referentes ao level1 para a API, apos isto realiza um get no seu ID e, CASO INSERÇÃO, atualiza a dropDown*/
                 selectNormal: function () {
+
                     var previous = $('#parLevel1Select2 option:selected').val();
+
                     $('#parLevel1Select2')
                         .on('focus', function () {
                             previous = $('#parLevel1Select2 option:selected').val();
                         })
                         .on("change", function (e) {
-
+                            indexParamsLevel2.resetaForm();
+                            indexParamsLevel3.resetaForm();
                             if(dirtForm($(initialFormLevel1), $($('form')[0]))){
                                 openConfirm(
                                     'Existem dados que não foram salvos. Deseja continuar?',
                                     function(){
-                                        selectLevel1();
+                                        indexParamsLevel1.selectLevel1();
                                     },
                                     function(){
+                                        //e.preventDefault();
                                         $('#parLevel1Select2').val(previous);
                                         closeConfirm();
+                                        return;
                                     });
                             }else{
-                                selectLevel1();
+                                indexParamsLevel1.selectLevel1();
                             }
                         })
-                },
-            }
 
-            var selectLevel1 = function(){
-                closeConfirm();
-                openLoader(@Html.Raw(Json.Encode(@Resources.Resource.loading_the_level1)));
+                },/*Inicializa os eventos do select "focus" e "change", no change reseta form level2 e level3, também no change existe as opções para o modal e validação de form caso haja alterações não salvas*/
+                selectLevel1: function(){
 
-                var valorSelecionado = $('#parLevel1Select2 option:selected').val();
-                if (valorSelecionado == "") {
-                    $('#ParLevel1').empty();
-                    $('#ParLevel1').append(parLevel1Empty);
-                    $('#level1Title').text(indexParamsLevel1.new_level1);
+                    closeConfirm();
+                    openLoader(indexParamsLevel1.loading_the_level1);
+                    var valorSelecionado = $('#parLevel1Select2 option:selected').val();
 
-                    initialFormLevel1 = $($('form')[0]).clone();
-                    closeLoader();
-                } else {
-                    $.get('GetParLevel1ById/' + valorSelecionado, function (obj, responseText, xhr) {
+                    if (valorSelecionado == "") {/*Reseta Form*/
+                        indexParamsLevel1.resetaForm();
+                    } else {
+                        indexParamsLevel1.GetLevel1(valorSelecionado);
+                    }
+
+                },/*Executa ao selecionar um level1*/
+                GetLevel1: function(id, isSave) {
+
+                    $.get('GetParLevel1ById/' + id, function (obj, responseText, xhr) {
                         if (obj != null) {
                             $('#ParLevel1').empty();
                             $('#ParLevel1').append(xhr.responseText);
-                            UpdateSelect2Level2(valorSelecionado);
+                            UpdateSelect2Level2(id);
                         }
-                        if (valorSelecionado > 0) {
+                    
+                        if (id > 0) {
                             $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
-                        } else {
+                        } 
+                        else {
                             $('#level1Title').text(indexParamsLevel1.new_level1);
                         }
 
+                        if(!!isSave){
+                            /*Atualiza Select*/
+                            var retornoId = $('#paramsDto_parLevel1Dto_Id').val();
+                            if ($("#parLevel1Select2 option:selected").val() == retornoId) {
+                                if ($("#parLevel1Select2 option:selected").text() != retornoName) {
+                                    $("#parLevel1Select2 option:selected").text(retornoId + ' - ' + retornoName);
+                                }
+                            } else {
+                                $("#parLevel1Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
+                                $("#parLevel1Select2").val(retornoId)
+                            }
+                        }
+
                         updateAllTables();
-
-                        closeLoader();
-
-                        reloadPopovers();
-                        $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                        $.validator.unobtrusive.parse("form");
-
                         initialFormLevel1 = $($('form')[0]).clone();
+                        closeLoader();
+                        reloadPopovers();
+
+                        /*Reseta Validação*/
+                        indexParamsLevel1.resetaValidacao();
+                   
                     });
 
-                    //closeConfirm();
+                },/*Busca dados do level1 na API*/
+                resetaValidacao: function(){
 
-                    $('#parLevel2Select2').val('-1').trigger('select2:select').change();
-                    $('#parLevel3Select2').val('-1').trigger('select2:select').change();
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
+
+                },
+                resetaForm: function() {
+                    $('#ParLevel1').empty();
+                    $('#ParLevel1').append(parLevel1Empty);
+                    $('#level1Title').text(indexParamsLevel1.new_level1);
+                    initialFormLevel1 = $($('form')[0]).clone();
+                    closeLoader();
+                },
+                resetDdlLevel3Level2: function(){
+                    $('#parLevel2Select2').val('-1');
+                    indexParamsLevel2.GetLevel2('-1');
+                    $('#parLevel3Select2').val('-1');
+                    indexParamsLevel3.GetLevel2('-1');
                 }
             }
 
 
-        indexParamsLevel1.selectNormal();
+            /*LEVEL 2*/
+            var indexParamsLevel2 = {
 
+                new_level2: @Html.Raw(Json.Encode(@Resources.Resource.new_level2)),
+                loading_the_level2 : @Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2)),
+                saving_the_level2 : @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level2)),
+                removing_the_level3_group : @Html.Raw(Json.Encode(@Resources.Resource.removing_the_level3_group)),
 
+                enviarDadosParaApi: function (e) {
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
 
-        /*LEVEL 2*/
-        var indexParamsLevel2 = {
+                    if ($('#newLevel2Modal > form').valid()) {
+                        //Cabecalhos.UpdateCabecalhos();
+                        //Cluster.UpdateCounter();
+                        CounterLevel2.UpdateCounters();
+                        var dados = $('#newLevel2Modal > form').serializeObject();
 
-            new_level2: @Html.Raw(Json.Encode(@Resources.Resource.new_level2)),
-            loading_the_level2 : @Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2)),
-            saving_the_level2 : @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level2)),
-            removing_the_level3_group : @Html.Raw(Json.Encode(@Resources.Resource.removing_the_level3_group)),
+                        openLoader(indexParamsLevel2.saving_the_level2);
+                        $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                            closeLoader();
+                            var $btn = $('#btnSaveNewLevel2');
+                            $btn.button('loading');
 
-            selectNormal: function () {
-                var previous = $('#parLevel2Select2 option:selected').val();
-                $('#parLevel2Select2')
-                    .on('focus', function () {
-                        previous = $('#parLevel2Select2 option:selected').val();
-                    })
-                    .on("change", function (e) {
-
-                        if(dirtForm($(initialFormLevel2), $($('form')[1]))){
-                            openConfirm(
-                                'Existem dados que não foram salvos. Deseja continuar?',
-                                function(){
-                                    indexParamsLevel2.selectLevel2();
-                                },
-                                function(){
-                                    $('#parLevel2Select2').val(previous);
-                                    closeConfirm();
-                                });
-                        }else{
-                            indexParamsLevel2.selectLevel2();
-                        }
-                    });
-
-                closeConfirm();
-            },
-            select2: function () {
-                //$('#parLevel2Select2').select2({
-                //}).on("select2:select", function (e) {
-
-                //    if (e.currentTarget.value == "") {
-                //        $('#ParLevel2').empty();
-                //        $('#ParLevel2').append(parLevel2Empty);
-                //        $('#level2Title').text(indexParamsLevel2.new_level2);
-                //    } else {
-                //        var message = indexParamsLevel2.loading;
-                //        openLoader(message);
-                //        $.get('GetParLevel2ById/' + e.currentTarget.value, function (obj, responseText, xhr) {
-                //            closeLoader();
-                //            if (obj != null) {
-                //                $('#ParLevel2').empty();
-                //                $('#ParLevel2').append(xhr.responseText);
-                //                UpdateSelect2Level3(e.currentTarget.value);
-                //            }
-                //            if (e.currentTarget.value > 0) {
-                //                $('#level2Title').text('#' + $('#paramsDto_parLevel2Dto_Id').val() + ' - ' + $('#paramsDto_parLevel2Dto_Name').val());
-                //            } else {
-                //                $('#level2Title').text(indexParamsLevel2.new_level2);
-                //            }
-
-                //            initialFormLevel2 = $($('form')[1]).clone();
-                //        });
-                //    }
-
-                //}).on("select2:unselect", function (e) {
-
-                //    if (e.currentTarget.value == "") {
-                //        $('#ParLevel2').empty()
-                //        $('#ParLevel2').append(parLevel2Empty)
-                //        $('#level2Title').text(indexParamsLevel2.new_level2);
-                //    }
-                //});
-            },
-            enviarDadosParaApi: function (e) {
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-
-                if ($('#newLevel2Modal > form').valid()) {
-                    //Cabecalhos.UpdateCabecalhos();
-                    //Cluster.UpdateCounter();
-                    CounterLevel2.UpdateCounters();
-                    var dados = $('#newLevel2Modal > form').serializeObject();
-
-                    openLoader(indexParamsLevel2.saving_the_level2);
-                    $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                        closeLoader();
-                        var $btn = $('#btnSaveNewLevel2');
-                        $btn.button('loading');
-
-                        if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
-                            openLoader(indexParamsLevel2.loading_the_level2);
-                            $.get('GetParLevel2ById',{  level2Id: objetoReturn.paramsDto.parLevel2Dto.Id, level3Id: 0}, function (obj, responseText, xhr) {
-                                closeLoader();
-                                if (obj != null) {
-                                    $('#ParLevel2').empty();
-                                    $('#ParLevel2').append(xhr.responseText);
-
-                                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                                    $.validator.unobtrusive.parse("form");
-                                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                                    $.validator.unobtrusive.parse("form");
-                                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                                    $.validator.unobtrusive.parse("form");
-                                }
-
-                                var retornoId = $('#paramsDto_parLevel2Dto_Id').val();
-                                var retornoName = $('#paramsDto_parLevel2Dto_Name').val();
-                                $('#level2Title').text('#' + retornoId + ' - ' + retornoName); /*Texto do panel*/
-
-                                /*Atualiza Select2*/
-                                if ($("#parLevel2Select2 option:selected").val() == retornoId) {
-                                    if ($("#parLevel2Select2 option:selected").text() != retornoName) {
-                                        $("#parLevel2Select2 option:selected").text(retornoId + ' - ' + retornoName);
-                                        //$('#parLevel2Select2').select2();
-                                    }
-                                } else {
-                                    $("#parLevel2Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
-                                    $("#parLevel2Select2").val(retornoId)
-                                }
-
-                                initialFormLevel2 = $($('form')[1]).clone();
-                            });
-                            openMessageModal("Alerta", statusmessage);
-                            //alert(statusmessage);
-                        }
-                        //console.log(objetoReturn);
-                        //console.log(respostaCompleta);
-                    }).fail(function (e, h, x) {
-                        closeLoader();
-                        openMessageModal("Alerta", e.responseJSON.Message);
-                    });
-                }
-
-            },
-            removeLevel3Group: function(e, element){
-                openLoader(removing_the_level3_group);
-                $.post(removeLevel3Group + '/' + element.attr('id'), function (obj, responseText, xhr) {
-                    closeLoader();
-                    if (obj != null) {
-
-                        element.remove();
+                            if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
+                                openLoader(indexParamsLevel2.loading_the_level2);
+                                indexParamsLevel2.GetLevel2(objetoReturn.paramsDto.parLevel2Dto.Id, $('#paramsDto_parLevel3Dto_Id').val(), true)
+                                openMessageModal("Alerta", statusmessage);
+                            }
+                        }).fail(function (e, h, x) {
+                            closeLoader();
+                            openMessageModal("Alerta", e.responseJSON.Message);
+                        });
                     }
-                });
-            },
-            selectLevel2: function(){
 
-                closeConfirm();
-                openLoader(indexParamsLevel2.loading_the_level2);
+                },/*Envia os dados referentes ao level2 para a API, apos isto realiza um get no seu ID e, CASO INSERÇÃO, atualiza a dropDown*/
+                selectNormal: function () {
+                    var previous = $('#parLevel2Select2 option:selected').val();
+                    $('#parLevel2Select2')
+                        .on('focus', function () {
+                            previous = $('#parLevel2Select2 option:selected').val();
+                        })
+                        .on("change", function (e) {
+                            indexParamsLevel3.resetaForm();
+                            if(dirtForm($(initialFormLevel2), $($('form')[1]))){
+                                openConfirm(
+                                    'Existem dados que não foram salvos. Deseja continuar?',
+                                    function(){
+                                        indexParamsLevel2.selectLevel2();
+                                    },
+                                    function(){
+                                        $('#parLevel2Select2').val(previous);
+                                        closeConfirm();
+                                    });
+                            }else{
+                                indexParamsLevel2.selectLevel2();
+                            }
+                        });
 
-                var valorSelecionado = $('#parLevel2Select2 option:selected').val();
-                if (valorSelecionado == "") {
-                    $('#ParLevel2').empty();
-                    $('#ParLevel2').append(parLevel2Empty);
-                    $('#level2Title').text(indexParamsLevel2.new_level2);
+                    closeConfirm();
+                },/*Inicializa os eventos do select "focus" e "change", no change reseta form level3,  também no change existe as opções para o modal e validação de form caso haja alterações não salvas*/
+                selectLevel2: function(){
 
-                    initialFormLevel2 = $($('form')[1]).clone();
-                    closeLoader();
-                } else {
-                    $.get('GetParLevel2ById',{  level2Id: valorSelecionado, level3Id: $('#paramsDto_parLevel3Dto_Id').val()}, function (obj, responseText, xhr) {
+                    closeConfirm();
+                    openLoader(indexParamsLevel2.loading_the_level2);
+                    var valorSelecionado = $('#parLevel2Select2 option:selected').val();
+
+                    if (valorSelecionado == "") {
+                        indexParamsLevel2.resetaForm();
+                    } 
+                    else {
+                        indexParamsLevel2.GetLevel2(valorSelecionado, $('#paramsDto_parLevel3Dto_Id').val());
+                    }
+
+                    indexParamsLevel2.resetaValidacao();
+
+                },/*Executa ao selecionar um level2*/
+                GetLevel2: function(thislevel2Id, thislevel3Id, isSave) {
+
+                    $.get('GetParLevel2ById',{  level2Id: thislevel2Id, level3Id: thislevel3Id}, function (obj, responseText, xhr) {
+
                         if (obj != null) {
                             $('#ParLevel2').empty();
                             $('#ParLevel2').append(xhr.responseText);
-                            UpdateSelect2Level3(valorSelecionado);
+                            UpdateSelect2Level3(thislevel2Id);
                         }
-                        if (valorSelecionado > 0) {
+
+                        if (thislevel2Id > 0) {
                             $('#level2Title').text('#' + $('#paramsDto_parLevel2Dto_Id').val() + ' - ' + $('#paramsDto_parLevel2Dto_Name').val());
                         } else {
                             $('#level2Title').text(indexParamsLevel2.new_level2);
                         }
 
-                        $('#parLevel3Select2').val('-1').trigger('select2:select').change();
-                        closeLoader();
+                        if(!!isSave){
+                            var retornoId = $('#paramsDto_parLevel2Dto_Id').val();
+                            /*Atualiza Select2*/
+                            if ($("#parLevel2Select2 option:selected").val() == retornoId) {
+                                if ($("#parLevel2Select2 option:selected").text() != retornoName) {
+                                    $("#parLevel2Select2 option:selected").text(retornoId + ' - ' + retornoName);
+                                }
+                            } else {
+                                $("#parLevel2Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
+                                $("#parLevel2Select2").val(retornoId)
+                            }
+                        }
 
-                        reloadPopovers();
-                        
                         initialFormLevel2 = $($('form')[1]).clone();
+                        closeLoader();
+                        reloadPopovers();
+                  
+                        indexParamsLevel2.resetaValidacao();
                     });
+
+                },/*Busca dados do level2 na API*/
+                removeLevel3Group: function(e, element){
+                    openLoader(removing_the_level3_group);
+                    $.post(removeLevel3Group + '/' + element.attr('id'), function (obj, responseText, xhr) {
+                        closeLoader();
+                        if (obj != null) {
+
+                            element.remove();
+                        }
+                    });
+                },
+                resetaForm: function() {
+                    $('#parLevel2Select2').val('-1');
+                    indexParamsLevel2.GetLevel2('-1');
+
+                    //$('#ParLevel2').empty();
+                    //$('#ParLevel2').append(parLevel2Empty);
+                    //$('#level2Title').text(indexParamsLevel2.new_level2);
+                    //initialFormLevel2 = $($('form')[1]).clone();
+                    //closeLoader();
+                },
+                resetaValidacao: function(){
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
                 }
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
             }
-        }
 
-
-            //indexParamsLevel2.select2();
-            indexParamsLevel2.selectNormal();
-
-            $(document).on('click', '#btnRemoveLevel3GroupAdded', function(e){
-                indexParamsLevel2.removeLevel3Group(e, $(this).parents('tr'));
-            })
 
             /*LEVEL 3*/
             var indexParamsLevel3 = {
@@ -905,46 +826,46 @@
                 loading_the_level3: @Html.Raw(Json.Encode(@Resources.Resource.loading_the_level3)),
                 saving_the_level3: @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level3)),
 
-                select2: function () {
-                    $('#parLevel3Select2').select2({
-                        //placeholder: {
-                        //    id: "-1",
-                        //    text: "Selecione..."
-                        //},
-                    }).on("select2:select", function (e) {
 
-                        if (e.currentTarget.value == "") {
-                            $('#ParLevel3').empty();
-                            $('#ParLevel3').append(parLevel3Empty);
-                            $('#level3Title').text(indexParamsLevel3.newLevel3);
-                        } else {
-                            openLoader(indexParamsLevel3.loading_the_level3);
-                            $.get('GetParLevel3ById/' + e.currentTarget.value + "&", function (obj, responseText, xhr) {
-                                closeLoader();
-                                if (obj != null) {
-                                    $('#ParLevel3').empty();
-                                    $('#ParLevel3').append(xhr.responseText);
-                                }
-                                if (e.currentTarget.value > 0) {
-                                    $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
-                                } else {
-                                    $('#level3Title').text(indexParamsLevel3.newLevel3);
-                                }
+                enviarDadosParaApi: function (e) {
 
-                                initialFormLevel3 = $($('form')[2]).clone();
-                            });
-                        }
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
 
-                    }).on("select2:unselect", function (e) {
+                    if ($('#newLevel3Modal > form').valid()) {
+                        //Cabecalhos.UpdateCabecalhos();
+                        //Cluster.UpdateCounter();
+                        //  Counter.UpdateCounters();
+                        var dados = $('#newLevel3Modal > form').serializeObject();
 
-                        if (e.currentTarget.value == "") {
-                            $('#ParLevel3').empty()
-                            $('#ParLevel3').append(parLevel3Empty)
-                            $('#level3Title').text(indexParamsLevel3.newLevel3);
-                        }
+                        if(dados['paramsDto.parLevel3Value.IntervalMax'] != undefined && dados['paramsDto.parLevel3Value.IntervalMax'] != null)
+                            dados['paramsDto.parLevel3Value.IntervalMax'] = dados['paramsDto.parLevel3Value.IntervalMax'].replace(',', '.');
 
-                    });
-                },
+                        if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
+                            dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
+
+                        openLoader(indexParamsLevel3.saving_the_level3);
+                        $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+
+                            closeLoader();
+                            var $btn = $('#btnSaveNewLevel3');
+                            $btn.button('loading');
+
+                            if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
+                                openLoader(indexParamsLevel3.saving_the_level3);
+                                indexParamsLevel3.GetLevel3(objetoReturn.paramsDto.parLevel3Dto.Id, $('#paramsDto_parLevel2Dto_Id').val(), true);
+                                openMessageModal("Alerta", statusmessage);
+                            }
+
+                        }).fail(function (e, h, x) {
+                            closeLoader();
+                            $btn.button('loading');
+                            openMessageModal("Alerta", e.responseJSON.Message);
+                        });
+
+                    }
+
+                },/*Envia os dados referentes ao level3 para a API, apos isto realiza um get no seu ID e, CASO INSERÇÃO, atualiza a dropDown*/
                 selectNormal: function () {
                     var previous = $('#parLevel3Select2 option:selected').val();
                     $('#parLevel3Select2')
@@ -968,119 +889,77 @@
                             }
                         });
 
-                },
+                },/*Inicializa os eventos do select "focus" e "change", no change existe as opções para o modal e validação de form caso haja alterações não salvas*/
                 selectLevel3: function(){
 
                     closeConfirm();
                     openLoader(indexParamsLevel3.loading_the_level3);
-
                     var valorSelecionado = $('#parLevel3Select2 option:selected').val();
                     var valorSelecionadoLevel2 = $('#parLevel2Select2 :selected').val();
+
                     if (valorSelecionado == "") {
-                        $('#ParLevel3').empty();
-                        $('#ParLevel3').append(parLevel3Empty);
-                        $('#level3Title').text(indexParamsLevel3.newLevel3);
+                        indexParamsLevel3.resetForm();
+                    } else {
+                        indexParamsLevel3.GetLevel3(valorSelecionado, valorSelecionadoLevel2);
+                    }
+
+                    indexParamsLevel3.resetValidacao();
+                },/*Executa ao selecionar um level3*/
+                GetLevel3: function(valorSelecionado, valorSelecionadoLevel2, isSave) {
+                    $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
+                        closeLoader();
+                        if (obj != null) {
+                            $('#ParLevel3').empty();
+                            $('#ParLevel3').append(xhr.responseText);
+                            indexParamsLevel3.resetValidacao();
+                        }
+                        if (valorSelecionado > 0) {
+                            $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
+                        } else {
+                            $('#level3Title').text(indexParamsLevel3.new_level3);
+                        }
+
+                        if(!!isSave){
+                            /*Atualiza Select*/
+                            if ($("#parLevel3Select2 option:selected").val() == retornoId) {
+                                if ($("#parLevel3Select2 option:selected").text() != retornoName) {
+                                    $("#parLevel3Select2 option:selected").text(retornoId + ' - ' + retornoName);
+                                    //$('#parLevel3Select2').select2();
+                                }
+                            } else {
+                                $("#parLevel3Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
+                                $("#parLevel3Select2").val(retornoId);
+                            }
+                        }
 
                         initialFormLevel3 = $($('form')[2]).clone();
                         closeLoader();
-                    } else {
-                        $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
+                        reloadPopovers();
 
-                            if (obj != null) {
-                                $('#ParLevel3').empty();
-                                $('#ParLevel3').append(xhr.responseText);
-                            }
-                            if (valorSelecionado > 0) {
-                                $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
-                            } else {
-                                $('#level3Title').text(indexParamsLevel3.newLevel3);
-                            }
-
-                            closeLoader();
-
-                            reloadPopovers();
-
-                            initialFormLevel3 = $($('form')[2]).clone();
-
-                        });
-
-                    }
+                    });
+                },/*Busca dados do level3 na API*/
+                resetValidacao: function(){
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
                     $("form").each(function () { $.data($(this)[0], 'validator', false); });
                     $.validator.unobtrusive.parse("form");
                 },
-                enviarDadosParaApi: function (e) {
+                resetaForm: function(){
+                    $('#parLevel3Select2').val('-1');
+                    indexParamsLevel3.GetLevel3('-1');
 
-                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                    $.validator.unobtrusive.parse("form");
-
-                    if ($('#newLevel3Modal > form').valid()) {
-                        //Cabecalhos.UpdateCabecalhos();
-                        //Cluster.UpdateCounter();
-                        //  Counter.UpdateCounters();
-                        var dados = $('#newLevel3Modal > form').serializeObject();
-
-                        if(dados['paramsDto.parLevel3Value.IntervalMax'] != undefined && dados['paramsDto.parLevel3Value.IntervalMax'] != null)
-                            dados['paramsDto.parLevel3Value.IntervalMax'] = dados['paramsDto.parLevel3Value.IntervalMax'].replace(',', '.');
-
-                        if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
-                            dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
-
-                        openLoader(indexParamsLevel3.saving_the_level3);
-                        $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                            closeLoader();
-                            var $btn = $('#btnSaveNewLevel3');
-                            $btn.button('loading');
-
-                            if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
-                                openLoader(indexParamsLevel3.saving_the_level3);
-                                $.get('GetParLevel3ById', { id: objetoReturn.paramsDto.parLevel3Dto.Id, idParLevel2: $('#paramsDto_parLevel2Dto_Id').val() }, function (obj, responseText, xhr) {
-                                    closeLoader();
-                                    if (obj != null) {
-                                        $('#ParLevel3').empty();
-                                        $('#ParLevel3').append(xhr.responseText);
-
-                                        $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                                        $.validator.unobtrusive.parse("form");
-                                        $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                                        $.validator.unobtrusive.parse("form");
-                                        $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                                        $.validator.unobtrusive.parse("form");
-                                    }
-
-                                    var retornoId = $('#paramsDto_parLevel3Dto_Id').val();
-                                    var retornoName = $('#paramsDto_parLevel3Dto_Name').val();
-                                    $('#level3Title').text('#' + retornoId + ' - ' + retornoName); /*Texto do panel*/
-
-                                    /*Atualiza Select2*/
-                                    if ($("#parLevel3Select2 option:selected").val() == retornoId) {
-                                        if ($("#parLevel3Select2 option:selected").text() != retornoName) {
-                                            $("#parLevel3Select2 option:selected").text(retornoId + ' - ' + retornoName);
-                                            //$('#parLevel3Select2').select2();
-                                        }
-                                    } else {
-                                        $("#parLevel3Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
-                                        $("#parLevel3Select2").val(retornoId);
-                                    }
-
-                                    //$('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
-
-                                    initialFormLevel3 = $($('form')[2]).clone();
-                                });
-                                openMessageModal("Alerta", statusmessage);
-                                //alert(statusmessage);
-
-                            }
-                        }).fail(function (e, h, x) {
-                            closeLoader();
-                            openMessageModal("Alerta", e.responseJSON.Message);
-                            //alert(e.responseJSON.Message);
-                        });
-
-                    }
-
-                },
+                    //$('#ParLevel3').empty();
+                    //$('#ParLevel3').append(parLevel3Empty);
+                    //$('#level3Title').text(indexParamsLevel3.newLevel3);
+                    //initialFormLevel3 = $($('form')[2]).clone();
+                    //closeLoader();
+                }
             }
-            //indexParamsLevel3.select2();
+
+            indexParamsLevel1.selectNormal();
+            indexParamsLevel2.selectNormal();
             indexParamsLevel3.selectNormal();
 
 
