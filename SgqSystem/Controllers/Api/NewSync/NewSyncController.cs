@@ -51,7 +51,10 @@ namespace SgqSystem.Controllers.Api.NewSync
           
             return null;
         }
-
+        public HttpResponseMessage test([FromBody] string test)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, "SGQ");
+        }
         [HttpGet]
         [Route("Insert2")]
         public string Insert2()
@@ -85,10 +88,11 @@ namespace SgqSystem.Controllers.Api.NewSync
 
             return null;
         }
-        [HttpGet]
+        [HttpPost]
         //[Route("InsertJson/{obj}/{collectionDate}/{level01Id}/{level02Id}/{unitId}/{period}/{shift}/{device}/{version}/{ambient}")]
         //public string InsertJson(string obj, string collectionDate,string level01Id, string level02Id ,string unitId ,string period ,string shift ,string device ,string version ,string ambient)
-        [Route("InsertJson/{obj}")]
+        [Route("InsertJson")]
+        //public string GenericReturn<CollectionJson> InsertJson([FromBody] SyncViewModel objToSync)
         public string InsertJson(string obj)
         {
 
@@ -104,7 +108,7 @@ namespace SgqSystem.Controllers.Api.NewSync
             //string version = "2";
             string key = "123";
 
-            
+            //string obj = null;
 
             string sql = "INSERT INTO [dbo].[CollectionJson] " +
                          "([AddDate],[AlterDate],[ObjectJson],[Key],[CollectionDate],[IsFullSaved],[level01_Id],[level02_Id],[Unit_Id],[Period],[Shift],[Device_Id],[AppVersion],[Ambient],[TTP])" +
