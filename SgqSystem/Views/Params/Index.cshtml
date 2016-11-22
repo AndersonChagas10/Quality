@@ -450,8 +450,8 @@
 
 
             function dirtForm(oldForm, newForm){
-                var o = oldForm.serialize();
-                var n = newForm.serialize();
+                var o = oldForm.serialize().toString();
+                var n = newForm.serialize().toString();
                 if (o != n) {
                     return true;
                 }
@@ -687,13 +687,13 @@
 
                         updateAllTables();
 
-                        initialFormLevel1 = $($('form')[0]).clone();
-
                         closeLoader();
 
                         reloadPopovers();
                         $("form").each(function () { $.data($(this)[0], 'validator', false); });
                         $.validator.unobtrusive.parse("form");
+
+                        initialFormLevel1 = $($('form')[0]).clone();
                     });
 
                     //closeConfirm();
@@ -874,13 +874,13 @@
                         } else {
                             $('#level2Title').text(indexParamsLevel2.new_level2);
                         }
-                        initialFormLevel2 = $($('form')[1]).clone();
 
                         $('#parLevel3Select2').val('-1').trigger('select2:select').change();
                         closeLoader();
 
                         reloadPopovers();
-
+                        
+                        initialFormLevel2 = $($('form')[1]).clone();
                     });
                 }
                 $("form").each(function () { $.data($(this)[0], 'validator', false); });
@@ -996,11 +996,11 @@
                                 $('#level3Title').text(indexParamsLevel3.newLevel3);
                             }
 
-                            initialFormLevel3 = $($('form')[2]).clone();
-
                             closeLoader();
 
                             reloadPopovers();
+
+                            initialFormLevel3 = $($('form')[2]).clone();
 
                         });
 
@@ -1120,6 +1120,7 @@
                         //alert("Vinculado L3 com L2 ID: " + obj.Id);
                         UpdateSelect2Level2(idLevel1);
                     }
+                    initialFormLevel3 = $($('form')[2]).clone();
                 }).fail(function (e, h, x) {
                     openMessageModal("Alerta", e.responseJSON.Message);
                     //alert(e.responseJSON.Message); // or whatever
@@ -1165,6 +1166,7 @@
                         //alert("Vinculado L3 com L2 ID: " + obj.Id);
                         UpdateSelect2Level3(idLevel2, undefined, function(){$('#parLevel3Select2').trigger('change');});
                     }
+                    initialFormLevel3 = $($('form')[2]).clone();
                 });
 
             }
