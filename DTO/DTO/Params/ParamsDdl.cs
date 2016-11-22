@@ -69,31 +69,37 @@ namespace DTO.DTO.Params
                             List<ParLevel3BoolFalseDTO> ddlParLevel3BoolFalse,
                             List<ParLevel3BoolTrueDTO> ddlParLevel3BoolTrue)
         {
-            DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation);
-            DdlFrequency = Guard.CreateDropDownList(ddlFrequency);
+            DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation.OrderBy(r => r.Name));
+            DdlFrequency = Guard.CreateDropDownList(ddlFrequency.OrderBy(r => r.Name));
             //DdlparLevel1 = Guard.CreateDropDownList(ddlparLevel1);
             //DdlparLevel2 = Guard.CreateDropDownList(ddlparLevel2);
             //DdlparLevel3 = Guard.CreateDropDownList(ddlparLevel3);
-            DdlparCluster = Guard.CreateDropDownList(ddlparCluster);
-            DdlparLevelDefinition = Guard.CreateDropDownList(ddlparLevelDefinition);
-            DdlParFieldType = Guard.CreateDropDownList(ddlParFieldType);
-            DdlParDepartment = Guard.CreateDropDownList(ddlParDepartment);
-            DdlParCounter_Level1 = Guard.CreateDropDownList(ddlParCounter_Level1);
-            DdlParLocal_Level1 = Guard.CreateDropDownList(ddlParLocal_Level1);
-            DdlParCounter_Level2 = Guard.CreateDropDownList(ddlParCounter_Level2);
-            DdlParLocal_Level2 = Guard.CreateDropDownList(ddlParLocal_Level2);
-            DdlParNotConformityRule = Guard.CreateDropDownList(ddlParNotConformityRule);
-            DdlParLevel3InputType = Guard.CreateDropDownList(ddlParLevel3InptType);
-            DdlParMeasurementUnit = Guard.CreateDropDownList(ddlParMeasurementUnit);
-            DdlParLevel3BoolFalse = Guard.CreateDropDownList(ddlParLevel3BoolFalse);
-            DdlParLevel3BoolTrue = Guard.CreateDropDownList(ddlParLevel3BoolTrue);
+            DdlparCluster = Guard.CreateDropDownList(ddlparCluster.OrderBy(r => r.Name));
+            DdlparLevelDefinition = Guard.CreateDropDownList(ddlparLevelDefinition.OrderBy(r => r.Name));
+            DdlParFieldType = Guard.CreateDropDownList(ddlParFieldType.OrderBy(r => r.Name));
+            DdlParDepartment = Guard.CreateDropDownList(ddlParDepartment.OrderBy(r => r.Name));
+            DdlParCounter_Level1 = Guard.CreateDropDownList(ddlParCounter_Level1.OrderBy(r => r.Name));
+            DdlParLocal_Level1 = Guard.CreateDropDownList(ddlParLocal_Level1.OrderBy(r => r.Name));
+            DdlParCounter_Level2 = Guard.CreateDropDownList(ddlParCounter_Level2.OrderBy(r => r.Name));
+            DdlParLocal_Level2 = Guard.CreateDropDownList(ddlParLocal_Level2.OrderBy(r => r.Name));
+            DdlParNotConformityRule = Guard.CreateDropDownList(ddlParNotConformityRule.OrderBy(r => r.Name));
+            DdlParLevel3InputType = Guard.CreateDropDownList(ddlParLevel3InptType.OrderBy(r => r.Name));
+            DdlParMeasurementUnit = Guard.CreateDropDownList(ddlParMeasurementUnit.OrderBy(r => r.Name));
+            DdlParLevel3BoolFalse = Guard.CreateDropDownList(ddlParLevel3BoolFalse.OrderBy(r => r.Name));
+            DdlParLevel3BoolTrue = Guard.CreateDropDownList(ddlParLevel3BoolTrue.OrderBy(r => r.Name));
+
         }
 
         public void SetDdlsNivel123(List<ParLevel1DTO> ddlparLevel1, List<ParLevel2DTO> ddlparLevel2, List<ParLevel3DTO> ddlparLevel3)
         {
-            DdlparLevel1 = CreateSelectListParamsViewModelListLevel(ddlparLevel1);
-            DdlparLevel2 = CreateSelectListParamsViewModelListLevel(ddlparLevel2);
-            DdlparLevel3 = CreateSelectListParamsViewModelListLevel(ddlparLevel3);
+            DdlparLevel1 = CreateSelectListParamsViewModelListLevel(ddlparLevel1.OrderBy(r => r.Name));
+            DdlparLevel2 = CreateSelectListParamsViewModelListLevel(ddlparLevel2.OrderBy(r => r.Name));
+            DdlparLevel3 = CreateSelectListParamsViewModelListLevel(ddlparLevel3.OrderBy(r => r.Name));
+
+            DdlparLevel1 = DdlparLevel1.OrderBy(r => r.Group);
+            DdlparLevel2 = DdlparLevel2.OrderBy(r => r.Group);
+            DdlparLevel3 = DdlparLevel3.OrderBy(r => r.Group);
+
         }
 
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(List<T> lista)
