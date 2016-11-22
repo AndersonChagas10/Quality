@@ -89,6 +89,7 @@ namespace SgqSystem.Controllers.Api.NewSync
         //[Route("InsertJson/{obj}/{collectionDate}/{level01Id}/{level02Id}/{unitId}/{period}/{shift}/{device}/{version}/{ambient}")]
         //public string InsertJson(string obj, string collectionDate,string level01Id, string level02Id ,string unitId ,string period ,string shift ,string device ,string version ,string ambient)
         [Route("InsertJson/{obj}")]
+        //public string GenericReturn<CollectionJson> InsertJson([FromBody] SyncViewModel objToSync)
         public string InsertJson(string obj)
         {
 
