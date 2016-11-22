@@ -8,7 +8,6 @@ namespace DTO.DTO.Params
         public int ParLevel1_Id { get; set; }
         [Required]
         public int ParCluster_Id { get; set; }
-        [Required]
         public decimal Points { get; set; }
         public bool IsActive { get; set; } = true;
 
