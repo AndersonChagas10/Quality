@@ -929,6 +929,8 @@
 
                         if(!!isSave){
                             /*Atualiza Select*/
+                            var retornoId = $('#paramsDto_parLevel3Dto_Id').val();
+                            var retornoName = $('#paramsDto_parLevel3Dto_Name').val();
                             if ($("#parLevel3Select2 option:selected").val() == retornoId) {
                                 if ($("#parLevel3Select2 option:selected").text() != retornoName) {
                                     $("#parLevel3Select2 option:selected").text(retornoId + ' - ' + retornoName);
