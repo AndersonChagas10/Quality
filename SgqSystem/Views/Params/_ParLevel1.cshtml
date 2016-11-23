@@ -601,6 +601,7 @@
             }
         });
     }
+
     var Cluster = {
         Counter: 0,
         EventoDdlClusters: function () {
@@ -626,7 +627,7 @@
                 $('#pontosCluster').val('0.00');
             }
             $('#pontosCluster').val()
-            
+
             //if($('#valCrit :selected').val() <= 0 ){
             //}
 
@@ -650,7 +651,7 @@
                 '<input type="hidden" name="paramsDto.parLevel1XClusterDto[].Points" value="' + pontosCluster + '" />');
             novaTr.find('#pontosCluster').append(pontosCluster)
             novaTr.find('#crit').append(nivelCrit)
-            
+
             //novaTr.find('#btnAlterarCluster').attr('id', novaTr.find('#btnAlterarCluster').attr('id') + idCluster);
             novaTr.find('#btnExcluirCluster').attr('id', novaTr.find('#btnExcluirCluster').attr('id') + idCluster);
             novaTr.attr('id', idCluster);
@@ -666,19 +667,25 @@
 
             $('#valueCluster').val(-1);
             $('#pontosCluster').val("");
-            $('#valueCluster option[value=' + idCluster + ']').attr('disabled', true)
+            //$('#valueCluster option[value=' + idCluster + ']').attr('disabled', true)
+            Cluster.VerificaDDl();
             //Cluster.Counter++;
             Cluster.VerificaShowTable();
 
             updateAllTables();
         },
         VerificaShowTable: function () {
-
+            if($('#clusterIncluidos > tbody tr:visible').length == 1){
+                $('#clusterIncluidos').hide();
+            } else {
+                $('#clusterIncluidos').show();
+            }
         },
         EventoRemove: function (btnSelector, idCluster) {
             $('#' + btnSelector).click(function () {
-                $('#valueCluster option[value=' + idCluster + ']').attr('disabled', false);
+                //$('#valueCluster option[value=' + idCluster + ']').attr('disabled', false);
                 $(this).parents('tr').first().remove();
+                Cluster.VerificaDDl();
                 Cluster.VerificaShowTable();
             });
             updateAllTables();
@@ -704,7 +711,15 @@
                 });
             });
         },
-
+        VerificaDDl: function(){
+            $('#valueCluster option').show();
+            $('#clusterIncluidos > tbody tr td:nth-child(1):visible').each(function(c,o){
+                var elementoNoDdl = $.grep($('#valueCluster option'), function(n,i){
+                    return $(n).text().trim() == $(o).text().trim() || $(n).val() == "" || $(n).val() == -1 ;
+                });
+                $(elementoNoDdl).hide();
+            });
+        },
         CounterRemoveClusterEDICAO: 0,
         btnINATIVARLevel1XCluster: function (e) {
             var nameNovo = e.parent().find('input[type="hidden"]').attr("name") + "[" + Cluster.CounterRemoveClusterEDICAO + "]";
@@ -712,17 +727,19 @@
             e.parents('tr').hide();
             Cluster.CounterRemoveClusterEDICAO++;
             console.log(e.parents('tr'));
+            Cluster.VerificaDDl();
+            Cluster.VerificaShowTable();
         },
         verificaClustersJsIncluidosParaDesabilitar: function () {
-
-            $('#valueCluster option[value=' + idCluster + ']').attr('disabled', true)
+            Cluster.VerificaDDl();
+            //$('#valueCluster option[value=' + idCluster + ']').attr('disabled', true)
         },
     }
 
     var Cabecalhos = {
 
-        BtnExcluir:  '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this));"><i class="fa fa-times"></i></button>',
-        BtnExcluir2: '<button type="button" class="btn btn-danger btn-xs" name=""  onclick="Cabecalhos.RemoverDaTabela($(this));"><i class="fa fa-times"></i></button>',
+        BtnExcluir:  function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');"><i class="fa fa-times"></i></button>'; },
+        BtnExcluir2: function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length +', true);"><i class="fa fa-times"></i></button>'; },
         //ParMultipleValues: new {
         //    Id: '',
         //    ParHeaderField_Id: '',
@@ -963,7 +980,7 @@
             });
 
             example += '</td>'
-            example += '<td>&nbsp;' + Cabecalhos.BtnExcluir + '</td></tr>';//Btn excluir
+            example += '<td>&nbsp;' + Cabecalhos.BtnExcluir() + '</td></tr>';//Btn excluir
 
 
             $('#tableCabecalhosPreview').append(example);
@@ -1143,7 +1160,7 @@
             });
             example += '</td>';
 
-            example += '<td>&nbsp;' + Cabecalhos.BtnExcluir + '</td></tr>';//Btn excluir
+            example += '<td>&nbsp;' + Cabecalhos.BtnExcluir2() + '</td></tr>';//Btn excluir
 
             $('#tableCabecalhosPreview').append(example);
 
@@ -1229,7 +1246,7 @@
             example += '</td>';
 
             example += '<td>';
-            example += '&nbsp;' +  Cabecalhos.BtnExcluir;
+            example += '&nbsp;' +  Cabecalhos.BtnExcluir();
             //example += '</div>';
             example += '</td>';
 
@@ -1262,7 +1279,7 @@
 
             if($('#headerLevel option:selected').val() == -1){
                 openMessageModal("Alerta", "Selecione o Nivel do Cabecalho");
-               //lert('Selecione o Nivel do Cabecalho');
+                //lert('Selecione o Nivel do Cabecalho');
                 return;
             }
 
@@ -1308,7 +1325,7 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             example += '</td>';
             example += '<td>';
-            example += '&nbsp;' + Cabecalhos.BtnExcluir;
+            example += '&nbsp;' + Cabecalhos.BtnExcluir();
             //example += '</div>';
             example += '</td>';
             $('#tableCabecalhosPreview').append(example);
@@ -1354,16 +1371,35 @@
         },
 
         RemoverDaTabela: function(e, indexValueOfArray, isBinario){
-            if(indexValueOfArray != undefined && isBinario == undefined)
-                Cabecalhos.ParMultiplaEscolhaOpcoes.splice(indexValueOfArray,1);
+            if(indexValueOfArray != undefined && isBinario == undefined){
+                //Cabecalhos.ParMultiplaEscolhaOpcoes.splice(indexValueOfArray,1);
+                
+                if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                    $('#salvarCabecalho2').fadeOut();
+                else
+                    $('#salvarCabecalho2').fadeIn();
 
-            if(indexValueOfArray != undefined && isBinario != undefined)
-                Cabecalhos.ParBinario.splice(indexValueOfArray,1);
+            }
 
+            if(indexValueOfArray != undefined && isBinario != undefined){
+                //Cabecalhos.ParBinario.splice(indexValueOfArray,1);
+                
+                if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                    $('#salvarCabecalho1').fadeOut();
+                else
+                    $('#salvarCabecalho1').fadeIn();
 
-            Cabecalhos.tableMultiplaEscolha.row( e.parents('tr') ).remove().draw();
+            }
+            e.parents('tr').remove();
+
+            if(Cabecalhos.tableMultiplaEscolha.rows()[0].length == 0){
+                $('#camposCabecalhoIncluidos').hide();
+            }
 
             updateAllTables();
+
+
+
         },
 
         ////INCLUSÃO
@@ -1517,7 +1553,8 @@
     }
 
     $(document).ready(function () {
-
+        
+       
         $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').attr('checked', 'checked');
         defaults();
         $('#paramsDto_parLevel1Dto_IsRuleConformity[value="false"]').trigger('click');
@@ -1543,6 +1580,17 @@
         initialFormLevel1 = $($('form')[0]).clone();
 
         $('[data-toggle="popover"]').popover();
+
+        setTimeout(function(){  
+            Cluster.VerificaDDl();
+            Cluster.VerificaShowTable(); 
+        }, 3000);
     });
+
+
+    setTimeout(function(){  
+        Cluster.VerificaDDl();
+        Cluster.VerificaShowTable(); 
+    }, 3000);
 
 </script>

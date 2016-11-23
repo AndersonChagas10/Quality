@@ -4,9 +4,7 @@ using DTO.DTO;
 using DTO.Helpers;
 using Dominio.Interfaces.Repositories;
 using System.Linq;
-using AutoMapper;
 using System.Collections.Generic;
-using DTO;
 
 namespace Dominio.Services
 {
@@ -32,9 +30,9 @@ namespace Dominio.Services
             _collectionLevel03Repository = collectionLevel03Repository;
         }
 
-        public GenericReturn<GetSyncDTO> GetLastEntry()
+        public List<ConsolidationLevel01> GetLastEntryToMerge()
         {
-            throw new NotImplementedException();
+            return _consolidationLevel01Repository.GetLastEntryConsildatedLevel01ToMerge().ToList(); //.Where
         }
 
         public GenericReturn<GetSyncDTO> GetHtmlLastEntry(SyncDTO idUnidade)
@@ -53,6 +51,7 @@ namespace Dominio.Services
             }
         }
 
+      
     }
 
 }

@@ -167,6 +167,13 @@ namespace Data.Repositories
             return listResults;
         }
 
+        public IEnumerable<ConsolidationLevel01> GetLastEntryConsildatedLevel01ToMerge()
+        {
+            var ids = db.Database.SqlQuery<int>("SELECT max(id) as id FROM [dbo].ConsolidationLevel01 group by Level01Id").ToList();
+            var lastResults = db.ConsolidationLevel01.Where(r => ids.Any(x => x == r.Id));
+            return lastResults;
+        }
+
         #endregion
 
     }

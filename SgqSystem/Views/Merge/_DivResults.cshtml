@@ -1,0 +1,135 @@
+﻿@model SgqSystem.ViewModels.ResultsDivViewModel
+@using SgqSystem.Helpers
+@{
+    ViewBag.Title = "ParLeve1";
+    //URL relativa
+    var url1 = Url.Action("AddUpdateLevel1", "api/ParamsApi");
+    Layout = null;
+    var shifts = new List<int>();
+    var periods = new List<int>();
+
+    shifts.Add(1);
+    shifts.Add(2);
+
+    periods.Add(1);
+    periods.Add(2);
+    periods.Add(3);
+    periods.Add(4);
+}
+
+
+@foreach (var consolidationLevel1 in Model.consolidationLevel01)
+{
+
+    foreach (var shift in shifts)
+    {
+        foreach (var period in periods)
+        {
+
+            if (consolidationLevel1.Level01Id == 2 && consolidationLevel1.ConsolidationLevel02.Any(r => r.CollectionLevel02.Any(cc => cc.Shift == shift && cc.Period == period)))
+            {
+                <div class="level01Result" level01id="@consolidationLevel1.Level01Id" unidadeid="1" date=@consolidationLevel1.ConsolidationDate.ToString("MMddyyyy") datetime="@consolidationLevel1.ConsolidationDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" shift="@shift" period="@period" reaudit="false" reauditnumber="0" totalevaluate="0" sidewitherros="0" more3defects="0" lastevaluate="@consolidationLevel1.ConsolidationLevel02.LastOrDefault().CollectionLevel02.Max(z=>z.EvaluationNumber)" lastsample="@consolidationLevel1.ConsolidationLevel02.LastOrDefault().CollectionLevel02.Max(z=>z.Sample)" biasedunbiased="0" evaluate="@consolidationLevel1.ConsolidationLevel02.LastOrDefault().CollectionLevel02.Max(z=>z.EvaluationNumber)">
+                    @foreach (var consolidationLevel2 in consolidationLevel1.ConsolidationLevel02)
+                    {
+                        foreach (var level2 in consolidationLevel2.Level02.CollectionLevel02.Where(r => r.Period == period && r.Shift == shift))
+                        {
+                            if (level2.CorrectiveAction != null && level2.CorrectiveAction.Count() > 0)
+                            {
+                                <div class="level02Result" level01id="@consolidationLevel1.Level01Id" level02id="@level2.Level02Id" unidadeid="1" date=@level2.CollectionDate.ToString("MMddyyyy") datetime="@level2.CollectionDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" auditorid="@level2.AuditorId" shift="@shift" period="@period" defects="@Convert.ToInt32(level2.CollectionLevel03.Sum(r=>r.Value))" reaudit="false" evaluate="@level2.EvaluationNumber" sample="@level2.Sample" reauditnumber="0" phase="0" startphasedate="null" cattletype="1" chainspeed="1" lotnumber="3" mudscore="2" consecutivefailurelevel="undefined" consecutivefailuretotal="undefined" notavaliable=@level2.NotEvaluatedIs.ToString().ToLower() sync="true" id="@level2.Id" idcorrectiveaction="@level2.CorrectiveAction.FirstOrDefault().Id" correctiveactioncomplete="correctiveActionComplete">
+                                    @foreach (var level3 in level2.CollectionLevel03)
+                                    {
+                                        <div class="level03Result" level03id="@level3.Level03Id" date="@level2.CollectionDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" value="@Convert.ToInt32(@level3.Value)" conform=@level3.ConformedIs.ToString().ToLower() auditorid="@level2.AuditorId" totalerror="null" valuetext="undefined" id="@level3.Id"></div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="level02Result" level01id="@consolidationLevel1.Level01Id" level02id="@level2.Level02Id" unidadeid="1" date=@level2.CollectionDate.ToString("MMddyyyy") datetime="@level2.CollectionDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" auditorid="@level2.AuditorId" shift="@shift" period="@period" defects="@Convert.ToInt32(level2.CollectionLevel03.Sum(r=>r.Value))" reaudit="false" evaluate="@level2.EvaluationNumber" sample="@level2.Sample" reauditnumber="0" phase="0" startphasedate="null" cattletype="1" chainspeed="1" lotnumber="3" mudscore="2" consecutivefailurelevel="undefined" consecutivefailuretotal="undefined" notavaliable=@level2.NotEvaluatedIs.ToString().ToLower() sync="true" id="@level2.Id">
+                                    @foreach (var level3 in level2.CollectionLevel03)
+                                    {
+                                        <div class="level03Result" level03id="@level3.Level03Id" date="@level2.CollectionDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" value="@Convert.ToInt32(@level3.Value)" conform=@level3.ConformedIs.ToString().ToLower() auditorid="@level2.AuditorId" totalerror="null" valuetext="undefined" id="@level3.Id"></div>
+                                    }
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            }
+            else if (consolidationLevel1.Level01Id == 3 && consolidationLevel1.ConsolidationLevel02.Any(r => r.CollectionLevel02.Any(cc => cc.Shift == shift && cc.Period == period)))
+            {
+                <div class="level01Result" level01id="@consolidationLevel1.Level01Id" unidadeid="1" date=@consolidationLevel1.ConsolidationDate.ToString("MMddyyyy") datetime="@consolidationLevel1.ConsolidationDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" shift="@shift" period="@period" reaudit="false" reauditnumber="0" totalevaluate="@consolidationLevel1.ConsolidationLevel02.LastOrDefault().CollectionLevel02.Max(z=>z.EvaluationNumber)" sidewitherros="0" more3defects="0" lastevaluate="@consolidationLevel1.ConsolidationLevel02.LastOrDefault().CollectionLevel02.Max(z=>z.EvaluationNumber)" lastsample="@consolidationLevel1.ConsolidationLevel02.LastOrDefault().CollectionLevel02.Where(r => r.Shift ==  shift && r.Period == period).Max(z=>z.Sample)" biasedunbiased="0" evaluate="@consolidationLevel1.ConsolidationLevel02.LastOrDefault().CollectionLevel02.Where(r => r.Shift ==  shift && r.Period == period).Max(z=>z.EvaluationNumber)">
+                    @foreach (var consolidationLevel2 in consolidationLevel1.ConsolidationLevel02.Where(r => r.CollectionLevel02.Any(cc => cc.Shift == shift && cc.Period == period)))
+                    {
+                        var level2 = consolidationLevel2.CollectionLevel02.OrderByDescending(r => r.Sample).ThenByDescending(r => r.EvaluationNumber).FirstOrDefault(r => r.Period == period && r.Shift == shift);
+                        if (level2.CorrectiveAction != null && level2.CorrectiveAction.Count() > 0)
+                        {
+                            <div class="level02Result" level01id="@consolidationLevel1.Level01Id" level02id="@level2.Level02Id" unidadeid="1" date=@level2.CollectionDate.ToString("MMddyyyy") datetime="@level2.CollectionDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" auditorid="@level2.AuditorId" shift="@shift" period="@period" defects="@Convert.ToInt32(level2.CollectionLevel03.Sum(r=>r.Value))" reaudit="false" evaluate="@level2.EvaluationNumber" sample="@level2.Sample" reauditnumber="0" phase="0" startphasedate="null" cattletype="1" chainspeed="1" lotnumber="3" mudscore="2" consecutivefailurelevel="undefined" consecutivefailuretotal="undefined" notavaliable=@level2.NotEvaluatedIs.ToString().ToLower() sync="true" id="@level2.Id" idcorrectiveaction="@level2.CorrectiveAction.FirstOrDefault().Id" correctiveactioncomplete="correctiveActionComplete">
+                                @foreach (var level3 in level2.CollectionLevel03)
+                                {
+                                    <div class="level03Result" level03id="@level3.Level03Id" date="@level2.CollectionDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" value="@Convert.ToInt32(@level3.Value)" conform=@level3.ConformedIs.ToString().ToLower() auditorid="@level2.AuditorId" totalerror="null" valuetext="undefined" id="@level3.Id"></div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="level02Result" level01id="@consolidationLevel1.Level01Id" level02id="@level2.Level02Id" unidadeid="1" date=@level2.CollectionDate.ToString("MMddyyyy") datetime="@level2.CollectionDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" auditorid="@level2.AuditorId" shift="@shift" period="@period" defects="@Convert.ToInt32(level2.CollectionLevel03.Sum(r=>r.Value))" reaudit="false" evaluate="@level2.EvaluationNumber" sample="@level2.Sample" reauditnumber="0" phase="0" startphasedate="null" cattletype="1" chainspeed="1" lotnumber="3" mudscore="2" consecutivefailurelevel="undefined" consecutivefailuretotal="undefined" notavaliable=@level2.NotEvaluatedIs.ToString().ToLower() sync="true" id="@level2.Id">
+                                @foreach (var level3 in level2.CollectionLevel03)
+                                {
+                                    <div class="level03Result" level03id="@level3.Level03Id" date="@level2.CollectionDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" value="@Convert.ToInt32(@level3.Value)" conform=@level3.ConformedIs.ToString().ToLower() auditorid="@level2.AuditorId" totalerror="null" valuetext="undefined" id="@level3.Id"></div>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+            }
+            else if (consolidationLevel1.Level01Id == 1 && consolidationLevel1.ConsolidationLevel02.Where(r => r.CollectionLevel02.Any(cc => cc.Shift == shift && cc.Period == period)).Count() > 0)
+            {
+                <div class="level01Result" level01id="@consolidationLevel1.Level01Id" unidadeid="1" date=@consolidationLevel1.ConsolidationDate.ToString("MMddyyyy") datetime="@consolidationLevel1.ConsolidationDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" shift="@shift" period="@period" reaudit="false" reauditnumber="0" totalevaluate="0" sidewitherros="0" more3defects="0" lastevaluate="@consolidationLevel1.ConsolidationLevel02.LastOrDefault().CollectionLevel02.Max(z=>z.EvaluationNumber)" lastsample="@consolidationLevel1.ConsolidationLevel02.LastOrDefault().CollectionLevel02.Max(z=>z.Sample)" biasedunbiased=@consolidationLevel1.ConsolidationLevel02.FirstOrDefault().CollectionLevel02.FirstOrDefault().CattleTypeId.ToString() evaluate="@consolidationLevel1.ConsolidationLevel02.LastOrDefault().CollectionLevel02.Max(z=>z.EvaluationNumber)">
+                    @foreach (var consolidationLevel2 in consolidationLevel1.ConsolidationLevel02.Where(r => r.CollectionLevel02.Any(cc => cc.Shift == shift && cc.Period == period)))
+                    {
+                        var level2 = consolidationLevel2.CollectionLevel02.LastOrDefault(r => r.Period == period && r.Shift == shift);
+                        if (level2.CorrectiveAction != null && level2.CorrectiveAction.Count() > 0)
+                        {
+                            <div class="level02Result" level01id="@consolidationLevel1.Level01Id" level02id="@level2.Level02Id" unidadeid="1" date=@level2.CollectionDate.ToString("MMddyyyy") datetime="@level2.CollectionDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" auditorid="@level2.AuditorId" shift="@shift" period="@period" defects=@level2.CollectionLevel03.Where(r=>r.ConformedIs == false).Count().ToString() reaudit="false" evaluate="@level2.EvaluationNumber" sample="@level2.Sample" reauditnumber="0" phase="0" startphasedate="null" cattletype="1" chainspeed="1" lotnumber="3" mudscore="2" consecutivefailurelevel="undefined" consecutivefailuretotal="undefined" notavaliable=@level2.NotEvaluatedIs.ToString().ToLower() sync="true" id="@level2.Id" idcorrectiveaction="@level2.CorrectiveAction.FirstOrDefault().Id" correctiveactioncomplete="correctiveActionComplete">
+                                @foreach (var level3 in level2.CollectionLevel03)
+                                {
+                                    <div class="level03Result" level03id="@level3.Level03Id" date="@level2.CollectionDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" value conform=@level3.ConformedIs.ToString().ToLower() auditorid="@level2.AuditorId" totalerror="null" valuetext="@level3.ValueText" id="@level3.Id"></div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="level02Result" level01id="@consolidationLevel1.Level01Id" level02id="@level2.Level02Id" unidadeid="1" date=@level2.CollectionDate.ToString("MMddyyyy") datetime="@level2.CollectionDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" auditorid="@level2.AuditorId" shift="@shift" period="@period" defects=@level2.CollectionLevel03.Where(r=>r.ConformedIs == false).Count().ToString() reaudit="false" evaluate="@level2.EvaluationNumber" sample="@level2.Sample" reauditnumber="0" phase="" startphasedate="null" cattletype="1" chainspeed="1" lotnumber="3" mudscore="2" consecutivefailurelevel="undefined" consecutivefailuretotal="undefined" notavaliable=@level2.NotEvaluatedIs.ToString().ToLower() sync="true" id="@level2.Id">
+                                @foreach (var level3 in level2.CollectionLevel03)
+                                {
+                                    <div class="level03Result" level03id="@level3.Level03Id" date="@level2.CollectionDate.ToString("MM/dd/yyyy HH:mm:sss.FFF").Replace('"', ' ')" value conform=@level3.ConformedIs.ToString().ToLower() auditorid="@level2.AuditorId" totalerror="null" valuetext="@level3.ValueText" id="@level3.Id"></div>
+                                }
+                            </div>
+                        }
+
+                    }
+                </div>
+            }
+
+
+            foreach (var consolidationLevel2 in consolidationLevel1.ConsolidationLevel02.Where(r => r.CollectionLevel02.Any(cc => cc.Shift == shift && cc.Period == period && cc.CorrectiveAction != null)))
+            {
+                if (consolidationLevel2.CollectionLevel02.FirstOrDefault(r => r.CorrectiveAction != null) != null && consolidationLevel2.CollectionLevel02.Any(r => r.CorrectiveAction.Count() > 0))
+                {
+                    var ca = consolidationLevel2.CollectionLevel02.FirstOrDefault(r => r.CorrectiveAction != null).CorrectiveAction.FirstOrDefault();
+                    <div class="correctiveAction" slaugthersignature="@ca.UserSgq1.FullName" techinicalsignature="@ca.UserSgq2.FullName" preventativemeasure="@ca.PreventativeMeasure" productdisposition="@ca.ProductDisposition" unidadeid="1" auditorid="@ca.AuditorId" date=@ca.DateCorrectiveAction.ToString("MMddyyyy") shift="@shift" period="@period" level01id="@ca.CollectionLevel02.Level02Id" descriptionfailure="@ca.DescriptionFailure" immediatecorrectiveaction="@ca.ImmediateCorrectiveAction" idcorrectiveaction="@ca.Id" datetimeslaughter=@ca.DateTimeSlaughter.Value.ToString("MM/dd/yyyy hh:mm:ss") datetimetechinical=@ca.DateTimeTechinical.Value.ToString("MM/dd/yyyy hh:mm:ss") auditstarttime=@ca.AuditStartTime.ToString("MM/dd/yyyy hh:mm:ss") datecorrectiveaction=@ca.DateCorrectiveAction.ToString("MM/dd/yyyy hh:mm:ss")></div>
+                }
+            }
+
+        }
+    }
+
+}
+
+@*<script>
+
+        $(document).ready(function () {
+
+        });
+
+</script>*@
