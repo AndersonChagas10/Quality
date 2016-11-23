@@ -31,7 +31,9 @@ namespace Dominio
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<BkpCollection> BkpCollection { get; set; }
         public virtual DbSet<CollectionHtml> CollectionHtml { get; set; }
+        public virtual DbSet<CollectionJson> CollectionJson { get; set; }
         public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
         public virtual DbSet<CollectionLevel03> CollectionLevel03 { get; set; }
         public virtual DbSet<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
@@ -51,6 +53,7 @@ namespace Dominio
         public virtual DbSet<ParConsolidationType> ParConsolidationType { get; set; }
         public virtual DbSet<ParCounter> ParCounter { get; set; }
         public virtual DbSet<ParCounterXLocal> ParCounterXLocal { get; set; }
+        public virtual DbSet<ParCriticalLevel> ParCriticalLevel { get; set; }
         public virtual DbSet<ParDepartment> ParDepartment { get; set; }
         public virtual DbSet<ParEvaluation> ParEvaluation { get; set; }
         public virtual DbSet<ParFieldType> ParFieldType { get; set; }
@@ -81,10 +84,8 @@ namespace Dominio
         public virtual DbSet<ParStructureGroup> ParStructureGroup { get; set; }
         public virtual DbSet<Period> Period { get; set; }
         public virtual DbSet<Shift> Shift { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<UnitUser> UnitUser { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
-        public virtual DbSet<BkpCollection> BkpCollection { get; set; }
     }
 }

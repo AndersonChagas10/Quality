@@ -32,6 +32,27 @@
           <Property Name="CollectionDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UnitId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="CollectionJson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="ObjectJson" Type="text" Nullable="false" />
+          <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CollectionDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="IsFullSaved" Type="bit" Nullable="false" />
+          <Property Name="level01_Id" Type="int" />
+          <Property Name="level02_Id" Type="int" />
+          <Property Name="Unit_Id" Type="int" />
+          <Property Name="Period" Type="int" />
+          <Property Name="Shift" Type="int" />
+          <Property Name="Device_Id" Type="nvarchar(max)" />
+          <Property Name="AppVersion" Type="nvarchar(max)" />
+          <Property Name="Ambient" Type="nvarchar" MaxLength="50" />
+          <Property Name="TTP" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="CollectionLevel02">
           <Key>
             <PropertyRef Name="Id" />
@@ -283,6 +304,16 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ParCriticalLevel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
+          <Property Name="AddDate" Type="datetime" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
         <EntityType Name="ParDepartment">
           <Key>
             <PropertyRef Name="Id" />
@@ -391,6 +422,7 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="ParCriticalLevel_Id" Type="int" />
         </EntityType>
         <EntityType Name="ParLevel1XHeaderField">
           <Key>
@@ -660,16 +692,6 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterTime" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="Unit">
           <Key>
             <PropertyRef Name="Id" />
@@ -678,6 +700,9 @@
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
+          <Property Name="Number" Type="int" />
+          <Property Name="Code" Type="int" />
+          <Property Name="Ip" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="UnitUser">
           <Key>
@@ -1033,6 +1058,18 @@
             </Principal>
             <Dependent Role="ParLevel1XCluster">
               <PropertyRef Name="ParCluster_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1XCluster_ParCriticalLevel">
+          <End Role="ParCriticalLevel" Type="Self.ParCriticalLevel" Multiplicity="0..1" />
+          <End Role="ParLevel1XCluster" Type="Self.ParLevel1XCluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCriticalLevel">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XCluster">
+              <PropertyRef Name="ParCriticalLevel_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1411,6 +1448,7 @@
         <EntityContainer Name="SgqDbModelStoreContainer">
           <EntitySet Name="BkpCollection" EntityType="Self.BkpCollection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionHtml" EntityType="Self.CollectionHtml" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CollectionJson" EntityType="Self.CollectionJson" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionLevel02" EntityType="Self.CollectionLevel02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionLevel03" EntityType="Self.CollectionLevel03" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConsolidationLevel01" EntityType="Self.ConsolidationLevel01" Schema="dbo" store:Type="Tables" />
@@ -1430,6 +1468,7 @@
           <EntitySet Name="ParConsolidationType" EntityType="Self.ParConsolidationType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCounter" EntityType="Self.ParCounter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCounterXLocal" EntityType="Self.ParCounterXLocal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParCriticalLevel" EntityType="Self.ParCriticalLevel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParDepartment" EntityType="Self.ParDepartment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParEvaluation" EntityType="Self.ParEvaluation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParFieldType" EntityType="Self.ParFieldType" Schema="dbo" store:Type="Tables" />
@@ -1460,7 +1499,6 @@
           <EntitySet Name="ParStructureGroup" EntityType="Self.ParStructureGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Period" EntityType="Self.Period" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UnitUser" EntityType="Self.UnitUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSgq" EntityType="Self.UserSgq" Schema="dbo" store:Type="Tables" />
@@ -1574,6 +1612,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel1XCluster_ParCluster" Association="Self.FK_ParLevel1XCluster_ParCluster">
             <End Role="ParCluster" EntitySet="ParCluster" />
+            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1XCluster_ParCriticalLevel" Association="Self.FK_ParLevel1XCluster_ParCriticalLevel">
+            <End Role="ParCriticalLevel" EntitySet="ParCriticalLevel" />
             <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel1XCluster_ParLevel1" Association="Self.FK_ParLevel1XCluster_ParLevel1">
@@ -1706,7 +1748,9 @@
     <edmx:ConceptualModels>
       <Schema Namespace="SgqDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SgqDbDevEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BkpCollection" EntityType="SgqDbModel.BkpCollection" />
           <EntitySet Name="CollectionHtml" EntityType="SgqDbModel.CollectionHtml" />
+          <EntitySet Name="CollectionJson" EntityType="SgqDbModel.CollectionJson" />
           <EntitySet Name="CollectionLevel02" EntityType="SgqDbModel.CollectionLevel02" />
           <EntitySet Name="CollectionLevel03" EntityType="SgqDbModel.CollectionLevel03" />
           <EntitySet Name="ConsolidationLevel01" EntityType="SgqDbModel.ConsolidationLevel01" />
@@ -1726,6 +1770,7 @@
           <EntitySet Name="ParConsolidationType" EntityType="SgqDbModel.ParConsolidationType" />
           <EntitySet Name="ParCounter" EntityType="SgqDbModel.ParCounter" />
           <EntitySet Name="ParCounterXLocal" EntityType="SgqDbModel.ParCounterXLocal" />
+          <EntitySet Name="ParCriticalLevel" EntityType="SgqDbModel.ParCriticalLevel" />
           <EntitySet Name="ParDepartment" EntityType="SgqDbModel.ParDepartment" />
           <EntitySet Name="ParEvaluation" EntityType="SgqDbModel.ParEvaluation" />
           <EntitySet Name="ParFieldType" EntityType="SgqDbModel.ParFieldType" />
@@ -1756,7 +1801,6 @@
           <EntitySet Name="ParStructureGroup" EntityType="SgqDbModel.ParStructureGroup" />
           <EntitySet Name="Period" EntityType="SgqDbModel.Period" />
           <EntitySet Name="Shift" EntityType="SgqDbModel.Shift" />
-          <EntitySet Name="sysdiagrams" EntityType="SgqDbModel.sysdiagrams" />
           <EntitySet Name="Unit" EntityType="SgqDbModel.Unit" />
           <EntitySet Name="UnitUser" EntityType="SgqDbModel.UnitUser" />
           <EntitySet Name="UserSgq" EntityType="SgqDbModel.UserSgq" />
@@ -1867,6 +1911,10 @@
           <AssociationSet Name="FK_ParCounterLocal_ParLocal" Association="SgqDbModel.FK_ParCounterLocal_ParLocal">
             <End Role="ParLocal" EntitySet="ParLocal" />
             <End Role="ParCounterXLocal" EntitySet="ParCounterXLocal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1XCluster_ParCriticalLevel" Association="SgqDbModel.FK_ParLevel1XCluster_ParCriticalLevel">
+            <End Role="ParCriticalLevel" EntitySet="ParCriticalLevel" />
+            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel2_ParDepartment" Association="SgqDbModel.FK_ParLevel2_ParDepartment">
             <End Role="ParDepartment" EntitySet="ParDepartment" />
@@ -1996,8 +2044,21 @@
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="UnitUser" EntitySet="UnitUser" />
           </AssociationSet>
-          <EntitySet Name="BkpCollection" EntityType="SgqDbModel.BkpCollection" />
         </EntityContainer>
+        <EntityType Name="BkpCollection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_Id" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="Period" Type="Int32" Nullable="false" />
+          <Property Name="Html" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Error" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Json" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="CollectionHtml">
           <Key>
             <PropertyRef Name="Id" />
@@ -2010,6 +2071,27 @@
           <Property Name="Shift" Type="Int32" Nullable="false" />
           <Property Name="CollectionDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UnitId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CollectionJson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="ObjectJson" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Key" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CollectionDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="IsFullSaved" Type="Boolean" Nullable="false" />
+          <Property Name="level01_Id" Type="Int32" />
+          <Property Name="level02_Id" Type="Int32" />
+          <Property Name="Unit_Id" Type="Int32" />
+          <Property Name="Period" Type="Int32" />
+          <Property Name="Shift" Type="Int32" />
+          <Property Name="Device_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AppVersion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Ambient" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TTP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CollectionLevel02">
           <Key>
@@ -2301,6 +2383,17 @@
           <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel3" FromRole="ParCounterXLocal" ToRole="ParLevel3" />
           <NavigationProperty Name="ParLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLocal" FromRole="ParCounterXLocal" ToRole="ParLocal" />
         </EntityType>
+        <EntityType Name="ParCriticalLevel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="ParLevel1XCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCriticalLevel" FromRole="ParCriticalLevel" ToRole="ParLevel1XCluster" />
+        </EntityType>
         <EntityType Name="ParDepartment">
           <Key>
             <PropertyRef Name="Id" />
@@ -2428,7 +2521,9 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="ParCriticalLevel_Id" Type="Int32" />
           <NavigationProperty Name="ParCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCluster" FromRole="ParLevel1XCluster" ToRole="ParCluster" />
+          <NavigationProperty Name="ParCriticalLevel" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCriticalLevel" FromRole="ParLevel1XCluster" ToRole="ParCriticalLevel" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1XCluster" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="ParLevel1XHeaderField">
@@ -2748,16 +2843,6 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterTime" Type="DateTime" Nullable="false" Precision="7" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="Unit">
           <Key>
             <PropertyRef Name="Id" />
@@ -2766,6 +2851,9 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="Number" Type="Int32" />
+          <Property Name="Code" Type="Int32" />
+          <Property Name="Ip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Unit" FromRole="Unit" ToRole="ConsolidationLevel01" />
           <NavigationProperty Name="UnitUser" Relationship="SgqDbModel.FK_UnitUser_Unit" FromRole="Unit" ToRole="UnitUser" />
         </EntityType>
@@ -3118,6 +3206,18 @@
             </Principal>
             <Dependent Role="ParCounterXLocal">
               <PropertyRef Name="ParLocal_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1XCluster_ParCriticalLevel">
+          <End Type="SgqDbModel.ParCriticalLevel" Role="ParCriticalLevel" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParLevel1XCluster" Role="ParLevel1XCluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCriticalLevel">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XCluster">
+              <PropertyRef Name="ParCriticalLevel_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3505,26 +3605,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="BkpCollection">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="User_Id" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Html" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Error" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Json" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SgqDbModelStoreContainer" CdmEntityContainer="SgqDbDevEntities">
+          <EntitySetMapping Name="BkpCollection">
+            <EntityTypeMapping TypeName="SgqDbModel.BkpCollection">
+              <MappingFragment StoreEntitySet="BkpCollection">
+                <ScalarProperty Name="Json" ColumnName="Json" />
+                <ScalarProperty Name="Error" ColumnName="Error" />
+                <ScalarProperty Name="Html" ColumnName="Html" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CollectionHtml">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionHtml">
               <MappingFragment StoreEntitySet="CollectionHtml">
@@ -3533,6 +3634,28 @@
                 <ScalarProperty Name="Shift" ColumnName="Shift" />
                 <ScalarProperty Name="Period" ColumnName="Period" />
                 <ScalarProperty Name="Html" ColumnName="Html" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CollectionJson">
+            <EntityTypeMapping TypeName="SgqDbModel.CollectionJson">
+              <MappingFragment StoreEntitySet="CollectionJson">
+                <ScalarProperty Name="TTP" ColumnName="TTP" />
+                <ScalarProperty Name="Ambient" ColumnName="Ambient" />
+                <ScalarProperty Name="AppVersion" ColumnName="AppVersion" />
+                <ScalarProperty Name="Device_Id" ColumnName="Device_Id" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Unit_Id" ColumnName="Unit_Id" />
+                <ScalarProperty Name="level02_Id" ColumnName="level02_Id" />
+                <ScalarProperty Name="level01_Id" ColumnName="level01_Id" />
+                <ScalarProperty Name="IsFullSaved" ColumnName="IsFullSaved" />
+                <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="ObjectJson" ColumnName="ObjectJson" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -3809,6 +3932,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ParCriticalLevel">
+            <EntityTypeMapping TypeName="SgqDbModel.ParCriticalLevel">
+              <MappingFragment StoreEntitySet="ParCriticalLevel">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ParDepartment">
             <EntityTypeMapping TypeName="SgqDbModel.ParDepartment">
               <MappingFragment StoreEntitySet="ParDepartment">
@@ -3916,6 +4050,7 @@
           <EntitySetMapping Name="ParLevel1XCluster">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel1XCluster">
               <MappingFragment StoreEntitySet="ParLevel1XCluster">
+                <ScalarProperty Name="ParCriticalLevel_Id" ColumnName="ParCriticalLevel_Id" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
@@ -4216,20 +4351,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="SgqDbModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Unit">
             <EntityTypeMapping TypeName="SgqDbModel.Unit">
               <MappingFragment StoreEntitySet="Unit">
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -4256,21 +4383,6 @@
                 <ScalarProperty Name="AcessDate" ColumnName="AcessDate" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BkpCollection">
-            <EntityTypeMapping TypeName="SgqDbModel.BkpCollection">
-              <MappingFragment StoreEntitySet="BkpCollection">
-                <ScalarProperty Name="Json" ColumnName="Json" />
-                <ScalarProperty Name="Error" ColumnName="Error" />
-                <ScalarProperty Name="Html" ColumnName="Html" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

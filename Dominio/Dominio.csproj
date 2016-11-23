@@ -37,6 +37,9 @@
     <Compile Include="CollectionHtml.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="CollectionJson.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="CollectionLevel02.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -114,6 +117,9 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParCounterXLocal.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParCriticalLevel.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParDepartment.cs">
@@ -228,9 +234,6 @@
       <DependentUpon>SgqEfContext.edmx</DependentUpon>
     </Compile>
     <Compile Include="Shift.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="sysdiagrams.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Unit.cs">

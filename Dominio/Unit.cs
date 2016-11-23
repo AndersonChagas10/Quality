@@ -25,6 +25,9 @@ namespace Dominio
         public string Name { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
+        public Nullable<int> Number { get; set; }
+        public Nullable<int> Code { get; set; }
+        public string Ip { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
