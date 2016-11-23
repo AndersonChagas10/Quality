@@ -628,6 +628,7 @@
                         if(!!isSave){
                             /*Atualiza Select*/
                             var retornoId = $('#paramsDto_parLevel1Dto_Id').val();
+                            var retornoName = $('#paramsDto_parLevel1Dto_Name').val();
                             if ($("#parLevel1Select2 option:selected").val() == retornoId) {
                                 if ($("#parLevel1Select2 option:selected").text() != retornoName) {
                                     $("#parLevel1Select2 option:selected").text(retornoId + ' - ' + retornoName);
@@ -770,6 +771,7 @@
 
                         if(!!isSave){
                             var retornoId = $('#paramsDto_parLevel2Dto_Id').val();
+                            var retornoName = $('#paramsDto_parLevel2Dto_Name').val();
                             /*Atualiza Select2*/
                             if ($("#parLevel2Select2 option:selected").val() == retornoId) {
                                 if ($("#parLevel2Select2 option:selected").text() != retornoName) {
@@ -921,6 +923,8 @@
 
                         if(!!isSave){
                             /*Atualiza Select*/
+                            var retornoId = $('#paramsDto_parLevel3Dto_Id').val();
+                            var retornoName = $('#paramsDto_parLevel3Dto_Name').val();
                             if ($("#parLevel3Select2 option:selected").val() == retornoId) {
                                 if ($("#parLevel3Select2 option:selected").text() != retornoName) {
                                     $("#parLevel3Select2 option:selected").text(retornoId + ' - ' + retornoName);
