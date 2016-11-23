@@ -322,6 +322,9 @@
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Charts\ChartsController.cs" />
     <Compile Include="Controllers\Params\ParamsController.cs" />
+    <Compile Include="Controllers\ParClustersController.cs" />
+    <Compile Include="Controllers\ParDepartmentsController.cs" />
+    <Compile Include="Controllers\ParMeasurementUnitsController.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1142,6 +1145,21 @@
     <Content Include="Views\Params\_RightLayout.cshtml" />
     <Content Include="Views\Params\_ParLevel1Collection.cshtml" />
     <Content Include="Views\Params\ParamsLevel1.cshtml" />
+    <Content Include="Views\ParClusters\Create.cshtml" />
+    <Content Include="Views\ParClusters\Delete.cshtml" />
+    <Content Include="Views\ParClusters\Details.cshtml" />
+    <Content Include="Views\ParClusters\Edit.cshtml" />
+    <Content Include="Views\ParClusters\Index.cshtml" />
+    <Content Include="Views\ParDepartments\Create.cshtml" />
+    <Content Include="Views\ParDepartments\Delete.cshtml" />
+    <Content Include="Views\ParDepartments\Details.cshtml" />
+    <Content Include="Views\ParDepartments\Edit.cshtml" />
+    <Content Include="Views\ParDepartments\Index.cshtml" />
+    <Content Include="Views\ParMeasurementUnits\Create.cshtml" />
+    <Content Include="Views\ParMeasurementUnits\Delete.cshtml" />
+    <Content Include="Views\ParMeasurementUnits\Details.cshtml" />
+    <Content Include="Views\ParMeasurementUnits\Edit.cshtml" />
+    <Content Include="Views\ParMeasurementUnits\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
