@@ -51,6 +51,7 @@ namespace Dominio.Services
         private IBaseRepository<ParLevel3Level2> _baseParLevel3Level2;
         private IBaseRepository<ParLevel3Level2> _baseRepoParLevel3Level2;
         private IBaseRepository<ParLevel3Level2Level1> _baseRepoParLevel3Level2Level1;
+        private IBaseRepository<ParCriticalLevel> _baseRepoParCriticalLevel;
         private IParLevel3Repository _repoParLevel3;
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
@@ -88,8 +89,10 @@ namespace Dominio.Services
                             IBaseRepository<ParLevel3Level2> baseParLevel3Level2,
                             IBaseRepository<ParLevel3Level2> baseRepoParLevel3Level2,
                             IBaseRepository<ParLevel3Level2Level1> baseRepoParLevel3Level2Level1,
-                            IParLevel3Repository repoParLevel3)
+                            IParLevel3Repository repoParLevel3,
+                            IBaseRepository<ParCriticalLevel> baseRepoParCriticalLevel)
         {
+            _baseRepoParCriticalLevel = baseRepoParCriticalLevel;
             _paramsRepo = paramsRepo;
             _baseRepoParCounterXLocal = baseRepoParCounterXLocal;
             _baseRepoParLevel1XHeaderField = baseRepoParLevel1XHeaderField;
@@ -480,6 +483,8 @@ namespace Dominio.Services
             var DdlParLevel3BoolFalse = Mapper.Map<List<ParLevel3BoolFalseDTO>>(_baseParLevel3BoolFalse.GetAll());
             var DdlParLevel3BoolTrue = Mapper.Map<List<ParLevel3BoolTrueDTO>>(_baseParLevel3BoolTrue.GetAll());
 
+            var DdlparCrit = Mapper.Map<List<ParCriticalLevelDTO>>(_baseRepoParCriticalLevel.GetAll());
+
             var retorno = new ParamsDdl();
 
             retorno.SetDdlsNivel123(DdlparLevel1,
@@ -503,8 +508,8 @@ namespace Dominio.Services
                             DdlParLevel3InputType,
                             DdlParMeasurementUnit,
                             DdlParLevel3BoolFalse,
-                            DdlParLevel3BoolTrue
-                            );
+                            DdlParLevel3BoolTrue,
+                            DdlparCrit);
             return retorno;
         }
 

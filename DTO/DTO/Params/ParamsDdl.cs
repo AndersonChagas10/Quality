@@ -15,6 +15,8 @@ namespace DTO.DTO.Params
         public IEnumerable<SelectListItem> DdlparLevel2 { get; set; }
         public IEnumerable<SelectListItem> DdlparLevel3 { get; set; }
         public IEnumerable<SelectListItem> DdlparCluster { get; set; }
+        public IEnumerable<SelectListItem> DdlparCrit { get; set; }
+        
         public IEnumerable<SelectListItem> DdlParDepartment { get; set; }
 
         //[Range(0, 999, ErrorMessage = "É obrigatório selecionar o Nível do Campo.")]
@@ -67,7 +69,8 @@ namespace DTO.DTO.Params
                             List<ParLevel3InputTypeDTO> ddlParLevel3InptType,
                             List<ParMeasurementUnitDTO> ddlParMeasurementUnit,
                             List<ParLevel3BoolFalseDTO> ddlParLevel3BoolFalse,
-                            List<ParLevel3BoolTrueDTO> ddlParLevel3BoolTrue)
+                            List<ParLevel3BoolTrueDTO> ddlParLevel3BoolTrue,
+                            List<ParCriticalLevelDTO> ddlparCrit)
         {
             DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation.OrderBy(r => r.Name));
             DdlFrequency = Guard.CreateDropDownList(ddlFrequency.OrderBy(r => r.Name));
@@ -87,6 +90,7 @@ namespace DTO.DTO.Params
             DdlParMeasurementUnit = Guard.CreateDropDownList(ddlParMeasurementUnit.OrderBy(r => r.Name));
             DdlParLevel3BoolFalse = Guard.CreateDropDownList(ddlParLevel3BoolFalse.OrderBy(r => r.Name));
             DdlParLevel3BoolTrue = Guard.CreateDropDownList(ddlParLevel3BoolTrue.OrderBy(r => r.Name));
+            DdlparCrit = Guard.CreateDropDownList(ddlparCrit.OrderBy(r => r.Name));
 
         }
 

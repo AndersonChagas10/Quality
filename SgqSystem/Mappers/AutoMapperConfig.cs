@@ -42,6 +42,7 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParMultipleValuesMapperProfile>();
                 x.AddProfile<ParLevel1XHeaderFieldMapperProfile>();
                 x.AddProfile<ParLevel3Level2Level1MapperProfile>();
+                x.AddProfile<ParCriticalLevelMapperProfile>();
 
 
                 /*

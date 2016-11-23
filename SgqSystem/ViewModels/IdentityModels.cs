@@ -29,5 +29,7 @@ namespace SgqSystem.ViewModels
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Dominio.ParCluster> ParClusters { get; set; }
     }
 }

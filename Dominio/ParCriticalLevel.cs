@@ -12,19 +12,21 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParLevel1XCluster
+    public partial class ParCriticalLevel
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParCriticalLevel()
+        {
+            this.ParLevel1XCluster = new HashSet<ParLevel1XCluster>();
+        }
+    
         public int Id { get; set; }
-        public int ParLevel1_Id { get; set; }
-        public int ParCluster_Id { get; set; }
-        public decimal Points { get; set; }
+        public string Name { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool IsActive { get; set; }
-        public Nullable<int> ParCriticalLevel_Id { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     
-        public virtual ParCluster ParCluster { get; set; }
-        public virtual ParCriticalLevel ParCriticalLevel { get; set; }
-        public virtual ParLevel1 ParLevel1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParLevel1XCluster> ParLevel1XCluster { get; set; }
     }
 }

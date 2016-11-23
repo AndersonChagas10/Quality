@@ -12,19 +12,23 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParLevel1XCluster
+    public partial class CollectionJson
     {
         public int Id { get; set; }
-        public int ParLevel1_Id { get; set; }
-        public int ParCluster_Id { get; set; }
-        public decimal Points { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool IsActive { get; set; }
-        public Nullable<int> ParCriticalLevel_Id { get; set; }
-    
-        public virtual ParCluster ParCluster { get; set; }
-        public virtual ParCriticalLevel ParCriticalLevel { get; set; }
-        public virtual ParLevel1 ParLevel1 { get; set; }
+        public string ObjectJson { get; set; }
+        public string Key { get; set; }
+        public System.DateTime CollectionDate { get; set; }
+        public bool IsFullSaved { get; set; }
+        public Nullable<int> level01_Id { get; set; }
+        public Nullable<int> level02_Id { get; set; }
+        public Nullable<int> Unit_Id { get; set; }
+        public Nullable<int> Period { get; set; }
+        public Nullable<int> Shift { get; set; }
+        public string Device_Id { get; set; }
+        public string AppVersion { get; set; }
+        public string Ambient { get; set; }
+        public string TTP { get; set; }
     }
 }
