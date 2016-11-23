@@ -19,7 +19,7 @@ namespace SgqSystem.Controllers
 
             ViewModel = new ResultsDivViewModel()
             {
-                consolidationLevel01 = _getConsolidateDataCollectionDomain.GetLastEntry()
+                consolidationLevel01 = _getConsolidateDataCollectionDomain.GetLastEntryToMerge()
             };
 
         }
