@@ -96,53 +96,17 @@ namespace SgqSystem.Controllers.Api.NewSync
         public string InsertJson(string obj)
         {
 
-            string collectionDate = null; string level01Id = null; string level02Id = null; string unitId = null; string period = null;  string shift = null; string device = null; string version = null; string ambient = null;
+            return null;
            //string obj, string collectionDate, string level01id, string unit, string period, string shift, string device, string version
            // string obj = "123";
-            collectionDate = Convert.ToDateTime(collectionDate).ToString("yyyy-MM-dd HH:mm:ss");
+            //collectionDate = Convert.ToDateTime(collectionDate).ToString("yyyy-MM-dd HH:mm:ss");
             //string level01id = "1";
             //string unit = "1";
            // string period = "1";
             //string shift = "1";
            // string device = "123";
             //string version = "2";
-            string key = "123";
-
-            //string obj = null;
-
-            string sql = "INSERT INTO [dbo].[CollectionJson] " +
-                         "([AddDate],[AlterDate],[ObjectJson],[Key],[CollectionDate],[IsFullSaved],[level01_Id],[level02_Id],[Unit_Id],[Period],[Shift],[Device_Id],[AppVersion],[Ambient],[TTP])" +
-                         "VALUES " +
-                         "(GetDate(),null,'" + obj + "','" + key + "',CONVERT(DATE, '" + collectionDate + "'),0,'" + level01Id + "', '" + level02Id + "','" + unitId + "','" + period + "','" + shift + "','" + device + "', '" + ambient + "','" + version + "', null) ";
-
-            //"  "SELECT @@IDENTITY AS 'Identity'; ";"
-
-
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-                        var i = command.ExecuteScalar();
-                        if (i != null)
-                        {
-
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-            return null;
+           
         }
         [HttpGet]
         [Route("ProcessJson")]
