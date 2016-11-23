@@ -62,7 +62,7 @@
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsLimitedEvaluetionNumber, new { @class = "form-control checkbox-erp", @checked = "checked" }), @Html.Label(Resources.Resource.limited_number_of_evaluations), Table.PosicaoLabel.left, null, null)
                         </tr>
-                       
+
                     </tbody>
                 </table>
 
@@ -98,7 +98,7 @@
                                             <td id="nomeCluster"></td>
                                             <td id="pontosCluster"></td>
                                             <td id="alterarCluster">
-                                                <button type="button" class="btn btn-primary btn-xs pull-right" id="btnAlterarCluster"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                                                @*<button type="button" class="btn btn-primary btn-xs pull-right" id="btnAlterarCluster"><i class="fa fa-edit" aria-hidden="true"></i></button>*@
                                                 <button type="button" class="btn btn-danger btn-xs pull-right" id="btnExcluirCluster"><i class="fa fa-times" aria-hidden="true"></i></button>
                                             </td>
                                         </tr>
@@ -106,12 +106,17 @@
                                         {
                                             foreach (var i in Model.paramsDto.parLevel1Dto.clustersInclusos)
                                             {
+                                                var pontos = "0,00";
+                                                if (i.Points.ToString("#,##").Length > 0)
+                                                {
+                                                    pontos = i.Points.ToString("0.00");
+                                                }
                                                 <tr id="editar">
                                                     <td id="">@i.ParCluster.Name</td>
-                                                    <td id="">@i.Points.ToString("#")</td>
+                                                    <td id="">@pontos </td>
                                                     <td id="editarCluster">
                                                         @*<input type="button" value="Alterar" id="Cluster.btnEDITARCluster" />*@
-                                                        <button type="button" class="btn btn-danger btn-xs" onclick="Cluster.btnINATIVARLevel1XCluster($(this))"><i class="fa fa-times"></i></button>
+                                                        <button type="button" class="btn btn-danger btn-xs pull-right" onclick="Cluster.btnINATIVARLevel1XCluster($(this))"><i class="fa fa-times"></i></button>
                                                         @Html.Hidden("paramsDto.parLevel1Dto.removerParCluster", i.Id, htmlAttributes: new { @disabled = "disabled" })
                                                         @Html.Hidden("clusterId", i.Id, htmlAttributes: new { @disabled = "disabled", @id = "clusterId" })
 
@@ -462,9 +467,9 @@
                                             @Table.GerarColunaCheckbox(
                                                 @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
                                                 , @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
-                                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.not_conformity_rule), Table.PosicaoLabel.top)
-                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm fixed-width", type = "number", min = "0" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
-                                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
+                                            @*@Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.not_conformity_rule), Table.PosicaoLabel.top)
+                                                @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm fixed-width", type = "number", min = "0" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
+                                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)*@
                                         </tr>
                                     </tbody>
                                 </table>
@@ -541,8 +546,8 @@
                     </div>
                 </div>
 
-                
-                
+
+
                 <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
         </div>
@@ -605,9 +610,9 @@
 
             /*Valida cluster pontos*/
             if ($('#pontosCluster').val().length == 0) {
-                $('#pontosCluster').val('0');
+                $('#pontosCluster').val('0.00');
             }
-
+            $('#pontosCluster').val()
             /**/
             var $this = $('#clustersVazia'), $parentTR = $this.closest('tr');
 
@@ -616,14 +621,14 @@
             $(novaTr).removeClass('example');
             var idCluster = $('#valueCluster option:selected').val();
             var nomeCluster = $('#valueCluster option:selected').text();
-            var pontosCluster = $('#pontosCluster').val();
+            var pontosCluster = $('#pontosCluster').val().replace(/[^0-9.]/g, '');
 
             /**/
             novaTr.find('#nomeCluster').append(nomeCluster +
                 ' <input type="hidden" name="paramsDto.parLevel1XClusterDto[].ParCluster_Id" value="' + idCluster + '" />' +
                 '<input type="hidden" name="paramsDto.parLevel1XClusterDto[].Points" value="' + pontosCluster + '" />');
             novaTr.find('#pontosCluster').append(pontosCluster)
-            novaTr.find('#btnAlterarCluster').attr('id', novaTr.find('#btnAlterarCluster').attr('id') + idCluster);
+            //novaTr.find('#btnAlterarCluster').attr('id', novaTr.find('#btnAlterarCluster').attr('id') + idCluster);
             novaTr.find('#btnExcluirCluster').attr('id', novaTr.find('#btnExcluirCluster').attr('id') + idCluster);
             novaTr.attr('id', idCluster);
 
@@ -633,7 +638,7 @@
 
             //Cluster.EventoAlterar(novaTr.find('#btnAlterarCluster' + idCluster).attr('id'), idCluster);
             Cluster.EventoRemove(novaTr.find('#btnExcluirCluster' + idCluster).attr('id'), idCluster);
-            Cluster.EventoAlterar(novaTr.find('#btnAlterarCluster' + idCluster).attr('id'), idCluster);
+            //Cluster.EventoAlterar(novaTr.find('#btnAlterarCluster' + idCluster).attr('id'), idCluster);
             Cluster.Index++;
 
             $('#valueCluster').val(-1);
@@ -717,7 +722,7 @@
         ListaDeCabecalhos: [],
 
         listParHeaderFieldDto: [],
-        
+
         ValidaCamposCabecalho: function (isValid) {
 
             if ($('#headerLevel option:selected').val() == -1) {
@@ -1443,7 +1448,7 @@
 
         if($('#l1InputNumeroNC').val().length <= 0)
         {
-            
+
             openMessageModal("Alerta", "Selecione o Nivel do Cabecalho");
             //alert('Selecione o Nivel do Cabecalho');
             return;
@@ -1451,7 +1456,7 @@
 
         if($('#l1InputVigencia').val().length <= 0)
         {
-            
+
             openMessageModal("Alerta", "É necessário selecionar a Vigência");
             //alert('É necessário selecionar a Vigência');
             return;
@@ -1509,7 +1514,7 @@
             $('#newLevel1Modal').find('#selectNotConformityRule').val(parLevel1.parNotConformityRuleXLevelDto.ParNotConformityRule_Id).change();
 
         $('#newLevel1Modal').find('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(parLevel1.parNotConformityRuleXLevelDto.Value)
-    
+
         //Geral.TableShow();
         ///initialize form
         initialFormLevel1 = $($('form')[0]).clone();
