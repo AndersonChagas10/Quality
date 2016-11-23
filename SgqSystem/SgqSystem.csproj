@@ -339,6 +339,7 @@
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCriticalLevelMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParDepartmentMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel3Level2Level1MapperProfile.cs" />

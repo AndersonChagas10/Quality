@@ -79,6 +79,7 @@
                                     <tbody>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_clusters), Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(@Html.DropDownList("valCrit", Model.paramsDdl.DdlparCrit, new { @class = "form-control input-sm" }), @Html.Label("Nivel"), Table.PosicaoLabel.top)
                                             @Table.GerarColunaButton(@Html.Editor("pontosCluster", new { htmlAttributes = new { @value = 0, @type = "number", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.cluster_points), Table.PosicaoLabel.top, button: "<button class='btn btn-primary btn-sm' type='button' id='btnIncluirCluster' onclick='Cluster.IncluirCluster();'><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
@@ -88,6 +89,7 @@
                                     <thead>
                                         <tr>
                                             <th>@Resources.Resource.cluster_name</th>
+                                            <th>Nivel</th>
                                             <th>@Resources.Resource.cluster_points</th>
                                             <th></th>
                                         </tr>
@@ -96,6 +98,7 @@
                                         <tr id="clusters" class="example"></tr>
                                         <tr id="clustersVazia" style="display:none" class="example">
                                             <td id="nomeCluster"></td>
+                                            <td id="crit"></td>
                                             <td id="pontosCluster"></td>
                                             <td id="alterarCluster">
                                                 @*<button type="button" class="btn btn-primary btn-xs pull-right" id="btnAlterarCluster"><i class="fa fa-edit" aria-hidden="true"></i></button>*@
@@ -113,6 +116,16 @@
                                                 }
                                                 <tr id="editar">
                                                     <td id="">@i.ParCluster.Name</td>
+
+                                                    @if (i.ParCriticalLevel != null)
+                                                    {
+                                                        <td id="">@i.ParCriticalLevel.Name</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td id=""></td>
+                                                    }
+
                                                     <td id="">@pontos </td>
                                                     <td id="editarCluster">
                                                         @*<input type="button" value="Alterar" id="Cluster.btnEDITARCluster" />*@
@@ -613,12 +626,19 @@
                 $('#pontosCluster').val('0.00');
             }
             $('#pontosCluster').val()
+            
+            //if($('#valCrit :selected').val() <= 0 ){
+            //}
+
             /**/
             var $this = $('#clustersVazia'), $parentTR = $this.closest('tr');
+
 
             /**/
             var novaTr = $parentTR.clone()
             $(novaTr).removeClass('example');
+            var nivelCrit = $('#valCrit :selected').text();
+            var nivelCritVal = $('#valCrit :selected').val();
             var idCluster = $('#valueCluster option:selected').val();
             var nomeCluster = $('#valueCluster option:selected').text();
             var pontosCluster = $('#pontosCluster').val().replace(/[^0-9.]/g, '');
@@ -626,8 +646,11 @@
             /**/
             novaTr.find('#nomeCluster').append(nomeCluster +
                 ' <input type="hidden" name="paramsDto.parLevel1XClusterDto[].ParCluster_Id" value="' + idCluster + '" />' +
+                ' <input type="hidden" name="paramsDto.parLevel1XClusterDto[].ParCriticalLevel_Id" value="' + nivelCritVal + '" />' +
                 '<input type="hidden" name="paramsDto.parLevel1XClusterDto[].Points" value="' + pontosCluster + '" />');
             novaTr.find('#pontosCluster').append(pontosCluster)
+            novaTr.find('#crit').append(nivelCrit)
+            
             //novaTr.find('#btnAlterarCluster').attr('id', novaTr.find('#btnAlterarCluster').attr('id') + idCluster);
             novaTr.find('#btnExcluirCluster').attr('id', novaTr.find('#btnExcluirCluster').attr('id') + idCluster);
             novaTr.attr('id', idCluster);
