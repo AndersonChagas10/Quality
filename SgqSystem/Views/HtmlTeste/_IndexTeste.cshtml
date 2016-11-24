@@ -38,8 +38,6 @@
         <br />
         <span id="versionLogin" class="">Version: <span class="number"></span></span> -
         <span id="ambienteLogin" class=""><span class="base"></span></span>
-
-
     </div>
 </div>
 
@@ -2519,7 +2517,7 @@
     //var baseAmbiente = "Production";
 
     //***************Apontamento Api´s********************************
-    var urlPreffix = urlServidor;
+    var urlPreffix = urlServidorDeveloper;
 
 
     //teste update
@@ -7657,9 +7655,11 @@
     }
 
 
+</script>
 
-
-
+<!--Parameretrization-->
+<script>
+    
     var level1  = @Html.Raw(Json.Encode(@Model.paramsDto.collectionObject));
 
     level1.forEach(function(o, c){
@@ -7788,12 +7788,14 @@
 
             
 
-            var itemGroupLevel1 = '<li class="list-group-item" style="padding: 0px;">                                                                                                                     '+
+            var itemGroupLevel1 = '<li class="list-group-item" style="padding-bottom:0">                                                                                                                     '+
               '   <div class="row">                                                                                                                                                 '+
+              //Level Button
               '       <a href="#" id="' + o.Id + '" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" savelevel02="saveLevel02" minreauditnumber="1" consecutivefailure="false">  '+
               '           <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>                  '+
               '           <span class="levelName" style="font-size:17px; font-family: Verdana">' + o.Name + '</span>                                                                                                             '+
               '       </a>                                                                                                                                                          '+
+              //Buttons Level1
               '       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">                                                                                                    '+
               '           <div class="pull-right">                                                                                                                                  '+
               '               <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-sm btn-danger">Corrective Action</button></span>                          '+
@@ -8111,31 +8113,31 @@
         
             }
 
-             
-            countersLevel2 += "<div> <span class='control-label' style='font-size: 10px'><b title='" + title + "'> " + parCounterName + "</b></span><span class='control-label' style='font-size: 25px'> " + valueCounter + " </span></div>";
+
+            countersLevel2 += " <span style='cursor:help; margin-left: 20px'><b title='" + title + "'> " + parCounterName + ":</b><span> " + valueCounter + " </span></span>";
         });
 
-        level2Item +=  '<li class="list-group-item" style="padding:0">                                                                                     ' +
+        level2Item +=  '<li class="list-group-item" style="padding-bottom:0">                                                                                                               ' +
              '   <div class="row">                                                                                                                         ' +
-             '       <a href="#" id="' + o.Id + '" class="level02 col-xs-4" levelerrorlimit="1" defects="0" reauditnumber="0">  ' +
+             '       <a href="#" id="' + o.Id + '" class="level02 col-xs-8 col-sm-8 col-md-8 col-lg-8" levelerrorlimit="1" defects="0" reauditnumber="0">  ' +
              '           <span class="icons">                                                                                                              ' +
              '               <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>                 ' +
              '               <i class="fa fa-exclamation font22 iconsArea red areaNotComplete" aria-hidden="true" title="Not Complete"></i>                ' +
              '           </span>                                                                                                                           ' +
-             '           <span class="levelName" style="font-size:18px;font-family:Verdana !important">' + o.Name + '</span>                               ' +
+             '           <span class="levelName" style="font-size:24px;font-family:Verdana !important">' + o.Name + '</span>                                                                                     ' +
              '       </a>                                                                                                                                  ' +
-             '       <div class="col-xs-5">' +
-                        countersLevel2 +
-             '       </div>                                                                                                                                '+
-             '       <div class="col-xs-3 userInfo">                                                                                                       ' +
+             '       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 userInfo">                                                                            ' +
              '           <div class="pull-right">                                                                                                          ' +
-                        btnAreaSave                                                                                                                          +
-                        btnNA                                                                                                                                +
+              btnAreaSave                                                                                                                                    +
+              btnNA                                                                                                                                          +
              '               <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>          ' +
              '           </div>                                                                                                                            ' +
              '       </div>                                                                                                                                ' +
              '   </div>                                                                                                                                    ' +
-             '</li>';
+            '<div class="row"><div class="col-xs-12" style="background-color: #f5f5f5;height: 30px;margin-top:5px; line-height: 30px;font-size:12px;">' +
+              countersLevel2 +
+
+            '</div></div></li>';
 
             return level2Item;
     }
