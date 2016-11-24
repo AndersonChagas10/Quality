@@ -530,7 +530,7 @@
             var indexParamsLevel1 = {
                 new_level1: @Html.Raw(Json.Encode(@Resources.Resource.new_level1)),
                 saving_the_level1: @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level1)),
-                loading_the_level1: @Html.Raw(Json.Encode(@Resources.Resource.loading_the_level1)),
+                loading_the_level1: @Html.Raw(Json.Encode(@Resources.Resource.loading)),
 
                 enviarDadosParaApi: function (e) {
 
@@ -551,10 +551,9 @@
 
                         $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
 
-                            //closeLoader();
+                            closeLoader();
 
                             if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
-                                openLoader(indexParamsLevel1.loading_the_level1);
                                 indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
                                 openMessageModal("Alerta", statusmessage);
                             }
@@ -599,7 +598,6 @@
                 selectLevel1: function(){
 
                     closeConfirm();
-                    openLoader();
                     var valorSelecionado = $('#parLevel1Select2 option:selected').val();
 
                     if (valorSelecionado == "") {/*Reseta Form*/
@@ -641,14 +639,13 @@
 
                         updateAllTables();
                         initialFormLevel1 = $($('form')[0]).clone();
-                        closeLoader();
-                        closeLoader();
-                        closeLoader();
+                        
                         reloadPopovers();
 
                         /*Reseta Validação*/
                         indexParamsLevel1.resetaValidacao();
 
+                        closeLoader();
                     });
 
                 },/*Busca dados do level1 na API*/
@@ -682,7 +679,7 @@
             var indexParamsLevel2 = {
 
                 new_level2: @Html.Raw(Json.Encode(@Resources.Resource.new_level2)),
-                loading_the_level2 : @Html.Raw(Json.Encode(@Resources.Resource.loading_the_level2)),
+                loading_the_level2 : @Html.Raw(Json.Encode(@Resources.Resource.loading)),
                 saving_the_level2 : @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level2)),
                 removing_the_level3_group : @Html.Raw(Json.Encode(@Resources.Resource.removing_the_level3_group)),
 
@@ -703,7 +700,6 @@
                             $btn.button('loading');
 
                             if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
-                                openLoader(indexParamsLevel2.loading_the_level2);
                                 indexParamsLevel2.GetLevel2(objetoReturn.paramsDto.parLevel2Dto.Id, $('#paramsDto_parLevel3Dto_Id').val(), true)
                                 openMessageModal("Alerta", statusmessage);
                             }
@@ -742,7 +738,7 @@
                 selectLevel2: function(){
 
                     closeConfirm();
-                    openLoader(indexParamsLevel2.loading_the_level2);
+                    
                     var valorSelecionado = $('#parLevel2Select2 option:selected').val();
 
                     if (valorSelecionado == "") {
@@ -786,10 +782,12 @@
                         }
 
                         initialFormLevel2 = $($('form')[1]).clone();
-                        closeLoader();
+                        
                         reloadPopovers();
 
                         indexParamsLevel2.resetaValidacao();
+
+                        closeLoader();
                     });
 
                 },/*Busca dados do level2 na API*/
@@ -827,7 +825,7 @@
             /*LEVEL 3*/
             var indexParamsLevel3 = {
                 new_level3: @Html.Raw(Json.Encode(@Resources.Resource.new_level3)),
-                loading_the_level3: @Html.Raw(Json.Encode(@Resources.Resource.loading_the_level3)),
+                loading_the_level3: @Html.Raw(Json.Encode(@Resources.Resource.loading)),
                 saving_the_level3: @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level3)),
 
 
@@ -839,7 +837,7 @@
                     if ($('#newLevel3Modal > form').valid()) {
                         //Cabecalhos.UpdateCabecalhos();
                         //Cluster.UpdateCounter();
-                        //  Counter.UpdateCounters();
+                        //Counter.UpdateCounters();
                         var dados = $('#newLevel3Modal > form').serializeObject();
 
                         if(dados['paramsDto.parLevel3Value.IntervalMax'] != undefined && dados['paramsDto.parLevel3Value.IntervalMax'] != null)
@@ -850,13 +848,12 @@
 
                         openLoader(indexParamsLevel3.saving_the_level3);
                         $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-
                             closeLoader();
+
                             var $btn = $('#btnSaveNewLevel3');
                             $btn.button('loading');
 
                             if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
-                                openLoader(indexParamsLevel3.saving_the_level3);
                                 indexParamsLevel3.GetLevel3(objetoReturn.paramsDto.parLevel3Dto.Id, $('#paramsDto_parLevel2Dto_Id').val(), true);
                                 openMessageModal("Alerta", statusmessage);
                             }
@@ -897,7 +894,6 @@
                 selectLevel3: function(){
 
                     closeConfirm();
-                    openLoader(indexParamsLevel3.loading_the_level3);
                     var valorSelecionado = $('#parLevel3Select2 option:selected').val();
                     var valorSelecionadoLevel2 = $('#parLevel2Select2 :selected').val();
 
@@ -910,6 +906,7 @@
                     indexParamsLevel3.resetValidacao();
                 },/*Executa ao selecionar um level3*/
                 GetLevel3: function(valorSelecionado, valorSelecionadoLevel2, isSave) {
+                    openLoader(indexParamsLevel3.loading_the_level3);
                     $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
                         closeLoader();
                         if (obj != null) {

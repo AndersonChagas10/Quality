@@ -624,4 +624,7 @@
   <data name="samples_per_evaluation" xml:space="preserve">
     <value>Samples per Evaluation</value>
   </data>
+  <data name="loading" xml:space="preserve">
+    <value>Loading</value>
+  </data>
 </root>
