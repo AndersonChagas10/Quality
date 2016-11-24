@@ -1166,6 +1166,7 @@
     <Content Include="Views\ParMeasurementUnits\Index.cshtml" />
     <Content Include="Views\Merge\_DivResults.cshtml" />
     <Content Include="Views\HtmlTeste\_IndexTeste.cshtml" />
+    <Content Include="Views\HtmlTeste\_IndexTeste_old.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
