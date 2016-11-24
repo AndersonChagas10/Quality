@@ -11,7 +11,6 @@ using System.Web.Http.Cors;
 namespace SgqSystem.Controllers.Api
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [HandleApi()]
     [RoutePrefix("api/User")]
     public class UserController : ApiController
     {
@@ -31,6 +30,7 @@ namespace SgqSystem.Controllers.Api
 
         [Route("AuthenticationLogin")]
         [HttpPost]
+        [HandleApi()]
         public GenericReturn<UserDTO> AuthenticationLogin([FromBody] UserViewModel userVm)
         {
             return _userDomain.AuthenticationLogin(userVm);
