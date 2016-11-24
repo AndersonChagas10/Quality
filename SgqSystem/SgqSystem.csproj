@@ -321,6 +321,7 @@
     <Compile Include="Controllers\Api\UserController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Charts\ChartsController.cs" />
+    <Compile Include="Controllers\Merge\MergeController.cs" />
     <Compile Include="Controllers\Params\ParamsController.cs" />
     <Compile Include="Controllers\ParClustersController.cs" />
     <Compile Include="Controllers\ParDepartmentsController.cs" />
@@ -411,6 +412,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Views\ResultsDivViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin-lte\css\AdminLTE.css" />
@@ -1162,6 +1164,7 @@
     <Content Include="Views\ParMeasurementUnits\Details.cshtml" />
     <Content Include="Views\ParMeasurementUnits\Edit.cshtml" />
     <Content Include="Views\ParMeasurementUnits\Index.cshtml" />
+    <Content Include="Views\Merge\_DivResults.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
