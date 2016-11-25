@@ -480,12 +480,25 @@
                                             @Table.GerarColunaCheckbox(
                                                 @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
                                                 , @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
-                                            @*@Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.not_conformity_rule), Table.PosicaoLabel.top)
-                                                @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm fixed-width", type = "number", min = "0" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
-                                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)*@
+
                                         </tr>
                                     </tbody>
                                 </table>
+
+                                <span class="input-group-btn"><button type="button" class="btn btn-primary btn-sm" id="" onclick="RegraNc.adicionaObjNovo();"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+
+                                <table id="tableRegraNc" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Regra de Alerta:">
+                                    <thead>
+                                        <tr>
+                                            <th>Regra de Não conformidade</th>
+                                            <th>Valor</th>
+                                            <th>Reauditoria</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+
                             </div>
                         </div>
                     </div>
@@ -1373,7 +1386,7 @@
         RemoverDaTabela: function(e, indexValueOfArray, isBinario){
             if(indexValueOfArray != undefined && isBinario == undefined){
                 //Cabecalhos.ParMultiplaEscolhaOpcoes.splice(indexValueOfArray,1);
-                
+
                 if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
                     $('#salvarCabecalho2').fadeOut();
                 else
@@ -1383,7 +1396,7 @@
 
             if(indexValueOfArray != undefined && isBinario != undefined){
                 //Cabecalhos.ParBinario.splice(indexValueOfArray,1);
-                
+
                 if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
                     $('#salvarCabecalho1').fadeOut();
                 else
@@ -1477,6 +1490,121 @@
 
     }
 
+    var RegraNc = {
+
+        /*Setup*/
+        listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto)),
+        listaDeRegrasNc: [],
+        botaoInsercao: function() { 
+            return crudNxN.btnExcluir("RegraNc.listaDeRegrasNc", "RegraNc.tdsNames") + crudNxN.btnAlterar("RegraNc.listaDeRegrasNc", "RegraNc.tdsNames", "RegraNc.preparaDadosModalAlterar", "RegraNc.retornaObjetoAlterado") 
+        },
+        botaoAlteracao: function(o) {
+            var retorno =  o.IsActive ? crudNxN.btnInativa("RegraNc.listaDeRegrasNc", "RegraNc.tdsNames", "RegraNc.preparaDadosModalAlterar", "RegraNc.retornaObjetoAlterado") : crudNxN.btnReAtiva("RegraNc.listaDeRegrasNc", "RegraNc.tdsNames", "RegraNc.preparaDadosModalAlterar", "RegraNc.retornaObjetoAlterado");
+            return retorno += crudNxN.btnAlterar("RegraNc.listaDeRegrasNc", "RegraNc.tdsNames", "RegraNc.preparaDadosModalAlterar", "RegraNc.retornaObjetoAlterado");
+        },
+        tdsNames: ['ParNotConformityRule_Name', 'Value', 'IsReauditShowTable', 'btn'],
+        objetoAlteracaoCorrente: {},
+        adicionaObj: function(object){
+            crudNxN.adicionaObj(RegraNc.listaDeRegrasNc, object, 'tableRegraNc', RegraNc.tdsNames);
+        },
+
+        /*Adição*/
+        adicionaObjNovo: function(isInativo){
+
+            /*Valida se pode criar o objeto*/
+            if($('#selectNotConformityRule :selected').val() <= 0){
+                alert("Por favor Selecione Regra de Não conformidade.");
+                return;
+            }
+
+            if($('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
+                alert("É necessário preencher o campo Valor da Regra de alerta.");
+                return;
+            }
+
+            /*Cria o objeto*/
+            var object = {/*Objeto*/
+                ParNotConformityRule_Id: $('#selectNotConformityRule :selected').val(),
+                ParNotConformityRule_Name: $('#selectNotConformityRule :selected').text(),
+                Value: $('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
+                IsReaudit: $('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
+                IsReauditShowTable: $('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não",
+                IsActive: true,
+                btn: RegraNc.botaoInsercao(),
+            }
+
+            /*Conclui*/
+            RegraNc.adicionaObj(object);
+        },/*Ok*/
+        
+        /*Caregar Dados*/
+        carregaDadosDoDb: function(){
+            if( RegraNc.listObjSalvo != null){ /*Carrega regras de NC*/
+                RegraNc.listObjSalvo.forEach(function(o, c){
+                    o["btn"] = RegraNc.botaoAlteracao(o);
+                    o["IsReauditShowTable"] = o.IsReaudit ? "Sim" : "Não";
+                    o["ParNotConformityRule_Name"] = o.ParNotConformityRule.Name;
+                    RegraNc.adicionaObj(o);
+                });
+            }
+        },/*Ok*/
+      
+        /*Submit (prepara objetos um a um)*/
+        incluiNoObjetoParaSubmit: function(dados){
+            RegraNc.listaDeRegrasNc.forEach(function(o, c){
+                if((o.Id != null || o.Id != undefined) && o.Id > 0){
+                    dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].Id"] = o.Id;
+                }
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].ParNotConformityRule_Id"] = o.ParNotConformityRule_Id;
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].ParNotConformityRule_Name"] = o.ParNotConformityRule_Name;
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].Value"] = o.Value;
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReaudit"] = o.IsReaudit;
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReauditShowTable"] = o.IsReauditShowTable;
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsActive"] = o.IsActive;
+            });
+        },/*Ok*/
+
+        /*Prepara dados para o modal de alteração*/
+        preparaDadosModalAlterar: function(obj){
+          
+            RegraNc.objetoAlteracaoCorrente = obj;
+            $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch('destroy', true);
+            var divDeEdicao = $('#level1_nc_collapse > div > table.table-erp').clone();
+            $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch();
+            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+            $('#crudNxNEdit #selectNotConformityRule').val(obj.ParNotConformityRule_Id);
+            $("#crudNxNEdit  .check-box").bootstrapSwitch('state', obj.IsReaudit);
+            //var isChecked = $("#crudNxNEdit  .check-box").is(':checked');
+            $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(obj.Value);
+            //$('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').trigger('change');
+
+        },/*Ok*/
+
+        /*Retorna objeto com dados da modal (somente atualizar os dados disponíveis na modal.*/
+        retornaObjetoAlterado: function(obj){
+
+            /*Valida se pode criar o objeto*/
+            if($('#crudNxNEdit #selectNotConformityRule :selected').val() <= 0){
+                alert("Por favor Selecione Regra de Não conformidade.");
+                return;
+            }
+
+            if($('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
+                alert("É necessário preencher o campo Valor da Regra de alerta.");
+                return;
+            }
+
+            obj.ParNotConformityRule_Id = $('#crudNxNEdit #selectNotConformityRule :selected').val();
+            obj.ParNotConformityRule_Name =  $('#crudNxNEdit #selectNotConformityRule :selected').text();
+            obj.Value =  $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val();
+            obj.IsReaudit = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked");
+            obj.IsReauditShowTable =  $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não";
+        },/*Ok*/
+
+    };
+
+    
+
     $('#salvarCabecalho1').on('click', Cabecalhos.SalvaMultiplaEscolha);
     $('#salvarCabecalho2').on('click', Cabecalhos.SalvaBinario);
 
@@ -1553,8 +1681,8 @@
     }
 
     $(document).ready(function () {
-        
-       
+
+
         $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').attr('checked', 'checked');
         defaults();
         $('#paramsDto_parLevel1Dto_IsRuleConformity[value="false"]').trigger('click');
@@ -1581,16 +1709,20 @@
 
         $('[data-toggle="popover"]').popover();
 
-        setTimeout(function(){  
+        RegraNc.carregaDadosDoDb();
+        crudNxN.functionClickSaveModalEdit(RegraNc.listaDeRegrasNc);
+
+        setTimeout(function(){
             Cluster.VerificaDDl();
-            Cluster.VerificaShowTable(); 
+            reloadPopovers();
+            Cluster.VerificaShowTable();
         }, 3000);
     });
 
 
-    setTimeout(function(){  
+    setTimeout(function(){
         Cluster.VerificaDDl();
-        Cluster.VerificaShowTable(); 
+        Cluster.VerificaShowTable();
     }, 3000);
 
 </script>
