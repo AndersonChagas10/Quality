@@ -2464,9 +2464,6 @@
             <span class="unit">Colorado</span>
             <span class="urlPrefix"></span>
             <span class="status pull-right"></span>
-            <div class="progress">
-                <div class="statusProgress progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
         </p>
     </footer>
 </div>
@@ -2485,12 +2482,12 @@
     var urlServidorUsaProduction = "http://10.160.65.120/QualityAssurance"
     var urlServidorExternal = "http://191.34.137.39/SgqMaster"
 
-    var versao = "1.0.4";
+    var versao = "1.0.5";
 
 
     var baseAmbiente = "GRT Local"
 
-    var urlPreffix = "http://localhost";
+    //var urlPreffix = "http://localhost";
 
     //teste update
     //assim que todos os arquivos foram carregados
@@ -8330,7 +8327,7 @@
     function consolidation() {
         $.ajax({
             type: 'POST'
-                , url: 'http://localhost/SgqSystem/Services/SynService.asmx/ProcessJson'
+                , url: urlPreffix+'/Services/SynService.asmx/ProcessJson'
                 , contentType: 'application/json; charset=utf-8'
                 , dataType: 'json'
                 , data: '{' + "device: '123'" + '}'
