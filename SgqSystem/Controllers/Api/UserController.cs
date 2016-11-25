@@ -1,6 +1,7 @@
 ﻿using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
+using SgqSystem.Handlres;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace SgqSystem.Controllers.Api
 
         [Route("AuthenticationLogin")]
         [HttpPost]
+        [HandleApi()]
         public GenericReturn<UserDTO> AuthenticationLogin([FromBody] UserViewModel userVm)
         {
             return _userDomain.AuthenticationLogin(userVm);

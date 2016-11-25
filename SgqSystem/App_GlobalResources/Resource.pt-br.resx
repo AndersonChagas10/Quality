@@ -618,4 +618,7 @@
   <data name="samples_per_evaluation" xml:space="preserve">
     <value>Amostras por Avaliação</value>
   </data>
+  <data name="loading" xml:space="preserve">
+    <value>Carregando</value>
+  </data>
 </root>

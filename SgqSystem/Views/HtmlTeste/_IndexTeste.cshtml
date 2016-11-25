@@ -4,6 +4,12 @@
     <div class="head"></div>
     <form class="form-signin">
         <h2 id="changePrefix" class="form-signin-heading">Please sign in</h2>
+        <select class="form-control" id="selectUnit">
+            <option value="0">Select Unit</option>
+            <option value="1" ip="192.168.25.200/SgqMaster">Souderton, PA</option>
+            <option value="2" ip="192.168.25.200/SgqMaster">Omaha, NE</option>
+            <option value="3" id="10.160.227.14">Hyrum, UT</option>
+        </select>
         <select class="form-control" id="shift">
             <option value="0">Select the shift</option>
             <option value="1">Shift A</option>
@@ -16,9 +22,7 @@
 
         <button class="btn btn-lg btn-primary btn-block marginTop10" type="submit" data-loading-text="Authenticating..." id="btnLogin" disabled>Sign in</button>
         <div id="messageError" class="alert alert-danger hide" role="alert">
-            <span class="icon-remove-sign"></span>
-            <strong>Error! </strong>
-            <span id="mensagemErro"> </span>
+            <span class="icon-remove-sign"></span>    <strong>Error! </strong><span id="mensagemErro"> </span>
         </div>
         <div class="divLoadFiles">
             <span class="messageLoading">
@@ -33,16 +37,12 @@
         </div>
     </form>
     <div class="foot" style="text-align:center">
-        <br />
-        <br />
-        <br />
-        <span id="versionLogin" class="">Version: <span class="number"></span></span> -
-        <span id="ambienteLogin" class=""><span class="base"></span></span>
+        <br /><br /><br />
+        <span id="versionLogin" class="">Version: <span class="number"></span></span> - <span id="ambienteLogin" class=""><span class="base"></span></span>
 
 
     </div>
 </div>
-
 <!--Começo Ação Corretiva-->
 <div id="correctiveActionModal" class="container panel panel-default modal-padrao" style="display:none">
     <div class="panel-body">
@@ -61,26 +61,15 @@
                         <div class="row">
                             <div class="col-xs-6" id="CorrectiveActionTaken">
                                 <b class="font16">Corrective Action Taken:<br /></b>
-                                <b>Date/Time:</b>
-                                <span id="datetime"></span>
-                                <br />
-                                <b>Auditor: </b>
-                                <span id="auditor"></span>
-                                <br />
-                                <b>Shift: </b>
-                                <span id="shift"></span>
-                                <br />
+                                <b>Date/Time:</b> <span id="datetime"></span><br />
+                                <b>Auditor: </b><span id="auditor"></span><br />
+                                <b>Shift: </b><span id="shift"></span><br />
                             </div>
                             <div class="col-xs-6" id="AuditInformation">
                                 <b class="font16">Audit Information:<br /></b>
-                                <b>Audit: </b>
-                                <span id="auditText"></span>
-                                <br />
-                                <b>Start Time: </b>
-                                <span id="starttime"></span>
-                                <br />
-                                <b>Period: </b>
-                                <span id="correctivePeriod"></span>
+                                <b>Audit: </b><span id="auditText"></span><br />
+                                <b>Start Time: </b><span id="starttime"></span><br />
+                                <b>Period: </b><span id="correctivePeriod"></span>
                             </div>
                         </div>
                     </div>
@@ -138,7 +127,6 @@
         </div>
     </div>
 </div>
-
 <div id="modalSignatureCorrectiveAction" class="panel panel-default modal-padrao signature" style="display:none">
     <div class="panel-body">
         <div class="modal-header">
@@ -160,9 +148,7 @@
                         <input type="password" class="form-control" id="signaturePassword">
                     </div>
                     <div id="messageError" class="alert alert-danger hide" role="alert">
-                        <span class="icon-remove-sign"></span>
-                        <strong>Error! </strong>
-                        <span id="mensagemErro"> </span>
+                        <span class="icon-remove-sign"></span>    <strong>Error! </strong><span id="mensagemErro"> </span>
                     </div>
                     <div id="messageAlert" class="alert alert-info hide" role="alert">
                         <span id="mensagemAlerta" class="icon-info-sign"></span>
@@ -180,15 +166,20 @@
     </div>
 </div>
 <!--Fim Ação Corretiva-->
-
 <div class="message padding20" style="display:none">
     <h1 class="head">Titulo</h1>
     <div class="body font16">Mensagem</div>
-    <div class="foot">
-        <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button>
-    </div>
+    <div class="foot"><button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right btnMessage"> Ok</button></div>
 </div>
-
+<div class="messageConfirm padding20" style="display:none">
+    <h1 class="head">Titulo</h1>
+    <div class="body font16">
+        <div class="txtMessage"></div>
+        <input type="password" id="passMessageComfirm" placeholder="Password" class="form-control input-sm" style="max-width: 160px;" />
+    </div>
+    <div class="foot"><button id="btnMessageYes" class="btn btn-lg marginRight30 btn-primary pull-right btnMessage"> Yes </button></div>
+    <div class="foot"><button id="btnMessageNo" class="btn btn-lg marginRight30 btn-primary pull-right btnMessage"> No </button></div>
+</div>
 <div class="App hide" breadMainLevel="Indicadores">
     <div class="rightMenu">
         <div class="list-group list-group-inverse rightMenuList">
@@ -238,16 +229,13 @@
     </div>
     <div class="container">
 
-        <ol class="breadcrumb"></ol>
+        <ol class="breadcrumb">
+            
+        </ol>
 
         <div class="level01List">
             <div class="painel padding5">
                 <div class="row">
-                    <div class="col-xs-4">
-                        <span class="atualDate">05/25/2015 00:00</span>
-                        <br />
-                        <span class="shift">Shift A</span>
-                    </div>
                     <div class="col-xs-4">
                         <div>
                             <select class="form-control" id="selectPeriod">
@@ -279,10 +267,6 @@
             <div class="painel painelLevel02 padding10">
                 <div class="row">
                     <div class="col-xs-3">
-                        <div>
-                            <span class="atualDate">05/25/2015 00:00 </span> /
-                            <span class="shift">Shift A</span>
-                        </div>
                         <div class="labelPainel hide" level01id="2">
                             <strong>Total Defects:</strong>
                             <span class="totalDefects">0</span>
@@ -1618,10 +1602,6 @@
             <div class="painel painelLevel03 padding10">
                 <div class="row">
                     <div class="col-xs-3">
-                        <div>
-                            <span class="atualDate">05/25/2015 00:00</span> /
-                            <span class="shift">Shift A</span>
-                        </div>
                         <div class="labelPainel hide" level01id="2">
                             <strong>Total Defects:</strong>
                             <span class="totalDefects">0</span>
@@ -2492,10 +2472,9 @@
 </div>
 <div class="Results hide"></div>
 <div class="Users hide"></div>
-
 <!--Methods-->
 <script>
-    //***************Urls********************************
+    
     var urlServidor = "http://192.168.25.200/SgqMaster";
     var urlServidorDeveloper = "http://192.168.25.200/SgqMasterDesenvolvimento";
 
@@ -2504,34 +2483,42 @@
 
 
     var urlServidorUsaProduction = "http://10.160.65.120/QualityAssurance"
-    //var urlServidorExternal = "http://177.133.182.80:8081/SgqMaster"
+    var urlServidorExternal = "http://191.34.137.39/SgqMaster"
 
-    //***************Urls********************************
+    var versao = "1.0.4";
 
 
-    //***************Versão********************************
-    var versao = "1.0.3";
-    var versaoRN = "1.0.3";
+    var baseAmbiente = "GRT Local"
 
-    //***************Base Ambiente********************************
-    //var baseAmbiente = "GRT Local"
-    var baseAmbiente = "Homologation";
-    //var baseAmbiente = "Production";
-
-    //***************Apontamento Api´s********************************
-    var urlPreffix = urlServidor;
-
+    var urlPreffix = "http://localhost";
 
     //teste update
     //assim que todos os arquivos foram carregados
     $(document).ready(function () {
+        //clearLastSync();
+        if (localStorage.unit != undefined) {
+            $('#selectUnit').val(localStorage.unit);
+            //$('#selectUnit').trigger('change');
+        }
         $('#version .number, #versionLogin .number').text(versao);
         $('#ambiente .base, #ambienteLogin .base').text(baseAmbiente);
+
+        ping();
 
         //comeca o relogio
         updateWatch();
     });
-
+    $(document).on('change', '#selectUnit', function (e) {
+        //_writeFile("sync.txt", "");
+        urlPreffix = "";
+        connectionServer = false;
+        if ($('#selectUnit :selected').val() == "0")
+        {
+            return false;
+        }
+        urlPreffix = 'http://' + $('#selectUnit :selected').attr('ip');
+        ping();
+    });
     //assim que o dispositivo estiver pronto
     document.addEventListener("deviceready", onDeviceReady, false);
 
@@ -2542,6 +2529,8 @@
             fs.root.getFile("sync.txt", { create: true, exclusive: false }, function (fileEntry) {
             }, onErrorCreateFile);
         }, onErrorLoadFs);
+
+
     }
 
     //criacao do file plugin
@@ -2598,15 +2587,21 @@
         tempoLogout--;
         if (tempoLogout == 0) {
             $("#btnLogout").click();
-            openMessageModal("Inactive", "You have not been active for " + (configTempLogout / 60) + " minutes. Log in again.");
+            openMessageModal("Inactive", "You have not been active for "+(configTempLogout/60)+" minutes. Log in again.");
         }
+
         setTimeout(updateWatch, 1000);
     }
 
     function initialLogin(user) {
         Geral.esconderMensagem();
+
+        localStorage.setItem("unit", $('#selectUnit').val());
+
+
         $('.App').attr('userid', user.attr('userid'));
-        $('.App').attr('unidadeid', user.attr('unidadeid'));
+        //$('.App').attr('unidadeid', user.attr('unidadeid'));
+        $('.App').attr('unidadeid', $('#selectUnit :selected').val());
         $('.unit').text(user.attr('unidadename'));
 
         $('.App').attr('shift', $('#shift option:selected').val());
@@ -2632,7 +2627,7 @@
         //syncronuza primiero resulta e seta para saber que tem  o primeiro resultao
         //chama usuarios off line
         //start sincronizacao automatica
-        starServices();
+        //starServices();
 
         ///antes de mostrar
         showLevel01(true);
@@ -2661,14 +2656,14 @@
     });
 
     $(document).on('click', '#btnSync', function (e) {
-        if (connectionServer == true) {
-            openSyncModal('Sync', 'Syncing the data collection...');
-            Sync();
-            //waitingDialog.show('Syncing the results...', { dialogSize: 'sm', progressType: 'primary' }); setTimeout(function () { waitingDialog.hide(); }, 3000);
-        } else {
-            openMessageModal("Connection", 'The device is not connected to the server.');
-        }
-
+        //if (connectionServer == true) {
+        //    openSyncModal('Sync', 'Syncing the data collection...');
+        //    Sync();
+        //    //waitingDialog.show('Syncing the results...', { dialogSize: 'sm', progressType: 'primary' }); setTimeout(function () { waitingDialog.hide(); }, 3000);
+        //} else {
+        //    openMessageModal("Connection", 'The device is not connected to the server.');
+        //}
+        sendResults();
     });
 
     $(document).on('click', '#btnLogin', function (e) {
@@ -2682,8 +2677,6 @@
     $(window).bind('beforeunload', function () {
         return "Warning! If you proceed you will loose information";
     });
-
-
 
     function evaluateDoneReturn(elementConf, lastEvaluate, lastSample) {
         if (elementConf.attr('totalsets')) {
@@ -2700,7 +2693,8 @@
             return evaluate;
         }
     }
-    /**/
+
+
     $(document).on('click', '.level01List .level01', function (e) {
         //Seleciona o Nivel 01
         var level01 = $(this);
@@ -2846,24 +2840,6 @@
         showLevel02(level01);
 
     });
-
-    function getLevel1(id){
-        for(var i = 0; i < level1.length; i++){
-            if(level1[i].Id == id)
-                return level1[i];
-        }
-    }
-
-    function getLevel2(level01id, level02id){
-        for(var i = 0; i < level1.length; i++){
-            var level2list = level1[i].listParLevel2Colleta;
-            for(var j = 0; j < level2list.length; j++){
-                if(level2list[j].Id == level02id)
-                    return level2list[j];
-            }
-        }
-    }
-
     function getPhases(level01) {
         var resultsLevel01Phase = $('.level01Result[level01id=' + level01.attr('id') + '][reaudit=false][shift=' + $('.App').attr('shift') + '][completed=completed]:last');
 
@@ -2895,7 +2871,8 @@
                 phase = 0;
             }
 
-            if (phase > 3) {
+            if (phase > 3)
+            {
                 phase = 3;
                 phaseNumber = 1;
             }
@@ -3299,22 +3276,26 @@
 
                     erro = erro + level03Erros;
 
-                    if (level03Erros > 0) {
+                    if(level03Erros > 0)
+                    {
                         var level02Name = $('.level02[level02id=' + level02Result.attr('level02id') + '] .levelName:first').text();
                         var level03Name = $('.level03[id=' + level03Result.attr('level03id') + '] .levelName:first').text();
 
                         var rowLevel02Level03Name = level03Erros + " " + level02Name + " " + level03Name;
 
-                        if (level02Level03Names == "") {
+                        if(level02Level03Names == "")
+                        {
                             level02Level03Names += rowLevel02Level03Name;
                         }
-                        else {
+                        else
+                        {
                             level02Level03Names += "," + rowLevel02Level03Name;
                         }
                     }
                 });
 
-                if (level02Level03Names) {
+                if (level02Level03Names)
+                {
                     level02Level03Names = " - " + level02Level03Names;
                 }
                 if (erro >= 3) {
@@ -3355,6 +3336,16 @@
 
     function correctiveActionSignature() {
 
+    }
+
+    function dateFormat() {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var mmddyyyy = ("0" + month).slice(-2) + "/" + ("0" + day).slice(-2) + "/" + year;
+
+        return mmddyyyy;
     }
     function dateReturn() {
 
@@ -3688,27 +3679,9 @@
             $('.level02[notavaliable]').removeAttr('havecorrectiveaction').siblings('.userInfo').children('div').children('.btnCorrectiveAction').addClass('hide');
             $('.level02Group[level01id=1] .level02[defects=0]').removeAttr('havecorrectiveaction').siblings('.userInfo').children('div').children('.btnCorrectiveAction').addClass('hide');
 
-
-            //$('.painel.painelLevel02').parent().removeClass('col-xs-12').removeClass('col-xs-9').removeClass('col-xs-6').removeClass('col-xs-3').addClass('col-xs-3').removeClass('hide');
-
-            //var listPanelLevel02 = $('.painel.painelLevel02');
-
-            //for (var i = 0; i < listPanelLevel02.length; i++) {
-            //    if ($($('.painel.painelLevel02')[i]).children(':visible').length == 0) {
-            //        $($('.painel.painelLevel02')[i]).parent().addClass('hide');
-            //    }
-            //}
-
-            //$('.painel.painelLevel02:visible:last').parent().addClass('col-xs-' + (($($('.painel.painelLevel02')).parent('.hide').length * 3) + 3)).removeClass('smallPaddingRight');
-
-
         });
     }
 
-    //function level02Configure() {
-    //    $('.level02[completed]').parents('li').addClass('bgCompleted');
-    //    $('.level02[limitExceeded]').parents('li').addClass('bgLimitExceeded');
-    //}
     function buttonsNavMenuShow(level01) {
         $('.buttonMenu[level01id=' + level01.attr('id') + ']').removeClass('hide');
         // level02ButtonSave($('.level02Group[level01id=' + level01.attr('id') + ']'));
@@ -3768,17 +3741,7 @@
         $('.level02').removeClass('selected');
 
         level02.addClass('selected');
-        //if (level02.attr('completed'))
-        //{
-        //    level02.attr('update', 'update');
-        //}
-
-        if (!level02.attr('defects')) {
-            level02.attr('defects', '0');
-        }
-        //if (level02.attr('consecutivefailure')) {
-        //    $('.painelLevel03 .consecutiveFailure').text(level02.attr('consecutivefailure'));
-        //}
+        
         $('.level02List').fadeOut("fast", function (e) {
             level02.parents('.level02List').addClass('hide');
             var level03 = $('.level03List');
@@ -3787,16 +3750,8 @@
             $('.painel .defects').text(level02.attr('defects'));
             defectLimitCheck();
 
+            level03.children('.level03Group[level01id=' + $('.level01.selected').attr('id') + ']').removeClass('hide');
 
-
-            if(level02.attr('id'))
-            {
-                level03.children('.level03Group[level01id=' + $('.level01.selected').attr('id') + '][level02id=' +  $('.level02.selected').attr('id') + ']').removeClass('hide');
-            }
-            else
-            {
-                level03.children('.level03Group[level01id=' + $('.level01.selected').attr('id') + ']').removeClass('hide');
-            }
             breadCrumb($('.level01List .selected').text(), $('.level02List .level02.selected span.levelName').text());
             $('.btnCA').addClass('hide');
 
@@ -3812,20 +3767,7 @@
                 $('.level03Group:visible input').attr('disabled', 'disabeld');
             }
 
-            // $('.painel.painelLevel03').parent().removeClass('col-xs-12').removeClass('col-xs-9').removeClass('col-xs-6').removeClass('col-xs-3').addClass('col-xs-3').removeClass('hide').add('smallPaddingRight').add('smallPaddingRight');
-
-            //var listPanelLevel03 = $('.painel.painelLevel03');
-
-            //for (var i = 0; i < listPanelLevel03.length; i++) {
-            //    if ($($('.painel.painelLevel03')[i]).children(':visible').length == 0) {
-            //        $($('.painel.painelLevel03')[i]).parent().addClass('hide');
-            //    }
-            //}
-
-            //$('.painel.painelLevel03:visible:last').parent().addClass('col-xs-' + (($($('.painel.painelLevel03')).parent('.hide').length * 3) + 3)).removeClass('smallPaddingRight');
         });
-
-        //CreateHeader(levelHeader, cabecalhosInclusos, contadoresIncluidos)
 
     }
 
@@ -3850,21 +3792,21 @@
             level02Li = "<li class='active'>" + level02 + "</li>";
         }
 
+        var button = "<button class='btn btn-primary disabled pull-right' style='margin: -8px -15px; padding-bottom: 8px;'>"+
+                        "<span class='atualDate'>"+dateTimeWithMinutes()+"</span> / "+
+                        "<span class='shift'>"+$('#shift option:selected').text()+"</span>"+
+                     "</button>";
 
         bdCrumb.html(
                         mainLevel +
                         level01Li +
-                        level02Li
+                        level02Li +
+                        button
                                 );
 
 
     }
 
-    //$(document).on('click', '.breadcrumb', function (e) {
-    //    $('#messageContent').text('ppppppppp');
-    //    var $modal = $('#modalMessage');
-    //    $modal.modal();
-    //});
     $(document).on('click', '#btnMore', function (e) {
         rightMenuShow();
     });
@@ -3913,6 +3855,28 @@
             createFileResult();
             initializeApp();
         });
+    });
+    $(document).on('click', '#btnClearDatabase', function (e) {
+
+        var message = '';
+
+        if($('.level02Result[sync=false]').length > 0){
+            message = "There still unsynced data in the tablet database.";
+        }
+        message += " Do you want to continue?";
+
+        openMessageConfirm("Clear database", message,
+            function () {
+                if ($('#passMessageComfirm').val() == "1qazmko0#") {
+                    _writeFile("database.txt", "");
+                    $('.Results').empty();
+                    $('.messageConfirm, .overlay').fadeOut("fast");
+                } else {
+                    $('.messageConfirm, .overlay').children('.body').children('.txtMessage').html('Wrong password.');
+                }
+            }
+        );
+
     });
     function rightMenuHide() {
         if ($('.rightMenu').hasClass('visible')) {
@@ -4287,8 +4251,8 @@
     $(document).on('click', '.button-collapse', function (e) {
         $('.panel-collapse').collapse('hide');
     });
- 
-    $(document).on('click', '.level03.boolean', function (e) {
+    //colocar uma forma de identificar campos yes or not
+    $(document).on('click', '.level03Group[level01id=1] .level03', function (e) {
 
         var level02 = $('.level02.selected');
 
@@ -4296,26 +4260,30 @@
 
         var response = level03.children('.row').children('div').children('span.response');
         //acho que demvemos fazer um atrivuto direto no level03 para nao ficar tentando executar para todos
-        if (response.attr('value') == '0') {
-            //vai alterar para true
-            response.text(response.attr('booltrueName')).attr('value', '1');
-            //verificar se exite mais level03 excedido
-            //se nao existir remove a regra de limite execido do level02 e zero os deveitos
-            level03.removeClass('lightred').removeAttr('notconform');
-            if ($('.level03Group .level03[notConform]').length == 0) {
-                level02.removeAttr('limitexceeded').parents('li').removeClass('bgLimitExceeded');
-            }
-        }
-        else {
-            //altera para false
-            level02.attr('limitexceeded', 'limitexceeded').parents('li').addClass('bgLimitExceeded');
-            level03.addClass('lightred').attr('notConform', 'notCoform');
-            response.text(response.attr('boolfalseName')).attr('value', '0');
-        }
+        if (response.length) {
 
-        level02.attr('defects', $('.level03[notConform]').length);
-        level02.attr('level03' + $(this).attr('id'), response.attr('value'));
-        // level02Configure();
+            if (response.attr('value') == '0') {
+                response.text('Yes').attr('value', '1');
+
+                level03.removeClass('lightred').removeAttr('notconform');
+                if ($('.level03Group[level01id=1] .level03[notConform]').length == 0) {
+                    level02.removeAttr('limitexceeded').parents('li').removeClass('bgLimitExceeded');
+                }
+
+            }
+            else {
+
+                // $('.panel-group').children('.panel').children('.collapse').collapse('show');
+                //$('#accordion').children('.panel').children('.collapse').collapse('show');
+                level02.attr('limitexceeded', 'limitexceeded').parents('li').addClass('bgLimitExceeded');
+                level03.addClass('lightred').attr('notConform', 'notCoform');
+                response.text('No').attr('value', '0');
+            }
+
+            level02.attr('defects', $('.level03[notConform]').length);
+            level02.attr('level03' + $(this).attr('id'), response.attr('value'));
+            // level02Configure();
+        }
 
     });
     $(document).on('click', '.na', function (e) {
@@ -4337,9 +4305,6 @@
             level02.removeAttr('notavaliable').removeAttr('completed');
             level02.parents('li').removeClass('bgNoAvaliable').removeClass('bgCompleted');
             $('#btnSave').addClass('hide');
-            //var result = $('.level01Result[level01id=' + $('.level01.selected').attr('id') + '][shift=' + $('.App').attr('shift') + '][date=' + $('.App').attr('date') + '][period=' + $('.App').attr('period') + ']:last').children('.level02Result[level02id=' + level02.attr('id') + ']:last');
-            //result.attr('remove', true).attr('datetime', dateTimeFormat());
-            // buttonsLevel02Show(level01);
         }
         else {
             $(this).addClass('naSelected');
@@ -4366,10 +4331,6 @@
         $(this).attr('disabled', 'disabled');
         $(this).siblings('.defects').addClass('hide');
 
-        //$(this).addClass('disabled', function (e) {
-        //    alert('mae');
-        //});
-        //$(this).parents('button').addClass('hide');
 
     });
 
@@ -4409,10 +4370,6 @@
             if (device.platform == "windows")
                 body = $('html');
 
-            //se o scroll da tela for diferente da localizacao do level02
-            //if ($(window).height() > value)
-
-            //faco a animacao para colocar no meio da tela
             body.animate({
                 scrollTop: value
             }, 'fast');
@@ -4457,7 +4414,7 @@
         $('#inputLotNumber').val("");
         $('#inputMudScore').val("");
         $('#biasedUnbiased').val('0');
-
+        $('.btnAreaSave').removeAttr('disabled');
         $('.btnAreaSaveConfirm').addClass('hide');
 
         // $('.painel .labelPainel[level01id=' + level02Group.attr('level01id') + '] #inputChainSpeed, .labelPainel[level01id=' + level02Group.attr('level01id') + '] #inputLotNumber, .labelPainel[level01id=' + level02Group.attr('level01id') + '] #inputMudScore').val("");
@@ -4507,7 +4464,7 @@
         });
 
         $('.level03Group[level01id=' + level02Group.attr('level01id') + '] .level03').removeClass('lightred').removeAttr('notconform');
-        $('.level03Group[level01id=' + level02Group.attr('level01id') + '] .level03 .row div span.response').attr('value', '0').trigger('click');
+        $('.level03Group[level01id=' + level02Group.attr('level01id') + '] .level03 .row div span.response').attr('value', '0').text('Yes');
         $('.level03Group[level01id=' + level02Group.attr('level01id') + '] .level03 textarea').val('');
     }
 
@@ -4599,16 +4556,15 @@
         //Oculto btnCA
         $('.btnCA').addClass('hide');
 
-        //Se o level01 faz ação corretiva pelo level01 e o resultado tem ação corretiva mostro .btnCA
-        //(level01ResultSelected.attr('havecorrectiveaction') || level01ResultSelected.children('.level02Result[havecorrectiveaction]').length)
-
         if (!level01.attr('correctivactionlevel02') && ($('.level01Result[level01id=' + level01.attr('id') + '][completed][havecorrectiveaction]').length || $('.level01Result[level01id=' + level01.attr('id') + '][completed] .level02Result[havecorrectiveaction]').length)) {
 
             var level02CA = $('.level01Result[level01id=' + level01.attr('id') + '][completed] .level02Result[havecorrectiveaction]');
-            if (level02CA.length && level02CA.parents('.level01Result').attr('correctiveactioncomplete')) {
+            if(level02CA.length && level02CA.parents('.level01Result').attr('correctiveactioncomplete'))
+            {
                 level02CA.removeAttr('havecorrectiveaction').attr('correctiveactioncomplete', 'correctiveactioncomplete');
             }
-            else {
+            else
+            {
                 btnCAShow();
             }
         }
@@ -4639,27 +4595,16 @@
 
         var lastResult = getLastResult(level01);
         var returnLevel02 = false;
-        //if (lastResult.length)
-        //{
-        //    var totalEvaluate = parseInt(level02.attr('totalsets'));
-
-        //    if(lastResult.attr('completedsample') && parseInt(lastResult.attr('evaluate')) == totalEvaluate)
-        //    {
-        //        openMessageModal('Last set finished!', "");
-        //        returnLevel02 = true;
-        //    }
-        //}
 
         if (returnLevel02 == true) {
 
-            setTimeout(function (e) {
+            setTimeout(function (e)
+            {
                 level02Return();
             }, 500);
         }
-        else {
-            //Seleciona Level02
-
-            //Inicio reaudit como falso
+        else
+        {
             var reaudit = false;
             //se meu level02 for uma reauditoria
             if (level01.attr('startreaudit')) {
@@ -5409,14 +5354,16 @@
             var sideWithErros = parseInt($('.sideWithErrors:first').text());
             var more3Erros = parseInt($('.more3Defects:first').text());
 
-            if (sideWithErros > 5 || more3Erros > 0) {
+            if (sideWithErros > 5 || more3Erros > 0)
+            {
                 level02Head.attr('limitExceeded', 'limitExceeded');
                 level02Head.attr('havecorrectiveaction', 'havecorrectiveaction');
                 level02Head.parents('li').addClass('bgLimitExceeded');
                 level02Head.attr('havereaudit', 'havereaudit').attr('havecorrectiveaction', 'havecorrectiveaction');
                 level01Save.attr('havereaudit', 'havereaudit').attr('havecorrectiveaction', 'havecorrectiveaction');
             }
-            else {
+            else
+            {
                 level02Head.removeAttr('limitExceeded');
                 level02Head.removeAttr('havecorrectiveaction');
                 level02Head.parents('li').removeClass('bgLimitExceeded');
@@ -5508,10 +5455,12 @@
         var phase = 0;
         var startPhase = null;
         var atualPhase = parseInt(level02.attr('phase'));
-        if (isNaN(atualPhase)) {
+        if(isNaN(atualPhase))
+        {
             phase = 0;
         }
-        else {
+        else
+        {
             phase = atualPhase;
         }
         if (level01.attr('havephases')) {
@@ -5895,7 +5844,8 @@
 
             //verifico se eu tenho reauditoria para o periodo e data atual
             var reauditNotComplete = $('.level01Result[level01id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][havereaudit]:last');
-            if (!reauditNotComplete.length) {
+            if (!reauditNotComplete.length)
+            {
                 //verifica se tem reauditoria para qualquer period anterior
                 reauditNotComplete = $('.level01Result[level01id=' + level01.attr('id') + '][shift=' + $('.App').attr('shift') + '][havereaudit]:last');
             }
@@ -5927,6 +5877,17 @@
                 //   if (corretivActionsNoCompleted.length && (level01Complete == true || !atualResult.length)) {
                 level01.attr('correctivaction', 'correctivaction').parents('.row').children('.userInfo').children('.btnCorrectiveAction').removeClass('hide');
             }
+
+            //var reauditInPeriod = false;
+            //if(reauditNotComplete.attr('date') == atualResult.attr('date') &&
+            //   reauditNotComplete.attr('shift') == atualResult.attr('shift') &&
+            //    reauditNotComplete.attr('period') == atualResult.attr('period'))
+            //{
+            //    reauditInPeriod = true;
+            //}
+
+
+
 
             //se tenho um resultado que tem reauditoria nao completa e esse resultado já estiver completo
             if (reauditNotComplete.length && reauditNotComplete.attr('completed')) {
@@ -6015,6 +5976,16 @@
 
     $(document).on('change', 'select#selectCattleType', function (e) {
         $('span.cattleType').html($("select#selectCattleType :selected").text());
+    });
+    $(document).on('change', 'input[type=number]', function (e) {
+        $(this).attr('oldvalue', $(this).val());
+    });
+    $(document).on('input', 'input[type=number]', function (e) {
+        if (this.value.length > 0 && isNaN(parseInt(this.value)))
+        {
+            $(this).val($(this).attr('oldvalue'));
+        }
+        $(this).val(parseInt($(this).val()));
     });
     $(document).on('input', 'input#inputChainSpeed', function (e) {
         $('span.chainSpeed').html($(this).val());
@@ -6152,6 +6123,14 @@
                 //Oculto o contador.
                 level01Buttons.children('.reauditCount').addClass('hide');
 
+                //if (resultStarReaudit.attr('period') != $('.App').attr('period')) {
+                //    var resultAtualLevel = $('.level01Result[level01id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][reaudit=false]');
+                //    if (resultAtualLevel.length == 0) {
+                //        level01.attr('reauditnumber', '0').removeAttr('reaudit').removeAttr('reauditnumber').removeAttr('startreaudit').removeAttr('completed');
+
+                //    }
+                //}
+
                 //Informa ao usuário que terminou a reauditoria
                 openMessageModal('Re-audit completed', $('#selectPeriod option[value=' + resultStarReaudit.attr('period') + ']').text() + ' re-audit completed!');
 
@@ -6286,11 +6265,21 @@
                 //Oculto o contador.
                 level01Buttons.children('.reauditCount').addClass('hide');
 
+                //if (resultStarReaudit.attr('period') != $('.App').attr('period')) {
+                //    var resultAtualLevel = $('.level01Result[level01id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][reaudit=false]');
+                //    if (resultAtualLevel.length == 0) {
+                //        level01.attr('reauditnumber', '0').removeAttr('reaudit').removeAttr('reauditnumber').removeAttr('startreaudit').removeAttr('completed');
+
+                //    }
+                //}
+
                 //Informa ao usuário que terminou a reauditoria
                 openMessageModal('Re-audit completed', $('#selectPeriod option[value=' + resultStarReaudit.attr('period') + ']').text() + ' re-audit completed!');
 
             }
         }
+
+
 
         createFileResult();
 
@@ -6304,6 +6293,8 @@
 
     });
     $(document).on('click', '#btnSalvarLevel02HTP', function (e) {
+
+
 
         //Verifica o level01 Selecionado.
         var level01 = $('.level01.selected');
@@ -6350,6 +6341,12 @@
             return false;
         }
 
+        //Se for uma reautoria preencho os campos NA com o valor informado nos inputs após ter começado a reauditoria.
+        //if (level01Result.attr('reaudit') == "true") {
+        //    level01Result.children('.level02Result[biasedUnbiased=""]').attr('biasedUnbiased', $('#biasedUnbiased').val());
+
+        //}
+        //Se for uma reautoria preencho os campos NA com o valor informado nos inputs após ter começado a reauditoria.
         if (level01Result.attr('reaudit') == "true") {
 
             level01Result.attr('biasedunbiased', $('#biasedUnbiased').val());
@@ -6391,6 +6388,15 @@
                 //Oculto o contador.
                 level01Buttons.children('.reauditCount').addClass('hide');
 
+                //if (resultStarReaudit.attr('period') != $('.App').attr('period')) {
+                //    var resultAtualLevel = $('.level01Result[level01id=' + level01.attr('id') + '][date=' + $('.App').attr('date') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][reaudit=false]');
+                //    if (resultAtualLevel.length == 0) {
+                //        level01.attr('reauditnumber', '0').removeAttr('reaudit').removeAttr('reauditnumber').removeAttr('startreaudit').removeAttr('completed');
+
+                //    }
+                //}
+
+                //Informa ao usuário que terminou a reauditoria
                 openMessageModal('Re-audit completed', $('#selectPeriod option[value=' + resultStarReaudit.attr('period') + ']').text() + ' re-audit completed!');
 
             }
@@ -6459,6 +6465,10 @@
 
         $('.auditReaudit .reauditPeriod').text(level01.siblings('.userInfo').children('div').children('.btnReaudit').children('.reauditPeriod').text());
 
+        //nao é o
+
+        //level02Complete($('.level02List .level02Group[level01id=' + level01.attr('id') +'] .level02'));
+
         level01.click();
     });
     $(document).on('click', '.level02Group .btnReaudit', function (e) {
@@ -6468,8 +6478,19 @@
         level02.attr('defects', '0');
         $('.painelLevel03 .labelPhase').parents('.labelPainel').addClass('hide');
 
-        level02Level03Reset(level02.parents('.level02Group'));
+        //if (level02.attr('havephases') && level02.attr('limitexceeded'))
+        //{
+        //    $('.painelLevel03 .labelPhase').parents('.labelPainel').removeClass('hide');
+        //    level02.attr('prevphasexceeded', 'prevphasexceeded').removeAttr('limitexceeded');
 
+        //}
+        //$('.painelLevel03 .labelPhase').text(level02.attr('phase'));
+
+        //$('.level02List .level02Group[level01id=' + level01.attr('id') + '] .level02').removeAttr('completed').removeAttr('limitexceeded').removeAttr('notavaliable');
+        //level02Reset($('.level02List .level02Group[level01id=' + level01.attr('id') + '] .level02'));
+        level02Level03Reset(level02.parents('.level02Group'));
+        //nao é o
+        //level02Complete($('.level02List .level02Group[level01id=' + level01.attr('id') +'] .level02'));
         level02.click();
     });
 
@@ -6517,27 +6538,37 @@
     });
 
     function slaugtherSignatureLogin(user) {
-        $('#btnSignatureLogin').siblings('.modal-close-signature').click();
-        $('.SlaugtherSignature').removeClass('hide');
-        $('.SlaugtherSignature').children('.name').text(user.attr('username'));
-        $('.SlaugtherSignature').children('.date').text(dateTimeWithMinutes());
-        $('.SlaugtherSignature').attr('userid', user.attr('userid'));
-        $('.SlaugtherSignature').attr('datetime', dateTimeWithMinutes());
-        $('.btnSignature.btnSlaugtherSignature').addClass('hide');
+
+        if (user.attr('userprofile').indexOf("operations") >= 0) {
+            $('#btnSignatureLogin').siblings('.modal-close-signature').click();
+            $('.SlaugtherSignature').removeClass('hide');
+            $('.SlaugtherSignature').children('.name').text(user.attr('username'));
+            $('.SlaugtherSignature').children('.date').text(dateTimeWithMinutes());
+            $('.SlaugtherSignature').attr('userid', user.attr('userid'));
+            $('.SlaugtherSignature').attr('datetime', dateTimeWithMinutes());
+            $('.btnSignature.btnSlaugtherSignature').addClass('hide');
+        } else {
+            Geral.exibirMensagemErro("The user has no permission to sign this form.");
+        }
+
+
     }
 
-    $(document).on('click', '#btnTechinicalLogin', function (e) {
-        getlogin($('#techinicalLogin').val(), $('#techinicalPassword').val(), techinicalSignatureLogin);
-    });
-
     function techinicalSignatureLogin(user) {
-        $('#btnSignatureLogin').siblings('.modal-close-signature').click();
-        $('.TechinicalSignature').removeClass('hide');
-        $('.TechinicalSignature').children('.name').text(user.attr('username'));
-        $('.TechinicalSignature').children('.date').text(dateTimeWithMinutes());
-        $('.TechinicalSignature').attr('userid', user.attr('userid'));
-        $('.TechinicalSignature').attr('datetime', dateTimeWithMinutes());
-        $('.btnSignature.btnTechinicalSignature').addClass('hide');
+
+        if (user.attr('userprofile').indexOf("techservices") >= 0) {
+            $('#btnSignatureLogin').siblings('.modal-close-signature').click();
+            $('.TechinicalSignature').removeClass('hide');
+            $('.TechinicalSignature').children('.name').text(user.attr('username'));
+            $('.TechinicalSignature').children('.date').text(dateTimeWithMinutes());
+            $('.TechinicalSignature').attr('userid', user.attr('userid'));
+            $('.TechinicalSignature').attr('datetime', dateTimeWithMinutes());
+            $('.btnSignature.btnTechinicalSignature').addClass('hide');
+        } else {
+            Geral.exibirMensagemErro("The user has no permission to sign this form.");
+        }
+
+
     }
 
     $(document).on('click', '#btnMessageOk', function (e) {
@@ -6553,6 +6584,27 @@
     function areaImage(id) {
         showLevel03($("#" + id + ".level02"));
     }
+
+    function openMessageConfirm(title, content, callback) {
+
+        var mensagem = $('.messageConfirm, .overlay');
+
+        mensagem.children('.head').html(title);
+        mensagem.children('.body').children('.txtMessage').html(content);
+        $('#btnMessageYes').removeClass('hide');
+        $('#btnMessageNo').removeClass('hide');
+
+        mensagem.fadeIn("fast");
+
+        $('#btnMessageYes').click(function () {
+            callback();
+        });
+        $('#btnMessageNo').click(function () {
+            mensagem.fadeOut("fast");
+        });
+
+    }
+
 
     function openMessageModal(title, content) {
 
@@ -6594,6 +6646,20 @@
     function syncModalPer(per) {
         var mensagem = $('.message, .overlay');
         mensagem.children('.body').children('.perc').html(per);
+    }
+
+
+    function appendDevice(obj, appendTo) {
+        var platform = device.platform;
+
+        if (platform == 'windows') {
+            MSApp.execUnsafeLocalFunction(function () {
+                appendTo.append(obj);
+            });
+        }
+        else {
+            appendTo.append(obj);
+        }
     }
 
     function afterDevice(obj, afterTo) {
@@ -6741,9 +6807,7 @@
             correctiveAction.attr('DateCorrectiveAction', $('#CorrectiveActionTaken').children('span#datetime').text());
             level02Result.attr('idCorrectiveAction', idCorrectiveAction).attr('sync', 'false').attr('datetime', dateTimeFormat());
 
-
         }
-
 
         var level01ResultsUpdate = $('.level01Result[level01id=' + level01.attr('id') + '][havecorrectiveaction]');
         var level02ResultsUpdate = $('.level01Result[level01id=' + level01.attr('id') + '] .level02Result[havecorrectiveaction]');
@@ -6753,7 +6817,6 @@
             //level01ResultsUpdate = level01Result;
             level02ResultsUpdate = level02Result;
         }
-
 
         level02ResultsUpdate.attr('correctiveactioncomplete', 'correctiveActionComplete').removeAttr('havecorrectiveaction');
         level02.removeAttr('correctivaction').attr('correctiveactioncomplete', 'correctiveActionComplete');
@@ -6784,10 +6847,11 @@
         });
 
     });
-</script>
 
+</script>
 <!--File-->
 <script>
+
     //methodoo padrao para criacao de arquivo
     function createFile() {
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
@@ -6801,7 +6865,7 @@
         }, onErrorLoadFs);
     }
     //metodo que insere a lista de usuarios no banco local
-    function insertUserFile(username, password) {
+    function insertUserFile(username, password){
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
             fs.root.getFile("users.txt", { create: true, exclusive: false }, function (fileEntry) {
                 $.ajax({
@@ -6812,9 +6876,11 @@
                     url: urlPreffix + '/api/User/GetAllUserValidationAd',
                     type: 'POST',
                     success: function (data) {
+                        //Se não tem mensagem de erro e tem retorno do método
                         if (!data.MensagemExcecao && data.Retorno) {
                             var users = '';
-                            for (var i = 0; i < data.Retorno.length; i++) {
+                            //Percorre o retorno incrementando a lista de usuários
+                            for(var i = 0; i < data.Retorno.length; i++){
                                 var user = data.Retorno[i];
                                 var unidadeid = '';
                                 if (user.UnitUser[0]) {
@@ -6822,10 +6888,12 @@
                                     unidadename = user.UnitUser[0].Unit.Name;
                                 }
                                 users +=
-                                '<div class="user" userid="' + user.Id + '" username="' + user.FullName + '" userlogin="' + user.Name.toLowerCase() + '" userpass="' +
+                                '<div class="user" userid="' + user.Id + '" username="' + user.FullName+ '" userlogin="' + user.Name.toLowerCase() + '" userpass="' +
                                 user.Password + '" userprofile="' + user.Role + '" unidadeid="' + unidadeid + '" unidadename="' + unidadename + '"></div>';
                             }
+                            //Grava a lista de usuários
                             writeFile(fileEntry, new Blob([users], { type: 'text/plain' }));
+                            //Libera a lista de usuários para a pesquisa
                             appendDevice(users, $('.Users'));
                             if (username && password)
                                 getLastSync($('.user[userlogin="' + username.toLowerCase() + '"][userpass="' + password + '"]'), initialLogin);
@@ -6838,21 +6906,24 @@
     }
     //metodo que grava o resultado do html no bnco local
     function createFileResult() {
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
-
-            //console.log('file system open: ' + fs.name);
-            fs.root.getFile("database.txt", { create: true, exclusive: false }, function (fileEntry) {
-                var result = $('.Results').html();
-                writeFile(fileEntry, new Blob([result], { type: 'text/plain' }));
-            }, onErrorCreateFile);
-        }, onErrorLoadFs);
+        _writeFile("database.txt", $('.Results').html());
+    }//metodo padrao que grava dados no arquivo
+    function writeFile(fileEntry, dataObj) {
+        // Create a FileWriter object for our FileEntry (log.txt).
+        fileEntry.createWriter(function (fileWriter) {
+            fileWriter.onwriteend = function () {
+            };
+            fileWriter.onerror = function (e) {
+            };
+            fileWriter.write(dataObj);
+        });
     }
     //metodo padrao que le o arquivo no hmtl de results
     function readFile(fileEntry) {
         fileEntry.file(function (file) {
             var reader = new FileReader();
-            reader.onloadend = function () {
-                if (this.result) {
+            reader.onloadend = function() {
+                if(this.result){
                     $('.Results').empty();
                     appendDevice($(this.result), $('.Results'));
                     cleanResults();
@@ -6861,37 +6932,57 @@
             reader.readAsText(file);
         }, onErrorReadFile);
     }
-    //metodo que faz o login
+    /// <summary>Método que faz o Login</summary>
+    /// username: Nome de  usuário
+    /// password: Senha
+    /// method: call-back (função que vai ser chamada após a execução do método)
     function getlogin(username, password, method) {
+        //Abre uma requisição de Arquivo.
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+            //Busca o arquivo de usuários que está gravado local no dispositivo
             fs.root.getFile("users.txt", { create: true, exclusive: false }, function (fileEntry) {
+                //Abre o arquivo
                 fileEntry.file(function (file) {
                     var reader = new FileReader();
                     reader.onloadend = function () {
+                        //Se existe resultado
                         if (this.result) {
+                            //Atualiza a base de usuário no dispositivo para verificar o login digitado
                             appendDevice(this.result, $('.Users'));
+                            //Instancia o nome do usuário e a senha criptografada para pesquisa.
                             var u = username;
                             var p = AES.Encrypt(password);
+                            //Faz a pesquisa na base de usuários
                             var user = $('.user[userlogin="' + u.toLowerCase() + '"][userpass="' + p + '"]');
+                            //Se o usuário existe
                             if (user.length) {
+                                //Busca a ultima sincronização
                                 getLastSync(user, method);
                             }
                             else {
-                                if (initialLogin == method) {
+                                //Se o método callback passado for initialLogin
+                                if (method == initialLogin) {
+                                    //Se o dispositivo estiver conectado
                                     if (connectionServer == true) {
+                                        //Verifico o Login On Line na API
                                         onlineLogin(username, password);
                                         return;
                                     }
                                 }
+                                //Usuário e senha inválidos
                                 Geral.exibirMensagemErro("Username or password is invalid");
                                 $('#btnLogin').button('reset');
                             }
+                            //Limpa a base de usuários de pesquisa temporária
                             $('.Users').empty();
                         } else {
+                            //Se não existe resultado na tabela de usuários e o dispositivo não estiver conectado
                             if (connectionServer == false) {
-                                Geral.exibirMensagemErro("The first login needs to be online.");
+                                //Informa mensagem que necessita estar on line
+                                Geral.exibirMensagemErro("The first login needs to be connected the unit. "  + $('#selectUnit :selected').text());
                                 $('#btnLogin').button('reset');
                             } else
+                                //Se existe conexão e não tem arquivo, verifica o login online
                                 onlineLogin(username, password);
                         }
                     };
@@ -6901,7 +6992,7 @@
         });
     }
     //cria o arquivo de database se ainda nao existir
-    function loginFile() {
+    function loginFile(){
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
             fs.root.getFile("database.txt", { create: false, exclusive: false }, function (fileEntry) {
                 readFile(fileEntry);
@@ -6936,6 +7027,7 @@
             }, firstLoginWithoutFile);
         }, firstLoginWithoutFile);
     }//gravar o ultimo sincronismo
+
     function firstLoginWithoutFile() {
         if (connectionServer == true) {
             $('#btnSync').click();
@@ -6945,11 +7037,24 @@
     function setLastSync() {
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
             fs.root.getFile("sync.txt", { create: true, exclusive: false }, function (fileEntry) {
-                var div = '<div class="LastSync" date="' + dateFormat() + '" datetime="' + dateTimeFormat() + '" userid="' + $('.App').attr('userid') + '"></div>';
+                var div = '<div class="LastSync" date="' + dateFormat() + '" datetime="' + dateTimeFormat() + '" userid="' + $('.App').attr('userid') + '" unitid="' + $('#selectUnit :selected').val() + '"></div>';
                 writeFile(fileEntry, new Blob([div], { type: 'text/plain' }));
             }, onErrorCreateFile);
         }, onErrorLoadFs);
     }
+
+    function clearLastSync() {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+            fs.root.getFile("sync.txt", { create: false }, function (fileEntry) {
+                fileEntry.remove(function () {
+                    console.log('File removed.');
+                });
+                //var div = "123";
+                //writeFile(fileEntry, new Blob([div], { type: 'text/plain' }));
+            }, onErrorCreateFile);
+        }, onErrorLoadFs);
+    }
+
     //pega a ultima data de sincronismo e decide qual callback executar
     function getLastSync(user, callback) {
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
@@ -6957,11 +7062,13 @@
                 fileEntry.file(function (file) {
                     var reader = new FileReader();
                     reader.onloadend = function () {
+                        var lastSync = $(this.result);
                         if ($(user).attr('unidadeid'))
-                            if (this.result) {
-                                var lastSync = $(this.result);
-                                if (dateFormat() > lastSync.attr('date') && !connectionServer) {
+                            if (lastSync.length) {
+
+                                if (dateFormat() > lastSync.attr('date') && (connectionServer == true) || lastSync.attr('unitid') != $('#selectUnit :selected').val()) {
                                     Geral.exibirMensagemErro("Sync for the first time today.");
+                                    $('#btnLogin').button('reset');
                                 } else {
                                     callback(user);
                                 }
@@ -6980,7 +7087,9 @@
             }, onErrorCreateFile);
         }, onErrorLoadFs);
     }
-
+    //arquivo de erro para leitura
+    function onErrorLoadFs(e) {
+    }
     //cria o arquivo de sincronizacao se nao existir
     function onErrorCreateSyncFile(callback, user) {
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
@@ -6989,11 +7098,18 @@
             }, onErrorCreateFile);
         }, onErrorLoadFs);
     }
-
+    //metodo padrao para erro de criacao de arquivo
+    function onErrorCreateFile(e) {
+        console.log(e);
+    }
+    //metodo padrao para erro de leitura de arquivo
+    function onErrorReadFile(e) {
+        console.log(e);
+    }
 </script>
-
 <!--SyncData-->
 <script>
+    
 
     function MakeObject2(element, ListName, objectReturn) {
         //debugMessage('Start MakeObject2');
@@ -7023,8 +7139,35 @@
             objectReturn[ListName].push(level01Result);
 
         });
+
+        //debugMessage('Finished MakeObject2');
     }
 
+    //function MakeObject2(element, ListName, objectReturn) {
+    //    objectReturn[ListName] = [];
+    //    var elemens = element;
+    //    $.each(elemens, function (counter, object) {
+
+    //        if ($(object).attr('sync') == "true") { return; }
+
+    //        var temp = {};
+    //        var el = object;
+    //        for (var i = 0, atts = el.attributes, n = atts.length, arr = []; i < n; i++) {
+    //            var name = atts[i].nodeName;
+    //            var value = atts[i].nodeValue;
+    //            if (name == "datetime") {
+    //                value = value.slice(0, 16)
+    //            }
+    //            if (value == 'undefined' || value == 'null') { continue; }
+    //            temp[name] = value;
+    //        }
+    //        objectReturn[ListName].push(temp);
+    //        if (!!object.childNodes) {
+    //            if (object.childNodes.length > 0)
+    //                MakeObject2(object.childNodes, 'next' + ListName, temp);
+    //        }
+    //    });
+    //}
     (function ($) {
         $.fn.getAttributes = function () {
             var attributes = {};
@@ -7038,18 +7181,84 @@
         };
     })(jQuery);
 
+    //function MakeResult(Obj, selector) {
+    //    MakeObject2(selector, 'Root', Obj);
+    //    console.log('Done.');
+    //    //console.log(Obj);
+    //}
     function MakeResult(Obj, selector) {
         MakeObject2(selector, 'Root', Obj);
         console.log('Done.');
+        //console.log(Obj);
     }
 
-    $(document).ready(function () {
-        ping();
-    });
+    //$(document).ready(function () {
+    //    ping();
+    //});
 
+    //function Sync() {
+    //    var objToSend = { '': $('.App').attr('userid') };
+    //    $.post(urlPreffix + '/api/Sync/Lock', objToSend, function (r) {
+
+    //        try {
+
+    //            //console.log(r);
+    //            if (r == "wait") {
+    //                //Esperar
+    //                console.log('Waiting other user to finish Sync.');
+    //                setTimeout(function (e) {
+    //                    Sync();
+    //                }, 800);
+    //            } else if (r == $('.App').attr('userid')) {
+    //                //Enviar
+    //                SyncEnvia();
+    //            } else {
+    //                //Caso erro;
+    //                console.log('Server possible not reached. Cant send data and retrieve, verify your connection.')
+    //                console.log(r);
+    //            }
+
+    //        } catch (e) {
+    //            $.post(urlPreffix + '/api/Sync/unLock', {}, function (r) { console.log(r); })
+    //        }
+    //        //finally {
+    //        //    $.post(urlPreffix + '/api/Sync/unLock', {}, function (r) { console.log(r); })
+    //        //}
+
+    //    });
+    //}
     function Sync() {
 
         SyncEnvia();
+        //var objToSend = { '': $('.App').attr('userid') };
+        //$.post(urlPreffix + '/api/Sync/Lock', objToSend, function (r) {
+
+        //    try {
+
+        //        //console.log(r);
+        //        if (r == "wait") {
+        //            //Esperar
+        //            console.log('Waiting other user to finish Sync.');
+        //            setTimeout(function (e) {
+        //                Sync();
+        //            }, 800);
+        //        } else if (r == $('.App').attr('userid')) {
+        //            //Enviar
+        //            SyncEnvia();
+        //        } else {
+        //            //Caso erro;
+        //            console.log('Server possible not reached. Cant send data and retrieve, verify your connection.')
+        //            console.log(r);
+        //        }
+
+        //    } catch (e) {
+        //        $.post(urlPreffix + '/api/Sync/unLock', {}, function (r) { console.log(r); })
+        //    }
+        //    //finally {
+        //    //    $.post(urlPreffix + '/api/Sync/unLock', {}, function (r) { console.log(r); })
+        //    //}
+
+        //});
     }
 
     function SyncEnvia() {
@@ -7063,11 +7272,16 @@
 
         var objetoToSend = $('.level01Result');
 
+
+        //$(objetoToSend).find('.level02Result[sync=true]').remove();
+
         if ($(objetoToSend).children('div[sync=false]').length) {
             MakeResult(ObjListaLevel1, objetoToSend);
         } else {
             GetToSyncNoOffLineData("SyncEnvia");
         }
+
+        //if (ObjListaLevel1.Root.length == 0) { FirstSync(); }
 
         $.each(ObjListaLevel1.Root, function (c, o) {
 
@@ -7096,7 +7310,8 @@
 
                 $.post(urlPreffix + "/api/Sync/SetDataAuditConsolidated", smallerObject, function (r) {
                     if (r.Mensagem.indexOf('All Data') > 0) {
-                        if(r.Retorno != null){
+                        //$('.level01Result[level01Id=' + r.IdSaved + '] .level02Result').attr('sync', true)
+                        if (r.Retorno != null) {
                             var listaLevel02ComId = r.Retorno.ListToSave[0].collectionLevel02DTO;
                             listaLevel02ComId.forEach(function (o, c) {
                                 var variavel = new Date(o.CollectionDate);
@@ -7111,6 +7326,8 @@
                                     dia = "0" + dia;
                                 }
                                 var data2 = mes + dia + variavel.getUTCFullYear().toString();
+                                //var data2 = variavel[1] + variavel[0] + variavel[2];
+                                //09132016
                                 var a = '.level01Result[level01Id=' + r.IdSaved + '] .level02Result[level02id=' + o.Level02Id + '][evaluate=' + o.EvaluationNumber + '][shift=' + o.Shift + '][period=' + o.Period + '][date=' + data2 + '][sample=' + o.Sample + '][phase=' + o.Phase + '][reaudit=' + o.ReauditIs + '][reauditNumber=' + o.ReauditNumber + ']';
                                 $(a).attr('id', o.Id).attr('sync', true);
                                 //syncModalPer(counterSync++);
@@ -7125,16 +7342,21 @@
                                 });
                             });
                         } else {
+                            openMessageModal(r.Mensagem + ' - ' + r.MensagemExcecao);
                             $('.level02Result').attr('sync', true);
                         }
                     }
                     console.log("smallerObject metod start> ", 'background: #222; color: Red')
+                    //console.log(smallerObject)
                     console.log(r.Mensagem);
                     console.log(r);
                     console.log(r.Result);
                     console.log("smallerObject metod end> ", 'background: #222; color: Red')
                     counter++;
                     if (ObjListaLevel1.Root.length == counter) { GetToSyncNoOffLineData("SyncEnvia"); }
+                }).fail(function (e, h, x) {
+                    if (e.responseJSON)
+                        openMessageModal("Error", e.responseJSON.Message);
                 });
             }
             else {
@@ -7147,6 +7369,89 @@
 
     }
 
+    //function SyncEnvia() {
+    //    counter = 0;
+    //    statusMessage('Sync started...');
+    //    var ObjListaLevel1 = {};
+    //    var objetoToSend = $('.level01Result').clone()
+    //    $(objetoToSend).find('.level02Result[sync=true]').remove();
+    //    if ($(objetoToSend).children('div').length) {
+    //        MakeResult(ObjListaLevel1, objetoToSend);
+    //    } else {
+    //        GetToSyncNoOffLineData("SyncEnvia");
+    //    }
+    //    if (ObjListaLevel1.Root.length == 0) { FirstSync(); }
+    //    $.each(ObjListaLevel1.Root, function (c, o) {
+    //        var smallerObject = {};
+    //        smallerObject['Root'] = [];
+    //        if (!!o.correctiveactioncomplete || o.nextRoot != undefined) {
+    //            if (o.nextRoot != undefined) {
+    //                o['correctiveactioncomplete'] = [];
+    //                $.each(o.nextRoot, function (cc, oo) {
+    //                    if (!!oo.correctiveActionComplete || !!oo.correctiveactioncomplete) {
+    //                        var tempCA = {}
+    //                        var idCorrectiveAction = oo.idcorrectiveaction;
+    //                        if (!idCorrectiveAction) {
+    //                            idCorrectiveAction = oo.idCorrectiveAction;
+    //                        }
+    //                        MakeObject2($('.Results > .correctiveAction[idcorrectiveaction=' + idCorrectiveAction + ']'), 'a', tempCA);
+    //                        o['correctiveactioncomplete'].push(tempCA.a[0]);
+    //                        //$.each(tempCA.a, function (cc, oo) {
+    //                        //    if (oo.level01id == o.level01id)
+    //                        //        o['correctiveactioncomplete'] = oo;
+    //                        //});
+    //                    }
+    //                });
+    //            }
+    //        }
+    //        smallerObject.Root.push(o);
+    //        smallerObject['lockPattern'] = $('.App').attr('userid');
+    //        if (smallerObject.Root[0].nextRoot != undefined) {
+    //            $.post(urlPreffix + "/api/Sync/SetDataAuditConsolidated", smallerObject, function (r) {
+    //                if (r.Mensagem.indexOf('All Data') > 0) {
+    //                    //$('.level01Result[level01Id=' + r.IdSaved + '] .level02Result').attr('sync', true)
+    //                    var listaLevel02ComId = r.Retorno.ListToSave[0].collectionLevel02DTO;
+    //                    listaLevel02ComId.forEach(function (o, c) {
+    //                        var variavel = new Date(o.CollectionDate);
+    //                        var mes = variavel.getUTCMonth() + 1;
+    //                        mes = variavel.getUTCMonth() + 1;
+    //                        mes = mes.toString();
+    //                        if (mes.length < 2) {
+    //                            mes = "0" + mes;
+    //                        }
+    //                        var data2 = mes + variavel.getUTCDate().toString() + variavel.getUTCFullYear().toString();
+    //                        //var data2 = variavel[1] + variavel[0] + variavel[2];
+    //                        //09132016
+    //                        var a = '.level01Result[level01Id=' + r.IdSaved + '] .level02Result[level02id=' + o.Level02Id + '][evaluate=' + o.EvaluationNumber + '][shift=' + o.Shift + '][period=' + o.Period + '][date=' + data2 + '][sample=' + o.Sample + '][phase=' + o.Phase + '][reaudit=' + o.ReauditIs + '][reauditNumber=' + o.ReauditNumber + ']';
+    //                        $(a).attr('id', o.Id).attr('sync', true);
+    //                        if (o.CorrectiveActionSaved != null) {
+    //                            var CA = o.CorrectiveActionSaved;
+    //                            var CaSearch = '.correctiveAction[idcorrectiveaction="' + o.CorrectiveActionId + '"][shift="' + o.Shift + '"][period="' + o.Period + '"][unidadeid="' + r.Retorno.ListToSave[0].UnitId + '"][immediatecorrectiveaction="' + CA.ImmediateCorrectiveAction + '"][preventativemeasure="' + CA.PreventativeMeasure + '"][productdisposition="' + CA.ProductDisposition + '"]';
+    //                            $(CaSearch).attr('CollectionLevel02Id', CA.CollectionLevel02Id).attr('Id', CA.Id).attr("idcorrectiveaction", CA.Id)
+    //                            $(a).attr("idcorrectiveaction", CA.Id);
+    //                        }
+    //                        o.collectionLevel03DTO.forEach(function (oo, cc) {
+    //                            $('.level01Result[level01Id=' + r.IdSaved + '] .level02Result[level02id=' + o.Level02Id + '] .level03Result[level03id=' + oo.Level03Id + ']').attr('id', oo.Id);
+    //                        });
+    //                    });
+    //                }
+    //                console.log("smallerObject metod start> ", 'background: #222; color: Red')
+    //                //console.log(smallerObject)
+    //                console.log(r.Mensagem);
+    //                console.log(r);
+    //                console.log(r.Result);
+    //                console.log("smallerObject metod end> ", 'background: #222; color: Red')
+    //                counter++;
+    //                if (ObjListaLevel1.Root.length == counter) { GetToSyncNoOffLineData("SyncEnvia"); }
+    //            });
+    //        }
+    //        else {
+    //            counter++;
+    //            if (ObjListaLevel1.Root.length == counter) { GetToSyncNoOffLineData("SyncEnvia"); }
+    //        }
+    //    });
+    //    setLastSync();
+    //}
     function updateWindow() {
 
         if ($('.level02List').is(':visible')) {
@@ -7161,7 +7466,10 @@
             periodReset();
             resultPreencher(result);
             showLevel02(level01);
-
+            //else {
+            //    $('.level01.selected').click();
+            //}
+            //showLevel02($('.level01.selected'));
         }
         else if ($('.level01List').is(':visible')) {
             $('#selectPeriod').trigger('change');
@@ -7185,8 +7493,12 @@
         };
 
         $.post(urlPreffix + "/api/Sync/SaveHtml", htmlObject, function (r) {
-
-
+            //console.log(r);
+            //if (!r.MensagemExcecao) {
+            //    $('.status').text('Sync finished successfully.');
+            //} else {
+            //    $('.status').text('Sync failed.');
+            //}
             console.log("sendHtml start caller: " + caller);
             if (!!r.Mensagem && r.MensagemExcecao == null) {
                 console.log(r.Mensagem);
@@ -7198,15 +7510,40 @@
                 return false;
             }
             mensagemSyncHide();
-
+            //ok
+            //comentei o codigo pois estava interferindo na montagem dos resultados na tela
+            //if ($('.level01List').is(':visible')) {
+            //    periodReset();
+            //}
             console.log("sendHtml end caller: " + caller);
             //$.post(urlPreffix + 'api/Sync/unLock')
         });
     }
-    function mensagemSyncHide() {
-        $('.msgSync').removeClass('msgSync').fadeOut("fast");
 
-    }
+
+    /********************************************************************************************************
+    ****BUG****BUG****BUG****BUG****BUG****BUG****BUG****BUG****BUG****BUG****BUG****BUG****BUG****BUG*******
+    ********************************************************************************************************/
+    ////////////////function FirstSync() {
+
+    ////////////////    getOffLineData(true);
+    ////////////////    //var idUnidade = $('.App').attr('unidadeid');
+    ////////////////    //var lockPattern = $('.App').attr('userid');
+    ////////////////    //var objToSend = { 'idUnidade': idUnidade, 'lockPattern': lockPattern }
+
+    ////////////////    //$.post(urlPreffix + "/api/Sync/GetHtmlLastEntry", objToSend, function (r) {
+    ////////////////    //    console.log(r);
+    ////////////////    //    if (r.Retorno != null) {
+    ////////////////    //        Merge(r);
+    ////////////////    //        sendHtml();
+    ////////////////    //    }
+    ////////////////    //});
+
+    ////////////////}
+    /********************************************************************************************************
+    ****FIM BUG****FIM BUG****FIM BUG****FIM BUG****FIM BUG****FIM BUG****FIM BUG****FIM BUG****FIM BUG******
+    ********************************************************************************************************/
+
 
     function GetToSyncNoOffLineData(caller) {
 
@@ -7214,6 +7551,8 @@
         var lockPattern = $('.App').attr('userid');
         var objToSend = { 'idUnidade': idUnidade, 'lockPattern': lockPattern }
         objToSend['CollectionHtml'] = {
+            //Html: $('.App').attr('unidadeid'),
+            //Period: $('.App').attr('period'),
             Shift: $('#shift option:selected').val(),
             UnitId: $('.App').attr('unidadeid')
         }
@@ -7292,33 +7631,96 @@
 
     })(jQuery);
 
+    //função de sincronização comentada. Pessoal da JBS USA solicitou tirar
+    //var automaticSync;
+
+    //function startAutomaticSync() {
+    //    console.log('Autosyncing...');
+    //    if (connectionServer == true) {
+    //        if ($('.level03Group:visible').length == 0 && $('#correctiveActionModal:visible').length == 0) {
+    //            Sync();
+    //        }
+
+    //        //sincronização a cada trinta segundos
+    //        automaticSync = setTimeout(startAutomaticSync, 60000);
+    //    }
+    //}
+
+    //function stopAutomaticSync() {
+    //    if (automaticSync)
+    //        clearTimeout(automaticSync);
+    //}
+
+
     var connectionServer = false;
 
+    var timeoutPing;
     function ping() {
-        //connectionServer = true;
+        if (urlPreffix == "") {
+            connectionServer = false;
+            return false;
+        }
         $.ajax({
-            url: urlPreffix,
-            success: function (result) {
-                if (result)
-                    connectionServer = true;
-                else
-                    connectionServer = false;
-            },
-            error: function (result) {
+            type: "GET",
+            url: urlPreffix + '/api/LoginApi/Logado',
+            error: function (data) {
                 connectionServer = false;
-            }
+            },
+            success: function (data) {
+                connectionServer = true;
+            },
+            timeout: 5000 //in milliseconds
         });
 
-        setTimeout(ping, 5000);
+        //timeoutPing = setTimeout(function (e) {
+
+        //     $.get(urlPreffix + '/api/LoginApi/Logado', function (data, status) {
+        //         if (data == 'ok') {
+        //             connectionServer = true;
+        //         }
+        //         else {
+        //             connectionServer = true;
+        //         }
+        //     }).fail(function () {
+        //         connectionServer = false;
+        //     });
+
+        // });
+
+        ////connectionServer = true;
+        //$.ajax({
+        //    type: 'GET',
+        //    url: urlPreffix + '/api/LoginApi/Logado',
+        //    success: function (data, textStatus, xhr) {
+        //        if(data == "ok")
+        //        {
+        //            connectionServer = true;
+        //        }
+        //        else
+        //        {
+        //            connectionServer = false;
+        //        }
+        //    },
+        //    error: function (data, textStatus, xhr) {
+        //        connectionServer = false;
+        //    },
+        //    timeout: 8000 // sets time
+        //});
+
+        //setTimeout(ping, 5000);
     }
 
 
     function Merge(r) {
 
+        //Pego os resultados que vem da sincornização.
         var results = $(r.Retorno.html);
 
+        //Se não existe nenhum level01Result.
         if ($('.level01Result').length == 0) {
+            //Adiciono os resultados da sincronização aos resultados da tela.
 
+            //coloquei essa variavel pq estou limpando pq tá chegando com level02Result na raiz...verifica pq
             var resultsValidos = results.children('.level01Result, .correctiveAction')
 
             appendDevice(resultsValidos, $('.Results'));
@@ -7326,6 +7728,9 @@
             //Saio do método.
             return true;
         }
+
+
+        //Separamos os objetos que vem a partir da sincronização
         var objResultsLevel01 = results.children('div');
 
         //Percorro os objetos
@@ -7405,6 +7810,66 @@
 
                 //Se não existir o elemento
                 if (level01Result.length == 0) {
+                    //Adiciona nos resultados
+
+                    //var level01ResultObjects = $('.level01Result[level01id=' + objLevel1.attr('level01id')  + '][date=' + objLevel1.attr('date') + '][shift=' + objLevel1.attr('shift') + '][period=' + objLevel1.attr('period') + ']');
+
+                    //var evaluateObjBanco = parseInt(objLevel1.attr('evaluate'));
+                    //var reauditObjBanco = objLevel1.attr('reaudit');
+                    //var reauditNumberObjBanco = parseInt(objLevel1.attr('reauditnumber'));
+
+
+
+                    //var evalueteResults = 0;
+                    //var reauditResult = false;
+                    //var reauditNumberResult = 0;
+
+                    //if (reauditNumberObjBanco == "true" && reauditNumberObjBanco == 1)
+                    //{
+                    //    reauditResult = false;
+                    //    reauditNumberResult = 0;
+                    //}
+                    //else if (reauditNumberObjBanco == "true" && reauditNumberObjBanco > 1)
+                    //{
+                    //    reauditResult = true;
+                    //    reauditNumberResult = reauditNumberResult - 1;
+                    //}
+
+
+                    //if (reauditObjBanco == "true" )
+                    //{
+                    //    if(evaluateObjBanco > 1)
+                    //    {
+                    //        evalueteResults = evaluateObjBanco - 1;
+                    //    }
+
+                    //    if(reauditNumberObjBanco > 1)
+                    //    {
+                    //        reauditNumberResult = reauditNumberObjBanco - 1;
+                    //        reauditResult = true;
+                    //    }
+                    //    else
+                    //    {
+                    //        reauditResult = false;
+                    //        reauditNumberResult = 0;
+                    //    }
+                    //}
+
+
+
+                    //meu objeto do banco é um reauditoria e o numero 1 um  ------------tenho quue proceurar um objeto que não é reuaditoria
+                    //meu objeto é uma reaudit é o numero é maior que 1 ---------------- procuro uma reauditoria menor para colocar o objeto depois
+                    //tenho que verificar a evaluate para colocar no lugar correto
+                    //se a avaliação for um eu procuro uma avlaiacao maior
+                    //se a avaliação for maior que 1 procuro a menor
+
+                    //se nao existir essa regra coloca no append mesmo
+
+                    //level01ResultObjects.each(function (e) {
+
+
+                    //});
+
                     appendDevice(objLevel1, $('.Results'));
                 }
                 else if (level01Result.length == 1) {
@@ -7462,6 +7927,10 @@
                         }
 
                     }
+                    //Se a coleta foi alterada:
+
+                    //Se a data do elemento que veio do banco de dados for maior que a data do elemento do resultado no aplicativo.
+
                 }
             }
 
@@ -7548,7 +8017,17 @@
 
         //Percorremos os level02Result
         objectsLevel02.each(function (e) {
+
+            //if ($(objLevel1).attr('class') == "correctiveAction") {
+            //    return;
+            //}
+
+            //Instancio um objeto do level02Result
             var objLevel2 = $(this);
+
+            //console.log($(this));
+            //console.log(counter++);
+
             var id = objLevel2.attr("level02id");
             var shift = objLevel2.attr("shift");
             var period = objLevel2.attr("period");
@@ -7558,9 +8037,21 @@
             var reauditNumber = objLevel2.attr("reauditNumber");
             var evaluate = objLevel2.attr('evaluate');
             var sample = objLevel2.attr("sample");
-            var level02Result = level01Result.children('.level02Result[level02id=' + id + '][shift=' + shift + '][period=' + period + '][date=' + date + '][sample=' + sample + '][phase=' + phase + '][reaudit=' + reaudit + '][reauditNumber=' + reauditNumber + ']');
+            //var remove = objLevel2.attr("remove");
 
+
+
+            // var search = '.level01Result[evaluate=' + objLevel1.attr('evaluate') + '] .level02Result[level02id=' + id + '][shift=' + shift + '][period=' + period + '][date=' + date + '][sample=' + sample + '][phase=' + phase + '][reaudit=' + reaudit + '][reauditNumber=' + reauditNumber + ']';
+            // var elem = $(search);
+
+            //Verifico se o Level01Result te o Level02Result
+            var level02Result = level01Result.children('.level02Result[level02id=' + id + '][shift=' + shift + '][period=' + period + '][date=' + date + '][sample=' + sample + '][phase=' + phase + '][reaudit=' + reaudit + '][reauditNumber=' + reauditNumber + ']');
+            //Se existir objetos em level01Result > level02Result, IGUAIS aos objetos que vieram do banco level01Result > level02Result entra na conficional
+
+            //Se existe o elemento do Level02Result
             if (level02Result.length > 0) {
+
+                //Caso os dois objetos forem iguais
                 if (level02Result[0].isEqualNode(objLevel2[0])) {
                     //Não faz nada
                 }
@@ -7569,6 +8060,9 @@
 
                     var dataAtual = stringToTime(level02Result.attr('datetime'));
                     var dataElementoDb = stringToTime(objLevel2.attr('datetime'));
+                    //Se a coleta foi alterada:
+
+                    //Se a data do elemento que veio do banco de dados for maior que a data do elemento do resultado no aplicativo.
                     if (dataElementoDb > dataAtual) {
 
                         //Adiciono o elemento do banco após o elemento do aplicativo.
@@ -7579,6 +8073,15 @@
                     else {
 
                     }
+                    //Verificar se precida do bloco de codigo comentado abaixo
+                    //if (!!level02Result.attr('havecorrectiveaction')) {
+                    //    if (!!objLevel2.attr('correctiveActionComplete')) {
+                    //        level02Result.removeAttr('havecorrectiveaction');
+                    //        level02Result.attr('correctiveactioncomplete', $(objLevel2).attr('correctiveActionComplete'));
+                    //    }
+                    //}
+                    //Fim do bloco de código
+
 
                 }
 
@@ -7623,6 +8126,21 @@
 
                 });
 
+
+                //appendDevice(objLevel2, level01Result);
+
+                //var ordenarIsto = $('.level01Result[level01id=' + $(objLevel1).attr('level01id') + '][evaluate=' + objLevel1.attr('evaluate') + '] .level02Result[level02id=' + id + ']')
+
+                ////if ($(objLevel1).attr('level01id') == '1') {
+                //ordenarElementos(ordenarIsto, "sample");
+                //ordenarElementos(ordenarIsto, "reaudit");
+                //ordenarElementos(ordenarIsto, "phase");
+                ////}
+
+                //var level01Ordernar = ordenarIsto.parents('.level01Result');
+                //$('.level01Result[level01id=' + $(objLevel1).attr('level01id') + '][evaluate=' + objLevel1.attr('evaluate') + '] .level02Result[level02id=' + id + ']').remove();
+                //appendDevice(ordenarIsto, level01Ordernar);
+
             }
 
         });
@@ -7653,12 +8171,188 @@
     }
     function cleanResults() {
         var results = $('.Results .level01Result, .Results .correctiveAction');
-        $('.Results').html(results);
+        appendDevice(results, $('.Results'));
+    }
+</script>
+<!--NewSync-->
+<script>
+    
+
+    var totalObj = 0; //Verifica total de Level02 a ser sincornizado
+    var objsyncked = 0; //Ojetos já sincronizados
+    var qtdeObjetos = 500; //Quantidade de Objetos enviados por sincronização
+
+    /// Função que Inicializa a Sincronização
+    function sendResults() {
+        totalObj = $('.level02Result[sync=false]').length;
+        if (totalObj == 0)
+        {
+            openMessageModal("No Sync Collection", 'Don´t have collectione for sync now');
+            return true;
+        }
+        objsyncked = 0; //Zera a variavel de objetos sincronizados
+        totalObj = $('.level02Result[sync=false]').length; //verificamos o total de level02 a ser sincronizado
+        menssagemSync("Sync Collection", 'Cheking Collections'); // Mostra o modal informando que está verificando as coletas
+        initializeSync(); //Inicializa o Envio dos Resultados
+    }
+    function initializeSync() {
+
+
+        setTimeout(function (e) {
+            //Prepara a quantidade de objetos que devem ser sincronizados conforme definição na variável qtdeObjetos
+            preparing(qtdeObjetos);
+            $('.message .body').html("Preparing to send..."); //Altera mensagem para preaprando envio;
+            setTimeout(function (e) {
+
+                $('.message .body').html("Send " + objsyncked + " of " + totalObj + " Results"); //Mostra Qtde de Objeros que já foram enviados
+                setTimeout(function (e) {
+
+                    send(); //Envia a informação
+
+                }, 1000);
+            }, 1000);
+        }, 1000);
+    }
+    //Prepara os objetos a partir da variavel qtdeObjetos
+    function preparing(qtdeObjetos)
+    {
+        //Os objetos ganharam uma tag para que possam ser identificados facilmente
+        var arrayResultsSend = $('.level02Result[sync=false]').slice(0, qtdeObjetos);
+        arrayResultsSend.attr('send', 'true');
+
+        //for (var i = 0; i < qtdeObjetos; i++) {
+        //    $('.level02Result[sync=false]:eq(' + i + ')').attr('send', 'true');
+        //}
+    }
+    function send() {
+
+        var objectSend = "";
+
+        // objectSend['Level02'] = [];
+
+        $('.level02Result[sync=false][send=true]').each(function (e) {
+
+            var level02Result = "";
+
+            var level02 = $(this);
+            var level01 = level02.parents('.level01Result');
+
+            level02Result += level01.attr('level01id');
+            level02Result += ";" + level01.attr('datetime');
+            level02Result += ";" + level02.attr('level02id');
+            level02Result += ";" + level02.attr('datetime');
+            level02Result += ";" + level01.attr('unidadeid');
+            level02Result += ";" + level01.attr('period');
+            level02Result += ";" + level01.attr('shift');
+            //level02Result += ";" + "device";
+            level02Result += ";" + versao;
+            level02Result += ";" + baseAmbiente;
+
+            var level03Result = $(this).children('.level03Result');
+            var resultLevel03 = "";
+
+            level03Result.each(function (e) {
+
+                var level03 = $(this);
+
+                var result = level03.attr('level03id');
+                result += "," + level03.attr('date');
+                result += "," + level03.attr('value');
+                result += "," + level03.attr('conform');
+                result += "," + level03.attr('auditorid');
+                result += "," + level03.attr('totalerror');
+                result += "," + escape(level03.attr('valuetext'));
+
+
+                resultLevel03 += "<level03>" + result + "</level03>";
+
+                // object += "]}";
+            });
+            level02Result += ";" + resultLevel03;
+
+            objectSend += "<level02>" + level02Result + "</level02>";
+
+
+
+        });
+        // console.log(objectSend);
+        $.ajax({
+            type: 'POST'
+                , url: urlPreffix+'/Services/SynService.asmx/InsertJson'
+                , contentType: 'application/json; charset=utf-8'
+                , dataType: 'json'
+                , data: '{' + "obj: '" + objectSend + "', deviceName: '123', deviceMac: '00FF0023'" + '}'
+            //, data: '{' + "obj: '" + objectSend + "', collectionDate : '" + level02.attr('datetime') + "', level01Id: '" + level01.attr('level01Id') + "', level02Id: '" + level02.attr('level02id') + "', unitId: '" + level01.attr('unidadeid') + "', period: '" + level01.attr('period') + "', shift: '" + level01.attr('shift') + "', device: '123', version: '" + versao + "', ambient: '" + baseAmbiente + "'" + '}'
+                , async: false //blocks window close
+            , success: function (data, status) {
+                objsyncked = objsyncked + $('.level02Result[sync=false][send=true]').length;
+
+                $('.message .body').html("Send Result " + objsyncked + "/" + totalObj);
+                $('.level02Result[sync=false][send=true]').removeAttr('send').attr('sync', 'true');
+                menssagemSync("Sync Collection", 'Cheking Collections');
+                setTimeout(function (e) {
+                    if ($('.level02Result[sync=false]').length)
+                    {
+                        initializeSync();
+                    }
+                    else
+                    {
+                        menssagemSync("Sync Consolidation", 'Consolidation Results');
+                        setTimeout(function (e) {
+
+                            consolidation();
+
+                        }, 1500);
+                    }
+                }, 1000);
+
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+
+            }
+        });
     }
 
+    function menssagemSync(title, content) {
+        var mensagem = $('.message, .overlay');
+        mensagem.children('.head').html(title);
+        mensagem.children('.body').html(content);
+        $('#btnMessageOk').addClass('hide');
+        mensagem.addClass('msgSync');
+        mensagem.fadeIn("fast");
+    }
+    function mensagemSyncHide() {
+        $('.msgSync').removeClass('msgSync').fadeOut("fast");
+
+    }
+    function consolidation() {
+        $.ajax({
+            type: 'POST'
+                , url: 'http://localhost/SgqSystem/Services/SynService.asmx/ProcessJson'
+                , contentType: 'application/json; charset=utf-8'
+                , dataType: 'json'
+                , data: '{' + "device: '123'" + '}'
+            //, data: '{' + "obj: '" + objectSend + "', collectionDate : '" + level02.attr('datetime') + "', level01Id: '" + level01.attr('level01Id') + "', level02Id: '" + level02.attr('level02id') + "', unitId: '" + level01.attr('unidadeid') + "', period: '" + level01.attr('period') + "', shift: '" + level01.attr('shift') + "', device: '123', version: '" + versao + "', ambient: '" + baseAmbiente + "'" + '}'
+                , async: false //blocks window close
+            , success: function (data, status) {
+                $('.message .body').html("Result consolidation completed");
+                setTimeout(function (e) {
+                    mensagemSyncHide();
+                }, 1500);
 
 
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
 
+
+            }
+        });
+    }
+</script>
+<!--Parameretrization-->
+<script>
 
     var level1  = @Html.Raw(Json.Encode(@Model.paramsDto.collectionObject));
 
@@ -7688,7 +8382,7 @@
                             }else{
                                 header += '<option value="'+p.Value+'">'+p.Text+'</option>';
                             }
-                        
+
                         });
                         header += '</select></div>';
                         break;
@@ -7719,7 +8413,7 @@
                         break;
                 }
             });
-        }       
+        }
 
         if(contadoresIncluidos){
             contadoresIncluidos.forEach(function(o, c){
@@ -7728,29 +8422,29 @@
                 var parCounterName = o.ParCounter.Name;
                 var title = o.ParCounter.Name;
                 var valueCounter = "0";
-        
+
                 switch (o.ParCounter.Id) {
-                    case 21: 
+                    case 21:
                         parCounterName = "Nº AV PL";
                         //valueCounter = o.ParamEvaluation.Number;
                         break;
-                    case 22: 
+                    case 22:
                         parCounterName = "Nº AM PL"
                         //valueCounter = o.ParamSample.Number;
                         break;
-                    case 23: 
+                    case 23:
                         parCounterName = "TOT AV"
                         break;
-                    case 24: 
+                    case 24:
                         parCounterName = "TS AV"
                         break;
-                    case 25: 
+                    case 25:
                         parCounterName = "TOT NC"
                         break;
-                    case 27: 
+                    case 27:
                         parCounterName = "Nº AM."
                         break;
-                    case 29: 
+                    case 29:
                         parCounterName = "Nº AV."
                         break;
                     case 30:
@@ -7764,15 +8458,15 @@
 
                         break;
                     default:
-        
+
                 }
 
 
-                countersLevel2 += " <div class='col-xs-4'><span style='cursor:help; margin-left: 20px'><b title='" + title + "'> " + parCounterName + ":</b><span> " + valueCounter + " </span></span></div>";
+                countersLevel2 += " <div class='col-xs-3'><span style='cursor:help;'><b title='" + title + "'> " + parCounterName + ":</b><span> " + valueCounter + " </span></span></div>";
 
                 header +=   countersLevel2;
             });
-        }        
+        }
 
         header += '</div>';
 
@@ -7786,14 +8480,16 @@
         //As colunhas do Level1 estão relacionadas as @*Heder do Level1*@ no Html. Caso alterar o tanho das divs aqui deve ser alterada no HTML também
         listLevel1.forEach(function(o, c){
 
-            
 
-            var itemGroupLevel1 = '<li class="list-group-item" style="padding: 0px;">                                                                                                                     '+
+
+            var itemGroupLevel1 = '<li class="list-group-item" style="padding-bottom:0">                                                                                                                     '+
               '   <div class="row">                                                                                                                                                 '+
+              //Level Button
               '       <a href="#" id="' + o.Id + '" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" savelevel02="saveLevel02" minreauditnumber="1" consecutivefailure="false">  '+
               '           <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>                  '+
               '           <span class="levelName" style="font-size:17px; font-family: Verdana">' + o.Name + '</span>                                                                                                             '+
               '       </a>                                                                                                                                                          '+
+              //Buttons Level1
               '       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">                                                                                                    '+
               '           <div class="pull-right">                                                                                                                                  '+
               '               <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-sm btn-danger">Corrective Action</button></span>                          '+
@@ -7811,7 +8507,8 @@
 
             itemGroupLevel1 += '</div></div></li>';
 
-            $('.level01List .list-group').append(itemGroupLevel1);
+            appendDevice(itemGroupLevel1, $('.level01List .list-group'));
+            //$('.level01List .list-group').append(itemGroupLevel1);
 
 
             CreateLevel2Listgroup(o.listParLevel2Colleta, o.Id, o.Name, o.listParLevel3Level2Level1Dto, o.HasSaveLevel2, o.HasNoApplicableLevel2);
@@ -7823,8 +8520,6 @@
 
         var level2Item = '<div class="list-group level02Group hide" level01Id="' + idLevel1 + '">       ';
 
-        
-
         var isCreated = false;
         listLevel2Item.forEach(function(o, c){
 
@@ -7834,29 +8529,29 @@
                 var parCounterName = "";
                 var title = p.ParCounter.Name;
                 var valueCounter = "0";
-        
+
                 switch (p.ParCounter.Id) {
-                    case 21: 
+                    case 21:
                         parCounterName = "Nº AV PL";
                         valueCounter = o.ParamEvaluation.Number;
                         break;
-                    case 22: 
+                    case 22:
                         parCounterName = "Nº AM PL"
                         valueCounter = o.ParamSample.Number;
                         break;
-                    case 23: 
+                    case 23:
                         parCounterName = "TOT AV"
                         break;
-                    case 24: 
+                    case 24:
                         parCounterName = "TS AV"
                         break;
-                    case 25: 
+                    case 25:
                         parCounterName = "TOT NC"
                         break;
-                    case 27: 
+                    case 27:
                         parCounterName = "Nº AM."
                         break;
-                    case 29: 
+                    case 29:
                         parCounterName = "Nº AV."
                         break;
                     case 30:
@@ -7870,11 +8565,11 @@
 
                         break;
                     default:
-        
+
                 }
 
 
-                countersLevel2 += " <span style='cursor:help; margin-left: 20px'><b title='" + title + "'> " + parCounterName + ":</b><span> " + valueCounter + " </span></span>";
+                countersLevel2 += " <span style='cursor:help;'><b title='" + title + "'> " + parCounterName + ":</b><span> " + valueCounter + " </span></span>";
             });
 
             if(o.HasShowLevel03){/*Ex CFF*/
@@ -7891,19 +8586,19 @@
                   '           </span>                                                                                                                           ' +
                   '           <span class="levelName">' + level1Name + '</span>                                                                                 ' +
                   '       </a>                                                                                                                                  ' +
-                  
+
                   '       <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">                                                                            ' +
                   '           <div class="hide">                                                                                                                ' +
                   '               <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>                                                     ' +
                   '           </div>                                                                                                                            ' +
                   '       </div>                                                                                                                                ' +
-                 
+
                   '       <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">                                                                            ' +
                   '           <div>                                                                                                                             ' +
                   '               <a href="#" class="defects iconsArea font22">0</a>                                                                            ' +
                   '           </div>                                                                                                                            ' +
                   '       </div>                                                                                                                                ' +
-                
+
                   '       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 userInfo">                                                                            ' +
                   '           <div class="pull-right">                                                                                                          ' +
                   '               <button class="btn btn-success hide btnAreaSaveConfirm">                                                                      ' +
@@ -7931,7 +8626,8 @@
                                            '    <button class="btn btn-default button-collapse"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>                                             ' +
                                            '</div>';
                     cabecalhoLevel3 += '</div>';
-                    $('.level03List').append(cabecalhoLevel3)
+                    appendDevice(cabecalhoLevel3, $('.level03List'));
+                    //$('.level03List').append(cabecalhoLevel3)
                     isCreated = true;
                 }
                 CriaLevel3AgrupadoPorLevel2(o.listaParLevel3Colleta, o.Name, o.Id, idLevel1, cabecalhoLevel3);
@@ -7939,10 +8635,10 @@
             } else {/*Ex CCA*/
 
                 level2Item += CriaItemLevel2TipoCCA(o, saveLevel2, naLevel2);
-                
+
                 if(o.ParLevel3Group.length == 0){
                     CreateLevel3(o.listaParLevel3Colleta, idLevel1, o.Id);
-                } 
+                }
                 else {
 
                     var listParLevel3Level2Level1 = jQuery.grep(listParLevel3Level2Level1Dto, function( n ) {
@@ -7957,17 +8653,18 @@
                                           '<button id="btnSalvarHTP" class="btn btn-default level03Confirm hide">Salvar</button>                                                 ' +
                                        '</div> ';
 
-                    $('.level03List').append(level03Group);
+                    appendDevice(level03Group, $('.level03List'));
+                    //$('.level03List').append(level03Group);
 
                     var groupLevel3 = '';
-                    
+
                     /*Adiciono os que possuem group*/
                     listParLevel3Level2Level1.forEach(function(level3Level2Leve1, counter){
-                        
-                        var group = level3Level2Leve1.ParLevel3Level2.ParLevel3Group;                        
-                        
+
+                        var group = level3Level2Leve1.ParLevel3Level2.ParLevel3Group;
+
                         if(group != null){
-                            
+
                             var level3 = jQuery.grep(listParLevel3Level2Level1, function( n ) {
                                 if(n.ParLevel3Level2.ParLevel3Group != null){
                                     return (n.ParLevel3Level2.ParLevel3Group.Id == group.Id);
@@ -8000,8 +8697,8 @@
                                                         '        <div class="col-xs-3 text-center">' +
                                                         '          <div class="input-group input-group-sm width200 pull-right">'+
                                                         '           <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>'+
-                                                        '          </div>' + 
-                                                        '        </div>' + 
+                                                        '          </div>' +
+                                                        '        </div>' +
                                                         '    </div>' +
                                                         '</div>';
 
@@ -8014,7 +8711,7 @@
                                                          '        <div class="col-xs-9">' + l3.Name + '</div>' +
                                                          '        <div class="col-xs-3 text-center">' +
                                                          '            <span value="1" booltrueName="' + l3.ParLevel3Value[0].ParLevel3BoolTrue.Name + '" boolfalseName="' + l3.ParLevel3Value[0].ParLevel3BoolFalse.Name + '" class="pull-right marginRight30 response">' + l3.ParLevel3Value[0].ParLevel3BoolTrue.Name + '</span>' +
-                                                         '        </div>' + 
+                                                         '        </div>' +
                                                          '    </div>' +
                                                          '</div>';
                                     }
@@ -8030,7 +8727,8 @@
 
                     });
 
-                    $('.level03List > [level01id=' + idLevel1 + '][level02id=' + o.Id + ']').append($(groupLevel3));
+                    appendDevice($(groupLevel3), $('.level03List > [level01id=' + idLevel1 + '][level02id=' + o.Id + ']'));
+                    //$('.level03List > [level01id=' + idLevel1 + '][level02id=' + o.Id + ']').append($(groupLevel3));
                 }
             }
 
@@ -8038,11 +8736,12 @@
 
         level2Item += '<button id="btnSalvarLevel02CCA" class="btn btn-default level02Confirm hide">Salvar</button></div>';
 
-        $('.level02List').append(level2Item);
+        appendDevice(level2Item, $('.level02List'));
+        //$('.level02List').append(level2Item);
     }
 
     function CriaItemLevel2TipoCCA(o, saveLevel2, naLevel2) {
-    
+
         var btnAreaSave = '';
         var level2Item  = '';
 
@@ -8065,36 +8764,36 @@
                                  '               </button>                                                                                                                     ' ;
 
         }
-        
+
         var countersLevel2 = "";
         o.listParCounterXLocal.forEach(function(p, c){
 
             var parCounterName = "";
             var title = p.ParCounter.Name;
             var valueCounter = "0";
-        
+
             switch (p.ParCounter.Id) {
-                case 21: 
+                case 21:
                     parCounterName = "Nº AV PL";
                     valueCounter = o.ParamEvaluation.Number;
                     break;
-                case 22: 
+                case 22:
                     parCounterName = "Nº AM PL"
                     valueCounter = o.ParamSample.Number;
                     break;
-                case 23: 
+                case 23:
                     parCounterName = "TOT AV"
                     break;
-                case 24: 
+                case 24:
                     parCounterName = "TS AV"
                     break;
-                case 25: 
+                case 25:
                     parCounterName = "TOT NC"
                     break;
-                case 27: 
+                case 27:
                     parCounterName = "Nº AM."
                     break;
-                case 29: 
+                case 29:
                     parCounterName = "Nº AV."
                     break;
                 case 30:
@@ -8108,34 +8807,34 @@
 
                     break;
                 default:
-        
+
             }
 
-             
-            countersLevel2 += "<div> <span class='control-label' style='font-size: 10px'><b title='" + title + "'> " + parCounterName + "</b></span><span class='control-label' style='font-size: 25px'> " + valueCounter + " </span></div>";
+
+            countersLevel2 += " <span style='cursor:help;'><b title='" + title + "'> " + parCounterName + ":</b><span> " + valueCounter + " </span></span>";
         });
 
-        level2Item +=  '<li class="list-group-item" style="padding:0">                                                                                     ' +
+        level2Item +=  '<li class="list-group-item" style="padding-bottom:0">                                                                                                               ' +
              '   <div class="row">                                                                                                                         ' +
-             '       <a href="#" id="' + o.Id + '" class="level02 col-xs-4" levelerrorlimit="1" defects="0" reauditnumber="0">  ' +
+             '       <a href="#" id="' + o.Id + '" class="level02 col-xs-8 col-sm-8 col-md-8 col-lg-8" levelerrorlimit="1" defects="0" reauditnumber="0">  ' +
              '           <span class="icons">                                                                                                              ' +
              '               <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>                 ' +
              '               <i class="fa fa-exclamation font22 iconsArea red areaNotComplete" aria-hidden="true" title="Not Complete"></i>                ' +
              '           </span>                                                                                                                           ' +
-             '           <span class="levelName" style="font-size:18px;font-family:Verdana !important">' + o.Name + '</span>                               ' +
+             '           <span class="levelName" style="font-size:24px;font-family:Verdana !important">' + o.Name + '</span>                                                                                     ' +
              '       </a>                                                                                                                                  ' +
-             '       <div class="col-xs-5">' +
-                        countersLevel2 +
-             '       </div>                                                                                                                                '+
-             '       <div class="col-xs-3 userInfo">                                                                                                       ' +
+             '       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 userInfo">                                                                            ' +
              '           <div class="pull-right">                                                                                                          ' +
-                        btnAreaSave                                                                                                                          +
-                        btnNA                                                                                                                                +
+              btnAreaSave                                                                                                                                    +
+              btnNA                                                                                                                                          +
              '               <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>          ' +
              '           </div>                                                                                                                            ' +
              '       </div>                                                                                                                                ' +
              '   </div>                                                                                                                                    ' +
-             '</li>';
+            '<div class="row"><div class="col-xs-12" style="background-color: #f5f5f5;height: 30px;margin-top:5px; line-height: 30px;font-size:12px;">' +
+              countersLevel2 +
+
+            '</div></div></li>';
 
             return level2Item;
     }
@@ -8185,7 +8884,8 @@
 
         htmlLevel3 += '</ul><button id="btnSalvarCCA" class="btn btn-default level03Confirm hide">Salvar</button></div>';
 
-        $('.level03List').append(htmlLevel3)
+        appendDevice(htmlLevel3, $('.level03List'));
+        //$('.level03List').append(htmlLevel3)
 
     }
 
@@ -8257,13 +8957,28 @@
             '           </div>'+
             '       </div>';
 
-
-        $('.level03List > [level01id=' + level1Id + ']').append($(level2Item));
+        appendDevice($(level2Item), $('.level03List > [level01id=' + level1Id + ']'));
+        //$('.level03List > [level01id=' + level1Id + ']').append($(level2Item));
 
 
     }
 
+    function getLevel1(id){
+        for(var i = 0; i < level1.length; i++){
+            if(level1[i].Id == id)
+                return level1[i];
+        }
+    }
 
+    function getLevel2(level01id, level02id){
+        for(var i = 0; i < level1.length; i++){
+            var level2list = level1[i].listParLevel2Colleta;
+            for(var j = 0; j < level2list.length; j++){
+                if(level2list[j].Id == level02id)
+                    return level2list[j];
+            }
+        }
+    }
 
 
 
