@@ -689,23 +689,23 @@
                     var dados = $('#newLevel1Modal > form').serializeObject();
                     RegraNc.incluiNoObjetoParaSubmit(dados);
 
-                    openLoader();
+                        //openLoader();
 
                     $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
 
-                        closeLoader();
+                            //closeLoader();
 
-                        if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
-                            indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
-                            openMessageModal("Alerta", statusmessage);
-                        }
-                        $btn.button('reset');
-                    }).fail(function (e, h, x) {
-                        closeLoader();
-                        $btn.button('reset');
-                        openMessageModal("Alerta", e.responseJSON.Message);
-                    });
-                }
+                            if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
+                                indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
+                                openMessageModal("Alerta", statusmessage);
+                            }
+                            $btn.button('reset');
+                        }).fail(function (e, h, x) {
+                            //closeLoader();
+                            $btn.button('reset');
+                            openMessageModal("Alerta", e.responseJSON.Message);
+                        });
+                    }
 
             },/*Envia os dados referentes ao level1 para a API, apos isto realiza um get no seu ID e, CASO INSERÇÃO, atualiza a dropDown*/
             selectNormal: function () {
@@ -748,15 +748,15 @@
                     indexParamsLevel1.GetLevel1(valorSelecionado);
                 }
 
-            },/*Executa ao selecionar um level1*/
-            GetLevel1: function(id, isSave) {
-                openLoader();
-                $.get('GetParLevel1ById/' + id, function (obj, responseText, xhr) {
-                    if (obj != null) {
-                        $('#ParLevel1').empty();
-                        $('#ParLevel1').append(xhr.responseText);
-                        UpdateSelect2Level2(id);
-                    }
+                },/*Executa ao selecionar um level1*/
+                GetLevel1: function(id, isSave) {
+                    //openLoader();
+                    $.get('GetParLevel1ById/' + id, function (obj, responseText, xhr) {
+                        if (obj != null) {
+                            $('#ParLevel1').empty();
+                            $('#ParLevel1').append(xhr.responseText);
+                            UpdateSelect2Level2(id);
+                        }
 
                     if (id > 0) {
                         $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
@@ -787,8 +787,8 @@
                     /*Reseta Validação*/
                     indexParamsLevel1.resetaValidacao();
 
-                    closeLoader();
-                });
+                        //closeLoader();
+                    });
 
             },/*Busca dados do level1 na API*/
             resetaValidacao: function(){
@@ -800,21 +800,21 @@
                 $("form").each(function () { $.data($(this)[0], 'validator', false); });
                 $.validator.unobtrusive.parse("form");
 
-            },
-            resetaForm: function() {
-                $('#ParLevel1').empty();
-                $('#ParLevel1').append(parLevel1Empty);
-                $('#level1Title').text(indexParamsLevel1.new_level1);
-                initialFormLevel1 = $($('form')[0]).clone();
-                closeLoader();
-            },
-            resetDdlLevel3Level2: function(){
-                $('#parLevel2Select2').val('-1');
-                indexParamsLevel2.GetLevel2('-1');
-                $('#parLevel3Select2').val('-1');
-                indexParamsLevel3.GetLevel2('-1');
+                },
+                resetaForm: function() {
+                    $('#ParLevel1').empty();
+                    $('#ParLevel1').append(parLevel1Empty);
+                    $('#level1Title').text(indexParamsLevel1.new_level1);
+                    initialFormLevel1 = $($('form')[0]).clone();
+                    //closeLoader();
+                },
+                resetDdlLevel3Level2: function(){
+                    $('#parLevel2Select2').val('-1');
+                    indexParamsLevel2.GetLevel2('-1');
+                    $('#parLevel3Select2').val('-1');
+                    indexParamsLevel3.GetLevel2('-1');
+                }
             }
-        }
 
 
         /*LEVEL 2*/
@@ -835,21 +835,21 @@
                     CounterLevel2.UpdateCounters();
                     var dados = $('#newLevel2Modal > form').serializeObject();
 
-                    openLoader(indexParamsLevel2.saving_the_level2);
-                    $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                        closeLoader();
-                        var $btn = $('#btnSaveNewLevel2');
-                        $btn.button('loading');
+                        //openLoader(indexParamsLevel2.saving_the_level2);
+                        $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                            //closeLoader();
+                            var $btn = $('#btnSaveNewLevel2');
+                            $btn.button('loading');
 
-                        if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
-                            indexParamsLevel2.GetLevel2(objetoReturn.paramsDto.parLevel2Dto.Id, $('#paramsDto_parLevel3Dto_Id').val(), true)
-                            openMessageModal("Alerta", statusmessage);
-                        }
-                    }).fail(function (e, h, x) {
-                        closeLoader();
-                        openMessageModal("Alerta", e.responseJSON.Message);
-                    });
-                }
+                            if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
+                                indexParamsLevel2.GetLevel2(objetoReturn.paramsDto.parLevel2Dto.Id, $('#paramsDto_parLevel3Dto_Id').val(), true)
+                                openMessageModal("Alerta", statusmessage);
+                            }
+                        }).fail(function (e, h, x) {
+                            //closeLoader();
+                            openMessageModal("Alerta", e.responseJSON.Message);
+                        });
+                    }
 
             },/*Envia os dados referentes ao level2 para a API, apos isto realiza um get no seu ID e, CASO INSERÇÃO, atualiza a dropDown*/
             selectNormal: function () {
@@ -892,10 +892,10 @@
 
                 indexParamsLevel2.resetaValidacao();
 
-            },/*Executa ao selecionar um level2*/
-            GetLevel2: function(thislevel2Id, thislevel3Id, isSave) {
-                openLoader(indexParamsLevel2.loading_the_level2);
-                $.get('GetParLevel2ById',{  level2Id: thislevel2Id, level3Id: thislevel3Id}, function (obj, responseText, xhr) {
+                },/*Executa ao selecionar um level2*/
+                GetLevel2: function(thislevel2Id, thislevel3Id, isSave) {
+                    //openLoader(indexParamsLevel2.loading_the_level2);
+                    $.get('GetParLevel2ById',{  level2Id: thislevel2Id, level3Id: thislevel3Id}, function (obj, responseText, xhr) {
 
                     if (obj != null) {
                         $('#ParLevel2').empty();
@@ -929,15 +929,15 @@
 
                     indexParamsLevel2.resetaValidacao();
 
-                    closeLoader();
-                });
+                        //closeLoader();
+                    });
 
-            },/*Busca dados do level2 na API*/
-            removeLevel3Group: function(e, element){
-                openLoader(removing_the_level3_group);
-                $.post(removeLevel3Group + '/' + element.attr('id'), function (obj, responseText, xhr) {
-                    closeLoader();
-                    if (obj != null) {
+                },/*Busca dados do level2 na API*/
+                removeLevel3Group: function(e, element){
+                    //openLoader(removing_the_level3_group);
+                    $.post(removeLevel3Group + '/' + element.attr('id'), function (obj, responseText, xhr) {
+                        //closeLoader();
+                        if (obj != null) {
 
                         element.remove();
                     }
@@ -947,21 +947,21 @@
                 $('#parLevel2Select2').val('-1');
                 indexParamsLevel2.GetLevel2('-1');
 
-                //$('#ParLevel2').empty();
-                //$('#ParLevel2').append(parLevel2Empty);
-                //$('#level2Title').text(indexParamsLevel2.new_level2);
-                //initialFormLevel2 = $($('form')[1]).clone();
-                //closeLoader();
-            },
-            resetaValidacao: function(){
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
+                    //$('#ParLevel2').empty();
+                    //$('#ParLevel2').append(parLevel2Empty);
+                    //$('#level2Title').text(indexParamsLevel2.new_level2);
+                    //initialFormLevel2 = $($('form')[1]).clone();
+                    ////closeLoader();
+                },
+                resetaValidacao: function(){
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
+                }
             }
-        }
 
 
         /*LEVEL 3*/
@@ -988,9 +988,9 @@
                     if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
                         dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
 
-                    openLoader(indexParamsLevel3.saving_the_level3);
-                    $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                        closeLoader();
+                        //openLoader(indexParamsLevel3.saving_the_level3);
+                        $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                            //closeLoader();
 
                         var $btn = $('#btnSaveNewLevel3');
                         $btn.button('loading');
@@ -1000,11 +1000,11 @@
                             openMessageModal("Alerta", statusmessage);
                         }
 
-                    }).fail(function (e, h, x) {
-                        closeLoader();
-                        $btn.button('loading');
-                        openMessageModal("Alerta", e.responseJSON.Message);
-                    });
+                        }).fail(function (e, h, x) {
+                            //closeLoader();
+                            $btn.button('loading');
+                            openMessageModal("Alerta", e.responseJSON.Message);
+                        });
 
                 }
 
@@ -1045,22 +1045,22 @@
                     indexParamsLevel3.GetLevel3(valorSelecionado, valorSelecionadoLevel2);
                 }
 
-                indexParamsLevel3.resetValidacao();
-            },/*Executa ao selecionar um level3*/
-            GetLevel3: function(valorSelecionado, valorSelecionadoLevel2, isSave) {
-                openLoader(indexParamsLevel3.loading_the_level3);
-                $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
-                    closeLoader();
-                    if (obj != null) {
-                        $('#ParLevel3').empty();
-                        $('#ParLevel3').append(xhr.responseText);
-                        indexParamsLevel3.resetValidacao();
-                    }
-                    if (valorSelecionado > 0) {
-                        $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
-                    } else {
-                        $('#level3Title').text(indexParamsLevel3.new_level3);
-                    }
+                    indexParamsLevel3.resetValidacao();
+                },/*Executa ao selecionar um level3*/
+                GetLevel3: function(valorSelecionado, valorSelecionadoLevel2, isSave) {
+                    //openLoader(indexParamsLevel3.loading_the_level3);
+                    $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
+                        //closeLoader();
+                        if (obj != null) {
+                            $('#ParLevel3').empty();
+                            $('#ParLevel3').append(xhr.responseText);
+                            indexParamsLevel3.resetValidacao();
+                        }
+                        if (valorSelecionado > 0) {
+                            $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
+                        } else {
+                            $('#level3Title').text(indexParamsLevel3.new_level3);
+                        }
 
                     if(!!isSave){
                         /*Atualiza Select*/
@@ -1077,9 +1077,9 @@
                         }
                     }
 
-                    initialFormLevel3 = $($('form')[2]).clone();
-                    closeLoader();
-                    reloadPopovers();
+                        initialFormLevel3 = $($('form')[2]).clone();
+                        //closeLoader();
+                        reloadPopovers();
 
                 });
             },/*Busca dados do level3 na API*/
@@ -1242,6 +1242,14 @@
         $(document).ready(function () {
             reloadPopovers();
         });
+
+            $( document ).ajaxStart(function() {
+                openLoader("@Resources.Resource.please_wait"+"...");
+            });
+
+            $( document ).ajaxStop(function() {
+                closeLoader();
+            });
 
 
 

@@ -260,6 +260,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.pt-br.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Resource1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -1158,6 +1163,7 @@
     <Content Include="Views\ParMeasurementUnits\Index.cshtml" />
     <Content Include="Views\Merge\_DivResults.cshtml" />
     <Content Include="Views\HtmlTeste\_IndexTeste.cshtml" />
+    <Content Include="Views\HtmlTeste\_IndexTeste_old.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
