@@ -400,7 +400,7 @@
                 posicao = $(e).parents('tr').attr('pos');
                 $('#crudNxNEdit > div > div > div.modal-body').empty();
                 preparaDados(arrayObj[posicao]);
-                
+                $('#crudNxNEdit #myModalLabel').text($(e).parents('table').attr('nameModal'));
 
                 $('#crudNxNEdit').modal();
 
@@ -471,7 +471,7 @@
                 } else {
                     $('#' + idTable).fadeOut();
                 }
-
+                reloadPopovers();
             },
 
         }
