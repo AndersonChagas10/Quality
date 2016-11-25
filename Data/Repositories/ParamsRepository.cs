@@ -30,7 +30,7 @@ namespace Data.Repositories
 
         #region ParLevel1
 
-        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<int> removerCluster, List<int> removeCounter, List<ParCounterXLocal> listaParCounterLocal, ParNotConformityRuleXLevel nonCoformitRule, List<ParRelapse> reincidencia, List<int> removeReincidencia)
+        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<int> removerCluster, List<int> removeCounter, List<ParCounterXLocal> listaParCounterLocal, List<ParNotConformityRuleXLevel> listNonCoformitRule, List<ParRelapse> reincidencia, List<int> removeReincidencia)
         {
             using (var ts = db.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
             {
@@ -71,8 +71,11 @@ namespace Data.Repositories
                     }
                 }
 
-                if (nonCoformitRule != null)
-                    SaveNonConformityRule(nonCoformitRule, paramLevel1.Id);
+                if (listNonCoformitRule != null)
+                {
+                    foreach (var nonCoformitRule in listNonCoformitRule)
+                        SaveNonConformityRule(nonCoformitRule, paramLevel1.Id);
+                }
 
                 if (reincidencia != null)
                     foreach(var parRelapse in reincidencia)

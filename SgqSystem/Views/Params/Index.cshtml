@@ -546,6 +546,7 @@
                         Cluster.UpdateCounter();
                         CounterLevel1.UpdateCounters();
                         var dados = $('#newLevel1Modal > form').serializeObject();
+                        RegraNc.incluiNoObjetoParaSubmit(dados);
 
                         openLoader();
 
