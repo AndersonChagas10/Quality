@@ -31,7 +31,7 @@ namespace SgqSystem
         [Conditional("DEBUG")]
         private static void DisableApplicationInsightsOnDebug()
         {
-            TelemetryConfiguration.Active.DisableTelemetry = true;
+            //TelemetryConfiguration.Active.DisableTelemetry = true;
         }
     }
     
