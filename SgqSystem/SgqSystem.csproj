@@ -1235,7 +1235,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63128</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/</IISUrl>
+          <IISUrl>http://localhost/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>http://eduardolucasmaia.ngrok.io:63128/</CustomServerUrl>
