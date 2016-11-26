@@ -903,6 +903,7 @@
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\ParamsDevInterno.pubxml" />
+    <None Include="Properties\PublishProfiles\ParamsInterno.pubxml" />
     <None Include="Properties\PublishProfiles\PublishEUA.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ DEV.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
