@@ -425,13 +425,13 @@
             },
             btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
             funcEdit: function(e) {
-                
+
                 $('#crudNxNEdit > div > div > div.modal-body').empty();
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').off('click');
                 var obj = $(e).parents('tr').data();
 
-               
-    /*RegraNc*/ if($(e).parents('#level1_nc_accordion').length || $(e).parents('#level2_nc_accordion').length || $(e).parents('#level3_nc_accordion').length ){
+                /*RegraNc*/
+                if($(e).parents('#level1_nc_accordion').length || $(e).parents('#level2_nc_accordion').length || $(e).parents('#level3_nc_accordion').length ){
                     crudNxN.modalAlterarRegraNc(obj);
                     $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function(){
                         var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
@@ -442,7 +442,9 @@
                         $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable)
                         $('#crudNxNEdit').modal('hide');
                     });
-    /*Contadores*/ } else if($(e).parents('#level1_counter_accordion').length || $(e).parents('#level1_counter_accordion').length || $(e).parents('#level1_counter_accordion').length ){
+                }
+                /*Contadores*/
+                else if($(e).parents('#level1_counter_accordion').length || $(e).parents('#level1_counter_accordion').length || $(e).parents('#level1_counter_accordion').length ){
                     crudNxN.modalAlterarContadores(obj);//
                     $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function(){
                         var editado = crudNxN.retornaObjetoAlteradoContadores(obj);//
@@ -453,22 +455,28 @@
                         $('#crudNxNEdit').modal('hide');
                     });
                 }
-                
-
-                
-
-
                 /*Reincidencia*/
-
+                else if($(e).parents('#level1_counter_accordion').length || $(e).parents('#level1_counter_accordion').length || $(e).parents('#level1_counter_accordion').length ){
+                    crudNxN.modalAlterarReincidencia(obj);//
+                    $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function(){
+                        var editado = crudNxN.retornaObjetoAlteradoReincidencia(obj);//
+                        $(e).parents('tr').removeData();
+                        $(e).parents('tr').data(editado);
+                        $($(e).parents('tr').find('td')[0]).html(editado.parFrequencyName)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.NcNumber)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.EffectiveLength)//
+                        $('#crudNxNEdit').modal('hide');
+                    });
+                }
 
                 $('#crudNxNEdit').modal();
 
             },
 
             modalAlterarRegraNc: function(obj){
-          
+
                 $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch('destroy', true);
-    
+
                 var divDeEdicao = $('#level1_nc_collapse > div > table.table-erp').clone();
                 $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
 
@@ -477,7 +485,7 @@
                 $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(obj.Value);
 
                 $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch();
-           
+
             },/*Ok*/
             retornaObjetoAlteradoRegraNc: function(obj){
 
@@ -502,7 +510,7 @@
             },/*Ok*/
 
             modalAlterarContadores: function(obj){
-    
+
                 var divDeEdicao = $('#camposContador').clone();
                 $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
 
@@ -511,7 +519,7 @@
 
             },
             retornaObjetoAlteradoContadores: function(obj){
-               
+
                 /*Valida se pode criar o objeto*/
                 if($('#crudNxNEdit #parCounter :selected').val() <= 0){
                     alert("Por favor selecione o contador.");
@@ -522,7 +530,7 @@
                     alert("Por favor selecione o local.");
                     return;
                 }
-                
+
                 obj.ParLocal_Id = $('#crudNxNEdit #parLocal :selected').val();
                 obj.ParLocalName =  $('#crudNxNEdit #parLocal :selected').text();
                 obj.ParCounter_Id = $('#crudNxNEdit #parCounter :selected').val();
@@ -530,13 +538,47 @@
 
                 return obj;
             },
+            
+            /*testar*/
+            modalAlterarReincidencia: function(obj){
 
-            modalAlterarReincidencia: function(){},
-            retornaObjetoAlteradoReincidencia: function(){},
+                var divDeEdicao = $('#camposRencidencia').clone();
+                $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+                $('#crudNxNEdit #myModalLabel').html($('#tableReincidencia').prop('nameModal'));
+
+                $('#crudNxNEdit #selectFrequenciaReincidencia').val(obj.ParFrequency_Id);/*Preenche*/
+                $('#crudNxNEdit #inputNumeroNC').val(obj.NcNumber);/*Preenche*/
+                $('#crudNxNEdit #inputVigencia').val(obj.EffectiveLength);/*Preenche*/
+
+            },
+            retornaObjetoAlteradoReincidencia: function(obj){
+                /*Valida se pode criar o objeto*/
+                ReincidenciaL1.veifyAdd('crudNxNEdit')
+                ReincidenciaL1.getObjAdd('crudNxNEdit', obj);
+            },
+
+            modalAlterarCluster: function(obj){
+
+                var divDeEdicao = $('#camposCluster').clone();
+                $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+                $('#crudNxNEdit #myModalLabel').html($('#camposCluster').prop('nameModal'));
+
+                $('#crudNxNEdit #valueCluster').val(obj.ParCluster_Id);/*Preenche*/
+                $('#crudNxNEdit #valCrit').val(obj.ParCriticalLevel_Id);/*Preenche*/
+                $('#crudNxNEdit #pontosCluster').val(obj.Points);/*Preenche*/
+
+            },
+            retornaObjetoAlteradoCluster: function(obj){
+                /*Valida se pode criar o objeto*/
+                ClustersL1.veifyAdd('crudNxNEdit')
+                ClustersL1.getObjAdd('crudNxNEdit', obj);
+            },
 
         }
 
-
+        var ContadoresL1;
+        var ContadoresL2;
+        var ContadoresL3;
 
         function openMessageModal(title, content) {
 
@@ -887,7 +929,7 @@
             removing_the_level3_group : @Html.Raw(Json.Encode(@Resources.Resource.removing_the_level3_group)),
 
             enviarDadosParaApi: function (e) {
-                
+
                 $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val("0");
 
                 $("form").each(function () { $.data($(this)[0], 'validator', false); });
