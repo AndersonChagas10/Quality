@@ -67,12 +67,12 @@
                                         <img src="@Url.Content("~/Imagens/United-States.png")" />
                                     </a>
                                 </li>
-                                <li>
+                                @*<li>
                                     <a href="@Url.Action("ChangeCulture", "Home", new { language = "es" } )" id="btnES">
                                         <img src="~/Imagens/Spain.png" />
                                     </a>
                                 </li>
-                                <li>@DateTime.Now.ToString()</li>
+                                <li>@DateTime.Now.ToString()</li>*@
                             </ul>
                         </li>
                         <li><a href="#"><span class="glyphicon glyphicon-user"></span>@Session["username"].ToString()</a></li>
