@@ -91,7 +91,9 @@ namespace DTO.DTO.Params
         public List<ParCounterXLocalDTO> contadoresIncluidos { get; set; }
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
 
+        /*Props novas*/
         public List<ParLevel3Level2Level1DTO> listParLevel3Level2Level1Dto { get; set; }
+        public List<ParCounterXLocalDTO> listParCounterXLocal { get; set; }
 
         public IEnumerable<SelectListItem> DdlLevel2Vinculados { get; set; }
         

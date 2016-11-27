@@ -357,126 +357,186 @@
 
         var crudNxN = {
 
-            adicionaObj: function(arrayToStore, obj, idTable, tdsNames){
-                arrayToStore.push(obj);
-                crudNxN.atualizaViewDaTable(arrayToStore, idTable, tdsNames);/*Recria tbody*/
-            },
+            adiciona: function(o, idTable, tdsName){
 
-            btnExcluir: function(arrayObj, tdsNames) {
-                return '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Remover" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcRemoveClick($(this), ' + arrayObj + ', ' + tdsNames + ' );"><i class="fa fa-times" aria-hidden="true"></i></button>';
-            },/*Somente inserção*/
-            btnAlterar: function(arrayObj, tdsNames, preparaDados, resultadoAlteracao) {
-                return '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcAlterar($(this), ' + arrayObj + ', ' + tdsNames + ' , \'' + arrayObj + '\' , \'' + tdsNames + '\', ' + preparaDados + ', ' + resultadoAlteracao + ');"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>';
-            },/*Inserção e alteração*/
-            btnInativa: function(arrayObj, tdsNames) {
-                return '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Inativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcInativar($(this), ' + arrayObj + ', ' + tdsNames + ' , \'' + arrayObj + '\' , \'' + tdsNames + '\');"><i class="fa fa-times" aria-hidden="true"></i></button>';
-            },/*Somente alteração*/
-            btnReAtiva: function(arrayObj, tdsNames) {
-                return '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Reativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcReativar($(this), ' + arrayObj + ', ' + tdsNames + ' , \'' + arrayObj + '\' , \'' + tdsNames + '\');"><i class="fa fa-undo" aria-hidden="true"></i></button>';
-            },/*Somente alteração*/
+                var tr = "";
+                var objData = {};
 
-            funcRemoveClick: function(e, arrayObj, tdsNames){
-                arrayObj.splice($(e).parents('tr').attr('pos'), 1);/*Remove objeto da lista*/
-                crudNxN.atualizaViewDaTable(arrayObj, $(e).parents('table').attr('id'), tdsNames);/*Recria tbody*/
-            },/*Remove obj (somente inserção)*/
+                if(o["IsActive"] == true){
+                    tr += "<tr pos=" + crudNxN.inifnito + ">"
+                }else{
+                    tr += "<tr pos=" + crudNxN.inifnito + " class='inativeTr'>";
+                }
 
-            funcInativar: function(e, arrayObj, tdsNames, arrayObjString, tdsNamesString){
-                posicao = $(e).parents('tr').attr('pos');
-                arrayObj[posicao].IsActive = false;/*Altera objeto na lista*/
-                arrayObj[posicao].btn = arrayObj[posicao].btn.replace(crudNxN.btnInativa(arrayObjString, tdsNamesString), crudNxN.btnReAtiva(arrayObjString, tdsNamesString));
-                //arrayObj[posicao].btn = crudNxN.btnReAtiva(arrayObjString, tdsNamesString)// + crudNxN.btnAlterar(arrayObjString, tdsNamesString, preparaDadosString, resultadoAlteracaoString);
-                crudNxN.atualizaViewDaTable(arrayObj, $(e).parents('table').attr('id'), tdsNames);/*Recria tbody*/
-            },/*Inativa objeto (somente alteração)*/
-
-            funcReativar: function(e, arrayObj, tdsNames, arrayObjString, tdsNamesString){
-                posicao = $(e).parents('tr').attr('pos');
-                arrayObj[posicao].IsActive = true;/*Altera objeto na lista*/
-                arrayObj[posicao].btn = arrayObj[posicao].btn.replace(crudNxN.btnReAtiva(arrayObjString, tdsNamesString), crudNxN.btnInativa(arrayObjString, tdsNamesString));//crudNxN.btnInativa(arrayObjString, tdsNamesString)// + crudNxN.btnAlterar(arrayObjString, tdsNamesString);
-                crudNxN.atualizaViewDaTable(arrayObj, $(e).parents('table').attr('id'), tdsNames);/*Recria tbody*/
-            },/*Reativa objeto (somente alteração)*/
-
-            funcAlterar: function(e, arrayObj, tdsNames, arrayObjString, tdsNamesString, preparaDados, callback){
-
-                posicao = $(e).parents('tr').attr('pos');
-                $('#crudNxNEdit > div > div > div.modal-body').empty();
-                preparaDados(arrayObj[posicao]);
-                $('#crudNxNEdit #myModalLabel').text($(e).parents('table').attr('nameModal'));
-
-                $('#crudNxNEdit').modal();
-
-                $('#crudNxNEdit').data({pos: null});
-                $('#crudNxNEdit').data({dados: null});
-                $('#crudNxNEdit').data({names: null});
-                $('#crudNxNEdit').data({func: null});
-                $('#crudNxNEdit').data({idTable: null});
-
-                $('#crudNxNEdit').data({pos: posicao});
-                $('#crudNxNEdit').data({dados: arrayObj});
-                $('#crudNxNEdit').data({names: tdsNames});
-                $('#crudNxNEdit').data({func: callback});
-                $('#crudNxNEdit').data({idTable: $(e).parents('table').attr('id')});
-
-                $("#crudNxNEdit  .check-box").bootstrapSwitch();
-            },/*Altera objetos (inserção e alteração)*/
-
-            functionClickSaveModalEdit: function(arrayObj){
-                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').off('click');
-                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function(e){
-                    //e.preventDefault();
-
-                    $('#crudNxNEdit').data('func')(arrayObj[$('#crudNxNEdit').data('pos')]);
-                    console.log(arrayObj);
-                    crudNxN.atualizaViewDaTable(arrayObj, $('#crudNxNEdit').data('idTable'), $('#crudNxNEdit').data('names'));/*Recria tbody*/
-                    $('#crudNxNEdit').modal('hide');
-                });
-            },
-
-            claerTrigger: function() {
-
-            },
-
-            /*
-             objctList: Array com objetos Array[obj1, obj2,....]
-             idTable: string
-             limpaTable: bool
-             tdsName: Array[name, name,...]
-             */
-            atualizaViewDaTable: function(objctList, idTable, tdsName){
-
-                $('#' + idTable + ' > tbody').empty();
-
-                objctList.forEach(function(o,c){
-
-                    var tr = "";
-
-                    if(o["IsActive"] == true){
-                        tr += "<tr pos=" + $('#' + idTable + ' tbody tr').length + ">"
-                    }else{
-                        tr += "<tr pos=" + $('#' + idTable + ' tbody tr').length + " class='inativeTr'>";
+                tdsName.forEach(function(oo, cc) {/*Para cada name de tdName monta uma TD, coloca valor a ser mostrado na TD a prop do objeto[name].*/
+                    if(oo == "btn"){
+                        if(o["Id"] != null && o["Id"] != undefined && o["Id"] > 0){
+                            if(o["IsActive"]){
+                                o[oo] = crudNxN.btnInactive + crudNxN.btnEdit;
+                            }else{
+                                o[oo] = crudNxN.btnReActive + crudNxN.btnEdit;
+                            }
+                        }else{
+                            o[oo] = crudNxN.btnRemove + crudNxN.btnEdit;
+                        }
                     }
-
-                    tdsName.forEach(function(oo, cc) {/*Para cada name de tdName monta uma TD, coloca valor a ser mostrado na TD a prop do objeto[name].*/
-                        tr += '<td>' + o[oo] + '</td>';
-                    });
-
-                    tr += '</tr>'
-                    $('#' + idTable + ' > tbody').append(tr);
-
+                    tr += '<td>' + o[oo] + '</td>';
                 });
 
+                tr += '</tr>'
+                $(tr)
+                $('#' + idTable + ' > tbody').append($(tr).data(o));
+                crudNxN.verificaSeMostraTable(idTable);
+                reloadPopovers();
 
-                /*Verifica se existe elemento na tabela, se sim, mostra a tabela, se não esconde tabela.*/
+            },
+            verificaSeMostraTable: function(idTable) {
                 if($('#' + idTable + ' > tbody > tr').length > 0){
                     $('#' + idTable).fadeIn();
                 } else {
                     $('#' + idTable).fadeOut();
                 }
+            },
+            btnRemove: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Remover" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcRemove($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
+            funcRemove: function(e){
+                $(e).parents('tr').remove();
+            },
+            btnInactive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Inativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcInactive($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
+            funcInactive: function(e){
+                var obj = $(e).parents('tr').data();
+                obj["IsActive"] = false;
+                $(e).parents('tr').removeData();
+                $(e).parents('tr').data(obj);
+                var element = $(e).parents('tr');
+                element.find('td:last').empty();
+                element.find('td:last').append(crudNxN.btnReActive, crudNxN.btnEdit);
                 reloadPopovers();
             },
+            btnReActive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Reativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcReActive($(this));"><i class="fa fa-undo" aria-hidden="true"></i></button>',
+            funcReActive: function(e){
+                var obj = $(e).parents('tr').data();
+                obj["IsActive"] = true;
+                $(e).parents('tr').removeData();
+                $(e).parents('tr').data(obj);
+                var element = $(e).parents('tr');
+                element.find('td:last').empty();
+                element.find('td:last').append(crudNxN.btnInactive, crudNxN.btnEdit);
+                reloadPopovers();
+            },
+            btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
+            funcEdit: function(e) {
+                
+                $('#crudNxNEdit > div > div > div.modal-body').empty();
+                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').off('click');
+                var obj = $(e).parents('tr').data();
+
+               
+    /*RegraNc*/ if($(e).parents('#level1_nc_accordion').length || $(e).parents('#level2_nc_accordion').length || $(e).parents('#level3_nc_accordion').length ){
+                    crudNxN.modalAlterarRegraNc(obj);
+                    $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function(){
+                        var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
+                        $(e).parents('tr').removeData();
+                        $(e).parents('tr').data(editado);
+                        $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name)
+                        $($(e).parents('tr').find('td')[1]).html(editado.Value)
+                        $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable)
+                        $('#crudNxNEdit').modal('hide');
+                    });
+    /*Contadores*/ } else if($(e).parents('#level1_counter_accordion').length || $(e).parents('#level1_counter_accordion').length || $(e).parents('#level1_counter_accordion').length ){
+                    crudNxN.modalAlterarContadores(obj);//
+                    $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function(){
+                        var editado = crudNxN.retornaObjetoAlteradoContadores(obj);//
+                        $(e).parents('tr').removeData();
+                        $(e).parents('tr').data(editado);
+                        $($(e).parents('tr').find('td')[0]).html(editado.ParCounterName)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.ParLocalName)//
+                        $('#crudNxNEdit').modal('hide');
+                    });
+                }
+                
+
+                
+
+
+                /*Reincidencia*/
+
+
+                $('#crudNxNEdit').modal();
+
+            },
+
+            modalAlterarRegraNc: function(obj){
+          
+                $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch('destroy', true);
+    
+                var divDeEdicao = $('#level1_nc_collapse > div > table.table-erp').clone();
+                $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+                $('#crudNxNEdit #selectNotConformityRule').val(obj.ParNotConformityRule_Id);/*Preenche*/
+                $("#crudNxNEdit .check-box").bootstrapSwitch('state', obj.IsReaudit);
+                $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(obj.Value);
+
+                $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch();
+           
+            },/*Ok*/
+            retornaObjetoAlteradoRegraNc: function(obj){
+
+                /*Valida se pode criar o objeto*/
+                if($('#crudNxNEdit #selectNotConformityRule :selected').val() <= 0){
+                    alert("Por favor Selecione Regra de Não conformidade.");
+                    return;
+                }
+
+                if($('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
+                    alert("É necessário preencher o campo Valor da Regra de alerta.");
+                    return;
+                }
+
+                obj.ParNotConformityRule_Id = $('#crudNxNEdit #selectNotConformityRule :selected').val();
+                obj.ParNotConformityRule_Name =  $('#crudNxNEdit #selectNotConformityRule :selected').text();
+                obj.Value =  $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val();
+                obj.IsReaudit = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked");
+                obj.IsReauditShowTable =  $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não";
+
+                return obj;
+            },/*Ok*/
+
+            modalAlterarContadores: function(obj){
+    
+                var divDeEdicao = $('#camposContador').clone();
+                $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+                $('#crudNxNEdit #parCounter').val(obj.ParCounter_Id);/*Preenche*/
+                $('#crudNxNEdit #parLocal').val(obj.ParLocal_Id);/*Preenche*/
+
+            },
+            retornaObjetoAlteradoContadores: function(obj){
+               
+                /*Valida se pode criar o objeto*/
+                if($('#crudNxNEdit #parCounter :selected').val() <= 0){
+                    alert("Por favor selecione o contador.");
+                    return;
+                }
+
+                if($('#crudNxNEdit #parLocal').val() <= 0){
+                    alert("Por favor selecione o local.");
+                    return;
+                }
+                
+                obj.ParLocal_Id = $('#crudNxNEdit #parLocal :selected').val();
+                obj.ParLocalName =  $('#crudNxNEdit #parLocal :selected').text();
+                obj.ParCounter_Id = $('#crudNxNEdit #parCounter :selected').val();
+                obj.ParCounterName =  $('#crudNxNEdit #parCounter :selected').text();
+
+                return obj;
+            },
+
+            modalAlterarReincidencia: function(){},
+            retornaObjetoAlteradoReincidencia: function(){},
 
         }
 
-        
+
 
         function openMessageModal(title, content) {
 
@@ -687,25 +747,26 @@
                     Cluster.UpdateCounter();
                     CounterLevel1.UpdateCounters();
                     var dados = $('#newLevel1Modal > form').serializeObject();
-                    RegraNc.incluiNoObjetoParaSubmit(dados);
+                    RegraNcL1.incluiNoObjetoParaSubmit(dados);
+                    ContadoresL1.incluiNoObjetoParaSubmit(dados);
 
-                        //openLoader();
+                    //openLoader();
 
                     $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
 
-                            //closeLoader();
+                        //closeLoader();
 
-                            if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
-                                indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
-                                openMessageModal("Alerta", statusmessage);
-                            }
-                            $btn.button('reset');
-                        }).fail(function (e, h, x) {
-                            //closeLoader();
-                            $btn.button('reset');
-                            openMessageModal("Alerta", e.responseJSON.Message);
-                        });
-                    }
+                        if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
+                            indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
+                            openMessageModal("Alerta", statusmessage);
+                        }
+                        $btn.button('reset');
+                    }).fail(function (e, h, x) {
+                        //closeLoader();
+                        $btn.button('reset');
+                        openMessageModal("Alerta", e.responseJSON.Message);
+                    });
+                }
 
             },/*Envia os dados referentes ao level1 para a API, apos isto realiza um get no seu ID e, CASO INSERÇÃO, atualiza a dropDown*/
             selectNormal: function () {
@@ -748,15 +809,15 @@
                     indexParamsLevel1.GetLevel1(valorSelecionado);
                 }
 
-                },/*Executa ao selecionar um level1*/
-                GetLevel1: function(id, isSave) {
-                    //openLoader();
-                    $.get('GetParLevel1ById/' + id, function (obj, responseText, xhr) {
-                        if (obj != null) {
-                            $('#ParLevel1').empty();
-                            $('#ParLevel1').append(xhr.responseText);
-                            UpdateSelect2Level2(id);
-                        }
+            },/*Executa ao selecionar um level1*/
+            GetLevel1: function(id, isSave) {
+                //openLoader();
+                $.get('GetParLevel1ById/' + id, function (obj, responseText, xhr) {
+                    if (obj != null) {
+                        $('#ParLevel1').empty();
+                        $('#ParLevel1').append(xhr.responseText);
+                        UpdateSelect2Level2(id);
+                    }
 
                     if (id > 0) {
                         $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
@@ -787,8 +848,8 @@
                     /*Reseta Validação*/
                     indexParamsLevel1.resetaValidacao();
 
-                        //closeLoader();
-                    });
+                    //closeLoader();
+                });
 
             },/*Busca dados do level1 na API*/
             resetaValidacao: function(){
@@ -800,21 +861,21 @@
                 $("form").each(function () { $.data($(this)[0], 'validator', false); });
                 $.validator.unobtrusive.parse("form");
 
-                },
-                resetaForm: function() {
-                    $('#ParLevel1').empty();
-                    $('#ParLevel1').append(parLevel1Empty);
-                    $('#level1Title').text(indexParamsLevel1.new_level1);
-                    initialFormLevel1 = $($('form')[0]).clone();
-                    //closeLoader();
-                },
-                resetDdlLevel3Level2: function(){
-                    $('#parLevel2Select2').val('-1');
-                    indexParamsLevel2.GetLevel2('-1');
-                    $('#parLevel3Select2').val('-1');
-                    indexParamsLevel3.GetLevel2('-1');
-                }
+            },
+            resetaForm: function() {
+                $('#ParLevel1').empty();
+                $('#ParLevel1').append(parLevel1Empty);
+                $('#level1Title').text(indexParamsLevel1.new_level1);
+                initialFormLevel1 = $($('form')[0]).clone();
+                //closeLoader();
+            },
+            resetDdlLevel3Level2: function(){
+                $('#parLevel2Select2').val('-1');
+                indexParamsLevel2.GetLevel2('-1');
+                $('#parLevel3Select2').val('-1');
+                indexParamsLevel3.GetLevel2('-1');
             }
+        }
 
 
         /*LEVEL 2*/
@@ -826,6 +887,9 @@
             removing_the_level3_group : @Html.Raw(Json.Encode(@Resources.Resource.removing_the_level3_group)),
 
             enviarDadosParaApi: function (e) {
+                
+                $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val("0");
+
                 $("form").each(function () { $.data($(this)[0], 'validator', false); });
                 $.validator.unobtrusive.parse("form");
 
@@ -834,22 +898,23 @@
                     //Cluster.UpdateCounter();
                     CounterLevel2.UpdateCounters();
                     var dados = $('#newLevel2Modal > form').serializeObject();
+                    RegraNcL2.incluiNoObjetoParaSubmit(dados);
 
-                        //openLoader(indexParamsLevel2.saving_the_level2);
-                        $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                            //closeLoader();
-                            var $btn = $('#btnSaveNewLevel2');
-                            $btn.button('loading');
+                    //openLoader(indexParamsLevel2.saving_the_level2);
+                    $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                        //closeLoader();
+                        var $btn = $('#btnSaveNewLevel2');
+                        $btn.button('loading');
 
-                            if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
-                                indexParamsLevel2.GetLevel2(objetoReturn.paramsDto.parLevel2Dto.Id, $('#paramsDto_parLevel3Dto_Id').val(), true)
-                                openMessageModal("Alerta", statusmessage);
-                            }
-                        }).fail(function (e, h, x) {
-                            //closeLoader();
-                            openMessageModal("Alerta", e.responseJSON.Message);
-                        });
-                    }
+                        if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
+                            indexParamsLevel2.GetLevel2(objetoReturn.paramsDto.parLevel2Dto.Id, $('#paramsDto_parLevel3Dto_Id').val(), true)
+                            openMessageModal("Alerta", statusmessage);
+                        }
+                    }).fail(function (e, h, x) {
+                        //closeLoader();
+                        openMessageModal("Alerta", e.responseJSON.Message);
+                    });
+                }
 
             },/*Envia os dados referentes ao level2 para a API, apos isto realiza um get no seu ID e, CASO INSERÇÃO, atualiza a dropDown*/
             selectNormal: function () {
@@ -892,10 +957,10 @@
 
                 indexParamsLevel2.resetaValidacao();
 
-                },/*Executa ao selecionar um level2*/
-                GetLevel2: function(thislevel2Id, thislevel3Id, isSave) {
-                    //openLoader(indexParamsLevel2.loading_the_level2);
-                    $.get('GetParLevel2ById',{  level2Id: thislevel2Id, level3Id: thislevel3Id}, function (obj, responseText, xhr) {
+            },/*Executa ao selecionar um level2*/
+            GetLevel2: function(thislevel2Id, thislevel3Id, isSave) {
+                //openLoader(indexParamsLevel2.loading_the_level2);
+                $.get('GetParLevel2ById',{  level2Id: thislevel2Id, level3Id: thislevel3Id}, function (obj, responseText, xhr) {
 
                     if (obj != null) {
                         $('#ParLevel2').empty();
@@ -929,15 +994,15 @@
 
                     indexParamsLevel2.resetaValidacao();
 
-                        //closeLoader();
-                    });
+                    //closeLoader();
+                });
 
-                },/*Busca dados do level2 na API*/
-                removeLevel3Group: function(e, element){
-                    //openLoader(removing_the_level3_group);
-                    $.post(removeLevel3Group + '/' + element.attr('id'), function (obj, responseText, xhr) {
-                        //closeLoader();
-                        if (obj != null) {
+            },/*Busca dados do level2 na API*/
+            removeLevel3Group: function(e, element){
+                //openLoader(removing_the_level3_group);
+                $.post(removeLevel3Group + '/' + element.attr('id'), function (obj, responseText, xhr) {
+                    //closeLoader();
+                    if (obj != null) {
 
                         element.remove();
                     }
@@ -947,21 +1012,21 @@
                 $('#parLevel2Select2').val('-1');
                 indexParamsLevel2.GetLevel2('-1');
 
-                    //$('#ParLevel2').empty();
-                    //$('#ParLevel2').append(parLevel2Empty);
-                    //$('#level2Title').text(indexParamsLevel2.new_level2);
-                    //initialFormLevel2 = $($('form')[1]).clone();
-                    ////closeLoader();
-                },
-                resetaValidacao: function(){
-                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                    $.validator.unobtrusive.parse("form");
-                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                    $.validator.unobtrusive.parse("form");
-                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                    $.validator.unobtrusive.parse("form");
-                }
+                //$('#ParLevel2').empty();
+                //$('#ParLevel2').append(parLevel2Empty);
+                //$('#level2Title').text(indexParamsLevel2.new_level2);
+                //initialFormLevel2 = $($('form')[1]).clone();
+                ////closeLoader();
+            },
+            resetaValidacao: function(){
+                $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                $.validator.unobtrusive.parse("form");
+                $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                $.validator.unobtrusive.parse("form");
+                $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                $.validator.unobtrusive.parse("form");
             }
+        }
 
 
         /*LEVEL 3*/
@@ -988,9 +1053,9 @@
                     if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
                         dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
 
-                        //openLoader(indexParamsLevel3.saving_the_level3);
-                        $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                            //closeLoader();
+                    //openLoader(indexParamsLevel3.saving_the_level3);
+                    $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                        //closeLoader();
 
                         var $btn = $('#btnSaveNewLevel3');
                         $btn.button('loading');
@@ -1000,11 +1065,11 @@
                             openMessageModal("Alerta", statusmessage);
                         }
 
-                        }).fail(function (e, h, x) {
-                            //closeLoader();
-                            $btn.button('loading');
-                            openMessageModal("Alerta", e.responseJSON.Message);
-                        });
+                    }).fail(function (e, h, x) {
+                        //closeLoader();
+                        $btn.button('loading');
+                        openMessageModal("Alerta", e.responseJSON.Message);
+                    });
 
                 }
 
@@ -1045,22 +1110,22 @@
                     indexParamsLevel3.GetLevel3(valorSelecionado, valorSelecionadoLevel2);
                 }
 
-                    indexParamsLevel3.resetValidacao();
-                },/*Executa ao selecionar um level3*/
-                GetLevel3: function(valorSelecionado, valorSelecionadoLevel2, isSave) {
-                    //openLoader(indexParamsLevel3.loading_the_level3);
-                    $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
-                        //closeLoader();
-                        if (obj != null) {
-                            $('#ParLevel3').empty();
-                            $('#ParLevel3').append(xhr.responseText);
-                            indexParamsLevel3.resetValidacao();
-                        }
-                        if (valorSelecionado > 0) {
-                            $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
-                        } else {
-                            $('#level3Title').text(indexParamsLevel3.new_level3);
-                        }
+                indexParamsLevel3.resetValidacao();
+            },/*Executa ao selecionar um level3*/
+            GetLevel3: function(valorSelecionado, valorSelecionadoLevel2, isSave) {
+                //openLoader(indexParamsLevel3.loading_the_level3);
+                $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
+                    //closeLoader();
+                    if (obj != null) {
+                        $('#ParLevel3').empty();
+                        $('#ParLevel3').append(xhr.responseText);
+                        indexParamsLevel3.resetValidacao();
+                    }
+                    if (valorSelecionado > 0) {
+                        $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
+                    } else {
+                        $('#level3Title').text(indexParamsLevel3.new_level3);
+                    }
 
                     if(!!isSave){
                         /*Atualiza Select*/
@@ -1077,9 +1142,9 @@
                         }
                     }
 
-                        initialFormLevel3 = $($('form')[2]).clone();
-                        //closeLoader();
-                        reloadPopovers();
+                    initialFormLevel3 = $($('form')[2]).clone();
+                    //closeLoader();
+                    reloadPopovers();
 
                 });
             },/*Busca dados do level3 na API*/
@@ -1243,13 +1308,13 @@
             reloadPopovers();
         });
 
-            $( document ).ajaxStart(function() {
-                openLoader("@Resources.Resource.please_wait"+"...");
-            });
+        $( document ).ajaxStart(function() {
+            openLoader("@Resources.Resource.please_wait"+"...");
+        });
 
-            $( document ).ajaxStop(function() {
-                closeLoader();
-            });
+        $( document ).ajaxStop(function() {
+            closeLoader();
+        });
 
 
 
