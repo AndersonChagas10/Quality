@@ -66,6 +66,10 @@
                     </tbody>
                 </table>
 
+                @{
+                    Model.levelControl = 1;
+                }
+                @*Clusters*@
                 <div class="panel-group accordion" id="level1_cluster_accordion">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -75,7 +79,7 @@
                         </div>
                         <div id="level1_cluster_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                             <div class="panel-body">
-                                <table class="table-erp">
+                                <table class="table-erp" id="camposCluster">
                                     <tbody>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_clusters), Table.PosicaoLabel.top)
@@ -84,8 +88,8 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                @*Tabela de Cluster Incluidos*@
-                                <table id="clusterIncluidos" class="table table-condensed table-responsive no-margin margin-top" style="display: none;">
+
+                                <table id="tableClusters" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Cluster:">
                                     <thead>
                                         <tr>
                                             <th>@Resources.Resource.cluster_name</th>
@@ -94,56 +98,16 @@
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr id="clusters" class="example"></tr>
-                                        <tr id="clustersVazia" style="display:none" class="example">
-                                            <td id="nomeCluster"></td>
-                                            <td id="crit"></td>
-                                            <td id="pontosCluster"></td>
-                                            <td id="alterarCluster">
-                                                @*<button type="button" class="btn btn-primary btn-xs pull-right" id="btnAlterarCluster"><i class="fa fa-edit" aria-hidden="true"></i></button>*@
-                                                <button type="button" class="btn btn-danger btn-xs pull-right" id="btnExcluirCluster"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                            </td>
-                                        </tr>
-                                        @if (Model.paramsDto.parLevel1Dto.clustersInclusos != null)
-                                        {
-                                            foreach (var i in Model.paramsDto.parLevel1Dto.clustersInclusos)
-                                            {
-                                                var pontos = "0,00";
-                                                if (i.Points.ToString("#,##").Length > 0)
-                                                {
-                                                    pontos = i.Points.ToString("0.00");
-                                                }
-                                                <tr id="editar">
-                                                    <td id="">@i.ParCluster.Name</td>
-
-                                                    @if (i.ParCriticalLevel != null)
-                                                    {
-                                                        <td id="">@i.ParCriticalLevel.Name</td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td id=""></td>
-                                                    }
-
-                                                    <td id="">@pontos </td>
-                                                    <td id="editarCluster">
-                                                        @*<input type="button" value="Alterar" id="Cluster.btnEDITARCluster" />*@
-                                                        <button type="button" class="btn btn-danger btn-xs pull-right" onclick="Cluster.btnINATIVARLevel1XCluster($(this))"><i class="fa fa-times"></i></button>
-                                                        @Html.Hidden("paramsDto.parLevel1Dto.removerParCluster", i.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                        @Html.Hidden("clusterId", i.Id, htmlAttributes: new { @disabled = "disabled", @id = "clusterId" })
-
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-                                    </tbody>
+                                    <tbody></tbody>
                                 </table>
+
+                              
                             </div>
                         </div>
                     </div>
                 </div>
 
+                @*Cabecalhos*@
                 <div class="panel-group accordion" id="level1_header_accordion">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -405,71 +369,10 @@
                         </div>
                     </div>
                 </div>
+                
+                @Html.Partial("_CounterXLevel", Model)
 
-                <div class="panel-group accordion" id="level1_counter_accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_counter_accordion" href="#level1_counter_collapse" aria-expanded="false"> @Resources.Resource.counters </a>
-                            </h4>
-                        </div>
-                        <div id="level1_counter_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <table id="camposContador" class="table-erp">
-                                    <tbody>
-                                        <tr class="row">
-                                            @Table.GerarColuna(@Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
-                                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"ContadoresL1.adiciona(); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <table id="tableContadores" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Contador:">
-                                    <thead>
-                                        <tr>
-                                            <th>Nome do contador</th>
-                                            <th>Level</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-
-                                @*<div id="counterHidden1"></div>
-                                <div id="counterEditHidden1"></div>*@
-
-                                @*<table id="tblPreviewCounter1" class="table-erp table table" style="display: none;">
-                                    <thead class="thead-default">
-                                        <tr>
-                                            <th>@Resources.Resource.counter</th>
-                                            <th>@Resources.Resource.local</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (Model.paramsDto.parLevel1Dto.contadoresIncluidos != null)
-                                        {
-                                            foreach (var contadoresEditar in Model.paramsDto.parLevel1Dto.contadoresIncluidos)
-                                            {
-                                                <tr>
-                                                    <td>@contadoresEditar.ParCounter.Name</td>
-                                                    <td>@contadoresEditar.ParLocal.Name</td>
-                                                    <td>
-                                                        &nbsp;
-                                                        <button type="button" class="btn btn-danger btn-xs pull-right" onclick="CounterLevel1.RemoveCounterEdicao($(this), @contadoresEditar.Id)"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-                                    </tbody>
-                                </table>*@
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                @*  @Html.Partial("_RegraDeAlerta", Model)*@
-
+                @*Regra de NC*@
                 <div class="panel-group accordion" id="level1_nc_accordion">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -516,76 +419,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="panel-group accordion" id="level1_repetition_accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_repetition_accordion" href="#level1_repetition_collapse" aria-expanded="false"> @Resources.Resource.repetition</a>
-                            </h4>
-                        </div>
-                        <div id="level1_repetition_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <table class="table-erp">
-                                    <tbody>
-                                        <tr class="row">
-
-                                            @Table.GerarColuna(
-                                                @Html.TextBox("inputNumeroNC", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number", @Id = "l1InputNumeroNC" })
-                                                , @Html.Label(Resources.Resource.number_nc)
-                                                , Table.PosicaoLabel.top)
-
-                                            @Table.GerarColuna(
-                                                @Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number", @Id = "l1InputVigencia" })
-                                                , @Html.Label(Resources.Resource.validation)
-                                                , Table.PosicaoLabel.top)
-
-                                            @Table.GerarColunaButton(
-                                                @Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "l1SelectFrequenciaReincidencia", @class = "form-control input-sm" })
-                                                , @Html.Label(Resources.Resource.frequency)
-                                                , Table.PosicaoLabel.top
-                                                , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"l1BtnAddFrequenciaReincidencia\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class="table-erp table table-condensed" id="l1TableRepetition" style="display: none;">
-                                    <thead>
-                                        <tr>
-                                            <td>@Resources.Resource.rule</td>
-                                            <td>@Resources.Resource.number_nc</td>
-                                            <td>@Resources.Resource.validation</td>
-                                            <td colspan="2">@Resources.Resource.frequency</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr id="RegraReincidenciaGroup" class="example"></tr>
-                                        @if (Model.paramsDto.parLevel1Dto.listParRelapseDto != null)
-                                        {
-                                            int i = 0;
-                                            foreach (var rp in Model.paramsDto.parLevel1Dto.listParRelapseDto)
-                                            {
-                                                i++;
-                                                <tr id="@rp.Id" class="existent">
-                                                    <td>Regra @i</td>
-                                                    <td>@rp.NcNumber</td>
-                                                    <td>@rp.EffectiveLength</td>
-                                                    <td>@rp.parFrequency.Name</td>
-                                                    <td>
-                                                        @Html.Hidden("paramsDto.parLevel1Dto.removeReincidencia", rp.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                        <button type="button" class="btn btn-danger btn-xs pull-right" onclick="removeReincidencia($(this))" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
+                
+                @Html.Partial("_ReincidenciaXLevel", Model)
+              
 
                 <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
@@ -595,8 +431,6 @@
 
 
 <script>
-
-
 
     $('#paramsDto_parLevel1Dto_IsSpecific').on('switchChange.bootstrapSwitch', function (event, state) {
         if (state) {
@@ -1434,75 +1268,6 @@
         //},
     }
 
-    var CounterLevel1 = {
-        ObjCounters: [],
-        ObjCounterRemove: [],
-        SaveCounter: function (edicao) {
-            CounterLevel1.ObjCounters.push({
-                Id: null,
-                ParLocal_Id: $('#parLocal  option:selected').val(),
-                ParCounter_Id: $('#parCounter option:selected').val(),
-                ParLevel1_Id: $('#paramsDto_parLevel1Dto_Id').val(),
-                Edicao: edicao,
-                ParLocal_Name: $('#parCounter option:selected').text(),
-                ParCounter_Name: $('#parLocal option:selected').text(),
-            });
-            CounterLevel1.CreateCounterPreview();
-        },
-        CreateCounterPreview: function () {
-
-            //$('#tblPreviewCounter1 > tbody').empty();
-            $('#tblPreviewCounter1 > tbody > tr#insert').remove();
-            var objHiddenCounter = "";
-            CounterLevel1.ObjCounters.forEach(function (o, c) {
-                objHiddenCounter += '<tr id="insert" >';
-                objHiddenCounter += '<td>' + o.ParLocal_Name + '</td>';
-                objHiddenCounter += '<td>' + o.ParCounter_Name + '</td>';
-                objHiddenCounter += '<td>&nbsp;<button class="btn btn-danger btn-xs pull-right" onclick="CounterLevel1.RemoveCounter($(this), ' + c + ')"><i class=\"fa fa-times\" aria-hidden=\"true\"></button></td>';
-                objHiddenCounter += '</tr>';
-            });
-
-            $('#tblPreviewCounter1 > tbody').append(objHiddenCounter);
-
-            updateAllTables();
-
-        },
-        UpdateCounters: function () {
-
-            /*Objetos Inseridos*/
-            $('#counterHidden1').empty();
-            var objHiddenCounter = "";
-            CounterLevel1.ObjCounters.forEach(function (o, c) {
-                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParCounter_Id" type="hidden" value="' + o.ParCounter_Id + '" />'
-                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLocal_Id" type="hidden"  value="' + o.ParLocal_Id + '" />'
-                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLevel1_Id" type="hidden"  value="' + o.ParLevel1_Id + '" />'
-            });
-            $('#counterHidden1').append(objHiddenCounter);
-
-            /*Objetos removidos*/
-            $('#counterEditHidden1').empty();
-
-            var objHiddenCounter = "";
-            CounterLevel1.ObjCounterRemove.forEach(function (o, c) {
-                objHiddenCounter += '<input name="paramsDto.parLevel1Dto.removerParCounterXlocal[' + c + ']" type="hidden" value="' + o.Id + '" />'
-            });
-
-            $('#counterEditHidden1').append(objHiddenCounter);
-        },
-        RemoveCounter: function (e, c) {
-            e.parents('tr').remove();
-            CounterLevel1.ObjCounters.splice(c, 1);
-
-            updateAllTables();
-        },
-        RemoveCounterEdicao: function (e, id) {
-            //e.preventDefaut();
-            e.parents('tr').hide();
-            CounterLevel1.ObjCounterRemove.push({ Id: id })
-        },
-
-    }
-
     var RegraNcL1 = {
 
         /*Setup*/
@@ -1568,69 +1333,99 @@
     };
 
 
-    var ContadoresL1 = {
+    var ClustersL1 = {
+        /*
+      public int ParLevel1_Id { get; set; }
+        [Required]
+        public int ParCluster_Id { get; set; }
+        public decimal Points { get; set; }
+        public bool IsActive { get; set; } = true;
+        public Nullable<int> ParCriticalLevel_Id { get; set; }
 
+
+        public ParClusterDTO ParCluster { get; set; }
+        public ParCriticalLevelDTO ParCriticalLevel { get; set; }
+    */
         /*Setup*/
-        idTable: 'tableContadores',
+        idTable: 'tableClusters',
         level: 'ParLevel1',
-        listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.listParCounterXLocal)),
-        tdsNames: ['ParCounterName', 'ParLocalName', 'btn'],
-        getObjAdd: function(){
-            return {/*Objeto*/
-                ParLocal_Id: $('#' + ContadoresL1.level + ' #parLocal :selected').val(),
-                ParLocalName: $('#' + ContadoresL1.level + ' #parLocal :selected').text(),
-                ParCounter_Id: $('#' + ContadoresL1.level + ' #parCounter :selected').val(),
-                ParCounterName: $('#' + ContadoresL1.level + ' #parCounter :selected').text(),
-                IsActive: true,
-            };
+        listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.listLevel1XClusterDto)),
+        tdsNames: ['Cluster_Name','ParCriticalLevel_Name', 'Points',  'btn'],
+        getObjAdd: function(isEdit, obj){
+            if(isEdit != undefined){
+                obj.Cluster_Name = $('#' + isEdit + ' #valueCluster :selected').text();
+                obj.ParCluster_Id = $('#' + isEdit + ' #valueCluster :selected').val();
+                obj.ParCriticalLevel_Name = $('#' + isEdit + ' #valCrit :selected').text();
+                obj.ParCriticalLevel_Id = $('#' + isEdit + ' #valCrit :selected').val();
+                obj.Points = $('#' + isEdit + ' #pontosCluster').val();
+                return obj;
+            }else{
+                return {/*Objeto*/
+                    Cluster_Name: $('#' + isEdit + ' #valueCluster :selected').text(),
+                    ParCluster_Id: $('#' + isEdit + ' #valueCluster :selected').val(),
+                    ParCriticalLevel_Name: $('#' + isEdit + ' #valCrit :selected').text(),
+                    ParCriticalLevel_Id: $('#' + isEdit + ' #valCrit :selected').val(),
+                    Points: $('#' + isEdit + ' #pontosCluster').val(),
+                    IsActive: true,
+                };
+            }
+
         },
-        veifyAdd: function() {
-             /*Valida se pode criar o objeto*/
-            if($('#' + ContadoresL1.level + ' #parCounter :selected').val() <= 0){
-                alert("Por favor selecione o contador.");
+        veifyAdd: function(isEdit) {
+            var seletorTato = !!isEdit ? isEdit : ClustersL1.level;
+            /*Valida se pode criar o objeto*/
+            if($('#' + seletorTato + ' #valueCluster :selected').val() <= 0){
+                alert("Por favor selecione o cluster.");
                 return;
             }
 
-            if($('#' + ContadoresL1.level + ' #parLocal').val() <= 0){
-                alert("Por favor selecione o local.");
+            if($('#' + seletorTato + ' #valCrit :selected').val() <= 0){
+                alert("Por favor selecione o nivel critico.");
+                return;
+            }
+
+            if($('#' + seletorTato + ' #pontosCluster').val().replace(/[^0-9.]/g, '') == ""){
+                alert("Por favor preencha o campo pontos do cluster.");
                 return;
             }
         },
         incluiNoObjetoParaSubmit: function(dados){
 
-            $('#' + ContadoresL1.level + ' #' + ContadoresL1.idTable + ' > tbody > tr ').each(function(c, obj){
+            $('#' + ClustersL1.level + ' #' + ClustersL1.idTable + ' > tbody > tr ').each(function(c, obj){
 
                 var o = $(obj).data();
 
                 if((o.Id != null || o.Id != undefined) && o.Id > 0){
-                    dados["paramsDto.parLevel1Dto.listParCounterXLocal[" + c + "].Id"] = o.Id;
+                    dados["paramsDto.parLevel1Dto.listLevel1XClusterDto[" + c + "].Id"] = o.Id;
                 }
 
-                dados["paramsDto.parLevel1Dto.listParCounterXLocal[" + c + "].ParLocal_Id"] = o.ParLocal_Id;
-                dados["paramsDto.parLevel1Dto.listParCounterXLocal[" + c + "].ParCounter_Id"] = o.ParCounter_Id;
-                dados["paramsDto.parLevel1Dto.listParCounterXLocal[" + c + "].IsActive"] = o.IsActive;
+                dados["paramsDto.parLevel1Dto.listLevel1XClusterDto[" + c + "].ParCluster_Id"] = o.ParCluster_Id;
+                dados["paramsDto.parLevel1Dto.listLevel1XClusterDto[" + c + "].ParCriticalLevel_Id"] = o.ParCriticalLevel_Id;
+                dados["paramsDto.parLevel1Dto.listLevel1XClusterDto[" + c + "].Points"] = o.Points;
+                dados["paramsDto.parLevel1Dto.listLevel1XClusterDto[" + c + "].IsActive"] = o.IsActive;
 
             });
 
         },
         carregaDadosDoDb: function(){
-            if( ContadoresL1.listObjSalvo != null){ /*Carrega regras de NC*/
-                ContadoresL1.listObjSalvo.forEach(function(o, c){
-                    o["ParLocalName"] = o.ParLocal.Name;
-                    o["ParCounterName"] = o.ParCounter.Name;
-                    crudNxN.adiciona(o, ContadoresL1.level + ' #' + ContadoresL1.idTable, ContadoresL1.tdsNames);
+            if( ClustersL1.listObjSalvo != null){ /*Carrega regras de NC*/
+                ClustersL1.listObjSalvo.forEach(function(o, c){
+                    o["parFrequencyName"] = o.ParCluster.Name;
+                    o["parFrequencyName"] = o.ParCriticalLevel.Name;
+                    crudNxN.adiciona(o, ClustersL1.level + ' #' + ClustersL1.idTable, ClustersL1.tdsNames);
                 });
             }
         },
         /*Fim Setup*/
 
         adiciona: function() {
-            ContadoresL1.veifyAdd();
-            var object = ContadoresL1.getObjAdd();
-            crudNxN.adiciona(object, ContadoresL1.level + ' #' + ContadoresL1.idTable, ContadoresL1.tdsNames);
+            ClustersL1.veifyAdd();
+            var object = ClustersL1.getObjAdd();
+            crudNxN.adiciona(object, ClustersL1.level + ' #' + ClustersL1.idTable, ClustersL1.tdsNames);
         },
-
     };
+
+
 
     $('#salvarCabecalho1').on('click', Cabecalhos.SalvaMultiplaEscolha);
     $('#salvarCabecalho2').on('click', Cabecalhos.SalvaBinario);
@@ -1737,7 +1532,7 @@
         $('[data-toggle="popover"]').popover();
 
         RegraNcL1.carregaDadosDoDb();
-        ContadoresL1.carregaDadosDoDb();
+      
 
         setTimeout(function(){
             Cluster.VerificaDDl();

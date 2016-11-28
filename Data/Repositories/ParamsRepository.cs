@@ -30,7 +30,7 @@ namespace Data.Repositories
 
         #region ParLevel1
 
-        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<int> removerCluster, List<ParCounterXLocal> listaParCounterLocal, List<ParNotConformityRuleXLevel> listNonCoformitRule, List<ParRelapse> reincidencia, List<int> removeReincidencia)
+        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<ParCounterXLocal> listaParCounterLocal, List<ParNotConformityRuleXLevel> listNonCoformitRule, List<ParRelapse> reincidencia)
         {
             using (var ts = db.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
             {
@@ -66,28 +66,30 @@ namespace Data.Repositories
                 if (listaParCounterLocal != null)
                 {
                     foreach (var counterDoLevel1 in listaParCounterLocal)
-                    {
                         SalvaCounterLocalDoLevel1(paramLevel1, counterDoLevel1);
-                    }
                 }
 
+                //Alerta (Regra de NC)
                 if (listNonCoformitRule != null)
                 {
                     foreach (var nonCoformitRule in listNonCoformitRule)
                         SaveNonConformityRule(nonCoformitRule, paramLevel1.Id);
                 }
 
+                //Reincidencia
                 if (reincidencia != null)
+                {
                     foreach(var parRelapse in reincidencia)
                         SaveReincidencia(parRelapse, paramLevel1.Id);
+                }
 
-                InativaCluster(paramLevel1, removerCluster);
+                //InativaCluster(paramLevel1, removerCluster);
 
                 InativaHeadField(paramLevel1, removerHeadField);
 
                 //InativaCounter(paramLevel1, removeCounter);
 
-                InativaReincidencia(removeReincidencia);
+                //InativaReincidencia(removeReincidencia);
 
                 ts.Commit();
             }
@@ -271,8 +273,9 @@ namespace Data.Repositories
                 AddUpdateParLevel2(paramLevel2); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
 
-                foreach(var paramNotConformityRuleXLevel in listParamNotConformityRuleXLevel)
-                    AddUpdateParNotConformityRuleXLevel(paramNotConformityRuleXLevel, 2, ParLevel2_Id: paramLevel2.Id);
+                if(listParamNotConformityRuleXLevel != null)
+                    foreach(var paramNotConformityRuleXLevel in listParamNotConformityRuleXLevel)
+                        AddUpdateParNotConformityRuleXLevel(paramNotConformityRuleXLevel, 2, ParLevel2_Id: paramLevel2.Id);
                 //db.SaveChanges();
 
                 AddUpdateParEvaluation(paramEvaluation, paramLevel2.Id);

@@ -1182,6 +1182,8 @@
     <Content Include="Views\Language\Index.cshtml" />
     <Content Include="Views\Params\_RegraDeAlerta.cshtml" />
     <Content Include="Views\CompanyStructure\Index.cshtml" />
+    <Content Include="Views\Params\_CounterXLevel.cshtml" />
+    <Content Include="Views\Params\_ReincidenciaXLevel.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

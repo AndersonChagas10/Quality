@@ -1,0 +1,141 @@
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+@using SgqSystem.Helpers
+
+@{
+    var level = Model.levelControl;
+    var id = "level" + Model.levelControl + "_counter_accordion";
+    var id2 = "#level" + Model.levelControl + "_counter_accordion";
+    var id3 = "#level" + Model.levelControl + "_counter_collapse";
+    var id4 = "level" + Model.levelControl + "_counter_collapse";
+    var click = "ContadoresL" + Model.levelControl + ".adiciona()";
+}
+
+@*Contadores*@
+<div class="panel-group accordion" id="@id">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a id="changeCounterCollapse" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="@id2" href="@id3" aria-expanded="false"> @Resources.Resource.counters </a>
+            </h4>
+        </div>
+        <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+                <table id="camposContador" class="table-erp">
+                    <tbody>
+                        <tr class="row">
+                            @Table.GerarColuna(@Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top
+                           , button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table id="tableContadores" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Contador:">
+                    <thead>
+                        <tr>
+                            <th>Nome do contador</th>
+                            <th>Level</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
+    function atribuiLevelDivCounter (){
+
+        var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto));
+        var levelDomain;
+        var listSalvo;
+
+        if(levelControl == 1){
+            levelDomain = "newLevel1Modal";
+            listSalvo = paramsDto.parLevel1Dto.listParCounterXLocal;
+            ContadoresL1 = getCounterObject(levelDomain, listSalvo);
+            ContadoresL1.carregaDadosDoDb();
+        }
+        if(levelControl == 2){
+            levelDomain = "newLevel2Modal";
+            listSalvo = paramsDto.parLevel2Dto.listParCounterXLocal;
+            ContadoresL2 = getCounterObject(levelDomain, listSalvo);
+            ContadoresL2.carregaDadosDoDb();
+        }
+
+    }
+
+    atribuiLevelDivCounter();
+    function getCounterObject (levelDomain, listSalvo) {
+        return {
+            /*Setup*/
+            levelControl: levelControl,
+            idTable: 'tableContadores',
+            level: levelDomain,
+            listObjSalvo: listSalvo,
+            tdsNames: ['ParCounterName', 'ParLocalName', 'btn'],
+            getObjAdd: function(){
+                return {/*Objeto*/
+                    ParLocal_Id: $('#' + this.level + ' #parLocal :selected').val(),
+                    ParLocalName: $('#' + this.level + ' #parLocal :selected').text(),
+                    ParCounter_Id: $('#' + this.level + ' #parCounter :selected').val(),
+                    ParCounterName: $('#' + this.level + ' #parCounter :selected').text(),
+                    IsActive: true,
+                };
+            },
+            veifyAdd: function() {
+                /*Valida se pode criar o objeto*/
+                if($('#' + this.level + ' #parCounter :selected').val() <= 0){
+                    alert("Por favor selecione o contador.");
+                    return;
+                }
+
+                if($('#' + this.level + ' #parLocal').val() <= 0){
+                    alert("Por favor selecione o local.");
+                    return;
+                }
+            },
+            incluiNoObjetoParaSubmit: function(dados){
+
+                var level = this.levelControl;
+                $('#' + this.level + ' #' + this.idTable + ' > tbody > tr ').each(function(c, obj){
+
+                    var o = $(obj).data();
+
+                    if((o.Id != null || o.Id != undefined) && o.Id > 0){
+                        dados["paramsDto.parLevel" + level + "Dto.listParCounterXLocal[" + c + "].Id"] = o.Id;
+                    }
+
+                    dados["paramsDto.parLevel" + level + "Dto.listParCounterXLocal[" + c + "].ParLocal_Id"] = o.ParLocal_Id;
+                    dados["paramsDto.parLevel" + level + "Dto.listParCounterXLocal[" + c + "].ParCounter_Id"] = o.ParCounter_Id;
+                    dados["paramsDto.parLevel" + level + "Dto.listParCounterXLocal[" + c + "].IsActive"] = o.IsActive;
+
+                });
+
+            },
+            carregaDadosDoDb: function(){
+                var id = this.level + ' #' + this.idTable;
+                var tdNamess = this.tdsNames;
+                if( this.listObjSalvo != null){ /*Carrega regras de NC*/
+                    this.listObjSalvo.forEach(function(o, c){
+                        o["ParLocalName"] = o.ParLocal.Name;
+                        o["ParCounterName"] = o.ParCounter.Name;
+                        crudNxN.adiciona(o,  id, tdNamess);
+                    });
+                }
+            },
+            /*Fim Setup*/
+            adiciona: function() {
+                this.veifyAdd();
+                var object = this.getObjAdd();
+                crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
+            },
+        };
+    }
+
+</script>
