@@ -15,6 +15,7 @@ namespace Dominio.Services
         #region Construtor
         private ICorrectiveActionRepository _correctiveActionRepository;
         private IBaseRepository<UserSgq> _baseUserSgqRepo;
+        private IBaseRepository<Unit> _baseRepoUnit;
         private IEnumerable<UserSgq> _userSgq;
         private IBaseRepository<Level01> _baseLevel01Repo;
         private IBaseRepository<Level02> _baseLevel02Repo;
@@ -26,9 +27,11 @@ namespace Dominio.Services
             IBaseRepository<UserSgq> baseUserSgqRepo,
             IBaseRepository<Level01> baseLevel01Repo,
             IBaseRepository<Level02> baseLevel02Repo,
-            IBaseRepository<CorrectiveAction> baseCorrectiveAction
+            IBaseRepository<CorrectiveAction> baseCorrectiveAction,
+            IBaseRepository<Unit> baseRepoUnit
             )
         {
+            _baseRepoUnit = baseRepoUnit;
             _baseCorrectiveAction = baseCorrectiveAction;
             _baseLevel01Repo = baseLevel01Repo;
             _baseLevel02Repo = baseLevel02Repo;
@@ -51,6 +54,7 @@ namespace Dominio.Services
                 //Guard.CheckListNullOrEmpty(result, "There`s no corrective actions in database to retrieve.");
 
                 var resultMapped = Mapper.Map<List<CorrectiveActionDTO>>(result);
+                var undiades = _baseRepoUnit.GetAll();
 
                 foreach (var i in resultMapped)
                 {
@@ -61,6 +65,8 @@ namespace Dominio.Services
                     var original = result.FirstOrDefault(r => r.Id == i.Id);
                     i.Level01Id = original.CollectionLevel02.Level01Id;
                     i.Level02Id = original.CollectionLevel02.Level02Id;
+
+                    i.Unit = Mapper.Map<UnitDTO>(undiades.FirstOrDefault(r => original.CollectionLevel02.UnitId == r.Id));
 
                     i.level02Name = _listLevel02.FirstOrDefault(r => r.Id == i.Level02Id).Name;
                     i.level01Name = _listLevel01.FirstOrDefault(r => r.Id == i.Level01Id).Name;

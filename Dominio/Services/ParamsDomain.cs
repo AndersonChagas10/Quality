@@ -142,28 +142,19 @@ namespace Dominio.Services
         {
             /*Validação*/
             //paramsDto.parLevel1Dto.IsValid();
-
-            /*Mappers: mapeia elementos que vão ser salvos*/
-            ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);                                                                                      //ParLevel1
-            List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);                                                     //Cabeçalhos do Level1
-            List<ParLevel1XCluster> ListaParLevel1XCluster = Mapper.Map<List<ParLevel1XCluster>>(paramsDto.parLevel1XClusterDto);                                           //Clusters do Level1
-            List<ParCounterXLocal> ListaParCounterLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.parLevel1Dto.listParCounterXLocal);                                               //Contadores do Level1
-            List<ParRelapse> listaReincidencia = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel1Dto.listParRelapseDto);                                                    //Reincidencia do Level1
-            List<ParNotConformityRuleXLevel> listNonCoformitRule = Mapper.Map<List<ParNotConformityRuleXLevel>>(paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto);  //Regra de NC do Level1
+            ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);//ParLevel1
+            List<ParRelapse> listaReincidencia = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel1Dto.listParRelapseDto);//Reincidencia do Level1
+            List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);//Cabeçalhos do Level1
+            List<ParCounterXLocal> ListaParCounterLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.parLevel1Dto.listParCounterXLocal);//Contadores do Level1
+            List<ParLevel1XCluster> ListaParLevel1XCluster = Mapper.Map<List<ParLevel1XCluster>>(paramsDto.parLevel1Dto.listLevel1XClusterDto);//Clusters do Level1
+            List<ParNotConformityRuleXLevel> listNonCoformitRule = Mapper.Map<List<ParNotConformityRuleXLevel>>(paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto);//Regra de NC do Level1
 
             /*Inativar*/
             List<int> removerHeadField = paramsDto.parLevel1Dto.removerParHeaderField;
-            //List<int> removerCluster = paramsDto.parLevel1Dto.removerParCluster;
-            //List<int> removeCounter = paramsDto.parLevel1Dto.removerParCounterXlocal;
-            //List<int> removeReincidencia = paramsDto.parLevel1Dto.removeReincidencia;
-            //List<int> removeNotConformityRuleXLevel = paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto.Where(r => r.IsActive == false).Select(r => r.Id).ToList();
 
-            /*Reativar*/
-
-
-            /*Enviando para repository salvar, envia todos, pois como existe transaction, faz rolback de tudo se der erro.*/
             try
             {
+                /*Enviando para repository salvar, envia todos, pois como existe transaction, faz rolback de tudo se der erro.*/
                 _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField
                                             , ListaParCounterLocal, listNonCoformitRule, listaReincidencia);
             }
@@ -171,8 +162,7 @@ namespace Dominio.Services
             {
                 VerifyUniqueName(saveParamLevel1, e);
             }
-
-            /*Retorno*/
+            
             paramsDto.parLevel1Dto.Id = saveParamLevel1.Id;
             return paramsDto;
         }
@@ -205,36 +195,19 @@ namespace Dominio.Services
         {
             /*ParLevel1*/
             var parlevel1 = _baseRepoParLevel1.GetById(idParLevel1);
-            var retorno = Mapper.Map<ParLevel1DTO>(parlevel1);
+            var parlevel1Dto = Mapper.Map<ParLevel1DTO>(parlevel1);
+            parlevel1Dto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parlevel1.ParCounterXLocal.OrderByDescending(r => r.IsActive));/*Contadores*/
+            parlevel1Dto.listLevel1XClusterDto = Mapper.Map<List<ParLevel1XClusterDTO>>(parlevel1.ParLevel1XCluster.OrderByDescending(r => r.IsActive));/*Clusters*/
+            parlevel1Dto.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(parlevel1.ParLevel3Level2Level1);/*Level 2 e 3 vinculados*/
+            parlevel1Dto.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parlevel1.ParRelapse.OrderByDescending(r => r.IsActive));/*Reincidencia*/
+            parlevel1Dto.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(parlevel1.ParNotConformityRuleXLevel.OrderByDescending(r => r.IsActive));/*Regra de alerta (Regra de NC)*/
 
-            /*Clusters*/
-            retorno.listLevel1XClusterDto = Mapper.Map<List<ParLevel1XClusterDTO>>(parlevel1.ParLevel1XCluster.OrderBy(r => r.IsActive));
+            parlevel1Dto.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(parlevel1.ParLevel1XHeaderField.Where(r =>r.IsActive == true).OrderBy(r => r.IsActive));/*Cabeçalhos*/
 
-            /*Cabeçalhos*/
-            retorno.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(parlevel1.ParLevel1XHeaderField.Where(r => r.ParLevel1_Id == retorno.Id && r.IsActive == true).OrderBy(r => r.IsActive));
+            parlevel1Dto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();
+            parlevel1Dto.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2.GetAll()), parlevel1Dto.listParLevel3Level2Level1Dto);
 
-            /*Contadores*/
-            retorno.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parlevel1.ParCounterXLocal.OrderBy(r => r.IsActive));
-
-            /*Level 2 e 3 vinculados*/
-            retorno.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(parlevel1.ParLevel3Level2Level1);
-
-            retorno.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2.GetAll()), retorno.listParLevel3Level2Level1Dto);
-
-            //foreach (var i in retorno.listParLevel3Level2Level1Dto)
-            //{
-            //    var idLevel2 = i.ParLevel3Level2.ParLevel2_Id;
-            //    _baseRepoParLevel3Level2.GetAll().Where(r => r.ParLevel2_Id == idLevel2);
-            //}
-
-            //non conf
-            retorno.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();
-            retorno.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(parlevel1.ParNotConformityRuleXLevel.OrderBy(r => r.IsActive));
-            
-            /*Reincidencia*/
-            retorno.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parlevel1.ParRelapse.OrderBy(r => r.IsActive));
-
-            return retorno;
+            return parlevel1Dto;
         }
 
         #endregion
@@ -245,27 +218,17 @@ namespace Dominio.Services
         {
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel2 saveParamLevel2 = Mapper.Map<ParLevel2>(paramsDto.parLevel2Dto);
-            List<ParLevel3Group> listaParLevel3Group = Mapper.Map<List<ParLevel3Group>>(paramsDto.listParLevel3GroupDto);
-            List<ParCounterXLocal> listParCounterXLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.parLevel2Dto.listParCounterXLocal);
 
-            List<ParNotConformityRuleXLevel> listNonCoformitRule = Mapper.Map<List<ParNotConformityRuleXLevel>>(paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto);  //
-
-            //ParNotConformityRuleXLevel saveParamNotConformityRuleXLevel = Mapper.Map<ParNotConformityRuleXLevel>(paramsDto.parNotConformityRuleXLevelDto);
             ParEvaluation saveParamEvaluation = Mapper.Map<ParEvaluation>(paramsDto.parEvaluationDto);
             ParSample saveParamSample = Mapper.Map<ParSample>(paramsDto.parSampleDto);
-            List<ParRelapse> listParRelapse = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel2Dto.listParRelapseDto);
-            List<int> listParRelapseRemove = paramsDto.parLevel2Dto.removeReincidencia;
+            List<ParRelapse> listParRelapse = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel2Dto.listParRelapseDto);/*Reincidencia*/
+            List<ParLevel3Group> listaParLevel3Group = Mapper.Map<List<ParLevel3Group>>(paramsDto.listParLevel3GroupDto);
+            List<ParCounterXLocal> listParCounterXLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.parLevel2Dto.listParCounterXLocal);/*Contadores*/
+            List<ParNotConformityRuleXLevel> listNonCoformitRule = Mapper.Map<List<ParNotConformityRuleXLevel>>(paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto);/*Regra de alerta*/
 
             try
             {
-                _paramsRepo.SaveParLevel2(saveParamLevel2,
-                                           listaParLevel3Group,
-                                           listParCounterXLocal,
-                                           listNonCoformitRule,
-                                           saveParamEvaluation,
-                                           saveParamSample,
-                                           listParRelapse,
-                                           listParRelapseRemove);
+                _paramsRepo.SaveParLevel2(saveParamLevel2, listaParLevel3Group, listParCounterXLocal, listNonCoformitRule, saveParamEvaluation, saveParamSample, listParRelapse);
             }
             catch (DbUpdateException e)
             {
@@ -299,37 +262,25 @@ namespace Dominio.Services
             var parLevel2 = _baseRepoParLevel2.GetById(idParLevel2);
             var level2 = Mapper.Map<ParLevel2DTO>(parLevel2);
 
-            level2.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parLevel2.ParRelapse);
-            /*Level 2 e 3 vinculados*/
-            level2.listParLevel3Level2Dto = Mapper.Map<List<ParLevel3Level2DTO>>(_baseRepoParLevel3Level2.GetAll().Where(r => r.ParLevel2_Id == level2.Id).ToList());
+            level2.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parLevel2.ParRelapse.OrderByDescending(r=>r.IsActive));/*Reincidencia*/
+            level2.listParCounterXLocal= Mapper.Map<List<ParCounterXLocalDTO>>(parLevel2.ParCounterXLocal.OrderByDescending(r => r.IsActive));/*Contadores*/
+            level2.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(parLevel2.ParNotConformityRuleXLevel.OrderByDescending(r => r.IsActive));/*Regra de Alerta*/
+            level2.listParLevel3Level2Dto = Mapper.Map<List<ParLevel3Level2DTO>>(parLevel2.ParLevel3Level2);/*Vinculo L3 L2*/
+
+            /*Estas prop deveriam estar dentro do parlevel2*/
+            paramsDto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();/*Regra de Alerta, sem isto dava estouro...*/
+            paramsDto.parEvaluationDto = Mapper.Map<ParEvaluationDTO>(parLevel2.ParEvaluation.FirstOrDefault());
+            paramsDto.parSampleDto = Mapper.Map<ParSampleDTO>(parLevel2.ParSample.FirstOrDefault());
+
+            /*Cria select Level 2 e 3 vinculados*/
+            paramsDto.listParLevel3GroupDto = Mapper.Map<List<ParLevel3GroupDTO>>(parLevel2.ParLevel3Group.Where(r => r.IsActive == true));
             level2.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3.GetAll()), level2.listParLevel3Level2Dto);
 
-            paramsDto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parLevel2.ParCounterXLocal);
-            level2.listParCounterXLocal = paramsDto.listParCounterXLocal;
-
-            paramsDto.parEvaluationDto = Mapper.Map<ParEvaluationDTO>(_baseParEvaluation.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id && r.IsActive == true));
-            paramsDto.parSampleDto = Mapper.Map<ParSampleDTO>(_baseParSample.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id && r.IsActive == true));
-            //paramsDto.parNotConformityRuleXLevelDto = Mapper.Map<ParNotConformityRuleXLevelDTO>(_baseParNotConformityRuleXLevel.GetAll().FirstOrDefault(r => r.ParLevel2_Id == level2.Id));
-            paramsDto.listParLevel3GroupDto = Mapper.Map<List<ParLevel3GroupDTO>>(_baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == level2.Id && r.IsActive == true).ToList());
-
-
-            paramsDto.listParLevel3GroupDto = Mapper.Map<List<ParLevel3GroupDTO>>(_baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == level2.Id && r.IsActive == true).ToList());
-
-            var vinculoLevel3Level2 = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == level3Id);
-            if (vinculoLevel3Level2 != null)
-            {
-                level2.pesoDoVinculoSelecionado = vinculoLevel3Level2.Weight;
-            }
+            if (parLevel2.ParLevel3Level2.FirstOrDefault(r=> r.ParLevel3_Id == level3Id) != null)/*Peso do vinculo*/
+                level2.pesoDoVinculoSelecionado = parLevel2.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == level3Id).Weight;
             else
-            {
                 level2.pesoDoVinculoSelecionado = 0;
-            }
 
-            //non conf
-            paramsDto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();
-            level2.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(_baseParNotConformityRuleXLevel.GetAll().Where(r => r.ParLevel2_Id == level2.Id));
-
-            //parNotConformityRuleXLevelDto
             paramsDto.parLevel2Dto = level2;
 
             return paramsDto;
@@ -344,12 +295,12 @@ namespace Dominio.Services
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel3 saveParamLevel3 = Mapper.Map<ParLevel3>(paramsDto.parLevel3Dto);
             ParLevel3Value saveParamLevel3Value = Mapper.Map<ParLevel3Value>(paramsDto.parLevel3Value);
-            List<ParRelapse> listParRelapse = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel3Dto.listParRelapseDto);
-            List<int> listParRelapseRemove = paramsDto.parLevel3Dto.removeReincidencia;
+            List<ParRelapse> listParRelapse = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel3Dto.listParRelapseDto);/*Reincidencia*/
+            //List<int> listParRelapseRemove = paramsDto.parLevel3Dto.removeReincidencia;
 
             try
             {
-                _paramsRepo.SaveParLevel3(saveParamLevel3, saveParamLevel3Value, listParRelapse, listParRelapseRemove);
+                _paramsRepo.SaveParLevel3(saveParamLevel3, saveParamLevel3Value, listParRelapse);
             }
             catch (DbUpdateException e)
             {
@@ -376,35 +327,25 @@ namespace Dominio.Services
         public ParamsDTO GetLevel3(int idParLevel3, int? idParLevel2 = 0)
         {
             ParamsDTO retorno = new ParamsDTO();
-            /*ParLevel3*/
-            var parlevel3 = _baseRepoParLevel3.GetById(idParLevel3);
+            var parlevel3 = _baseRepoParLevel3.GetById(idParLevel3);/*ParLevel3*/
             var level3 = Mapper.Map<ParLevel3DTO>(parlevel3);
-
-            if (idParLevel2 > 0)
-            {
-                var vinculoLevel3Level2 = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3);
-                if (vinculoLevel3Level2 != null)
-                {
-                    level3.pesoDoVinculo = vinculoLevel3Level2.Weight;
-                }
-                else
-                {
-                    level3.pesoDoVinculo = 0;
-                }
-            }
-
-            var parLevel3Value = Mapper.Map<ParLevel3ValueDTO>(_baseParLevel3Value.GetAll().FirstOrDefault(r => r.ParLevel3_Id == level3.Id));
-            level3.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parlevel3.ParRelapse);
-
-            level3.listGroupsLevel2 = new List<ParLevel3GroupDTO>();
+            level3.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parlevel3.ParRelapse.OrderByDescending(r => r.IsActive));/*Reincidencia*/
             level3.listGroupsLevel2 = Mapper.Map<List<ParLevel3GroupDTO>>(_baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList());
 
-            var parLevel3Level2 = _baseParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == level3.Id);
-            if (parLevel3Level2 != null)
-                level3.groupLevel2Selected = _baseParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == level3.Id).ParLevel3Group_Id;
+            if (parlevel3.ParLevel3Level2.FirstOrDefault(r => r.ParLevel2_Id == idParLevel2) != null)/*Id do grupo selecionado no vinculo Level 3 com level 2*/
+                level3.groupLevel2Selected = parlevel3.ParLevel3Level2.FirstOrDefault(r => r.ParLevel2_Id == idParLevel2).ParLevel3Group_Id;
 
-            retorno.parLevel3Dto = level3;
+            if (idParLevel2 > 0)/*Encontra peso do vinculo*/
+            {
+                if (parlevel3.ParLevel3Level2.FirstOrDefault(r=>r.ParLevel2_Id == idParLevel2) != null)
+                    level3.pesoDoVinculo = parlevel3.ParLevel3Level2.FirstOrDefault(r => r.ParLevel2_Id == idParLevel2).Weight;
+                else
+                    level3.pesoDoVinculo = 0;
+            }
+
+            var parLevel3Value = Mapper.Map<ParLevel3ValueDTO>(parlevel3.ParLevel3Value.FirstOrDefault(r => r.ParLevel3_Id == level3.Id));/*ParLevel 3 Value?*/
             retorno.parLevel3Value = parLevel3Value;
+            retorno.parLevel3Dto = level3;
 
 
             return retorno;

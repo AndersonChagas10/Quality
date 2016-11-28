@@ -1177,6 +1177,7 @@
     <Content Include="Views\Params\_RegraDeAlerta.cshtml" />
     <Content Include="Views\Params\_CounterXLevel.cshtml" />
     <Content Include="Views\Params\_ReincidenciaXLevel.cshtml" />
+    <Content Include="Views\Params\_ClusterXLevel.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
