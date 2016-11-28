@@ -2,7 +2,6 @@
 @using SgqSystem.Helpers
 
 @{
-
     var level = Model.levelControl;
     var id = "level" + Model.levelControl + "_counter_accordion";
     var id2 = "#level" + Model.levelControl + "_counter_accordion";
@@ -71,6 +70,7 @@
 
     }
 
+    atribuiLevelDivCounter();
     function getCounterObject (levelDomain, listSalvo) {
         return {
             /*Setup*/
@@ -137,9 +137,5 @@
             },
         };
     }
-
-    $(document).ready(function () {
-        atribuiLevelDivCounter();
-    });
 
 </script>

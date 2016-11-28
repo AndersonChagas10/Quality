@@ -366,7 +366,10 @@
                         </div>
                     </div>
                 </div>
-
+                
+                @{
+                    Model.levelControl = 1;
+                }
                 @Html.Partial("_CounterXLevel", Model)
 
                 @*Regra de NC*@
@@ -1311,75 +1314,6 @@
         //RemoveCabecalhoINCLUSAO: function (e) {
         //    e.parent().remove();
         //},
-    }
-
-    var CounterLevel1 = {
-        ObjCounters: [],
-        ObjCounterRemove: [],
-        SaveCounter: function (edicao) {
-            CounterLevel1.ObjCounters.push({
-                Id: null,
-                ParLocal_Id: $('#parLocal  option:selected').val(),
-                ParCounter_Id: $('#parCounter option:selected').val(),
-                ParLevel1_Id: $('#paramsDto_parLevel1Dto_Id').val(),
-                Edicao: edicao,
-                ParLocal_Name: $('#parCounter option:selected').text(),
-                ParCounter_Name: $('#parLocal option:selected').text(),
-            });
-            CounterLevel1.CreateCounterPreview();
-        },
-        CreateCounterPreview: function () {
-
-            //$('#tblPreviewCounter1 > tbody').empty();
-            $('#tblPreviewCounter1 > tbody > tr#insert').remove();
-            var objHiddenCounter = "";
-            CounterLevel1.ObjCounters.forEach(function (o, c) {
-                objHiddenCounter += '<tr id="insert" >';
-                objHiddenCounter += '<td>' + o.ParLocal_Name + '</td>';
-                objHiddenCounter += '<td>' + o.ParCounter_Name + '</td>';
-                objHiddenCounter += '<td>&nbsp;<button class="btn btn-danger btn-xs pull-right" onclick="CounterLevel1.RemoveCounter($(this), ' + c + ')"><i class=\"fa fa-times\" aria-hidden=\"true\"></button></td>';
-                objHiddenCounter += '</tr>';
-            });
-
-            $('#tblPreviewCounter1 > tbody').append(objHiddenCounter);
-
-            updateAllTables();
-
-        },
-        UpdateCounters: function () {
-
-            /*Objetos Inseridos*/
-            $('#counterHidden1').empty();
-            var objHiddenCounter = "";
-            CounterLevel1.ObjCounters.forEach(function (o, c) {
-                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParCounter_Id" type="hidden" value="' + o.ParCounter_Id + '" />'
-                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLocal_Id" type="hidden"  value="' + o.ParLocal_Id + '" />'
-                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLevel1_Id" type="hidden"  value="' + o.ParLevel1_Id + '" />'
-            });
-            $('#counterHidden1').append(objHiddenCounter);
-
-            /*Objetos removidos*/
-            $('#counterEditHidden1').empty();
-
-            var objHiddenCounter = "";
-            CounterLevel1.ObjCounterRemove.forEach(function (o, c) {
-                objHiddenCounter += '<input name="paramsDto.parLevel1Dto.removerParCounterXlocal[' + c + ']" type="hidden" value="' + o.Id + '" />'
-            });
-
-            $('#counterEditHidden1').append(objHiddenCounter);
-        },
-        RemoveCounter: function (e, c) {
-            e.parents('tr').remove();
-            CounterLevel1.ObjCounters.splice(c, 1);
-
-            updateAllTables();
-        },
-        RemoveCounterEdicao: function (e, id) {
-            //e.preventDefaut();
-            e.parents('tr').hide();
-            CounterLevel1.ObjCounterRemove.push({ Id: id })
-        },
-
     }
 
     var RegraNcL1 = {
