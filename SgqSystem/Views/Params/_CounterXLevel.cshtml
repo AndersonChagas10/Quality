@@ -1,21 +1,32 @@
 ﻿@model SgqSystem.ViewModels.ParamsViewModel
 @using SgqSystem.Helpers
 
+@{
+
+    var level = Model.levelControl;
+    var id = "level" + Model.levelControl + "_counter_accordion";
+    var id2 = "#level" + Model.levelControl + "_counter_accordion";
+    var id3 = "#level" + Model.levelControl + "_counter_collapse";
+    var id4 = "level" + Model.levelControl + "_counter_collapse";
+    var click = "ContadoresL" + Model.levelControl + ".adiciona()";
+}
+
 @*Contadores*@
-<div class="panel-group accordion" id="level1_counter_accordion">
+<div class="panel-group accordion" id="@id">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a id="changeCounterCollapse" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_counter_accordion" href="#level1_counter_collapse" aria-expanded="false"> @Resources.Resource.counters </a>
+                <a id="changeCounterCollapse" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="@id2" href="@id3" aria-expanded="false"> @Resources.Resource.counters </a>
             </h4>
         </div>
-        <div id="level1_counter_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+        <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
             <div class="panel-body">
                 <table id="camposContador" class="table-erp">
                     <tbody>
                         <tr class="row">
                             @Table.GerarColuna(@Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
-                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"ContadoresL1.adiciona(); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top
+                           , button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                         </tr>
                     </tbody>
                 </table>
@@ -39,37 +50,31 @@
 <script>
 
     var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
-
     function atribuiLevelDivCounter (){
 
+        var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto));
         var levelDomain;
         var listSalvo;
 
         if(levelControl == 1){
             levelDomain = "newLevel1Modal";
-            listSalvo = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.listParCounterXLocal));
+            listSalvo = paramsDto.parLevel1Dto.listParCounterXLocal;
             ContadoresL1 = getCounterObject(levelDomain, listSalvo);
             ContadoresL1.carregaDadosDoDb();
         }
         if(levelControl == 2){
             levelDomain = "newLevel2Modal";
-            listSalvo = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel2Dto.listParCounterXLocal));
+            listSalvo = paramsDto.parLevel2Dto.listParCounterXLocal;
             ContadoresL2 = getCounterObject(levelDomain, listSalvo);
             ContadoresL2.carregaDadosDoDb();
         }
-        if(levelControl == 3){
-            levelDomain = "newLevel3Modal";
-            ContadoresL3 = getCounterObject(levelDomain, listSalvo);
-        }
-
-        $('#' + levelDomain + ' #changeCounterCollapse').prop('data-parent', '#level' + levelDomain + '_counter_accordion');
-        $('#' + levelDomain + '#level1_counter_collapse').attr('id', $('#changeCounterCollapse').prop('data-parent'))
 
     }
 
     function getCounterObject (levelDomain, listSalvo) {
         return {
             /*Setup*/
+            levelControl: levelControl,
             idTable: 'tableContadores',
             level: levelDomain,
             listObjSalvo: listSalvo,
@@ -97,27 +102,30 @@
             },
             incluiNoObjetoParaSubmit: function(dados){
 
+                var level = this.levelControl;
                 $('#' + this.level + ' #' + this.idTable + ' > tbody > tr ').each(function(c, obj){
 
                     var o = $(obj).data();
 
                     if((o.Id != null || o.Id != undefined) && o.Id > 0){
-                        dados["paramsDto.parLevel1Dto.listParCounterXLocal[" + c + "].Id"] = o.Id;
+                        dados["paramsDto.parLevel" + level + "Dto.listParCounterXLocal[" + c + "].Id"] = o.Id;
                     }
 
-                    dados["paramsDto.parLevel1Dto.listParCounterXLocal[" + c + "].ParLocal_Id"] = o.ParLocal_Id;
-                    dados["paramsDto.parLevel1Dto.listParCounterXLocal[" + c + "].ParCounter_Id"] = o.ParCounter_Id;
-                    dados["paramsDto.parLevel1Dto.listParCounterXLocal[" + c + "].IsActive"] = o.IsActive;
+                    dados["paramsDto.parLevel" + level + "Dto.listParCounterXLocal[" + c + "].ParLocal_Id"] = o.ParLocal_Id;
+                    dados["paramsDto.parLevel" + level + "Dto.listParCounterXLocal[" + c + "].ParCounter_Id"] = o.ParCounter_Id;
+                    dados["paramsDto.parLevel" + level + "Dto.listParCounterXLocal[" + c + "].IsActive"] = o.IsActive;
 
                 });
 
             },
             carregaDadosDoDb: function(){
+                var id = this.level + ' #' + this.idTable;
+                var tdNamess = this.tdsNames;
                 if( this.listObjSalvo != null){ /*Carrega regras de NC*/
                     this.listObjSalvo.forEach(function(o, c){
                         o["ParLocalName"] = o.ParLocal.Name;
                         o["ParCounterName"] = o.ParCounter.Name;
-                        crudNxN.adiciona(o, this.level + ' #' + this.idTable, this.tdsNames);
+                        crudNxN.adiciona(o,  id, tdNamess);
                     });
                 }
             },

@@ -273,8 +273,9 @@ namespace Data.Repositories
                 AddUpdateParLevel2(paramLevel2); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
 
-                foreach(var paramNotConformityRuleXLevel in listParamNotConformityRuleXLevel)
-                    AddUpdateParNotConformityRuleXLevel(paramNotConformityRuleXLevel, 2, ParLevel2_Id: paramLevel2.Id);
+                if(listParamNotConformityRuleXLevel != null)
+                    foreach(var paramNotConformityRuleXLevel in listParamNotConformityRuleXLevel)
+                        AddUpdateParNotConformityRuleXLevel(paramNotConformityRuleXLevel, 2, ParLevel2_Id: paramLevel2.Id);
                 //db.SaveChanges();
 
                 AddUpdateParEvaluation(paramEvaluation, paramLevel2.Id);
