@@ -25,25 +25,23 @@
             <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
                 <div class="page-quick-sidebar-list" style="position: relative; overflow: hidden; width: auto; height: 563px;">
                     <div class="page-quick-sidebar-chat-users" data-rail-color="#ddd" data-wrapper-class="page-quick-sidebar-list" data-height="563" style="overflow: hidden; width: auto; height: 563px;" data-initialized="1">
-                        <h3 class="list-heading">Staff</h3>
+                        
+                    
+                    <h3 class="list-heading">Language</h3>
                         <ul class="media-list list-items">
                             <li class="media">
-                                <div class="media-status">
-                                    <span class="badge badge-success">8</span>
-                                </div>
-
-                                <div class="media-body">
-                                    <h4 class="media-heading">Bob Nilson</h4>
-                                    <div class="media-heading-sub"> Project Manager </div>
-                                </div>
+                                <a href="@Url.Action("ChangeCulture", "Home", new { language = "en" } )" id="btnEN">
+                                    <img src="@Url.Content("~/Imagens/United-States.png")" />
+                                </a>
                             </li>
                             <li class="media">
-
-                                <div class="media-body">
-                                    <h4 class="media-heading">Nick Larson</h4>
-                                    <div class="media-heading-sub"> Art Director </div>
-                                </div>
+                                <a href="@Url.Action("ChangeCulture", "Home", new { language = "pt-BR" } )" id="btnBR">
+                                    <img src="~/Imagens/Brazil.png" />
+                                </a>
                             </li>
+                        </ul>
+                        <h3 class="list-heading">Staff</h3>
+                        <ul class="media-list list-items">
                             <li class="media">
                                 <div class="media-status">
                                     <span class="badge badge-danger">3</span>

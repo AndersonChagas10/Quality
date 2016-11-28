@@ -7,7 +7,7 @@ using System.Web.Mvc;
 namespace SgqSystem.Controllers.Params
 {
     //[HandleController()]
-    public class ParamsController : Controller
+    public class ParamsController : BaseController
     {
 
         #region Construtor

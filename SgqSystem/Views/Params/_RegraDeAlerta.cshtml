@@ -1,0 +1,50 @@
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+@using SgqSystem.Helpers
+
+<div class="panel-group accordion" id="level1_nc_accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_nc_accordion" href="#level2_nc_collapse" aria-expanded="false"> @Resources.Resource.alert_rule</a>
+            </h4>
+        </div>
+        <div id="level2_nc_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+                <table class="table-erp">
+                    <tbody>
+                        <tr class="row">
+                            @Html.HiddenFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Id)
+                            @Table.GerarColuna(
+                                                @Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" })
+                                                , @Html.Label(Resources.Resource.not_conformity_rule)
+                                                , Table.PosicaoLabel.top)
+                            @Table.GerarColuna(
+                                                @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" })
+                                                , @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
+                            @Table.GerarColunaCheckbox(
+                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
+                                                , @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
+
+                        </tr>
+                    </tbody>
+                </table>
+
+                <span class="input-group-btn"><button type="button" class="btn btn-primary btn-sm" id="" onclick="RegraNc.adicionaObjNovo();"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+
+                <table id="tableRegraNc" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Regra de Alerta:">
+                    <thead>
+                        <tr>
+                            <th>Regra de Não conformidade</th>
+                            <th>Valor</th>
+                            <th>Reauditoria</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -419,15 +419,26 @@
                                     <tbody>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
-                                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"CounterLevel1.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top, button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"ContadoresL1.adiciona(); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                                         </tr>
                                     </tbody>
                                 </table>
 
-                                <div id="counterHidden1"></div>
-                                <div id="counterEditHidden1"></div>
+                                <table id="tableContadores" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Contador:">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome do contador</th>
+                                            <th>Level</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
 
-                                <table id="tblPreviewCounter1" class="table-erp table table" style="display: none;">
+                                @*<div id="counterHidden1"></div>
+                                <div id="counterEditHidden1"></div>*@
+
+                                @*<table id="tblPreviewCounter1" class="table-erp table table" style="display: none;">
                                     <thead class="thead-default">
                                         <tr>
                                             <th>@Resources.Resource.counter</th>
@@ -451,11 +462,13 @@
                                             }
                                         }
                                     </tbody>
-                                </table>
+                                </table>*@
                             </div>
                         </div>
                     </div>
                 </div>
+
+                @*  @Html.Partial("_RegraDeAlerta", Model)*@
 
                 <div class="panel-group accordion" id="level1_nc_accordion">
                     <div class="panel panel-default">
@@ -471,21 +484,21 @@
                                         <tr class="row">
                                             @Html.HiddenFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Id)
                                             @Table.GerarColuna(
-                                                @Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" })
-                                                , @Html.Label(Resources.Resource.not_conformity_rule)
-                                                , Table.PosicaoLabel.top)
+                                    @Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" })
+                                    , @Html.Label(Resources.Resource.not_conformity_rule)
+                                    , Table.PosicaoLabel.top)
                                             @Table.GerarColuna(
-                                                @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" })
-                                                , @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
+                                    @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" })
+                                    , @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
                                             @Table.GerarColunaCheckbox(
-                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
-                                                , @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
+                                    @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
+                                    , @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
 
                                         </tr>
                                     </tbody>
                                 </table>
 
-                                <span class="input-group-btn"><button type="button" class="btn btn-primary btn-sm" id="" onclick="RegraNc.adicionaObjNovo();"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                <span class="input-group-btn"><button type="button" class="btn btn-primary btn-sm" id="" onclick="RegraNcL1.adiciona();"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
 
                                 <table id="tableRegraNc" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Regra de Alerta:">
                                     <thead>
@@ -1490,120 +1503,134 @@
 
     }
 
-    var RegraNc = {
+    var RegraNcL1 = {
 
         /*Setup*/
+        level: 'ParLevel1',
         listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto)),
-        listaDeRegrasNc: [],
-        botaoInsercao: function() { 
-            return crudNxN.btnExcluir("RegraNc.listaDeRegrasNc", "RegraNc.tdsNames") + crudNxN.btnAlterar("RegraNc.listaDeRegrasNc", "RegraNc.tdsNames", "RegraNc.preparaDadosModalAlterar", "RegraNc.retornaObjetoAlterado") 
-        },
-        botaoAlteracao: function(o) {
-            var retorno =  o.IsActive ? crudNxN.btnInativa("RegraNc.listaDeRegrasNc", "RegraNc.tdsNames", "RegraNc.preparaDadosModalAlterar", "RegraNc.retornaObjetoAlterado") : crudNxN.btnReAtiva("RegraNc.listaDeRegrasNc", "RegraNc.tdsNames", "RegraNc.preparaDadosModalAlterar", "RegraNc.retornaObjetoAlterado");
-            return retorno += crudNxN.btnAlterar("RegraNc.listaDeRegrasNc", "RegraNc.tdsNames", "RegraNc.preparaDadosModalAlterar", "RegraNc.retornaObjetoAlterado");
-        },
         tdsNames: ['ParNotConformityRule_Name', 'Value', 'IsReauditShowTable', 'btn'],
-        objetoAlteracaoCorrente: {},
-        adicionaObj: function(object){
-            crudNxN.adicionaObj(RegraNc.listaDeRegrasNc, object, 'tableRegraNc', RegraNc.tdsNames);
-        },
-
-        /*Adição*/
-        adicionaObjNovo: function(isInativo){
-
+        adiciona: function() {
             /*Valida se pode criar o objeto*/
-            if($('#selectNotConformityRule :selected').val() <= 0){
+            if($('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val() <= 0){
                 alert("Por favor Selecione Regra de Não conformidade.");
                 return;
             }
 
-            if($('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
+            if($('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
                 alert("É necessário preencher o campo Valor da Regra de alerta.");
                 return;
             }
 
             /*Cria o objeto*/
             var object = {/*Objeto*/
-                ParNotConformityRule_Id: $('#selectNotConformityRule :selected').val(),
-                ParNotConformityRule_Name: $('#selectNotConformityRule :selected').text(),
-                Value: $('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
-                IsReaudit: $('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
-                IsReauditShowTable: $('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não",
+                ParNotConformityRule_Id: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val(),
+                ParNotConformityRule_Name: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').text(),
+                Value: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
+                IsReaudit: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
+                IsReauditShowTable: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não",
                 IsActive: true,
-                btn: RegraNc.botaoInsercao(),
+                //btn: crudNxN.btnRemove + crudNxN.btnEdit,
             }
 
             /*Conclui*/
-            RegraNc.adicionaObj(object);
-        },/*Ok*/
-        
-        /*Caregar Dados*/
-        carregaDadosDoDb: function(){
-            if( RegraNc.listObjSalvo != null){ /*Carrega regras de NC*/
-                RegraNc.listObjSalvo.forEach(function(o, c){
-                    o["btn"] = RegraNc.botaoAlteracao(o);
-                    o["IsReauditShowTable"] = o.IsReaudit ? "Sim" : "Não";
-                    o["ParNotConformityRule_Name"] = o.ParNotConformityRule.Name;
-                    RegraNc.adicionaObj(o);
-                });
-            }
-        },/*Ok*/
-      
-        /*Submit (prepara objetos um a um)*/
+            crudNxN.adiciona(object, RegraNcL1.level + ' #tableRegraNc', RegraNcL1.tdsNames);
+        },
         incluiNoObjetoParaSubmit: function(dados){
-            RegraNc.listaDeRegrasNc.forEach(function(o, c){
+
+            $('#' + RegraNcL1.level + ' #tableRegraNc > tbody > tr ').each(function(c, obj){
+
+                var o = $(obj).data();
+
                 if((o.Id != null || o.Id != undefined) && o.Id > 0){
                     dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].Id"] = o.Id;
                 }
+
                 dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].ParNotConformityRule_Id"] = o.ParNotConformityRule_Id;
                 dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].ParNotConformityRule_Name"] = o.ParNotConformityRule_Name;
                 dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].Value"] = o.Value;
                 dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReaudit"] = o.IsReaudit;
                 dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReauditShowTable"] = o.IsReauditShowTable;
                 dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsActive"] = o.IsActive;
+
             });
-        },/*Ok*/
-
-        /*Prepara dados para o modal de alteração*/
-        preparaDadosModalAlterar: function(obj){
-          
-            RegraNc.objetoAlteracaoCorrente = obj;
-            $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch('destroy', true);
-            var divDeEdicao = $('#level1_nc_collapse > div > table.table-erp').clone();
-            $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch();
-            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
-            $('#crudNxNEdit #selectNotConformityRule').val(obj.ParNotConformityRule_Id);
-            $("#crudNxNEdit  .check-box").bootstrapSwitch('state', obj.IsReaudit);
-            //var isChecked = $("#crudNxNEdit  .check-box").is(':checked');
-            $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(obj.Value);
-            //$('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').trigger('change');
 
         },/*Ok*/
-
-        /*Retorna objeto com dados da modal (somente atualizar os dados disponíveis na modal.*/
-        retornaObjetoAlterado: function(obj){
-
-            /*Valida se pode criar o objeto*/
-            if($('#crudNxNEdit #selectNotConformityRule :selected').val() <= 0){
-                alert("Por favor Selecione Regra de Não conformidade.");
-                return;
+        carregaDadosDoDb: function(){
+            if( RegraNcL1.listObjSalvo != null){ /*Carrega regras de NC*/
+                RegraNcL1.listObjSalvo.forEach(function(o, c){
+                    o["IsReauditShowTable"] = o.IsReaudit ? "Sim" : "Não";
+                    o["ParNotConformityRule_Name"] = o.ParNotConformityRule.Name;
+                    crudNxN.adiciona(o, RegraNcL1.level + ' #tableRegraNc', RegraNcL1.tdsNames);
+                });
             }
-
-            if($('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
-                alert("É necessário preencher o campo Valor da Regra de alerta.");
-                return;
-            }
-
-            obj.ParNotConformityRule_Id = $('#crudNxNEdit #selectNotConformityRule :selected').val();
-            obj.ParNotConformityRule_Name =  $('#crudNxNEdit #selectNotConformityRule :selected').text();
-            obj.Value =  $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val();
-            obj.IsReaudit = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked");
-            obj.IsReauditShowTable =  $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não";
         },/*Ok*/
 
     };
 
-    
+
+    var ContadoresL1 = {
+
+        /*Setup*/
+        idTable: 'tableContadores',
+        level: 'ParLevel1',
+        listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.listParCounterXLocal)),
+        tdsNames: ['ParCounterName', 'ParLocalName', 'btn'],
+        getObjAdd: function(){
+            return {/*Objeto*/
+                ParLocal_Id: $('#' + ContadoresL1.level + ' #parLocal :selected').val(),
+                ParLocalName: $('#' + ContadoresL1.level + ' #parLocal :selected').text(),
+                ParCounter_Id: $('#' + ContadoresL1.level + ' #parCounter :selected').val(),
+                ParCounterName: $('#' + ContadoresL1.level + ' #parCounter :selected').text(),
+                IsActive: true,
+            };
+        },
+        veifyAdd: function() {
+             /*Valida se pode criar o objeto*/
+            if($('#' + ContadoresL1.level + ' #parCounter :selected').val() <= 0){
+                alert("Por favor selecione o contador.");
+                return;
+            }
+
+            if($('#' + ContadoresL1.level + ' #parLocal').val() <= 0){
+                alert("Por favor selecione o local.");
+                return;
+            }
+        },
+        incluiNoObjetoParaSubmit: function(dados){
+
+            $('#' + ContadoresL1.level + ' #' + ContadoresL1.idTable + ' > tbody > tr ').each(function(c, obj){
+
+                var o = $(obj).data();
+
+                if((o.Id != null || o.Id != undefined) && o.Id > 0){
+                    dados["paramsDto.parLevel1Dto.listParCounterXLocal[" + c + "].Id"] = o.Id;
+                }
+
+                dados["paramsDto.parLevel1Dto.listParCounterXLocal[" + c + "].ParLocal_Id"] = o.ParLocal_Id;
+                dados["paramsDto.parLevel1Dto.listParCounterXLocal[" + c + "].ParCounter_Id"] = o.ParCounter_Id;
+                dados["paramsDto.parLevel1Dto.listParCounterXLocal[" + c + "].IsActive"] = o.IsActive;
+
+            });
+
+        },
+        carregaDadosDoDb: function(){
+            if( ContadoresL1.listObjSalvo != null){ /*Carrega regras de NC*/
+                ContadoresL1.listObjSalvo.forEach(function(o, c){
+                    o["ParLocalName"] = o.ParLocal.Name;
+                    o["ParCounterName"] = o.ParCounter.Name;
+                    crudNxN.adiciona(o, ContadoresL1.level + ' #' + ContadoresL1.idTable, ContadoresL1.tdsNames);
+                });
+            }
+        },
+        /*Fim Setup*/
+
+        adiciona: function() {
+            ContadoresL1.veifyAdd();
+            var object = ContadoresL1.getObjAdd();
+            crudNxN.adiciona(object, ContadoresL1.level + ' #' + ContadoresL1.idTable, ContadoresL1.tdsNames);
+        },
+
+    };
 
     $('#salvarCabecalho1').on('click', Cabecalhos.SalvaMultiplaEscolha);
     $('#salvarCabecalho2').on('click', Cabecalhos.SalvaBinario);
@@ -1709,8 +1736,8 @@
 
         $('[data-toggle="popover"]').popover();
 
-        RegraNc.carregaDadosDoDb();
-        crudNxN.functionClickSaveModalEdit(RegraNc.listaDeRegrasNc);
+        RegraNcL1.carregaDadosDoDb();
+        ContadoresL1.carregaDadosDoDb();
 
         setTimeout(function(){
             Cluster.VerificaDDl();

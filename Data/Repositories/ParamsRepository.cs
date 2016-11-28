@@ -30,7 +30,7 @@ namespace Data.Repositories
 
         #region ParLevel1
 
-        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<int> removerCluster, List<int> removeCounter, List<ParCounterXLocal> listaParCounterLocal, List<ParNotConformityRuleXLevel> listNonCoformitRule, List<ParRelapse> reincidencia, List<int> removeReincidencia)
+        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<int> removerCluster, List<ParCounterXLocal> listaParCounterLocal, List<ParNotConformityRuleXLevel> listNonCoformitRule, List<ParRelapse> reincidencia, List<int> removeReincidencia)
         {
             using (var ts = db.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
             {
@@ -85,7 +85,7 @@ namespace Data.Repositories
 
                 InativaHeadField(paramLevel1, removerHeadField);
 
-                InativaCounter(paramLevel1, removeCounter);
+                //InativaCounter(paramLevel1, removeCounter);
 
                 InativaReincidencia(removeReincidencia);
 
@@ -264,14 +264,17 @@ namespace Data.Repositories
 
         #region ParLevel2
 
-        public void SaveParLevel2(ParLevel2 paramLevel2, List<ParLevel3Group> listaParLevel3Group, List<ParCounterXLocal> listParCounterXLocal, ParNotConformityRuleXLevel paramNotConformityRuleXLevel, ParEvaluation paramEvaluation, ParSample paramSample, List<ParRelapse> listParRelapse, List<int> listParRelapseRemove)
+        public void SaveParLevel2(ParLevel2 paramLevel2, List<ParLevel3Group> listaParLevel3Group, List<ParCounterXLocal> listParCounterXLocal, List<ParNotConformityRuleXLevel> listParamNotConformityRuleXLevel, ParEvaluation paramEvaluation, ParSample paramSample, List<ParRelapse> listParRelapse, List<int> listParRelapseRemove)
         {
             using (var ts = db.Database.BeginTransaction())
             {
                 AddUpdateParLevel2(paramLevel2); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
 
-                AddUpdateParNotConformityRuleXLevel(paramNotConformityRuleXLevel, 2, ParLevel2_Id: paramLevel2.Id);
+                foreach(var paramNotConformityRuleXLevel in listParamNotConformityRuleXLevel)
+                    AddUpdateParNotConformityRuleXLevel(paramNotConformityRuleXLevel, 2, ParLevel2_Id: paramLevel2.Id);
+                //db.SaveChanges();
+
                 AddUpdateParEvaluation(paramEvaluation, paramLevel2.Id);
                 AddUpdateParSample(paramSample, paramLevel2.Id);
 
@@ -346,17 +349,19 @@ namespace Data.Repositories
 
         private void AddUpdateParNotConformityRuleXLevel(ParNotConformityRuleXLevel paramNotConformityRuleXLevel, int Level, int? ParLevel1_Id = null, int? ParLevel2_Id = null, int? ParLevel3_Id = null)
         {
-            if (ParLevel1_Id == null && ParLevel2_Id == null && ParLevel3_Id == null)
-            {
-                throw new Exception("É necessário Informar O Id do Level1 ou Level2 ou Level3");
-            }
-            paramNotConformityRuleXLevel.Level = Level;
-            paramNotConformityRuleXLevel.ParLevel2_Id = ParLevel2_Id;
+            //if (ParLevel1_Id == null && ParLevel2_Id == null && ParLevel3_Id == null)
+            //{
+            //    throw new Exception("É necessário Informar O Id do Level1 ou Level2 ou Level3");
+            //}
+            //paramNotConformityRuleXLevel.Level = Level;
+            //paramNotConformityRuleXLevel.ParLevel2_Id = ParLevel2_Id;
 
-            paramNotConformityRuleXLevel.ParLevel1_Id = ParLevel1_Id;
+            //paramNotConformityRuleXLevel.ParLevel1_Id = ParLevel1_Id;
             paramNotConformityRuleXLevel.ParLevel2_Id = ParLevel2_Id;
-            paramNotConformityRuleXLevel.ParLevel3_Id = ParLevel3_Id;
-
+            //paramNotConformityRuleXLevel.ParLevel3_Id = ParLevel3_Id;
+            
+            //MOCK
+            paramNotConformityRuleXLevel.ParCompany_Id = 1;
             if (paramNotConformityRuleXLevel.Id == 0)
             {
                 db.ParNotConformityRuleXLevel.Add(paramNotConformityRuleXLevel);

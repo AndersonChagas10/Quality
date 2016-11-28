@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
-    public class ChartsController : Controller
+    public class ChartsController : BaseController
     {
         #region Constructor
 
