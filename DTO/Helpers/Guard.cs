@@ -1,4 +1,5 @@
 ﻿using DTO.BaseEntity;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -252,6 +253,21 @@ namespace DTO.Helpers
         }
 
         #endregion
+
+        public static T DeserializaJson<T>(string json)
+        {
+            return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        public static string ToJson(object value)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+            return JsonConvert.SerializeObject(value, Formatting.Indented, settings);
+        }
 
         public static List<SelectListItem> CreateDropDownList<T>(IEnumerable<T> enumerable)
         {
