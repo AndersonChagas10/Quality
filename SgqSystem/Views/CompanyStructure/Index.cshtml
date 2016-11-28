@@ -1,21 +1,8 @@
-﻿@model SgqSystem.ViewModels.ParamsViewModel
-@using SgqSystem.Helpers
+﻿@using SgqSystem.Helpers
 
 @{
 
-    ViewBag.Title = Resources.Resource.customization;
-    //URL relativa
-    var url1 = Url.Action("AddUpdateLevel1", "api/ParamsApi");
-    var url2 = Url.Action("AddUpdateLevel2", "api/ParamsApi");
-    var url3 = Url.Action("AddUpdateLevel3", "api/ParamsApi");
-    var urlGetLevel1 = Url.Action("GetParLevel1ById", "api/ParamsApi");
-    var urlGetLevel2 = Url.Action("GetParLevel2ById", "api/ParamsApi");
-    var urlGetLevel3 = Url.Action("GetParLevel3ById", "api/ParamsApi");
-    var vinculoL2L3 = Url.Action("AddVinculoL3L2", "api/ParamsApi");
-    var vinculoL1L2 = Url.Action("AddVinculoL1L2", "api/ParamsApi");
-
-    var removeLevel3Group = Url.Action("RemoveParLevel3Group", "api/ParamsApi");
-    var AddLevel3Group = Url.Action("AddUpdateParLevel3Group", "api/ParamsApi");
+    ViewBag.Title = @Resources.Resource.company_register;
 
     Layout = null;
 
@@ -41,23 +28,7 @@
     <link href="~/Scripts/theme/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Scripts/theme/css/layout.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
-
-    @*<style type="text/css">
-        #camposCabecalhoIncluidos > th, #camposCabecalhoIncluidos > td {
-            text-align: center;
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-
-        #camposCabecalhoIncluidos > table.dataTable {
-            margin: 0;
-            clear: both;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-    </style>*@
-
-
+    
 </head>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo">
@@ -87,8 +58,8 @@
                     <!-- BEGIN PAGE HEADER-->
                     <!-- BEGIN PAGE TITLE-->
                     <h1 class="page-title">
-                        @Resources.Resource.customization
-                        <small>Construct data collection screen</small>
+                        @Resources.Resource.company_register
+                        <small>@Resources.Resource.register_company_and_its_structure</small>
                     </h1>
                     <!-- END PAGE TITLE-->
                     <!-- BEGIN PAGE BAR -->
@@ -118,13 +89,8 @@
                                 <div class="portlet-title tabbable-line">
                                     <div class="caption">
                                         <i class="icon-share font-dark"></i>
-                                        <span class="caption-subject font-dark bold uppercase">@Resources.Resource.customization</span>
-                                    </div>
-                                    <ul class="nav nav-tabs">
-                                        <li class="active">
-                                            <a href="#setup_tab" data-toggle="tab" aria-expanded="true"> Setup </a>
-                                        </li>
-                                    </ul>
+                                        <span class="caption-subject font-dark bold uppercase">@Resources.Resource.company_register</span>
+                                    </div>  
                                 </div>
                                 <div class="portlet-body">
                                     <div class="tab-content">
@@ -134,7 +100,7 @@
                                                     <button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button>
                                                 </div>
                                                 <div class="col-xs-9">
-                                                    @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })
+                                                    @*@Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })*@
                                                 </div>
                                                 <hr />
                                             </div>
@@ -148,7 +114,7 @@
                                                     <div id="level1_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
                                                             <div id="ParLevel1">
-                                                                @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
+                                                                @*@Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)*@
                                                             </div>
                                                         </div>
                                                     </div>
@@ -161,7 +127,7 @@
                                                 </div>
                                                 <div class="col-xs-9" id="partialSelectLevel2">
                                                     @*@Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control", @id = "parLevel2Select2" })*@
-                                                    @Html.Partial("~/Views/Params/_SelectBoxLevel2.cshtml", Model)
+                                                    @*@Html.Partial("~/Views/Params/_SelectBoxLevel2.cshtml", Model)*@
                                                 </div>
                                                 <hr />
                                             </div>
@@ -182,7 +148,7 @@
                                                     <div id="level2_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
                                                             <div id="ParLevel2">
-                                                                @Html.Partial("~/Views/Params/_ParLevel2.cshtml", Model)
+                                                                @*@Html.Partial("~/Views/Params/_ParLevel2.cshtml", Model)*@
                                                             </div>
                                                         </div>
                                                     </div>
@@ -195,7 +161,7 @@
                                                 </div>
                                                 <div class="col-xs-9" id="partialSelectLevel3">
                                                     @*@Html.DropDownList("paramsDto.parLevel3Selected", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control", @id = "parLevel3Select2" })*@
-                                                    @Html.Partial("~/Views/Params/_SelectBoxLevel3.cshtml", Model)
+                                                    @*@Html.Partial("~/Views/Params/_SelectBoxLevel3.cshtml", Model)*@
                                                 </div>
                                                 <hr />
                                             </div>
@@ -218,41 +184,121 @@
                                                     <div id="level3_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
                                                             <div id="ParLevel3">
-                                                                @Html.Partial("~/Views/Params/_ParLevel3.cshtml", Model)
+                                                                @*@Html.Partial("~/Views/Params/_ParLevel3.cshtml", Model)*@
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            @*<div class="panel-group accordion" id="level3level2_accordion">
-                                                    <div class="panel panel-success">
-                                                        <div class="panel-heading">
-                                                            <h4 class="panel-title">
-                                                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3level2_accordion" href="#level3level2_collapse" aria-expanded="false"> Vinculo Level3 com Level 2 </a>
-                                                            </h4>
-                                                        </div>
-                                                        <div id="level3level2_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                                            <div class="panel-body">
-                                                                <div id="ParLevel3level2">
-                                                                    <table class="table-erp">
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                @Table.GerarColuna(@Html.Label("Nivel 2"), @Html.Label("Nivel 2 Label"), Table.PosicaoLabel.top, null, null)
-                                                                                @Table.GerarColuna(@Html.Label("Nivel 3"), @Html.Label("Nivel 3 Label"), Table.PosicaoLabel.top, null, null)
-                                                                                @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Level2.Weight, new { @class = "form-control input-sm" }), @Html.Label("Peso"), Table.PosicaoLabel.top, null, null)
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td colspan="3"><button>Ok</button></td>
-                                                                            </tr>
+                                        </div>
 
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
+                                    </div>
+                                </div>
+                                <div class="portlet-title tabbable-line">
+                                    <div class="caption">
+                                        <i class="icon-share font-dark"></i>
+                                        <span class="caption-subject font-dark bold uppercase">@Resources.Resource.company_register</span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="setup_tab">
+                                            <div class="row">
+                                                <div class="col-xs-3">
+                                                    <button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button>
+                                                </div>
+                                                <div class="col-xs-9">
+                                                    @*@Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })*@
+                                                </div>
+                                                <hr />
+                                            </div>
+                                            <div class="panel-group accordion" id="level1_accordion">
+                                                <div class="panel panel-info">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_accordion" href="#level1_collapse" aria-expanded="false" id="level1Title">  </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="level1_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                        <div class="panel-body">
+                                                            <div id="ParLevel1">
+                                                                @*@Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)*@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>*@
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-xs-3">
+                                                    <button class="btn btn-warning btn-block" id="btnNewLevel2">@Resources.Resource.new_level2</button>
+                                                </div>
+                                                <div class="col-xs-9" id="partialSelectLevel2">
+                                                    @*@Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control", @id = "parLevel2Select2" })*@
+                                                    @*@Html.Partial("~/Views/Params/_SelectBoxLevel2.cshtml", Model)*@
+                                                </div>
+                                                <hr />
+                                            </div>
+                                            <div class="panel-group accordion" id="level2_accordion">
+                                                <div class="panel panel-warning">
+                                                    <div class="panel-heading">
+                                                        <div class="row panel-title">
+                                                            <div class="col-xs-8">
+                                                                <h4 class="panel-title">
+                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_accordion" href="#level2_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.level2 </a>
+                                                                </h4>
+                                                            </div>
+                                                            <div class="col-xs-4">
+                                                                <button id="vinculoLevel1" class="btn btn-warning pull-right" style="height: 42px;" title="Vincular ao Level 1"><span class="glyphicon glyphicon-link"></span></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="level2_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                        <div class="panel-body">
+                                                            <div id="ParLevel2">
+                                                                @*@Html.Partial("~/Views/Params/_ParLevel2.cshtml", Model)*@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-xs-3">
+                                                    <button class="btn btn-danger btn-block" id="btnNewLevel3">@Resources.Resource.new_level3</button>
+                                                </div>
+                                                <div class="col-xs-9" id="partialSelectLevel3">
+                                                    @*@Html.DropDownList("paramsDto.parLevel3Selected", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control", @id = "parLevel3Select2" })*@
+                                                    @*@Html.Partial("~/Views/Params/_SelectBoxLevel3.cshtml", Model)*@
+                                                </div>
+                                                <hr />
+                                            </div>
+                                            <div class="panel-group accordion" id="level3_accordion">
+                                                <div class="panel panel-danger">
+
+                                                    <div class="panel-heading">
+
+                                                        <div class="row panel-title">
+                                                            <div class="col-xs-8">
+                                                                <h4 class="panel-title">
+                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false" id="level3Title"> @Resources.Resource.level3 </a>
+                                                                </h4>
+                                                            </div>
+                                                            <div class="col-xs-4">
+                                                                <button id="vinculoLevel2" class="btn btn-danger pull-right" style="height: 42px;" title="Vincular ao Level 2" onclick="saveLevel3Level2()"><span class="glyphicon glyphicon-link"></span></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="level3_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                        <div class="panel-body">
+                                                            <div id="ParLevel3">
+                                                                @*@Html.Partial("~/Views/Params/_ParLevel3.cshtml", Model)*@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </div>
 
@@ -335,6 +381,45 @@
     </div>
 
     <script>
+
+        var monthNames = [
+           '@Resources.Resource.january',
+           '@Resources.Resource.february',
+           '@Resources.Resource.march',
+           '@Resources.Resource.april',
+           '@Resources.Resource.may',
+           '@Resources.Resource.june',
+           '@Resources.Resource.july',
+           '@Resources.Resource.august',
+           '@Resources.Resource.september',
+           '@Resources.Resource.october',
+           '@Resources.Resource.november',
+           '@Resources.Resource.december'];
+
+        function twoDigits(str) {
+            str = ("000" + str).slice(-2);
+            return str;
+        }
+
+        function watcher() {
+
+            var date = new Date();
+            var day = date.getDate();
+            var monthIndex = date.getMonth();
+            var year = date.getFullYear();
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
+
+            $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
+
+            setTimeout(watcher, 1000);
+        }
+
+        watcher();
+    </script>
+
+    @*<script>
         /*
             Serializa objeto usando bind de property Name
             $('form').serializeObject();
@@ -425,12 +510,12 @@
             },
             btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
             funcEdit: function(e) {
-                
+
                 $('#crudNxNEdit > div > div > div.modal-body').empty();
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').off('click');
                 var obj = $(e).parents('tr').data();
 
-               
+
     /*RegraNc*/ if($(e).parents('#level1_nc_accordion').length || $(e).parents('#level2_nc_accordion').length || $(e).parents('#level3_nc_accordion').length ){
                     crudNxN.modalAlterarRegraNc(obj);
                     $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function(){
@@ -453,9 +538,9 @@
                         $('#crudNxNEdit').modal('hide');
                     });
                 }
-                
 
-                
+
+
 
 
                 /*Reincidencia*/
@@ -466,9 +551,9 @@
             },
 
             modalAlterarRegraNc: function(obj){
-          
+
                 $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch('destroy', true);
-    
+
                 var divDeEdicao = $('#level1_nc_collapse > div > table.table-erp').clone();
                 $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
 
@@ -477,7 +562,7 @@
                 $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(obj.Value);
 
                 $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch();
-           
+
             },/*Ok*/
             retornaObjetoAlteradoRegraNc: function(obj){
 
@@ -502,7 +587,7 @@
             },/*Ok*/
 
             modalAlterarContadores: function(obj){
-    
+
                 var divDeEdicao = $('#camposContador').clone();
                 $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
 
@@ -511,7 +596,7 @@
 
             },
             retornaObjetoAlteradoContadores: function(obj){
-               
+
                 /*Valida se pode criar o objeto*/
                 if($('#crudNxNEdit #parCounter :selected').val() <= 0){
                     alert("Por favor selecione o contador.");
@@ -522,7 +607,7 @@
                     alert("Por favor selecione o local.");
                     return;
                 }
-                
+
                 obj.ParLocal_Id = $('#crudNxNEdit #parLocal :selected').val();
                 obj.ParLocalName =  $('#crudNxNEdit #parLocal :selected').text();
                 obj.ParCounter_Id = $('#crudNxNEdit #parCounter :selected').val();
@@ -887,7 +972,7 @@
             removing_the_level3_group : @Html.Raw(Json.Encode(@Resources.Resource.removing_the_level3_group)),
 
             enviarDadosParaApi: function (e) {
-                
+
                 $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val("0");
 
                 $("form").each(function () { $.data($(this)[0], 'validator', false); });
@@ -1318,8 +1403,9 @@
 
 
 
-    </script>
+    </script>*@
 
 
 </body>
 </html>
+
