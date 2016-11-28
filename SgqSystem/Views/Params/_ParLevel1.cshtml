@@ -66,6 +66,9 @@
                     </tbody>
                 </table>
 
+                @{
+                    Model.levelControl = 1;
+                }
                 @*Clusters*@
                 <div class="panel-group accordion" id="level1_cluster_accordion">
                     <div class="panel panel-default">
@@ -367,9 +370,6 @@
                     </div>
                 </div>
                 
-                @{
-                    Model.levelControl = 1;
-                }
                 @Html.Partial("_CounterXLevel", Model)
 
                 @*Regra de NC*@
@@ -420,56 +420,8 @@
                     </div>
                 </div>
                 
-                @*Reincidencia*@
-                <div class="panel-group accordion" id="level1_repetition_accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_repetition_accordion" href="#level1_repetition_collapse" aria-expanded="false"> @Resources.Resource.repetition</a>
-                            </h4>
-                        </div>
-                        <div id="level1_repetition_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <table class="table-erp" id="camposRencidencia">
-                                    <tbody>
-                                        <tr class="row">
-
-                                            @Table.GerarColuna(
-                                                @Html.TextBox("inputNumeroNC", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number", @Id = "l1InputNumeroNC" })
-                                                , @Html.Label(Resources.Resource.number_nc)
-                                                , Table.PosicaoLabel.top)
-
-                                            @Table.GerarColuna(
-                                                @Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number", @Id = "l1InputVigencia" })
-                                                , @Html.Label(Resources.Resource.validation)
-                                                , Table.PosicaoLabel.top)
-
-                                            @Table.GerarColunaButton(
-                                                @Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "l1SelectFrequenciaReincidencia", @class = "form-control input-sm" })
-                                                , @Html.Label(Resources.Resource.frequency)
-                                                , Table.PosicaoLabel.top
-                                                , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"l1BtnAddFrequenciaReincidencia\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <table id="tableReincidencia" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Reincidencia:">
-                                    <thead>
-                                        <tr>
-                                            <th>@Resources.Resource.rule</th>
-                                            <th>@Resources.Resource.number_nc</th>
-                                            <th>@Resources.Resource.validation</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @Html.Partial("_ReincidenciaXLevel", Model)
+              
 
                 <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
@@ -1380,99 +1332,6 @@
 
     };
 
-
-
-    var ReincidenciaL1 = {
-        /*
-         public int? ParLevel1_Id { get; set; }
-        public int? ParLevel2_Id { get; set; }
-        public int? ParLevel3_Id { get; set; }
-        public int ParFrequency_Id { get; set; }
-        public int NcNumber { get; set; }
-        public int EffectiveLength { get; set; }
-        public bool IsActive { get; set; } = true;
-
-        public ParFrequencyDTO parFrequency { get; set; }
-        public ParLevel1DTO parLevel1 { get; set; }
-        public ParLevel2DTO parLevel2 { get; set; }
-        public ParLevel3DTO parLevel3 { get; set; }
-        */
-
-        /*Setup*/
-        idTable: 'tableReincidencia',
-        level: 'ParLevel1',
-        listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.listParRelapseDto)),
-        tdsNames: ['parFrequencyName','NcNumber', 'EffectiveLength',  'btn'],
-        getObjAdd: function(isEdit, obj){
-            if(isEdit != undefined){
-                obj.ParFrequency_Id = $('#' + isEdit + ' #selectFrequenciaReincidencia :selected').val();
-                obj.parFrequencyName = $('#' + isEdit + ' #selectFrequenciaReincidencia :selected').text();
-                obj.NcNumber = $('#' + isEdit + ' #inputNumeroNC').val();
-                obj.EffectiveLength = $('#' + isEdit + ' #inputVigencia').val();
-                return obj;
-            }else{
-                return {/*Objeto*/
-                    ParFrequency_Id: $('#' + ReincidenciaL1.level + ' #selectFrequenciaReincidencia :selected').val(),
-                    parFrequencyName: $('#' + ReincidenciaL1.level + ' #selectFrequenciaReincidencia :selected').text(),
-                    NcNumber: $('#' + ReincidenciaL1.level + ' #inputNumeroNC').val(),
-                    EffectiveLength: $('#' + ReincidenciaL1.level + ' #inputVigencia').val(),
-                    IsActive: true,
-                };
-            }
-
-        },
-        veifyAdd: function(isEdit) {
-            var seletorTato = !!isEdit ? isEdit : ReincidenciaL1.level;
-            /*Valida se pode criar o objeto*/
-            if($('#' + seletorTato + ' #selectFrequenciaReincidencia :selected').val() <= 0){
-                alert("Por favor selecione a frequência.");
-                return;
-            }
-
-            if($('#' + seletorTato + ' #inputNumeroNC').val().replace(/[^0-9.]/g, '') == ""){
-                alert("Por preencha o numero de não conformidades.");
-                return;
-            }
-
-            if($('#' + seletorTato + ' #inputVigencia').val().replace(/[^0-9.]/g, '') == ""){
-                alert("Por favor preencha a vigência.");
-                return;
-            }
-        },
-        incluiNoObjetoParaSubmit: function(dados){
-
-            $('#' + ReincidenciaL1.level + ' #' + ReincidenciaL1.idTable + ' > tbody > tr ').each(function(c, obj){
-
-                var o = $(obj).data();
-
-                if((o.Id != null || o.Id != undefined) && o.Id > 0){
-                    dados["paramsDto.parLevel1Dto.listParRelapseDto[" + c + "].Id"] = o.Id;
-                }
-
-                dados["paramsDto.parLevel1Dto.listParRelapseDto[" + c + "].ParFrequency_Id"] = o.ParFrequency_Id;
-                dados["paramsDto.parLevel1Dto.listParRelapseDto[" + c + "].NcNumber"] = o.NcNumber;
-                dados["paramsDto.parLevel1Dto.listParRelapseDto[" + c + "].EffectiveLength"] = o.EffectiveLength;
-                dados["paramsDto.parLevel1Dto.listParRelapseDto[" + c + "].IsActive"] = o.IsActive;
-
-            });
-
-        },
-        carregaDadosDoDb: function(){
-            if( ReincidenciaL1.listObjSalvo != null){ /*Carrega regras de NC*/
-                ReincidenciaL1.listObjSalvo.forEach(function(o, c){
-                    o["parFrequencyName"] = o.parFrequency.Name;
-                    crudNxN.adiciona(o, ReincidenciaL1.level + ' #' + ReincidenciaL1.idTable, ReincidenciaL1.tdsNames);
-                });
-            }
-        },
-        /*Fim Setup*/
-
-        adiciona: function() {
-            ReincidenciaL1.veifyAdd();
-            var object = ReincidenciaL1.getObjAdd();
-            crudNxN.adiciona(object, ReincidenciaL1.level + ' #' + ReincidenciaL1.idTable, ReincidenciaL1.tdsNames);
-        },
-    };
 
     var ClustersL1 = {
         /*

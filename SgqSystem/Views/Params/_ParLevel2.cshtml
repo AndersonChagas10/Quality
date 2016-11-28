@@ -180,95 +180,12 @@
                     </div>
                 </div>
 
-                @*<div class="panel-group accordion" id="level2_nc_accordion">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_nc_accordion" href="#level2_nc_collapse" aria-expanded="false"> @Resources.Resource.alert_rule</a>
-                                </h4>
-                            </div>
-                            <div id="level2_nc_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                <div class="panel-body">
-                                    <table class="table-erp">
-                                        <tbody>
-                                            <tr class="row">
-                                                @Table.GerarColuna(@Html.DropDownList("paramsDto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.not_conformity_rule), Table.PosicaoLabel.top)
-                                                @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
-                                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>*@
-
-                @*Reincidencia*@
-                <div class="panel-group accordion" id="level2_repetition_accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_repetition_accordion" href="#level2_repetition_collapse" aria-expanded="false"> @Resources.Resource.repetition</a>
-                            </h4>
-                        </div>
-                        <div id="level2_repetition_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <table class="table-erp">
-                                    <tbody>
-                                        <tr class="row">
-                                            @Table.GerarColuna(
-         @Html.TextBox("inputNumeroNC", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number", @Id = "l2InputNumeroNC" })
-         , @Html.Label(Resources.Resource.number_nc)
-         , Table.PosicaoLabel.top)
-
-                                            @Table.GerarColuna(
-         @Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number", @Id = "l2InputVigencia" })
-         , @Html.Label(Resources.Resource.validation)
-         , Table.PosicaoLabel.top)
-
-                                            @Table.GerarColunaButton(
-         @Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "l2SelectFrequenciaReincidencia", @class = "form-control input-sm" })
-         , @Html.Label(Resources.Resource.frequency)
-         , Table.PosicaoLabel.top
-         , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"l2BtnAddFrequenciaReincidencia\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class="table-erp table table-condensed" id="l2TableRepetition" style="display: none;">
-                                    <thead>
-                                        <tr>
-                                            <td>@Resources.Resource.rule</td>
-                                            <td>@Resources.Resource.number_nc</td>
-                                            <td>@Resources.Resource.validation</td>
-                                            <td colspan="2">@Resources.Resource.frequency</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr id="RegraReincidenciaGroup" class="example"></tr>
-                                        @if (Model.paramsDto.parLevel2Dto.listParRelapseDto != null)
-                                        {
-                                            int i = 0;
-                                            foreach (var rp in Model.paramsDto.parLevel2Dto.listParRelapseDto)
-                                            {
-                                                i++;
-                                        <tr id="@rp.Id" class="existent">
-                                            <td>Regra @i</td>
-                                            <td>@rp.NcNumber</td>
-                                            <td>@rp.EffectiveLength</td>
-                                            <td>@rp.parFrequency.Name</td>
-                                            <td>
-                                                @Html.Hidden("paramsDto.parLevel2Dto.removeReincidencia", rp.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                <button type="button" class="btn btn-danger btn-xs pull-right" onclick="l2RemoveReincidencia($(this))" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                            </td>
-                                        </tr>
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @{
+                    Model.levelControl = 2;
+                }
+                
+                @Html.Partial("_ReincidenciaXLevel", Model)
+               
 
                 <table class="table-erp">
                     <tbody>
@@ -280,9 +197,7 @@
                     </tbody>
                 </table>
 
-                @{
-                    Model.levelControl = 2;
-                } 
+                
                 @Html.Partial("_CounterXLevel", Model)
 
                 <button type="button" id="btnSaveNewLevel2" data-loading-text="@Resources.Resource.saving_the_level2" onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-warning">@Resources.Resource.save_level2</button>

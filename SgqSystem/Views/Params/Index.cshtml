@@ -456,15 +456,15 @@
                     });
                 }
                 /*Reincidencia*/
-                else if($(e).parents('#level1_counter_accordion').length || $(e).parents('#level1_counter_accordion').length || $(e).parents('#level1_counter_accordion').length ){
+                else if($(e).parents('#level1_reincidencia_accordion').length || $(e).parents('#level2_reincidencia_accordion').length || $(e).parents('#level3_reincidencia_accordion').length ){
                     crudNxN.modalAlterarReincidencia(obj);//
                     $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function(){
                         var editado = crudNxN.retornaObjetoAlteradoReincidencia(obj);//
                         $(e).parents('tr').removeData();
                         $(e).parents('tr').data(editado);
-                        $($(e).parents('tr').find('td')[0]).html(editado.parFrequencyName)//
-                        $($(e).parents('tr').find('td')[1]).html(editado.NcNumber)//
+                        $($(e).parents('tr').find('td')[0]).html(editado.NcNumber)//
                         $($(e).parents('tr').find('td')[1]).html(editado.EffectiveLength)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.parFrequencyName)//
                         $('#crudNxNEdit').modal('hide');
                     });
                 }
@@ -556,6 +556,7 @@
                 /*Valida se pode criar o objeto*/
                 ReincidenciaL1.veifyAdd('crudNxNEdit')
                 ReincidenciaL1.getObjAdd('crudNxNEdit', obj);
+                return obj;
             },
 
             modalAlterarCluster: function(obj){
@@ -792,6 +793,7 @@
                     var dados = $('#newLevel1Modal > form').serializeObject();
                     RegraNcL1.incluiNoObjetoParaSubmit(dados);
                     ContadoresL1.incluiNoObjetoParaSubmit(dados);
+                    ReincidenciaL1.incluiNoObjetoParaSubmit(dados);
 
                     //openLoader();
 
@@ -943,6 +945,7 @@
                     var dados = $('#newLevel2Modal > form').serializeObject();
                     RegraNcL2.incluiNoObjetoParaSubmit(dados);
                     ContadoresL2.incluiNoObjetoParaSubmit(dados);
+                    ReincidenciaL2.incluiNoObjetoParaSubmit(dados);
 
                     //openLoader(indexParamsLevel2.saving_the_level2);
                     $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
@@ -1090,6 +1093,7 @@
                     //Cluster.UpdateCounter();
                     //Counter.UpdateCounters();
                     var dados = $('#newLevel3Modal > form').serializeObject();
+                    ReincidenciaL3.incluiNoObjetoParaSubmit(dados);
 
                     if(dados['paramsDto.parLevel3Value.IntervalMax'] != undefined && dados['paramsDto.parLevel3Value.IntervalMax'] != null)
                         dados['paramsDto.parLevel3Value.IntervalMax'] = dados['paramsDto.parLevel3Value.IntervalMax'].replace(',', '.');

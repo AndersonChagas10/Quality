@@ -53,71 +53,12 @@
                     </tr>
                 </table>
 
-                <div class="panel-group accordion margin-top" id="level3_repetition_accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_repetition_accordion" href="#level3_repetition_collapse" aria-expanded="false"> @Resources.Resource.repetition</a>
-                            </h4>
-                        </div>
-                        <div id="level3_repetition_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <table class="table-erp">
-                                    <tbody>
-                                        <tr class="row">
-                                            @Table.GerarColuna(
-                                                @Html.TextBox("inputNumeroNC", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number", @Id = "l3InputNumeroNC" })
-                                                , @Html.Label(Resources.Resource.number_nc)
-                                                , Table.PosicaoLabel.top)
 
-                                            @Table.GerarColuna(
-                                                @Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number", @Id = "l3InputVigencia" })
-                                                , @Html.Label(Resources.Resource.validation)
-                                                , Table.PosicaoLabel.top)
+                @{
+                    Model.levelControl = 3;
+                }
 
-                                            @Table.GerarColunaButton(
-                                                @Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "l3SelectFrequenciaReincidencia", @class = "form-control input-sm" })
-                                                , @Html.Label(Resources.Resource.frequency)
-                                                , Table.PosicaoLabel.top
-                                                , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"l3BtnAddFrequenciaReincidencia\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class="table-erp table table-condensed" id="l3TableRepetition">
-                                    <thead>
-                                        <tr>
-                                            <td>@Resources.Resource.rule</td>
-                                            <td>@Resources.Resource.number_nc</td>
-                                            <td>@Resources.Resource.validation</td>
-                                            <td colspan="2">@Resources.Resource.frequency</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr id="RegraReincidenciaGroup" class="example"></tr>
-                                        @if (Model.paramsDto.parLevel3Dto.listParRelapseDto != null)
-                                        {
-                                            int i = 0;
-                                            foreach (var rp in Model.paramsDto.parLevel3Dto.listParRelapseDto)
-                                            {
-                                                i++;
-                                                <tr id="@rp.Id" class="existent">
-                                                    <td>Regra @i</td>
-                                                    <td>@rp.NcNumber</td>
-                                                    <td>@rp.EffectiveLength</td>
-                                                    <td>@rp.parFrequency.Name</td>
-                                                    <td>
-                                                        @Html.Hidden("paramsDto.parLevel3Dto.removeReincidencia", rp.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                        <button type="button" class="btn btn-danger btn-xs pull-right" onclick="l3RemoveReincidencia($(this))" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @Html.Partial("_ReincidenciaXLevel", Model)
 
                 <div class="panel panel-default margin-top">
                     <div class="panel-heading"><h4 style="margin: 0px; padding: 10px 15px;">@Resources.Resource.weight</h4></div>
@@ -196,34 +137,7 @@
             </div>
         </div>
 
-        @*<!-- Modal -->
-        <div class="modal fade" id="modalPontos" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">@Resources.Resource.weight</h4>
-                    </div>
-                    <div class="modal-body">
-                        <small>@Resources.Resource.inform_the_weight_of_the_level3</small>
-                        @Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.pesoDoVinculo, new { @class = "form-control input-sm" })
-                        <small>Grupo do level2</small>
-                        @Html.DropDownListFor(m => m.paramsDto.parLevel3Dto.listGroupsLevel2, new SelectList(Model.paramsDto.parLevel3Dto.listGroupsLevel2, dataValueField:"Id", dataTextField:"Name" ), "Selecione...", new { @class = "form-control input-sm" })
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="saveLevel3Level2()" id="savePontos">@Resources.Resource.attach</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.back</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>*@
-
-
     }
-
 
 </div>
 <script>
@@ -320,34 +234,7 @@
     function level03ValueIntervalWriter(valueMin, valueMax) {
         return "O valor aceitável deve ser menor que " + valueMin + " e maior que " + valueMax;
     }
-    //$(document).on('input', '#parLevel3Value_IntervalMax', function (e) {
-    //    parIntervalosTypeCreate();
-
-    //    //se os dois campos estão nulos
-    //    if($(this).val() == "" && $('#parLevel3Value_IntervalMin').val() == "")
-    //    {
-    //        //ocultamos
-    //        $('#ParIntervalosLabel').text("").parents('tr').fadeIn();
-    //        return true;
-    //    }
-    //        //se o primeiro campo está vazio e o segundo não
-    //    else if($(this).val() == "" && $('#parLevel3Value_IntervalMin').val() != "")
-    //    {
-    //        $('#parLevel3Value_IntervalMin').trigger('input');
-    //        return true;
-    //    }
-    //        //Se o segundo campo está vazio
-    //    else if($('#parLevel3Value_IntervalMin').val() == "")
-    //    {
-    //        $('#ParIntervalosLabel').text("O valor aceitável deve ser igual ou menor que " + $(this).val()).parents('tr').fadeIn();
-    //    }
-    //        //se os dois campos estão preenchidos
-    //    else
-    //    {
-    //        $('#ParIntervalosLabel').text(level03ValueIntervalWriter($('#parLevel3Value_IntervalMin').val(), $(this).val())).parents('tr').fadeIn();
-    //    }
-    //});
-   
+  
     function parIntervalosTypeCreate() {
 
         var value = "";
