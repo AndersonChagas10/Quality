@@ -82,7 +82,6 @@ namespace DTO.DTO.Params
 
         #region Props utilizadas para alteração
 
-        public List<ParLevel1XClusterDTO> clustersInclusos { get; set; }
         public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }
         public List<int> removerParHeaderField { get; set; }
         public List<int> removerParCluster { get; set; }
@@ -92,6 +91,7 @@ namespace DTO.DTO.Params
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
 
         /*Props novas*/
+        public List<ParLevel1XClusterDTO> listLevel1XClusterDto { get; set; }
         public List<ParLevel3Level2Level1DTO> listParLevel3Level2Level1Dto { get; set; }
         public List<ParCounterXLocalDTO> listParCounterXLocal { get; set; }
 

@@ -1175,6 +1175,7 @@
     <Content Include="Views\HtmlTeste\_IndexTeste_old.cshtml" />
     <Content Include="Views\Language\Index.cshtml" />
     <Content Include="Views\Params\_RegraDeAlerta.cshtml" />
+    <Content Include="Views\Params\_CounterXLevel.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
