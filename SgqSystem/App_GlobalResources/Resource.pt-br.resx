@@ -645,4 +645,19 @@
   <data name="structure_register" xml:space="preserve">
     <value>Cadastro de estrutura</value>
   </data>
+  <data name="saving" xml:space="preserve">
+    <value>Salvando</value>
+  </data>
+  <data name="structure_group" xml:space="preserve">
+    <value>Estrutura do Grupo</value>
+  </data>
+  <data name="company" xml:space="preserve">
+    <value>Empresa</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>Descrição</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
 </root>

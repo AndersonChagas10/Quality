@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
 using Dominio;
-using DTO.DTO;
 using DTO.DTO.Params;
 
 namespace SgqSystem.Mappers
 {
-    public class UnitUserMapperProfile : Profile
+    public class ParCompanyStructureMapperProfile : Profile
     {
-        public UnitUserMapperProfile()
+        public ParCompanyStructureMapperProfile()
         {
-            CreateMap<ParCompanyStructure, ParCompanyStructureDTO>();
             CreateMap<ParCompanyStructureDTO, ParCompanyStructure>();
+            CreateMap<ParCompanyStructure, ParCompanyStructureDTO>();
         }
     }
 }

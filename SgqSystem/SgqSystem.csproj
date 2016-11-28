@@ -268,11 +268,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.pt-br.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Resource1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -314,7 +309,7 @@
     <Compile Include="Controllers\Api\NewSync\NewSyncController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\CompanyStructureController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
     <Compile Include="Controllers\Exemplo\HtmlTesteController.cs" />
     <Compile Include="Controllers\Globalization\GlobalizationController.cs" />
@@ -346,6 +341,9 @@
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParStructureGroupMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyStructureMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCriticalLevelMapperProfile.cs" />
@@ -412,6 +410,7 @@
     <Compile Include="ViewModels\IdentityModels.cs" />
     <Compile Include="ViewModels\ColetaViewModel.cs" />
     <Compile Include="ViewModels\ContextExampleViewModel.cs" />
+    <Compile Include="ViewModels\CompanyViewModel.cs" />
     <Compile Include="ViewModels\ParamsViewModel.cs" />
     <Compile Include="ViewModels\ReportsCorrectiveActionViewModel.cs" />
     <Compile Include="ViewModels\ReqController.cs" />
@@ -1181,9 +1180,12 @@
     <Content Include="Views\HtmlTeste\_IndexTeste_old.cshtml" />
     <Content Include="Views\Language\Index.cshtml" />
     <Content Include="Views\Params\_RegraDeAlerta.cshtml" />
-    <Content Include="Views\CompanyStructure\Index.cshtml" />
+    <Content Include="Views\Company\Index.cshtml" />
     <Content Include="Views\Params\_CounterXLevel.cshtml" />
     <Content Include="Views\Params\_ReincidenciaXLevel.cshtml" />
+    <Content Include="Views\Company\StructureGroup.cshtml" />
+    <Content Include="Views\Company\Company.cshtml" />
+    <Content Include="Views\Company\Structure.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1249,7 +1251,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63128</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
