@@ -1183,6 +1183,7 @@
     <Content Include="Views\Company\Index.cshtml" />
     <Content Include="Views\Params\_CounterXLevel.cshtml" />
     <Content Include="Views\Params\_ReincidenciaXLevel.cshtml" />
+    <Content Include="Views\Params\_ClusterXLevel.cshtml" />
     <Content Include="Views\Company\StructureGroup.cshtml" />
     <Content Include="Views\Company\Company.cshtml" />
     <Content Include="Views\Company\Structure.cshtml" />

@@ -39,10 +39,23 @@ namespace Data.Repositories
 
                 //Clusters
                 if (listaParLevel1XCluster != null)
-                {
                     foreach (var Level1XCluster in listaParLevel1XCluster)
-                        SalvaLevel1XCluster(Level1XCluster, paramLevel1.Id); /*Salva NxN Level1XCluster*/
-                }
+                        SalvaLevel1XCluster(Level1XCluster, paramLevel1.Id);
+
+                //Counters
+                if (listaParCounterLocal != null)
+                    foreach (var counterDoLevel1 in listaParCounterLocal)
+                        SalvaCounterLocalDoLevel1(paramLevel1, counterDoLevel1);
+
+                //Alerta (Regra de NC)
+                if (listNonCoformitRule != null)
+                    foreach (var nonCoformitRule in listNonCoformitRule)
+                        SaveNonConformityRule(nonCoformitRule, paramLevel1.Id);
+
+                //Reincidencia
+                if (reincidencia != null)
+                    foreach(var parRelapse in reincidencia)
+                        SaveReincidencia(parRelapse, paramLevel1.Id);
 
                 //Header Fields
                 if (listaParHeadField != null)
@@ -62,34 +75,7 @@ namespace Data.Repositories
                     }
                 }
 
-                //Counters
-                if (listaParCounterLocal != null)
-                {
-                    foreach (var counterDoLevel1 in listaParCounterLocal)
-                        SalvaCounterLocalDoLevel1(paramLevel1, counterDoLevel1);
-                }
-
-                //Alerta (Regra de NC)
-                if (listNonCoformitRule != null)
-                {
-                    foreach (var nonCoformitRule in listNonCoformitRule)
-                        SaveNonConformityRule(nonCoformitRule, paramLevel1.Id);
-                }
-
-                //Reincidencia
-                if (reincidencia != null)
-                {
-                    foreach(var parRelapse in reincidencia)
-                        SaveReincidencia(parRelapse, paramLevel1.Id);
-                }
-
-                //InativaCluster(paramLevel1, removerCluster);
-
                 InativaHeadField(paramLevel1, removerHeadField);
-
-                //InativaCounter(paramLevel1, removeCounter);
-
-                //InativaReincidencia(removeReincidencia);
 
                 ts.Commit();
             }
@@ -266,7 +252,7 @@ namespace Data.Repositories
 
         #region ParLevel2
 
-        public void SaveParLevel2(ParLevel2 paramLevel2, List<ParLevel3Group> listaParLevel3Group, List<ParCounterXLocal> listParCounterXLocal, List<ParNotConformityRuleXLevel> listParamNotConformityRuleXLevel, ParEvaluation paramEvaluation, ParSample paramSample, List<ParRelapse> listParRelapse, List<int> listParRelapseRemove)
+        public void SaveParLevel2(ParLevel2 paramLevel2, List<ParLevel3Group> listaParLevel3Group, List<ParCounterXLocal> listParCounterXLocal, List<ParNotConformityRuleXLevel> listParamNotConformityRuleXLevel, ParEvaluation paramEvaluation, ParSample paramSample, List<ParRelapse> listParRelapse)
         {
             using (var ts = db.Database.BeginTransaction())
             {
@@ -276,36 +262,21 @@ namespace Data.Repositories
                 if(listParamNotConformityRuleXLevel != null)
                     foreach(var paramNotConformityRuleXLevel in listParamNotConformityRuleXLevel)
                         AddUpdateParNotConformityRuleXLevel(paramNotConformityRuleXLevel, 2, ParLevel2_Id: paramLevel2.Id);
-                //db.SaveChanges();
 
                 AddUpdateParEvaluation(paramEvaluation, paramLevel2.Id);
                 AddUpdateParSample(paramSample, paramLevel2.Id);
 
                 if (listaParLevel3Group != null)
-                {
                     foreach (var Level3Group in listaParLevel3Group)
-                    {
                         AddUpdateParLevel3Group(Level3Group, paramLevel2.Id); /*Salva NxN Level1XCluster*/
-                    }
 
-                }
                 if (listParCounterXLocal != null)
-                {
-
                     foreach (var ParCounterXLocal in listParCounterXLocal)
-                    {
                         AddUpdateParCounterXLocal(ParCounterXLocal, paramLevel2.Id); /*Salva NxN Level1XCluster*/
-                    }
-                }
-                if (listParRelapse != null)
-                {
-                    foreach (var ParRelapse in listParRelapse)
-                    {
-                        AddUpdateParRelapse(ParRelapse, paramLevel2.Id); /*Salva NxN Level1XCluster*/
-                    }
-                }
 
-                InativaReincidencia(listParRelapseRemove);
+                if (listParRelapse != null)
+                    foreach (var ParRelapse in listParRelapse)
+                        AddUpdateParRelapse(ParRelapse, paramLevel2.Id); /*Salva NxN Level1XCluster*/
 
                 db.SaveChanges();
                 ts.Commit();
@@ -450,23 +421,22 @@ namespace Data.Repositories
         /// </summary>
         /// <param name="paramLevel3"></param>
         /// <param name="paramLevel3Value"></param>
-        public void SaveParLevel3(ParLevel3 paramLevel3, ParLevel3Value paramLevel3Value, List<ParRelapse> listParRelapse, List<int> listParRelapseRemove)
+        public void SaveParLevel3(ParLevel3 paramLevel3, ParLevel3Value paramLevel3Value, List<ParRelapse> listParRelapse)
         {
             using (var ts = db.Database.BeginTransaction())
             {
                 AddUpdateParLevel3(paramLevel3); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
 
-                InativaReincidencia(listParRelapseRemove);
-
                 AddUpdateParLevel3Value(paramLevel3Value, paramLevel3.Id);
                 db.SaveChanges();
-                ts.Commit();
 
                 if (listParRelapse != null)
                     foreach (var parRelapse in listParRelapse)
                        SaveReincidenciaLevel3(parRelapse, paramLevel3.Id);
 
+                db.SaveChanges();
+                ts.Commit();
             }
         }
 

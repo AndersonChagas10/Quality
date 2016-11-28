@@ -132,8 +132,13 @@
                     </div>
                 </div>
 
+
+                @{
+                    Model.levelControl = 2;
+                }
+
                 @*/*Regra de alerta*/*@
-                 <div class="panel-group accordion" id="level2_nc_accordion">
+                <div class="panel-group accordion" id="level2_nc_accordion">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -179,15 +184,10 @@
                         </div>
                     </div>
                 </div>
-
-                @{
-                    Model.levelControl = 2;
-                }
-                
                 @Html.Partial("_ReincidenciaXLevel", Model)
-               
+                @Html.Partial("_CounterXLevel", Model)
 
-                <table class="table-erp">
+                @*<table class="table-erp">
                     <tbody>
                         <tr class="row hide">
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Id, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
@@ -195,10 +195,7 @@
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.ParCompany_Id, new { @Value = "1", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
                         </tr>
                     </tbody>
-                </table>
-
-                
-                @Html.Partial("_CounterXLevel", Model)
+                </table>*@
 
                 <button type="button" id="btnSaveNewLevel2" data-loading-text="@Resources.Resource.saving_the_level2" onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-warning">@Resources.Resource.save_level2</button>
             </div>

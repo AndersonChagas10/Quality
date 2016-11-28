@@ -73,20 +73,16 @@ namespace DTO.DTO.Params
         //[Display(Name = "?IsActive ", ResourceType = typeof(Resource))]
         public bool IsActive { get; set; } = true;
 
-        public ParConsolidationTypeDTO parConsolidationTypeDto { get; set; }
         public ParFrequencyDTO parFrequencyDto { get; set; }
-        public List<ParLevel1XHeaderFieldDTO> parLevel1HeaderFieldDto { get; set; }
+        public ParConsolidationTypeDTO parConsolidationTypeDto { get; set; }
         public ParNotConformityRuleXLevelDTO parNotConformityRuleXLevelDto { get; set; }
+        public List<ParLevel1XHeaderFieldDTO> parLevel1HeaderFieldDto { get; set; }
         public List<ParNotConformityRuleXLevelDTO> listParNotConformityRuleXLevelDto { get; set; }
-
 
         #region Props utilizadas para alteração
 
         public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }
         public List<int> removerParHeaderField { get; set; }
-        public List<int> removerParCluster { get; set; }
-        public List<int> removerParCounterXlocal { get; set; }
-        public List<int> removeReincidencia { get; set; }
         public List<ParCounterXLocalDTO> contadoresIncluidos { get; set; }
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
 

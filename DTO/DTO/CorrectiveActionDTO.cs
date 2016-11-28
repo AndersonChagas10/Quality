@@ -17,6 +17,7 @@ namespace DTO.DTO
         public string level01Name { get; set; }
         public int Level01Id { get; set; }
         public int Level02Id { get; set; }
+        public UnitDTO Unit { get; set; }
 
         public int AuditorId { get; set; }
         public int CollectionLevel02Id { get; set; }
