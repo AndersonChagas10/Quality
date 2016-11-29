@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Dominio;
 using DTO.DTO;
-using DTO.DTO.Params;
 
 namespace SgqSystem.Mappers
 {
@@ -9,8 +8,8 @@ namespace SgqSystem.Mappers
     {
         public UnitUserMapperProfile()
         {
-            CreateMap<ParCompanyXStructure, ParCompanyXStructureDTO>();
-            CreateMap<ParCompanyXStructureDTO, ParCompanyXStructure>();
+            CreateMap<UnitUser, UnitUserDTO>();
+            CreateMap<UnitUserDTO, UnitUser>();
         }
     }
 }
