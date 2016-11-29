@@ -7,7 +7,7 @@ namespace SgqSystem.Controllers
     /// <summary>
     /// Controller para aprendizagem do sistema.
     /// </summary>
-    public class ExampleController : Controller
+    public class ExampleController : BaseController
     {
         [HandleController()]
         public ActionResult Index()

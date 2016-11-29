@@ -4,77 +4,79 @@
     ViewBag.Title = "ParLeve2";
     var url = Url.Action("AddUpdateLevel2", "api/ParamsApi"); //URL relativa
     var urlGetLevel1 = Url.Action("GetParLevel2ById", "api/ParamsApi"); //URL relativa
+    Model.levelControl = 2;
 }
 <div id="newLevel2Modal">
     @using (Html.BeginForm())
     {
         <div class="row">
             <div class="col-lg-12">
+
                 <table class="table-erp">
                     <tbody>
                         <tr class="row hide">
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Id
-                                    , new { @class = "form-control input-sm" })
-                                    , @Html.Label(Resources.Resource.level2)
-                                    , Table.PosicaoLabel.top
-                                    , null, null)
+             , new { @class = "form-control input-sm" })
+             , @Html.Label(Resources.Resource.level2)
+             , Table.PosicaoLabel.top
+             , null, null)
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" })
-                                    , @Html.Label(Resources.Resource.level2)
-                                    , Table.PosicaoLabel.top
-                                    , null
-                                    , null)
+             , @Html.Label(Resources.Resource.level2)
+             , Table.PosicaoLabel.top
+             , null
+             , null)
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" })
-                                   , @Html.Label(Resources.Resource.level2)
-                                   , Table.PosicaoLabel.top
-                                   , null
-                                   , null)
+            , @Html.Label(Resources.Resource.level2)
+            , Table.PosicaoLabel.top
+            , null
+            , null)
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.ParCompany_Id, htmlAttributes: new { @Value = "1" })
-                                   , @Html.Label(Resources.Resource.level2)
-                                   , Table.PosicaoLabel.top
-                                   , null
-                                   , null)
+            , @Html.Label(Resources.Resource.level2)
+            , Table.PosicaoLabel.top
+            , null
+            , null)
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Level, htmlAttributes: new { @Value = "2" })
-                                   , @Html.Label(Resources.Resource.level2)
-                                   , Table.PosicaoLabel.top
-                                   , null
-                                   , null)
+            , @Html.Label(Resources.Resource.level2)
+            , Table.PosicaoLabel.top
+            , null
+            , null)
                         </tr>
                         <tr class="row">
 
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Name, new { @class = "form-control input-sm" })
-                                    , @Html.Label(Resources.Resource.level2_name)
-                                    , Table.PosicaoLabel.top
-                                    , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Name, null, new { @class = "text-danger" }))
+             , @Html.Label(Resources.Resource.level2_name)
+             , Table.PosicaoLabel.top
+             , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Name, null, new { @class = "text-danger" }))
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Description, new { @class = "form-control input-sm" })
-                                   , @Html.Label(Resources.Resource.level2_description)
-                                   , Table.PosicaoLabel.top
-                                   , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Description, null, new { @class = "text-danger" }))
+            , @Html.Label(Resources.Resource.level2_description)
+            , Table.PosicaoLabel.top
+            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Description, null, new { @class = "text-danger" }))
 
                         </tr>
                         <tr class="row">
 
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.Number, new { @class = "form-control input-sm", type = "number", min = "0" })
-                                   , @Html.Label(Resources.Resource.evaluation)
-                                   , Table.PosicaoLabel.top
-                                   , error: @Html.ValidationMessageFor(m => m.paramsDto.parEvaluationDto.Number, null, new { @class = "text-danger" }))
+            , @Html.Label(Resources.Resource.evaluation)
+            , Table.PosicaoLabel.top
+            , error: @Html.ValidationMessageFor(m => m.paramsDto.parEvaluationDto.Number, null, new { @class = "text-danger" }))
 
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.Number, new { @class = "form-control input-sm", type = "number", min = "0" })
-                                   , @Html.Label(Resources.Resource.samples_per_evaluation)
-                                   , Table.PosicaoLabel.top
-                                   , error: @Html.ValidationMessageFor(m => m.paramsDto.parSampleDto.Number, null, new { @class = "text-danger" }))
+            , @Html.Label(Resources.Resource.samples_per_evaluation)
+            , Table.PosicaoLabel.top
+            , error: @Html.ValidationMessageFor(m => m.paramsDto.parSampleDto.Number, null, new { @class = "text-danger" }))
 
                         </tr>
                         <tr class="row">
 
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParDepartment_Id", Model.paramsDdl.DdlParDepartment, htmlAttributes: new { @class = "form-control input-sm" })
-                                   , @Html.Label(Resources.Resource.department)
-                                   , Table.PosicaoLabel.top
-                                   , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParDepartment_Id, null, new { @class = "text-danger" }))
+            , @Html.Label(Resources.Resource.department)
+            , Table.PosicaoLabel.top
+            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParDepartment_Id, null, new { @class = "text-danger" }))
 
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm" })
-                                   , @Html.Label(Resources.Resource.frequency)
-                                   , Table.PosicaoLabel.top
-                                   , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
+            , @Html.Label(Resources.Resource.frequency)
+            , Table.PosicaoLabel.top
+            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
 
                         </tr>
                         <tr class="row">
@@ -89,49 +91,9 @@
                     </tbody>
                 </table>
 
-                <div class="panel-group accordion" id="level2_group_accordion" style="display: none">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_group_accordion" href="#level2_group_collapse" aria-expanded="false"> @Resources.Resource.groups</a>
-                            </h4>
-                        </div>
-                        <div id="level2_group_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <table class="table-erp">
+                @Html.Partial("_GroupXLevel", Model)
 
-                                    <tbody>
-                                        <tr>
-                                            @Table.GerarColunaButton(@Html.TextBox("inputParLevel03Name", null, htmlAttributes: new { @Id = "inputParLevel03Name", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"btnParLevel03GroupInsert\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class="table-erp table table-condensed" id="tableLevel3Group">
-                                    <thead>
-                                        <tr>
-                                            <th>Nome do Grupo</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (Model.paramsDto.listParLevel3GroupDto != null)
-                                        {
-                                            foreach (var lg in Model.paramsDto.listParLevel3GroupDto)
-                                            {
-                                                <tr id="@lg.Id">
-                                                    <td>@lg.Name</td>
-                                                    <td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoveLevel3GroupAdded"><i class="fa fa-times" aria-hidden="true"></i></button></td>
-
-                                                </tr>
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                @*/*Regra de alerta*/*@
                 <div class="panel-group accordion" id="level2_nc_accordion">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -144,85 +106,46 @@
                                 <table class="table-erp">
                                     <tbody>
                                         <tr class="row">
-                                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" }), @Html.Label(Resources.Resource.not_conformity_rule), Table.PosicaoLabel.top)
-                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" }), @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
-                                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
+                                            @Html.HiddenFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Id)
+                                            @Table.GerarColuna(
+         @Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" })
+         , @Html.Label(Resources.Resource.not_conformity_rule)
+         , Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(
+         @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" })
+         , @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
+                                            @Table.GerarColunaCheckbox(
+             @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
+             , @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
+
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                @*Reincidencia*@
-                <div class="panel-group accordion" id="level2_repetition_accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_repetition_accordion" href="#level2_repetition_collapse" aria-expanded="false"> @Resources.Resource.repetition</a>
-                            </h4>
-                        </div>
-                        <div id="level2_repetition_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <table class="table-erp">
-                                    <tbody>
-                                        <tr class="row">
-                                            @Table.GerarColuna(
-                                                @Html.TextBox("inputNumeroNC", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number", @Id = "l2InputNumeroNC" })
-                                                , @Html.Label(Resources.Resource.number_nc)
-                                                , Table.PosicaoLabel.top)
+                                <span class="input-group-btn"><button type="button" class="btn btn-primary btn-sm" id="" onclick="RegraNcL2.adiciona();"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
 
-                                            @Table.GerarColuna(
-                                                @Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number", @Id = "l2InputVigencia" })
-                                                , @Html.Label(Resources.Resource.validation)
-                                                , Table.PosicaoLabel.top)
-
-                                            @Table.GerarColunaButton(
-                                                @Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @Id = "l2SelectFrequenciaReincidencia", @class = "form-control input-sm" })
-                                                , @Html.Label(Resources.Resource.frequency)
-                                                , Table.PosicaoLabel.top
-                                                , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"l2BtnAddFrequenciaReincidencia\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class="table-erp table table-condensed" id="l2TableRepetition" style="display: none;">
+                                <table id="tableRegraNc" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Regra de Alerta:">
                                     <thead>
                                         <tr>
-                                            <td>@Resources.Resource.rule</td>
-                                            <td>@Resources.Resource.number_nc</td>
-                                            <td>@Resources.Resource.validation</td>
-                                            <td colspan="2">@Resources.Resource.frequency</td>
+                                            <th>Regra de Não conformidade</th>
+                                            <th>Valor</th>
+                                            <th>Reauditoria</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr id="RegraReincidenciaGroup" class="example"></tr>
-                                        @if (Model.paramsDto.parLevel2Dto.listParRelapseDto != null)
-                                        {
-                                            int i = 0;
-                                            foreach (var rp in Model.paramsDto.parLevel2Dto.listParRelapseDto)
-                                            {
-                                                i++;
-                                                <tr id="@rp.Id" class="existent">
-                                                    <td>Regra @i</td>
-                                                    <td>@rp.NcNumber</td>
-                                                    <td>@rp.EffectiveLength</td>
-                                                    <td>@rp.parFrequency.Name</td>
-                                                    <td>
-                                                        @Html.Hidden("paramsDto.parLevel2Dto.removeReincidencia", rp.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                        <button type="button" class="btn btn-danger btn-xs pull-right" onclick="l2RemoveReincidencia($(this))" id="btnRemoverFrequenciaReincidencia"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-                                    </tbody>
+                                    <tbody></tbody>
                                 </table>
+
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <table class="table-erp">
+                @Html.Partial("_ReincidenciaXLevel", Model)
+
+                @Html.Partial("_CounterXLevel", Model)
+
+                @*<table class="table-erp">
                     <tbody>
                         <tr class="row hide">
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Id, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
@@ -230,65 +153,8 @@
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.ParCompany_Id, new { @Value = "1", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
                         </tr>
                     </tbody>
-                </table>
+                </table>*@
 
-                <div class="panel-group accordion" id="level2_counter_accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_counter_accordion" href="#level2_counter_collapse" aria-expanded="false"> @Resources.Resource.counters</a>
-                            </h4>
-                        </div>
-                        <div id="level2_counter_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <table id="camposContador" class="table-erp">
-                                    <tbody>
-                                        <tr class="row">
-                                            @Table.GerarColuna(@Html.DropDownList("selectCounter", Model.paramsDdl.DdlParCounter_Level2, htmlAttributes: new { @class = "form-control input-erp input-sm", @id = "selectCounter" })
-                                           , @Html.Label(Resources.Resource.counter)
-                                           , Table.PosicaoLabel.top
-                                           , null
-                                           , null)
-
-                                            @Table.GerarColunaButton(@Html.DropDownList("selectLocal", Model.paramsDdl.DdlParLocal_Level2, htmlAttributes: new { @class = "form-control input-erp input-sm", @id = "selectLocal" })
-                                           , @Html.Label(Resources.Resource.local)
-                                           , Table.PosicaoLabel.top
-                                           , button: "<button id=\"btnSaveCounter\" type=\"button\" onclick=\"CounterLevel2.SaveCounter(false); \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-
-                                <div id="counterHidden2"></div>
-                                <div id="counterEditHidden2"></div>
-
-                                <table id="tblPreviewCounter2" class="table-erp table table" style="display: none">
-                                    <thead>
-                                        <tr>
-                                            <th>@Resources.Resource.counter</th>
-                                            <th>@Resources.Resource.local</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (Model.paramsDto.listParCounterXLocal != null)
-                                        {
-                                            foreach (var cl in Model.paramsDto.listParCounterXLocal)
-                                            {
-                                                <tr id="@cl.Id">
-                                                    <td>@cl.ParCounter.Name </td>
-                                                    <td>@cl.ParLocal.Name</td>
-                                                    <td>&nbsp;<button type="button" class="btn btn-danger btn-xs pull-right" onclick="CounterLevel2.RemoveCounterEdicao($(this), @cl.Id)"><i class="fa fa-times" aria-hidden="true"></i></button></td>
-                                                </tr>
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <button type="button" id="btnSaveNewLevel2" data-loading-text="@Resources.Resource.saving_the_level2" onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-warning">@Resources.Resource.save_level2</button>
             </div>
         </div>
@@ -297,11 +163,75 @@
 
 <script>
 
+    var RegraNcL2 = {
+
+        /*Setup*/
+        level: 'ParLevel2',
+        listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto)),
+        tdsNames: ['ParNotConformityRule_Name', 'Value', 'IsReauditShowTable', 'btn'],
+        adiciona: function() {
+            /*Valida se pode criar o objeto*/
+            if($('#' + RegraNcL2.level + ' #selectNotConformityRule :selected').val() <= 0){
+                alert("Por favor Selecione Regra de Não conformidade.");
+                return;
+            }
+
+            if($('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
+                alert("É necessário preencher o campo Valor da Regra de alerta.");
+                return;
+            }
+
+            /*Cria o objeto*/
+            var object = {/*Objeto*/
+                ParNotConformityRule_Id: $('#' + RegraNcL2.level + ' #selectNotConformityRule :selected').val(),
+                ParNotConformityRule_Name: $('#' + RegraNcL2.level + ' #selectNotConformityRule :selected').text(),
+                Value: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
+                IsReaudit: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
+                IsReauditShowTable: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não",
+                IsActive: true,
+                //btn: crudNxN.btnRemove + crudNxN.btnEdit,
+            }
+
+            /*Conclui*/
+            crudNxN.adiciona(object, RegraNcL2.level + ' #tableRegraNc', RegraNcL2.tdsNames);
+        },
+        incluiNoObjetoParaSubmit: function(dados){
+
+            $('#' + RegraNcL2.level + ' #tableRegraNc > tbody > tr ').each(function(c, obj){
+
+                var o = $(obj).data();
+
+                if((o.Id != null || o.Id != undefined) && o.Id > 0){
+                    dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].Id"] = o.Id;
+                }
+
+                dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].ParNotConformityRule_Id"] = o.ParNotConformityRule_Id;
+                dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].ParNotConformityRule_Name"] = o.ParNotConformityRule_Name;
+                dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].Value"] = o.Value;
+                dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReaudit"] = o.IsReaudit;
+                dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReauditShowTable"] = o.IsReauditShowTable;
+                dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].IsActive"] = o.IsActive;
+
+            });
+
+        },/*Ok*/
+        carregaDadosDoDb: function(){
+            if( RegraNcL2.listObjSalvo != null){ /*Carrega regras de NC*/
+                RegraNcL2.listObjSalvo.forEach(function(o, c){
+                    o["IsReauditShowTable"] = o.IsReaudit ? "Sim" : "Não";
+                    o["ParNotConformityRule_Name"] = o.ParNotConformityRule.Name;
+                    crudNxN.adiciona(o, RegraNcL2.level + ' #tableRegraNc', RegraNcL2.tdsNames);
+                });
+            }
+        },/*Ok*/
+
+    };
+
     $('#paramsDto_parLevel2Dto_HasGroupLevel3').on('switchChange.bootstrapSwitch', function (event, state) {
         if (state) {
-            $('#level2_group_accordion').fadeIn();
+            $('#level2_GroupLevel_accordion').fadeIn();
         } else {
-            $('#level2_group_accordion').fadeOut();
+            $('#level2_GroupLevel_accordion').fadeOut();
         }
     });
 
@@ -332,74 +262,6 @@
 
     });
 
-    var CounterLevel2 = {
-        ObjCounters: [],
-        ObjCounterRemove: [],
-        SaveCounter: function (edicao) {
-            CounterLevel2.ObjCounters.push({
-                Id: null,
-                ParLocal_Id: $('#selectLocal  option:selected').val(),
-                ParCounter_Id: $('#selectCounter option:selected').val(),
-                ParLevel1_Id: $('#paramsDto_parLevel2Dto_Id').val(),
-                Edicao: edicao,
-                ParLocal_Name: $('#selectLocal option:selected').text(),
-                ParCounter_Name: $('#selectCounter option:selected').text(),
-            });
-            CounterLevel2.CreateCounterPreview();
-        },
-        CreateCounterPreview: function () {
-
-            //$('#tblPreviewCounter2 > tbody').empty();
-            $('#tblPreviewCounter2 > tbody > tr#insert').remove();
-            var objHiddenCounter = "";
-            CounterLevel2.ObjCounters.forEach(function (o, c) {
-                objHiddenCounter += '<tr id="insert" >';
-                objHiddenCounter += '<td>' + o.ParCounter_Name + '</td>';
-                objHiddenCounter += '<td>' + o.ParLocal_Name + '</td>';
-                objHiddenCounter += '<td>&nbsp;<button type="button" class="btn btn-danger btn-xs pull-right" onclick="CounterLevel2.RemoveCounter($(this), ' + c + ')"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button></td>';
-                objHiddenCounter += '</tr>';
-            });
-
-            $('#tblPreviewCounter2 > tbody').append(objHiddenCounter);
-
-            updateAllTables();
-        },
-        UpdateCounters: function () {
-
-            /*Objetos Inseridos*/
-            $('#counterHidden2').empty();
-            var objHiddenCounter = "";
-            CounterLevel2.ObjCounters.forEach(function (o, c) {
-                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParCounter_Id" type="hidden" value="' + o.ParCounter_Id + '" />'
-                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLocal_Id" type="hidden"  value="' + o.ParLocal_Id + '" />'
-                objHiddenCounter += '<input name="paramsDto.listParCounterXLocal[' + c + '].ParLevel2_Id" type="hidden"  value="' + o.ParLevel1_Id + '" />'
-            });
-            $('#counterHidden2').append(objHiddenCounter);
-
-            /*Objetos removidos*/
-            $('#counterEditHidden2').empty();
-
-            var objHiddenCounter = "";
-            CounterLevel2.ObjCounterRemove.forEach(function (o, c) {
-                objHiddenCounter += '<input name="paramsDto.parLevel2Dto.removerParCounterXlocal[' + c + ']" type="hidden" value="' + o.Id + '" />'
-            });
-
-            $('#counterEditHidden2').append(objHiddenCounter);
-        },
-        RemoveCounter: function (e, c) {
-            e.parents('tr').remove();
-            CounterLevel2.ObjCounters.splice(c, 1);
-
-            updateAllTables();
-        },
-        RemoveCounterEdicao: function (e, id) {
-            //e.preventDefaut();
-            e.parents('tr').hide();
-
-            CounterLevel2.ObjCounterRemove.push({ Id: id })
-        },
-
-    }
 
     $('#btnParLevel03GroupInsert').click(function (e) {
         e.preventDefault();
@@ -512,7 +374,6 @@
 
         updateAllTables();
     });
-    /*Fim Submit Level1*/
 
     $(document).ready(function () {
 
@@ -534,7 +395,16 @@
         ///initialize form
         initialFormLevel2 = $($('form')[1]).clone();
 
+
+        RegraNcL2.carregaDadosDoDb();
+
         $('[data-toggle="popover"]').popover();
+
+        if ($('#paramsDto_parLevel2Dto_HasGroupLevel3').is(':checked')) {
+            $('#level2_GroupLevel_accordion').fadeIn();
+        } else {
+            $('#level2_GroupLevel_accordion').fadeOut();
+        }
     });
 
 </script>

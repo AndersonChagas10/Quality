@@ -7,7 +7,7 @@ using System.Web.Mvc;
 namespace SgqSystem.Controllers.Params
 {
     //[HandleController()]
-    public class ParamsController : Controller
+    public class ParamsController : BaseController
     {
 
         #region Construtor
@@ -34,34 +34,35 @@ namespace SgqSystem.Controllers.Params
 
         public ActionResult GetParLevel1ById(int id)
         {
+            ViewModel.levelControl = 1;
             if (id == -1)/*Retorna View Vazia*/
                 return PartialView("_ParLevel1", ViewModel);
 
             ViewModel.paramsDto.parLevel1Dto = _paramDomain.GetLevel1(id);
-            /*Retorna View com Model ParLevel1 encontrado no DB.*/
-            return PartialView("_ParLevel1", ViewModel);
+            return PartialView("_ParLevel1", ViewModel);/*Retorna View com Model ParLevel1 encontrado no DB.*/
         }
 
         public ActionResult GetParLevel2ById(int level2Id, int? level3Id)
         {
+            ViewModel.levelControl = 2;
             if (level2Id <= 0) /*Retorna View Vazia*/
                 return PartialView("_ParLevel2", ViewModel);
 
             var viewModelPreenchido = ViewModel;
             viewModelPreenchido.paramsDto = _paramDomain.GetLevel2(level2Id, level3Id);
-            /*Retorna View com Model ParLevel2 encontrado no DB.*/
-            return PartialView("_ParLevel2", viewModelPreenchido);
+
+            return PartialView("_ParLevel2", viewModelPreenchido);/*Retorna View com Model ParLevel2 encontrado no DB.*/
         }
 
         public ActionResult GetParLevel3ById(int id, int? idParLevel2 = 0)
         {
+            ViewModel.levelControl = 3;
             if (id <= 0) /*Retorna View Vazia*/
                 return PartialView("_ParLevel3", ViewModel);
 
             var viewModelPreenchido = ViewModel;
             viewModelPreenchido.paramsDto = _paramDomain.GetLevel3(id, idParLevel2);
-            /*Retorna View com Model ParLevel3 encontrado no DB.*/
-            return PartialView("_ParLevel3", viewModelPreenchido);
+            return PartialView("_ParLevel3", viewModelPreenchido); /*Retorna View com Model ParLevel3 encontrado no DB.*/
         }
 
         #endregion

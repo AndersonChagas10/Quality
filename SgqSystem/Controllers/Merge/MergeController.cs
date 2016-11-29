@@ -4,7 +4,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
-    public class MergeController : Controller
+    public class MergeController : BaseController
     {
 
         #region Construtor e atributos

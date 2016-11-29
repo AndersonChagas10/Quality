@@ -2,7 +2,7 @@
 
 namespace SgqSystem.Controllers
 {
-    public class FileControlController : Controller
+    public class FileControlController : BaseController
     {
         // GET: FileControl
         public ActionResult Index()

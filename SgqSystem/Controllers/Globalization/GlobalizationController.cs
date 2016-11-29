@@ -1,8 +1,5 @@
-﻿using Dominio;
-using Dominio.Interfaces.Services;
-using DTO.DTO.Params;
+﻿using Dominio.Interfaces.Services;
 using SgqSystem.ViewModels;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using System.Web.Mvc;
@@ -10,7 +7,7 @@ using System.Web.Routing;
 
 namespace SgqSystem.Controllers.Globalization
 {
-    public class GlobalizationController : Controller
+    public class GlobalizationController : BaseController
     {
         #region Construtor
 

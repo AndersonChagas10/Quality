@@ -2,7 +2,7 @@
 
 namespace SgqSystem.Controllers
 {
-    public class AccesDeniedController : Controller
+    public class AccesDeniedController : BaseController
     {
         // GET: AccerDenied
         public ActionResult Index()

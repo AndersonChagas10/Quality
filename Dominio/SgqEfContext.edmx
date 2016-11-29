@@ -37,20 +37,31 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="ObjectJson" Type="text" Nullable="false" />
-          <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="CollectionDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="IsFullSaved" Type="bit" Nullable="false" />
-          <Property Name="level01_Id" Type="int" />
-          <Property Name="level02_Id" Type="int" />
           <Property Name="Unit_Id" Type="int" />
-          <Property Name="Period" Type="int" />
           <Property Name="Shift" Type="int" />
+          <Property Name="Period" Type="int" />
+          <Property Name="level01_Id" Type="int" />
+          <Property Name="Level01CollectionDate" Type="datetime2" Precision="7" />
+          <Property Name="level02_Id" Type="int" />
+          <Property Name="Evaluate" Type="int" />
+          <Property Name="Sample" Type="int" />
+          <Property Name="AuditorId" Type="int" />
+          <Property Name="Level02CollectionDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Level02HeaderJson" Type="text" />
+          <Property Name="Level03ResultJSon" Type="text" Nullable="false" />
+          <Property Name="CorrectiveActionJson" Type="text" />
+          <Property Name="Reaudit" Type="bit" Nullable="false" />
+          <Property Name="ReauditNumber" Type="int" />
+          <Property Name="haveReaudit" Type="bit" />
+          <Property Name="haveCorrectiveAction" Type="bit" />
           <Property Name="Device_Id" Type="nvarchar(max)" />
           <Property Name="AppVersion" Type="nvarchar(max)" />
           <Property Name="Ambient" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsProcessed" Type="bit" Nullable="false" />
+          <Property Name="Device_Mac" Type="nvarchar(max)" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
           <Property Name="TTP" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="CollectionLevel02">
@@ -82,6 +93,10 @@
           <Property Name="Mudscore" Type="decimal" Precision="20" Scale="5" Nullable="false" />
           <Property Name="NotEvaluatedIs" Type="bit" Nullable="false" />
           <Property Name="Duplicated" Type="bit" Nullable="false" />
+          <Property Name="HaveCorrectiveAction" Type="bit" />
+          <Property Name="HaveReaudit" Type="bit" />
+          <Property Name="HavePhase" Type="bit" />
+          <Property Name="Completed" Type="bit" />
         </EntityType>
         <EntityType Name="CollectionLevel03">
           <Key>
@@ -194,6 +209,18 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="LogJson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="result" Type="text" Nullable="false" />
+          <Property Name="log" Type="text" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Device_Id" Type="nvarchar(max)" />
+          <Property Name="AppVersion" Type="nvarchar(max)" />
+          <Property Name="callback" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="LogSgqGlobal">
           <Key>
             <PropertyRef Name="Id" />
@@ -257,7 +284,7 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="ParCompanyStructure">
+        <EntityType Name="ParCompanyXStructure">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -917,6 +944,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParCompanyXStructure_ParCompany">
+          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="1" />
+          <End Role="ParCompanyXStructure" Type="Self.ParCompanyXStructure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParCompanyXStructure">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParCompanyXStructure_ParStructure">
+          <End Role="ParStructure" Type="Self.ParStructure" Multiplicity="1" />
+          <End Role="ParCompanyXStructure" Type="Self.ParCompanyXStructure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParStructure">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParCompanyXStructure">
+              <PropertyRef Name="ParStructure_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParCounterLocal_ParCounter">
           <End Role="ParCounter" Type="Self.ParCounter" Multiplicity="1" />
           <End Role="ParCounterXLocal" Type="Self.ParCounterXLocal" Multiplicity="*" />
@@ -1421,6 +1472,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParStructure_ParStructureGroup">
+          <End Role="ParStructureGroup" Type="Self.ParStructureGroup" Multiplicity="1" />
+          <End Role="ParStructure" Type="Self.ParStructure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParStructureGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParStructure">
+              <PropertyRef Name="ParStructureGroup_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UnitUser_Unit">
           <End Role="Unit" Type="Self.Unit" Multiplicity="1" />
           <End Role="UnitUser" Type="Self.UnitUser" Multiplicity="*" />
@@ -1459,12 +1522,13 @@
           <EntitySet Name="Level01" EntityType="Self.Level01" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level02" EntityType="Self.Level02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level03" EntityType="Self.Level03" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogJson" EntityType="Self.LogJson" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogSgqGlobal" EntityType="Self.LogSgqGlobal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCluster" EntityType="Self.ParCluster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParClusterGroup" EntityType="Self.ParClusterGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCompany" EntityType="Self.ParCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCompanyCluster" EntityType="Self.ParCompanyCluster" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParCompanyStructure" EntityType="Self.ParCompanyStructure" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParCompanyXStructure" EntityType="Self.ParCompanyXStructure" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParConsolidationType" EntityType="Self.ParConsolidationType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCounter" EntityType="Self.ParCounter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCounterXLocal" EntityType="Self.ParCounterXLocal" Schema="dbo" store:Type="Tables" />
@@ -1565,6 +1629,14 @@
           <AssociationSet Name="FK_ParCluster_ParClusterGroup" Association="Self.FK_ParCluster_ParClusterGroup">
             <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
             <End Role="ParCluster" EntitySet="ParCluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParCompanyXStructure_ParCompany" Association="Self.FK_ParCompanyXStructure_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParCompanyXStructure" EntitySet="ParCompanyXStructure" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParCompanyXStructure_ParStructure" Association="Self.FK_ParCompanyXStructure_ParStructure">
+            <End Role="ParStructure" EntitySet="ParStructure" />
+            <End Role="ParCompanyXStructure" EntitySet="ParCompanyXStructure" />
           </AssociationSet>
           <AssociationSet Name="FK_ParCounterLocal_ParCounter" Association="Self.FK_ParCounterLocal_ParCounter">
             <End Role="ParCounter" EntitySet="ParCounter" />
@@ -1734,6 +1806,10 @@
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParSample" EntitySet="ParSample" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParStructure_ParStructureGroup" Association="Self.FK_ParStructure_ParStructureGroup">
+            <End Role="ParStructureGroup" EntitySet="ParStructureGroup" />
+            <End Role="ParStructure" EntitySet="ParStructure" />
+          </AssociationSet>
           <AssociationSet Name="FK_UnitUser_Unit" Association="Self.FK_UnitUser_Unit">
             <End Role="Unit" EntitySet="Unit" />
             <End Role="UnitUser" EntitySet="UnitUser" />
@@ -1761,12 +1837,13 @@
           <EntitySet Name="Level01" EntityType="SgqDbModel.Level01" />
           <EntitySet Name="Level02" EntityType="SgqDbModel.Level02" />
           <EntitySet Name="Level03" EntityType="SgqDbModel.Level03" />
+          <EntitySet Name="LogJson" EntityType="SgqDbModel.LogJson" />
           <EntitySet Name="LogSgqGlobal" EntityType="SgqDbModel.LogSgqGlobal" />
           <EntitySet Name="ParCluster" EntityType="SgqDbModel.ParCluster" />
           <EntitySet Name="ParClusterGroup" EntityType="SgqDbModel.ParClusterGroup" />
           <EntitySet Name="ParCompany" EntityType="SgqDbModel.ParCompany" />
           <EntitySet Name="ParCompanyCluster" EntityType="SgqDbModel.ParCompanyCluster" />
-          <EntitySet Name="ParCompanyStructure" EntityType="SgqDbModel.ParCompanyStructure" />
+          <EntitySet Name="ParCompanyXStructure" EntityType="SgqDbModel.ParCompanyXStructure" />
           <EntitySet Name="ParConsolidationType" EntityType="SgqDbModel.ParConsolidationType" />
           <EntitySet Name="ParCounter" EntityType="SgqDbModel.ParCounter" />
           <EntitySet Name="ParCounterXLocal" EntityType="SgqDbModel.ParCounterXLocal" />
@@ -1872,6 +1949,10 @@
             <End Role="ParCluster" EntitySet="ParCluster" />
             <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParCompanyXStructure_ParCompany" Association="SgqDbModel.FK_ParCompanyXStructure_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParCompanyXStructure" EntitySet="ParCompanyXStructure" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParEvaluation_ParCompany" Association="SgqDbModel.FK_ParEvaluation_ParCompany">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="ParEvaluation" EntitySet="ParEvaluation" />
@@ -1887,6 +1968,10 @@
           <AssociationSet Name="FK_ParSample_ParCompany" Association="SgqDbModel.FK_ParSample_ParCompany">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="ParSample" EntitySet="ParSample" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParCompanyXStructure_ParStructure" Association="SgqDbModel.FK_ParCompanyXStructure_ParStructure">
+            <End Role="ParStructure" EntitySet="ParStructure" />
+            <End Role="ParCompanyXStructure" EntitySet="ParCompanyXStructure" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel1_ParConsolidationType" Association="SgqDbModel.FK_ParLevel1_ParConsolidationType">
             <End Role="ParConsolidationType" EntitySet="ParConsolidationType" />
@@ -2036,6 +2121,10 @@
             <End Role="ParNotConformityRule" EntitySet="ParNotConformityRule" />
             <End Role="ParNotConformityRuleXLevel" EntitySet="ParNotConformityRuleXLevel" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParStructure_ParStructureGroup" Association="SgqDbModel.FK_ParStructure_ParStructureGroup">
+            <End Role="ParStructureGroup" EntitySet="ParStructureGroup" />
+            <End Role="ParStructure" EntitySet="ParStructure" />
+          </AssociationSet>
           <AssociationSet Name="FK_UnitUser_Unit" Association="SgqDbModel.FK_UnitUser_Unit">
             <End Role="Unit" EntitySet="Unit" />
             <End Role="UnitUser" EntitySet="UnitUser" />
@@ -2077,20 +2166,31 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="ObjectJson" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Key" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CollectionDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="IsFullSaved" Type="Boolean" Nullable="false" />
-          <Property Name="level01_Id" Type="Int32" />
-          <Property Name="level02_Id" Type="Int32" />
           <Property Name="Unit_Id" Type="Int32" />
-          <Property Name="Period" Type="Int32" />
           <Property Name="Shift" Type="Int32" />
+          <Property Name="Period" Type="Int32" />
+          <Property Name="level01_Id" Type="Int32" />
+          <Property Name="Level01CollectionDate" Type="DateTime" Precision="7" />
+          <Property Name="level02_Id" Type="Int32" />
+          <Property Name="Evaluate" Type="Int32" />
+          <Property Name="Sample" Type="Int32" />
+          <Property Name="AuditorId" Type="Int32" />
+          <Property Name="Level02CollectionDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Level02HeaderJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Level03ResultJSon" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CorrectiveActionJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Reaudit" Type="Boolean" Nullable="false" />
+          <Property Name="ReauditNumber" Type="Int32" />
+          <Property Name="haveReaudit" Type="Boolean" />
+          <Property Name="haveCorrectiveAction" Type="Boolean" />
           <Property Name="Device_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AppVersion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Ambient" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsProcessed" Type="Boolean" Nullable="false" />
+          <Property Name="Device_Mac" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Key" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TTP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CollectionLevel02">
@@ -2122,6 +2222,10 @@
           <Property Name="Mudscore" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
           <Property Name="NotEvaluatedIs" Type="Boolean" Nullable="false" />
           <Property Name="Duplicated" Type="Boolean" Nullable="false" />
+          <Property Name="HaveCorrectiveAction" Type="Boolean" />
+          <Property Name="HaveReaudit" Type="Boolean" />
+          <Property Name="HavePhase" Type="Boolean" />
+          <Property Name="Completed" Type="Boolean" />
           <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="CollectionLevel02" ToRole="ConsolidationLevel02" />
           <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_CollectionLevel02_Level01" FromRole="CollectionLevel02" ToRole="Level01" />
           <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_CollectionLevel02_Level02" FromRole="CollectionLevel02" ToRole="Level02" />
@@ -2259,6 +2363,18 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CollectionLevel03" Relationship="SgqDbModel.FK_CollectionLevel03_Level03" FromRole="Level03" ToRole="CollectionLevel03" />
         </EntityType>
+        <EntityType Name="LogJson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="result" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="log" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Device_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AppVersion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="callback" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="LogSgqGlobal">
           <Key>
             <PropertyRef Name="Id" />
@@ -2313,6 +2429,7 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParCompanyXStructure" Relationship="SgqDbModel.FK_ParCompanyXStructure_ParCompany" FromRole="ParCompany" ToRole="ParCompanyXStructure" />
           <NavigationProperty Name="ParEvaluation" Relationship="SgqDbModel.FK_ParEvaluation_ParCompany" FromRole="ParCompany" ToRole="ParEvaluation" />
           <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParCompany" FromRole="ParCompany" ToRole="ParLevel3Value" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" FromRole="ParCompany" ToRole="ParNotConformityRuleXLevel" />
@@ -2329,7 +2446,7 @@
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="ParCompanyStructure">
+        <EntityType Name="ParCompanyXStructure">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -2339,6 +2456,8 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParCompanyXStructure_ParCompany" FromRole="ParCompanyXStructure" ToRole="ParCompany" />
+          <NavigationProperty Name="ParStructure" Relationship="SgqDbModel.FK_ParCompanyXStructure_ParStructure" FromRole="ParCompanyXStructure" ToRole="ParStructure" />
         </EntityType>
         <EntityType Name="ParConsolidationType">
           <Key>
@@ -2812,6 +2931,8 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParCompanyXStructure" Relationship="SgqDbModel.FK_ParCompanyXStructure_ParStructure" FromRole="ParStructure" ToRole="ParCompanyXStructure" />
+          <NavigationProperty Name="ParStructureGroup" Relationship="SgqDbModel.FK_ParStructure_ParStructureGroup" FromRole="ParStructure" ToRole="ParStructureGroup" />
         </EntityType>
         <EntityType Name="ParStructureGroup">
           <Key>
@@ -2824,6 +2945,7 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParStructure" Relationship="SgqDbModel.FK_ParStructure_ParStructureGroup" FromRole="ParStructureGroup" ToRole="ParStructure" />
         </EntityType>
         <EntityType Name="Period">
           <Key>
@@ -3089,6 +3211,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParCompanyXStructure_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
+          <End Type="SgqDbModel.ParCompanyXStructure" Role="ParCompanyXStructure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParCompanyXStructure">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParEvaluation_ParCompany">
           <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
           <End Type="SgqDbModel.ParEvaluation" Role="ParEvaluation" Multiplicity="*" />
@@ -3134,6 +3268,18 @@
             </Principal>
             <Dependent Role="ParSample">
               <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParCompanyXStructure_ParStructure">
+          <End Type="SgqDbModel.ParStructure" Role="ParStructure" Multiplicity="1" />
+          <End Type="SgqDbModel.ParCompanyXStructure" Role="ParCompanyXStructure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParStructure">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParCompanyXStructure">
+              <PropertyRef Name="ParStructure_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3581,6 +3727,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParStructure_ParStructureGroup">
+          <End Type="SgqDbModel.ParStructureGroup" Role="ParStructureGroup" Multiplicity="1" />
+          <End Type="SgqDbModel.ParStructure" Role="ParStructure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParStructureGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParStructure">
+              <PropertyRef Name="ParStructureGroup_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UnitUser_Unit">
           <End Type="SgqDbModel.Unit" Role="Unit" Multiplicity="1" />
           <End Type="SgqDbModel.UnitUser" Role="UnitUser" Multiplicity="*" />
@@ -3644,20 +3802,31 @@
             <EntityTypeMapping TypeName="SgqDbModel.CollectionJson">
               <MappingFragment StoreEntitySet="CollectionJson">
                 <ScalarProperty Name="TTP" ColumnName="TTP" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Device_Mac" ColumnName="Device_Mac" />
+                <ScalarProperty Name="IsProcessed" ColumnName="IsProcessed" />
                 <ScalarProperty Name="Ambient" ColumnName="Ambient" />
                 <ScalarProperty Name="AppVersion" ColumnName="AppVersion" />
                 <ScalarProperty Name="Device_Id" ColumnName="Device_Id" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Unit_Id" ColumnName="Unit_Id" />
+                <ScalarProperty Name="haveCorrectiveAction" ColumnName="haveCorrectiveAction" />
+                <ScalarProperty Name="haveReaudit" ColumnName="haveReaudit" />
+                <ScalarProperty Name="ReauditNumber" ColumnName="ReauditNumber" />
+                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
+                <ScalarProperty Name="CorrectiveActionJson" ColumnName="CorrectiveActionJson" />
+                <ScalarProperty Name="Level03ResultJSon" ColumnName="Level03ResultJSon" />
+                <ScalarProperty Name="Level02HeaderJson" ColumnName="Level02HeaderJson" />
+                <ScalarProperty Name="Level02CollectionDate" ColumnName="Level02CollectionDate" />
+                <ScalarProperty Name="AuditorId" ColumnName="AuditorId" />
+                <ScalarProperty Name="Sample" ColumnName="Sample" />
+                <ScalarProperty Name="Evaluate" ColumnName="Evaluate" />
                 <ScalarProperty Name="level02_Id" ColumnName="level02_Id" />
+                <ScalarProperty Name="Level01CollectionDate" ColumnName="Level01CollectionDate" />
                 <ScalarProperty Name="level01_Id" ColumnName="level01_Id" />
-                <ScalarProperty Name="IsFullSaved" ColumnName="IsFullSaved" />
-                <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
-                <ScalarProperty Name="Key" ColumnName="Key" />
-                <ScalarProperty Name="ObjectJson" ColumnName="ObjectJson" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="Unit_Id" ColumnName="Unit_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3665,6 +3834,10 @@
           <EntitySetMapping Name="CollectionLevel02">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel02">
               <MappingFragment StoreEntitySet="CollectionLevel02">
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="HavePhase" ColumnName="HavePhase" />
+                <ScalarProperty Name="HaveReaudit" ColumnName="HaveReaudit" />
+                <ScalarProperty Name="HaveCorrectiveAction" ColumnName="HaveCorrectiveAction" />
                 <ScalarProperty Name="Duplicated" ColumnName="Duplicated" />
                 <ScalarProperty Name="NotEvaluatedIs" ColumnName="NotEvaluatedIs" />
                 <ScalarProperty Name="Mudscore" ColumnName="Mudscore" />
@@ -3813,6 +3986,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="LogJson">
+            <EntityTypeMapping TypeName="SgqDbModel.LogJson">
+              <MappingFragment StoreEntitySet="LogJson">
+                <ScalarProperty Name="callback" ColumnName="callback" />
+                <ScalarProperty Name="AppVersion" ColumnName="AppVersion" />
+                <ScalarProperty Name="Device_Id" ColumnName="Device_Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="log" ColumnName="log" />
+                <ScalarProperty Name="result" ColumnName="result" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="LogSgqGlobal">
             <EntityTypeMapping TypeName="SgqDbModel.LogSgqGlobal">
               <MappingFragment StoreEntitySet="LogSgqGlobal">
@@ -3881,9 +4067,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ParCompanyStructure">
-            <EntityTypeMapping TypeName="SgqDbModel.ParCompanyStructure">
-              <MappingFragment StoreEntitySet="ParCompanyStructure">
+          <EntitySetMapping Name="ParCompanyXStructure">
+            <EntityTypeMapping TypeName="SgqDbModel.ParCompanyXStructure">
+              <MappingFragment StoreEntitySet="ParCompanyXStructure">
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />

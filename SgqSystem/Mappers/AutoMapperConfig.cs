@@ -24,7 +24,10 @@ namespace SgqSystem.Mappers
                 x.AddProfile<DepartmenMapperProfile>();
                 x.AddProfile<UnitMapperProfile>();
                 x.AddProfile<UnitUserMapperProfile>();
-                
+                //x.AddProfile<ParCompanyStructureMapperProfile>();
+                //x.AddProfile<ParStructureMapperProfile>();
+                //x.AddProfile<ParStructureGroupMapperProfile>();
+
 
                 /*
                  * Par Level1 Mapping

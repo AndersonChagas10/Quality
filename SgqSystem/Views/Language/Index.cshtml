@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<ul>
+    <li>
+        @Html.ActionLink(
+        "Brasil",
+        ViewContext.RouteData.Values["action"].ToString(),
+        new { language = "pt-BR" })
+    </li>
+    @*<li>
+        @Html.ActionLink(
+        "French",
+        ViewContext.RouteData.Values["action"].ToString(),
+        new { language = "fr" })
+    </li>*@
+    <li>
+        @Html.ActionLink(
+        "English",
+        ViewContext.RouteData.Values["action"].ToString(),
+        new { language = "en-US" })
+    </li>    
+    <li>@Html.ActionLink("English", "Change", "Language", new { LanguageAbbreviation = "pt-BR" }, null)</li>
+    <li>@Html.ActionLink("Brasil", "Change", "Language", new { LanguageAbbreviation = "en-US" }, null)</li>
+    <li>@DateTime.Now.ToString()</li>
+</ul>

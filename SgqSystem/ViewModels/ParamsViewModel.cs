@@ -45,5 +45,6 @@ namespace SgqSystem.ViewModels
 
         public ParamsDdl paramsDdl { get; set; }
 
+        public int levelControl { get; set; }
     }
 }

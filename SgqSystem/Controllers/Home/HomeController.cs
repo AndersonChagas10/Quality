@@ -3,11 +3,12 @@ using DTO.DTO;
 using SgqSystem.Secirity;
 using System;
 using System.Diagnostics;
+using System.Web;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
 
         [CustomAuthorize(Roles = "Admin")]
@@ -20,6 +21,23 @@ namespace SgqSystem.Controllers
             ViewBag.Title = "Sgq Global";
             //teste();
             return View();
+        }
+
+        public void ChangeCulture(string language = "pt-BR")
+        {
+            Response.Cookies.Remove("Language");
+            HttpCookie languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
+
+            if (languageCookie == null) languageCookie = new HttpCookie("Language");
+
+            languageCookie.Value = language;
+
+            languageCookie.Expires = DateTime.Now.AddDays(10);
+
+            Response.SetCookie(languageCookie);
+
+            Response.Redirect(Request.UrlReferrer.ToString());
+
         }
 
         //public void teste()

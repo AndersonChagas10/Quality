@@ -7,7 +7,7 @@ using System.Web.Mvc;
 namespace SgqSystem.Controllers
 {
     [CustomAuthorize(Roles = "Admin")]
-    public class ReportsController : Controller
+    public class ReportsController : BaseController
     {
 
         #region Constructor

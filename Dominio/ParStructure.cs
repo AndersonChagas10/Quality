@@ -14,6 +14,12 @@ namespace Dominio
     
     public partial class ParStructure
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParStructure()
+        {
+            this.ParCompanyXStructure = new HashSet<ParCompanyXStructure>();
+        }
+    
         public int Id { get; set; }
         public int ParStructureGroup_Id { get; set; }
         public string Name { get; set; }
@@ -22,5 +28,9 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool Active { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParCompanyXStructure> ParCompanyXStructure { get; set; }
+        public virtual ParStructureGroup ParStructureGroup { get; set; }
     }
 }

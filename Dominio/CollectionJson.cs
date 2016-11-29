@@ -15,20 +15,31 @@ namespace Dominio
     public partial class CollectionJson
     {
         public int Id { get; set; }
-        public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
-        public string ObjectJson { get; set; }
-        public string Key { get; set; }
-        public System.DateTime CollectionDate { get; set; }
-        public bool IsFullSaved { get; set; }
-        public Nullable<int> level01_Id { get; set; }
-        public Nullable<int> level02_Id { get; set; }
         public Nullable<int> Unit_Id { get; set; }
-        public Nullable<int> Period { get; set; }
         public Nullable<int> Shift { get; set; }
+        public Nullable<int> Period { get; set; }
+        public Nullable<int> level01_Id { get; set; }
+        public Nullable<System.DateTime> Level01CollectionDate { get; set; }
+        public Nullable<int> level02_Id { get; set; }
+        public Nullable<int> Evaluate { get; set; }
+        public Nullable<int> Sample { get; set; }
+        public Nullable<int> AuditorId { get; set; }
+        public System.DateTime Level02CollectionDate { get; set; }
+        public string Level02HeaderJson { get; set; }
+        public string Level03ResultJSon { get; set; }
+        public string CorrectiveActionJson { get; set; }
+        public bool Reaudit { get; set; }
+        public Nullable<int> ReauditNumber { get; set; }
+        public Nullable<bool> haveReaudit { get; set; }
+        public Nullable<bool> haveCorrectiveAction { get; set; }
         public string Device_Id { get; set; }
         public string AppVersion { get; set; }
         public string Ambient { get; set; }
+        public bool IsProcessed { get; set; }
+        public string Device_Mac { get; set; }
+        public System.DateTime AddDate { get; set; }
+        public Nullable<System.DateTime> AlterDate { get; set; }
+        public string Key { get; set; }
         public string TTP { get; set; }
     }
 }

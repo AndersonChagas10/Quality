@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Api
 {
-    public class UserAuthenticationController : Controller
+    public class UserAuthenticationController : BaseController
     {
 
         private readonly IUserDomain _userDomain;

@@ -3,6 +3,7 @@ using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -95,7 +96,33 @@ namespace SgqSystem.Controllers.Api
 
         #endregion
 
-            #region Lock BETA TRAVA CLIENTE QUANDO ALGUM TABLET ESTIVER SINCRONIZANDO.
+        #region Novo Modelo com Json
+
+        /// <summary>
+        /// Metodo do Api para salvar Consolidação lelve01, level2, collection level02 e level03, corrective action. 
+        /// O Objeto SyncViewModel objToSync deve conter o parametro Root com a estrutura correta segundo definido no
+        /// Banco de Dados para que o restanten do processo ocorra sem imprevistos.
+        /// </summary>
+        /// <param name="objToSync"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/Sync/SaveFastJson")]
+        public GenericReturn<CollectionJson> SaveFastJson([FromBody] SyncViewModel objToSync)
+        {
+            return _saveConsolidateDataCollectionDomain.SaveFastJson(objToSync);
+        }
+
+        [HttpPost]
+        [Route("api/Sync/SetFullSave")]
+        public bool SetFullSave([FromBody] List<int> listId)
+        {
+            _saveConsolidateDataCollectionDomain.SetFullSave(listId);
+            return true;
+        }
+
+        #endregion
+
+        #region Lock BETA TRAVA CLIENTE QUANDO ALGUM TABLET ESTIVER SINCRONIZANDO.
 
         [HttpPost]
         [Route("api/Sync/Lock")]

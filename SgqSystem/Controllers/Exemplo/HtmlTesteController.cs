@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Exemplo
 {
-    public class HtmlTesteController : Controller
+    public class HtmlTesteController : BaseController
     {
 
         #region Construtor

@@ -48,10 +48,33 @@
                             </ul>
                         </li>
                     </ul>
+
                     <ul class="nav navbar-nav">
                         <li><a href="@Url.Action("Index", "Params")">Params</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Language<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+
+                                <li>
+                                    <a href="@Url.Action("ChangeCulture", "Home", new { language = "pt-BR" } )" id="btnBR">
+                                        <img src="~/Imagens/Brazil.png" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("ChangeCulture", "Home", new { language = "en" } )" id="btnEN">
+                                        <img src="@Url.Content("~/Imagens/United-States.png")" />
+                                    </a>
+                                </li>
+                                @*<li>
+                                    <a href="@Url.Action("ChangeCulture", "Home", new { language = "es" } )" id="btnES">
+                                        <img src="~/Imagens/Spain.png" />
+                                    </a>
+                                </li>
+                                <li>@DateTime.Now.ToString()</li>*@
+                            </ul>
+                        </li>
                         <li><a href="#"><span class="glyphicon glyphicon-user"></span>@Session["username"].ToString()</a></li>
                         <li><a href="@Url.Action("LogOut", "UserAuthentication")"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
                     </ul>
@@ -60,11 +83,33 @@
             else
             {
                 <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Language<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+
+                            <li>
+                                <a href="@Url.Action("ChangeCulture", "Home", new { language = "pt-BR" } )" id="btnBR">
+                                    <img src="~/Imagens/Brazil.png" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ChangeCulture", "Home", new { language = "en-US" } )" id="btnEN">
+                                    <img src="@Url.Content("~/Imagens/United-States.png")" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ChangeCulture", "Home", new { language = "es" } )" id="btnES">
+                                    <img src="~/Imagens/Spain.png" />
+                                </a>
+                            </li>
+                            <li>@DateTime.Now.ToString()</li>
+                        </ul>
+                    </li>
                     <li><a href="@Url.Action("LogIn", "UserAuthentication")"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                     @*<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>*@
                 </ul>
             }
-
+           
         </div>
 
     </nav>
@@ -74,7 +119,7 @@
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
         @*@Scripts.Render("~/bundles/hc")*@
-        
+
         @RenderBody()
 
         <hr />
@@ -86,7 +131,7 @@
     @RenderSection("scripts", required: false)
 
     <script>
-    
+
     </script>
 </body>
 </html>
