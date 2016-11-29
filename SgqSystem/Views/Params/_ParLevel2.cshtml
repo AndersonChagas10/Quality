@@ -4,12 +4,14 @@
     ViewBag.Title = "ParLeve2";
     var url = Url.Action("AddUpdateLevel2", "api/ParamsApi"); //URL relativa
     var urlGetLevel1 = Url.Action("GetParLevel2ById", "api/ParamsApi"); //URL relativa
+    Model.levelControl = 2;
 }
 <div id="newLevel2Modal">
     @using (Html.BeginForm())
     {
         <div class="row">
             <div class="col-lg-12">
+
                 <table class="table-erp">
                     <tbody>
                         <tr class="row hide">
@@ -89,53 +91,7 @@
                     </tbody>
                 </table>
 
-                <div class="panel-group accordion" id="level2_group_accordion" style="display: none">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_group_accordion" href="#level2_group_collapse" aria-expanded="false"> @Resources.Resource.groups</a>
-                            </h4>
-                        </div>
-                        <div id="level2_group_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <table class="table-erp">
-
-                                    <tbody>
-                                        <tr>
-                                            @Table.GerarColunaButton(@Html.TextBox("inputParLevel03Name", null, htmlAttributes: new { @Id = "inputParLevel03Name", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top, button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"btnParLevel03GroupInsert\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class="table-erp table table-condensed" id="tableLevel3Group">
-                                    <thead>
-                                        <tr>
-                                            <th>Nome do Grupo</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (Model.paramsDto.listParLevel3GroupDto != null)
-                                        {
-                                            foreach (var lg in Model.paramsDto.listParLevel3GroupDto)
-                                            {
-                                        <tr id="@lg.Id">
-                                            <td>@lg.Name</td>
-                                            <td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoveLevel3GroupAdded"><i class="fa fa-times" aria-hidden="true"></i></button></td>
-
-                                        </tr>
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                @{
-                    Model.levelControl = 2;
-                }
+                @Html.Partial("_GroupXLevel", Model)
 
                 @*/*Regra de alerta*/*@
                 <div class="panel-group accordion" id="level2_nc_accordion">
@@ -184,7 +140,9 @@
                         </div>
                     </div>
                 </div>
+
                 @Html.Partial("_ReincidenciaXLevel", Model)
+
                 @Html.Partial("_CounterXLevel", Model)
 
                 @*<table class="table-erp">
@@ -271,9 +229,9 @@
 
     $('#paramsDto_parLevel2Dto_HasGroupLevel3').on('switchChange.bootstrapSwitch', function (event, state) {
         if (state) {
-            $('#level2_group_accordion').fadeIn();
+            $('#level2_GroupLevel_accordion').fadeIn();
         } else {
-            $('#level2_group_accordion').fadeOut();
+            $('#level2_GroupLevel_accordion').fadeOut();
         }
     });
 
@@ -416,7 +374,6 @@
 
         updateAllTables();
     });
-    /*Fim Submit Level1*/
 
     $(document).ready(function () {
 
@@ -442,6 +399,12 @@
         RegraNcL2.carregaDadosDoDb();
 
         $('[data-toggle="popover"]').popover();
+
+        if ($('#paramsDto_parLevel2Dto_HasGroupLevel3').is(':checked')) {
+            $('#level2_GroupLevel_accordion').fadeIn();
+        } else {
+            $('#level2_GroupLevel_accordion').fadeOut();
+        }
     });
 
 </script>

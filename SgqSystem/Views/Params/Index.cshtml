@@ -103,7 +103,6 @@
                             </li>
                         </ul>
                         <div class="page-toolbar">
-                            <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
                             <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
                                 <i class="fa fa-calendar"></i>&nbsp;
                                 <span class="thin uppercase" id="currentDate"></span>&nbsp;
@@ -160,7 +159,6 @@
                                                     <button class="btn btn-warning btn-block" id="btnNewLevel2">@Resources.Resource.new_level2</button>
                                                 </div>
                                                 <div class="col-xs-9" id="partialSelectLevel2">
-                                                    @*@Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDdl.DdlparLevel2, htmlAttributes: new { @class = "form-control", @id = "parLevel2Select2" })*@
                                                     @Html.Partial("~/Views/Params/_SelectBoxLevel2.cshtml", Model)
                                                 </div>
                                                 <hr />
@@ -194,7 +192,6 @@
                                                     <button class="btn btn-danger btn-block" id="btnNewLevel3">@Resources.Resource.new_level3</button>
                                                 </div>
                                                 <div class="col-xs-9" id="partialSelectLevel3">
-                                                    @*@Html.DropDownList("paramsDto.parLevel3Selected", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control", @id = "parLevel3Select2" })*@
                                                     @Html.Partial("~/Views/Params/_SelectBoxLevel3.cshtml", Model)
                                                 </div>
                                                 <hr />
@@ -225,34 +222,6 @@
                                                 </div>
                                             </div>
 
-                                            @*<div class="panel-group accordion" id="level3level2_accordion">
-                                                    <div class="panel panel-success">
-                                                        <div class="panel-heading">
-                                                            <h4 class="panel-title">
-                                                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3level2_accordion" href="#level3level2_collapse" aria-expanded="false"> Vinculo Level3 com Level 2 </a>
-                                                            </h4>
-                                                        </div>
-                                                        <div id="level3level2_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                                            <div class="panel-body">
-                                                                <div id="ParLevel3level2">
-                                                                    <table class="table-erp">
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                @Table.GerarColuna(@Html.Label("Nivel 2"), @Html.Label("Nivel 2 Label"), Table.PosicaoLabel.top, null, null)
-                                                                                @Table.GerarColuna(@Html.Label("Nivel 3"), @Html.Label("Nivel 3 Label"), Table.PosicaoLabel.top, null, null)
-                                                                                @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Level2.Weight, new { @class = "form-control input-sm" }), @Html.Label("Peso"), Table.PosicaoLabel.top, null, null)
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td colspan="3"><button>Ok</button></td>
-                                                                            </tr>
-
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>*@
 
                                         </div>
 
@@ -316,23 +285,7 @@
     </div>
 
     <!-- Modal Edição  crudNxN -->
-    <div class="modal fade" id="crudNxNEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="width: 450px;">
-        <div class="modal-dialog  modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">a</h4>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">@Resources.Resource.save</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    @Html.Partial("_crudNxNModal")
 
     <script>
         /*
@@ -354,242 +307,6 @@
             });
             return o;
         };
-
-        var crudNxN = {
-
-            adiciona: function(o, idTable, tdsName){
-
-                var tr = "";
-                var objData = {};
-
-                if(o["IsActive"] == true){
-                    tr += "<tr pos=" + crudNxN.inifnito + ">"
-                }else{
-                    tr += "<tr pos=" + crudNxN.inifnito + " class='inativeTr'>";
-                }
-
-                tdsName.forEach(function(oo, cc) {/*Para cada name de tdName monta uma TD, coloca valor a ser mostrado na TD a prop do objeto[name].*/
-                    if(oo == "btn"){
-                        if(o["Id"] != null && o["Id"] != undefined && o["Id"] > 0){
-                            if(o["IsActive"]){
-                                o[oo] = crudNxN.btnInactive + crudNxN.btnEdit;
-                            }else{
-                                o[oo] = crudNxN.btnReActive + crudNxN.btnEdit;
-                            }
-                        }else{
-                            o[oo] = crudNxN.btnRemove + crudNxN.btnEdit;
-                        }
-                    }
-                    tr += '<td>' + o[oo] + '</td>';
-                });
-
-                tr += '</tr>'
-                $(tr)
-                $('#' + idTable + ' > tbody').append($(tr).data(o));
-                crudNxN.verificaSeMostraTable(idTable);
-                reloadPopovers();
-
-            },
-            verificaSeMostraTable: function(idTable) {
-                if($('#' + idTable + ' > tbody > tr').length > 0){
-                    $('#' + idTable).fadeIn();
-                } else {
-                    $('#' + idTable).fadeOut();
-                }
-            },
-            btnRemove: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Remover" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcRemove($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
-            funcRemove: function(e){
-                $(e).parents('tr').remove();
-            },
-            btnInactive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Inativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcInactive($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
-            funcInactive: function(e){
-                var obj = $(e).parents('tr').data();
-                obj["IsActive"] = false;
-                $(e).parents('tr').removeData();
-                $(e).parents('tr').data(obj);
-                var element = $(e).parents('tr');
-                element.find('td:last').empty();
-                element.find('td:last').append(crudNxN.btnReActive, crudNxN.btnEdit);
-                reloadPopovers();
-            },
-            btnReActive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Reativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcReActive($(this));"><i class="fa fa-undo" aria-hidden="true"></i></button>',
-            funcReActive: function(e){
-                var obj = $(e).parents('tr').data();
-                obj["IsActive"] = true;
-                $(e).parents('tr').removeData();
-                $(e).parents('tr').data(obj);
-                var element = $(e).parents('tr');
-                element.find('td:last').empty();
-                element.find('td:last').append(crudNxN.btnInactive, crudNxN.btnEdit);
-                reloadPopovers();
-            },
-            btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
-            funcEdit: function(e) {
-
-                $('#crudNxNEdit > div > div > div.modal-body').empty();
-                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').off('click');
-                var obj = $(e).parents('tr').data();
-
-                /*RegraNc*/
-                if($(e).parents('#level1_nc_accordion').length || $(e).parents('#level2_nc_accordion').length || $(e).parents('#level3_nc_accordion').length ){
-                    crudNxN.modalAlterarRegraNc(obj);
-                    $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function(){
-                        var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
-                        $(e).parents('tr').removeData();
-                        $(e).parents('tr').data(editado);
-                        $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name)
-                        $($(e).parents('tr').find('td')[1]).html(editado.Value)
-                        $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable)
-                        $('#crudNxNEdit').modal('hide');
-                    });
-                }
-                /*Contadores*/
-                else if($(e).parents('#level1_counter_accordion').length || $(e).parents('#level2_counter_accordion').length || $(e).parents('#level3_counter_accordion').length ){
-                    crudNxN.modalAlterarContadores(obj);//
-                    $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function(){
-                        var editado = crudNxN.retornaObjetoAlteradoContadores(obj);//
-                        $(e).parents('tr').removeData();
-                        $(e).parents('tr').data(editado);
-                        $($(e).parents('tr').find('td')[0]).html(editado.ParCounterName)//
-                        $($(e).parents('tr').find('td')[1]).html(editado.ParLocalName)//
-                        $('#crudNxNEdit').modal('hide');
-                    });
-                }
-                /*Reincidencia*/
-                else if($(e).parents('#level1_reincidencia_accordion').length || $(e).parents('#level2_reincidencia_accordion').length || $(e).parents('#level3_reincidencia_accordion').length ){
-                    crudNxN.modalAlterarReincidencia(obj);//
-                    $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function(){
-                        var editado = crudNxN.retornaObjetoAlteradoReincidencia(obj);//
-                        $(e).parents('tr').removeData();
-                        $(e).parents('tr').data(editado);
-                        $($(e).parents('tr').find('td')[0]).html(editado.NcNumber)//
-                        $($(e).parents('tr').find('td')[1]).html(editado.EffectiveLength)//
-                        $($(e).parents('tr').find('td')[2]).html(editado.parFrequencyName)//
-                        $('#crudNxNEdit').modal('hide');
-                    });
-                }  
-                else if($(e).parents('#level1_cluster_accordion').length){
-                    crudNxN.modalAlterarCluster(obj);//
-                    $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function(){
-                        var editado = crudNxN.retornaObjetoAlteradoCluster(obj);//
-                        $(e).parents('tr').removeData();
-                        $(e).parents('tr').data(editado);
-                        $($(e).parents('tr').find('td')[0]).html(editado.Cluster_Name)//
-                        $($(e).parents('tr').find('td')[1]).html(editado.ParCriticalLevel_Name)//
-                        $($(e).parents('tr').find('td')[2]).html(editado.Points)//
-                        $('#crudNxNEdit').modal('hide');
-                    });
-                }
-
-                $('#crudNxNEdit').modal();
-
-            },
-
-            modalAlterarRegraNc: function(obj){
-
-                $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch('destroy', true);
-
-                var divDeEdicao = $('#level1_nc_collapse > div > table.table-erp').clone();
-                $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
-
-                $('#crudNxNEdit #selectNotConformityRule').val(obj.ParNotConformityRule_Id);/*Preenche*/
-                $("#crudNxNEdit .check-box").bootstrapSwitch('state', obj.IsReaudit);
-                $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(obj.Value);
-
-                $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch();
-
-            },/*Ok*/
-            retornaObjetoAlteradoRegraNc: function(obj){
-
-                /*Valida se pode criar o objeto*/
-                if($('#crudNxNEdit #selectNotConformityRule :selected').val() <= 0){
-                    alert("Por favor Selecione Regra de Não conformidade.");
-                    return;
-                }
-
-                if($('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
-                    alert("É necessário preencher o campo Valor da Regra de alerta.");
-                    return;
-                }
-
-                obj.ParNotConformityRule_Id = $('#crudNxNEdit #selectNotConformityRule :selected').val();
-                obj.ParNotConformityRule_Name =  $('#crudNxNEdit #selectNotConformityRule :selected').text();
-                obj.Value =  $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val();
-                obj.IsReaudit = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked");
-                obj.IsReauditShowTable =  $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não";
-
-                return obj;
-            },/*Ok*/
-
-            modalAlterarContadores: function(obj){
-
-                var divDeEdicao = $('#camposContador').clone();
-                $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
-                $('#crudNxNEdit #myModalLabel').html($('#tableContadores').attr('nameModal'));
-
-                $('#crudNxNEdit #parCounter').val(obj.ParCounter_Id);/*Preenche*/
-                $('#crudNxNEdit #parLocal').val(obj.ParLocal_Id);/*Preenche*/
-
-            },
-            retornaObjetoAlteradoContadores: function(obj){
-
-                /*Valida se pode criar o objeto*/
-                if($('#crudNxNEdit #parCounter :selected').val() <= 0){
-                    alert("Por favor selecione o contador.");
-                    return;
-                }
-
-                if($('#crudNxNEdit #parLocal').val() <= 0){
-                    alert("Por favor selecione o local.");
-                    return;
-                }
-
-                obj.ParLocal_Id = $('#crudNxNEdit #parLocal :selected').val();
-                obj.ParLocalName =  $('#crudNxNEdit #parLocal :selected').text();
-                obj.ParCounter_Id = $('#crudNxNEdit #parCounter :selected').val();
-                obj.ParCounterName =  $('#crudNxNEdit #parCounter :selected').text();
-
-                return obj;
-            },
-            
-            /*testar*/
-            modalAlterarReincidencia: function(obj){
-
-                var divDeEdicao = $('#camposRencidencia').clone();
-                $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
-                $('#crudNxNEdit #myModalLabel').html($('#tableReincidencia').prop('nameModal'));
-
-                $('#crudNxNEdit #selectFrequenciaReincidencia').val(obj.ParFrequency_Id);/*Preenche*/
-                $('#crudNxNEdit #inputNumeroNC').val(obj.NcNumber);/*Preenche*/
-                $('#crudNxNEdit #inputVigencia').val(obj.EffectiveLength);/*Preenche*/
-
-            },
-            retornaObjetoAlteradoReincidencia: function(obj){
-                /*Valida se pode criar o objeto*/
-                ReincidenciaL1.veifyAdd('crudNxNEdit')
-                ReincidenciaL1.getObjAdd('crudNxNEdit', obj);
-                return obj;
-            },
-
-            modalAlterarCluster: function(obj){
-
-                var divDeEdicao = $('#camposCluster').clone();
-                $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
-                $('#crudNxNEdit #myModalLabel').html($('#camposCluster').prop('nameModal'));
-
-                $('#crudNxNEdit #valueCluster').val(obj.ParCluster_Id).attr('disabled', true);/*Preenche*/
-                $('#crudNxNEdit #valCrit').val(obj.ParCriticalLevel_Id);/*Preenche*/
-                $('#crudNxNEdit #pontosCluster').val(obj.Points);/*Preenche*/
-
-            },
-            retornaObjetoAlteradoCluster: function(obj){
-                /*Valida se pode criar o objeto*/
-                ClusterL1.veifyAdd('crudNxNEdit')
-                ClusterL1.getObjAdd('crudNxNEdit', obj);
-                return obj;
-            },
-
-        }
       
         function openMessageModal(title, content) {
 
@@ -700,8 +417,6 @@
                 }
             }
         }
-
-
 
         function dirtForm(oldForm, newForm){
             var o = oldForm.serialize().toString();
@@ -955,7 +670,7 @@
                     RegraNcL2.incluiNoObjetoParaSubmit(dados);
                     ContadoresL2.incluiNoObjetoParaSubmit(dados);
                     ReincidenciaL2.incluiNoObjetoParaSubmit(dados);
-
+                    GroupL2.incluiNoObjetoParaSubmit(dados);
                     //openLoader(indexParamsLevel2.saving_the_level2);
                     $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                         //closeLoader();
@@ -1103,7 +818,8 @@
                     //Counter.UpdateCounters();
                     var dados = $('#newLevel3Modal > form').serializeObject();
                     ReincidenciaL3.incluiNoObjetoParaSubmit(dados);
-
+                   
+                    
                     if(dados['paramsDto.parLevel3Value.IntervalMax'] != undefined && dados['paramsDto.parLevel3Value.IntervalMax'] != null)
                         dados['paramsDto.parLevel3Value.IntervalMax'] = dados['paramsDto.parLevel3Value.IntervalMax'].replace(',', '.');
 
@@ -1333,13 +1049,26 @@
             });
         }
 
+        var selecione = @Html.Raw(Json.Encode(Resources.Resource.select)) 
         function UpdateSelect2Level3(idLevel2, idNewLevel3, callback) {
             //$('#parLevel3Select2').select2("destroy")
             var selecionado = $('#parLevel3Select2 :selected').val();
             $('#partialSelectLevel3').load('UpdateSelectLevel3?id=' + idLevel2, function () {
+
                 indexParamsLevel3.selectNormal();
                 if (selecionado > 0) {
                     $('#parLevel3Select2').val(selecionado);
+                }
+                else{
+                    var id = GroupL2.level + ' #' + GroupL2.idTable;
+                    var tdNamess = this.tdsNames;
+                    $('#paramsDto_parLevel3Dto_listGroupsLevel2').empty();
+                    $('#paramsDto_parLevel3Dto_listGroupsLevel2').append('<option value="-1">' + selecione + '</option>');
+                    if( GroupL2.listObjSalvo != null){ /*Existem Grupos*/
+                        GroupL2.listObjSalvo.forEach(function(o, c){
+                            $('#paramsDto_parLevel3Dto_listGroupsLevel2').append('<option value=' + o.Id + '>' + o.Name + '</option>');
+                        });
+                    }
                 }
                 if (idNewLevel3 != undefined) {
                     $('#parLevel3Select2').val(idNewLevel3);

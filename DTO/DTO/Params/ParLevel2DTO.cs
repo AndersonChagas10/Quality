@@ -79,6 +79,6 @@ namespace DTO.DTO.Params
             DdlLevel3Vinculados = retorno;
         }
         public List<ParNotConformityRuleXLevelDTO> listParNotConformityRuleXLevelDto { get; set; }
-
+        public List<ParLevel3GroupDTO> listParLevel3GroupDto { get; set; }
     }
 }
