@@ -75,6 +75,7 @@
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICollectionLevel02Repo.cs" />
     <Compile Include="Interfaces\Services\ICorrectiveActionDomain.cs" />
+    <Compile Include="Interfaces\Services\ICompanyDomain.cs" />
     <Compile Include="Interfaces\Services\IGetConsolidateDataCollectionDomain.cs" />
     <Compile Include="Interfaces\Services\IExampleDomain.cs" />
     <Compile Include="Interfaces\Services\IParamsDomain.cs" />
@@ -89,6 +90,9 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Level03.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LogJson.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="LogService\LoggerNLog.cs" />
@@ -107,7 +111,7 @@
     <Compile Include="ParCompanyCluster.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ParCompanyStructure.cs">
+    <Compile Include="ParCompanyXStructure.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParConsolidationType.cs">
@@ -211,6 +215,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CorrectiveActionDomain.cs" />
+    <Compile Include="Services\CompanyDomain.cs" />
     <Compile Include="Services\GetConsolidateDataCollectionDomain.cs" />
     <Compile Include="Services\ExampleDomain.cs" />
     <Compile Include="Services\ParamsDomain.cs" />

@@ -630,4 +630,40 @@
   <data name="please_wait" xml:space="preserve">
     <value>Please wait</value>
   </data>
+  <data name="cluster" xml:space="preserve">
+    <value>Cluster</value>
+  </data>
+  <data name="company_register" xml:space="preserve">
+    <value>Company Register</value>
+  </data>
+  <data name="company_structure" xml:space="preserve">
+    <value>Company Structure</value>
+  </data>
+  <data name="main" xml:space="preserve">
+    <value>Main</value>
+  </data>
+  <data name="register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="register_company_and_its_structure" xml:space="preserve">
+    <value>Register company and it's structure</value>
+  </data>
+  <data name="structure_register" xml:space="preserve">
+    <value>Structure register</value>
+  </data>
+  <data name="structure_group" xml:space="preserve">
+    <value>Structure Group</value>
+  </data>
+  <data name="saving" xml:space="preserve">
+    <value>Saving</value>
+  </data>
+  <data name="company" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Name</value>
+  </data>
 </root>

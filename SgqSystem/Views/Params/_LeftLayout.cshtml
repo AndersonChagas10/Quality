@@ -3,57 +3,79 @@
 }
 
 <div class="page-sidebar-wrapper">
-    <!-- BEGIN SIDEBAR -->
-    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
     <div class="page-sidebar navbar-collapse collapse">
-        <!-- BEGIN SIDEBAR MENU -->
-        <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
-        <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
-        <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
-        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-        <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
-        <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
         <ul class="page-sidebar-menu  page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-            <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
-            <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
             <li class="sidebar-toggler-wrapper hide">
                 <div class="sidebar-toggler">
                     <span></span>icon-home
                 </div>
             </li>
             <li class="heading">
-                <h3 class="uppercase">Language</h3>
+                <h3 class="uppercase">@Resources.Resource.main</h3>
             </li>
             <!-- END SIDEBAR TOGGLER BUTTON -->
-            <li class="nav-item start active open">
-                <a href="javascript:;" class="nav-link nav-toggle">
+            <li class="nav-item" id="navbar1">
+                <a href="@Url.Action("Index", "Params")" class="nav-link nav-toggle">
                     <i class="fa fa-home" aria-hidden="true"></i>
-                    <span class="title">Dashboard</span>
+                    <span class="title">@Resources.Resource.customization</span>
                     <span class="selected"></span>
                     <span class="arrow closed"></span>
                 </a>
             </li>
             <li class="heading">
-                <h3 class="uppercase">Features</h3>
+                <h3 class="uppercase">@Resources.Resource.register</h3>
             </li>
-            <li class="nav-item  ">
-                <a href="javascript:;" class="nav-link nav-toggle">
+            <li class="nav-item" id="navbar2">
+                <a href="@Url.Action("Index", "Company")" class="nav-link nav-toggle">
                     <i class="fa fa-university" aria-hidden="true"></i>
-                    <span class="title">UI Features</span>
+                    <span class="title">@Resources.Resource.company_structure</span>
                     <span class="arrow"></span>
                 </a>
             </li>
-            <li class="nav-item  ">
+            <li class="nav-item" id="navbar3">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="fa fa-university" aria-hidden="true"></i>
-                    <span class="title">Components</span>
+                    <span class="title">@Resources.Resource.cluster</span>
+                    <span class="arrow"></span>
+                </a>
+            </li>
+            <li class="nav-item" id="navbar4">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="fa fa-university" aria-hidden="true"></i>
+                    <span class="title">@Resources.Resource.department</span>
+                    <span class="arrow"></span>
+                </a>
+            </li>
+            <li class="nav-item" id="navbar5">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="fa fa-university" aria-hidden="true"></i>
+                    <span class="title">@Resources.Resource.measurement_unit</span>
                     <span class="arrow"></span>
                 </a>
             </li>
         </ul>
-        <!-- END SIDEBAR MENU -->
-        <!-- END SIDEBAR MENU -->
     </div>
-    <!-- END SIDEBAR -->
 </div>
+
+<script>
+
+    $(document).ready(function () {
+        if (localStorage.navibarState) {
+            navbarSelect(localStorage.navibarState);
+        } else {
+            $('#navbar1').addClass('active');
+            localStorage.navibarState = "navbar1";
+        }
+    });
+
+    function navbarSelect(id) {
+        $('.nav-item').removeClass('active').removeClass('start').removeClass('open');
+        $('#' + id).addClass('active').addClass('start').addClass('open');
+    };
+
+    $('.nav-item').click(function () {
+        localStorage.navibarState = $(this).attr('id');
+        //navbarSelect(localStorage.navibarState);
+    });
+    
+</script>

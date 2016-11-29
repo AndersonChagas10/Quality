@@ -624,4 +624,40 @@
   <data name="please_wait" xml:space="preserve">
     <value>Por favor, espere um momento</value>
   </data>
+  <data name="cluster" xml:space="preserve">
+    <value>Cluster</value>
+  </data>
+  <data name="company_register" xml:space="preserve">
+    <value>Cadastro da Empresa</value>
+  </data>
+  <data name="company_structure" xml:space="preserve">
+    <value>Estrutura da Empresa</value>
+  </data>
+  <data name="main" xml:space="preserve">
+    <value>Principal</value>
+  </data>
+  <data name="register" xml:space="preserve">
+    <value>Cadastros</value>
+  </data>
+  <data name="register_company_and_its_structure" xml:space="preserve">
+    <value>Registro de empresas e sua estrutura</value>
+  </data>
+  <data name="structure_register" xml:space="preserve">
+    <value>Cadastro de estrutura</value>
+  </data>
+  <data name="saving" xml:space="preserve">
+    <value>Salvando</value>
+  </data>
+  <data name="structure_group" xml:space="preserve">
+    <value>Estrutura do Grupo</value>
+  </data>
+  <data name="company" xml:space="preserve">
+    <value>Empresa</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>Descrição</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
 </root>
