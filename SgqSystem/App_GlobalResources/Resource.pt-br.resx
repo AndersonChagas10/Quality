@@ -621,4 +621,7 @@
   <data name="loading" xml:space="preserve">
     <value>Carregando</value>
   </data>
+  <data name="please_wait" xml:space="preserve">
+    <value>Por favor, espere um momento</value>
+  </data>
 </root>
