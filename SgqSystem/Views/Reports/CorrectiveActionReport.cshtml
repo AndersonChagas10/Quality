@@ -41,6 +41,7 @@
             $("#btnSend").click(function (e) {
                 Send();
             });
+            //alert('dados Modal');
         });
 
         formControl.ShowAllFielsAndFullCallendar();
@@ -107,19 +108,13 @@
                         $.post(url2, { "": data.Id }, function (r, x, e) {
                             if (!!r.Retorno) {
                                 //console.log(r.Retorno);
+                                $('#correctiveActionModal  #estName').html(r.Retorno.Unit.Code); // ?
                                 $('#correctiveActionModal  #datetime').html(r.Retorno.DateCorrectiveActionFormatado); // ?
                                 $('#correctiveActionModal  #auditor').html(r.Retorno.AuditorName);
                                 $('#correctiveActionModal  #auditText').html(r.Retorno.level01Name);
                                 $('#correctiveActionModal  #shift').html(r.Retorno.ShiftName);
                                 $('#correctiveActionModal  #starttime').html(r.Retorno.StartTimeFormatado);
                                 $('#correctiveActionModal  #correctivePeriod').html(r.Retorno.PeriodName);
-
-
-                                //var ImmediateCorrectiveAction = r.Retorno.ImmediateCorrectiveAction;
-                                //if (ImmediateCorrectiveAction.length > 20)
-                                //{
-                                //    ImmediateCorrectiveAction = ImmediateCorrectiveAction.substring(0, 20) + '...';
-                                //}
 
                                 $('#correctiveActionModal  #DescriptionFailure').html(r.Retorno.DescriptionFailure);
                                 $('#correctiveActionModal  #ImmediateCorrectiveAction').html(r.Retorno.ImmediateCorrectiveAction);
@@ -131,6 +126,21 @@
 
                                 $('#correctiveActionModal  #Technical .name').html(r.Retorno.NameTechinical);
                                 $('#correctiveActionModal  #Technical .date').html(r.Retorno.DateTimeTechinicalFarmatado);
+
+
+                                var date = new Date();
+                                var year = date.getFullYear();
+                                var month = date.getMonth() + 1;
+                                var day = date.getDate();
+                                var hour = date.getHours();
+                                var minute = date.getMinutes();
+                                var seconds = date.getSeconds();
+                                var mileseconds = date.getMilliseconds();
+                                var mmddyyyyhhmm = ("0" + month).slice(-2) + "/" + ("0" + day).slice(-2) + "/" + year + " " + ("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2);
+
+
+
+                                $('.printedDate').html(mmddyyyyhhmm);
                             } else {
                                 GuardJs.exibirMensagemAlerta(r.Mensagem);
                             }
@@ -190,6 +200,8 @@
 
             window.print();
             $wrapper.detach();
+            $('#printSection').remove();
+
         }
 
         function printElement(elem, append, delimiter) {

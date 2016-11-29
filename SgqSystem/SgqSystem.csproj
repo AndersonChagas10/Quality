@@ -268,11 +268,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.pt-br.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Resource1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -396,6 +391,7 @@
     <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
     <Compile Include="Secirity\SessionPersister.cs" />
+    <Compile Include="Services\Level02Result.cs" />
     <Compile Include="Services\SynService.asmx.cs">
       <DependentUpon>SynService.asmx</DependentUpon>
       <SubType>Component</SubType>
