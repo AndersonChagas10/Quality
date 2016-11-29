@@ -9,8 +9,8 @@ namespace SgqSystem.Mappers
     {
         public UnitUserMapperProfile()
         {
-            CreateMap<ParCompanyStructure, ParCompanyStructureDTO>();
-            CreateMap<ParCompanyStructureDTO, ParCompanyStructure>();
+            CreateMap<ParCompanyXStructure, ParCompanyXStructureDTO>();
+            CreateMap<ParCompanyXStructureDTO, ParCompanyXStructure>();
         }
     }
 }

@@ -46,6 +46,10 @@ namespace Dominio
         public decimal Mudscore { get; set; }
         public bool NotEvaluatedIs { get; set; }
         public bool Duplicated { get; set; }
+        public Nullable<bool> HaveCorrectiveAction { get; set; }
+        public Nullable<bool> HaveReaudit { get; set; }
+        public Nullable<bool> HavePhase { get; set; }
+        public Nullable<bool> Completed { get; set; }
     
         public virtual ConsolidationLevel02 ConsolidationLevel02 { get; set; }
         public virtual Level01 Level01 { get; set; }

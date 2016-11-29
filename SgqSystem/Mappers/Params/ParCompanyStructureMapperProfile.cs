@@ -8,8 +8,8 @@ namespace SgqSystem.Mappers
     {
         public ParCompanyStructureMapperProfile()
         {
-            CreateMap<ParCompanyStructureDTO, ParCompanyStructure>();
-            CreateMap<ParCompanyStructure, ParCompanyStructureDTO>();
+            CreateMap<ParCompanyXStructureDTO, ParCompanyXStructure>();
+            CreateMap<ParCompanyXStructure, ParCompanyXStructureDTO>();
         }
     }
 }

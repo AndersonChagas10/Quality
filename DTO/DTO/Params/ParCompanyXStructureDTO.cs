@@ -2,7 +2,7 @@
 
 namespace DTO.DTO.Params
 {
-    public class ParCompanyStructureDTO : EntityBase
+    public class ParCompanyXStructureDTO : EntityBase
     {
         public int ParStructure_Id { get; set; }
         public int ParCompany_Id { get; set; }

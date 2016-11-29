@@ -44,12 +44,13 @@ namespace Dominio
         public virtual DbSet<Level01> Level01 { get; set; }
         public virtual DbSet<Level02> Level02 { get; set; }
         public virtual DbSet<Level03> Level03 { get; set; }
+        public virtual DbSet<LogJson> LogJson { get; set; }
         public virtual DbSet<LogSgqGlobal> LogSgqGlobal { get; set; }
         public virtual DbSet<ParCluster> ParCluster { get; set; }
         public virtual DbSet<ParClusterGroup> ParClusterGroup { get; set; }
         public virtual DbSet<ParCompany> ParCompany { get; set; }
         public virtual DbSet<ParCompanyCluster> ParCompanyCluster { get; set; }
-        public virtual DbSet<ParCompanyStructure> ParCompanyStructure { get; set; }
+        public virtual DbSet<ParCompanyXStructure> ParCompanyXStructure { get; set; }
         public virtual DbSet<ParConsolidationType> ParConsolidationType { get; set; }
         public virtual DbSet<ParCounter> ParCounter { get; set; }
         public virtual DbSet<ParCounterXLocal> ParCounterXLocal { get; set; }

@@ -12,22 +12,22 @@ namespace SgqSystem.Controllers
     public class CompanyController : Controller
     {
         private IBaseDomain<ParCompany, ParCompanyDTO> _baseDomainParCompany;
-        private IBaseDomain<ParCompanyStructure, ParCompanyStructureDTO> _baseDomainParCompanyStructure;
+        private IBaseDomain<ParCompanyXStructure, ParCompanyXStructureDTO> _baseDomainParCompanyXStructure;
         private IBaseDomain<ParStructure, ParStructureDTO> _baseDomainParStructure;
         private IBaseDomain<ParStructureGroup, ParStructureGroupDTO> _baseDomainParStructureGroup;
 
         public CompanyController(IBaseDomain<ParCompany, ParCompanyDTO> baseDomainParCompany,
-                    IBaseDomain<ParCompanyStructure, ParCompanyStructureDTO> baseDomainParCompanyStructure,
+                    IBaseDomain<ParCompanyXStructure, ParCompanyXStructureDTO> baseDomainParCompanyXStructure,
                     IBaseDomain<ParStructure, ParStructureDTO> baseDomainParStructure,
                     IBaseDomain<ParStructureGroup, ParStructureGroupDTO> baseDomainParStructureGroup)
         {
             _baseDomainParCompany = baseDomainParCompany;
-            _baseDomainParCompanyStructure = baseDomainParCompanyStructure;
+            _baseDomainParCompanyXStructure = baseDomainParCompanyXStructure;
             _baseDomainParStructure = baseDomainParStructure;
             _baseDomainParStructureGroup = baseDomainParStructureGroup;
 
             ViewBag.listaParCompany = _baseDomainParCompany.GetAll();
-            ViewBag.listaParCompanyStructure = _baseDomainParCompanyStructure.GetAll();
+            ViewBag.listaParCompanyStructure = _baseDomainParCompanyXStructure.GetAll();
             ViewBag.listaParStructure = _baseDomainParStructure.GetAll();
             ViewBag.listaParStructureGroup = _baseDomainParStructureGroup.GetAll();
 

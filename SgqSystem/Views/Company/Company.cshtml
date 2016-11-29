@@ -7,11 +7,11 @@
             <table class="table-erp">
                 <tbody>
                     <tr class="row hide">
-                        @*@Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Id, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)*@
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Id", new { @id = "parCompanyDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
                     </tr>
                     <tr class="row">
-                        @Table.GerarColuna(@Html.Editor("CompanyName", new { htmlAttributes = new { @class = "form-control" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
-                        @Table.GerarColunaButton(@Html.Editor("Strucure", new { htmlAttributes = new { @class = "form-control" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick='indexCompany.enviarDadosParaApi();' class='btn btn-primary margin'><i class='fa fa-plus'></i></button>")
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Name", new { htmlAttributes = new { @id = "parCompanyDTO_Name", @class = "form-control" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                        @Table.GerarColunaButton(@Html.Editor("parCompanyDTO.Description", new { htmlAttributes = new { @id = "parCompanyDTO_Description",  @class = "form-control" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick='indexCompany.enviarDadosParaApi();' class='btn btn-primary margin'><i class='fa fa-plus'></i></button>")
                     </tr>
 
                 </tbody>

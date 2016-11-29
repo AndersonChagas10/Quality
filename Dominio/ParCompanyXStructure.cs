@@ -12,7 +12,7 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParCompanyStructure
+    public partial class ParCompanyXStructure
     {
         public int Id { get; set; }
         public int ParStructure_Id { get; set; }
@@ -20,5 +20,8 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public System.DateTime AlterDate { get; set; }
         public bool Active { get; set; }
+    
+        public virtual ParCompany ParCompany { get; set; }
+        public virtual ParStructure ParStructure { get; set; }
     }
 }

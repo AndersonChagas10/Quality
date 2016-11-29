@@ -264,151 +264,151 @@ namespace Dominio.Services
 
         #region Novo Modelo com Json
 
-        public GenericReturn<CollectionJson> SaveFastJson(SyncDTO obj)
-        {
-            GenericReturn<CollectionJson> feedback = new GenericReturn<CollectionJson>("Susscess! All Data Saved for: ");
-            var saveJson = new CollectionJson();
+        //public GenericReturn<CollectionJson> SaveFastJson(SyncDTO obj)
+        //{
+        //    GenericReturn<CollectionJson> feedback = new GenericReturn<CollectionJson>("Susscess! All Data Saved for: ");
+        //    var saveJson = new CollectionJson();
 
-            try
-            {
-                //throw new Exception("teste");
-                //MOCK
-                obj.key = " ";
+        //    try
+        //    {
+        //        //throw new Exception("teste");
+        //        //MOCK
+        //        obj.key = " ";
 
-                saveJson.ObjectJson = Guard.ToJson(obj);
-                saveJson.Key = obj.key;
+        //        saveJson.ObjectJson = Guard.ToJson(obj);
+        //        saveJson.Key = obj.key;
 
-                if (saveJson.ObjectJson.IndexOf("\"period\": \"1\"") > 0)
-                    saveJson.Period = 1;
+        //        if (saveJson.ObjectJson.IndexOf("\"period\": \"1\"") > 0)
+        //            saveJson.Period = 1;
 
-                if (saveJson.ObjectJson.IndexOf("\"period\": \"2\"") > 0)
-                    saveJson.Period = 2;
+        //        if (saveJson.ObjectJson.IndexOf("\"period\": \"2\"") > 0)
+        //            saveJson.Period = 2;
 
-                if (saveJson.ObjectJson.IndexOf("\"period\": \"3\"") > 0)
-                    saveJson.Period = 3;
+        //        if (saveJson.ObjectJson.IndexOf("\"period\": \"3\"") > 0)
+        //            saveJson.Period = 3;
 
-                if (saveJson.ObjectJson.IndexOf("\"period\": \"4\"") > 0)
-                    saveJson.Period = 4;
+        //        if (saveJson.ObjectJson.IndexOf("\"period\": \"4\"") > 0)
+        //            saveJson.Period = 4;
 
-                if (saveJson.ObjectJson.IndexOf("\"level01id\": \"3\"") > 0)
-                    saveJson.level01_Id = 3;
+        //        if (saveJson.ObjectJson.IndexOf("\"level01id\": \"3\"") > 0)
+        //            saveJson.level01_Id = 3;
 
-                if (saveJson.ObjectJson.IndexOf("\"level01id\": \"1\"") > 0)
-                    saveJson.level01_Id = 1;
+        //        if (saveJson.ObjectJson.IndexOf("\"level01id\": \"1\"") > 0)
+        //            saveJson.level01_Id = 1;
 
-                if (saveJson.ObjectJson.IndexOf("\"level01id\": \"2\"") > 0)
-                    saveJson.level01_Id = 2;
+        //        if (saveJson.ObjectJson.IndexOf("\"level01id\": \"2\"") > 0)
+        //            saveJson.level01_Id = 2;
 
-                _baseRepoCollectionJson.AddOrUpdate(saveJson);
+        //        _baseRepoCollectionJson.AddOrUpdate(saveJson);
 
-                var obj2 = Guard.DeserializaJson<SyncDTO>(saveJson.ObjectJson);
+        //        var obj2 = Guard.DeserializaJson<SyncDTO>(saveJson.ObjectJson);
 
-            }
+        //    }
 
-            catch (Exception e)
-            {
-                new CreateLog(new Exception("Cannot sync Data: ", e), obj);
-                feedback.MensagemExcecao = e.Message;
-            }
+        //    catch (Exception e)
+        //    {
+        //        new CreateLog(new Exception("Cannot sync Data: ", e), obj);
+        //        feedback.MensagemExcecao = e.Message;
+        //    }
 
-            feedback.Mensagem = "Susscess!All Data Saved for: " + saveJson.level01_Id + " Fom period: " + saveJson.Period;
-            return feedback;
-        }
+        //    feedback.Mensagem = "Susscess!All Data Saved for: " + saveJson.level01_Id + " Fom period: " + saveJson.Period;
+        //    return feedback;
+        //}
 
-        public void SetFullSave(List<int> listId)
-        {
-            var listPeriods = new List<int>();
-            var processadosTempoReal = new List<int>();
-            listPeriods.Add(1);
-            listPeriods.Add(2);
-            listPeriods.Add(3);
-            listPeriods.Add(4);
+        //public void SetFullSave(List<int> listId)
+        //{
+        //    var listPeriods = new List<int>();
+        //    var processadosTempoReal = new List<int>();
+        //    listPeriods.Add(1);
+        //    listPeriods.Add(2);
+        //    listPeriods.Add(3);
+        //    listPeriods.Add(4);
 
-            var listJson = new List<CollectionJson>();
+        //    var listJson = new List<CollectionJson>();
 
-            foreach (var i in listId)
-                listJson.Add(_baseRepoCollectionJson.GetById(i));
-
-
-            foreach (var periodo in listPeriods)
-            {
-
-                foreach (var json in listJson)
-                {
+        //    foreach (var i in listId)
+        //        listJson.Add(_baseRepoCollectionJson.GetById(i));
 
 
-                    if (json.Period == periodo && json.IsFullSaved == false && !(processadosTempoReal.Any(r => r == json.Id)))
-                    {
-                        json.IsFullSaved = true;
-                        _baseRepoCollectionJson.AddOrUpdate(json);
+        //    foreach (var periodo in listPeriods)
+        //    {
 
-                        var obj = Guard.DeserializaJson<SyncDTO>(json.ObjectJson);
-                        processadosTempoReal.Add(json.Id);
+        //        foreach (var json in listJson)
+        //        {
 
-                        try
-                        {
 
-                            _consolidationLevel01ToSave = new List<ConsolidationLevel01>();
-                            _consolidationLevel02ToSave = new List<ConsolidationLevel02>();
-                            _collectionLevel02ToSave = new List<CollectionLevel02>();
-                            _collectionLevel03ToSave = new List<CollectionLevel03>();
-                            _correctiveActionToSave = new List<CorrectiveAction>();
+        //            if (json.Period == periodo && json.IsFullSaved == false && !(processadosTempoReal.Any(r => r == json.Id)))
+        //            {
+        //                json.IsFullSaved = true;
+        //                _baseRepoCollectionJson.AddOrUpdate(json);
 
-                            #region Validação e criação de objetos.
+        //                var obj = Guard.DeserializaJson<SyncDTO>(json.ObjectJson);
+        //                processadosTempoReal.Add(json.Id);
 
-                            if (obj.Root.Count == 0)
-                                throw new ExceptionHelper("Impossible to Sync data. The Sync list is empty.");
+        //                try
+        //                {
 
-                            obj.ListToSave = new List<ConsolidationLevel01DTO>();
-                            obj.ListToSaveCA = new List<CorrectiveActionDTO>();
+        //                    _consolidationLevel01ToSave = new List<ConsolidationLevel01>();
+        //                    _consolidationLevel02ToSave = new List<ConsolidationLevel02>();
+        //                    _collectionLevel02ToSave = new List<CollectionLevel02>();
+        //                    _collectionLevel03ToSave = new List<CollectionLevel03>();
+        //                    _correctiveActionToSave = new List<CorrectiveAction>();
 
-                            CriaListaDeObjectsToSave(obj); //RN1
+        //                    #region Validação e criação de objetos.
 
-                            #endregion
+        //                    if (obj.Root.Count == 0)
+        //                        throw new ExceptionHelper("Impossible to Sync data. The Sync list is empty.");
 
-                            //Stopwatch watch = IniciaCronometro(); //RN3
+        //                    obj.ListToSave = new List<ConsolidationLevel01DTO>();
+        //                    obj.ListToSaveCA = new List<CorrectiveActionDTO>();
 
-                            #region Loop Save
+        //                    CriaListaDeObjectsToSave(obj); //RN1
 
-                            foreach (var i in obj.ListToSave) //RN2
-                            {
-                                ConsolidationLevel01 level01Consolidation = Mapper.Map<ConsolidationLevel01>(i);
-                                level01Consolidation = AddConsolidationLevel01(level01Consolidation);
-                                ConsolidationLevel02 level02Consolidation;
-                                foreach (var consolidationLevel02Dto in i.consolidationLevel02DTO)
-                                {
-                                    VerificaDuplicados(i);//RN7
-                                    foreach (var collectionLevel02Dto in i.collectionLevel02DTO)
-                                    {
-                                        level02Consolidation = AddConsolidationLevel02(level01Consolidation, consolidationLevel02Dto, collectionLevel02Dto.Level02Id, i.UnitId);
-                                        AddCorrectiveAction(obj.ListToSaveCA, collectionLevel02Dto);
-                                        CollectionLevel02 collectionLevel02 = AddCollectionLevel02CollectionLevel03(collectionLevel02Dto, level01Consolidation.Level01Id, level02Consolidation.Id);
-                                    }
-                                }
-                            }
+        //                    #endregion
 
-                            lock (this)
-                            {
+        //                    //Stopwatch watch = IniciaCronometro(); //RN3
 
-                                /*Salvando os itens */
-                                _saveCollectionRepo.SaveAllLevel(_collectionLevel02ToSave
-                                     , _collectionLevel03ToSave, _correctiveActionToSave);
+        //                    #region Loop Save
 
-                            }
+        //                    foreach (var i in obj.ListToSave) //RN2
+        //                    {
+        //                        ConsolidationLevel01 level01Consolidation = Mapper.Map<ConsolidationLevel01>(i);
+        //                        level01Consolidation = AddConsolidationLevel01(level01Consolidation);
+        //                        ConsolidationLevel02 level02Consolidation;
+        //                        foreach (var consolidationLevel02Dto in i.consolidationLevel02DTO)
+        //                        {
+        //                            VerificaDuplicados(i);//RN7
+        //                            foreach (var collectionLevel02Dto in i.collectionLevel02DTO)
+        //                            {
+        //                                level02Consolidation = AddConsolidationLevel02(level01Consolidation, consolidationLevel02Dto, collectionLevel02Dto.Level02Id, i.UnitId);
+        //                                AddCorrectiveAction(obj.ListToSaveCA, collectionLevel02Dto);
+        //                                CollectionLevel02 collectionLevel02 = AddCollectionLevel02CollectionLevel03(collectionLevel02Dto, level01Consolidation.Level01Id, level02Consolidation.Id);
+        //                            }
+        //                        }
+        //                    }
 
-                            #endregion
-                        }
-                        catch (Exception e)
-                        {
-                            json.IsFullSaved = false;
-                            _baseRepoCollectionJson.AddOrUpdate(json);
-                            new CreateLog(new Exception("Cannot sync Data: ", e), obj);
-                        }
-                    }
-                }
+        //                    lock (this)
+        //                    {
 
-            }
-        }
+        //                        /*Salvando os itens */
+        //                        _saveCollectionRepo.SaveAllLevel(_collectionLevel02ToSave
+        //                             , _collectionLevel03ToSave, _correctiveActionToSave);
+
+        //                    }
+
+        //                    #endregion
+        //                }
+        //                catch (Exception e)
+        //                {
+        //                    json.IsFullSaved = false;
+        //                    _baseRepoCollectionJson.AddOrUpdate(json);
+        //                    new CreateLog(new Exception("Cannot sync Data: ", e), obj);
+        //                }
+        //            }
+        //        }
+
+        //    }
+        //}
 
         #endregion
 
@@ -670,6 +670,16 @@ namespace Dominio.Services
         private static Stopwatch IniciaCronometro()
         {
             return Stopwatch.StartNew();
+        }
+
+        public GenericReturn<CollectionJson> SaveFastJson(SyncDTO obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetFullSave(List<int> listId)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
