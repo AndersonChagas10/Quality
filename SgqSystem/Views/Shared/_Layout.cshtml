@@ -110,5 +110,44 @@
     @Html.Partial("_crudNxNModal")
 
     @RenderSection("scripts", required: false)
+
+    <script>
+
+        var monthNames = [
+            '@Resources.Resource.january',
+            '@Resources.Resource.february',
+            '@Resources.Resource.march',
+            '@Resources.Resource.april',
+            '@Resources.Resource.may',
+            '@Resources.Resource.june',
+            '@Resources.Resource.july',
+            '@Resources.Resource.august',
+            '@Resources.Resource.september',
+            '@Resources.Resource.october',
+            '@Resources.Resource.november',
+            '@Resources.Resource.december'];
+
+        function twoDigits(str) {
+            str = ("000" + str).slice(-2);
+            return str;
+        }
+
+        function watcher() {
+
+            var date = new Date();
+            var day = date.getDate();
+            var monthIndex = date.getMonth();
+            var year = date.getFullYear();
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
+
+            $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
+
+            setTimeout(watcher, 1000);
+        }
+
+        watcher();
+    </script>
 </body>
 </html>

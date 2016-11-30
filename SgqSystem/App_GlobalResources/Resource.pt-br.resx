@@ -672,4 +672,22 @@
   <data name="management" xml:space="preserve">
     <value>Gestão</value>
   </data>
+  <data name="new_cluster" xml:space="preserve">
+    <value>Novo cluster</value>
+  </data>
+  <data name="new_group" xml:space="preserve">
+    <value>Novo grupo</value>
+  </data>
+  <data name="new_structure" xml:space="preserve">
+    <value>Nova estrutura</value>
+  </data>
+  <data name="departments" xml:space="preserve">
+    <value>Departamentos</value>
+  </data>
+  <data name="new_department" xml:space="preserve">
+    <value>Novo departamento</value>
+  </data>
+  <data name="measurement_units" xml:space="preserve">
+    <value>Unidades de Medida</value>
+  </data>
 </root>

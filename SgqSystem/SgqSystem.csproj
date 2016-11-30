@@ -309,7 +309,7 @@
     <Compile Include="Controllers\Api\NewSync\NewSyncController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\Params\ParCompanyController.cs" />
     <Compile Include="Controllers\ConsolidacaoTestes\ConsolidacaoTestesController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
     <Compile Include="Controllers\Exemplo\HtmlTesteController.cs" />
@@ -327,9 +327,9 @@
     <Compile Include="Controllers\Charts\ChartsController.cs" />
     <Compile Include="Controllers\Merge\MergeController.cs" />
     <Compile Include="Controllers\Params\ParamsController.cs" />
-    <Compile Include="Controllers\ParClustersController.cs" />
-    <Compile Include="Controllers\ParDepartmentsController.cs" />
-    <Compile Include="Controllers\ParMeasurementUnitsController.cs" />
+    <Compile Include="Controllers\Params\ParClustersController.cs" />
+    <Compile Include="Controllers\Params\ParDepartmentsController.cs" />
+    <Compile Include="Controllers\Params\ParMeasurementUnitsController.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -398,6 +398,7 @@
     <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
     <Compile Include="Secirity\SessionPersister.cs" />
+    <Compile Include="Services\Level02Result.cs" />
     <Compile Include="Services\SynService.asmx.cs">
       <DependentUpon>SynService.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -1202,10 +1203,10 @@
     <Content Include="Views\Params\_GroupXLevel.cshtml" />
     <Content Include="Views\Shared\_crudNxNModal.cshtml" />
     <Content Include="Views\ConsolidacaoTestes\Index.cshtml" />
-    <Content Include="Views\Company\Company.cshtml" />
-    <Content Include="Views\Company\Index.cshtml" />
-    <Content Include="Views\Company\Structure.cshtml" />
-    <Content Include="Views\Company\StructureGroup.cshtml" />
+    <Content Include="Views\ParCompany\ParCompany.cshtml" />
+    <Content Include="Views\ParCompany\Index.cshtml" />
+    <Content Include="Views\ParCompany\ParStructure.cshtml" />
+    <Content Include="Views\ParCompany\ParStructureGroup.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

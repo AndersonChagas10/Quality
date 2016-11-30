@@ -9,14 +9,14 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
-    public class CompanyController : Controller
+    public class ParCompanyController : Controller
     {
         private IBaseDomain<ParCompany, ParCompanyDTO> _baseDomainParCompany;
         private IBaseDomain<ParCompanyXStructure, ParCompanyXStructureDTO> _baseDomainParCompanyXStructure;
         private IBaseDomain<ParStructure, ParStructureDTO> _baseDomainParStructure;
         private IBaseDomain<ParStructureGroup, ParStructureGroupDTO> _baseDomainParStructureGroup;
 
-        public CompanyController(IBaseDomain<ParCompany, ParCompanyDTO> baseDomainParCompany,
+        public ParCompanyController(IBaseDomain<ParCompany, ParCompanyDTO> baseDomainParCompany,
                     IBaseDomain<ParCompanyXStructure, ParCompanyXStructureDTO> baseDomainParCompanyXStructure,
                     IBaseDomain<ParStructure, ParStructureDTO> baseDomainParStructure,
                     IBaseDomain<ParStructureGroup, ParStructureGroupDTO> baseDomainParStructureGroup)

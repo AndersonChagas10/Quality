@@ -39,12 +39,52 @@ namespace SgqSystem.Controllers.ConsolidacaoTestes
         
     }
 
+    public class ResultLevel2
+    {
+        public int id { get; set; }
+        public int resultlevel1_id { get; set; }
+        public int parlevel1_id { get; set; }
+        public String parlevel1_name { get; set; }
+        public int parlevel2_id { get; set; }
+        public String parlevel2_name { get; set; }
+	    public int Punishment { get; set; }
+	    public decimal CT1Eva2 { get; set; }
+	    public decimal CT1Def2 { get; set; }
+	    public decimal CT2Eva2 { get; set; }
+	    public decimal CT2Def2 { get; set; }
+	    public decimal CT3Eva2 { get; set; }
+	    public decimal CT3Def2 { get; set; }
+	    public decimal CT4Eva2 { get; set; }
+	    public decimal CT4Def2 { get; set; }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+	    public decimal CT5Eva2 { get; set; }
+	    public decimal CT5Def2 { get; set; }
+    }
+
+    public class ResultLevel1
+    {
+        public int id { get; set; }
+        public int resultlevel1_id { get; set; }
+        public int parlevel1_id { get; set; }
+        public String parlevel1_name { get; set; }
+        public decimal CT1Eva1 { get; set; }
+	    public decimal CT1Def1 { get; set; }
+	    public decimal CT2Eva1 { get; set; }
+	    public decimal CT2Def1 { get; set; }
+	    public decimal CT3Eva1 { get; set; }
+	    public decimal CT3Def1 { get; set; }
+        public decimal CT3Def1_2 { get; set; }
+        public decimal CT4Eva1 { get; set; }
+	    public decimal CT4Def1 { get; set; }
+	    public decimal CT5Eva1 { get; set; }
+	    public decimal CT5Def1 { get; set; }
+    }
+
     #endregion
 
     public class ConsolidacaoTestesController : Controller
     {
 
-        #region MOCKS
+        #region MOCKS Lists
 
         private List<ResultLevel3> createListResultLevel3()
         {
@@ -62,21 +102,37 @@ namespace SgqSystem.Controllers.ConsolidacaoTestes
             return listaLevel3;
         }
 
-        private List<ResultLevel3> createListResultLevel2()
-        {
-            var listaLevel3 = new List<ResultLevel3>();
+        //private List<ResultLevel2> createListResultLevel2()
+        //{
+        //    var listaLevel3 = new List<ResultLevel3>();
 
 
-            listaLevel3.Add(new ResultLevel3
-            {
-                Id = 1,
-                resultlevel2_id = 1,
-                parlevel1_id = 1,
+        //    listaLevel3.Add(new ResultLevel3
+        //    {
+        //        Id = 1,
+        //        resultlevel2_id = 1,
+        //        parlevel1_id = 1,
 
-            });
+        //    });
 
-            return listaLevel3;
-        }
+        //    return listaLevel3;
+        //}
+
+        //private List<ResultLevel1> createListResultLevel1()
+        //{
+        //    var listaLevel3 = new List<ResultLevel3>();
+
+
+        //    listaLevel3.Add(new ResultLevel3
+        //    {
+        //        Id = 1,
+        //        resultlevel2_id = 1,
+        //        parlevel1_id = 1,
+
+        //    });
+
+        //    return listaLevel3;
+        //}
 
         private List<ParLevel3> createListLevel3()
         {
@@ -109,6 +165,8 @@ namespace SgqSystem.Controllers.ConsolidacaoTestes
 
             return View();
         }
+
+        #region Funções ConsolidationType 
 
         /// <summary>
         /// Se o peso das avaliações da tabela resultlevel3
@@ -148,6 +206,7 @@ namespace SgqSystem.Controllers.ConsolidacaoTestes
             }
         }
 
+        #endregion
 
         #region Calculos
 
@@ -176,9 +235,7 @@ namespace SgqSystem.Controllers.ConsolidacaoTestes
         }
 
         #endregion
-
-
-        
+                
 
     }
 
