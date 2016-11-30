@@ -5,6 +5,10 @@
         #printSection {
             display: none;
         }
+        .footer-rodape
+        {
+            margin-top:15px;
+        }
     }
 
     @@media print {
@@ -22,7 +26,12 @@
             top: 0;
         }
     }
+    @@media print{
 
+        .footer-rodape{
+            position:fixed; bottom:0px;
+        }
+    }
     .printable {
         display: none;
     }
@@ -58,70 +67,88 @@
                     </div>*@
                 <div class="modal-body">
                     <!--Começo Ação Corretiva-->
-                    <div id="correctiveActionModal" class="container panel panel-default modal-padrao" style="width:880px!important">
+                    @*style="width:880px!important"*@
+                    <div id="correctiveActionModal" class="modal-padrao" style="margin-left:10px;margin-right:10px;margin-top:15px;">
                         @*<div class="panel-body">*@
                         <!--<div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         </div>-->
                         @*<div class="modal-body">*@
-                        <h2>Corrective Action</h2>
-                        @*<div id="messageAlert" class="alert alert-info hide" role="alert">
-                                <span id="mensagemAlerta" class="icon-info-sign"></span>
-                            </div>*@
-                        @*<div class="row formCorrectiveAction">*@
-                        <div class="panel panel-default" style="width:860px!important">
-                            <div class="panel-body" style="width:845px!important">
-                                <div class="row">
-                                    <div class="col-xs-6" id="CorrectiveActionTaken">
-                                        <b class="font16">Corrective Action Taken:<br /></b>
-                                        <b>Date/Time:</b> <span id="datetime"></span><br />
-                                        <b>Auditor: </b><span id="auditor"></span><br />
-                                        <b>Shift: </b><span id="shift"></span><br />
-                                    </div>
-                                    <div class="col-xs-6" id="AuditInformation">
-                                        <b class="font16">Audit Information:<br /></b>
-                                        <b>Audit: </b><span id="auditText"></span><br />
-                                        <b>Start Time: </b><span id="starttime"></span><br />
-                                        <b>Period: </b><span id="correctivePeriod"></span>
-                                    </div>
+                        @*<h2>Corrective Action</h2>*@
+                        <div class="header" style="font-size:14px;font-weight:bold">
+                            <div class="unitCode">JBS Greeley Beef, Est. <span id="estName"></span></div>
+                            <div>Safe Program Audit Form</div>
+                            <div>Corrective Action</div>
+                        </div>
+                        <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
+                            <div class="row">
+                                <div class="col-xs-6" id="CorrectiveActionTaken">
+                                    <b class="font16">Corrective Action Taken:<br /></b>
+                                    <b>Date/Time:</b> <span id="datetime"></span><br />
+                                    <b>Auditor: </b><span id="auditor"></span><br />
+                                    <b>Shift: </b><span id="shift"></span><br />
+                                </div>
+                                <div class="col-xs-6" id="AuditInformation">
+                                    <b class="font16">Audit Information:<br /></b>
+                                    <b>Audit: </b><span id="auditText"></span><br />
+                                    <b>Start Time: </b><span id="starttime"></span><br />
+                                    <b>Period: </b><span id="correctivePeriod"></span>
+                                </div>
+                            </div>
+                        </div>                      
+                        <div>
+                            <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto;margin-top: 8px;">
+                                <h4 style="margin-top:0">Description of Failure</h4>
+                                <div id="DescriptionFailure"></div>
+                            </div>
+                            <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
+                                <h4 style="margin-top:0">Immediate Corrective Action</h4>
+                                <div id="ImmediateCorrectiveAction"></div>
+                            </div>
+                            <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
+                                <h4 style="margin-top:0">Product Disposition</h4>
+                                <div id="ProductDisposition"></div>
+                            </div>
+                            <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
+                                <h4 style="margin-top:0">Preventative Measure</h4>
+                                <div id="PreventativeMeasure"></div>
+                            </div>
+                            <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px; height: 90px;margin-bottom:15px;">
+                                <div class="SlaugtherSignature " style="width:50%; float: left;" id="Slaugther" userid="">
+                                    <h5 style="margin-top:0;font-weight:bold">Slaughter Signature</h5>
+                                    <div class="name"></div>
+                                    <div class="date"></div>
+                                </div>
+                                <div class="TechnicaSignature" style="width:49%; float: right;" id="Technical" userid="">
+                                    <h5 style="margin-top:0;font-weight:bold">Technical Signature</h5>
+                                    <div class="name"></div>
+                                    <div class="date"></div>
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <div class="form-group col-xs-6">
-                                <label>Description of Failure:</label>
-                                <textarea id="DescriptionFailure" class="form-control custom-control" rows="7" style="resize:none" disabled></textarea>
-                            </div>
-                            <div class="form-group col-xs-6">
-                                <label>Immediate Corrective Action:</label>
-                                <textarea id="ImmediateCorrectiveAction" class="form-control custom-control" rows="7" style="resize:none" disabled></textarea>
-                            </div>
-                            <div class="form-group col-xs-6">
-                                <label>Product Disposition:</label>
-                                <textarea id="ProductDisposition" class="form-control custom-control" rows="7" style="resize:none" disabled></textarea>
-                            </div>
-                            <div class="form-group col-xs-6">
-                                <label>Preventative Measure:</label>
-                                <textarea id="PreventativeMeasure" class="form-control custom-control" rows="7" style="resize:none" disabled></textarea>
-                            </div>
-                        </div>
                         @*Assinaturas*@
-                        <div class="">
-                            <div class="SlaugtherSignature col-xs-6" userid="" id="Slaugther">
-                                <h4>Slaughter Signature</h4>
-                                <div class="name"></div>
-                                <div class="date"></div>
+                        
+                        <div class="footer-rodape row" style="font-size:14px;font-weight:bold; width: 100%; height:auto;">
+                            <div class="col-xs-4">
+                                <div>Origination Date: January 30, 2014</div>
+                                <div>Revision Date:</div>
+                                <div>Supercedes Date:</div>
                             </div>
-                            <div class="TechnicaSignature col-xs-6" userid="" id="Technical">
-                                <h4>Technical Signature</h4>
-                                <div class="name"></div>
-                                <div class="date"></div>
+                            <div class="col-xs-4">
+                                <div>This Document Contains Confidential</div>
+                                <div>Commercial Information Pursuant to</div>
+                                <div>5 U.S.C Sec. 552(b)(4).</div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div></div>
+                                <div></div>
+                                <div>Printed <span class="printedDate"></span></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="btnPrint" class="btn btn-default non-printable" data-dismiss="modal">Print</button>
+                    <button type="button" id="btnPrint" class="btn btn-default non-printable">Print</button>
                     <button type="button" class="btn btn-default non-printable" data-dismiss="modal">Close</button>
                 </div>
             </div>

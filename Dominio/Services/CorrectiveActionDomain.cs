@@ -76,15 +76,15 @@ namespace Dominio.Services
                     {
                         i.DescriptionFailure = i.DescriptionFailure.Substring(0, 15) + "<span style=\"cursor:pointer\" title=\"" + i.DescriptionFailure + "\">...</span>";
                     }
-                    if(i.ImmediateCorrectiveAction.Length > 15)
+                    if (i.ImmediateCorrectiveAction.Length > 15)
                     {
                         i.ImmediateCorrectiveAction = i.ImmediateCorrectiveAction.Substring(0, 15) + "<span style=\"cursor:pointer\" title=\"" + i.ImmediateCorrectiveAction + "\">...</span>";
                     }
-                    if(i.PreventativeMeasure.Length > 15)
+                    if (i.PreventativeMeasure.Length > 15)
                     {
-                        i.PreventativeMeasure = i.PreventativeMeasure.Substring(0, 15) + "<span style=\"cursor:pointer\" title=\"" + i.PreventativeMeasure + "\">...</span>"; 
+                        i.PreventativeMeasure = i.PreventativeMeasure.Substring(0, 15) + "<span style=\"cursor:pointer\" title=\"" + i.PreventativeMeasure + "\">...</span>";
                     }
-                    if(i.ProductDisposition.Length > 15)
+                    if (i.ProductDisposition.Length > 15)
                     {
                         i.ProductDisposition = i.ProductDisposition.Substring(0, 15) + "<span style=\"cursor:pointer\" title=\"" + i.ProductDisposition + "\">...</span>";
                     }
@@ -143,6 +143,9 @@ namespace Dominio.Services
         {
             try
             {
+
+                var undiades = _baseRepoUnit.GetAll();
+
                 var result = _baseCorrectiveAction.GetById(id);
 
                 if (result == null)
@@ -153,6 +156,8 @@ namespace Dominio.Services
                 resultMapped.NameSlaughter = _userSgq.FirstOrDefault(r => r.Id == result.SlaughterId).FullName;
                 resultMapped.NameTechinical = _userSgq.FirstOrDefault(r => r.Id == result.TechinicalId).FullName;
                 resultMapped.AuditorName = _userSgq.FirstOrDefault(r => r.Id == result.AuditorId).FullName;
+
+                resultMapped.Unit = Mapper.Map<UnitDTO>(undiades.FirstOrDefault(u => u.Id == result.CollectionLevel02.UnitId));
 
                 resultMapped.Level01Id = result.CollectionLevel02.Level01Id;
                 resultMapped.Level02Id = result.CollectionLevel02.Level02Id;

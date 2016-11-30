@@ -37,11 +37,12 @@
     var $placeholder = $('<span style="display: none;" />').insertAfter($wrapper)
     $wrapper.detach();
 
-    $(document).ready(function () {
-        $("#btnSend").click(function (e) {
-            Send();
+        $(document).ready(function () {
+            $("#btnSend").click(function (e) {
+                Send();
+            });
+            //alert('dados Modal');
         });
-    });
 
     formControl.ShowAllFielsAndFullCallendar();
 
@@ -71,69 +72,78 @@
 
     function CriaTable(retornoArray) {
 
-        var table = $('#results').empty().DataTable({
-            data: retornoArray,
-            columns: [{ title: "View", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">View</button>' },
-                { title: "Auditor", mData: "AuditorName" },
-                { title: "Date", mData: "DateCorrectiveActionFormatadoShort" },
-                { title: "Start Time", mData: "StartTimeFormatado" },
-                { title: "Slaughter", mData: "NameSlaugtherAndDate" },
-                //{ title: "Date Slaughter", mData: "DateTimeSlaughterFarmatado" },
-                { title: "Techinical", mData: "NameTechinicalAndDate" },
-                //{ title: "Date Techinical", mData: "DateTimeTechinicalFarmatado" },
-                { title: "level01", mData: "level01Name" },
-                { title: "level02", mData: "level02Name" },
-                { title: "Audit Start Time", mData: "StartTimeFormatado" },
-                { title: "Description Failure", mData: "DescriptionFailure" },
-                { title: "Immediate Corrective Action", mData: "ImmediateCorrectiveAction" },
-                { title: "Preventative Measure", mData: "PreventativeMeasure" },
-                { title: "Product Disposition", mData: "ProductDisposition" },
-                //{ title: "Auditor", mData: "Id" }
-            ],
-            "columnDefs": [
-                { "className": "dt-center", "targets": "_all" }
-            ],
-            scrollX: true,
-            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-            pageLength: 10,
-            loadingRecords: true,
-            destroy: true,
-            info: true,
-            responsive: true,
-            initComplete: function () {
-                $('#loading').hide();
-                $('#results tbody').on('click', 'button', function (data, a, b) {
-                    var data = table.row($(this).parents('tr')).data();
-                    $.post(url2, { "": data.Id }, function (r, x, e) {
-                        if (!!r.Retorno) {
-                            //console.log(r.Retorno);
-                            $('#correctiveActionModal  #datetime').html(r.Retorno.DateCorrectiveActionFormatado); // ?
-                            $('#correctiveActionModal  #auditor').html(r.Retorno.AuditorName);
-                            $('#correctiveActionModal  #auditText').html(r.Retorno.level01Name);
-                            $('#correctiveActionModal  #shift').html(r.Retorno.ShiftName);
-                            $('#correctiveActionModal  #starttime').html(r.Retorno.StartTimeFormatado);
-                            $('#correctiveActionModal  #correctivePeriod').html(r.Retorno.PeriodName);
+            var table = $('#results').empty().DataTable({
+                data: retornoArray,
+                columns: [{ title: "View", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">View</button>' },
+                   { title: "Auditor", mData: "AuditorName" },
+                   { title: "Date", mData: "DateCorrectiveActionFormatadoShort" },
+                   { title: "Start Time", mData: "StartTimeFormatado" },
+                   { title: "Slaughter", mData: "NameSlaugtherAndDate" },
+                   //{ title: "Date Slaughter", mData: "DateTimeSlaughterFarmatado" },
+                   { title: "Techinical", mData: "NameTechinicalAndDate" },
+                   //{ title: "Date Techinical", mData: "DateTimeTechinicalFarmatado" },
+                   { title: "level01", mData: "level01Name" },
+                   { title: "level02", mData: "level02Name" },
+                   { title: "Audit Start Time", mData: "StartTimeFormatado" },
+                   { title: "Description Failure", mData: "DescriptionFailure" },
+                   { title: "Immediate Corrective Action", mData: "ImmediateCorrectiveAction" },
+                   { title: "Preventative Measure", mData: "PreventativeMeasure" },
+                   { title: "Product Disposition", mData: "ProductDisposition" },
+                   //{ title: "Auditor", mData: "Id" }
+                ],
+                "columnDefs": [
+                   { "className": "dt-center", "targets": "_all" }
+                ],
+                scrollX: true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                pageLength: 10,
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                responsive: true,
+                initComplete: function () {
+                    $('#loading').hide();
+                    $('#results tbody').on('click', 'button', function (data, a, b) {
+                        var data = table.row($(this).parents('tr')).data();
+                        $.post(url2, { "": data.Id }, function (r, x, e) {
+                            if (!!r.Retorno) {
+                                //console.log(r.Retorno);
+                                $('#correctiveActionModal  #estName').html(r.Retorno.Unit.Code); // ?
+                                $('#correctiveActionModal  #datetime').html(r.Retorno.DateCorrectiveActionFormatado); // ?
+                                $('#correctiveActionModal  #auditor').html(r.Retorno.AuditorName);
+                                $('#correctiveActionModal  #auditText').html(r.Retorno.level01Name);
+                                $('#correctiveActionModal  #shift').html(r.Retorno.ShiftName);
+                                $('#correctiveActionModal  #starttime').html(r.Retorno.StartTimeFormatado);
+                                $('#correctiveActionModal  #correctivePeriod').html(r.Retorno.PeriodName);
 
-
-                            //var ImmediateCorrectiveAction = r.Retorno.ImmediateCorrectiveAction;
-                            //if (ImmediateCorrectiveAction.length > 20)
-                            //{
-                            //    ImmediateCorrectiveAction = ImmediateCorrectiveAction.substring(0, 20) + '...';
-                            //}
-
-                            $('#correctiveActionModal  #DescriptionFailure').html(r.Retorno.DescriptionFailure);
-                            $('#correctiveActionModal  #ImmediateCorrectiveAction').html(r.Retorno.ImmediateCorrectiveAction);
-                            $('#correctiveActionModal  #ProductDisposition').html(r.Retorno.ProductDisposition);
-                            $('#correctiveActionModal  #PreventativeMeasure').html(r.Retorno.PreventativeMeasure);
+                                $('#correctiveActionModal  #DescriptionFailure').html(r.Retorno.DescriptionFailure);
+                                $('#correctiveActionModal  #ImmediateCorrectiveAction').html(r.Retorno.ImmediateCorrectiveAction);
+                                $('#correctiveActionModal  #ProductDisposition').html(r.Retorno.ProductDisposition);
+                                $('#correctiveActionModal  #PreventativeMeasure').html(r.Retorno.PreventativeMeasure);
 
                             $('#correctiveActionModal  #Slaugther .name').html(r.Retorno.NameSlaughter);
                             $('#correctiveActionModal  #Slaugther .date').html(r.Retorno.DateTimeSlaughterFarmatado);
 
-                            $('#correctiveActionModal  #Technical .name').html(r.Retorno.NameTechinical);
-                            $('#correctiveActionModal  #Technical .date').html(r.Retorno.DateTimeTechinicalFarmatado);
-                        } else {
-                            GuardJs.exibirMensagemAlerta(r.Mensagem);
-                        }
+                                $('#correctiveActionModal  #Technical .name').html(r.Retorno.NameTechinical);
+                                $('#correctiveActionModal  #Technical .date').html(r.Retorno.DateTimeTechinicalFarmatado);
+
+
+                                var date = new Date();
+                                var year = date.getFullYear();
+                                var month = date.getMonth() + 1;
+                                var day = date.getDate();
+                                var hour = date.getHours();
+                                var minute = date.getMinutes();
+                                var seconds = date.getSeconds();
+                                var mileseconds = date.getMilliseconds();
+                                var mmddyyyyhhmm = ("0" + month).slice(-2) + "/" + ("0" + day).slice(-2) + "/" + year + " " + ("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2);
+
+
+
+                                $('.printedDate').html(mmddyyyyhhmm);
+                            } else {
+                                GuardJs.exibirMensagemAlerta(r.Mensagem);
+                            }
 
                         $('#correctiveActionModal').show();
                     });
@@ -188,9 +198,11 @@
         //$(w.document.body).html(html);
         //w.print();
 
-        window.print();
-        $wrapper.detach();
-    }
+            window.print();
+            $wrapper.detach();
+            $('#printSection').remove();
+
+        }
 
     function printElement(elem, append, delimiter) {
         var domClone = elem.cloneNode(true);
