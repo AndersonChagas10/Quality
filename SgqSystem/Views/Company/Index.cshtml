@@ -1,323 +1,208 @@
-﻿@model SgqSystem.ViewModels.CompanyViewModel
-@using SgqSystem.Helpers
+﻿@using SgqSystem.Helpers
 
 @{
 
     ViewBag.Title = @Resources.Resource.company_register;
-
-    Layout = null;
-
+    
     var urlCompany = Url.Action("AddUpdateParCompany", "api/Company"); //URL relativa
     var urlStructure = Url.Action("AddUpdateParStructure", "api/Company"); //URL relativa
     var urlStructureGroup = Url.Action("AddUpdateParStructureGroup", "api/Company"); //URL relativa
 
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
-
-    @Styles.Render("~/Content/General")
-    @*@Styles.Render("~/Content/Theme")*@
-    @*@Styles.Render("~/Content/Tables")*@
-    @Styles.Render("~/Content/Erp")
-    @Styles.Render("~/Content/select2css")
-    @Styles.Render("~/Content/DatePikerContentCss")
-
-    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <link href="~/Scripts/theme/css/components.min.css" rel="stylesheet" />
-    <link href="~/Scripts/theme/css/darkblue.min.css" rel="stylesheet" />
-    <link href="~/Scripts/theme/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/Scripts/theme/css/layout.min.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
-    
-</head>
-
-<body class="page-header-fixed page-sidebar-closed-hide-logo">
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/ScriptTables")
-    @Scripts.Render("~/bundles/theme")
-    @Scripts.Render("~/bundles/select2js")
-    @Scripts.Render("~/bundles/DatePikerContent")
-
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
-    <div class="page-wrapper">
-
-        @Html.Partial("~/Views/Params/_Navbar.cshtml")
-        <div class="page-container">
-
-            @Html.Partial("~/Views/Params/_RightLayout.cshtml")
-            @Html.Partial("~/Views/Params/_LeftLayout.cshtml")
-
-            <div class="page-content-wrapper">
-                <!-- BEGIN CONTENT BODY -->
-                <div class="page-content" style="min-height: 650px;">
-                    <!-- BEGIN PAGE HEADER-->
-                    <!-- BEGIN PAGE TITLE-->
-                    <h1 class="page-title">
-                        @Resources.Resource.company_register
-                        <small>@Resources.Resource.register_company_and_its_structure</small>
-                    </h1>
-                    <!-- END PAGE TITLE-->
-                    <!-- BEGIN PAGE BAR -->
-                    <div class="page-bar">
-                        <ul class="page-breadcrumb">
-                            <li>
-                                <a href="index.html">Home</a>
-                                <i class="fa fa-angle-right"></i>
-                            </li>
-                            <li>
-                                <span>  </span>
-                            </li>
-                        </ul>
-                        <div class="page-toolbar">
-                            <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
-                            <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                                <i class="fa fa-calendar"></i>&nbsp;
-                                <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                            </div>
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 650px;">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE TITLE-->
+        <h1 class="page-title">
+            @Resources.Resource.company_register
+            <small>@Resources.Resource.register_company_and_its_structure</small>
+        </h1>
+        <!-- END PAGE TITLE-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="index.html">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>  </span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
+                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.company_register</span>
                         </div>
                     </div>
-                    <!-- END PAGE BAR -->
-                    <!-- END PAGE HEADER-->
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="portlet light bordered">
-                                <div class="portlet-title tabbable-line">
-                                    <div class="caption">
-                                        <i class="icon-share font-dark"></i>
-                                        <span class="caption-subject font-dark bold uppercase">@Resources.Resource.company_register</span>
-                                    </div>  
-                                </div>
-                                <div class="portlet-body">
-                                    <div class="tab-content">
-                                        <div class="tab-pane active" id="setup_tab">
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
 
-                                            <div class="panel-group accordion" id="company_accordion">
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <div class="row panel-title">
-                                                            <div class="col-xs-12">
-                                                                <h4 class="panel-title">
-                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#company_accordion" href="#company_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.company </a>
-                                                                </h4>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div id="company_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                                        <div class="panel-body">
-                                                            <div id="ParLevel2">
-                                                                @Html.Partial("~/Views/Company/Company.cshtml")
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                <div class="panel-group accordion" id="company_accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row panel-title">
+                                                <div class="col-xs-12">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#company_accordion" href="#company_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.company </a>
+                                                    </h4>
                                                 </div>
                                             </div>
-
-                                            <div class="panel-group accordion" id="structure_accordion">
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <div class="row panel-title">
-                                                            <div class="col-xs-12">
-                                                                <h4 class="panel-title">
-                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#structure_accordion" href="#structure_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.company_structure </a>
-                                                                </h4>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div id="structure_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                                        <div class="panel-body">
-                                                            <div id="ParLevel2">
-                                                                @Html.Partial("~/Views/Company/Structure.cshtml")
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="panel-group accordion" id="structure_group_accordion">
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <div class="row panel-title">
-                                                            <div class="col-xs-12">
-                                                                <h4 class="panel-title">
-                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#structure_group_accordion" href="#structure_group_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.structure_group </a>
-                                                                </h4>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div id="structure_group_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                                        <div class="panel-body">
-                                                            <div id="ParLevel2">
-                                                                @Html.Partial("~/Views/Company/StructureGroup.cshtml")
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         </div>
-
+                                        <div id="company_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div id="ParLevel2">
+                                                    @Html.Partial("~/Views/Company/Company.cshtml")
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <div class="panel-group accordion" id="structure_accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row panel-title">
+                                                <div class="col-xs-12">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#structure_accordion" href="#structure_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.company_structure </a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="structure_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div id="ParLevel2">
+                                                    @Html.Partial("~/Views/Company/Structure.cshtml")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel-group accordion" id="structure_group_accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row panel-title">
+                                                <div class="col-xs-12">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#structure_group_accordion" href="#structure_group_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.structure_group </a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="structure_group_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div id="ParLevel2">
+                                                    @Html.Partial("~/Views/Company/StructureGroup.cshtml")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
+
                         </div>
                     </div>
-                </div>  
-                <!-- END CONTENT BODY -->
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Modal Loader -->
-    <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-1">
-                            <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
-                        </div>
-                        <div class="col-xs-11" id="modalLoaderMessage">Message </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Modal Confirm -->
-    <div class="modal fade modalConfirm" id="modalConfirm" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.confirm_the_action</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12" id="modalConfirmMessage">Message </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="modalConfirmNo" type="button" class="btn btn-default">@Resources.Resource.no</button>
-                    <button id="modalConfirmYes" type="button" class="btn btn-primary">@Resources.Resource.yes</button>
                 </div>
             </div>
         </div>
     </div>
-    <div id="overlay" class="overlay" style="display:none"></div>
-    <div id="messageModal" class="message padding20" style="display:none">
-        <h1 class="head">Titulo</h1>
-        <div class="body font16">Mensagem</div>
-        <div class="foot">
-            <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button>
-        </div>
-    </div>
+    <!-- END CONTENT BODY -->
+</div>
 
-    <!-- Modal Edição  crudNxN -->
-    <div class="modal fade" id="crudNxNEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="width: 80%;">
-        <div class="modal-dialog  modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">a</h4>
-                </div>
-                <div class="modal-body">
+<script>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">@Resources.Resource.save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-
-        $.fn.serializeObject = function () {
-            var o = {};
-            var a = this.serializeArray();
-            $.each(a, function () {
-                if (o[this.name] !== undefined) {
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
-                    }
-                    o[this.name].push(this.value || '');
-                } else {
-                    o[this.name] = this.value || '';
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
                 }
-            });
-            return o;
-        };
-
-        var urlCompany = '@Html.Raw(@urlCompany)';
-
-        var monthNames = [
-           '@Resources.Resource.january',
-           '@Resources.Resource.february',
-           '@Resources.Resource.march',
-           '@Resources.Resource.april',
-           '@Resources.Resource.may',
-           '@Resources.Resource.june',
-           '@Resources.Resource.july',
-           '@Resources.Resource.august',
-           '@Resources.Resource.september',
-           '@Resources.Resource.october',
-           '@Resources.Resource.november',
-           '@Resources.Resource.december'];
-
-        function twoDigits(str) {
-            str = ("000" + str).slice(-2);
-            return str;
-        }
-
-        function watcher() {
-
-            var date = new Date();
-            var day = date.getDate();
-            var monthIndex = date.getMonth();
-            var year = date.getFullYear();
-            var hour = date.getHours();
-            var minute = date.getMinutes();
-            var second = date.getSeconds();
-
-            $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
-
-            setTimeout(watcher, 1000);
-        }
-
-        watcher();
-
-
-
-        var urlCompany = '@Html.Raw(@urlCompany)';
-
-        var indexCompany = {
-            enviarDadosParaApi: function (e) {
-                var dados = $($('form')[0]).serializeObject();
-                $.post(urlCompany, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                    console.log(objetoReturn);
-                    console.log(statusmessage);
-                    console.log(respostaCompleta);
-                });
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
             }
+        });
+        return o;
+    };
+
+    var urlCompany = '@Html.Raw(@urlCompany)';
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+        
+    navbarSelect("navbar2");
+
+    var monthNames = [
+        '@Resources.Resource.january',
+        '@Resources.Resource.february',
+        '@Resources.Resource.march',
+        '@Resources.Resource.april',
+        '@Resources.Resource.may',
+        '@Resources.Resource.june',
+        '@Resources.Resource.july',
+        '@Resources.Resource.august',
+        '@Resources.Resource.september',
+        '@Resources.Resource.october',
+        '@Resources.Resource.november',
+        '@Resources.Resource.december'];
+
+    function twoDigits(str) {
+        str = ("000" + str).slice(-2);
+        return str;
+    }
+
+    function watcher() {
+
+        var date = new Date();
+        var day = date.getDate();
+        var monthIndex = date.getMonth();
+        var year = date.getFullYear();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+
+        $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
+
+        setTimeout(watcher, 1000);
+    }
+
+    watcher();
+
+
+
+    var urlCompany = '@Html.Raw(@urlCompany)';
+
+    var indexCompany = {
+        enviarDadosParaApi: function (e) {
+            var dados = $($('form')[0]).serializeObject();
+            $.post(urlCompany, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                console.log(objetoReturn);
+                console.log(statusmessage);
+                console.log(respostaCompleta);
+            });
         }
-    </script>
+    }
+</script>
     
-</body>
-</html>
 

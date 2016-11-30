@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -309,6 +309,7 @@
     <Compile Include="Controllers\Api\NewSync\NewSyncController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\ConsolidacaoTestes\ConsolidacaoTestesController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
     <Compile Include="Controllers\Exemplo\HtmlTesteController.cs" />
@@ -341,6 +342,7 @@
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyXStructureMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCriticalLevelMapperProfile.cs" />
@@ -384,6 +386,8 @@
     <Compile Include="Mappers\Audit\ConsolidationLevel02MapperProfile.cs" />
     <Compile Include="Mappers\Audit\Level01MapperProfile.cs" />
     <Compile Include="Mappers\Audit\Level02MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParStructureGroupMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
     <Compile Include="Mappers\ShiftMapperProfile.cs" />
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMapperProfile.cs" />
@@ -630,10 +634,30 @@
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
     <Content Include="Content\select2.min.css" />
+    <Content Include="DataCollect\Content\bootstrap-modal-bs3patch.css" />
+    <Content Include="DataCollect\Content\bootstrap-modal.css" />
+    <Content Include="DataCollect\Content\bootstrap.css" />
+    <Content Include="DataCollect\Content\bootstrap.min.css" />
+    <Content Include="DataCollect\Content\Geral.css" />
+    <Content Include="DataCollect\Img\beef.jpg" />
+    <Content Include="DataCollect\Img\fundoSGQ.jpg" />
+    <Content Include="DataCollect\Img\GRTJBSLogo.png" />
+    <Content Include="DataCollect\Img\login.png" />
+    <Content Include="DataCollect\Img\sgq.jpg" />
+    <Content Include="DataCollect\Img\SGQLogo01.png" />
+    <Content Include="DataCollect\Img\ui-bg_diagonal-maze_75_ddd_10x10.png" />
+    <Content Include="DataCollect\index.html" />
+    <Content Include="DataCollect\Scripts\bootstrap-modal.js" />
+    <Content Include="DataCollect\Scripts\bootstrap-modalmanager.js" />
+    <Content Include="DataCollect\Scripts\bootstrap.js" />
+    <Content Include="DataCollect\Scripts\bootstrap.min.js" />
+    <Content Include="DataCollect\Scripts\correctiveaction.js" />
+    <Content Include="DataCollect\Scripts\DataBase.js" />
+    <Content Include="DataCollect\Scripts\File.js" />
+    <Content Include="DataCollect\Scripts\Methods.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="DataCollect\a.js" />
     <Content Include="Imagens\Brazil.png" />
     <Content Include="Imagens\Spain.png" />
     <Content Include="Imagens\United-States.png" />
@@ -1149,9 +1173,9 @@
     <Content Include="Views\HtmlTeste\_IndexTeste_new.cshtml" />
     <Content Include="Views\Params\_SelectBoxLevel2.cshtml" />
     <Content Include="Views\Params\_SelectBoxLevel3.cshtml" />
-    <Content Include="Views\Params\_LeftLayout.cshtml" />
-    <Content Include="Views\Params\_Navbar.cshtml" />
-    <Content Include="Views\Params\_RightLayout.cshtml" />
+    <Content Include="Views\Shared\_LeftLayout.cshtml" />
+    <Content Include="Views\Shared\_Navbar.cshtml" />
+    <Content Include="Views\Shared\_RightLayout.cshtml" />
     <Content Include="Views\ParClusters\Create.cshtml" />
     <Content Include="Views\ParClusters\Delete.cshtml" />
     <Content Include="Views\ParClusters\Details.cshtml" />
@@ -1176,8 +1200,12 @@
     <Content Include="Views\Params\_ReincidenciaXLevel.cshtml" />
     <Content Include="Views\Params\_ClusterXLevel.cshtml" />
     <Content Include="Views\Params\_GroupXLevel.cshtml" />
-    <Content Include="Views\Params\_crudNxNModal.cshtml" />
+    <Content Include="Views\Shared\_crudNxNModal.cshtml" />
     <Content Include="Views\ConsolidacaoTestes\Index.cshtml" />
+    <Content Include="Views\Company\Company.cshtml" />
+    <Content Include="Views\Company\Index.cshtml" />
+    <Content Include="Views\Company\Structure.cshtml" />
+    <Content Include="Views\Company\StructureGroup.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1186,6 +1214,10 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\HelpPage\Views\Shared\" />
     <Folder Include="Arquivos\uploads\" />
+    <Folder Include="DataCollect\Plugins\float_button\" />
+    <Folder Include="DataCollect\Plugins\font-awesome\" />
+    <Folder Include="DataCollect\Plugins\jquery\" />
+    <Folder Include="DataCollect\Plugins\sidebar\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
@@ -1243,11 +1275,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63128</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:63128/</IISUrl>
+          <IISUrl>http://localhost/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>http://eduardolucasmaia.ngrok.io:63128/</CustomServerUrl>

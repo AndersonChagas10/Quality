@@ -9,13 +9,6 @@
     padding-right: 15px;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
-
 bg {
     background-image: url('Imagens/SGQLogo01.png');
     background-color: #FF6600;
@@ -27,33 +20,34 @@ bg {
     width: 100%;
     height: 100%;
     background-color: #f8f9fd;
+    min-height: 600px;
 }
 
-    .login * {
-        font-family: Arial, Verdana, Tahoma;
-        border-radius: 0 !important;
-    }
+.login * {
+    font-family: Arial, Verdana, Tahoma;
+    border-radius: 0 !important;
+}
 
-    .login > .head {
-        background-image: url("Imagens/SGQLogo01.png");
-        background-repeat: no-repeat;
-        background-size: auto 100%;
-        background-position: center;
-        height: 220px;
-    }
+.login > .head {
+    background-image: url("Imagens/SGQLogo01.png");
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    background-position: center;
+    height: 220px;
+}
 
-    .login > .foot {
-        margin-top: 50px;
-        background-image: url("Imagens/GRTJBSLogo.png");
-        background-repeat: no-repeat;
-        background-size: auto 100%;
-        background-position: center;
-        height: 50px;
-    }
+.login > .foot {
+    margin-top: 50px;
+    background-image: url("Imagens/GRTJBSLogo.png");
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    background-position: center;
+    height: 50px;
+}
 
 .form-signin {
     background-position: center;
-    width: 220px;
+    width: 310px;
     padding: 15px;
     margin: 0 auto;
     background-color: #f8f9fd;
@@ -65,4 +59,33 @@ bg {
 
 .popover, .tooltip {
     z-index: 10060 !important;
+}
+footer{
+    color: white;
+}
+footer > p{
+    color: white;
+    padding-left: 16px;
+}
+.center-main{
+    top: 50%;
+    margin-top: 5%;
+}
+.center-button{
+    color: white;
+    background-color: #2b3643;
+    height: 200px;
+}
+.center-button > a{
+    position: absolute;
+    text-align: center;
+    display: inline-block;
+    margin-top: 0;
+    color: white;
+    font-size: 30px;
+    vertical-align: middle;
+    top: 50%;
+    left: 50%;
+    
+    transform: translate(-50%, -50%);
 }

@@ -1,0 +1,67 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="page-sidebar-wrapper hide">
+    <div class="page-sidebar navbar-collapse collapse">
+        <ul class="page-sidebar-menu  page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+            <li class="sidebar-toggler-wrapper hide">
+                <div class="sidebar-toggler">
+                    <span></span>icon-home
+                </div>
+            </li>
+            <li class="heading">
+                <h3 class="uppercase">@Resources.Resource.main</h3>
+            </li>
+            <!-- END SIDEBAR TOGGLER BUTTON -->
+            <li class="nav-item" id="navbar1">
+                <a href="@Url.Action("Index", "Params")" class="nav-link nav-toggle">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <span class="title">@Resources.Resource.customization</span>
+                    <span class="selected"></span>
+                    <span class="arrow closed"></span>
+                </a>
+            </li>
+            <li class="heading">
+                <h3 class="uppercase">@Resources.Resource.register</h3>
+            </li>
+            <li class="nav-item" id="navbar2">
+                <a href="@Url.Action("Index", "Company")" class="nav-link nav-toggle">
+                    <i class="fa fa-university" aria-hidden="true"></i>
+                    <span class="title">@Resources.Resource.company_structure</span>
+                    <span class="arrow"></span>
+                </a>
+            </li>
+            <li class="nav-item" id="navbar3">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="fa fa-university" aria-hidden="true"></i>
+                    <span class="title">@Resources.Resource.cluster</span>
+                    <span class="arrow"></span>
+                </a>
+            </li>
+            <li class="nav-item" id="navbar4">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="fa fa-university" aria-hidden="true"></i>
+                    <span class="title">@Resources.Resource.department</span>
+                    <span class="arrow"></span>
+                </a>
+            </li>
+            <li class="nav-item" id="navbar5">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="fa fa-university" aria-hidden="true"></i>
+                    <span class="title">@Resources.Resource.measurement_unit</span>
+                    <span class="arrow"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    
+    function navbarSelect(id) {
+        $('.nav-item').removeClass('active').removeClass('start').removeClass('open');
+        $('#' + id).addClass('active').addClass('start').addClass('open');
+    };
+        
+</script>

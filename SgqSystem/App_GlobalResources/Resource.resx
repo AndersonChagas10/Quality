@@ -666,4 +666,16 @@
   <data name="name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="username_or_password_are_incorrect" xml:space="preserve">
+    <value>The username or password are incorrect</value>
+  </data>
+  <data name="data_collection" xml:space="preserve">
+    <value>Data Collection</value>
+  </data>
+  <data name="management" xml:space="preserve">
+    <value>Management</value>
+  </data>
 </root>
