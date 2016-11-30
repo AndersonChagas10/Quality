@@ -307,6 +307,7 @@
     <Compile Include="Controllers\Api\Login\LoginController.cs" />
     <Compile Include="Controllers\Api\NewSync\NewSyncController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
     <Compile Include="Controllers\Exemplo\HtmlTesteController.cs" />
     <Compile Include="Controllers\Globalization\GlobalizationController.cs" />

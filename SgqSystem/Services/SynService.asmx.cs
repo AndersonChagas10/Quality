@@ -318,7 +318,8 @@ namespace SgqSystem.Services
                         else
                         {
                             //Se não ocorre sem problemas, retorna um erro
-                            return "erro json";
+                            throw new Exception("erro json");
+
                         }
                     }
                 }
@@ -706,6 +707,9 @@ namespace SgqSystem.Services
             }
         }
         #endregion
+
+
+
         #region Consolidation Level01
         /// <summary>
         /// Método que faz a inserção da consolidação
