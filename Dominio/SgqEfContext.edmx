@@ -335,9 +335,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="AddDate" Type="datetime" Nullable="false" />
+          <Property Name="Id" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+          <Property Name="Name" Nullable="false" MaxLength="155" Type="nvarchar" />
+          <Property Name="AddDate" Nullable="false" Type="datetime" />
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" />
         </EntityType>
@@ -1113,8 +1113,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParLevel1XCluster_ParCriticalLevel">
-          <End Role="ParCriticalLevel" Type="Self.ParCriticalLevel" Multiplicity="0..1" />
-          <End Role="ParLevel1XCluster" Type="Self.ParLevel1XCluster" Multiplicity="*" />
+          <End Type="Self.ParCriticalLevel" Multiplicity="0..1" Role="ParCriticalLevel" />
+          <End Type="Self.ParLevel1XCluster" Multiplicity="*" Role="ParLevel1XCluster" />
           <ReferentialConstraint>
             <Principal Role="ParCriticalLevel">
               <PropertyRef Name="Id" />
@@ -1687,8 +1687,8 @@
             <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel1XCluster_ParCriticalLevel" Association="Self.FK_ParLevel1XCluster_ParCriticalLevel">
-            <End Role="ParCriticalLevel" EntitySet="ParCriticalLevel" />
-            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
+            <End EntitySet="ParCriticalLevel" Role="ParCriticalLevel" />
+            <End EntitySet="ParLevel1XCluster" Role="ParLevel1XCluster" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel1XCluster_ParLevel1" Association="Self.FK_ParLevel1XCluster_ParLevel1">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
@@ -1998,8 +1998,8 @@
             <End Role="ParCounterXLocal" EntitySet="ParCounterXLocal" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel1XCluster_ParCriticalLevel" Association="SgqDbModel.FK_ParLevel1XCluster_ParCriticalLevel">
-            <End Role="ParCriticalLevel" EntitySet="ParCriticalLevel" />
-            <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
+            <End EntitySet="ParCriticalLevel" Role="ParCriticalLevel" />
+            <End EntitySet="ParLevel1XCluster" Role="ParLevel1XCluster" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel2_ParDepartment" Association="SgqDbModel.FK_ParLevel2_ParDepartment">
             <End Role="ParDepartment" EntitySet="ParDepartment" />
@@ -2506,10 +2506,10 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="Name" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="AddDate" Nullable="false" Precision="3" Type="DateTime" />
+          <Property Name="AlterDate" Precision="3" Type="DateTime" />
           <Property Name="IsActive" Type="Boolean" />
           <NavigationProperty Name="ParLevel1XCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCriticalLevel" FromRole="ParCriticalLevel" ToRole="ParLevel1XCluster" />
         </EntityType>
@@ -3356,8 +3356,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParLevel1XCluster_ParCriticalLevel">
-          <End Type="SgqDbModel.ParCriticalLevel" Role="ParCriticalLevel" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParLevel1XCluster" Role="ParLevel1XCluster" Multiplicity="*" />
+          <End Type="SgqDbModel.ParCriticalLevel" Multiplicity="0..1" Role="ParCriticalLevel" />
+          <End Type="SgqDbModel.ParLevel1XCluster" Multiplicity="*" Role="ParLevel1XCluster" />
           <ReferentialConstraint>
             <Principal Role="ParCriticalLevel">
               <PropertyRef Name="Id" />

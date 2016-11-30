@@ -328,12 +328,13 @@ namespace SgqSystem.Services
             catch (SqlException ex)
             {
                 int insertLog = insertLogJson(ObjResultJSon, ex.Message, deviceId, versaoApp, "InsertJson");
-                return "error sql insert";
+                return "error";
+                //return "error sql insert";
             }
             catch (Exception ex)
             {
                 int insertLog = insertLogJson(ObjResultJSon, ex.Message, deviceId, versaoApp, "InsertJson");
-                return "error exception insert";
+                return "error";
             }
         }
 
@@ -507,15 +508,15 @@ namespace SgqSystem.Services
                                 int ConsolidationLevel01Id = InsertConsoliDationLevel01(unitId, level01, level01CollectionDate);
                                 if(ConsolidationLevel01Id == 0)
                                 {
-                                    return "erro consolidation level01";
+                                    /*return "erro consolidation level01"*/
+                                    return "error";
                                 }
-
-
 
                                 int ConsolidationLevel02Id = InsertConsoliDationLevel02(ConsolidationLevel01Id.ToString(), level02, unitId, level02CollectionDate);
                                 if(ConsolidationLevel02Id == 0)
                                 {
-                                    return  "Erro Consolidation Level02";
+                                    //return  "Erro Consolidation Level02";
+                                    return "error";
                                 }
 
                                 bool update = false;
@@ -532,7 +533,8 @@ namespace SgqSystem.Services
 
                                 if(CollectionLevel02Id == 0)
                                 {
-                                    return "erro Collection level02";
+                                    //return "erro Collection level02";
+                                    return "error";
                                 }
                                 string correctiveActionCompleted = arrayHeader[12];
                                 if (haveCorrectiveAction == "0")
@@ -568,17 +570,19 @@ namespace SgqSystem.Services
                                     int updateCorrectiveAction = updateLevel02CorrectiveActionReaudit(CollectionLevel02Id.ToString(), correctiveActionCompleted, reauditCompleted);
                                     if (updateCorrectiveAction == 0)
                                     {
-                                        return "erro update correctiveaction";
+                                        //return "erro update correctiveaction";
+                                        return "error";
                                     }
                                 }
 
                                 int CollectionLevel03Id = InsertCollectionLevel03(CollectionLevel02Id.ToString(), level02, objson, AuditorId, Duplicated);
                                 if(CollectionLevel03Id == 0)
                                 {
-                                    return "Erro Level03";
+                                    //return "Erro Level03";
+                                    return "error";
                                 }
 
-                                if(!string.IsNullOrEmpty(correctiveActionJson))
+                                if (!string.IsNullOrEmpty(correctiveActionJson))
                                 {
                                     correctiveActionJson = correctiveActionJson.Replace("<correctiveaction>", "").Replace("</correctiveaction>", "");
 
@@ -609,16 +613,19 @@ namespace SgqSystem.Services
 
                                     if(CorrectiveActionId == 0)
                                     {
-                                        return "erro CorrectiveAction";
+                                        //return "erro CorrectiveAction";
+                                        return "error";
                                     }
                                 }
                                 int jsonUpdate = updateJson(Id);
                                 if(jsonUpdate  == 0)
                                 {
-                                    return "Erro Json";
+                                    //return "Erro Json";
+                                    return "error";
                                 }
 
                             }
+                            return null;
                         }
                     }
                 }
@@ -626,16 +633,18 @@ namespace SgqSystem.Services
             catch (SqlException ex)
             {
                 int insertLog = insertLogJson(Level02HeaderJson, ex.Message, device, "N/A", "ProcessJson");
-                return "error sql insert";
+                //return "error sql insert";
+                return "error";
+
             }
             catch (Exception ex)
             {
                 int insertLog = insertLogJson(Level02HeaderJson, ex.Message, device, "N/A", "ProcessJson");
-                return "error exception insert";
-            }
-            return null;
-        }
+                //return "error exception insert";
+                return "error";
 
+            }
+        }
         public int updateJson(string JsonId)
         {
             string sql = "UPDATE CollectionJson SET IsProcessed=1 WHERE ID='" + JsonId + "'";
@@ -707,9 +716,6 @@ namespace SgqSystem.Services
             }
         }
         #endregion
-
-
-
         #region Consolidation Level01
         /// <summary>
         /// Método que faz a inserção da consolidação
@@ -797,7 +803,6 @@ namespace SgqSystem.Services
                             //Se encontrar, retorna o Id da Consolidação
                             if (r.Read())
                             {
-
                                 return Convert.ToInt32(r[0]);
                             }
                             //Se não encontrar, retorna zero
@@ -1234,6 +1239,12 @@ namespace SgqSystem.Services
             }
         }
         
+        [WebMethod]
+        public string reciveLastData(string unidadeId)
+        {
+            string lastDate = DateTime.Now.ToString("yyyy-MM-dd");
+            return GetConsolidationLevel01(unidadeId, lastDate: true);
+        }
         /// <summary>
         /// Metodo que para chamar o recebimento de dados
         /// </summary>
@@ -1247,18 +1258,22 @@ namespace SgqSystem.Services
         /// <summary>
         /// Metodo que verifica as consolidações necessárias
         /// </summary>
-        /// <param name="unidadeId"><Id da Unidade/param>
+        /// <param name="unidadeId">Id da Unidade</param>
+        /// <param name="lastDate">Se False, traz o resultado do dia atual somente, se True, traz o ultimo resultado sem o dia atual</param>
         /// <returns></returns>
-        public string GetConsolidationLevel01(string unidadeId)
+        public string GetConsolidationLevel01(string unidadeId, bool lastDate=false)
         {
-            //Pega data Atual
-            ///Fazer a implementação para trazer a consolidação a partir da data desejada e não somente  data atual
-            DateTime atualDate = DateTime.Now;
-            string atualCollectionDate = atualDate.ToString("yyyyMMdd");
-            string collectionDate = GetMaxDateCollection(atualDate);
-            //>= '" + collectionDate + "' AND ConsolidationDate < '" + atualCollectionDate + "' 
 
-            string sql = "SELECT Id, Level01Id, ConsolidationDate FROM ConsolidationLevel01 WHERE ConsolidationDate BETWEEN '" +  collectionDate + " 00:00:00' AND '" + atualCollectionDate + " 23:59:59' GROUP BY Id, Level01Id, ConsolidationDate";
+            string atualCollectionDate = DateTime.Now.ToString("yyyyMMdd");
+            string collectionDate = atualCollectionDate;
+
+            if (lastDate == true)
+            {
+                collectionDate = GetMaxDateCollection(DateTime.Now);
+                atualCollectionDate = collectionDate;
+            }
+         
+            string sql = "SELECT Id, Level01Id, ConsolidationDate FROM ConsolidationLevel01 WHERE ConsolidationDate BETWEEN '" + collectionDate + " 00:00:00' AND '" + atualCollectionDate + " 23:59:59' GROUP BY Id, Level01Id, ConsolidationDate";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -1303,14 +1318,11 @@ namespace SgqSystem.Services
                                 var periods = (from p in Level02ResultList
                                                group p by p.period into g
                                                select new { period = g.Key }).ToList();
-
-                                string Level01ResultByPeruid = null;
+                   
                                 foreach (var p in periods)
                                 {
+                                    string Level01ResultByPeruid = null;
                                     var Level02ResultByPeriod = Level02ResultList.Where(pe => pe.period == p.period).GroupBy(s => s.reaudit).ToList() ;
-
-                                   
-
 
                                     foreach (var l2p in Level02ResultByPeriod)
                                     {
@@ -1328,13 +1340,11 @@ namespace SgqSystem.Services
                                         int totalEvaluate = 1;
                                         int totalSample = 1;
 
-
                                         if (Level01Id == "3")
                                         {
                                             totalEvaluate = 5;
                                             totalSample = 10;
                                         }
-
 
                                         foreach (var rs in l2p)
                                         {
@@ -1392,7 +1402,6 @@ namespace SgqSystem.Services
                                     }
                                     level01Results += Level01ResultByPeruid;
                                 }
-
                             }
                             return level01Results;
                         }
@@ -1402,12 +1411,15 @@ namespace SgqSystem.Services
             catch (SqlException ex)
             {
                 int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetConsolidationLevel01");
-                return null;
+                //return null;
+                return "error";
+
             }
             catch (Exception ex)
             {
                 int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetConsolidationLevel01");
-                return null;
+                //return null;
+                return "error";
             }
         }
         public string getMaxEvaluate(string CollectionLevel02Ids, string Level02Ids)

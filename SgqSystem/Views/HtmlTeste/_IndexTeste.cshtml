@@ -6,7 +6,7 @@
         <h2 id="changePrefix" class="form-signin-heading">Please sign in</h2>
         <select class="form-control" id="selectUnit">
             <option value="0">Select Unit</option>
-            <option value="1" ip="192.168.25.200/SgqMaster">Souderton, PA</option>
+            <option value="1" ip="localhost/SgqSystem">Souderton, PA</option>
             <option value="2" ip="192.168.25.200/SgqMaster">Omaha, NE</option>
             <option value="3" id="10.160.227.14">Hyrum, UT</option>
         </select>
@@ -8375,7 +8375,7 @@
                         var nameHeader = o.ParHeaderField.Name;
                         o.ParHeaderField.DropDownList.forEach(function(p, i){
                             if(p.Value <= 0 ){
-                                header += '<option value="'+p.Value+'"> @Resources.Resource.select '+nameHeader+'</option>';
+                                header += '<option value="'+p.Value+'"> @Resources.Resource.select ' + nameHeader+'</option>';
                             }else{
                                 header += '<option value="'+p.Value+'">'+p.Text+'</option>';
                             }
