@@ -2,7 +2,8 @@
     Layout = null;
 
     var urlDataCollection = Url.Action("", "DataCollect");
-    var urlManagement = Url.Action("CorrectiveActionReport", "Reports");
+    var urlCorrectiveActionReport = Url.Action("CorrectiveActionReport", "Reports");
+    var urlDataCollectionReport = Url.Action("DataCollectionReport", "Reports");
     var urlCustomization = Url.Action("Index", "Params");
     var urlHome = Url.Action("Index", "Home");
 }
@@ -33,9 +34,29 @@
                         </a>
                     </li>
                     <li class="mega-menu-dropdown" aria-haspopup="true">
-                        <a href="@urlManagement" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
+                        <a href="@urlCorrectiveActionReport" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
                             @Resources.Resource.management
+                            <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <!-- Content container to add padding -->
+                                <div class="mega-menu-content">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <ul class="mega-menu-submenu">
+                                                <li>
+                                                    <a href="@urlCorrectiveActionReport">@Resources.Resource.corrective_action_reports</a>
+                                                </li>
+                                                <li>
+                                                    <a href="@urlDataCollectionReport">@Resources.Resource.data_collection_reports</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </li>
                     <li class="mega-menu-dropdown" aria-haspopup="true">
                         <a href="@urlCustomization" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
@@ -104,6 +125,7 @@
 
             </ul>
         </div>
+
     </div>
 </div>
 
