@@ -17,7 +17,7 @@
     var removeLevel3Group = Url.Action("RemoveParLevel3Group", "api/ParamsApi");
     var AddLevel3Group = Url.Action("AddUpdateParLevel3Group", "api/ParamsApi");
 
-    Layout = null;
+    //Layout = null;
 
 }
 
@@ -75,11 +75,11 @@
 
     <div class="page-wrapper">
 
-        @Html.Partial("~/Views/Params/_Navbar.cshtml")
+        @*@Html.Partial("~/Views/Params/_Navbar.cshtml")*@
         <div class="page-container">
 
-            @Html.Partial("~/Views/Params/_RightLayout.cshtml")
-            @Html.Partial("~/Views/Params/_LeftLayout.cshtml")
+          @*  @Html.Partial("~/Views/Params/_RightLayout.cshtml")*@
+            @*@Html.Partial("~/Views/Params/_LeftLayout.cshtml")*@
 
             <div class="page-content-wrapper">
                 <!-- BEGIN CONTENT BODY -->
@@ -307,6 +307,11 @@
             });
             return o;
         };
+
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+
+        navbarSelect("navbar1");
       
         function openMessageModal(title, content) {
 
