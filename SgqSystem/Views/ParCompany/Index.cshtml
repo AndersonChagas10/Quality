@@ -3,10 +3,11 @@
 @{
 
     ViewBag.Title = @Resources.Resource.company_register;
-    
+
     var urlCompany = Url.Action("AddUpdateParCompany", "api/Company"); //URL relativa
     var urlStructure = Url.Action("AddUpdateParStructure", "api/Company"); //URL relativa
     var urlStructureGroup = Url.Action("AddUpdateParStructureGroup", "api/Company"); //URL relativa
+    var urlHome = Url.Action("Index", "Home"); //URL relativa
 
 }
 
@@ -24,11 +25,11 @@
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
-                    <a href="index.html">Home</a>
+                    <a href="@urlHome">Home</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>  </span>
+                    <span> @Resources.Resource.company_register </span>
                 </li>
             </ul>
             <div class="page-toolbar">

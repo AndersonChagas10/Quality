@@ -1176,7 +1176,6 @@
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_variables.scss" />
     <Content Include="Views\Params\_ParLevel2.cshtml" />
     <Content Include="Views\Params\_ParLevel3.cshtml" />
-    <Content Include="Views\HtmlTeste\_IndexTeste_new.cshtml" />
     <Content Include="Views\Params\_SelectBoxLevel2.cshtml" />
     <Content Include="Views\Params\_SelectBoxLevel3.cshtml" />
     <Content Include="Views\Shared\_LeftLayout.cshtml" />
@@ -1199,7 +1198,6 @@
     <Content Include="Views\ParMeasurementUnits\Index.cshtml" />
     <Content Include="Views\Merge\_DivResults.cshtml" />
     <Content Include="Views\HtmlTeste\_IndexTeste.cshtml" />
-    <Content Include="Views\HtmlTeste\_IndexTeste_old.cshtml" />
     <Content Include="Views\Language\Index.cshtml" />
     <Content Include="Views\Params\_RegraDeAlerta.cshtml" />
     <Content Include="Views\Params\_CounterXLevel.cshtml" />

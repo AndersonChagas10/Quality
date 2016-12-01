@@ -17,225 +17,173 @@
     var removeLevel3Group = Url.Action("RemoveParLevel3Group", "api/ParamsApi");
     var AddLevel3Group = Url.Action("AddUpdateParLevel3Group", "api/ParamsApi");
 
-    //Layout = null;
-
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
 
-    @Styles.Render("~/Content/General")
-    @*@Styles.Render("~/Content/Theme")*@
-    @*@Styles.Render("~/Content/Tables")*@
-    @Styles.Render("~/Content/Erp")
-    @Styles.Render("~/Content/select2css")
-    @Styles.Render("~/Content/DatePikerContentCss")
-
-    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <link href="~/Scripts/theme/css/components.min.css" rel="stylesheet" />
-    <link href="~/Scripts/theme/css/darkblue.min.css" rel="stylesheet" />
-    <link href="~/Scripts/theme/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/Scripts/theme/css/layout.min.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
-
-    @*<style type="text/css">
-        #camposCabecalhoIncluidos > th, #camposCabecalhoIncluidos > td {
-            text-align: center;
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-
-        #camposCabecalhoIncluidos > table.dataTable {
-            margin: 0;
-            clear: both;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-    </style>*@
-
-
-</head>
-
-<body class="page-header-fixed page-sidebar-closed-hide-logo">
-
-    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/ScriptTables")
     @Scripts.Render("~/bundles/theme")
     @Scripts.Render("~/bundles/select2js")
-    @Scripts.Render("~/bundles/DatePikerContent")
+    @Scripts.Render("~/bundles/DatePikerContent")*@
 
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-    <div class="page-wrapper">
-
-        @*@Html.Partial("~/Views/Params/_Navbar.cshtml")*@
-        <div class="page-container">
-
-          @*  @Html.Partial("~/Views/Params/_RightLayout.cshtml")*@
-            @*@Html.Partial("~/Views/Params/_LeftLayout.cshtml")*@
-
-            <div class="page-content-wrapper">
-                <!-- BEGIN CONTENT BODY -->
-                <div class="page-content" style="min-height: 650px;">
-                    <!-- BEGIN PAGE HEADER-->
-                    <!-- BEGIN PAGE TITLE-->
-                    <h1 class="page-title">
-                        @Resources.Resource.customization
-                        <small>Construct data collection screen</small>
-                    </h1>
-                    <!-- END PAGE TITLE-->
-                    <!-- BEGIN PAGE BAR -->
-                    <div class="page-bar">
-                        <ul class="page-breadcrumb">
-                            <li>
-                                <a href="index.html">Home</a>
-                                <i class="fa fa-angle-right"></i>
-                            </li>
-                            <li>
-                                <span>  </span>
-                            </li>
-                        </ul>
-                        <div class="page-toolbar">
-                            <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                                <i class="fa fa-calendar"></i>&nbsp;
-                                <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                            </div>
-                        </div>
+    <div class="page-content-wrapper">
+        <!-- BEGIN CONTENT BODY -->
+        <div class="page-content" style="min-height: 650px;">
+            <!-- BEGIN PAGE HEADER-->
+            <!-- BEGIN PAGE TITLE-->
+            <h1 class="page-title">
+                @Resources.Resource.customization
+                <small>Construct data collection screen</small>
+            </h1>
+            <!-- END PAGE TITLE-->
+            <!-- BEGIN PAGE BAR -->
+            <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                        <i class="fa fa-angle-right"></i>
+                    </li>
+                    <li>
+                        <span>  </span>
+                    </li>
+                </ul>
+                <div class="page-toolbar">
+                    <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
                     </div>
-                    <!-- END PAGE BAR -->
-                    <!-- END PAGE HEADER-->
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="portlet light bordered">
-                                <div class="portlet-title tabbable-line">
-                                    <div class="caption">
-                                        <i class="icon-share font-dark"></i>
-                                        <span class="caption-subject font-dark bold uppercase">@Resources.Resource.customization</span>
+                </div>
+            </div>
+            <!-- END PAGE BAR -->
+            <!-- END PAGE HEADER-->
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="portlet light bordered">
+                        <div class="portlet-title tabbable-line">
+                            <div class="caption">
+                                <i class="icon-share font-dark"></i>
+                                <span class="caption-subject font-dark bold uppercase">@Resources.Resource.customization</span>
+                            </div>
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#setup_tab" data-toggle="tab" aria-expanded="true"> Setup </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="setup_tab">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button>
+                                        </div>
+                                        <div class="col-xs-9">
+                                            @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })
+                                        </div>
+                                        <hr />
                                     </div>
-                                    <ul class="nav nav-tabs">
-                                        <li class="active">
-                                            <a href="#setup_tab" data-toggle="tab" aria-expanded="true"> Setup </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="portlet-body">
-                                    <div class="tab-content">
-                                        <div class="tab-pane active" id="setup_tab">
-                                            <div class="row">
-                                                <div class="col-xs-3">
-                                                    <button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button>
-                                                </div>
-                                                <div class="col-xs-9">
-                                                    @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })
-                                                </div>
-                                                <hr />
+                                    <div class="panel-group accordion" id="level1_accordion">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_accordion" href="#level1_collapse" aria-expanded="false" id="level1Title">  </a>
+                                                </h4>
                                             </div>
-                                            <div class="panel-group accordion" id="level1_accordion">
-                                                <div class="panel panel-info">
-                                                    <div class="panel-heading">
+                                            <div id="level1_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <div id="ParLevel1">
+                                                        @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <button class="btn btn-warning btn-block" id="btnNewLevel2">@Resources.Resource.new_level2</button>
+                                        </div>
+                                        <div class="col-xs-9" id="partialSelectLevel2">
+                                            @Html.Partial("~/Views/Params/_SelectBoxLevel2.cshtml", Model)
+                                        </div>
+                                        <hr />
+                                    </div>
+                                    <div class="panel-group accordion" id="level2_accordion">
+                                        <div class="panel panel-warning">
+                                            <div class="panel-heading">
+                                                <div class="row panel-title">
+                                                    <div class="col-xs-8">
                                                         <h4 class="panel-title">
-                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_accordion" href="#level1_collapse" aria-expanded="false" id="level1Title">  </a>
+                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_accordion" href="#level2_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.level2 </a>
                                                         </h4>
                                                     </div>
-                                                    <div id="level1_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                                        <div class="panel-body">
-                                                            <div id="ParLevel1">
-                                                                @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
-                                                            </div>
-                                                        </div>
+                                                    <div class="col-xs-4">
+                                                        <button id="vinculoLevel1" class="btn btn-warning pull-right" style="height: 42px;" title="Vincular ao Level 1"><span class="glyphicon glyphicon-link"></span></button>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="row">
-                                                <div class="col-xs-3">
-                                                    <button class="btn btn-warning btn-block" id="btnNewLevel2">@Resources.Resource.new_level2</button>
-                                                </div>
-                                                <div class="col-xs-9" id="partialSelectLevel2">
-                                                    @Html.Partial("~/Views/Params/_SelectBoxLevel2.cshtml", Model)
-                                                </div>
-                                                <hr />
-                                            </div>
-                                            <div class="panel-group accordion" id="level2_accordion">
-                                                <div class="panel panel-warning">
-                                                    <div class="panel-heading">
-                                                        <div class="row panel-title">
-                                                            <div class="col-xs-8">
-                                                                <h4 class="panel-title">
-                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_accordion" href="#level2_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.level2 </a>
-                                                                </h4>
-                                                            </div>
-                                                            <div class="col-xs-4">
-                                                                <button id="vinculoLevel1" class="btn btn-warning pull-right" style="height: 42px;" title="Vincular ao Level 1"><span class="glyphicon glyphicon-link"></span></button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div id="level2_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                                        <div class="panel-body">
-                                                            <div id="ParLevel2">
-                                                                @Html.Partial("~/Views/Params/_ParLevel2.cshtml", Model)
-                                                            </div>
-                                                        </div>
+                                            <div id="level2_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <div id="ParLevel2">
+                                                        @Html.Partial("~/Views/Params/_ParLevel2.cshtml", Model)
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="row">
-                                                <div class="col-xs-3">
-                                                    <button class="btn btn-danger btn-block" id="btnNewLevel3">@Resources.Resource.new_level3</button>
-                                                </div>
-                                                <div class="col-xs-9" id="partialSelectLevel3">
-                                                    @Html.Partial("~/Views/Params/_SelectBoxLevel3.cshtml", Model)
-                                                </div>
-                                                <hr />
-                                            </div>
-                                            <div class="panel-group accordion" id="level3_accordion">
-                                                <div class="panel panel-danger">
-
-                                                    <div class="panel-heading">
-
-                                                        <div class="row panel-title">
-                                                            <div class="col-xs-8">
-                                                                <h4 class="panel-title">
-                                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false" id="level3Title"> @Resources.Resource.level3 </a>
-                                                                </h4>
-                                                            </div>
-                                                            <div class="col-xs-4">
-                                                                <button id="vinculoLevel2" class="btn btn-danger pull-right" style="height: 42px;" title="Vincular ao Level 2" onclick="saveLevel3Level2()"><span class="glyphicon glyphicon-link"></span></button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div id="level3_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                                        <div class="panel-body">
-                                                            <div id="ParLevel3">
-                                                                @Html.Partial("~/Views/Params/_ParLevel3.cshtml", Model)
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
                                         </div>
-
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <button class="btn btn-danger btn-block" id="btnNewLevel3">@Resources.Resource.new_level3</button>
+                                        </div>
+                                        <div class="col-xs-9" id="partialSelectLevel3">
+                                            @Html.Partial("~/Views/Params/_SelectBoxLevel3.cshtml", Model)
+                                        </div>
+                                        <hr />
+                                    </div>
+                                    <div class="panel-group accordion" id="level3_accordion">
+                                        <div class="panel panel-danger">
+
+                                            <div class="panel-heading">
+
+                                                <div class="row panel-title">
+                                                    <div class="col-xs-8">
+                                                        <h4 class="panel-title">
+                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false" id="level3Title"> @Resources.Resource.level3 </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <button id="vinculoLevel2" class="btn btn-danger pull-right" style="height: 42px;" title="Vincular ao Level 2" onclick="saveLevel3Level2()"><span class="glyphicon glyphicon-link"></span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="level3_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <div id="ParLevel3">
+                                                        @Html.Partial("~/Views/Params/_ParLevel3.cshtml", Model)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- END CONTENT BODY -->
             </div>
-
         </div>
+        <!-- END CONTENT BODY -->
     </div>
+
     <!-- Modal Loader -->
     <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
         <div class="modal-dialog">
@@ -1124,6 +1072,3 @@
 
     </script>
 
-
-</body>
-</html>

@@ -12,12 +12,10 @@ namespace SgqSystem.Controllers.Api.Company
     {
 
         #region Construtor para injeção de dependencia
-
-        private ICompanyDomain _companyDomain;
-
-        public CompanyApiController(ICompanyDomain companyDomain)
+        
+        public CompanyApiController()
         {
-            _companyDomain = companyDomain;
+            
         }
 
         #endregion
@@ -27,9 +25,9 @@ namespace SgqSystem.Controllers.Api.Company
         [HttpPost]
         [HandleApi()]
         [Route("AddUpdateParCompany")]
-        public ParCompanyDTO AddUpdateParCompany([FromBody] ParCompanyDTO parCompanyDTO)
+        public void AddUpdateParCompany([FromBody] ParCompanyDTO parCompanyDTO)
         {
-           return _companyDomain.AddUpdateParCompany(parCompanyDTO);
+           //return _companyDomain.AddUpdateParCompany(parCompanyDTO);
         }
 
         #endregion
