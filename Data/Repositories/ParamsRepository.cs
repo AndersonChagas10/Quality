@@ -485,7 +485,7 @@ namespace Data.Repositories
             {
                 paramLevel3Value.ParLevel3BoolTrue_Id = null;
             }
-            paramLevel3Value.ParCompany_Id = 1;//MOCK
+            //paramLevel3Value.ParCompany_Id = 1;//MOCK
             paramLevel3Value.ParLevel3_Id = ParLevel3_Id;
             if (paramLevel3Value.Id == 0)
             {

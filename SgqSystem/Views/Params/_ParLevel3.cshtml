@@ -33,12 +33,13 @@
                            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }))
 
                     </tr>
+                    <tr class="row" id="companyValueL3">
+                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeParL3Value" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top)
+                    </tr>
                     <tr class="row ParIntervalos" style="display: none;">
                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
                         @Table.GerarColuna(@Html.DecimalFormatado("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, "parLevel3Value_IntervalMin", "form-control input-sm"), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                        @Table.GerarColuna(@Html.DecimalFormatado("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, "parLevel3Value_IntervalMax", "form-control input-sm"), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                        @*@Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), htmlAttributes: new { id = "parLevel3Value_IntervalMin", @class = "form-control input-sm", @onkeypress = "return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 46 || event.charCode == 0 " }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)*@
-                        @*@Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), htmlAttributes: new { id = "parLevel3Value_IntervalMin", @class = "form-control input-sm" , @onkeypress = "return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 46 || event.charCode == 0 " }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)*@
+                        @Table.GerarColuna(@Html.DecimalFormatado("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, "parLevel3Value_IntervalMax", "form-control input-sm"), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
                         <td style="display: none;">
                             <label>@Resources.Resource.values_between</label>
                             <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
@@ -54,7 +55,26 @@
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
                     </tr>
+                  
                 </table>
+
+
+                <table id="tableLevel3Value" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar tipo de dados de entrada:">
+                    <thead>
+                        <tr>
+                            <th>@Resources.Resource.data_type_entry</th>
+                            <th>@Resources.Resource.company</th>
+                            <th>@Resources.Resource.measurement_unit</th>
+                            <th>@Resources.Resource.minimum_range</th>
+                            <th>@Resources.Resource.maximum_range</th>
+                            <th>@Resources.Resource.positive_value</th>
+                            <th>@Resources.Resource.negative_value</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
 
                 @{
                     Model.levelControl = 3;
@@ -142,6 +162,113 @@
 
 </div>
 <script>
+
+   /* public int ParLevel3_Id { get; set; }
+    public int ParLevel3InputType_Id { get; set; }
+    public int? ParLevel3BoolFalse_Id { get; set; }
+    public int? ParLevel3BoolTrue_Id { get; set; }
+    public int ParCompany_Id { get; set; }
+    public int ParMeasurementUnit_Id { get; set; }
+    public bool? AcceptableValueBetween { get; set; }
+    public decimal? IntervalMin { get; set; } = 0;
+    public decimal? IntervalMax { get; set; } = 0;
+    public bool IsActive { get; set; } = true;
+    public ParLevel3BoolFalseDTO ParLevel3BoolFalse { get; set; }
+    public ParLevel3BoolTrueDTO ParLevel3BoolTrue { get; set; }
+    public ParLevel3InputTypeDTO ParLevel3InputType { get; set; }
+    public ParMeasurementUnitDTO ParMeasurementUnit { get; set; }*/
+
+    var level3Value =  {
+        /*Setup*/
+        levelControl: 1,
+        level: "newLevel3Modal",
+        listObjSalvo: listSalvo,
+        idTable: 'tableLevel3Value',//
+        tdsNames: ['Cluster_Name','ParCriticalLevel_Name', 'Points',  'btn'],
+        getObjAdd: function(isEdit, obj){
+            if(isEdit != undefined){
+                obj.Cluster_Name = $('#' + isEdit + ' #valueCluster :selected').text();
+                
+                return obj;
+            }else{
+                return {/*Objeto*/
+                    Cluster_Name: $('#' + this.level + ' #valueCluster :selected').text(),
+                    ParCluster_Id: $('#' + this.level + ' #valueCluster :selected').val(),
+                    ParCriticalLevel_Name: $('#' + this.level + ' #valCrit :selected').text(),
+                    ParCriticalLevel_Id: $('#' + this.level + ' #valCrit :selected').val(),
+                    Points: $('#' + this.level + ' #pontosCluster').val(),
+                    IsActive: true,
+                };
+            }
+        },
+        veifyAdd: function(isEdit) {
+            var seletorTato = !!isEdit ? isEdit : this.level;
+            /*Valida se pode criar o objeto*/
+            if($('#' + seletorTato + ' #valueCluster :selected').val() <= 0){
+                alert("Por favor selecione o cluster.");
+                return;
+            }
+
+            if($('#' + seletorTato + ' #valCrit :selected').val() <= 0){
+                alert("Por favor selecione o nivel critico.");
+                return;
+            }
+
+            if($('#' + seletorTato + ' #pontosCluster').val().replace(/[^0-9.]/g, '') == ""){
+                alert("Por favor preencha o campo pontos do cluster.");
+                return;
+            }
+        },
+        incluiNoObjetoParaSubmit: function(dados){
+
+            var level = this.levelControl;
+            $('#' + this.level + ' #' + this.idTable + ' > tbody > tr ').each(function(c, obj){
+
+                var o = $(obj).data();
+                //#edit
+                if((o.Id != null || o.Id != undefined) && o.Id > 0){
+                    dados["paramsDto.parLevel" + level + "Dto.listLevel1XClusterDto[" + c + "].Id"] = o.Id;
+                }
+
+                dados["paramsDto.parLevel" + level + "Dto.listLevel1XClusterDto[" + c + "].ParCluster_Id"] = o.ParCluster_Id;
+                dados["paramsDto.parLevel" + level + "Dto.listLevel1XClusterDto[" + c + "].ParCriticalLevel_Id"] = o.ParCriticalLevel_Id;
+                dados["paramsDto.parLevel" + level + "Dto.listLevel1XClusterDto[" + c + "].Points"] = o.Points;
+                dados["paramsDto.parLevel" + level + "Dto.listLevel1XClusterDto[" + c + "].IsActive"] = o.IsActive;
+                //
+            });
+
+        },
+        carregaDadosDoDb: function(){
+            var id = this.level + ' #' + this.idTable;
+            var tdNamess = this.tdsNames;
+            if( this.listObjSalvo != null){ /*Carrega regras de NC*/
+                this.listObjSalvo.forEach(function(o, c){
+                    o["Cluster_Name"] = o.ParCluster.Name;
+                    o["ParCriticalLevel_Name"] = o.ParCriticalLevel.Name;
+                    crudNxN.adiciona(o,  id, tdNamess);
+                });
+            }
+        },
+        /*Fim Setup*/
+        adiciona: function(e) {
+            this.veifyAdd();
+            var object = this.getObjAdd();
+            var valid = this.verifyJaExiste(object);
+            if(valid){
+                crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
+            }
+        },
+        verifyJaExiste: function(obj) {
+            var isValid  = true;
+            $('#'+this.level + ' #' + this.idTable).find('tbody > tr').each(function(c, o) {
+                if($(o).data().ParCluster_Id == obj.ParCluster_Id){
+                    alert("O cluster não pode ser duplicado, por favor verifique a seleção.")  
+                    isValid = false
+                }
+            });
+            return isValid;
+        }
+    };
 
     var hasPeso = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.pesoDoVinculo));
     var grouLevel2Selected = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.groupLevel2Selected));
@@ -295,12 +422,15 @@
 
             $('.ParIntervalos').hide();
             $('.ParBinarios').hide();
+
+            $('#companyValueL3').hide();
         }
 
         //Binários
         if ($("#selectTipoInput option:selected").val() == "1") {
             $('.ParIntervalos').hide();
             $('.ParBinarios').fadeIn();
+            $('#companyValueL3').fadeIn();
             $('#selectUnidadeDeMedidas').val(-1);
             $('#paramsDto_parLevel3Value_IntervalMin').val("");
             $('#paramsDto_parLevel3Value_IntervalMax').val("");
@@ -312,6 +442,8 @@
             $('.ParIntervalos').fadeIn();
             $('#selectConforme').val(-1);
             $('#selectNaoConforme').val(-1);
+            $('#companyValueL3').fadeIn();
+
         }
     });
 

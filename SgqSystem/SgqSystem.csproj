@@ -1212,6 +1212,7 @@
     <Content Include="Views\ParCompany\Index.cshtml" />
     <Content Include="Views\ParCompany\ParStructure.cshtml" />
     <Content Include="Views\ParCompany\ParStructureGroup.cshtml" />
+    <Content Include="Views\Params\_ParLevel3Value.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
