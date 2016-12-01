@@ -664,6 +664,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Imagens\Brazil.png" />
+    <Content Include="Imagens\Logo.png" />
     <Content Include="Imagens\Spain.png" />
     <Content Include="Imagens\United-States.png" />
     <Content Include="Scripts\aes.js" />
