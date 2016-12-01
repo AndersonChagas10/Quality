@@ -303,6 +303,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
     <Compile Include="Controllers\Api\Login\LoginController.cs" />
@@ -1171,7 +1172,6 @@
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_variables.scss" />
     <Content Include="Views\Params\_ParLevel2.cshtml" />
     <Content Include="Views\Params\_ParLevel3.cshtml" />
-    <Content Include="Views\HtmlTeste\_IndexTeste_new.cshtml" />
     <Content Include="Views\Params\_SelectBoxLevel2.cshtml" />
     <Content Include="Views\Params\_SelectBoxLevel3.cshtml" />
     <Content Include="Views\Shared\_LeftLayout.cshtml" />
@@ -1194,7 +1194,6 @@
     <Content Include="Views\ParMeasurementUnits\Index.cshtml" />
     <Content Include="Views\Merge\_DivResults.cshtml" />
     <Content Include="Views\HtmlTeste\_IndexTeste.cshtml" />
-    <Content Include="Views\HtmlTeste\_IndexTeste_old.cshtml" />
     <Content Include="Views\Language\Index.cshtml" />
     <Content Include="Views\Params\_RegraDeAlerta.cshtml" />
     <Content Include="Views\Params\_CounterXLevel.cshtml" />
