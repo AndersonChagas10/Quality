@@ -8,7 +8,7 @@
             <option value="0">Select Unit</option>
             <option value="1" ip="192.168.25.200/SgqMaster">Souderton, PA</option>
             <option value="2" ip="192.168.25.200/SgqMaster">Omaha, NE</option>
-            <option value="3" id="10.160.227.14">Hyrum, UT</option>
+            <option value="3" id="http://localhost:49448/">Trolando o server</option>
         </select>
         <select class="form-control" id="shift">
             <option value="0">Select the shift</option>
@@ -22,7 +22,9 @@
 
         <button class="btn btn-lg btn-primary btn-block marginTop10" type="submit" data-loading-text="Authenticating..." id="btnLogin" disabled>Sign in</button>
         <div id="messageError" class="alert alert-danger hide" role="alert">
-            <span class="icon-remove-sign"></span>    <strong>Error! </strong><span id="mensagemErro"> </span>
+            <span class="icon-remove-sign"></span>
+            <strong>Error! </strong>
+            <span id="mensagemErro"> </span>
         </div>
         <div class="divLoadFiles">
             <span class="messageLoading">
@@ -37,8 +39,11 @@
         </div>
     </form>
     <div class="foot" style="text-align:center">
-        <br /><br /><br />
-        <span id="versionLogin" class="">Version: <span class="number"></span></span> - <span id="ambienteLogin" class=""><span class="base"></span></span>
+        <br />
+        <br />
+        <br />
+        <span id="versionLogin" class="">Version: <span class="number"></span></span> -
+        <span id="ambienteLogin" class=""><span class="base"></span></span>
 
 
     </div>
@@ -61,15 +66,26 @@
                         <div class="row">
                             <div class="col-xs-6" id="CorrectiveActionTaken">
                                 <b class="font16">Corrective Action Taken:<br /></b>
-                                <b>Date/Time:</b> <span id="datetime"></span><br />
-                                <b>Auditor: </b><span id="auditor"></span><br />
-                                <b>Shift: </b><span id="shift"></span><br />
+                                <b>Date/Time:</b>
+                                <span id="datetime"></span>
+                                <br />
+                                <b>Auditor: </b>
+                                <span id="auditor"></span>
+                                <br />
+                                <b>Shift: </b>
+                                <span id="shift"></span>
+                                <br />
                             </div>
                             <div class="col-xs-6" id="AuditInformation">
                                 <b class="font16">Audit Information:<br /></b>
-                                <b>Audit: </b><span id="auditText"></span><br />
-                                <b>Start Time: </b><span id="starttime"></span><br />
-                                <b>Period: </b><span id="correctivePeriod"></span>
+                                <b>Audit: </b>
+                                <span id="auditText"></span>
+                                <br />
+                                <b>Start Time: </b>
+                                <span id="starttime"></span>
+                                <br />
+                                <b>Period: </b>
+                                <span id="correctivePeriod"></span>
                             </div>
                         </div>
                     </div>
@@ -148,7 +164,9 @@
                         <input type="password" class="form-control" id="signaturePassword">
                     </div>
                     <div id="messageError" class="alert alert-danger hide" role="alert">
-                        <span class="icon-remove-sign"></span>    <strong>Error! </strong><span id="mensagemErro"> </span>
+                        <span class="icon-remove-sign"></span>
+                        <strong>Error! </strong>
+                        <span id="mensagemErro"> </span>
                     </div>
                     <div id="messageAlert" class="alert alert-info hide" role="alert">
                         <span id="mensagemAlerta" class="icon-info-sign"></span>
@@ -169,7 +187,9 @@
 <div class="message padding20" style="display:none">
     <h1 class="head">Titulo</h1>
     <div class="body font16">Mensagem</div>
-    <div class="foot"><button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right btnMessage"> Ok</button></div>
+    <div class="foot">
+        <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right btnMessage"> Ok</button>
+    </div>
 </div>
 <div class="messageConfirm padding20" style="display:none">
     <h1 class="head">Titulo</h1>
@@ -177,8 +197,12 @@
         <div class="txtMessage"></div>
         <input type="password" id="passMessageComfirm" placeholder="Password" class="form-control input-sm" style="max-width: 160px;" />
     </div>
-    <div class="foot"><button id="btnMessageYes" class="btn btn-lg marginRight30 btn-primary pull-right btnMessage"> Yes </button></div>
-    <div class="foot"><button id="btnMessageNo" class="btn btn-lg marginRight30 btn-primary pull-right btnMessage"> No </button></div>
+    <div class="foot">
+        <button id="btnMessageYes" class="btn btn-lg marginRight30 btn-primary pull-right btnMessage"> Yes </button>
+    </div>
+    <div class="foot">
+        <button id="btnMessageNo" class="btn btn-lg marginRight30 btn-primary pull-right btnMessage"> No </button>
+    </div>
 </div>
 <div class="App hide" breadMainLevel="Indicadores">
     <div class="rightMenu">
@@ -229,9 +253,7 @@
     </div>
     <div class="container">
 
-        <ol class="breadcrumb">
-            
-        </ol>
+        <ol class="breadcrumb"></ol>
 
         <div class="level01List">
             <div class="painel padding5">
@@ -2471,7 +2493,7 @@
 <div class="Users hide"></div>
 <!--Methods-->
 <script>
-    
+
     var urlServidor = "http://192.168.25.200/SgqMaster";
     var urlServidorDeveloper = "http://192.168.25.200/SgqMasterDesenvolvimento";
 
@@ -3738,7 +3760,7 @@
         $('.level02').removeClass('selected');
 
         level02.addClass('selected');
-        
+
         $('.level02List').fadeOut("fast", function (e) {
             level02.parents('.level02List').addClass('hide');
             var level03 = $('.level03List');
@@ -7106,7 +7128,7 @@
 </script>
 <!--SyncData-->
 <script>
-    
+
 
     function MakeObject2(element, ListName, objectReturn) {
         //debugMessage('Start MakeObject2');
@@ -8173,7 +8195,7 @@
 </script>
 <!--NewSync-->
 <script>
-    
+
 
     var totalObj = 0; //Verifica total de Level02 a ser sincornizado
     var objsyncked = 0; //Ojetos já sincronizados
@@ -8348,6 +8370,8 @@
         });
     }
 </script>
+
+
 <!--Parameretrization-->
 <script>
 
@@ -8700,7 +8724,7 @@
                                                         '</div>';
 
                                     }
-                                    //binarios
+                                        //binarios
                                     else if (l3.ParLevel3Value[0].ParLevel3InputType.Id == 1){
 
                                         groupLevel3 +=   ' <div id="' + l3.Id + '" class="level03 boolean">' +
@@ -8833,7 +8857,7 @@
 
             '</div></div></li>';
 
-            return level2Item;
+        return level2Item;
     }
 
     /*Ex CCA*/

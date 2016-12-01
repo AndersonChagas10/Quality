@@ -35,8 +35,10 @@
                     </tr>
                     <tr class="row ParIntervalos" style="display: none;">
                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMin, htmlAttributes: new { id = "parLevel3Value_IntervalMin", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Value.IntervalMax, htmlAttributes: new { id = "parLevel3Value_IntervalMax", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.DecimalFormatado("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, "parLevel3Value_IntervalMin", "form-control input-sm"), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.DecimalFormatado("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, "parLevel3Value_IntervalMax", "form-control input-sm"), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
+                        @*@Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), htmlAttributes: new { id = "parLevel3Value_IntervalMin", @class = "form-control input-sm", @onkeypress = "return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 46 || event.charCode == 0 " }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)*@
+                        @*@Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), htmlAttributes: new { id = "parLevel3Value_IntervalMin", @class = "form-control input-sm" , @onkeypress = "return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 46 || event.charCode == 0 " }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)*@
                         <td style="display: none;">
                             <label>@Resources.Resource.values_between</label>
                             <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
@@ -143,7 +145,7 @@
 
     var hasPeso = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.pesoDoVinculo));
     var grouLevel2Selected = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.groupLevel2Selected));
-
+    //var 
     $('#paramsDto_parLevel3Dto_pesoDoVinculo').val(hasPeso);
 
     $('#pesoDefinido').html(hasPeso).show();
@@ -280,6 +282,8 @@
             $("#parIntervalosType").parents("td").hide();
         }
     }
+
+
     $('#selectTipoInput').change(function () {
 
         if ($("#selectTipoInput option:selected").val() == "-1") {

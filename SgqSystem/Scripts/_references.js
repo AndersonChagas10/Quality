@@ -183,4 +183,6 @@
 /// <reference path="theme/js/jquery.slimscroll.min.js" />
 /// <reference path="tripledes.js" />
 /// <reference path="x64-core.js" />
+/// <reference path="../views/htmlteste/methods.js" />
+/// <reference path="../views/htmlteste/paramsgenerator.js" />
 /// <reference path="../views/params/crudnxn.js" />
