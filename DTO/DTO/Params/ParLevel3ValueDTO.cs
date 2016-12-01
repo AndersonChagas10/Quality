@@ -15,8 +15,12 @@ namespace DTO.DTO.Params
         public int ParCompany_Id { get; set; }
         public int ParMeasurementUnit_Id { get; set; }
         public bool? AcceptableValueBetween { get; set; }
+
+        [Range(-999999999.99, 999999999.99)]
         public decimal? IntervalMin { get; set; } = 0;
+        [Range(-999999999.99, 999999999.99)]
         public decimal? IntervalMax { get; set; } = 0;
+
         public bool IsActive { get; set; } = true;
 
         //public ParCompanyDTO parCompany { get; set; }

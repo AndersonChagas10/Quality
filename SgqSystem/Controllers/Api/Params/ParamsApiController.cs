@@ -102,7 +102,7 @@ namespace SgqSystem.Controllers.Api.Params
         #endregion
 
         [HttpPost]
-        [Route("teste")]
+        [Route("ClearLevel1")]
         public decimal teste([FromBody] decimal teste)
         {
             return teste;

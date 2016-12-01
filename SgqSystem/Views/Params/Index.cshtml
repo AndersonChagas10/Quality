@@ -812,6 +812,19 @@
                 $("form").each(function () { $.data($(this)[0], 'validator', false); });
                 $.validator.unobtrusive.parse("form");
 
+                if($('#selectTipoInput :selected').val() == 1){//Binario
+                    if($('#selectConforme :selected').val() <= 0){
+                        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor positivo para o campo binario.");
+                        return;
+                    }else if($('#selectNaoConforme :selected').val() <= 0){
+                        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor negativo para o campo binario.");
+                        return;
+                    }
+                    
+                }else{
+                    
+                }
+
                 if ($('#newLevel3Modal > form').valid()) {
                     //Cabecalhos.UpdateCabecalhos();
                     //Cluster.UpdateCounter();
