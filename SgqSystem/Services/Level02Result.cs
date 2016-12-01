@@ -26,7 +26,8 @@ namespace SgqSystem.Services
 
         }
 
-        public Level02Result(string unidadeId, int period, int shift, int evaluate, int sample, string result, bool haveCorrectiveAction, bool haveReaudit, bool havePhases, bool reaudit, int reauditNumber, bool completed, int defects, int baisedUnbaised)
+        public Level02Result(string unidadeId, int period, int shift, int evaluate, int sample, string result, bool haveCorrectiveAction, bool haveReaudit, 
+                             bool havePhases, bool reaudit, int reauditNumber, bool completed, int defects, int baisedUnbaised)
         {
             this.unidadeId = unidadeId;
             this.period = period;

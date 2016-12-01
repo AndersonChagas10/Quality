@@ -154,7 +154,7 @@
     <value>Senha</value>
   </data>
   <data name="please_sign_in" xml:space="preserve">
-    <value>Por favor, entre</value>
+    <value>Faça o login</value>
   </data>
   <data name="reports" xml:space="preserve">
     <value>Relatórios</value>
@@ -659,5 +659,35 @@
   </data>
   <data name="name" xml:space="preserve">
     <value>Nome</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="username_or_password_are_incorrect" xml:space="preserve">
+    <value>O usuário ou senha estão incorretos</value>
+  </data>
+  <data name="data_collection" xml:space="preserve">
+    <value>Coleta de Dados</value>
+  </data>
+  <data name="management" xml:space="preserve">
+    <value>Gestão</value>
+  </data>
+  <data name="new_cluster" xml:space="preserve">
+    <value>Novo cluster</value>
+  </data>
+  <data name="new_group" xml:space="preserve">
+    <value>Novo grupo</value>
+  </data>
+  <data name="new_structure" xml:space="preserve">
+    <value>Nova estrutura</value>
+  </data>
+  <data name="departments" xml:space="preserve">
+    <value>Departamentos</value>
+  </data>
+  <data name="new_department" xml:space="preserve">
+    <value>Novo departamento</value>
+  </data>
+  <data name="measurement_units" xml:space="preserve">
+    <value>Unidades de Medida</value>
   </data>
 </root>

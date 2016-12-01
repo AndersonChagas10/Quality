@@ -2,19 +2,25 @@
 <html>
 <head>
     <title></title>
-    <meta charset="utf-8" />
-    <link href="Content/Geral.css" rel="stylesheet" />
-    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' *">
+    <link href="content/Geral.css" rel="stylesheet" />
+    <link href="content/bootstrap.min.css" rel="stylesheet" />
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="Content/bootstrap-modal-bs3patch.css" rel="stylesheet" />
-    <link href="Content/bootstrap-modal.css" rel="stylesheet" />
-
+    <link href="content/bootstrap-modal-bs3patch.css" rel="stylesheet" />
+    <link href="content/bootstrap-modal.css" rel="stylesheet" />
+    
 </head>
 <body>
     <div class="login">
         <div class="head"></div>
         <form class="form-signin">
-            <h2 class="form-signin-heading">Please sign in</h2>
+            <h2 id="changePrefix" class="form-signin-heading">Please sign in</h2>
+            <select class="form-control" id="selectUnit">
+                <option value="0">Select Unit</option>
+                <option value="1" ip="192.168.25.200/SgqMaster">Souderton, PA</option>
+                <option value="2" ip="10.160.65.120/QualityAssurance">Omaha, NE</option>
+                <option value="3" id="10.160.227.14">Hyrum, UT</option>
+            </select>
             <select class="form-control" id="shift">
                 <option value="0">Select the shift</option>
                 <option value="1">Shift A</option>
@@ -25,9 +31,14 @@
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" disabled>
 
-            <button class="btn btn-lg btn-primary btn-block marginTop10" type="submit" id="btnLogin" disabled>Sign in</button>
+            <button class="btn btn-lg btn-primary btn-block marginTop10" type="submit" data-loading-text="Authenticating..." id="btnLogin" disabled>Sign in</button>
             <div id="messageError" class="alert alert-danger hide" role="alert">
                 <span class="icon-remove-sign"></span>    <strong>Error! </strong><span id="mensagemErro"> </span>
+            </div>
+            <div class="divLoadFiles">
+                <span class="messageLoading">
+
+                </span>
             </div>
             <div id="messageAlert" class="alert alert-info hide" role="alert">
                 <span id="mensagemAlerta" class="icon-info-sign"></span>
@@ -36,99 +47,103 @@
                 <span id="mensagemSucesso" class="icon-ok-circle"></span>
             </div>
         </form>
-        <div class="foot"></div>
+        <div class="foot" style="text-align:center"><br /><br /><br />
+            <span id="versionLogin" class="">Version: <span class="number"></span></span> - <span id="ambienteLogin" class=""><span class="base"></span></span>
+
+
+        </div>
     </div>
 
     <!--Começo Ação Corretiva-->
     <div id="correctiveActionModal" class="container panel panel-default modal-padrao" style="display:none">
-            <div class="panel-body">
+        <div class="panel-body">
             <!--<div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>-->
-                <div class="modal-body">
-                    <h2>Corrective Action</h2>
-                    <div id="messageAlert" class="alert alert-info hide" role="alert">
-                        <span id="mensagemAlerta" class="icon-info-sign"></span>
+            <div class="modal-body">
+                <h2>Corrective Action</h2>
+                <div id="messageAlert" class="alert alert-info hide" role="alert">
+                    <span id="mensagemAlerta" class="icon-info-sign"></span>
+                </div>
+                <div class="row formCorrectiveAction">
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-6" id="CorrectiveActionTaken">
+                                    <b class="font16">Corrective Action Taken:<br /></b>
+                                    <b>Date/Time:</b> <span id="datetime"></span><br />
+                                    <b>Auditor: </b><span id="auditor"></span><br />
+                                    <b>Shift: </b><span id="shift"></span><br />
+                                </div>
+                                <div class="col-xs-6" id="AuditInformation">
+                                    <b class="font16">Audit Information:<br /></b>
+                                    <b>Audit: </b><span id="auditText"></span><br />
+                                    <b>Start Time: </b><span id="starttime"></span><br />
+                                    <b>Period: </b><span id="correctivePeriod"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description of Failure:</label>
+                        <textarea id="DescriptionFailure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Immediate Corrective Action:</label>
+                        <textarea id="ImmediateCorrectiveAction" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Product Disposition:</label>
+                        <textarea id="ProductDisposition" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Preventative Measure:</label>
+                        <textarea id="PreventativeMeasure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
                     </div>
                     <div class="row">
-
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-xs-6" id="CorrectiveActionTaken">
-                                        <b class="font16">Corrective Action Taken:<br /></b>
-                                        <b>Date/Time:</b> <span id="datetime"></span><br />
-                                        <b>Auditor: </b><span id="auditor"></span><br />
-                                        <b>Shift: </b><span id="shift"></span><br />
-                                    </div>
-                                    <div class="col-xs-6" id="AuditInformation">
-                                        <b class="font16">Audit Information:<br /></b>
-                                        <b>Audit: </b><span id="auditText"></span><br />
-                                        <b>Start Time: </b><span id="starttime"></span><br />
-                                        <b>Period: </b><span id="correctivePeriod"></span>
-                                    </div>
-                                </div>
+                        <div class="col-xs-6">
+                            <div class="SlaugtherSignature hide">
+                                <h4>Slaughter Signature</h4>
+                                <div class="name">Admin</div>
+                                <div class="date">08/24/2016 10:31</div>
+                                <button class="btn btn-link btnSlaugtherSignatureRemove">Remove Signature</button>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Description of Failure:</label>
-                            <textarea id="DescriptionFailure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Immediate Corrective Action:</label>
-                            <textarea id="ImmediateCorrectiveAction" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Product Disposition:</label>
-                            <textarea id="ProductDisposition" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Preventative Measure:</label>
-                            <textarea id="PreventativeMeasure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <div class="SlaugtherSignature hide">
-                                    <h4>Slaugther Signature</h4>
-                                    <div class="name">Admin</div>
-                                    <div class="date">08/24/2016 10:31</div>
-                                    <button class="btn btn-link btnSlaugtherSignatureRemove">Remove Signature</button>
-                                </div>
-                            </div>
-                            <div class="col-xs-6">
-                                <div class="TechinicalSignature hide">
-                                    <h4>Techinical Signature</h4>
-                                    <div class="name">Admin2</div>
-                                    <div class="date">08/24/2016</div>
-                                    <button class="btn btn-link btnTechinicalSignatureRemove">Remove Signature</button>
-                                </div>
+                        <div class="col-xs-6">
+                            <div class="TechinicalSignature hide">
+                                <h4>Technical  Signature</h4>
+                                <div class="name">Admin2</div>
+                                <div class="date">08/24/2016</div>
+                                <button class="btn btn-link btnTechinicalSignatureRemove">Remove Signature</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <span class="pull-left">
-                        <button class="btn btn-default btnSignature btnSlaugtherSignature">
-                            Slaugther Signature
-                        </button>
-                        
-                        <button class="btn btn-default btnSignature btnTechinicalSignature">
-                            Techinical Signature
-                        </button>
-                        
-                    </span>
+            </div>
+            <div class="modal-footer">
+                <span class="pull-left">
+                    <button class="btn btn-default btnSignature btnSlaugtherSignature">
+                        Slaughter Signature
+                    </button>
 
-                    <button class="btn btn-danger modal-close-ca">Close</button>
-                    <button class="btn btn-primary" id="btnSendCorrectiveAction">Send</button>
-                </div>
+                    <button class="btn btn-default btnSignature btnTechinicalSignature">
+                        Technical  Signature
+                    </button>
+
+                </span>
+
+                <button class="btn btn-danger modal-close-ca">Close</button>
+                <button class="btn btn-primary" id="btnSendCorrectiveAction">Send</button>
             </div>
         </div>
-        
+    </div>
+
     <div id="modalSignatureCorrectiveAction" class="panel panel-default modal-padrao signature" style="display:none">
         <div class="panel-body">
             <div class="modal-header">
                 <h3 class="slaughtersig head hide">Slaughter Signature</h3>
-                <h3 class="techinicalsig head hide">Techinical Signature</h3>
+                <h3 class="techinicalsig head hide">Technical  Signature</h3>
                 <div id="messageAlert" class="alert alert-info hide" role="alert">
                     <span id="mensagemAlerta" class="icon-info-sign"></span>
                 </div>
@@ -158,32 +173,44 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-danger modal-close-signature">Close</button>
-                <button type="button" class="btn btn-primary" id="btnSignatureLogin">Login</button>
+                <button type="button" class="btn btn-primary" id="btnSignatureLogin">Sign</button>
             </div>
         </div>
     </div>
-
-
     <!--Fim Ação Corretiva-->
 
     <div class="message padding20" style="display:none">
-            <h1 class="head">Titulo</h1>
-            <div class="body font16">Mensagem</div>
-            <div class="foot"><button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button></div>
+        <h1 class="head">Titulo</h1>
+        <div class="body font16">Mensagem</div>
+        <div class="foot"><button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right btnMessage"> Ok</button></div>
     </div>
-    <div class="App hide" breadMainLevel="Slaugther">
+
+    <div class="messageConfirm padding20" style="display:none">
+        <h1 class="head">Titulo</h1>
+        <div class="body font16"> <div class="txtMessage"></div> 
+            <input type="password" id="passMessageComfirm" placeholder="Password" class="form-control input-sm" style="max-width: 160px;" /> </div>
+        <div class="foot"><button id="btnMessageYes" class="btn btn-lg marginRight30 btn-primary pull-right btnMessage"> Yes </button></div>
+        <div class="foot"><button id="btnMessageNo" class="btn btn-lg marginRight30 btn-primary pull-right btnMessage"> No </button></div>
+    </div>
+
+    <div class="App hide" breadMainLevel="Slaughter">
         <div class="rightMenu">
             <div class="list-group list-group-inverse rightMenuList">
                 <a href="#" id="btnSync" class="list-group-item">Sync</a>
                 <a href="#" id="btnLogout" class="list-group-item">Logout</a>
+                <a href="#" id="btnLog" class="list-group-item">View Log</a>
+                <a href="#" id="btnCollectDB" class="list-group-item">View DataBase</a>
+                <a href="#" id="btnClearDatabase" class="list-group-item">Clear DataBase</a>
+                <span id="version" class="list-group-item">Version: <span class="number"></span></span>
+                <span id="ambiente" class="list-group-item"><span class="base"></span></span>
             </div>
         </div>
         <div class="cffImage">
             <a>
-                <img id="Image-Maps-Com-image-maps-2016-06-27-112056" src="Img/beef.jpg" border="0" width="255" height="522" orgWidth="255" orgHeight="522" usemap="#image-maps-2016-06-27-112056" alt="" />
+                <img id="Image-Maps-Com-image-maps-2016-06-27-112056" src="img/beef.jpg" border="0" width="255" height="522" orgWidth="255" orgHeight="522" usemap="#image-maps-2016-06-27-112056" alt="" />
                 <map name="image-maps-2016-06-27-112056" id="ImageMapsCom-image-maps-2016-06-27-112056">
-                    <area alt="" title="" onclick='areaImage(34)' shape="rect" coords="1,108,77,333" style="outline:none;" target="_self" /><!--Area 8-->
-                    <area alt="" title="" onclick='areaImage(31)' shape="rect" coords="76,131,188,188" style="outline:none;" target="_self" /><!--Area 8-->
+                    <area alt="" title="" onclick='areaImage(34)' shape="rect" coords="1,108,77,333" style="outline:none;" target="_self" /><!--Area 13-->
+                    <area alt="" title="" onclick='areaImage(31)' shape="rect" coords="76,131,188,188" style="outline:none;" target="_self" /><!--Area 10-->
                     <area alt="" title="" onclick='areaImage(32)' shape="rect" coords="76,185,188,251" style="outline:none;" target="_self" /><!--Area 11-->
                     <area alt="" title="" onclick='areaImage(33)' shape="rect" coords="186,107,255,340" style="outline:none;" target="_self" /><!--Area 12-->
                     <area alt="" title="" onclick='areaImage(35)' shape="rect" coords="76,255,186,369" style="outline:none;" target="_self" /><!--Area 14-->
@@ -208,7 +235,7 @@
             <div class="container">
                 <div class="navbar-header" style="width: 100%">
                     <a class="navbar-brand" id="SGQName" href="#"><i class="fa fa-chevron-left hide iconReturn" aria-hidden="true"></i> Data Collection</a>
-                    <div class="buttonMenu navbar-brand hide" id="btnShowImage" level01Id="3">Show Image</div>
+                    <div class="buttonMenu navbar-brand hide" id="btnShowImage" level01id="2">Show Image</div>
                     <div id="btnMore" class="iconMoreMenu pull-right" style="padding: 12px;"><i class="fa fa-ellipsis-v iconMoreMenu" aria-hidden="true"></i></div>
                 </div>
             </div>
@@ -218,13 +245,13 @@
             <ol class="breadcrumb"></ol>
 
             <div class="level01List">
-                <div class="painel padding10">
+                <div class="painel padding5">
                     <div class="row">
-                        <div class="col-xs-3">
-                            <span class="atualDate">05/25/2015 00:00</span> /
+                        <div class="col-xs-4">
+                            <span class="atualDate">05/25/2015 00:00</span> <br />
                             <span class="shift">Shift A</span>
                         </div>
-                        <div class="col-xs-9 shift">
+                        <div class="col-xs-4">
                             <div>
                                 <select class="form-control" id="selectPeriod">
                                     <option value="0">Select period</option>
@@ -240,7 +267,7 @@
                 <div class="list-group">
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="3" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02" minReauditNumber="2" consecutivefailure="true">
+                            <a href="#" id="2" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02" minReauditNumber="1" consecutivefailure="false">
                                 <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>
                                 <span class="levelName">Carcass Contamination Audit</span>
                             </a>
@@ -249,7 +276,7 @@
                                     <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>
                                     <button class="btn btn-primary btnReaudit hide">Reaudit <span class="reauditPeriod fontBold"></span></button>
                                     <!--<span class=" cursorPointer   "><button class=""></span></button></span>-->
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+                                    <!--<span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>-->
 
                                 </div>
                             </div>
@@ -258,39 +285,38 @@
 
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="6" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02" minReauditNumber="1" getresultlevel01="getresultlevel01">
-                            
+                            <a href="#" id="3" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02" minReauditNumber="1" haveevaluates="haveevaluates" getresultlevel01="getresultlevel01">
+
                                 <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>
                                 <span class="levelName">CFF (Cut, Fold and Flaps) Audit</span>
-                                                           
+
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>
                                     <button class="btn btn-primary btnReaudit hide">Reaudit <span class="reauditPeriod fontBold"></span></button>
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
                                 </div>
                             </div>
                         </div>
                     </li>
+
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="2" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02">
-                            
+                            <a href="#" id="1" class="level01 col-xs-6 col-sm-6 col-md-6 col-lg-8" saveLevel02="saveLevel02" havephases="havephases" minreauditnumber="1">
+
                                 <span class="icons"><i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i></span>
                                 <span class="levelName">HTP (Harvest Task Procedure) Audit</span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
                                     <span class="btnCorrectiveAction iconsArea font22 hide red"><button class="btn btn-danger">Corrective Action</button></span>
-                                    <!--<span class="btnReaudit cursorPointer iconsArea font22 marginLeft30 hide"><button class="btn btn-default">Reaudit</button></span>
-                                    <span class="reauditCount iconsArea font22 marginLeft30 marginRight30 hide">0</span>-->
-                                    <i class="fa fa-check fa-3 font22 iconsArea green areaComplete hide" aria-hidden="true" title="Complete"></i>
+                                    <button class="btn btn-primary btnReaudit hide">Reaudit <span class="reauditPeriod fontBold"></span></button>
                                 </div>
                             </div>
                         </div>
                     </li>
+
                 </div>
 
             </div>
@@ -302,18 +328,24 @@
                                 <span class="atualDate">05/25/2015 00:00 </span> /
                                 <span class="shift">Shift A</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="3">
+                            <div class="labelPainel hide" level01id="2">
                                 <strong>Total Defects:</strong> <span class="totalDefects">0</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="6">
+                            <div class="labelPainel hide" level01id="3">
                                 <strong>Sets Done: </strong><span class="setsDone">0</span>
+                            </div>
+                            <div class="labelPainel hide">
+                                <span class="Completed">Completed</span>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="labelPainel hide" level01Id="3">
+                            <div class="labelPainel hide" level01id="2">
                                 <span class="auditReaudit"><span class="name">Audit</span> <span class="reauditPeriod fontBold"></span></span>
                             </div>
-                            <div class="labelPainel hide" level01Id="6">
+                            <div class="labelPainel hide" level01id="3">
+                                <span class="auditReaudit"><span class="name">Audit</span> <span class="reauditPeriod fontBold"></span></span>
+                            </div>
+                            <div class="labelPainel hide" level01id="1">
                                 <span class="auditReaudit"><span class="name">Audit</span> <span class="reauditPeriod fontBold"></span></span>
                             </div>
                             <div>
@@ -321,17 +353,17 @@
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="labelPainel hide" level01Id="3">
+                            <div class="labelPainel hide" level01id="2">
                                 <select class="form-control" id="selectCattleType">
                                     <option value="0">Select cattle type</option>
                                     <option value="1">Cow</option>
                                     <option value="2">Steer</option>
                                 </select>
                             </div>
-                            <div class="labelPainel hide" level01Id="3">
+                            <div class="labelPainel hide" level01id="2">
                                 <input type="number" id="inputChainSpeed" class="form-control" placeholder="Chain Speed" />
                             </div>
-                            <div class="labelPainel hide" level01Id="2">
+                            <div class="labelPainel hide" level01id="1">
                                 <select class="form-control" id="biasedUnbiased">
                                     <option value="0">Select Unbiased/Biased...</option>
                                     <option value="1">Unbiased</option>
@@ -341,28 +373,29 @@
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="labelPainel hide" level01Id="3">
+                            <div class="labelPainel hide" level01id="2">
                                 <input type="number" id="inputLotNumber" class="form-control" placeholder="Lot #" />
                             </div>
-                            <div class="labelPainel hide" level01Id="3">
+                            <div class="labelPainel hide" level01id="2">
                                 <input type="number" id="inputMudScore" class="form-control" placeholder="Mud Score" />
                             </div>
-                            <div class="labelPainel hide" level01Id="6">
-                                <strong>Sides With Erros: </strong><span class="sideWithErrors">0</span>
+                            <div class="labelPainel hide" level01id="3">
+                                <strong>Sides With Defects: </strong><span class="sideWithErrors">0</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="6">
-                                <strong>3 or More Erros: </strong><span class="more3Defects">0</span>
+                            <div class="labelPainel hide" level01id="3">
+                                <strong>3 or More Defects: </strong><span class="more3Defects">0</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="list-group level02Group hide" level01id="3">
+
+                <div class="list-group level02Group hide" level01Id="2">
                     <div class="headDescription">
                         <div class="row">
                             <div class="col-xs-5 col-sm-5 col-sm-5 col-lg-5 pull-right">
                                 <span class="spanTitle">Defects</span>
                             </div>
-                            <div class="col-xs-7 col-sm-7 col-sm-7 col-lg-7">
+                            <div class="col-xs-7 col-sm-7 col-sm-7 col-lg-7 hide">
                                 <span class="spanTitle pull-right">Consec Failures</span>
                             </div>
                         </div>
@@ -377,7 +410,7 @@
                                 <span class="levelName">Area 1</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -412,7 +445,7 @@
                                 <span class="levelName">Area 2</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -447,7 +480,7 @@
                                 <span class="levelName">Area 3</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -482,7 +515,7 @@
                                 <span class="levelName">Area 4</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -517,7 +550,7 @@
                                 <span class="levelName">Area 5</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -552,7 +585,7 @@
                                 <span class="levelName">Area 6</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -587,7 +620,7 @@
                                 <span class="levelName">Area 7</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -622,7 +655,7 @@
                                 <span class="levelName">Area 8</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -657,7 +690,7 @@
                                 <span class="levelName">Area 9</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -692,7 +725,7 @@
                                 <span class="levelName">Area 10</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -727,7 +760,7 @@
                                 <span class="levelName">Area 11</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -762,7 +795,7 @@
                                 <span class="levelName">Area 12</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -797,7 +830,7 @@
                                 <span class="levelName">Area 13</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -832,7 +865,7 @@
                                 <span class="levelName">Area 14</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -867,7 +900,7 @@
                                 <span class="levelName">Area 15</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -902,7 +935,7 @@
                                 <span class="levelName">Area 16</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -937,7 +970,7 @@
                                 <span class="levelName">Area 17</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -972,7 +1005,7 @@
                                 <span class="levelName">Area 18</span>
                             </a>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 userInfo">
-                                <div>
+                                <div class="hide">
                                     <a href="#" class="consecutiveFailure iconsArea font22  pull-right">0</a>
                                 </div>
                             </div>
@@ -999,9 +1032,7 @@
                     </li>
                     <button id="btnSalvarLevel02CCA" class="btn btn-default level02Confirm hide">Salvar</button>
                 </div>
-
-
-                <div class="list-group level02Group hide" level01id="6">
+                <div class="list-group level02Group hide" level01Id="3">
 
                     <li class="list-group-item">
                         <div class="row">
@@ -1011,7 +1042,7 @@
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
                                 <span class="levelName">CFF</span>
-                            
+
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
@@ -1023,7 +1054,7 @@
                     <button id="btnSalvarLevel02CFF" class="btn btn-default level02Confirm hide">Salvar</button>
 
                 </div>
-                <div class="list-group level02Group hide" level01id="2">
+                <div class="list-group level02Group hide" level01id="1">
                     <div class="phasesreaudits hide">
                         <span class="phase" number="1" reaudits=""></span>
                         <span class="phase" number="2" reaudits="3"></span>
@@ -1032,24 +1063,21 @@
                     </div>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="1" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="1" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;11;12;13;14">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
                                 <span class="levelName">Open Hide Sticker</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
 
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20">
+                                    <!--<span class="btnPhase cursorPointer iconsArea font22 hide marginRight20">
                                         <button class="btn btn-primary">Phase <span class="atualPhase">0</span></button>
-                                    </span>
-
-                                    
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
-
-
+                                    </span>-->
+                                    <!--<span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>-->
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
                                         <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
                                     </button>
@@ -1066,21 +1094,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="2" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="2" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;11;12;13;14">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
                                 <span class="levelName">Stick and Bleed</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
-
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
                                         <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
@@ -1098,21 +1121,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="3" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="3" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;11;12;13;14">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Mark Pattern</span>
+                                <span class="levelName">Mark Pattern / Belly Ripper</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
-
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
                                         <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
@@ -1130,21 +1148,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="4" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="4" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;11;12;13;14">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Cap Bung</span>
+                                <span class="levelName">Cap Bung</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
-
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
                                         <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
@@ -1162,20 +1175,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="5" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="5" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;11;12;13;14">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Remove Udder</span>
+                                <span class="levelName">Remove Udder</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1194,20 +1203,17 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="6" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="6" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;11;12;13;14">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>1st Legger</span>
+                                <span class="levelName">1st Legger</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
 
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1226,20 +1232,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="7" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="7" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;11;12;13;14">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>2nd Legger</span>
+                                <span class="levelName">2nd Legger</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1258,20 +1260,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="8" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="8" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;15;16">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Rumper</span>
+                                <span class="levelName">Rumper</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1290,20 +1288,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="9" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="49" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;15;16">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Inside Butter</span>
+                                <span class="levelName">First Inside Butter</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1320,22 +1314,18 @@
                             </div>
                         </div>
                     </li>
-                    <li class="list-group-item">
+					<li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="10" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="50" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;15;16">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Outside Butter</span>
+                                <span class="levelName">Second Inside Butter</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1354,20 +1344,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="11" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="51" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;15;16">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Belly Ripper</span>
+                                <span class="levelName">First Outside Butter</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1384,22 +1370,18 @@
                             </div>
                         </div>
                     </li>
-                    <li class="list-group-item">
+					<li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="12" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="52" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;15;16">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Flanker</span>
+                                <span class="levelName">Second Outside Butter</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1418,20 +1400,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="13" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="12" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;15;16">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Rimover</span>
+                                <span class="levelName">Flanker</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1450,20 +1428,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="14" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="13" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;15;16">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Low Backer</span>
+                                <span class="levelName">Rimover</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1482,20 +1456,71 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="15" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="14" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;15;16">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="levelName">Low Backer</span>
+                                <span class="levelInfo"></span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
+
+
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="15" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;11;12;13;14">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
                                 <span>Open Necks</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
 
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
+                                    <button class="btn btn-success hide btnAreaSaveConfirm">
+                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-primary btnAreaSave">
+                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button class="btn btn-warning btnNotAvaliable na">
+                                        <span class="cursorPointer iconsArea font18">N/A</span>
+                                    </button>
 
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <a href="#" id="16" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;11;12;13;14">
+                                <span class="icons">
+                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
+                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
+                                </span>
+                                <span class="levelName">Gullet Raiser</span>
+                                <span class="levelInfo"></span>
+                            </a>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
+                                <div class="pull-right">
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1514,20 +1539,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="16" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="17" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;17">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Gullet Raiser</span>
+                                <span class="levelName">Weasand Rodder</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1546,20 +1567,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="17" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="18" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;17">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Weasand Rodder</span>
+                                <span class="levelName">Bung Dropper</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1578,20 +1595,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="18" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="19" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;17">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Bung Dropper</span>
+                                <span class="levelName">Pre-gutter</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1610,52 +1623,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="19" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="20" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;17">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Pre-gutter</span>
+                                <span class="levelName">Gutter</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
-
-
-                                    <button class="btn btn-success hide btnAreaSaveConfirm">
-                                        <span class="cursorPointer">Confirm? <i class="fa fa-check font22" aria-hidden="true"></i></span>
-                                    </button>
-                                    <button class="btn btn-primary btnAreaSave">
-                                        <span class="cursorPointer iconsArea"><i class="fa fa-floppy-o font22" aria-hidden="true"></i></span>
-                                    </button>
-                                    <button class="btn btn-warning btnNotAvaliable na">
-                                        <span class="cursorPointer iconsArea font18">N/A</span>
-                                    </button>
-
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <a href="#" id="20" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
-                                <span class="icons">
-                                    <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
-                                    <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
-                                </span>
-                                <span>Gutter</span>
-                            </a>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
-                                <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    <span class="btnReaudit cursorPointer iconsArea font22 hide"><button class="btn btn-primary">Reaudit</button></span>
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1675,20 +1652,16 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <a href="#" id="21" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" havephases="havephases"  reauditnumber>
+                            <a href="#" id="53" class="level02 col-xs-6 col-sm-6 col-md-6 col-lg-8" levelErrorLimit="0" reauditLevel02="reauditLevel02" reauditnumber level03show="9;10;11;12;13;14">
                                 <span class="icons">
                                     <i class="fa fa-check fa-3 font22 iconsArea green hide areaComplete" aria-hidden="true" title="Complete"></i>
                                     <i class="fa fa-exclamation font22 iconsArea red hide areaNotComplete" aria-hidden="true" title="Not Complete"></i>
                                 </span>
-                                <span>Clip Weasand</span>
+                                <span class="levelName">Mid-line Opener</span>
+                                <span class="levelInfo"></span>
                             </a>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 userInfo">
                                 <div class="pull-right">
-
-                                    <span class="btnPhase cursorPointer iconsArea font22 hide marginRight20"><button class="btn btn-primary">Phase <span class="atualPhase">0</span></button></span>
-
-                                    
-                                    <span class="reauditCount iconsArea font22 hide" count="0"><button class="btn btn-default">0</button></span>
 
 
                                     <button class="btn btn-success hide btnAreaSaveConfirm">
@@ -1709,7 +1682,6 @@
 
                 </div>
 
-
             </div>
             <div class="level03List hide">
                 <div class="painel painelLevel03 padding10">
@@ -1719,71 +1691,74 @@
                                 <span class="atualDate">05/25/2015 00:00</span> /
                                 <span class="shift">Shift A</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="3">
+                            <div class="labelPainel hide" level01id="2">
                                 <strong>Total Defects:</strong> <span class="totalDefects">0</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="3">
+                            <!--<div class="labelPainel hide" level01id="2">
                                 <strong>Consec Failures in Area:</strong> <span class="consecutiveFailure">0</span>
-                            </div>
-                            <div class="labelPainel hide" level01Id="3">
+                            </div>-->
+                            <div class="labelPainel hide" level01id="2">
                                 <strong>Defects:</strong> <span class="defects">0</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="6">
+                            <div class="labelPainel hide" level01id="3">
                                 <strong>Sets Done: </strong> <span class="setsDone">0</span>
+                            </div>
+                            <div class="labelPainel hide">
+                                <span class="Completed">Completed</span>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="labelPainel hide" level01Id="3">
+                            <div class="labelPainel hide" level01id="2">
                                 <span class="auditReaudit"><span class="name">Audit</span> <span class="reauditPeriod fontBold"></span></span>
                             </div>
-                            <div class="labelPainel hide" level01Id="6">
+                            <div class="labelPainel hide" level01id="3">
                                 <span class="auditReaudit"><span class="name">Audit</span> <span class="reauditPeriod fontBold"></span></span>
                             </div>
                             <div>
                                 <span class="period">Period</span>
                             </div>
                             <div class="labelPainel hide">
-                                Phase <span class="labelPhase"></span>
+                                Phase <span class="labelPhase"></span> <span class="reauditNumberPhase"></span>
                             </div>
-                            <div class="labelPainel hide" level01Id="2">
+                            <div class="labelPainel hide" level01id="1">
                                 <span class="biasedUnbiased">biasedUnbiased</span>
                             </div>
 
                         </div>
                         <div class="col-xs-3">
-                            <div class="labelPainel hide" level01Id="3">
-                                <span class="cattleType">CattleType</span>
+                            <div class="labelPainel hide" level01id="2">
+                                <strong>Cattle Type: </strong><span class="cattleType">CattleType</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="3">
-                                <span class="chainSpeed">chainSpeed</span>
+                            <div class="labelPainel hide" level01id="2">
+                                <strong>Chain Speedy: </strong><span class="chainSpeed">chainSpeed</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="6">
-                                <strong>Sides With Errors: </strong><span class="sideWithErrors">0</span>
+                            <div class="labelPainel hide" level01id="3">
+                                <strong>Sides With Defects: </strong><span class="sideWithErrors">0</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="6">
-                                <strong>3 or More Errors :</strong> <span class="more3Defects">0</span>
+                            <div class="labelPainel hide" level01id="3">
+                                <strong>3 or More Defects :</strong> <span class="more3Defects">0</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="6">
-                                <strong>Errors :</strong> <span class="sideErros">0</span>
+                            <div class="labelPainel hide" level01id="3">
+                                <strong>Defects :</strong> <span class="sideErros">0</span>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="labelPainel hide" level01Id="3">
-                                <span class="lotNumber">lotNumber</span>
+                            <div class="labelPainel hide" level01id="2">
+                                <strong>Lot Number #:</strong><span class="lotNumber">lotNumber</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="3">
-                                <span class="mudScore">mudScore</span>
+                            <div class="labelPainel hide" level01id="2">
+                                <strong>Mud Score: </strong><span class="mudScore">mudScore</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="6">
-                                <strong>Current Set: </strong> <span class="setAtual">1</span>
+                            <div class="labelPainel hide" level01id="3">
+                                <strong>Current Set: </strong> <span style="font-size:20px;font-weight:bold;color:#2a9def" class="setAtual">1</span>
                             </div>
-                            <div class="labelPainel hide" level01Id="6">
-                                <strong>Current Side: </strong> <span class="sideAtual">1</span>
+                            <div class="labelPainel hide" level01id="3">
+                                <strong>Current Side: </strong> <span style="font-size:20px;font-weight:bold;color:#2a9def" - class="sideAtual">1</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="cca level03Group hide" level01id="3">
+                <div class="cca level03Group hide" level01Id="2">
 
                     <ul class="list-group">
                         <li id="1" class="list-group-item level03">
@@ -1844,7 +1819,7 @@
                     </ul>
                     <button id="btnSalvarCCA" class="btn btn-default level03Confirm hide">Salvar</button>
                 </div>
-                <div class="cff level03Group hide" level01id="6">
+                <div class="cff level03Group hide" level01Id="3">
                     <div class="marginBottom10">
                         <button class="btn btn-default button-expand marginRight10"><i class="fa fa-expand" aria-hidden="true"></i> Expand All</button>
                         <button class="btn btn-default button-collapse"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>
@@ -1854,7 +1829,7 @@
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="40">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion40" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        External Round
+                                        <span class="levelName">External Round</span>
                                     </a>
                                 </h4>
                             </div>
@@ -1862,7 +1837,10 @@
                                 <div class="panel-body">
                                     <div id="6" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Cuts</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Cuts</span>
+
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -1873,7 +1851,9 @@
                                     </div>
                                     <div id="7" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Folds and Flaps</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Folds and Flaps</span>
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -1884,7 +1864,9 @@
                                     </div>
                                     <div id="8" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Puncture</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Puncture</span>
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -1904,7 +1886,8 @@
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="41">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion41" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                        Internal Round
+                                        <span class="levelName"> Internal Round</span>
+
                                     </a>
                                 </h4>
                             </div>
@@ -1912,7 +1895,9 @@
                                 <div class="panel-body">
                                     <div id="6" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Cuts</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Cuts</span>
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -1923,7 +1908,9 @@
                                     </div>
                                     <div id="7" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Folds and Flaps</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Folds and Flaps</span>
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -1934,7 +1921,9 @@
                                     </div>
                                     <div id="8" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Puncture</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Puncture</span>
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -1954,7 +1943,9 @@
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="42">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion42" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                        External Loin
+
+                                        <span class="levelName">External Loin</span>
+
                                     </a>
                                 </h4>
                             </div>
@@ -1962,7 +1953,9 @@
                                 <div class="panel-body">
                                     <div id="6" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Cuts</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Cuts</span>
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -1973,7 +1966,10 @@
                                     </div>
                                     <div id="7" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Folds and Flaps</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Folds</span>
+
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -1984,7 +1980,9 @@
                                     </div>
                                     <div id="8" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Puncture</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Puncture</span>
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2003,7 +2001,8 @@
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="43">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion43" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                        Internal Loin
+                                        <span class="levelName">Internal Loin</span>
+
                                     </a>
                                 </h4>
                             </div>
@@ -2011,7 +2010,9 @@
                                 <div class="panel-body">
                                     <div id="6" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Cuts</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Cuts</span>
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2022,7 +2023,9 @@
                                     </div>
                                     <div id="7" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Folds and Flaps</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Folds and Flaps</span>
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2033,7 +2036,9 @@
                                     </div>
                                     <div id="8" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Puncture</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Puncture</span>
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2052,7 +2057,8 @@
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="44">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion44" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                                        External Rib
+                                        <span class="levelName">External Rib</span>
+
                                     </a>
                                 </h4>
                             </div>
@@ -2060,7 +2066,10 @@
                                 <div class="panel-body">
                                     <div id="6" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Cuts</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Cuts</span>
+
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2071,7 +2080,10 @@
                                     </div>
                                     <div id="7" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Folds and Flaps</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Folds and Flaps</span>
+
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2082,7 +2094,10 @@
                                     </div>
                                     <div id="8" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Puncture</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Puncture</span>
+
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2101,7 +2116,9 @@
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="45">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion45" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
-                                        Internal Rib
+
+                                        <span class="levelName">Internal Rib</span>
+
                                     </a>
                                 </h4>
                             </div>
@@ -2109,7 +2126,10 @@
                                 <div class="panel-body">
                                     <div id="6" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Cuts</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Cuts</span>
+
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2120,7 +2140,10 @@
                                     </div>
                                     <div id="7" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Folds and Flaps</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Folds and Flaps</span>
+
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2131,7 +2154,10 @@
                                     </div>
                                     <div id="8" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Puncture</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Puncture</span>
+
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2150,7 +2176,9 @@
                             <div class="panel-heading level02" role="tab" id="headingOne" level02Id="46">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion46" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
-                                        External Chuck
+
+                                        <span class="levelName">External Chuck</span>
+
                                     </a>
                                 </h4>
                             </div>
@@ -2158,7 +2186,10 @@
                                 <div class="panel-body">
                                     <div id="6" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Cuts</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Cuts</span>
+
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2169,7 +2200,10 @@
                                     </div>
                                     <div id="7" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Folds and Flaps</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Folds and Flaps</span>
+
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2180,7 +2214,9 @@
                                     </div>
                                     <div id="8" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Puncture</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Puncture</span>
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2196,10 +2232,12 @@
                     </div>
                     <div class="panel-group" id="accordion47" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
-                            <div class="panel-heading level02" role="tab" id="headingOne" level02Id="1002">
+                            <div class="panel-heading level02" role="tab" id="headingOne" level02Id="48">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion47" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
-                                        Internal Chuck
+
+                                        <span class="levelName"> Internal Chuck</span>
+
                                     </a>
                                 </h4>
                             </div>
@@ -2207,7 +2245,10 @@
                                 <div class="panel-body">
                                     <div id="6" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Cuts</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Cuts</span>
+
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2218,7 +2259,10 @@
                                     </div>
                                     <div id="7" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Folds and Flaps</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Folds and Flaps</span>
+
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2229,7 +2273,10 @@
                                     </div>
                                     <div id="8" class="level03">
                                         <div class="row">
-                                            <div class="col-xs-6">Puncture</div>
+                                            <div class="col-xs-6">
+                                                <span class="levelName">Puncture</span>
+
+                                            </div>
                                             <div class="col-xs-6 text-center">
                                                 <div class="input-group input-group-sm width200 pull-right">
                                                     <span class="input-group-btn btn-minus"><button class="btn btn-default" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button></span><input value="0" min="0" type="number" class="form-control text-center levelValue"><span class="input-group-btn btn-plus"><button class="btn btn-default" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
@@ -2246,7 +2293,8 @@
                     <button id="btnSalvarCFF" class="btn btn-default level03Confirm hide">Salvar</button>
 
                 </div>
-                <div class="htp level03Group hide" level01id="2">
+
+                <div class="htp level03Group hide" level01id="1">
                     <div class="marginBottom10">
                         <button class="btn btn-default button-expand marginRight10"><i class="fa fa-expand" aria-hidden="true"></i> Expand All</button>
                         <button class="btn btn-default button-collapse"><i class="fa fa-compress" aria-hidden="true"></i> Collapse All</button>
@@ -2263,7 +2311,7 @@
                             </div>
                             <div id="collapsehOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    <div id="13" class="level03">
+                                    <div id="9" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Rinse hands with the chlorine spray between each carcass.</div>
                                             <div class="col-xs-3 text-center">
@@ -2272,7 +2320,7 @@
                                         </div>
 
                                     </div>
-                                    <div id="14" class="level03">
+                                    <div id="10" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Knives are to be steeled prior to placing in the sterilizer.</div>
                                             <div class="col-xs-3 text-center">
@@ -2296,7 +2344,7 @@
                             </div>
                             <div id="collapsehTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    <div id="15" class="level03">
+                                    <div id="11" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Two knives are to be used in a knife rotation system.</div>
                                             <div class="col-xs-3 text-center">
@@ -2305,7 +2353,7 @@
                                         </div>
 
                                     </div>
-                                    <div id="16" class="level03">
+                                    <div id="12" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Knives are to be changed (rotated) between each individual carcass.</div>
                                             <div class="col-xs-3 text-center">
@@ -2314,7 +2362,7 @@
                                         </div>
 
                                     </div>
-                                    <div id="17" class="level03">
+                                    <div id="13" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">All hide pattern openings done with one continuous cut.</div>
                                             <div class="col-xs-3 text-center">
@@ -2323,7 +2371,7 @@
                                         </div>
 
                                     </div>
-                                    <div id="18" class="level03">
+                                    <div id="14" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">All hide pattern openings trimmed as close to the initial job of opening. The piece of carcass removed as a continuous portion.</div>
                                             <div class="col-xs-3 text-center">
@@ -2347,7 +2395,7 @@
                             </div>
                             <div id="collapsehThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    <div id="19" class="level03">
+                                    <div id="15" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Sanitized by dipping in the 180°F sterilizer while running the blade for one (1) second between each carcass.</div>
                                             <div class="col-xs-3 text-center">
@@ -2356,7 +2404,7 @@
                                         </div>
 
                                     </div>
-                                    <div id="20" class="level03">
+                                    <div id="16" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Hoses for the air knives secured in a manner that does not contact the exposed carcass surface.</div>
                                             <div class="col-xs-3 text-center">
@@ -2381,7 +2429,7 @@
                             </div>
                             <div id="collapsehFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    <div id="21" class="level03">
+                                    <div id="17" class="level03">
                                         <div class="row">
                                             <div class="col-xs-9">Knives are to be changed (rotated) between each individual carcass.</div>
                                             <div class="col-xs-3 text-center">
@@ -2407,8 +2455,9 @@
                             </div>
                             <div id="collapsehFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    <textarea id="txtOthers" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-
+                                    <div id="18" class="level03 txtOthers">
+                                        <textarea class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2416,6 +2465,8 @@
                     <button id="btnSalvarHTP" class="btn btn-default level03Confirm hide">Salvar</button>
 
                 </div>
+
+
             </div>
 
         </div>
@@ -2424,24 +2475,37 @@
 
         <button class="btn btn-lg btn-danger btnCA hide">Corrective Action</button><!--Corrective Action-->
         <footer class="footer">
-            <p style="color: white; margin-left: 16px; margin-top: 12px;"><span class="user">Admin</span> - <span class="unit">Colorado</span></p>
-        </footer>
+            <p style="color: white; margin-left: 16px; margin-right: 16px; margin-top: 12px;">
+                <span class="user">Admin</span> - <span class="unit">Colorado</span>  <span class="urlPrefix"></span>
+                <span class="status pull-right"></span>
+                <div class="progress">
+                    <div class="statusProgress progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </p>
+         </footer>
     </div>
-    <div class="Results"></div>
-    <div class="Users"></div>
+    <div class="viewModal" style="display:none;">
+        <div class="head" style="height:35px;line-height:35px;padding-left:10px;padding-right:10px">View <a href="#" class="pull-right close" style="color: #000;text-decoration:none">X</a></div>
+        <div class="body" style="height: 565px; overflow-y: auto;padding-left:5px;padding-right:5px;padding-bottom:5px;"></div>
+    </div>
+    <div class="Results hide"></div>
+    <div class="Users hide"></div>
 
+    <script src="cordova.js"></script>
+    <script src="jquery/jquery.min.js"></script>
 
-    <script src="Content/*"></script>
-    <script src="Plugins/jquery/jquery.min.js"></script>
-    <script src="Scripts/*"></script>
-    <!--<script src="cordova.js"></script>-->
-    <!--<script src="Scripts/bootstrap.js"></script>
-    <script src="Scripts/Methods.js"></script>
-    <script src="Scripts/bootstrap-modal.js"></script>
-    <script src="Scripts/bootstrap-modalmanager.js"></script>
-    <script src="Scripts/File.js"></script>
-    <script src="SyncData.js"></script>
-    <script src="Scripts/DataBase.js"></script>-->
+    <script src="scripts/bootstrap.js"></script>
+    <script src="enc/core.js"></script>
+    <script src="enc/enc-base64.js"></script>
+    <script src="enc/cipher-core.js"></script>
+    <script src="enc/aes.js"></script>
+    <script src="scripts/bootstrap-modal.js"></script>
+    <script src="scripts/bootstrap-modalmanager.js"></script>
+    <!--<script src="Scripts/Import.js"></script>-->
+    <script src="scripts/methods.js"></script>
+    <script src="scripts/file.js"></script>
+    <script src="syncData.js"></script>
+    <script src="scripts/newSync.js"></script>
 
 </body>
 </html>

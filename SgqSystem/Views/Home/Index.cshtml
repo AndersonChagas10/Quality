@@ -1,26 +1,39 @@
 ﻿@{
-    var url = Url.Action("DataCollectionReport", "Reports");
-    var url2 = Url.Action("CorrectiveActionReport", "Reports");
-    var url3 = Url.Action("teste", "Reports");
+    var urlDataCollection = Url.Action("", "DataCollect");
+    var urlManagement = Url.Action("CorrectiveActionReport", "Reports");
+    var urlCustomization = Url.Action("Index", "Params");
     var version = ViewBag.Asembly;
 }
 
-<div class="jumbotron">
+<!-- BEGIN CONTENT BODY -->
+<div class="page-content" style="min-height: 600px; padding: 32px;">
+    <div class="center-main row">
+        <div class="col-xs-4"><div class="center-button"><a href="@urlDataCollection">@Resources.Resource.data_collection</a></div></div>
+        <div class="col-xs-4"><div class="center-button"><a href="@urlManagement">@Resources.Resource.management</a></div></div>
+        <div class="col-xs-4"><div class="center-button"><a href="@urlCustomization">@Resources.Resource.customization</a></div></div>
+    </div>
+</div>
+
+@*<div class="jumbotron">
     <h1>@ViewBag.Title</h1>
     <p class="lead"></p>
-    @*<p><a href="~/newColeta/Index.html" id="coelta"  target="_blank" class="btn btn-primary btn-lg">Data Collection &raquo;</a></p>*@
+    @*<p><a href="~/newColeta/Index.html" id="coelta"  target="_blank" class="btn btn-primary btn-lg">Data Collection &raquo;</a></p>
     <p><a href="@url" class="btn btn-primary btn-lg">Data Collection Reports &raquo;</a></p>
     <p><a href="@url2" class="btn btn-primary btn-lg">Corrective Action Reports &raquo;</a></p>
-    @*<p><a href="@url3" class="btn btn-primary btn-lg">Corrective Reports TESTE &raquo;</a></p>*@
-    @*<p><a href="@url1" class="btn btn-primary btn-lg">Chart Reports (BETAv0.0) &raquo;</a></p>*@
-    @*@Resources.Resource.value;*@
-</div>
+    @*<p><a href="@url3" class="btn btn-primary btn-lg">Corrective Reports TESTE &raquo;</a></p>
+    @*<p><a href="@url1" class="btn btn-primary btn-lg">Chart Reports (BETAv0.0) &raquo;</a></p>
+    Resources.Resource.value;
+</div>*@
 
 @section Scripts {
 
     <script>
         var version = '@Html.Raw(ViewBag.Asembly)';
+
+        $('#navbarLeft').addClass("hide");
+
     </script>
+
 
 }
 
