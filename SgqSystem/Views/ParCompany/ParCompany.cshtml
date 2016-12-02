@@ -10,13 +10,43 @@
                         @Table.GerarColuna(@Html.Editor("parCompanyDTO.Id", new { @id = "parCompanyDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
                     </tr>
                     <tr class="row">
-                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Name", new { htmlAttributes = new { @id = "parCompanyDTO_Name", @class = "form-control" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
-                        @Table.GerarColunaButton(@Html.Editor("parCompanyDTO.Description", new { htmlAttributes = new { @id = "parCompanyDTO_Description",  @class = "form-control" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick='indexCompany.enviarDadosParaApi();' class='btn btn-primary margin'><i class='fa fa-plus'></i></button>")
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Name", new { htmlAttributes = new { @id = "parCompanyDTO_Name", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Description", new { htmlAttributes = new { @id = "parCompanyDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top, colspan: 2)
                     </tr>
-
+                    <tr class="row">
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Initials", new { htmlAttributes = new { @id = "parCompanyDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.initials), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.SIF", new { htmlAttributes = new { @id = "parCompanyDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.sif), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.CompanyNumber", new { htmlAttributes = new { @id = "parCompanyDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.company_number), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row">
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.IPServer", new { htmlAttributes = new { @id = "parCompanyDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.ip_server), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.DBServer", new { htmlAttributes = new { @id = "parCompanyDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.db_server), Table.PosicaoLabel.top)
+                        <td class="td-erp">
+                            <button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick='indexCompany.enviarDadosParaApi();' class='btn btn-primary btn-sm margin pull-right'>@Resources.Resource.save</button>
+                        </td> 
+                    </tr>
                 </tbody>
-
             </table>
+
+            <table class="table-erp table table-condensed table-bordered table-margin">
+                <thead>
+                    <tr>
+                        <th>@Resources.Resource.name</th>
+                        <th>@Resources.Resource.description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in ViewBag.listaParCompany)
+                    {
+                        <tr>
+                            <td>@o.Name</td>
+                            <td>@o.Description</td>
+                            <td></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
         </div>
     </div>
 }

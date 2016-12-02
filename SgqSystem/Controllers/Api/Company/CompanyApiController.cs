@@ -8,14 +8,17 @@ using System.Web.Http;
 namespace SgqSystem.Controllers.Api.Company
 {
     [RoutePrefix("api/Company")]
+    [HandleApi()]
     public class CompanyApiController : ApiController
     {
 
         #region Construtor para injeção de dependencia
+
+        private ICompanyDomain _companyDomain;
         
-        public CompanyApiController()
+        public CompanyApiController(ICompanyDomain companyDomain)
         {
-            
+            _companyDomain = companyDomain;
         }
 
         #endregion
@@ -25,9 +28,25 @@ namespace SgqSystem.Controllers.Api.Company
         [HttpPost]
         [HandleApi()]
         [Route("AddUpdateParCompany")]
-        public void AddUpdateParCompany([FromBody] ParCompanyDTO parCompanyDTO)
+        public void AddUpdateParCompany([FromBody] CompanyViewModel companyViewModel)
         {
-           //return _companyDomain.AddUpdateParCompany(parCompanyDTO);
+            _companyDomain.AddUpdateParCompany(companyViewModel.parCompanyDTO);
+        }
+
+        [HttpPost]
+        [HandleApi()]
+        [Route("AddUpdateParStructure")]
+        public void AddUpdateParStructure([FromBody] CompanyViewModel companyViewModel)
+        {
+            _companyDomain.AddUpdateParStructure(companyViewModel.parStructureDTO);
+        }
+
+        [HttpPost]
+        [HandleApi()]
+        [Route("AddUpdateParStructureGroup")]
+        public void AddUpdateParStructureGroup([FromBody] CompanyViewModel companyViewModel)
+        {
+            _companyDomain.AddUpdateParStructureGroup(companyViewModel.parStructureGroupDTO);
         }
 
         #endregion

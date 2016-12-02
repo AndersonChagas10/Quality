@@ -30,7 +30,8 @@ namespace SgqSystem.Helpers
                                                 MvcHtmlString label,
                                                 PosicaoLabel posicaoLabel, 
                                                 MvcHtmlString error = null, 
-                                                string info = null)
+                                                string info = null,
+                                                int colspan = 0)
         {
             String tr = "";
             String tagInfo = "";
@@ -48,7 +49,7 @@ namespace SgqSystem.Helpers
 
             if (posicaoLabel == PosicaoLabel.top)
             {
-                tr = "<td class='td-erp'>" +
+                tr = "<td class='td-erp' colspan='" + colspan + "'>" +
                         label.ToString() + " " +
                         tagInfo +
                         "<div>"+

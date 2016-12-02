@@ -8,6 +8,7 @@ namespace Dominio.Interfaces.Services
         ParCompanyDTO AddUpdateParCompany(ParCompanyDTO parCompanyDTO);
         ParStructureDTO AddUpdateParStructure(ParStructureDTO parStructureDTO);
         ParStructureGroupDTO AddUpdateParStructureGroup(ParStructureGroupDTO parStructureGroupDTO);
+        ParCompanyXStructureDTO AddUpdateParCompanyXStructureDTO(ParCompanyXStructureDTO parCompanyXStructureDTO);
 
     }
 }

@@ -7,7 +7,7 @@
     var urlCompany = Url.Action("AddUpdateParCompany", "api/Company"); //URL relativa
     var urlStructure = Url.Action("AddUpdateParStructure", "api/Company"); //URL relativa
     var urlStructureGroup = Url.Action("AddUpdateParStructureGroup", "api/Company"); //URL relativa
-    var urlHome = Url.Action("Index", "Home"); //URL relativa
+    var urlHome = Url.Action("Index", "Home");
 
 }
 
@@ -148,10 +148,12 @@
     };
 
     var urlCompany = '@Html.Raw(@urlCompany)';
+    var urlStructure = '@Html.Raw(@urlStructure)';
+    var urlStructureGroup = '@Html.Raw(@urlStructureGroup)';
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
-        
+
     navbarSelect("navbar2");
 
     var monthNames = [
@@ -201,9 +203,35 @@
                 console.log(objetoReturn);
                 console.log(statusmessage);
                 console.log(respostaCompleta);
-            });
+            }).fail(function (e, h, x) {
+                console.log(e);
+            });;
+        }
+    }
+
+    var indexStructure = {
+        enviarDadosParaApi: function (e) {
+            var dados = $($('form')[1]).serializeObject();
+            $.post(urlStructure, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                console.log(objetoReturn);
+                console.log(statusmessage);
+                console.log(respostaCompleta);
+            }).fail(function (e, h, x) {
+                console.log(e);
+            });;
+        }
+    }
+
+    var indexStructureGroup = {
+        enviarDadosParaApi: function (e) {
+            var dados = $($('form')[2]).serializeObject();
+            $.post(urlStructureGroup, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                console.log(objetoReturn);
+                console.log(statusmessage);
+                console.log(respostaCompleta);
+            }).fail(function (e, h, x) {
+                console.log(e);
+            });;
         }
     }
 </script>
-    
-

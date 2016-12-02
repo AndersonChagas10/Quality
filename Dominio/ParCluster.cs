@@ -17,6 +17,7 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParCluster()
         {
+            this.ParCompanyCluster = new HashSet<ParCompanyCluster>();
             this.ParLevel1XCluster = new HashSet<ParLevel1XCluster>();
         }
     
@@ -30,6 +31,8 @@ namespace Dominio
         public bool IsActive { get; set; }
     
         public virtual ParClusterGroup ParClusterGroup { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParCompanyCluster> ParCompanyCluster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel1XCluster> ParLevel1XCluster { get; set; }
     }

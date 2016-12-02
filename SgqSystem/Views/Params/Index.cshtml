@@ -17,1058 +17,1045 @@
     var removeLevel3Group = Url.Action("RemoveParLevel3Group", "api/ParamsApi");
     var AddLevel3Group = Url.Action("AddUpdateParLevel3Group", "api/ParamsApi");
 
+    var urlHome = Url.Action("Index", "Home");
+
 }
 
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-    @*@Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/ScriptTables")
-    @Scripts.Render("~/bundles/theme")
-    @Scripts.Render("~/bundles/select2js")
-    @Scripts.Render("~/bundles/DatePikerContent")*@
-
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
-    <div class="page-content-wrapper">
-        <!-- BEGIN CONTENT BODY -->
-        <div class="page-content" style="min-height: 650px;">
-            <!-- BEGIN PAGE HEADER-->
-            <!-- BEGIN PAGE TITLE-->
-            <h1 class="page-title">
-                @Resources.Resource.customization
-                <small>Construct data collection screen</small>
-            </h1>
-            <!-- END PAGE TITLE-->
-            <!-- BEGIN PAGE BAR -->
-            <div class="page-bar">
-                <ul class="page-breadcrumb">
-                    <li>
-                        <a href="index.html">Home</a>
-                        <i class="fa fa-angle-right"></i>
-                    </li>
-                    <li>
-                        <span>  </span>
-                    </li>
-                </ul>
-                <div class="page-toolbar">
-                    <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                        <i class="fa fa-calendar"></i>&nbsp;
-                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                    </div>
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 650px;">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE TITLE-->
+        <h1 class="page-title">
+            @Resources.Resource.customization
+            <small>Construct data collection screen</small>
+        </h1>
+        <!-- END PAGE TITLE-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@urlHome">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.customization</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
                 </div>
             </div>
-            <!-- END PAGE BAR -->
-            <!-- END PAGE HEADER-->
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="portlet light bordered">
-                        <div class="portlet-title tabbable-line">
-                            <div class="caption">
-                                <i class="icon-share font-dark"></i>
-                                <span class="caption-subject font-dark bold uppercase">@Resources.Resource.customization</span>
-                            </div>
-                            <ul class="nav nav-tabs">
-                                <li class="active">
-                                    <a href="#setup_tab" data-toggle="tab" aria-expanded="true"> Setup </a>
-                                </li>
-                            </ul>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.customization</span>
                         </div>
-                        <div class="portlet-body">
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="setup_tab">
-                                    <div class="row">
-                                        <div class="col-xs-3">
-                                            <button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button>
-                                        </div>
-                                        <div class="col-xs-9">
-                                            @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })
-                                        </div>
-                                        <hr />
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button>
                                     </div>
-                                    <div class="panel-group accordion" id="level1_accordion">
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_accordion" href="#level1_collapse" aria-expanded="false" id="level1Title">  </a>
-                                                </h4>
-                                            </div>
-                                            <div id="level1_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                                <div class="panel-body">
-                                                    <div id="ParLevel1">
-                                                        @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
-                                                    </div>
+                                    <div class="col-xs-9">
+                                        @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })
+                                    </div>
+                                    <hr />
+                                </div>
+                                <div class="panel-group accordion" id="level1_accordion">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_accordion" href="#level1_collapse" aria-expanded="false" id="level1Title">  </a>
+                                            </h4>
+                                        </div>
+                                        <div id="level1_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div id="ParLevel1">
+                                                    @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="row">
-                                        <div class="col-xs-3">
-                                            <button class="btn btn-warning btn-block" id="btnNewLevel2">@Resources.Resource.new_level2</button>
-                                        </div>
-                                        <div class="col-xs-9" id="partialSelectLevel2">
-                                            @Html.Partial("~/Views/Params/_SelectBoxLevel2.cshtml", Model)
-                                        </div>
-                                        <hr />
-                                    </div>
-                                    <div class="panel-group accordion" id="level2_accordion">
-                                        <div class="panel panel-warning">
-                                            <div class="panel-heading">
-                                                <div class="row panel-title">
-                                                    <div class="col-xs-8">
-                                                        <h4 class="panel-title">
-                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_accordion" href="#level2_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.level2 </a>
-                                                        </h4>
-                                                    </div>
-                                                    <div class="col-xs-4">
-                                                        <button id="vinculoLevel1" class="btn btn-warning pull-right" style="height: 42px;" title="Vincular ao Level 1"><span class="glyphicon glyphicon-link"></span></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id="level2_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                                <div class="panel-body">
-                                                    <div id="ParLevel2">
-                                                        @Html.Partial("~/Views/Params/_ParLevel2.cshtml", Model)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-xs-3">
-                                            <button class="btn btn-danger btn-block" id="btnNewLevel3">@Resources.Resource.new_level3</button>
-                                        </div>
-                                        <div class="col-xs-9" id="partialSelectLevel3">
-                                            @Html.Partial("~/Views/Params/_SelectBoxLevel3.cshtml", Model)
-                                        </div>
-                                        <hr />
-                                    </div>
-                                    <div class="panel-group accordion" id="level3_accordion">
-                                        <div class="panel panel-danger">
-
-                                            <div class="panel-heading">
-
-                                                <div class="row panel-title">
-                                                    <div class="col-xs-8">
-                                                        <h4 class="panel-title">
-                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false" id="level3Title"> @Resources.Resource.level3 </a>
-                                                        </h4>
-                                                    </div>
-                                                    <div class="col-xs-4">
-                                                        <button id="vinculoLevel2" class="btn btn-danger pull-right" style="height: 42px;" title="Vincular ao Level 2" onclick="saveLevel3Level2()"><span class="glyphicon glyphicon-link"></span></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id="level3_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                                <div class="panel-body">
-                                                    <div id="ParLevel3">
-                                                        @Html.Partial("~/Views/Params/_ParLevel3.cshtml", Model)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <button class="btn btn-warning btn-block" id="btnNewLevel2">@Resources.Resource.new_level2</button>
+                                    </div>
+                                    <div class="col-xs-9" id="partialSelectLevel2">
+                                        @Html.Partial("~/Views/Params/_SelectBoxLevel2.cshtml", Model)
+                                    </div>
+                                    <hr />
+                                </div>
+                                <div class="panel-group accordion" id="level2_accordion">
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">
+                                            <div class="row panel-title">
+                                                <div class="col-xs-8">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_accordion" href="#level2_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.level2 </a>
+                                                    </h4>
+                                                </div>
+                                                <div class="col-xs-4">
+                                                    <button id="vinculoLevel1" class="btn btn-warning pull-right" style="height: 42px;" title="Vincular ao Level 1"><span class="glyphicon glyphicon-link"></span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="level2_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div id="ParLevel2">
+                                                    @Html.Partial("~/Views/Params/_ParLevel2.cshtml", Model)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <button class="btn btn-danger btn-block" id="btnNewLevel3">@Resources.Resource.new_level3</button>
+                                    </div>
+                                    <div class="col-xs-9" id="partialSelectLevel3">
+                                        @Html.Partial("~/Views/Params/_SelectBoxLevel3.cshtml", Model)
+                                    </div>
+                                    <hr />
+                                </div>
+                                <div class="panel-group accordion" id="level3_accordion">
+                                    <div class="panel panel-danger">
+
+                                        <div class="panel-heading">
+
+                                            <div class="row panel-title">
+                                                <div class="col-xs-8">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_accordion" href="#level3_collapse" aria-expanded="false" id="level3Title"> @Resources.Resource.level3 </a>
+                                                    </h4>
+                                                </div>
+                                                <div class="col-xs-4">
+                                                    <button id="vinculoLevel2" class="btn btn-danger pull-right" style="height: 42px;" title="Vincular ao Level 2" onclick="saveLevel3Level2()"><span class="glyphicon glyphicon-link"></span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="level3_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div id="ParLevel3">
+                                                    @Html.Partial("~/Views/Params/_ParLevel3.cshtml", Model)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- END CONTENT BODY -->
     </div>
+    <!-- END CONTENT BODY -->
+</div>
 
-    <!-- Modal Loader -->
-    <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
-        <div class="modal-dialog">
+<!-- Modal Loader -->
+<div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
+    <div class="modal-dialog">
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-1">
-                            <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
-                        </div>
-                        <div class="col-xs-11" id="modalLoaderMessage">Message </div>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-1">
+                        <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
                     </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <!-- Modal Confirm -->
-    <div class="modal fade modalConfirm" id="modalConfirm" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.confirm_the_action</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12" id="modalConfirmMessage">Message </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="modalConfirmNo" type="button" class="btn btn-default">@Resources.Resource.no</button>
-                    <button id="modalConfirmYes" type="button" class="btn btn-primary">@Resources.Resource.yes</button>
+                    <div class="col-xs-11" id="modalLoaderMessage">Message </div>
                 </div>
             </div>
         </div>
+
     </div>
-    <div id="overlay" class="overlay" style="display:none"></div>
-    <div id="messageModal" class="message padding20" style="display:none">
-        <h1 class="head">Titulo</h1>
-        <div class="body font16">Mensagem</div>
-        <div class="foot">
-            <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button>
+</div>
+<!-- Modal Confirm -->
+<div class="modal fade modalConfirm" id="modalConfirm" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">@Resources.Resource.confirm_the_action</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12" id="modalConfirmMessage">Message </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="modalConfirmNo" type="button" class="btn btn-default">@Resources.Resource.no</button>
+                <button id="modalConfirmYes" type="button" class="btn btn-primary">@Resources.Resource.yes</button>
+            </div>
         </div>
     </div>
+</div>
+<div id="overlay" class="overlay" style="display:none"></div>
+<div id="messageModal" class="message padding20" style="display:none">
+    <h1 class="head">Titulo</h1>
+    <div class="body font16">Mensagem</div>
+    <div class="foot">
+        <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button>
+    </div>
+</div>
 
-    <!-- Modal Edição  crudNxN -->
-    @Html.Partial("_crudNxNModal")
+<!-- Modal Edição  crudNxN -->
+@Html.Partial("_crudNxNModal")
 
-    <script>
-        /*
-            Serializa objeto usando bind de property Name
-            $('form').serializeObject();
-        */
-        $.fn.serializeObject = function () {
-            var o = {};
-            var a = this.serializeArray();
-            $.each(a, function () {
-                if (o[this.name] !== undefined) {
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
-                    }
-                    o[this.name].push(this.value || '');
-                } else {
-                    o[this.name] = this.value || '';
+<script>
+    /*
+        Serializa objeto usando bind de property Name
+        $('form').serializeObject();
+    */
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
                 }
-            });
-            return o;
-        };
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
 
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
 
-        navbarSelect("navbar1");
+    navbarSelect("navbar1");
       
-        function openMessageModal(title, content) {
+    function openMessageModal(title, content) {
 
-            var mensagem = $('#messageModal');
+        var mensagem = $('#messageModal');
 
-            mensagem.children('.head').html(title);
-            mensagem.children('.body').html(content);
-            $('#overlay').fadeIn("fast");
-            $('#btnMessageOk').fadeIn("fast");
+        mensagem.children('.head').html(title);
+        mensagem.children('.body').html(content);
+        $('#overlay').fadeIn("fast");
+        $('#btnMessageOk').fadeIn("fast");
 
-            mensagem.fadeIn("fast");
+        mensagem.fadeIn("fast");
 
-        }
+    }
 
-        $('#btnMessageOk').click(function(){
-            $('#overlay').fadeOut("fast");
-            var mensagem = $('#messageModal');
-            mensagem.fadeOut("fast");
-        });
+    $('#btnMessageOk').click(function(){
+        $('#overlay').fadeOut("fast");
+        var mensagem = $('#messageModal');
+        mensagem.fadeOut("fast");
+    });
 
-        ///initialize switches
+    ///initialize switches
 
-        function defaults() {
-            $.fn.bootstrapSwitch.defaults.size = 'small';
-            $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
-            $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
-            $(".check-box").bootstrapSwitch();
-        }
+    function defaults() {
+        $.fn.bootstrapSwitch.defaults.size = 'small';
+        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
+        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
+        $(".check-box").bootstrapSwitch();
+    }
 
-        var t1 = @Html.Raw(Json.Encode(@Resources.Resource.new_level1));
-        var t2 = @Html.Raw(Json.Encode(@Resources.Resource.new_level2));
-        var t3 = @Html.Raw(Json.Encode(@Resources.Resource.new_level3));
+    var t1 = @Html.Raw(Json.Encode(@Resources.Resource.new_level1));
+    var t2 = @Html.Raw(Json.Encode(@Resources.Resource.new_level2));
+    var t3 = @Html.Raw(Json.Encode(@Resources.Resource.new_level3));
 
-        $('#level1Title').text(t1);
-        $('#level2Title').text(t2);
-        $('#level3Title').text(t3);
+    $('#level1Title').text(t1);
+    $('#level2Title').text(t2);
+    $('#level3Title').text(t3);
 
-        $modalLoader = $('#modalLoader').clone();
-        $modalConfirm = $('#modalConfirm').clone();
+    $modalLoader = $('#modalLoader').clone();
+    $modalConfirm = $('#modalConfirm').clone();
 
-        $('#btnNewLevel1').click(function () {
-            $('#parLevel1Select2').val('-1').trigger('select2:select').change();
-            $('#level1_collapse').collapse('show');
-            $('#paramsDto_parLevel1Dto_Name').focus();
-        });
+    $('#btnNewLevel1').click(function () {
+        $('#parLevel1Select2').val('-1').trigger('select2:select').change();
+        $('#level1_collapse').collapse('show');
+        $('#paramsDto_parLevel1Dto_Name').focus();
+    });
 
-        $('#btnNewLevel2').click(function () {
-            $('#parLevel2Select2').val('-1').trigger('select2:select').change();
-            $('#level2_collapse').collapse('show');
-            $('#paramsDto_parLevel2Dto_Name').focus();
-        });
+    $('#btnNewLevel2').click(function () {
+        $('#parLevel2Select2').val('-1').trigger('select2:select').change();
+        $('#level2_collapse').collapse('show');
+        $('#paramsDto_parLevel2Dto_Name').focus();
+    });
 
-        $('#btnNewLevel3').click(function () {
-            $('#parLevel3Select2').val('-1').trigger('select2:select').change();
-            $('#level3_collapse').collapse('show');
-            $('#paramsDto_parLevel3Dto_Name').focus();
-        });
+    $('#btnNewLevel3').click(function () {
+        $('#parLevel3Select2').val('-1').trigger('select2:select').change();
+        $('#level3_collapse').collapse('show');
+        $('#paramsDto_parLevel3Dto_Name').focus();
+    });
 
-        var monthNames = [
-           '@Resources.Resource.january',
-           '@Resources.Resource.february',
-           '@Resources.Resource.march',
-           '@Resources.Resource.april',
-           '@Resources.Resource.may',
-           '@Resources.Resource.june',
-           '@Resources.Resource.july',
-           '@Resources.Resource.august',
-           '@Resources.Resource.september',
-           '@Resources.Resource.october',
-           '@Resources.Resource.november',
-           '@Resources.Resource.december'];
+    var monthNames = [
+        '@Resources.Resource.january',
+        '@Resources.Resource.february',
+        '@Resources.Resource.march',
+        '@Resources.Resource.april',
+        '@Resources.Resource.may',
+        '@Resources.Resource.june',
+        '@Resources.Resource.july',
+        '@Resources.Resource.august',
+        '@Resources.Resource.september',
+        '@Resources.Resource.october',
+        '@Resources.Resource.november',
+        '@Resources.Resource.december'];
 
-        closeLeftSidebar();
+    closeLeftSidebar();
 
-        function twoDigits(str) {
-            str = ("000" + str).slice(-2);
-            return str;
-        }
+    function twoDigits(str) {
+        str = ("000" + str).slice(-2);
+        return str;
+    }
 
-        function watcher() {
+    function watcher() {
 
-            var date = new Date();
-            var day = date.getDate();
-            var monthIndex = date.getMonth();
-            var year = date.getFullYear();
-            var hour = date.getHours();
-            var minute = date.getMinutes();
-            var second = date.getSeconds();
+        var date = new Date();
+        var day = date.getDate();
+        var monthIndex = date.getMonth();
+        var year = date.getFullYear();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
 
-            $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
+        $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
 
-            setTimeout(watcher, 1000);
-        }
+        setTimeout(watcher, 1000);
+    }
 
-        watcher();
+    watcher();
 
-        var url1 = '@Html.Raw(@url1)';
-        var url2 = '@Html.Raw(@url2)';
-        var url3 = '@Html.Raw(@url3)';
-        var AddLevel3Group = '@Html.Raw(@AddLevel3Group)';
+    var url1 = '@Html.Raw(@url1)';
+    var url2 = '@Html.Raw(@url2)';
+    var url3 = '@Html.Raw(@url3)';
+    var AddLevel3Group = '@Html.Raw(@AddLevel3Group)';
 
-        var Geral = {
-            TableShow: function(tableId, listEmpty){
-                if(!listEmpty){
-                    $(tableId).hide();
-                }else{
-                    $(tableId).show();
-                }
-            }
-        }
-
-        function dirtForm(oldForm, newForm){
-            var o = oldForm.serialize().toString();
-            var n = newForm.serialize().toString();
-            if (o != n) {
-                return true;
-            }
-            return false;
-        }
-
-        //$.fn.isDirty = function () {
-        //    var a = this.serializeArray();
-        //    for(var i = 0; i < a.length; i++){
-        //        if (a[i].value != "" && a[i].value != "0" && a[i].value != 0
-        //            && a[i].value != "-1" && a[i].value != -1
-        //            && a[i].value != "false" && a[i].value != "true") {
-        //            //break;
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //};
-
-        //$.fn.dirty = false;
-
-        var parLevel1Empty = $('#ParLevel1 > form').clone();
-        var parLevel2Empty = $('#ParLevel2 > form').clone();
-        var parLevel3Empty = $('#ParLevel3 > form').clone();
-
-        var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
-        var urlGetLevel2 = '@Html.Raw(@urlGetLevel2)';
-        var urlGetLevel3 = '@Html.Raw(@urlGetLevel3)';
-
-        var removeLevel3Group = '@Html.Raw(@removeLevel3Group)';
-
-        var loaderMessages = [];
-        var openLoader = function(message){
-            if(loaderMessages.length == 0){
-                $('.modalLoader').remove();
-                $('body').append($modalLoader);
-                $('#modalLoader').modal({ backdrop: false });
-                $('#modalLoaderMessage').text(message);
-                loaderMessages.push(message);
+    var Geral = {
+        TableShow: function(tableId, listEmpty){
+            if(!listEmpty){
+                $(tableId).hide();
             }else{
-                loaderMessages.push(message);
+                $(tableId).show();
             }
         }
+    }
 
-        var closeLoader = function(){
-            loaderMessages.splice(0, 1);
-            if(loaderMessages.length == 0){
-                $('.modalLoader').remove();
-            }
+    function dirtForm(oldForm, newForm){
+        var o = oldForm.serialize().toString();
+        var n = newForm.serialize().toString();
+        if (o != n) {
+            return true;
+        }
+        return false;
+    }
+
+    //$.fn.isDirty = function () {
+    //    var a = this.serializeArray();
+    //    for(var i = 0; i < a.length; i++){
+    //        if (a[i].value != "" && a[i].value != "0" && a[i].value != 0
+    //            && a[i].value != "-1" && a[i].value != -1
+    //            && a[i].value != "false" && a[i].value != "true") {
+    //            //break;
+    //            return true;
+    //        }
+    //    }
+    //    return false;
+    //};
+
+    //$.fn.dirty = false;
+
+    var parLevel1Empty = $('#ParLevel1 > form').clone();
+    var parLevel2Empty = $('#ParLevel2 > form').clone();
+    var parLevel3Empty = $('#ParLevel3 > form').clone();
+
+    var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
+    var urlGetLevel2 = '@Html.Raw(@urlGetLevel2)';
+    var urlGetLevel3 = '@Html.Raw(@urlGetLevel3)';
+
+    var removeLevel3Group = '@Html.Raw(@removeLevel3Group)';
+
+    var loaderMessages = [];
+    var openLoader = function(message){
+        if(loaderMessages.length == 0){
+            $('.modalLoader').remove();
+            $('body').append($modalLoader);
+            $('#modalLoader').modal({ backdrop: false });
+            $('#modalLoaderMessage').text(message);
+            loaderMessages.push(message);
+        }else{
+            loaderMessages.push(message);
+        }
+    }
+
+    var closeLoader = function(){
+        loaderMessages.splice(0, 1);
+        if(loaderMessages.length == 0){
+            $('.modalLoader').remove();
+        }
+    }
+
+    var openConfirm = function(message, callbackYes, callbackNo){
+        $('.modalConfirm').remove();
+        $('body').append($modalConfirm);
+        $('#modalConfirm').modal({backdrop: false });
+        $('#modalConfirmMessage').text(message);
+
+        if(callbackYes){
+            $('#modalConfirmYes').click(function(){
+                callbackYes();
+            });
         }
 
-        var openConfirm = function(message, callbackYes, callbackNo){
-            $('.modalConfirm').remove();
-            $('body').append($modalConfirm);
-            $('#modalConfirm').modal({backdrop: false });
-            $('#modalConfirmMessage').text(message);
-
-            if(callbackYes){
-                $('#modalConfirmYes').click(function(){
-                    callbackYes();
-                });
-            }
-
-            if(callbackNo){
-                $('#modalConfirmNo').click(function(){
-                    callbackNo();
-                });
-            }
+        if(callbackNo){
+            $('#modalConfirmNo').click(function(){
+                callbackNo();
+            });
         }
+    }
 
-        var closeConfirm = function(){
-            $('.modalConfirm').remove();
-        }
+    var closeConfirm = function(){
+        $('.modalConfirm').remove();
+    }
 
-        /*LEVEL 1*/
-        var indexParamsLevel1 = {
-            new_level1: @Html.Raw(Json.Encode(@Resources.Resource.new_level1)),
-            saving_the_level1: @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level1)),
-            loading_the_level1: @Html.Raw(Json.Encode(@Resources.Resource.loading)),
+    /*LEVEL 1*/
+    var indexParamsLevel1 = {
+        new_level1: @Html.Raw(Json.Encode(@Resources.Resource.new_level1)),
+        saving_the_level1: @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level1)),
+        loading_the_level1: @Html.Raw(Json.Encode(@Resources.Resource.loading)),
 
-            enviarDadosParaApi: function (e) {
+        enviarDadosParaApi: function (e) {
 
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
+            $("form").each(function () { $.data($(this)[0], 'validator', false); });
+            $.validator.unobtrusive.parse("form");
 
-                if ($('#newLevel1Modal > form').valid()) {
+            if ($('#newLevel1Modal > form').valid()) {
 
-                    var $btn = $('#btnSaveNewLevel1');
-                    $btn.button('loading');
+                var $btn = $('#btnSaveNewLevel1');
+                $btn.button('loading');
 
-                    Cabecalhos.UpdateCabecalhos();
-                    //CounterLevel1.UpdateCounters();
-                    var dados = $('#newLevel1Modal > form').serializeObject();
-                    RegraNcL1.incluiNoObjetoParaSubmit(dados);
-                    ContadoresL1.incluiNoObjetoParaSubmit(dados);
-                    ReincidenciaL1.incluiNoObjetoParaSubmit(dados);
-                    ClusterL1.incluiNoObjetoParaSubmit(dados);
+                Cabecalhos.UpdateCabecalhos();
+                //CounterLevel1.UpdateCounters();
+                var dados = $('#newLevel1Modal > form').serializeObject();
+                RegraNcL1.incluiNoObjetoParaSubmit(dados);
+                ContadoresL1.incluiNoObjetoParaSubmit(dados);
+                ReincidenciaL1.incluiNoObjetoParaSubmit(dados);
+                ClusterL1.incluiNoObjetoParaSubmit(dados);
 
-                    //openLoader();
-
-                    $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-
-                        //closeLoader();
-
-                        if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
-                            indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
-                            openMessageModal("Alerta", statusmessage);
-                        }
-                        $btn.button('reset');
-                    }).fail(function (e, h, x) {
-                        //closeLoader();
-                        $btn.button('reset');
-                        openMessageModal("Alerta", e.responseJSON.Message);
-                    });
-                }
-
-            },/*Envia os dados referentes ao level1 para a API, apos isto realiza um get no seu ID e, CASO INSERÇÃO, atualiza a dropDown*/
-            selectNormal: function () {
-
-                var previous = $('#parLevel1Select2 option:selected').val();
-
-                $('#parLevel1Select2')
-                    .on('focus', function () {
-                        previous = $('#parLevel1Select2 option:selected').val();
-                    })
-                    .on("change", function (e) {
-                        indexParamsLevel2.resetaForm();
-                        indexParamsLevel3.resetaForm();
-                        if(dirtForm($(initialFormLevel1), $($('form')[0]))){
-                            openConfirm(
-                                'Existem dados que não foram salvos. Deseja continuar?',
-                                function(){
-                                    indexParamsLevel1.selectLevel1();
-                                },
-                                function(){
-                                    //e.preventDefault();
-                                    $('#parLevel1Select2').val(previous);
-                                    closeConfirm();
-                                    return;
-                                });
-                        }else{
-                            indexParamsLevel1.selectLevel1();
-                        }
-                    })
-
-            },/*Inicializa os eventos do select "focus" e "change", no change reseta form level2 e level3, também no change existe as opções para o modal e validação de form caso haja alterações não salvas*/
-            selectLevel1: function(){
-
-                closeConfirm();
-                var valorSelecionado = $('#parLevel1Select2 option:selected').val();
-
-                if (valorSelecionado == "") {/*Reseta Form*/
-                    indexParamsLevel1.resetaForm();
-                } else {
-                    indexParamsLevel1.GetLevel1(valorSelecionado);
-                }
-
-            },/*Executa ao selecionar um level1*/
-            GetLevel1: function(id, isSave) {
                 //openLoader();
-                $.get('GetParLevel1ById/' + id, function (obj, responseText, xhr) {
-                    if (obj != null) {
-                        $('#ParLevel1').empty();
-                        $('#ParLevel1').append(xhr.responseText);
-                        UpdateSelect2Level2(id);
-                    }
 
-                    if (id > 0) {
-                        $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
-                    }
-                    else {
-                        $('#level1Title').text(indexParamsLevel1.new_level1);
-                    }
-
-                    if(!!isSave){
-                        /*Atualiza Select*/
-                        var retornoId = $('#paramsDto_parLevel1Dto_Id').val();
-                        var retornoName = $('#paramsDto_parLevel1Dto_Name').val();
-                        if ($("#parLevel1Select2 option:selected").val() == retornoId) {
-                            if ($("#parLevel1Select2 option:selected").text() != retornoName) {
-                                $("#parLevel1Select2 option:selected").text(retornoId + ' - ' + retornoName);
-                            }
-                        } else {
-                            $("#parLevel1Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
-                            $("#parLevel1Select2").val(retornoId)
-                        }
-                    }
-
-                    updateAllTables();
-                    initialFormLevel1 = $($('form')[0]).clone();
-
-                    reloadPopovers();
-
-                    /*Reseta Validação*/
-                    indexParamsLevel1.resetaValidacao();
+                $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
 
                     //closeLoader();
+
+                    if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
+                        indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
+                        openMessageModal("Alerta", statusmessage);
+                    }
+                    $btn.button('reset');
+                }).fail(function (e, h, x) {
+                    //closeLoader();
+                    $btn.button('reset');
+                    openMessageModal("Alerta", e.responseJSON.Message);
                 });
-
-            },/*Busca dados do level1 na API*/
-            resetaValidacao: function(){
-
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-
-            },
-            resetaForm: function() {
-                $('#ParLevel1').empty();
-                $('#ParLevel1').append(parLevel1Empty);
-                $('#level1Title').text(indexParamsLevel1.new_level1);
-                initialFormLevel1 = $($('form')[0]).clone();
-                //closeLoader();
-            },
-            resetDdlLevel3Level2: function(){
-                $('#parLevel2Select2').val('-1');
-                indexParamsLevel2.GetLevel2('-1');
-                $('#parLevel3Select2').val('-1');
-                indexParamsLevel3.GetLevel2('-1');
             }
-        }
 
+        },/*Envia os dados referentes ao level1 para a API, apos isto realiza um get no seu ID e, CASO INSERÇÃO, atualiza a dropDown*/
+        selectNormal: function () {
 
-        /*LEVEL 2*/
-        var indexParamsLevel2 = {
+            var previous = $('#parLevel1Select2 option:selected').val();
 
-            new_level2: @Html.Raw(Json.Encode(@Resources.Resource.new_level2)),
-            loading_the_level2 : @Html.Raw(Json.Encode(@Resources.Resource.loading)),
-            saving_the_level2 : @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level2)),
-            removing_the_level3_group : @Html.Raw(Json.Encode(@Resources.Resource.removing_the_level3_group)),
+            $('#parLevel1Select2')
+                .on('focus', function () {
+                    previous = $('#parLevel1Select2 option:selected').val();
+                })
+                .on("change", function (e) {
+                    indexParamsLevel2.resetaForm();
+                    indexParamsLevel3.resetaForm();
+                    if(dirtForm($(initialFormLevel1), $($('form')[0]))){
+                        openConfirm(
+                            'Existem dados que não foram salvos. Deseja continuar?',
+                            function(){
+                                indexParamsLevel1.selectLevel1();
+                            },
+                            function(){
+                                //e.preventDefault();
+                                $('#parLevel1Select2').val(previous);
+                                closeConfirm();
+                                return;
+                            });
+                    }else{
+                        indexParamsLevel1.selectLevel1();
+                    }
+                })
 
-            enviarDadosParaApi: function (e) {
+        },/*Inicializa os eventos do select "focus" e "change", no change reseta form level2 e level3, também no change existe as opções para o modal e validação de form caso haja alterações não salvas*/
+        selectLevel1: function(){
 
-                $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val("0");
+            closeConfirm();
+            var valorSelecionado = $('#parLevel1Select2 option:selected').val();
 
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
+            if (valorSelecionado == "") {/*Reseta Form*/
+                indexParamsLevel1.resetaForm();
+            } else {
+                indexParamsLevel1.GetLevel1(valorSelecionado);
+            }
 
-                if ($('#newLevel2Modal > form').valid()) {
-                    //Cabecalhos.UpdateCabecalhos();
-                    //Cluster.UpdateCounter();
-                    //CounterLevel2.UpdateCounters();
-                    var dados = $('#newLevel2Modal > form').serializeObject();
-                    RegraNcL2.incluiNoObjetoParaSubmit(dados);
-                    ContadoresL2.incluiNoObjetoParaSubmit(dados);
-                    ReincidenciaL2.incluiNoObjetoParaSubmit(dados);
-                    GroupL2.incluiNoObjetoParaSubmit(dados);
-                    //openLoader(indexParamsLevel2.saving_the_level2);
-                    $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                        //closeLoader();
-                        var $btn = $('#btnSaveNewLevel2');
-                        $btn.button('loading');
-
-                        if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
-                            indexParamsLevel2.GetLevel2(objetoReturn.paramsDto.parLevel2Dto.Id, $('#paramsDto_parLevel3Dto_Id').val(), true)
-                            openMessageModal("Alerta", statusmessage);
-                        }
-                    }).fail(function (e, h, x) {
-                        //closeLoader();
-                        openMessageModal("Alerta", e.responseJSON.Message);
-                    });
+        },/*Executa ao selecionar um level1*/
+        GetLevel1: function(id, isSave) {
+            //openLoader();
+            $.get('GetParLevel1ById/' + id, function (obj, responseText, xhr) {
+                if (obj != null) {
+                    $('#ParLevel1').empty();
+                    $('#ParLevel1').append(xhr.responseText);
+                    UpdateSelect2Level2(id);
                 }
 
-            },/*Envia os dados referentes ao level2 para a API, apos isto realiza um get no seu ID e, CASO INSERÇÃO, atualiza a dropDown*/
-            selectNormal: function () {
-                var previous = $('#parLevel2Select2 option:selected').val();
-                $('#parLevel2Select2')
-                    .on('focus', function () {
-                        previous = $('#parLevel2Select2 option:selected').val();
-                    })
-                    .on("change", function (e) {
-                        indexParamsLevel3.resetaForm();
-                        if(dirtForm($(initialFormLevel2), $($('form')[1]))){
-                            openConfirm(
-                                'Existem dados que não foram salvos. Deseja continuar?',
-                                function(){
-                                    indexParamsLevel2.selectLevel2();
-                                },
-                                function(){
-                                    $('#parLevel2Select2').val(previous);
-                                    closeConfirm();
-                                });
-                        }else{
-                            indexParamsLevel2.selectLevel2();
-                        }
-                    });
-
-                closeConfirm();
-            },/*Inicializa os eventos do select "focus" e "change", no change reseta form level3,  também no change existe as opções para o modal e validação de form caso haja alterações não salvas*/
-            selectLevel2: function(){
-
-                closeConfirm();
-
-                var valorSelecionado = $('#parLevel2Select2 option:selected').val();
-
-                if (valorSelecionado == "") {
-                    indexParamsLevel2.resetaForm();
+                if (id > 0) {
+                    $('#level1Title').text('#' + $('#paramsDto_parLevel1Dto_Id').val() + ' - ' + $('#paramsDto_parLevel1Dto_Name').val());
                 }
                 else {
-                    indexParamsLevel2.GetLevel2(valorSelecionado, $('#paramsDto_parLevel3Dto_Id').val());
+                    $('#level1Title').text(indexParamsLevel1.new_level1);
                 }
+
+                if(!!isSave){
+                    /*Atualiza Select*/
+                    var retornoId = $('#paramsDto_parLevel1Dto_Id').val();
+                    var retornoName = $('#paramsDto_parLevel1Dto_Name').val();
+                    if ($("#parLevel1Select2 option:selected").val() == retornoId) {
+                        if ($("#parLevel1Select2 option:selected").text() != retornoName) {
+                            $("#parLevel1Select2 option:selected").text(retornoId + ' - ' + retornoName);
+                        }
+                    } else {
+                        $("#parLevel1Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
+                        $("#parLevel1Select2").val(retornoId)
+                    }
+                }
+
+                updateAllTables();
+                initialFormLevel1 = $($('form')[0]).clone();
+
+                reloadPopovers();
+
+                /*Reseta Validação*/
+                indexParamsLevel1.resetaValidacao();
+
+                //closeLoader();
+            });
+
+        },/*Busca dados do level1 na API*/
+        resetaValidacao: function(){
+
+            $("form").each(function () { $.data($(this)[0], 'validator', false); });
+            $.validator.unobtrusive.parse("form");
+            $("form").each(function () { $.data($(this)[0], 'validator', false); });
+            $.validator.unobtrusive.parse("form");
+            $("form").each(function () { $.data($(this)[0], 'validator', false); });
+            $.validator.unobtrusive.parse("form");
+
+        },
+        resetaForm: function() {
+            $('#ParLevel1').empty();
+            $('#ParLevel1').append(parLevel1Empty);
+            $('#level1Title').text(indexParamsLevel1.new_level1);
+            initialFormLevel1 = $($('form')[0]).clone();
+            //closeLoader();
+        },
+        resetDdlLevel3Level2: function(){
+            $('#parLevel2Select2').val('-1');
+            indexParamsLevel2.GetLevel2('-1');
+            $('#parLevel3Select2').val('-1');
+            indexParamsLevel3.GetLevel2('-1');
+        }
+    }
+
+
+    /*LEVEL 2*/
+    var indexParamsLevel2 = {
+
+        new_level2: @Html.Raw(Json.Encode(@Resources.Resource.new_level2)),
+        loading_the_level2 : @Html.Raw(Json.Encode(@Resources.Resource.loading)),
+        saving_the_level2 : @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level2)),
+        removing_the_level3_group : @Html.Raw(Json.Encode(@Resources.Resource.removing_the_level3_group)),
+
+        enviarDadosParaApi: function (e) {
+
+            $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val("0");
+
+            $("form").each(function () { $.data($(this)[0], 'validator', false); });
+            $.validator.unobtrusive.parse("form");
+
+            if ($('#newLevel2Modal > form').valid()) {
+                //Cabecalhos.UpdateCabecalhos();
+                //Cluster.UpdateCounter();
+                //CounterLevel2.UpdateCounters();
+                var dados = $('#newLevel2Modal > form').serializeObject();
+                RegraNcL2.incluiNoObjetoParaSubmit(dados);
+                ContadoresL2.incluiNoObjetoParaSubmit(dados);
+                ReincidenciaL2.incluiNoObjetoParaSubmit(dados);
+                GroupL2.incluiNoObjetoParaSubmit(dados);
+                //openLoader(indexParamsLevel2.saving_the_level2);
+                $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                    //closeLoader();
+                    var $btn = $('#btnSaveNewLevel2');
+                    $btn.button('loading');
+
+                    if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
+                        indexParamsLevel2.GetLevel2(objetoReturn.paramsDto.parLevel2Dto.Id, $('#paramsDto_parLevel3Dto_Id').val(), true)
+                        openMessageModal("Alerta", statusmessage);
+                    }
+                }).fail(function (e, h, x) {
+                    //closeLoader();
+                    openMessageModal("Alerta", e.responseJSON.Message);
+                });
+            }
+
+        },/*Envia os dados referentes ao level2 para a API, apos isto realiza um get no seu ID e, CASO INSERÇÃO, atualiza a dropDown*/
+        selectNormal: function () {
+            var previous = $('#parLevel2Select2 option:selected').val();
+            $('#parLevel2Select2')
+                .on('focus', function () {
+                    previous = $('#parLevel2Select2 option:selected').val();
+                })
+                .on("change", function (e) {
+                    indexParamsLevel3.resetaForm();
+                    if(dirtForm($(initialFormLevel2), $($('form')[1]))){
+                        openConfirm(
+                            'Existem dados que não foram salvos. Deseja continuar?',
+                            function(){
+                                indexParamsLevel2.selectLevel2();
+                            },
+                            function(){
+                                $('#parLevel2Select2').val(previous);
+                                closeConfirm();
+                            });
+                    }else{
+                        indexParamsLevel2.selectLevel2();
+                    }
+                });
+
+            closeConfirm();
+        },/*Inicializa os eventos do select "focus" e "change", no change reseta form level3,  também no change existe as opções para o modal e validação de form caso haja alterações não salvas*/
+        selectLevel2: function(){
+
+            closeConfirm();
+
+            var valorSelecionado = $('#parLevel2Select2 option:selected').val();
+
+            if (valorSelecionado == "") {
+                indexParamsLevel2.resetaForm();
+            }
+            else {
+                indexParamsLevel2.GetLevel2(valorSelecionado, $('#paramsDto_parLevel3Dto_Id').val());
+            }
+
+            indexParamsLevel2.resetaValidacao();
+
+        },/*Executa ao selecionar um level2*/
+        GetLevel2: function(thislevel2Id, thislevel3Id, isSave) {
+            //openLoader(indexParamsLevel2.loading_the_level2);
+            $.get('GetParLevel2ById',{  level2Id: thislevel2Id, level3Id: thislevel3Id}, function (obj, responseText, xhr) {
+
+                if (obj != null) {
+                    $('#ParLevel2').empty();
+                    $('#ParLevel2').append(xhr.responseText);
+                    UpdateSelect2Level3(thislevel2Id);
+                }
+
+                if (thislevel2Id > 0) {
+                    $('#level2Title').text('#' + $('#paramsDto_parLevel2Dto_Id').val() + ' - ' + $('#paramsDto_parLevel2Dto_Name').val());
+                } else {
+                    $('#level2Title').text(indexParamsLevel2.new_level2);
+                }
+
+                if(!!isSave){
+                    var retornoId = $('#paramsDto_parLevel2Dto_Id').val();
+                    var retornoName = $('#paramsDto_parLevel2Dto_Name').val();
+                    /*Atualiza Select2*/
+                    if ($("#parLevel2Select2 option:selected").val() == retornoId) {
+                        if ($("#parLevel2Select2 option:selected").text() != retornoName) {
+                            $("#parLevel2Select2 option:selected").text(retornoId + ' - ' + retornoName);
+                        }
+                    } else {
+                        $("#parLevel2Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
+                        $("#parLevel2Select2").val(retornoId)
+                    }
+                }
+
+                initialFormLevel2 = $($('form')[1]).clone();
+
+                reloadPopovers();
 
                 indexParamsLevel2.resetaValidacao();
 
-            },/*Executa ao selecionar um level2*/
-            GetLevel2: function(thislevel2Id, thislevel3Id, isSave) {
-                //openLoader(indexParamsLevel2.loading_the_level2);
-                $.get('GetParLevel2ById',{  level2Id: thislevel2Id, level3Id: thislevel3Id}, function (obj, responseText, xhr) {
+                //closeLoader();
+            });
 
-                    if (obj != null) {
-                        $('#ParLevel2').empty();
-                        $('#ParLevel2').append(xhr.responseText);
-                        UpdateSelect2Level3(thislevel2Id);
-                    }
+        },/*Busca dados do level2 na API*/
+        removeLevel3Group: function(e, element){
+            //openLoader(removing_the_level3_group);
+            $.post(removeLevel3Group + '/' + element.attr('id'), function (obj, responseText, xhr) {
+                //closeLoader();
+                if (obj != null) {
 
-                    if (thislevel2Id > 0) {
-                        $('#level2Title').text('#' + $('#paramsDto_parLevel2Dto_Id').val() + ' - ' + $('#paramsDto_parLevel2Dto_Name').val());
-                    } else {
-                        $('#level2Title').text(indexParamsLevel2.new_level2);
-                    }
-
-                    if(!!isSave){
-                        var retornoId = $('#paramsDto_parLevel2Dto_Id').val();
-                        var retornoName = $('#paramsDto_parLevel2Dto_Name').val();
-                        /*Atualiza Select2*/
-                        if ($("#parLevel2Select2 option:selected").val() == retornoId) {
-                            if ($("#parLevel2Select2 option:selected").text() != retornoName) {
-                                $("#parLevel2Select2 option:selected").text(retornoId + ' - ' + retornoName);
-                            }
-                        } else {
-                            $("#parLevel2Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
-                            $("#parLevel2Select2").val(retornoId)
-                        }
-                    }
-
-                    initialFormLevel2 = $($('form')[1]).clone();
-
-                    reloadPopovers();
-
-                    indexParamsLevel2.resetaValidacao();
-
-                    //closeLoader();
-                });
-
-            },/*Busca dados do level2 na API*/
-            removeLevel3Group: function(e, element){
-                //openLoader(removing_the_level3_group);
-                $.post(removeLevel3Group + '/' + element.attr('id'), function (obj, responseText, xhr) {
-                    //closeLoader();
-                    if (obj != null) {
-
-                        element.remove();
-                    }
-                });
-            },
-            resetaForm: function() {
-                $('#parLevel2Select2').val('-1');
-                indexParamsLevel2.GetLevel2('-1');
-
-                //$('#ParLevel2').empty();
-                //$('#ParLevel2').append(parLevel2Empty);
-                //$('#level2Title').text(indexParamsLevel2.new_level2);
-                //initialFormLevel2 = $($('form')[1]).clone();
-                ////closeLoader();
-            },
-            resetaValidacao: function(){
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-            }
-        }
-
-
-        /*LEVEL 3*/
-        var indexParamsLevel3 = {
-            new_level3: @Html.Raw(Json.Encode(@Resources.Resource.new_level3)),
-            loading_the_level3: @Html.Raw(Json.Encode(@Resources.Resource.loading)),
-            saving_the_level3: @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level3)),
-
-
-            enviarDadosParaApi: function (e) {
-
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-
-                if($('#selectTipoInput :selected').val() == 1){//Binario
-                    if($('#selectConforme :selected').val() <= 0){
-                        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor positivo para o campo binario.");
-                        return;
-                    }else if($('#selectNaoConforme :selected').val() <= 0){
-                        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor negativo para o campo binario.");
-                        return;
-                    }
-                    
-                }else{
-                    
+                    element.remove();
                 }
+            });
+        },
+        resetaForm: function() {
+            $('#parLevel2Select2').val('-1');
+            indexParamsLevel2.GetLevel2('-1');
 
-                if ($('#newLevel3Modal > form').valid()) {
-                    //Cabecalhos.UpdateCabecalhos();
-                    //Cluster.UpdateCounter();
-                    //Counter.UpdateCounters();
-                    var dados = $('#newLevel3Modal > form').serializeObject();
-                    ReincidenciaL3.incluiNoObjetoParaSubmit(dados);
+            //$('#ParLevel2').empty();
+            //$('#ParLevel2').append(parLevel2Empty);
+            //$('#level2Title').text(indexParamsLevel2.new_level2);
+            //initialFormLevel2 = $($('form')[1]).clone();
+            ////closeLoader();
+        },
+        resetaValidacao: function(){
+            $("form").each(function () { $.data($(this)[0], 'validator', false); });
+            $.validator.unobtrusive.parse("form");
+            $("form").each(function () { $.data($(this)[0], 'validator', false); });
+            $.validator.unobtrusive.parse("form");
+            $("form").each(function () { $.data($(this)[0], 'validator', false); });
+            $.validator.unobtrusive.parse("form");
+        }
+    }
+
+
+    /*LEVEL 3*/
+    var indexParamsLevel3 = {
+        new_level3: @Html.Raw(Json.Encode(@Resources.Resource.new_level3)),
+        loading_the_level3: @Html.Raw(Json.Encode(@Resources.Resource.loading)),
+        saving_the_level3: @Html.Raw(Json.Encode(@Resources.Resource.saving_the_level3)),
+
+
+        enviarDadosParaApi: function (e) {
+
+            $("form").each(function () { $.data($(this)[0], 'validator', false); });
+            $.validator.unobtrusive.parse("form");
+
+            if($('#selectTipoInput :selected').val() == 1){//Binario
+                if($('#selectConforme :selected').val() <= 0){
+                    openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor positivo para o campo binario.");
+                    return;
+                }else if($('#selectNaoConforme :selected').val() <= 0){
+                    openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor negativo para o campo binario.");
+                    return;
+                }
+                    
+            }else{
+                    
+            }
+
+            if ($('#newLevel3Modal > form').valid()) {
+                //Cabecalhos.UpdateCabecalhos();
+                //Cluster.UpdateCounter();
+                //Counter.UpdateCounters();
+                var dados = $('#newLevel3Modal > form').serializeObject();
+                ReincidenciaL3.incluiNoObjetoParaSubmit(dados);
                    
                     
-                    if(dados['paramsDto.parLevel3Value.IntervalMax'] != undefined && dados['paramsDto.parLevel3Value.IntervalMax'] != null)
-                        dados['paramsDto.parLevel3Value.IntervalMax'] = dados['paramsDto.parLevel3Value.IntervalMax'].replace(',', '.');
+                if(dados['paramsDto.parLevel3Value.IntervalMax'] != undefined && dados['paramsDto.parLevel3Value.IntervalMax'] != null)
+                    dados['paramsDto.parLevel3Value.IntervalMax'] = dados['paramsDto.parLevel3Value.IntervalMax'].replace(',', '.');
 
-                    if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
-                        dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
+                if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
+                    dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
 
-                    //openLoader(indexParamsLevel3.saving_the_level3);
-                    $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
-                        //closeLoader();
-
-                        var $btn = $('#btnSaveNewLevel3');
-                        $btn.button('loading');
-
-                        if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
-                            indexParamsLevel3.GetLevel3(objetoReturn.paramsDto.parLevel3Dto.Id, $('#paramsDto_parLevel2Dto_Id').val(), true);
-                            openMessageModal("Alerta", statusmessage);
-                        }
-
-                    }).fail(function (e, h, x) {
-                        //closeLoader();
-                        $btn.button('loading');
-                        openMessageModal("Alerta", e.responseJSON.Message);
-                    });
-
-                }
-
-            },/*Envia os dados referentes ao level3 para a API, apos isto realiza um get no seu ID e, CASO INSERÇÃO, atualiza a dropDown*/
-            selectNormal: function () {
-                var previous = $('#parLevel3Select2 option:selected').val();
-                $('#parLevel3Select2')
-                    .on('focus', function () {
-                        previous = $('#parLevel3Select2 option:selected').val();
-                    })
-                    .on("change", function (e) {
-
-                        if(dirtForm($(initialFormLevel3), $($('form')[2]))){
-                            openConfirm(
-                                'Existem dados que não foram salvos. Deseja continuar?',
-                                function(){
-                                    indexParamsLevel3.selectLevel3();
-                                },
-                                function(){
-                                    $('#parLevel3Select2').val(previous);
-                                    closeConfirm();
-                                });
-                        }else{
-                            indexParamsLevel3.selectLevel3();
-                        }
-                    });
-
-            },/*Inicializa os eventos do select "focus" e "change", no change existe as opções para o modal e validação de form caso haja alterações não salvas*/
-            selectLevel3: function(){
-
-                closeConfirm();
-                var valorSelecionado = $('#parLevel3Select2 option:selected').val();
-                var valorSelecionadoLevel2 = $('#parLevel2Select2 :selected').val();
-
-                if (valorSelecionado == "") {
-                    indexParamsLevel3.resetForm();
-                } else {
-                    indexParamsLevel3.GetLevel3(valorSelecionado, valorSelecionadoLevel2);
-                }
-
-                indexParamsLevel3.resetValidacao();
-            },/*Executa ao selecionar um level3*/
-            GetLevel3: function(valorSelecionado, valorSelecionadoLevel2, isSave) {
-                //openLoader(indexParamsLevel3.loading_the_level3);
-                $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
+                //openLoader(indexParamsLevel3.saving_the_level3);
+                $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                     //closeLoader();
-                    if (obj != null) {
-                        $('#ParLevel3').empty();
-                        $('#ParLevel3').append(xhr.responseText);
-                        indexParamsLevel3.resetValidacao();
-                    }
-                    if (valorSelecionado > 0) {
-                        $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
-                    } else {
-                        $('#level3Title').text(indexParamsLevel3.new_level3);
+
+                    var $btn = $('#btnSaveNewLevel3');
+                    $btn.button('loading');
+
+                    if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
+                        indexParamsLevel3.GetLevel3(objetoReturn.paramsDto.parLevel3Dto.Id, $('#paramsDto_parLevel2Dto_Id').val(), true);
+                        openMessageModal("Alerta", statusmessage);
                     }
 
-                    if(!!isSave){
-                        /*Atualiza Select*/
-                        var retornoId = $('#paramsDto_parLevel3Dto_Id').val();
-                        var retornoName = $('#paramsDto_parLevel3Dto_Name').val();
-                        if ($("#parLevel3Select2 option:selected").val() == retornoId) {
-                            if ($("#parLevel3Select2 option:selected").text() != retornoName) {
-                                $("#parLevel3Select2 option:selected").text(retornoId + ' - ' + retornoName);
-                                //$('#parLevel3Select2').select2();
-                            }
-                        } else {
-                            $("#parLevel3Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
-                            $("#parLevel3Select2").val(retornoId);
-                        }
-                    }
-
-                    initialFormLevel3 = $($('form')[2]).clone();
+                }).fail(function (e, h, x) {
                     //closeLoader();
-                    reloadPopovers();
-
+                    $btn.button('loading');
+                    openMessageModal("Alerta", e.responseJSON.Message);
                 });
-            },/*Busca dados do level3 na API*/
-            resetValidacao: function(){
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-                $("form").each(function () { $.data($(this)[0], 'validator', false); });
-                $.validator.unobtrusive.parse("form");
-            },
-            resetaForm: function(){
-                $('#parLevel3Select2').val('-1');
-                indexParamsLevel3.GetLevel3('-1');
 
-                //$('#ParLevel3').empty();
-                //$('#ParLevel3').append(parLevel3Empty);
-                //$('#level3Title').text(indexParamsLevel3.newLevel3);
-                //initialFormLevel3 = $($('form')[2]).clone();
+            }
+
+        },/*Envia os dados referentes ao level3 para a API, apos isto realiza um get no seu ID e, CASO INSERÇÃO, atualiza a dropDown*/
+        selectNormal: function () {
+            var previous = $('#parLevel3Select2 option:selected').val();
+            $('#parLevel3Select2')
+                .on('focus', function () {
+                    previous = $('#parLevel3Select2 option:selected').val();
+                })
+                .on("change", function (e) {
+
+                    if(dirtForm($(initialFormLevel3), $($('form')[2]))){
+                        openConfirm(
+                            'Existem dados que não foram salvos. Deseja continuar?',
+                            function(){
+                                indexParamsLevel3.selectLevel3();
+                            },
+                            function(){
+                                $('#parLevel3Select2').val(previous);
+                                closeConfirm();
+                            });
+                    }else{
+                        indexParamsLevel3.selectLevel3();
+                    }
+                });
+
+        },/*Inicializa os eventos do select "focus" e "change", no change existe as opções para o modal e validação de form caso haja alterações não salvas*/
+        selectLevel3: function(){
+
+            closeConfirm();
+            var valorSelecionado = $('#parLevel3Select2 option:selected').val();
+            var valorSelecionadoLevel2 = $('#parLevel2Select2 :selected').val();
+
+            if (valorSelecionado == "") {
+                indexParamsLevel3.resetForm();
+            } else {
+                indexParamsLevel3.GetLevel3(valorSelecionado, valorSelecionadoLevel2);
+            }
+
+            indexParamsLevel3.resetValidacao();
+        },/*Executa ao selecionar um level3*/
+        GetLevel3: function(valorSelecionado, valorSelecionadoLevel2, isSave) {
+            //openLoader(indexParamsLevel3.loading_the_level3);
+            $.get('GetParLevel3ById', { id: valorSelecionado, idParLevel2: valorSelecionadoLevel2 }, function (obj, responseText, xhr) {
                 //closeLoader();
-            }
-        }
-
-        indexParamsLevel1.selectNormal();
-        indexParamsLevel2.selectNormal();
-        indexParamsLevel3.selectNormal();
-
-
-        /*Vincula Level 3 ao level2*/
-        var vinculoL1L2 = '@Html.Raw(@vinculoL1L2)';
-        $('#vinculoLevel1').on('click', function (e) {
-
-            var idLevel1 = $('#paramsDto_parLevel1Dto_Id').val();
-            var idLevel2 = $('#paramsDto_parLevel2Dto_Id').val();//Verifico se tenho um level2 salvo
-            var idLevel3 = $('#paramsDto_parLevel3Dto_Id').val();//Verifico se tenho um level2 salvo
-            var level2Selecionado = $('#parLevel2Select2 option:selected');
-            var idLevel3Level2 = 0;
-
-            if (idLevel1 <= 0) {
-                openMessageModal("Alerta", "É necessario selecionar um level 1 para realizar este vinculo.");
-                //alert("É necessario selecionar um level 1 para realizar este vinculo.");
-                return;
-            }
-
-            if (idLevel2 <= 0) {
-                openMessageModal("Alerta", "É necessario selecionar um level 2 para realizar este vinculo.");
-                //alert("É necessario selecionar um level 2 para realizar este vinculo.");
-                return;
-            }
-
-            if (idLevel3 <= 0) {
-                openMessageModal("Alerta", "É necessario selecionar um level 3 realizar este vinculo.");
-                //alert("É necessario selecionar um level 3 realizar este vinculo.");
-                return;
-            }
-
-
-            $.get(vinculoL1L2 + '/' + idLevel1 + '/' + idLevel2 + '/' + idLevel3, function (obj, responseText, xhr) {
                 if (obj != null) {
-                    console.log(obj);
-                    openMessageModal("Alerta", "Vinculado L3 com L2 ID: " + obj.Id);
-                    //alert("Vinculado L3 com L2 ID: " + obj.Id);
-                    UpdateSelect2Level2(idLevel1);
+                    $('#ParLevel3').empty();
+                    $('#ParLevel3').append(xhr.responseText);
+                    indexParamsLevel3.resetValidacao();
                 }
-                initialFormLevel3 = $($('form')[2]).clone();
-            }).fail(function (e, h, x) {
-                openMessageModal("Alerta", e.responseJSON.Message);
-                //alert(e.responseJSON.Message); // or whatever
-            });
-
-        });
-
-        /*Vincula Level 2 ao level1*/
-        var vinculoL2L3 = '@Html.Raw(@vinculoL2L3)';
-        function saveLevel3Level2() {
-
-            /*Level2*/
-            var idLevel2 = $('#paramsDto_parLevel2Dto_Id').val();
-            if (idLevel2 == undefined || idLevel2 <= 0 || idLevel2 == null) {
-                openMessageModal("Alerta", "É necessario selecionar o level 2.");
-                //alert("É necessario selecionar o level 2");
-                return;
-            }
-
-            /*Level3*/
-            var idLevel3 = $('#paramsDto_parLevel3Dto_Id').val();
-            if (idLevel3 == undefined || idLevel3 <= 0 || idLevel3 == null) {
-                openMessageModal("Alerta", "É necessario selecionar o level 3");
-                //alert("É necessario selecionar o level 3");
-                return;
-            }
-
-            var peso = $('#paramsDto_parLevel3Dto_pesoDoVinculo').val().replace(",", ".");
-            if (peso <= 0){
-                openMessageModal("Alerta", "O peso deve ser maior que zero.");
-                //alert("O peso deve ser maior que zero.");
-                return;
-            }
-
-            var  groupoLevel2 = $('#paramsDto_parLevel3Dto_listGroupsLevel2 :selected').val();
-            if( $('#paramsDto_parLevel3Dto_listGroupsLevel2 :selected').val().length == 0){
-                groupoLevel2 = 0;
-            }
-
-            $.get(vinculoL2L3 + '/' + idLevel2 + '/' + idLevel3 + '/' + peso + '/' + groupoLevel2 + '/', function (obj, responseText, xhr) {
-                if (obj != null) {
-                    openMessageModal("Alerta", "Vinculado L3 com L2 ID: " + obj.Id);
-                    //alert("Vinculado L3 com L2 ID: " + obj.Id);
-                    UpdateSelect2Level3(idLevel2, undefined, function(){$('#parLevel3Select2').trigger('change');});
+                if (valorSelecionado > 0) {
+                    $('#level3Title').text('#' + $('#paramsDto_parLevel3Dto_Id').val() + ' - ' + $('#paramsDto_parLevel3Dto_Name').val());
+                } else {
+                    $('#level3Title').text(indexParamsLevel3.new_level3);
                 }
-                initialFormLevel3 = $($('form')[2]).clone();
-            });
 
-        }
-
-        function UpdateSelect2Level2(idLevel1, idNewLevel2, callback) {
-            //$('#parLevel2Select2').select2("destroy").remove();
-            var selecionado = $('#parLevel2Select2 :selected').val();
-            $('#partialSelectLevel2').load('UpdateSelectLevel2?id=' + idLevel1, function () {
-                indexParamsLevel2.selectNormal();
-                if (selecionado > 0) {
-                    $('#parLevel2Select2').val(selecionado);
-                }
-                if (idNewLevel2 != undefined) {
-                    $('#parLevel2Select2').val(idNewLevel2);
-                }
-                if(callback != undefined)
-                    callback();
-            });
-        }
-
-        var selecione = @Html.Raw(Json.Encode(Resources.Resource.select)) 
-        function UpdateSelect2Level3(idLevel2, idNewLevel3, callback) {
-            //$('#parLevel3Select2').select2("destroy")
-            var selecionado = $('#parLevel3Select2 :selected').val();
-            $('#partialSelectLevel3').load('UpdateSelectLevel3?id=' + idLevel2, function () {
-
-                indexParamsLevel3.selectNormal();
-                if (selecionado > 0) {
-                    $('#parLevel3Select2').val(selecionado);
-                }
-                else{
-                    var id = GroupL2.level + ' #' + GroupL2.idTable;
-                    var tdNamess = this.tdsNames;
-                    $('#paramsDto_parLevel3Dto_listGroupsLevel2').empty();
-                    $('#paramsDto_parLevel3Dto_listGroupsLevel2').append('<option value="-1">' + selecione + '</option>');
-                    if( GroupL2.listObjSalvo != null){ /*Existem Grupos*/
-                        GroupL2.listObjSalvo.forEach(function(o, c){
-                            $('#paramsDto_parLevel3Dto_listGroupsLevel2').append('<option value=' + o.Id + '>' + o.Name + '</option>');
-                        });
+                if(!!isSave){
+                    /*Atualiza Select*/
+                    var retornoId = $('#paramsDto_parLevel3Dto_Id').val();
+                    var retornoName = $('#paramsDto_parLevel3Dto_Name').val();
+                    if ($("#parLevel3Select2 option:selected").val() == retornoId) {
+                        if ($("#parLevel3Select2 option:selected").text() != retornoName) {
+                            $("#parLevel3Select2 option:selected").text(retornoId + ' - ' + retornoName);
+                            //$('#parLevel3Select2').select2();
+                        }
+                    } else {
+                        $("#parLevel3Select2").append("<option value=" + retornoId + "> " + retornoId + ' - ' + retornoName + " </option>")
+                        $("#parLevel3Select2").val(retornoId);
                     }
                 }
-                if (idNewLevel3 != undefined) {
-                    $('#parLevel3Select2').val(idNewLevel3);
-                }
-                if(callback != undefined)
-                    callback();
+
+                initialFormLevel3 = $($('form')[2]).clone();
+                //closeLoader();
+                reloadPopovers();
+
             });
+        },/*Busca dados do level3 na API*/
+        resetValidacao: function(){
+            $("form").each(function () { $.data($(this)[0], 'validator', false); });
+            $.validator.unobtrusive.parse("form");
+            $("form").each(function () { $.data($(this)[0], 'validator', false); });
+            $.validator.unobtrusive.parse("form");
+            $("form").each(function () { $.data($(this)[0], 'validator', false); });
+            $.validator.unobtrusive.parse("form");
+        },
+        resetaForm: function(){
+            $('#parLevel3Select2').val('-1');
+            indexParamsLevel3.GetLevel3('-1');
+
+            //$('#ParLevel3').empty();
+            //$('#ParLevel3').append(parLevel3Empty);
+            //$('#level3Title').text(indexParamsLevel3.newLevel3);
+            //initialFormLevel3 = $($('form')[2]).clone();
+            //closeLoader();
+        }
+    }
+
+    indexParamsLevel1.selectNormal();
+    indexParamsLevel2.selectNormal();
+    indexParamsLevel3.selectNormal();
+
+
+    /*Vincula Level 3 ao level2*/
+    var vinculoL1L2 = '@Html.Raw(@vinculoL1L2)';
+    $('#vinculoLevel1').on('click', function (e) {
+
+        var idLevel1 = $('#paramsDto_parLevel1Dto_Id').val();
+        var idLevel2 = $('#paramsDto_parLevel2Dto_Id').val();//Verifico se tenho um level2 salvo
+        var idLevel3 = $('#paramsDto_parLevel3Dto_Id').val();//Verifico se tenho um level2 salvo
+        var level2Selecionado = $('#parLevel2Select2 option:selected');
+        var idLevel3Level2 = 0;
+
+        if (idLevel1 <= 0) {
+            openMessageModal("Alerta", "É necessario selecionar um level 1 para realizar este vinculo.");
+            //alert("É necessario selecionar um level 1 para realizar este vinculo.");
+            return;
         }
 
-        $('.table-erp tbody tr').mouseenter(function (e) {
-            $('.table-erp tbody tr').removeClass('hover');
-            $(this).addClass('hover');
+        if (idLevel2 <= 0) {
+            openMessageModal("Alerta", "É necessario selecionar um level 2 para realizar este vinculo.");
+            //alert("É necessario selecionar um level 2 para realizar este vinculo.");
+            return;
+        }
+
+        if (idLevel3 <= 0) {
+            openMessageModal("Alerta", "É necessario selecionar um level 3 realizar este vinculo.");
+            //alert("É necessario selecionar um level 3 realizar este vinculo.");
+            return;
+        }
+
+
+        $.get(vinculoL1L2 + '/' + idLevel1 + '/' + idLevel2 + '/' + idLevel3, function (obj, responseText, xhr) {
+            if (obj != null) {
+                console.log(obj);
+                openMessageModal("Alerta", "Vinculado L3 com L2 ID: " + obj.Id);
+                //alert("Vinculado L3 com L2 ID: " + obj.Id);
+                UpdateSelect2Level2(idLevel1);
+            }
+            initialFormLevel3 = $($('form')[2]).clone();
+        }).fail(function (e, h, x) {
+            openMessageModal("Alerta", e.responseJSON.Message);
+            //alert(e.responseJSON.Message); // or whatever
         });
-        $('.table-erp tbody tr').mouseleave(function (e) {
-            $('.table-erp tbody tr').removeClass('hover');
+
+    });
+
+    /*Vincula Level 2 ao level1*/
+    var vinculoL2L3 = '@Html.Raw(@vinculoL2L3)';
+    function saveLevel3Level2() {
+
+        /*Level2*/
+        var idLevel2 = $('#paramsDto_parLevel2Dto_Id').val();
+        if (idLevel2 == undefined || idLevel2 <= 0 || idLevel2 == null) {
+            openMessageModal("Alerta", "É necessario selecionar o level 2.");
+            //alert("É necessario selecionar o level 2");
+            return;
+        }
+
+        /*Level3*/
+        var idLevel3 = $('#paramsDto_parLevel3Dto_Id').val();
+        if (idLevel3 == undefined || idLevel3 <= 0 || idLevel3 == null) {
+            openMessageModal("Alerta", "É necessario selecionar o level 3");
+            //alert("É necessario selecionar o level 3");
+            return;
+        }
+
+        var peso = $('#paramsDto_parLevel3Dto_pesoDoVinculo').val().replace(",", ".");
+        if (peso <= 0){
+            openMessageModal("Alerta", "O peso deve ser maior que zero.");
+            //alert("O peso deve ser maior que zero.");
+            return;
+        }
+
+        var  groupoLevel2 = $('#paramsDto_parLevel3Dto_listGroupsLevel2 :selected').val();
+        if( $('#paramsDto_parLevel3Dto_listGroupsLevel2 :selected').val().length == 0){
+            groupoLevel2 = 0;
+        }
+
+        $.get(vinculoL2L3 + '/' + idLevel2 + '/' + idLevel3 + '/' + peso + '/' + groupoLevel2 + '/', function (obj, responseText, xhr) {
+            if (obj != null) {
+                openMessageModal("Alerta", "Vinculado L3 com L2 ID: " + obj.Id);
+                //alert("Vinculado L3 com L2 ID: " + obj.Id);
+                UpdateSelect2Level3(idLevel2, undefined, function(){$('#parLevel3Select2').trigger('change');});
+            }
+            initialFormLevel3 = $($('form')[2]).clone();
         });
 
-        var initialFormLevel1 = null;
-        var initialFormLevel2 = null;
-        var initialFormLevel3 = null;
+    }
 
-        $(document).ready(function () {
-            reloadPopovers();
+    function UpdateSelect2Level2(idLevel1, idNewLevel2, callback) {
+        //$('#parLevel2Select2').select2("destroy").remove();
+        var selecionado = $('#parLevel2Select2 :selected').val();
+        $('#partialSelectLevel2').load('UpdateSelectLevel2?id=' + idLevel1, function () {
+            indexParamsLevel2.selectNormal();
+            if (selecionado > 0) {
+                $('#parLevel2Select2').val(selecionado);
+            }
+            if (idNewLevel2 != undefined) {
+                $('#parLevel2Select2').val(idNewLevel2);
+            }
+            if(callback != undefined)
+                callback();
         });
+    }
 
-        $( document ).ajaxStart(function() {
-            openLoader("@Resources.Resource.please_wait"+"...");
+    var selecione = @Html.Raw(Json.Encode(Resources.Resource.select)) 
+    function UpdateSelect2Level3(idLevel2, idNewLevel3, callback) {
+        //$('#parLevel3Select2').select2("destroy")
+        var selecionado = $('#parLevel3Select2 :selected').val();
+        $('#partialSelectLevel3').load('UpdateSelectLevel3?id=' + idLevel2, function () {
+
+            indexParamsLevel3.selectNormal();
+            if (selecionado > 0) {
+                $('#parLevel3Select2').val(selecionado);
+            }
+            else{
+                var id = GroupL2.level + ' #' + GroupL2.idTable;
+                var tdNamess = this.tdsNames;
+                $('#paramsDto_parLevel3Dto_listGroupsLevel2').empty();
+                $('#paramsDto_parLevel3Dto_listGroupsLevel2').append('<option value="-1">' + selecione + '</option>');
+                if( GroupL2.listObjSalvo != null){ /*Existem Grupos*/
+                    GroupL2.listObjSalvo.forEach(function(o, c){
+                        $('#paramsDto_parLevel3Dto_listGroupsLevel2').append('<option value=' + o.Id + '>' + o.Name + '</option>');
+                    });
+                }
+            }
+            if (idNewLevel3 != undefined) {
+                $('#parLevel3Select2').val(idNewLevel3);
+            }
+            if(callback != undefined)
+                callback();
         });
+    }
 
-        $( document ).ajaxStop(function() {
-            closeLoader();
-        });
+    $('.table-erp tbody tr').mouseenter(function (e) {
+        $('.table-erp tbody tr').removeClass('hover');
+        $(this).addClass('hover');
+    });
+    $('.table-erp tbody tr').mouseleave(function (e) {
+        $('.table-erp tbody tr').removeClass('hover');
+    });
+
+    var initialFormLevel1 = null;
+    var initialFormLevel2 = null;
+    var initialFormLevel3 = null;
+
+    $(document).ready(function () {
+        reloadPopovers();
+    });
+
+    $( document ).ajaxStart(function() {
+        openLoader("@Resources.Resource.please_wait"+"...");
+    });
+
+    $( document ).ajaxStop(function() {
+        closeLoader();
+    });
 
 
 
-    </script>
-
+</script>

@@ -18,6 +18,7 @@ namespace Dominio
         public ParLevel1()
         {
             this.ParCounterXLocal = new HashSet<ParCounterXLocal>();
+            this.ParGoal = new HashSet<ParGoal>();
             this.ParLevel1XCluster = new HashSet<ParLevel1XCluster>();
             this.ParLevel1XHeaderField = new HashSet<ParLevel1XHeaderField>();
             this.ParLevel3Level2Level1 = new HashSet<ParLevel3Level2Level1>();
@@ -51,6 +52,8 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParCounterXLocal> ParCounterXLocal { get; set; }
         public virtual ParFrequency ParFrequency { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParGoal> ParGoal { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel1XCluster> ParLevel1XCluster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

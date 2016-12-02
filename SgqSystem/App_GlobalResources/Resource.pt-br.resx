@@ -690,4 +690,19 @@
   <data name="measurement_units" xml:space="preserve">
     <value>Unidades de Medida</value>
   </data>
+  <data name="company_number" xml:space="preserve">
+    <value>Número da Empresa</value>
+  </data>
+  <data name="db_server" xml:space="preserve">
+    <value>Servidor Banco de Dados</value>
+  </data>
+  <data name="initials" xml:space="preserve">
+    <value>Sigla</value>
+  </data>
+  <data name="ip_server" xml:space="preserve">
+    <value>IP do Servidor</value>
+  </data>
+  <data name="sif" xml:space="preserve">
+    <value>SIF</value>
+  </data>
 </root>
