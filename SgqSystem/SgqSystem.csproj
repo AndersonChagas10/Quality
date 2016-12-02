@@ -1196,7 +1196,6 @@
     <Content Include="Views\Merge\_DivResults.cshtml" />
     <Content Include="Views\HtmlTeste\_IndexTeste.cshtml" />
     <Content Include="Views\Language\Index.cshtml" />
-    <Content Include="Views\Params\_RegraDeAlerta.cshtml" />
     <Content Include="Views\Params\_CounterXLevel.cshtml" />
     <Content Include="Views\Params\_ReincidenciaXLevel.cshtml" />
     <Content Include="Views\Params\_ClusterXLevel.cshtml" />

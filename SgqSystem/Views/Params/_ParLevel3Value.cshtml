@@ -3,14 +3,14 @@
 
 @{
     var level = Model.levelControl;
-    var id = "level" + Model.levelControl + "_cluster_accordion";
-    var id2 = "#level" + Model.levelControl + "__cluster_accordion";
-    var id3 = "#level" + Model.levelControl + "__cluster_collapse";
-    var id4 = "level" + Model.levelControl + "__cluster_collapse";
+    var id = "level" + Model.levelControl + "_level3Value_accordion";
+    var id2 = "#level" + Model.levelControl + "__level3Value_accordion";
+    var id3 = "#level" + Model.levelControl + "__level3Value_collapse";
+    var id4 = "level" + Model.levelControl + "__level3Value_collapse";
     var click = "ClusterL" + Model.levelControl + ".adiciona($(this))";
 }
 
-@*Cluster*@
+@*level3Value*@
 <div class="panel-group accordion" id="@id">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -23,11 +23,27 @@
                 
                 <table class="table-erp" id="camposCluster">
                     <tbody>
-                        <tr class="row">
-                            @Table.GerarColuna(@Html.DropDownList("valueCluster", Model.paramsDdl.DdlparCluster, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_clusters), Table.PosicaoLabel.top)
-                            @Table.GerarColuna(@Html.DropDownList("valCrit", Model.paramsDdl.DdlparCrit, new { @class = "form-control input-sm" }), @Html.Label("Nivel"), Table.PosicaoLabel.top)
-                            @Table.GerarColunaButton(@Html.Editor("pontosCluster", new { htmlAttributes = new { @value = 0, @type = "number", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.cluster_points), Table.PosicaoLabel.top
-                           , button: "<button class='btn btn-primary btn-sm' type='button' id='btnIncluirCluster' onclick='" + @click + ";'><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                        <tr class="row" id="level3Value">
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeParL3Value" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top)
+                        </tr>
+                        <tr class="row ParIntervalos" style="display: none;">
+                            @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
+                            @Table.GerarColuna(@Html.DecimalFormatado("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, "parLevel3Value_IntervalMin", "form-control input-sm"), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
+                            @Table.GerarColuna(@Html.DecimalFormatado("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, "parLevel3Value_IntervalMax", "form-control input-sm"), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
+                            <td style="display: none;">
+                                <label>@Resources.Resource.values_between</label>
+                                <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
+                            </td>
+                        </tr>
+                        <tr class="row" style="display:none;padding:10px;">
+                            <td colspan="3">
+                                *
+                                <span id="ParIntervalosLabel"></span>
+                            </td>
+                        </tr>
+                        <tr class="row ParBinarios" style="display: none;">
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
+                            @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
                         </tr>
                     </tbody>
                 </table>
@@ -35,7 +51,9 @@
                 <table id="tableClusters" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Cluster:">
                     <thead>
                         <tr>
-                            <th>@Resources.Resource.cluster_name</th>
+                            <th>@Resources.Resource.company</th>
+                            <th>@Resources.Resource.data_type_entry</th>
+                            <th>@Resources.Resource.company</th>
                             <th>Nivel</th>
                             <th>@Resources.Resource.cluster_points</th>
                             <th></th>
@@ -112,20 +130,18 @@
                 /*Valida se pode criar o objeto*/
                 if($('#' + seletorTato + ' #valueCluster :selected').val() <= 0){
                     alert("Por favor selecione o cluster.");
-                    return false;
+                    return;
                 }
 
                 if($('#' + seletorTato + ' #valCrit :selected').val() <= 0){
                     alert("Por favor selecione o nivel critico.");
-                    return false;
+                    return;
                 }
 
                 if($('#' + seletorTato + ' #pontosCluster').val().replace(/[^0-9.]/g, '') == ""){
                     alert("Por favor preencha o campo pontos do cluster.");
-                    return false;
+                    return;
                 }
-                return true;
-
             },
             incluiNoObjetoParaSubmit: function(dados){
 
@@ -159,9 +175,9 @@
             },
             /*Fim Setup*/
             adiciona: function(e) {
-                var valid = this.verifyJaExiste(object);
-                valid = this.veifyAdd();
+                this.veifyAdd();
                 var object = this.getObjAdd();
+                var valid = this.verifyJaExiste(object);
                 if(valid){
                     crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
                 }
