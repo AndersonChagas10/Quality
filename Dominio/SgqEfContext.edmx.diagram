@@ -46,7 +46,6 @@
         <EntityTypeShape EntityType="SgqDbModel.ParLevel3InputType" Width="1.5" PointX="12" PointY="32.375" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel3Level2" Width="1.5" PointX="13.5" PointY="19.5" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel3Level2Level1" Width="1.5" PointX="5.25" PointY="23.625" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel3Value" Width="1.5" PointX="14.25" PointY="23.625" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevelDefiniton" Width="1.5" PointX="0.75" PointY="27.375" />
         <EntityTypeShape EntityType="SgqDbModel.ParLocal" Width="1.5" PointX="9" PointY="29.375" />
         <EntityTypeShape EntityType="SgqDbModel.ParMeasurementUnit" Width="1.5" PointX="12" PointY="29.25" />
@@ -81,7 +80,6 @@
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XCluster_ParCluster" />
         <AssociationConnector Association="SgqDbModel.FK_ParCompanyXStructure_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParEvaluation_ParCompany" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParSample_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParCompanyXStructure_ParStructure" />
@@ -112,19 +110,25 @@
         <AssociationConnector Association="SgqDbModel.FK_ParRelapse_ParLevel2" />
         <AssociationConnector Association="SgqDbModel.FK_ParSample_ParLevel2" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2_ParLevel3" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParLevel3" />
         <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel3" />
         <AssociationConnector Association="SgqDbModel.FK_ParRelapse_ParLevel3" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolFalse" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolTrue" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2_ParLevel3Group" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParLevel3InputType" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel3Level2" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParMeasurementUnit" />
         <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParNotConformityRule" />
         <AssociationConnector Association="SgqDbModel.FK_ParStructure_ParStructureGroup" />
         <AssociationConnector Association="SgqDbModel.FK_UnitUser_Unit" />
         <AssociationConnector Association="SgqDbModel.FK_UnitUser_UserSgq" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel3Value" Width="1.5" PointX="16.25" PointY="22.5" />
+        <AssociationConnector Association="SgqDbModel.FK_ParCompanyCluster_ParCluster" />
+        <AssociationConnector Association="SgqDbModel.FK_ParCompanyCluster_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ParGoal_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ParGoal_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParLevel3" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolFalse" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolTrue" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParLevel3InputType" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParMeasurementUnit" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

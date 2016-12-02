@@ -298,13 +298,13 @@ namespace Dominio.Services
         {
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel3 saveParamLevel3 = Mapper.Map<ParLevel3>(paramsDto.parLevel3Dto);
-            ParLevel3Value saveParamLevel3Value = Mapper.Map<ParLevel3Value>(paramsDto.parLevel3Value);
+            List<ParLevel3Value> listSaveParamLevel3Value = Mapper.Map<List<ParLevel3Value>>(paramsDto.parLevel3Dto.listLevel3Value);
             List<ParRelapse> listParRelapse = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel3Dto.listParRelapseDto);/*Reincidencia*/
             //List<int> listParRelapseRemove = paramsDto.parLevel3Dto.removeReincidencia;
 
             try
             {
-                _paramsRepo.SaveParLevel3(saveParamLevel3, saveParamLevel3Value, listParRelapse);
+                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse);
             }
             catch (DbUpdateException e)
             {
@@ -347,8 +347,8 @@ namespace Dominio.Services
                     level3.pesoDoVinculo = 0;
             }
 
-            var parLevel3Value = Mapper.Map<ParLevel3ValueDTO>(parlevel3.ParLevel3Value.FirstOrDefault(r => r.ParLevel3_Id == level3.Id));/*ParLevel 3 Value?*/
-            retorno.parLevel3Value = parLevel3Value;
+            retorno.parLevel3Value = new ParLevel3ValueDTO();
+            level3.listLevel3Value = Mapper.Map<List<ParLevel3ValueDTO>>(parlevel3.ParLevel3Value.OrderByDescending(r => r.IsActive));/*ParLevel 3 Value?*/
             retorno.parLevel3Dto = level3;
 
 

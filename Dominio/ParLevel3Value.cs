@@ -19,7 +19,7 @@ namespace Dominio
         public int ParLevel3InputType_Id { get; set; }
         public Nullable<int> ParLevel3BoolFalse_Id { get; set; }
         public Nullable<int> ParLevel3BoolTrue_Id { get; set; }
-        public int ParCompany_Id { get; set; }
+        public Nullable<int> ParCompany_Id { get; set; }
         public Nullable<int> ParMeasurementUnit_Id { get; set; }
         public Nullable<bool> AcceptableValueBetween { get; set; }
         public Nullable<decimal> IntervalMin { get; set; }

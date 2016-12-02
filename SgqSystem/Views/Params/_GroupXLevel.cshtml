@@ -92,9 +92,9 @@
                 /*Valida se pode criar o objeto*/
                 if($('#' + seletorTato + ' #inputParLevel03Name :selected').val() <= 0){
                     alert("Por favor selecione o Grupo.");
-                    return;
+                    return false;
                 }
-              
+                return true;
             },
             incluiNoObjetoParaSubmit: function(dados){
 
@@ -126,12 +126,13 @@
             },
             /*Fim Setup*/
             adiciona: function(e) {
-                this.veifyAdd();
-                var object = this.getObjAdd();
-                //var valid = this.verifyJaExiste(object);
-                //if(valid){
-                    crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
-                //}
+                if(this.veifyAdd()){
+                    var object = this.getObjAdd();
+                    //var valid = this.verifyJaExiste(object);
+                    //if(valid){
+                        crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
+                    //}
+                }
             },
         };
     }

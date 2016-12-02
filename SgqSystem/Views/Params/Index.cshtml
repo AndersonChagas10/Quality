@@ -765,18 +765,18 @@
                 $("form").each(function () { $.data($(this)[0], 'validator', false); });
                 $.validator.unobtrusive.parse("form");
 
-                if($('#selectTipoInput :selected').val() == 1){//Binario
-                    if($('#selectConforme :selected').val() <= 0){
-                        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor positivo para o campo binario.");
-                        return;
-                    }else if($('#selectNaoConforme :selected').val() <= 0){
-                        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor negativo para o campo binario.");
-                        return;
-                    }
+                //if($('#selectTipoInput :selected').val() == 1){//Binario
+                //    if($('#selectConforme :selected').val() <= 0){
+                //        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor positivo para o campo binario.");
+                //        return;
+                //    }else if($('#selectNaoConforme :selected').val() <= 0){
+                //        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor negativo para o campo binario.");
+                //        return;
+                //    }
                     
-                }else{
+                //}else{
                     
-                }
+                //}
 
                 if ($('#newLevel3Modal > form').valid()) {
                     //Cabecalhos.UpdateCabecalhos();
@@ -784,7 +784,7 @@
                     //Counter.UpdateCounters();
                     var dados = $('#newLevel3Modal > form').serializeObject();
                     ReincidenciaL3.incluiNoObjetoParaSubmit(dados);
-                   
+                    level3Value.incluiNoObjetoParaSubmit(dados);
                     
                     if(dados['paramsDto.parLevel3Value.IntervalMax'] != undefined && dados['paramsDto.parLevel3Value.IntervalMax'] != null)
                         dados['paramsDto.parLevel3Value.IntervalMax'] = dados['paramsDto.parLevel3Value.IntervalMax'].replace(',', '.');
