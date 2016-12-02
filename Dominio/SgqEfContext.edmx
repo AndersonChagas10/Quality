@@ -397,7 +397,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParLevel1_Id" Type="int" Nullable="false" />
-          <Property Name="ParCompany_Id" Type="int" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="int" />
           <Property Name="PercentValue" Type="decimal" Precision="10" Scale="5" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -1082,7 +1082,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParGoal_ParCompany">
-          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="1" />
+          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
           <End Role="ParGoal" Type="Self.ParGoal" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParCompany">
@@ -2666,7 +2666,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="Int32" />
           <Property Name="PercentValue" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
           <Property Name="AddDate" Type="DateTime" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Nullable="false" Precision="7" />
@@ -3358,7 +3358,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParGoal_ParCompany">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
           <End Type="SgqDbModel.ParGoal" Role="ParGoal" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParCompany">

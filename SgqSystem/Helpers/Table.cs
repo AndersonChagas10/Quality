@@ -159,7 +159,13 @@ namespace SgqSystem.Helpers
             return new MvcHtmlString(tr);
         }
 
-        public static MvcHtmlString GerarColunaCheckbox(MvcHtmlString checkbox, MvcHtmlString label,  PosicaoLabel posicaoLabel, MvcHtmlString error = null, string info = null)
+        public static MvcHtmlString GerarColunaCheckbox(
+                                            MvcHtmlString checkbox, 
+                                            MvcHtmlString label,  
+                                            PosicaoLabel posicaoLabel, 
+                                            MvcHtmlString error = null, 
+                                            string info = null,
+                                            String button = null)
         {
             String tr = "";
             String tagInfo = "";
@@ -178,9 +184,9 @@ namespace SgqSystem.Helpers
             if (posicaoLabel == PosicaoLabel.top)
             {
                 tr = "<td class='td-erp'>" +
-                        label.ToString() +
+                        label.ToString() + 
                         tagInfo + " <br>" +
-                        checkbox.ToString() +
+                        checkbox.ToString() + button +
                      "</td>";
             }
             else if (posicaoLabel == PosicaoLabel.left)
@@ -188,10 +194,10 @@ namespace SgqSystem.Helpers
                 tr =
                     "<td class='td-erp text-left'>" +
                         label.ToString() + 
-                        tagInfo +
+                        tagInfo + 
                     "</td>" +
                     "<td class='td-erp'>" +
-                        checkbox.ToString() +
+                        checkbox.ToString() + button +
                     "</td>";
             }
             return new MvcHtmlString(tr);

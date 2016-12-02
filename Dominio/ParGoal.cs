@@ -16,7 +16,7 @@ namespace Dominio
     {
         public int Id { get; set; }
         public int ParLevel1_Id { get; set; }
-        public int ParCompany_Id { get; set; }
+        public Nullable<int> ParCompany_Id { get; set; }
         public decimal PercentValue { get; set; }
         public Nullable<System.DateTime> AddDate { get; set; }
         public System.DateTime AlterDate { get; set; }

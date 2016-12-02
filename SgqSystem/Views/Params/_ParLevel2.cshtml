@@ -116,13 +116,11 @@
          , @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
                                             @Table.GerarColunaCheckbox(
              @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
-             , @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top)
+             , @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top, button: "<button type='button' class='btn btn-primary btn-sm'  onclick='RegraNcL2.adiciona();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
 
                                         </tr>
                                     </tbody>
                                 </table>
-
-                                <span class="input-group-btn"><button type="button" class="btn btn-primary btn-sm" id="" onclick="RegraNcL2.adiciona();"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
 
                                 <table id="tableRegraNc" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Regra de Alerta:">
                                     <thead>
@@ -378,6 +376,7 @@
     $(document).ready(function () {
 
         defaults();
+        loadSelect2();
 
         if ($('input[name="paramsDto.parLevel2Dto.HasGroupLevel3"]').is(':checked')) {
             $('#level2_group_accordion').fadeIn();

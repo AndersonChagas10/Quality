@@ -2,9 +2,15 @@
 
 @if (Model.paramsDto.parLevel2Dto.DdlLevel3Vinculados != null)
 {
-    @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDto.parLevel2Dto.DdlLevel3Vinculados, htmlAttributes: new { @class = "form-control", @id = "parLevel3Select2" })
+    @Html.DropDownList("paramsDto.parLevel2Selected", Model.paramsDto.parLevel2Dto.DdlLevel3Vinculados, htmlAttributes: new { @class = "form-control select2", @id = "parLevel3Select2" })
 }
 else
 {
-    @Html.DropDownList("paramsDto.parLevel3Selected", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control", @id = "parLevel3Select2" })
+    @Html.DropDownList("paramsDto.parLevel3Selected", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control select2", @id = "parLevel3Select2" })
 }
+
+<script>
+    $(document).ready(function () {
+        loadSelect2();
+    });
+</script>

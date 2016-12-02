@@ -71,7 +71,7 @@
                                         <button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button>
                                     </div>
                                     <div class="col-xs-9">
-                                        @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control", @id = "parLevel1Select2" })
+                                        @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2" })
                                     </div>
                                     <hr />
                                 </div>
@@ -275,6 +275,14 @@
         $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
         $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
         $(".check-box").bootstrapSwitch();
+    }
+
+    function loadSelect2(){
+        $.fn.select2.defaults.set("theme", "classic");
+        $('.select2').select2();
+        $('.select2-container .select2-selection--single').css('height', '34px');
+        $('.select2-container--classic .select2-selection--single .select2-selection__rendered').css('line-height', '34px');
+        $('.select2-container--classic .select2-selection--single .select2-selection__arrow').css('height', '32px');
     }
 
     var t1 = @Html.Raw(Json.Encode(@Resources.Resource.new_level1));
