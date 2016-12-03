@@ -711,4 +711,7 @@
   <data name="sif" xml:space="preserve">
     <value>SIF</value>
   </data>
+  <data name="close" xml:space="preserve">
+    <value>Close</value>
+  </data>
 </root>

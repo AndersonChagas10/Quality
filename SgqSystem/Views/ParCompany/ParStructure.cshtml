@@ -12,7 +12,7 @@
                     <tr class="row">
                         @Table.GerarColuna(@Html.Editor("parStructureDTO.Name", new { htmlAttributes = new { @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
                         @Table.GerarColuna(@Html.Editor("parStructureDTO.Description", new { htmlAttributes = new { @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
-                        @Table.GerarColunaButton(@Html.DropDownList("parStructureDTO.ParStructureGroup_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick='indexStructure.enviarDadosParaApi();' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
+                        @Table.GerarColunaButton(@Html.DropDownList("parStructureDTO.ParStructureGroup_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick='indexParStructure.enviarDadosParaApi($($(\"form\")[1]).serializeObject())' class='btn btn-primary btn-sm margin'><i class='fa fa-save'></i> " + Resources.Resource.save + "</button>")
                     </tr>
                 </tbody>
             </table>
@@ -32,7 +32,7 @@
                             <td>@o.Name</td>
                             <td>@o.Description</td>
                             <td>@o.ParStructureGroup.Name</td>
-                            <td></td>
+                            <td style="max-width: 15px"><button type="button" class="btn btn-primary btn-sm" onclick='indexParStructure.editar(@Html.Raw(Json.Encode(o)));'>@Resources.Resource.edit</button></td>
                         </tr>
                     }
                 </tbody>

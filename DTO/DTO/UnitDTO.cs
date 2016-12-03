@@ -8,7 +8,7 @@ namespace DTO.DTO
         public string Name { get; set; }
         public int Number { get; set; }
 
-        public int Code { get; set; }
+        public string Code { get; set; }
         public string Ip { get; set; }
     }
 }
