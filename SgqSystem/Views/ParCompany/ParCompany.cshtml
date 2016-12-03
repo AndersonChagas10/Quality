@@ -1,0 +1,66 @@
+﻿@using SgqSystem.Helpers
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table-erp">
+                <tbody>
+                    <tr class="row hide">
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Id", new { @id = "parCompanyDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
+                    </tr>
+                    <tr class="row">
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Name", new { htmlAttributes = new { @id = "parCompanyDTO_Name", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Description", new { htmlAttributes = new { @id = "parCompanyDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top, colspan: 2)
+                    </tr>
+                    <tr class="row">
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Initials", new { htmlAttributes = new { @id = "parCompanyDTO_Initials", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.initials), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.SIF", new { htmlAttributes = new { @id = "parCompanyDTO_SIF", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.sif), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.CompanyNumber", new { htmlAttributes = new { @id = "parCompanyDTO_CompanyNumber", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.company_number), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row">
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.IPServer", new { htmlAttributes = new { @id = "parCompanyDTO_IPServer", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.ip_server), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.DBServer", new { htmlAttributes = new { @id = "parCompanyDTO_DBServer", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.db_server), Table.PosicaoLabel.top)
+                        <td class="td-erp">
+                            <button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick="indexParCompany.enviarDadosParaApi($($('form')[0]).serializeObject());" class='btn btn-primary btn-sm margin pull-right'><i class="fa fa-save"></i> @Resources.Resource.save</button>
+                        </td> 
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table-erp table table-condensed table-bordered table-margin">
+                <thead>
+                    <tr>
+                        <th>@Resources.Resource.name</th>
+                        <th>@Resources.Resource.description</th>
+                        <th>@Resources.Resource.initials</th>
+                        <th>@Resources.Resource.sif</th>
+                        <th>@Resources.Resource.company_number</th>
+                        <th>@Resources.Resource.ip_server</th>
+                        <th>@Resources.Resource.db_server</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in ViewBag.listaParCompany)
+                    {
+                        <tr>
+                            <td>@o.Name</td>
+                            <td>@o.Description</td>
+                            <td>@o.Initials</td>
+                            <td>@o.SIF</td>
+                            <td>@o.CompanyNumber</td>
+                            <td>@o.IPServer</td>
+                            <td>@o.DBServer</td>
+                            <td><button type="button" class="btn btn-primary btn-sm" onclick='indexParCompany.editar(@Html.Raw(Json.Encode(o)));'>@Resources.Resource.edit</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+}
+
+<script>
+
+</script>

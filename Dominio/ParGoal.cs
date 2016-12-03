@@ -16,10 +16,13 @@ namespace Dominio
     {
         public int Id { get; set; }
         public int ParLevel1_Id { get; set; }
-        public int ParCompany_Id { get; set; }
+        public Nullable<int> ParCompany_Id { get; set; }
         public decimal PercentValue { get; set; }
         public Nullable<System.DateTime> AddDate { get; set; }
         public System.DateTime AlterDate { get; set; }
         public bool Active { get; set; }
+    
+        public virtual ParCompany ParCompany { get; set; }
+        public virtual ParLevel1 ParLevel1 { get; set; }
     }
 }

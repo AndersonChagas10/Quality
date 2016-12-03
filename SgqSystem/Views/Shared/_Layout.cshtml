@@ -5,133 +5,95 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
 
-    @*@Scripts.Render("~/Content/DataTables")*@
-
-    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-        <link href="~/Content/bootstrap-theme.css.map" rel="stylesheet" />
-        <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />*@
-
     @Styles.Render("~/Content/General")
+    @Styles.Render("~/Content/Erp")
+    @Styles.Render("~/Content/select2css")
+    @Styles.Render("~/Content/DatePikerContentCss")
     @Scripts.Render("~/bundles/modernizr")
+
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Scripts/theme/css/components.min.css" rel="stylesheet" />
+    <link href="~/Scripts/theme/css/darkblue.min.css" rel="stylesheet" />
+    <link href="~/Scripts/theme/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Scripts/theme/css/layout.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+
     @if (IsSectionDefined("Styles"))
     {
         @RenderSection("Styles");
     }
 
-    @*@RenderSection("css", required: false)
-        @RenderSection("Styles", false)*@
-
 </head>
+<body class="page-header-fixed page-sidebar-closed-hide-logo">
 
-<body>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/ScriptTables")
+    @Scripts.Render("~/bundles/theme")
+    @Scripts.Render("~/bundles/select2js")
+    @Scripts.Render("~/bundles/DatePikerContent")
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            @if (Session["username"] != null)
-            {
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="@Url.Action("Index", "Home")">Sgq Global</a>
-                </div>
-                <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav">
-                        <li class=""><a href="@Url.Action("Index", "Home")">Home</a></li>@*class="active"*@
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="@Url.Action("DataCollectionReport", "Reports")">Data Collection Report</a></li>
-                                <li><a href="@Url.Action("CorrectiveActionReport", "Reports")">Corrective Action Reports</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-                    <ul class="nav navbar-nav">
-                        <li><a href="@Url.Action("Index", "Params")">Params</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Language<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
+    <div class="page-wrapper">
 
-                                <li>
-                                    <a href="@Url.Action("ChangeCulture", "Home", new { language = "pt-BR" } )" id="btnBR">
-                                        <img src="~/Imagens/Brazil.png" />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("ChangeCulture", "Home", new { language = "en" } )" id="btnEN">
-                                        <img src="@Url.Content("~/Imagens/United-States.png")" />
-                                    </a>
-                                </li>
-                                @*<li>
-                                    <a href="@Url.Action("ChangeCulture", "Home", new { language = "es" } )" id="btnES">
-                                        <img src="~/Imagens/Spain.png" />
-                                    </a>
-                                </li>
-                                <li>@DateTime.Now.ToString()</li>*@
-                            </ul>
-                        </li>
-                        <li><a href="#"><span class="glyphicon glyphicon-user"></span>@Session["username"].ToString()</a></li>
-                        <li><a href="@Url.Action("LogOut", "UserAuthentication")"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
-                    </ul>
-                </div>
-            }
-            else
-            {
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Language<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+        @Html.Partial("~/Views/Shared/_Navbar.cshtml")
+        <div class="page-container">
 
-                            <li>
-                                <a href="@Url.Action("ChangeCulture", "Home", new { language = "pt-BR" } )" id="btnBR">
-                                    <img src="~/Imagens/Brazil.png" />
-                                </a>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("ChangeCulture", "Home", new { language = "en-US" } )" id="btnEN">
-                                    <img src="@Url.Content("~/Imagens/United-States.png")" />
-                                </a>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("ChangeCulture", "Home", new { language = "es" } )" id="btnES">
-                                    <img src="~/Imagens/Spain.png" />
-                                </a>
-                            </li>
-                            <li>@DateTime.Now.ToString()</li>
-                        </ul>
-                    </li>
-                    <li><a href="@Url.Action("LogIn", "UserAuthentication")"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                    @*<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>*@
-                </ul>
-            }
-           
+            @Html.Partial("~/Views/Shared/_RightLayout.cshtml")
+            @Html.Partial("~/Views/Shared/_LeftLayout.cshtml")
+
+            @RenderBody()
+
         </div>
-
-    </nav>
-
-
-    <div class="body-content" style="margin-top:50px">
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @*@Scripts.Render("~/bundles/hc")*@
-
-        @RenderBody()
-
-        <hr />
-        <footer class="wrapper">
-            <p class="page-content-wrapper">&copy; @DateTime.Now.Year - JBS and GRT Application.</p>
-        </footer>
     </div>
+
+    <footer class="wrapper">
+        <p class="page-content-wrapper">&copy; @DateTime.Now.Year - @Resources.Resource.jbs_and_grt_aplication </p>
+    </footer>
 
     @RenderSection("scripts", required: false)
 
     <script>
 
+        var monthNames = [
+            '@Resources.Resource.january',
+            '@Resources.Resource.february',
+            '@Resources.Resource.march',
+            '@Resources.Resource.april',
+            '@Resources.Resource.may',
+            '@Resources.Resource.june',
+            '@Resources.Resource.july',
+            '@Resources.Resource.august',
+            '@Resources.Resource.september',
+            '@Resources.Resource.october',
+            '@Resources.Resource.november',
+            '@Resources.Resource.december'];
+
+        function twoDigits(str) {
+            str = ("000" + str).slice(-2);
+            return str;
+        }
+
+        function watcher() {
+
+            var date = new Date();
+            var day = date.getDate();
+            var monthIndex = date.getMonth();
+            var year = date.getFullYear();
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
+
+            $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
+
+            setTimeout(watcher, 1000);
+        }
+
+        watcher();
     </script>
 </body>
 </html>

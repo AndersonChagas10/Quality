@@ -1,8 +1,6 @@
 ﻿using DTO.Helpers;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using System;
 using System.Linq;
 
 namespace DTO.DTO.Params
@@ -35,6 +33,8 @@ namespace DTO.DTO.Params
         public IEnumerable<SelectListItem> DdlParMeasurementUnit { get; set; }
         public IEnumerable<SelectListItem> DdlParLevel3BoolFalse { get; set; }
         public IEnumerable<SelectListItem> DdlParLevel3BoolTrue { get; set; }
+
+        public IEnumerable<SelectListItem> DdlParCompany { get; set; }
 
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
@@ -70,8 +70,10 @@ namespace DTO.DTO.Params
                             List<ParMeasurementUnitDTO> ddlParMeasurementUnit,
                             List<ParLevel3BoolFalseDTO> ddlParLevel3BoolFalse,
                             List<ParLevel3BoolTrueDTO> ddlParLevel3BoolTrue,
-                            List<ParCriticalLevelDTO> ddlparCrit)
+                            List<ParCriticalLevelDTO> ddlparCrit,
+                            List<ParCompanyDTO> ddlParCompany)
         {
+            DdlParCompany = Guard.CreateDropDownList(ddlParCompany.OrderBy(r => r.Name));
             DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation.OrderBy(r => r.Name));
             DdlFrequency = Guard.CreateDropDownList(ddlFrequency.OrderBy(r => r.Name));
             //DdlparLevel1 = Guard.CreateDropDownList(ddlparLevel1);

@@ -1,0 +1,385 @@
+﻿@using SgqSystem.Helpers
+
+@{
+
+    ViewBag.Title = @Resources.Resource.company_register;
+
+    var urlCompany = Url.Action("AddUpdateParCompany", "api/Company"); //URL relativa
+    var urlStructure = Url.Action("AddUpdateParStructure", "api/Company"); //URL relativa
+    var urlStructureGroup = Url.Action("AddUpdateParStructureGroup", "api/Company"); //URL relativa
+    var urlHome = Url.Action("Index", "Home");
+
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 650px;">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE TITLE-->
+        <h1 class="page-title">
+            @Resources.Resource.company_register
+            <small>@Resources.Resource.register_company_and_its_structure</small>
+        </h1>
+        <!-- END PAGE TITLE-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@urlHome">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span> @Resources.Resource.company_register </span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
+                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.company_register</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+
+                                <div class="panel-group accordion" id="company_accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row panel-title">
+                                                <div class="col-xs-12">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#company_accordion" href="#company_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.company </a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="company_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div id="ParLevel2">
+                                                    @Html.Partial("~/Views/ParCompany/ParCompany.cshtml")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel-group accordion" id="structure_accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row panel-title">
+                                                <div class="col-xs-12">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#structure_accordion" href="#structure_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.company_structure </a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="structure_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div id="ParLevel2">
+                                                    @Html.Partial("~/Views/ParCompany/ParStructure.cshtml")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel-group accordion" id="structure_group_accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row panel-title">
+                                                <div class="col-xs-12">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#structure_group_accordion" href="#structure_group_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.structure_group </a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="structure_group_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div id="ParLevel2">
+                                                    @Html.Partial("~/Views/ParCompany/ParStructureGroup.cshtml")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+<div class="modal fade modalCompany" id="modalCompany" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 hide" id="modalCompanyObj">
+                        <form>
+                            <table class="table-erp">
+                                <tbody>
+                                    <tr class="row hide">
+                                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Id", new { @id = "parCompanyDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Name", new { htmlAttributes = new { @id = "parCompanyDTO_Name", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Description", new { htmlAttributes = new { @id = "parCompanyDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top, colspan: 2)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.Initials", new { htmlAttributes = new { @id = "parCompanyDTO_Initials", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.initials), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.SIF", new { htmlAttributes = new { @id = "parCompanyDTO_SIF", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.sif), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.CompanyNumber", new { htmlAttributes = new { @id = "parCompanyDTO_CompanyNumber", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.company_number), Table.PosicaoLabel.top)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.IPServer", new { htmlAttributes = new { @id = "parCompanyDTO_IPServer", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.ip_server), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.Editor("parCompanyDTO.DBServer", new { htmlAttributes = new { @id = "parCompanyDTO_DBServer", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.db_server), Table.PosicaoLabel.top)
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="col-xs-12 hide" id="modalStructureObj">
+                        <form>
+                            <table class="table-erp">
+                                <tbody>
+                                    <tr class="row hide">
+                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Id", new { @id = "parStructureDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Name", new { htmlAttributes = new { @id = "parStructureDTO_Name",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Description", new { htmlAttributes = new { @id = "parStructureDTO_Description",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
+                                        @Table.GerarColunaButton(@Html.DropDownList("parStructureDTO.ParStructureGroup_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "parStructureDTO_ParStructureGroup_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top)
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="col-xs-12 hide" id="modalStructureGroupObj">
+                        <form>
+                            <table class="table-erp">
+                                <tbody>
+                                    <tr class="row hide">
+                                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Id", new { @id = "parStructureGroupDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
+                                    </tr>
+                                    <tr class="row">
+                                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Name", new { htmlAttributes = new { @id = "parStructureGroupDTO_Name", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Description", new { htmlAttributes = new { @id = "parStructureGroupDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
+                                        @Table.GerarColunaButton(@Html.DropDownList("parStructureGroupDTO.ParStructureGroupParent_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "parStructureGroupDTO_ParStructureGroupParent_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group), Table.PosicaoLabel.top)
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" onclick="closeCompanyModal()">@Resources.Resource.close</button>
+                <button type="button" id="modalCompanySave" class="btn btn-primary pull-right">@Resources.Resource.save</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script>
+
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+
+    var urlCompany = '@Html.Raw(@urlCompany)';
+    var urlStructure = '@Html.Raw(@urlStructure)';
+    var urlStructureGroup = '@Html.Raw(@urlStructureGroup)';
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+
+    navbarSelect("navbar2");
+
+    var monthNames = [
+        '@Resources.Resource.january',
+        '@Resources.Resource.february',
+        '@Resources.Resource.march',
+        '@Resources.Resource.april',
+        '@Resources.Resource.may',
+        '@Resources.Resource.june',
+        '@Resources.Resource.july',
+        '@Resources.Resource.august',
+        '@Resources.Resource.september',
+        '@Resources.Resource.october',
+        '@Resources.Resource.november',
+        '@Resources.Resource.december'];
+
+    function twoDigits(str) {
+        str = ("000" + str).slice(-2);
+        return str;
+    }
+
+    function watcher() {
+
+        var date = new Date();
+        var day = date.getDate();
+        var monthIndex = date.getMonth();
+        var year = date.getFullYear();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+
+        $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
+
+        setTimeout(watcher, 1000);
+    }
+
+    watcher();
+
+
+
+    var urlCompany = '@Html.Raw(@urlCompany)';
+
+    var indexParCompany = {
+        enviarDadosParaApi: function (dados) {
+            //var dados = $($('form')[0]).serializeObject();
+            $.post(urlCompany, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                console.log(objetoReturn);
+                console.log(statusmessage);
+                console.log(respostaCompleta);
+
+                $.get("GetParCompany", function (data) {
+                    $($('form')[0]).replaceWith(data);
+                });
+            }).fail(function (e, h, x) {
+                console.log(e);
+            });;
+        },
+        editar: function (object) {
+            $('#modalCompany').modal();
+            $('#modalCompanyObj').removeClass('hide');
+
+            $('#modalCompany .modal-header').text('@Resources.Resource.company');
+
+            for (var key in object) {
+                var obj = object[key];
+                $('#modalCompanyObj #parCompanyDTO_' + key).val(obj);
+            }
+        }
+    }
+
+    var indexParStructure = {
+        enviarDadosParaApi: function (dados) {
+            //var dados = $($('form')[1]).serializeObject();
+            $.post(urlStructure, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                console.log(objetoReturn);
+                console.log(statusmessage);
+                console.log(respostaCompleta);
+
+                $.get("GetParStructure", function (data) {
+                    $($('form')[1]).replaceWith(data);
+                });
+            }).fail(function (e, h, x) {
+                console.log(e);
+            });
+        },
+        editar: function (object) {
+            $('#modalCompany').modal();
+            $('#modalStructureObj').removeClass('hide');
+
+            $('#modalCompany .modal-header').text('@Resources.Resource.company_structure');
+
+            for (var key in object) {
+                var obj = object[key];
+                $('#modalStructureObj #parStructureDTO_' + key).val(obj);
+            }
+        }
+    }
+
+    var indexParStructureGroup = {
+        enviarDadosParaApi: function (dados) {
+            //var dados = $($('form')[2]).serializeObject();
+            $.post(urlStructureGroup, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                console.log(objetoReturn);
+                console.log(statusmessage);
+                console.log(respostaCompleta);
+
+                $.get("GetParStructureGroup", function (data) {
+                    $($('form')[2]).replaceWith(data);
+                });
+            }).fail(function (e, h, x) {
+                console.log(e);
+            });
+        },
+        editar: function (object) {
+            $('#modalCompany').modal();
+            $('#modalStructureGroupObj').removeClass('hide');
+
+            $('#modalCompany .modal-header').text('@Resources.Resource.structure_group');
+
+            for (var key in object) {
+                var obj = object[key];
+                $('#modalStructureGroupObj #parStructureGroupDTO_' + key).val(obj);
+            }
+        }
+    }
+
+    $('#modalCompanySave').click(function () {
+
+        if (!$('#modalCompanyObj').hasClass('hide')) {
+            indexParCompany.enviarDadosParaApi($('#modalCompanyObj form').serializeObject());
+        }
+        else if (!$('#modalStructureObj').hasClass('hide')) {
+            indexParStructure.enviarDadosParaApi($('#modalStructureObj form').serializeObject());
+        }
+        else if (!$('#modalStructureGroupObj').hasClass('hide')) {
+            indexParStructureGroup.enviarDadosParaApi($('#modalStructureGroupObj form').serializeObject());
+        }
+
+        closeCompanyModal();
+    });
+
+    function closeCompanyModal() {
+        $('#modalCompanyObj').addClass('hide');
+        $('#modalStructureObj').addClass('hide');
+        $('#modalStructureGroupObj').addClass('hide');
+
+        $('#modalCompany').modal('hide');
+    }
+
+
+</script>

@@ -11,12 +11,21 @@ namespace Dominio.Services
         #region Construtor
 
         private IBaseRepository<ParCompany> _baseRepoParCompany;
+        private IBaseRepository<ParStructure> _baseRepoParStructure;
+        private IBaseRepository<ParStructureGroup> _baseRepoParStructureGroup;
+        //private IBaseRepository<ParCompanyXStructure> _baseRepoParCompanyXStructure;
 
         public CompanyDomain(
-            IBaseRepository<ParCompany> baseRepoParCompany
+            IBaseRepository<ParCompany> baseRepoParCompany,
+            IBaseRepository<ParStructure> baseRepoParStructure,
+            IBaseRepository<ParStructureGroup> baseRepoParStructureGroup
+            //IBaseRepository<ParCompanyXStructure> baseRepoParCompanyXStructure
             )
         {
             _baseRepoParCompany = baseRepoParCompany;
+            _baseRepoParStructure = baseRepoParStructure;
+            _baseRepoParStructureGroup = baseRepoParStructureGroup;
+            //_baseRepoParCompanyXStructure = baseRepoParCompanyXStructure;
         }
 
         #endregion
@@ -35,26 +44,43 @@ namespace Dominio.Services
         /// <returns></returns>
         public ParCompanyDTO AddUpdateParCompany(ParCompanyDTO parCompanyDTO)
         {
-
-            //parCompanyDTO.example.IsValid(); //Rn1
             ParCompany parCompanySalvar = Mapper.Map<ParCompany>(parCompanyDTO);
 
             _baseRepoParCompany.AddOrUpdateNotCommit(parCompanySalvar);
             _baseRepoParCompany.Commit();
 
-            parCompanyDTO.Id = parCompanySalvar.Id; 
+            parCompanyDTO.Id = parCompanySalvar.Id;
 
             return parCompanyDTO;
         }
 
-        public ParStructureDTO AddUpdateParStructure(ParStructureDTO parStructureDTO)
+        public ParCompanyXStructureDTO AddUpdateParCompanyXStructureDTO(ParCompanyXStructureDTO parCompanyXStructureDTO)
         {
             throw new NotImplementedException();
         }
 
+        public ParStructureDTO AddUpdateParStructure(ParStructureDTO parStructureDTO)
+        {
+            ParStructure parStructureSalvar = Mapper.Map<ParStructure>(parStructureDTO);
+
+            _baseRepoParStructure.AddOrUpdateNotCommit(parStructureSalvar);
+            _baseRepoParStructure.Commit();
+
+            parStructureDTO.Id = parStructureSalvar.Id;
+
+            return parStructureDTO;
+        }
+
         public ParStructureGroupDTO AddUpdateParStructureGroup(ParStructureGroupDTO parStructureGroupDTO)
         {
-            throw new NotImplementedException();
+            ParStructureGroup parStructureGroupSalvar = Mapper.Map<ParStructureGroup>(parStructureGroupDTO);
+
+            _baseRepoParStructureGroup.AddOrUpdateNotCommit(parStructureGroupSalvar);
+            _baseRepoParStructureGroup.Commit();
+
+            parStructureGroupDTO.Id = parStructureGroupSalvar.Id;
+
+            return parStructureGroupDTO;
         }
 
         #endregion

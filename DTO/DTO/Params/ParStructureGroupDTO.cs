@@ -13,5 +13,7 @@ namespace DTO.DTO.Params
         public string Description { get; set; }
         public int ParStructureGroupParent_Id { get; set; }
         public bool IsActive { get; set; } = true;
+
+        public ParStructureGroupDTO ParStructureGroup { get; set; }
     }
 }

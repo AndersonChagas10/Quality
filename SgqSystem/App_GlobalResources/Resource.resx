@@ -666,4 +666,52 @@
   <data name="name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="username_or_password_are_incorrect" xml:space="preserve">
+    <value>The username or password are incorrect</value>
+  </data>
+  <data name="data_collection" xml:space="preserve">
+    <value>Data Collection</value>
+  </data>
+  <data name="management" xml:space="preserve">
+    <value>Management</value>
+  </data>
+  <data name="new_cluster" xml:space="preserve">
+    <value>New cluster</value>
+  </data>
+  <data name="new_group" xml:space="preserve">
+    <value>New group</value>
+  </data>
+  <data name="new_structure" xml:space="preserve">
+    <value>New structure</value>
+  </data>
+  <data name="departments" xml:space="preserve">
+    <value>Departments</value>
+  </data>
+  <data name="new_department" xml:space="preserve">
+    <value>New department</value>
+  </data>
+  <data name="measurement_units" xml:space="preserve">
+    <value>Measurement Units</value>
+  </data>
+  <data name="company_number" xml:space="preserve">
+    <value>Company Number</value>
+  </data>
+  <data name="db_server" xml:space="preserve">
+    <value>DB  Server</value>
+  </data>
+  <data name="initials" xml:space="preserve">
+    <value>Initials</value>
+  </data>
+  <data name="ip_server" xml:space="preserve">
+    <value>IP Server</value>
+  </data>
+  <data name="sif" xml:space="preserve">
+    <value>SIF</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Close</value>
+  </data>
 </root>

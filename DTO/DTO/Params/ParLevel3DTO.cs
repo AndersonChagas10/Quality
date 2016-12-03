@@ -25,5 +25,6 @@ namespace DTO.DTO.Params
 
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
         public List<int> removeReincidencia { get; set; }
+        public List<ParLevel3ValueDTO> listLevel3Value { get; set; }
     }
 }

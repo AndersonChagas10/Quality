@@ -18,10 +18,14 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>63128</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -48,10 +52,6 @@
       <HintPath>..\packages\AutoMapper.5.0.2\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="GridMvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Grid.Mvc.3.0.0\lib\net40\GridMvc.dll</HintPath>
       <Private>True</Private>
@@ -60,32 +60,32 @@
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.0.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.1.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.0.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.1.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.0.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.1.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.0.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+    <Reference Include="Microsoft.AI.Web, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.1.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.WindowsServer, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.0.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.1.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ApplicationInsights, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.1.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ApplicationInsights.TraceListener, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.TraceListener.2.0.0\lib\net45\Microsoft.ApplicationInsights.TraceListener.dll</HintPath>
+    <Reference Include="Microsoft.ApplicationInsights.TraceListener, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.TraceListener.2.1.0\lib\net45\Microsoft.ApplicationInsights.TraceListener.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -307,14 +307,17 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
+    <Compile Include="Controllers\Api\LanguageController.cs" />
     <Compile Include="Controllers\Api\Login\LoginController.cs" />
     <Compile Include="Controllers\Api\NewSync\NewSyncController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Params\ParCompanyController.cs" />
+    <Compile Include="Controllers\ConsolidacaoTestes\ConsolidacaoTestesController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
     <Compile Include="Controllers\Exemplo\HtmlTesteController.cs" />
-    <Compile Include="Controllers\Globalization\GlobalizationController.cs" />
     <Compile Include="Controllers\Login\AccesDeniedController.cs" />
     <Compile Include="Controllers\Api\File\FileController.cs" />
     <Compile Include="Controllers\Api\Example\ExampleApiController.cs" />
@@ -328,9 +331,9 @@
     <Compile Include="Controllers\Charts\ChartsController.cs" />
     <Compile Include="Controllers\Merge\MergeController.cs" />
     <Compile Include="Controllers\Params\ParamsController.cs" />
-    <Compile Include="Controllers\ParClustersController.cs" />
-    <Compile Include="Controllers\ParDepartmentsController.cs" />
-    <Compile Include="Controllers\ParMeasurementUnitsController.cs" />
+    <Compile Include="Controllers\Params\ParClustersController.cs" />
+    <Compile Include="Controllers\Params\ParDepartmentsController.cs" />
+    <Compile Include="Controllers\Params\ParMeasurementUnitsController.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -343,6 +346,7 @@
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyXStructureMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCriticalLevelMapperProfile.cs" />
@@ -386,6 +390,8 @@
     <Compile Include="Mappers\Audit\ConsolidationLevel02MapperProfile.cs" />
     <Compile Include="Mappers\Audit\Level01MapperProfile.cs" />
     <Compile Include="Mappers\Audit\Level02MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParStructureGroupMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
     <Compile Include="Mappers\ShiftMapperProfile.cs" />
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMapperProfile.cs" />
@@ -395,18 +401,18 @@
     <Compile Include="Mappers\UserMapperProfile.cs" />
     <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
+    <Compile Include="Secirity\RoleAuthorizeAttribute.cs" />
     <Compile Include="Secirity\SessionPersister.cs" />
-    <Compile Include="Services\Html.cs" />
     <Compile Include="Services\Level02Result.cs" />
-    <Compile Include="Services\SGQDBContext.cs" />
-    <Compile Include="Services\SyncServices.asmx.cs">
-      <DependentUpon>SyncServices.asmx</DependentUpon>
+    <Compile Include="Services\SynService.asmx.cs">
+      <DependentUpon>SynService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewModels\AccountBindingModels.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\EntityBaseViewModel.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\DataCollectionBaseViewModel.cs" />
+    <Compile Include="ViewModels\CompanyViewModel.cs" />
     <Compile Include="ViewModels\FormularioParaRelatorioViewModel.cs" />
     <Compile Include="ViewModels\CorrectiveActionViewModel.cs" />
     <Compile Include="ViewModels\IdentityModels.cs" />
@@ -635,10 +641,34 @@
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
     <Content Include="Content\select2.min.css" />
+    <Content Include="DataCollect\Content\bootstrap-modal-bs3patch.css" />
+    <Content Include="DataCollect\Content\bootstrap-modal.css" />
+    <Content Include="DataCollect\Content\bootstrap.css" />
+    <Content Include="DataCollect\Content\bootstrap.min.css" />
+    <Content Include="DataCollect\Content\Geral.css" />
+    <Content Include="DataCollect\Img\beef.jpg" />
+    <Content Include="DataCollect\Img\fundoSGQ.jpg" />
+    <Content Include="DataCollect\Img\GRTJBSLogo.png" />
+    <Content Include="DataCollect\Img\login.png" />
+    <Content Include="DataCollect\Img\sgq.jpg" />
+    <Content Include="DataCollect\Img\SGQLogo01.png" />
+    <Content Include="DataCollect\Img\ui-bg_diagonal-maze_75_ddd_10x10.png" />
+    <Content Include="DataCollect\index.html" />
+    <Content Include="DataCollect\Scripts\bootstrap-modal.js" />
+    <Content Include="DataCollect\Scripts\bootstrap-modalmanager.js" />
+    <Content Include="DataCollect\Scripts\bootstrap.js" />
+    <Content Include="DataCollect\Scripts\bootstrap.min.js" />
+    <Content Include="DataCollect\Scripts\correctiveaction.js" />
+    <Content Include="DataCollect\Scripts\DataBase.js" />
+    <Content Include="DataCollect\Scripts\File.js" />
+    <Content Include="DataCollect\Scripts\Methods.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="DataCollect\a.js" />
+    <Content Include="Imagens\Brazil.png" />
+    <Content Include="Imagens\Logo.png" />
+    <Content Include="Imagens\Spain.png" />
+    <Content Include="Imagens\United-States.png" />
     <Content Include="Scripts\aes.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
@@ -906,6 +936,7 @@
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\ParamsDevInterno.pubxml" />
+    <None Include="Properties\PublishProfiles\ParamsInterno.pubxml" />
     <None Include="Properties\PublishProfiles\PublishEUA.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ DEV.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
@@ -1057,8 +1088,9 @@
     <Content Include="Scripts\tripledes.js" />
     <Content Include="Scripts\x64-core.js" />
     <Content Include="Help.txt" />
-    <Content Include="Services\SyncServices.asmx" />
-    <Content Include="Views\Globalization\index2.html" />
+    <Content Include="Services\SynService.asmx" />
+    <Content Include="Views\Params\crudNxN.js" />
+    <Content Include="Views\Params\Index.cshtml" />
     <Content Include="Views\Params\_ParLevel1.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1105,12 +1137,6 @@
     </Content>
     <Content Include="Views\Example\Index.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
-    <Content Include="Views\Params\Index.cshtml" />
-    <Content Include="Views\Globalization\components\_content_layout.cshtml" />
-    <Content Include="Views\Globalization\components\_left_layout.cshtml" />
-    <Content Include="Views\Globalization\components\_navbar.cshtml" />
-    <Content Include="Views\Globalization\components\_right_layout.cshtml" />
-    <Content Include="Views\Globalization\Index.cshtml" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\fonts\fontawesome-webfont.eot" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\fonts\fontawesome-webfont.ttf" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\fonts\fontawesome-webfont.woff" />
@@ -1144,19 +1170,13 @@
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_screen-reader.scss" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_stacked.scss" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\scss\_variables.scss" />
-    <Content Include="Views\Params\Index2.cshtml" />
-    <Content Include="Views\Params\IndexTeste.cshtml" />
     <Content Include="Views\Params\_ParLevel2.cshtml" />
     <Content Include="Views\Params\_ParLevel3.cshtml" />
-    <Content Include="Views\Params\Index3.cshtml" />
-    <Content Include="Views\HtmlTeste\_IndexTeste_new.cshtml" />
     <Content Include="Views\Params\_SelectBoxLevel2.cshtml" />
     <Content Include="Views\Params\_SelectBoxLevel3.cshtml" />
-    <Content Include="Views\Params\_LeftLayout.cshtml" />
-    <Content Include="Views\Params\_Navbar.cshtml" />
-    <Content Include="Views\Params\_RightLayout.cshtml" />
-    <Content Include="Views\Params\_ParLevel1Collection.cshtml" />
-    <Content Include="Views\Params\ParamsLevel1.cshtml" />
+    <Content Include="Views\Shared\_LeftLayout.cshtml" />
+    <Content Include="Views\Shared\_Navbar.cshtml" />
+    <Content Include="Views\Shared\_RightLayout.cshtml" />
     <Content Include="Views\ParClusters\Create.cshtml" />
     <Content Include="Views\ParClusters\Delete.cshtml" />
     <Content Include="Views\ParClusters\Details.cshtml" />
@@ -1174,8 +1194,17 @@
     <Content Include="Views\ParMeasurementUnits\Index.cshtml" />
     <Content Include="Views\Merge\_DivResults.cshtml" />
     <Content Include="Views\HtmlTeste\_IndexTeste.cshtml" />
-    <Content Include="Views\HtmlTeste\_IndexTeste_old.cshtml" />
-    <Content Include="Views\HtmlTeste\_IndexTeste - Copy.cshtml" />
+    <Content Include="Views\Language\Index.cshtml" />
+    <Content Include="Views\Params\_CounterXLevel.cshtml" />
+    <Content Include="Views\Params\_ReincidenciaXLevel.cshtml" />
+    <Content Include="Views\Params\_ClusterXLevel.cshtml" />
+    <Content Include="Views\Params\_GroupXLevel.cshtml" />
+    <Content Include="Views\Shared\_crudNxNModal.cshtml" />
+    <Content Include="Views\ConsolidacaoTestes\Index.cshtml" />
+    <Content Include="Views\ParCompany\ParCompany.cshtml" />
+    <Content Include="Views\ParCompany\Index.cshtml" />
+    <Content Include="Views\ParCompany\ParStructure.cshtml" />
+    <Content Include="Views\ParCompany\ParStructureGroup.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1184,6 +1213,11 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\HelpPage\Views\Shared\" />
     <Folder Include="Arquivos\uploads\" />
+    <Folder Include="DataCollect\Plugins\float_button\" />
+    <Folder Include="DataCollect\Plugins\font-awesome\" />
+    <Folder Include="DataCollect\Plugins\jquery\" />
+    <Folder Include="DataCollect\Plugins\sidebar\" />
+    <Folder Include="Views\Base\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>
@@ -1240,7 +1274,15 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>63128</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>http://eduardolucasmaia.ngrok.io:63128/</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

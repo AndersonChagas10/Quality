@@ -3,14 +3,6 @@ document.addEventListener('deviceready', onDeviceReady, false);
 
 // Cordova is ready
 function onDeviceReady() {
-
-    //PeriodHTMLDAO.dropTable();
-    //SystemDAO.getDB();
-    //PeriodHTMLDAO.createTable();
-    //PeriodHTMLDAO.insertHTML();
-    //PeriodHTMLDAO.updateHTML(1);
-    //PeriodHTMLDAO.selectTable(list);
-    //PeriodHTMLDAO.appendHTML();
     $('#platform').text( device.platform );
     createFile();
 }

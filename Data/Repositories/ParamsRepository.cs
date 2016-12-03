@@ -421,15 +421,17 @@ namespace Data.Repositories
         /// </summary>
         /// <param name="paramLevel3"></param>
         /// <param name="paramLevel3Value"></param>
-        public void SaveParLevel3(ParLevel3 paramLevel3, ParLevel3Value paramLevel3Value, List<ParRelapse> listParRelapse)
+        public void SaveParLevel3(ParLevel3 paramLevel3, List<ParLevel3Value> listParamLevel3Value, List<ParRelapse> listParRelapse)
         {
             using (var ts = db.Database.BeginTransaction())
             {
                 AddUpdateParLevel3(paramLevel3); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
 
-                AddUpdateParLevel3Value(paramLevel3Value, paramLevel3.Id);
-                db.SaveChanges();
+                if (listParamLevel3Value != null)
+                    foreach (var paramLevel3Value in listParamLevel3Value)
+                        AddUpdateParLevel3Value(paramLevel3Value, paramLevel3.Id);
+              
 
                 if (listParRelapse != null)
                     foreach (var parRelapse in listParRelapse)
@@ -473,19 +475,6 @@ namespace Data.Repositories
 
         public void AddUpdateParLevel3Value(ParLevel3Value paramLevel3Value, int ParLevel3_Id)
         {
-            if (paramLevel3Value.ParMeasurementUnit_Id == -1)
-            {
-                paramLevel3Value.ParMeasurementUnit_Id = null;
-            }
-            if(paramLevel3Value.ParLevel3BoolFalse_Id == -1)
-            {
-                paramLevel3Value.ParLevel3BoolFalse_Id = null;
-            }
-            if(paramLevel3Value.ParLevel3BoolTrue_Id == -1)
-            {
-                paramLevel3Value.ParLevel3BoolTrue_Id = null;
-            }
-            paramLevel3Value.ParCompany_Id = 1;//MOCK
             paramLevel3Value.ParLevel3_Id = ParLevel3_Id;
             if (paramLevel3Value.Id == 0)
             {
@@ -497,6 +486,7 @@ namespace Data.Repositories
                 db.ParLevel3Value.Attach(paramLevel3Value);
                 db.Entry(paramLevel3Value).State = EntityState.Modified;
             }
+            db.SaveChanges();
         }
 
         #endregion

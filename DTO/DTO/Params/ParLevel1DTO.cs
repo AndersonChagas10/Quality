@@ -20,14 +20,14 @@ namespace DTO.DTO.Params
         public int ParFrequency_Id { get; set; }
 
         //[Display(Name = "level1_name", ResourceType = typeof(Resource))]
-        [Required(ErrorMessage = "O Nome deverá ter no mínimo 3 e máximo 10 caracteres.")]
+        //[Required(ErrorMessage = "O Nome deverá ter no mínimo 3 e máximo 10 caracteres.")]
         [MinLength(3, ErrorMessage = "O tamanho mínimo do Nome são 3 caracteres.")]
         [MaxLength(140, ErrorMessage = "O tamanho máximo do Nome são 140 caracteres.")]
         public string Name { get; set; }
 
         //[Display(Name = "level1_description", ResourceType = typeof(Resource))]
-        [Required(ErrorMessage = "A Descrição deverá ter no mínimo 3 e máximo 10 caracteres.")]
-        [MinLength(3, ErrorMessage = "O tamanho mínimo da Descrição deve ser 3 caracteres.")]
+        [Required(ErrorMessage = "A Descrição deverá ter no mínimo 0 e máximo 10 caracteres.")]
+        [MinLength(0, ErrorMessage = "O tamanho mínimo da Descrição deve ser 3 caracteres.")]
         [MaxLength(140, ErrorMessage = "O tamanho máximo da Descrição deve ser no 140 caracteres.")]
         public string Description { get; set; }
 
@@ -110,7 +110,7 @@ namespace DTO.DTO.Params
                 var opt = new SelectListItem() { Text = i.Id.ToString() + " - " + i.Name, Value = i.Id.ToString() };
                 if (listParLevel3Level2Level1Dto.Where(r => r.ParLevel3Level2.ParLevel2_Id == i.Id).Count() > 0)
                 {
-                    groupSelecionado.Name = "Vinculado: " + listParLevel3Level2Level1Dto.FirstOrDefault(r => r.ParLevel3Level2.ParLevel2_Id == i.Id).ParLevel1.Name;
+                    groupSelecionado.Name = "Vinculado:";
                     opt.Group = groupSelecionado;
                 }
                 else

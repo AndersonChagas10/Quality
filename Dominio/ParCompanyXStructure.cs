@@ -18,7 +18,7 @@ namespace Dominio
         public int ParStructure_Id { get; set; }
         public int ParCompany_Id { get; set; }
         public System.DateTime AddDate { get; set; }
-        public System.DateTime AlterDate { get; set; }
+        public Nullable<System.DateTime> AlterDate { get; set; }
         public bool Active { get; set; }
     
         public virtual ParCompany ParCompany { get; set; }

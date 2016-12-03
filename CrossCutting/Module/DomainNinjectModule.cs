@@ -16,6 +16,7 @@ namespace CrossCutting.IOC.Module
             Bind<IGetConsolidateDataCollectionDomain>().To<GetConsolidateDataCollectionDomain>();
             Bind<IExampleDomain>().To<ExampleDomain>();
             Bind<IParamsDomain>().To<ParamsDomain>();
+            Bind<ICompanyDomain>().To<CompanyDomain>();
         }
     }
 }

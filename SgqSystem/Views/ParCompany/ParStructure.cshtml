@@ -1,0 +1,46 @@
+﻿@using SgqSystem.Helpers
+    
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table-erp">
+                <tbody>
+                    <tr class="row hide">
+                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Id", new { @id = "parCompanyDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
+                    </tr>
+                    <tr class="row">
+                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Name", new { htmlAttributes = new { @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Description", new { htmlAttributes = new { @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
+                        @Table.GerarColunaButton(@Html.DropDownList("parStructureDTO.ParStructureGroup_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick='indexParStructure.enviarDadosParaApi($($(\"form\")[1]).serializeObject())' class='btn btn-primary btn-sm margin'><i class='fa fa-save'></i> " + Resources.Resource.save + "</button>")
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table-erp table table-condensed table-bordered table-margin">
+                <thead>
+                    <tr>
+                        <th>@Resources.Resource.name</th>
+                        <th>@Resources.Resource.description</th>
+                        <th>@Resources.Resource.group</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in ViewBag.listaParStructure)
+                    {
+                        <tr>
+                            <td>@o.Name</td>
+                            <td>@o.Description</td>
+                            <td>@o.ParStructureGroup.Name</td>
+                            <td style="max-width: 15px"><button type="button" class="btn btn-primary btn-sm" onclick='indexParStructure.editar(@Html.Raw(Json.Encode(o)));'>@Resources.Resource.edit</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<script>
+
+</script>

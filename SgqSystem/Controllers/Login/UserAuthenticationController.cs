@@ -1,7 +1,8 @@
 ﻿using Dominio.Interfaces.Services;
 using DTO.Helpers;
-using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
+using System;
+using System.Web;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Api
@@ -20,20 +21,37 @@ namespace SgqSystem.Controllers.Api
         [AllowAnonymous]
         public ActionResult LogIn()
         {
-            if(!(string.IsNullOrEmpty(SessionPersister.Username)))
-            {
+            HttpCookie currentUserCookie = Request.Cookies["webControlCookie"];
+            if (currentUserCookie != null)
                 return RedirectToAction("Index", "Home");
-            }
+
+            ExpireCookie();
             return View();
         }
 
         [HttpPost]  
         public ActionResult LogIn(UserViewModel user)
         {
+          
             var isAuthorized = _userDomain.AuthenticationLogin(user);
+
             if (isAuthorized.Retorno.IsNotNull())
             {
-                SessionPersister.Username = isAuthorized.Retorno.Name;
+                //create a cookie
+                HttpCookie myCookie = new HttpCookie("webControlCookie");
+                
+                //Add key-values in the cookie
+                myCookie.Values.Add("userId", isAuthorized.Retorno.Id.ToString());
+                myCookie.Values.Add("userName", isAuthorized.Retorno.Name);
+                myCookie.Values.Add("roles", isAuthorized.Retorno.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
+
+                //set cookie expiry date-time. Made it to last for next 12 hours.
+                myCookie.Expires = DateTime.Now.AddMinutes(30);
+                
+                //Most important, write the cookie to client.
+                Response.Cookies.Add(myCookie);
+
+                //SessionPersister.Username = isAuthorized.Retorno.Name;
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -44,46 +62,23 @@ namespace SgqSystem.Controllers.Api
 
         public ActionResult LogOut(UserViewModel user)
         {
-            SessionPersister.LogOut();
+            // clear cookies
+            ExpireCookie();
             return RedirectToAction("LogIn", "UserAuthentication");
         }
 
-        //[HttpGet]
-        //public ActionResult Register()
-        //{
-        //    return View();
-        //}
+        private void ExpireCookie()
+        {
+            HttpCookie currentUserCookie = Request.Cookies["webControlCookie"];
+            if (currentUserCookie != null)
+            {
+                Response.Cookies.Remove("webControlCookie");
+                currentUserCookie.Expires = DateTime.Now.AddDays(-10);
+                currentUserCookie.Value = null;
+                Response.SetCookie(currentUserCookie);
+            }
+           
+        }
 
-        //[HttpPost]
-        //public ActionResult Register(UserViewModel user)
-        //{
-        //    return View();
-        //}
-
-        //public void RenewCurrentUser()
-        //{
-        //    System.Web.HttpCookie authCookie =
-        //        System.Web.HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
-        //    if (authCookie != null)
-        //    {
-        //        FormsAuthenticationTicket authTicket = null;
-        //        authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-
-        //        if (authTicket != null && !authTicket.Expired)
-        //        {
-        //            FormsAuthenticationTicket newAuthTicket = authTicket;
-
-        //            if (FormsAuthentication.SlidingExpiration)
-        //            {
-        //                newAuthTicket = FormsAuthentication.RenewTicketIfOld(authTicket);
-        //            }
-        //            string userData = newAuthTicket.UserData;
-        //            string[] roles = userData.Split(',');
-
-        //            System.Web.HttpContext.Current.User =
-        //                new System.Security.Principal.GenericPrincipal(new FormsIdentity(newAuthTicket), roles);
-        //        }
-        //    }
-        //}
     }
 }

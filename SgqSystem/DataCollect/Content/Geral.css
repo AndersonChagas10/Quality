@@ -114,7 +114,7 @@ body > .App > div.container {
 }
 .login > .head
 {
-    background-image: url("../Img/SGQLogo01.png");
+    background-image: url("../img/sgqlogo01.png");
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
@@ -123,7 +123,7 @@ body > .App > div.container {
 .login > .foot
 {
     margin-top:50px;
-    background-image: url("../Img/GRTJBSLogo.png");
+    background-image: url("../img/grtjbslogo.png");
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
@@ -141,6 +141,16 @@ body > .App > div.container {
     border: 1px solid #ccc;
     margin-bottom: 10px;
     min-height:45px;
+}
+.smallPaddingRight{
+    padding-right: 5px !important;
+}
+.smallPaddingLeft{
+    padding-left: 5px !important;
+}
+.padding5
+{
+    padding:5px !important;
 }
 .padding10
 {
@@ -338,14 +348,17 @@ body > .App > div.container {
     position: fixed;
     z-index: 9999;
     margin: auto; 
-    top: 50%;
-    left: 50%; 
-    margin-top: -290px;  margin-left: -40% !important;
+    top: 5%;
+    left: 5%;
+    right: 5%;
+}
+.modal-signature{ 
+    right: 40%;
 }
 #correctiveActionModal
 {
-    height: 600px;
-    width: 80%;
+    height: auto !important;
+    width: 90% !important;
 }
 
 #correctiveActionModal .modal-body
@@ -357,32 +370,27 @@ body > .App > div.container {
     padding: 10px !important;
     overflow-y:auto;
     overflow-x:hidden;
+    height:450px;
 
 }
 #correctiveActionModal .modal-body > .row .row
 {
     padding: 10px;
 }
-
-#correctiveActionModal .modal-body
-{
-    padding-top: 0!important;
-}
-#correctiveActionModal .modal-body > .row
-{
-    padding: 10px !important;
-    height: 430px;
-    overflow-y:auto;
-    overflow-x:hidden;
-
-}
-#correctiveActionModal .modal-body > .row .row
+#correctiveActionModal .modal-footer
 {
     padding: 10px;
 }
+
 .signature{
-    z-index: 99999; position: fixed; margin: auto; top: 50%; left: 50%; margin-top: -200px;  margin-left: -170px !important;
-; 
+    z-index: 99999; 
+    position: fixed; 
+    margin: auto; 
+    top: 50%; 
+    left: 50%; 
+    margin-top: -280px;  
+    margin-left: -160px !important;
+    margin-right: 35% !important;
 }
 .btnNotAvaliable{
     padding-right: 0;
@@ -405,7 +413,7 @@ body > .App > div.container {
 }
 .headDescription span
 {
-     font-size:16px;
+    font-size:16px;
     font-weight: bold;
     margin-right:20px;
 }
@@ -425,7 +433,7 @@ body > .App > div.container {
     border-radius: 50% !important;
 }
 
-.btnConfirm{    
+.btnMessage{    
     margin-bottom:90px !important;
 }
 .spanTitle{
@@ -441,4 +449,61 @@ body > .App > div.container {
     color: #fff;
     z-index: 9999;
     position: absolute;
+}
+.messageConfirm
+{
+    top: 200px;
+    min-height: 200px;
+    width: 100%;
+    background-color: #5353c6;
+    color: #fff;
+    z-index: 9999;
+    position: absolute;
+}
+span.Completed
+{
+    font-size:14px;
+    font-weight:bold;
+    color: #0099ff;
+}
+.levelInfo
+{
+    margin-left:10px;
+    font-size:16px;
+    font-weight:bold;
+    color: #000;
+}
+.iconMoreMenu 
+{
+    cursor:pointer;
+}
+#version
+{
+    position: absolute;
+    bottom: 10px;
+    background-color: #333;
+    color: #fff;
+    border:0;
+    font-size:14px;
+}
+#ambiente
+{
+position: absolute;
+    bottom: 40px;
+    background-color: #333;
+    color: #fff;
+    border:0;
+    font-size:14px;
+}
+.viewModal
+{
+    position: absolute;
+    left: 50%;
+    margin-left: -35%;
+    top: 10px;
+    background-color: #fff;
+    width: 70%;
+    height: 600px;
+    z-index: 9999;
+    border: 1px solid #333;
 }

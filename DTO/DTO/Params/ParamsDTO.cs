@@ -1,6 +1,5 @@
 ﻿using DTO.BaseEntity;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace DTO.DTO.Params
 {

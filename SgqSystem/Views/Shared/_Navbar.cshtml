@@ -1,0 +1,169 @@
+﻿@{
+    Layout = null;
+
+    var urlDataCollection = Url.Action("", "DataCollect");
+    var urlCorrectiveActionReport = Url.Action("CorrectiveActionReport", "Reports");
+    var urlDataCollectionReport = Url.Action("DataCollectionReport", "Reports");
+    var urlCustomization = Url.Action("Index", "Params");
+    var urlHome = Url.Action("Index", "Home");
+}
+
+<div class="page-header navbar navbar-fixed-top">
+    <div class="page-header-inner">
+        <div class="page-logo" style="min-width: 235px;">
+            <a href="@Url.Action("Index", "Home")">
+                <img style="height: 45px; margin: 4px;" src="~/Imagens/Logo.png" />
+            </a>
+            <div class="menu-toggler sidebar-toggler hide">
+                <span></span>
+            </div>
+        </div>
+        
+
+        @*@if (Session["username"] != null)*@
+        @if (HttpContext.Current.Request.Cookies["webControlCookie"] != null)
+            {
+            <div class="hor-menu" id="navbarLeft">
+                <ul class="nav navbar-nav pull-left">
+                    <li class="mega-menu-dropdown" aria-haspopup="true">
+                        <a href="@urlHome" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
+                            @Resources.Resource.home
+                        </a>
+                    </li>
+                    <li class="mega-menu-dropdown" aria-haspopup="true">
+                        <a href="@urlDataCollection" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
+                            @Resources.Resource.data_collection
+                        </a>
+                    </li>
+                    <li class="mega-menu-dropdown" aria-haspopup="true">
+                        <a href="@urlCorrectiveActionReport" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
+                            @Resources.Resource.management
+                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <!-- Content container to add padding -->
+                                <div class="mega-menu-content">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <ul class="mega-menu-submenu">
+                                                <li>
+                                                    <a href="@urlCorrectiveActionReport">@Resources.Resource.corrective_action_reports</a>
+                                                </li>
+                                                <li>
+                                                    <a href="@urlDataCollectionReport">@Resources.Resource.data_collection_reports</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="mega-menu-dropdown" aria-haspopup="true">
+                        <a href="@urlCustomization" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
+                            @Resources.Resource.customization
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        }
+
+        <div class="top-menu">
+
+            <ul class="nav navbar-nav pull-right">
+
+                <li class="dropdown dropdown-user">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+                        <i class="fa fa-globe" aria-hidden="true"></i>
+                        <span class="username username-hide-on-mobile"> @Resources.Resource.language </span>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-default">
+                        <li>
+                            <a href="@Url.Action("ChangeCulture", "Home", new { language = "pt-BR" } )" id="btnBR">
+                                <img src="~/Imagens/Brazil.png" /> Português-BR
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("ChangeCulture", "Home", new { language = "en" } )" id="btnEN">
+                                <img src="@Url.Content("~/Imagens/United-States.png")" /> English-US
+                            </a>
+                        </li>
+
+                    </ul>
+                </li> 
+
+            @*@if (Session["username"] != null)*@
+            @if (HttpContext.Current.Request.Cookies["webControlCookie"] != null)
+            {
+                <li class="dropdown dropdown-user">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+                        <i class="fa fa-user"></i>
+                        <span class="username username-hide-on-mobile"> @HttpContext.Current.Request.Cookies["webControlCookie"].Values["userName"].ToString() </span>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-default">
+                        <li>
+                            <a href="page_user_lock_1.html">
+                                <i class="fa fa-user" aria-hidden="true"></i> Perfil
+                            </a>
+                        </li>
+                        <li class="divider"> </li>
+                        <li>
+                            <a href="@Url.Action("LogOut", "UserAuthentication")">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i> @Resources.Resource.log_out
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            }               
+            
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<script language="javascript" type="text/javascript">
+  
+        $('.dropdown-btn-config').click(function () {
+            if ($('.page-quick-sidebar-wrapper').css('right') == '0px')
+                closeRightSidebar();
+            else
+                openRightSidebar();
+        });
+
+        $('.menu-toggler').click(function () {
+            if ($('.page-sidebar-menu').hasClass('page-sidebar-menu-closed')) {
+                openLeftSidebar();
+            }else {
+                closeLeftSidebar();
+            }
+        });
+
+        $('.dropdown-user').click(function () {
+            closeRightSidebar();
+        });
+
+        function openRightSidebar() {
+            $('.page-quick-sidebar-wrapper').css('right', '0px');
+        }
+
+        function closeRightSidebar() {
+            $('.page-quick-sidebar-wrapper').css('right', '-320px');
+        }
+
+        function openLeftSidebar() {
+            $('.page-sidebar-menu').removeClass('page-sidebar-menu-closed');
+            $('body').removeClass('page-sidebar-closed');
+        }
+
+        function closeLeftSidebar() {
+            $('.page-sidebar-menu').addClass('page-sidebar-menu-closed');
+            $('body').addClass('page-sidebar-closed');
+        }
+
+</script>
