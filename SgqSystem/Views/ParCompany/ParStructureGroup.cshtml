@@ -7,12 +7,12 @@
             <table class="table-erp">
                 <tbody>
                     <tr class="row hide">
-                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Id", new { @id = "parCompanyDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
+                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Id", new { @id = "parStructureGroupDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
                     </tr>
                     <tr class="row">
-                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Name", new { htmlAttributes = new { @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
-                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Description", new { htmlAttributes = new { @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
-                        @Table.GerarColunaButton(@Html.DropDownList("parStructureGroupDTO.ParStructureGroupParent_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick='indexStructureGroup.enviarDadosParaApi();' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
+                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Name", new { htmlAttributes = new { @id = "parStructureGroupDTO_Name",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Description", new { htmlAttributes = new { @id = "parStructureGroupDTO_Description",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top) 
+                        @Table.GerarColunaButton(@Html.DropDownList("parStructureGroupDTO.ParStructureGroupParent_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "parStructureGroupDTO_ParStructureGroupParent_Id",  @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='"+Resources.Resource.saving+"' id='btnSaveCompany' onclick='indexParStructureGroup.enviarDadosParaApi($($(\"form\")[2]).serializeObject())' class='btn btn-primary btn-sm margin'><i class='fa fa-save'></i> "+Resources.Resource.save+"</button>")
                     </tr>
 
                 </tbody>
@@ -22,7 +22,6 @@
                     <tr>
                         <th>@Resources.Resource.name</th>
                         <th>@Resources.Resource.description</th>
-                        <th>@Resources.Resource.group</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,7 +30,7 @@
                         <tr>
                             <td>@o.Name</td>
                             <td>@o.Description</td>
-                            <td></td>
+                            <td style="max-width: 15px"><button type="button" class="btn btn-primary btn-sm" onclick='indexParStructureGroup.editar(@Html.Raw(Json.Encode(o)));'>@Resources.Resource.edit</button></td>
                         </tr>
                     }
                 </tbody>

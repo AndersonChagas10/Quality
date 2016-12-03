@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
-    public class ParCompanyController : Controller
+    public class ParCompanyController : BaseController
     {
         private IBaseDomain<ParCompany, ParCompanyDTO> _baseDomainParCompany;
         private IBaseDomain<ParCompanyXStructure, ParCompanyXStructureDTO> _baseDomainParCompanyXStructure;
@@ -38,5 +38,22 @@ namespace SgqSystem.Controllers
         {
             return View();
         }
+
+        public ActionResult GetParCompany()
+        {          
+            return PartialView("ParCompany");//retorna partial ParCompany
+        }
+
+        public ActionResult GetParStructure()
+        {
+            return PartialView("ParStructure");//retorna partial ParCompany
+        }
+
+        public ActionResult GetParStructureGroup()
+        {
+            return PartialView("ParStructureGroup");//retorna partial ParCompany
+        }
+
+
     }
 }
