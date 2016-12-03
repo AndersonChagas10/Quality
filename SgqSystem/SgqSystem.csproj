@@ -17,11 +17,15 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
-    <IISExpressSSLPort>63128</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -397,6 +401,7 @@
     <Compile Include="Mappers\UserMapperProfile.cs" />
     <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
+    <Compile Include="Secirity\RoleAuthorizeAttribute.cs" />
     <Compile Include="Secirity\SessionPersister.cs" />
     <Compile Include="Services\Level02Result.cs" />
     <Compile Include="Services\SynService.asmx.cs">
@@ -1084,7 +1089,6 @@
     <Content Include="Scripts\x64-core.js" />
     <Content Include="Help.txt" />
     <Content Include="Services\SynService.asmx" />
-    <Content Include="Views\Globalization\index2.html" />
     <Content Include="Views\Params\crudNxN.js" />
     <Content Include="Views\Params\Index.cshtml" />
     <Content Include="Views\Params\_ParLevel1.cshtml" />
@@ -1133,11 +1137,6 @@
     </Content>
     <Content Include="Views\Example\Index.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
-    <Content Include="Views\Globalization\components\_content_layout.cshtml" />
-    <Content Include="Views\Globalization\components\_left_layout.cshtml" />
-    <Content Include="Views\Globalization\components\_navbar.cshtml" />
-    <Content Include="Views\Globalization\components\_right_layout.cshtml" />
-    <Content Include="Views\Globalization\Index.cshtml" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\fonts\fontawesome-webfont.eot" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\fonts\fontawesome-webfont.ttf" />
     <Content Include="Scripts\theme\font-awesome-4.6.3\fonts\fontawesome-webfont.woff" />

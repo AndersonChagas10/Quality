@@ -54,12 +54,13 @@
 
                         </tr>
                         <tr class="row">
-
+                            @Html.HiddenFor(r => r.paramsDto.parEvaluationDto.Id)
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.Number, new { @class = "form-control input-sm", type = "number", min = "0" })
             , @Html.Label(Resources.Resource.evaluation)
             , Table.PosicaoLabel.top
             , error: @Html.ValidationMessageFor(m => m.paramsDto.parEvaluationDto.Number, null, new { @class = "text-danger" }))
 
+                            @Html.HiddenFor(r => r.paramsDto.parSampleDto.Id)
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.Number, new { @class = "form-control input-sm", type = "number", min = "0" })
             , @Html.Label(Resources.Resource.samples_per_evaluation)
             , Table.PosicaoLabel.top

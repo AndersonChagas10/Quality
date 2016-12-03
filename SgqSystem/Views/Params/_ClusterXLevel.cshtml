@@ -159,9 +159,9 @@
             },
             /*Fim Setup*/
             adiciona: function(e) {
-                var valid = this.verifyJaExiste(object);
                 valid = this.veifyAdd();
                 var object = this.getObjAdd();
+                var valid = this.verifyJaExiste(object);
                 if(valid){
                     crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
                 }
