@@ -403,9 +403,11 @@
     <Compile Include="Secirity\CustomPrincipal.cs" />
     <Compile Include="Secirity\RoleAuthorizeAttribute.cs" />
     <Compile Include="Secirity\SessionPersister.cs" />
+    <Compile Include="Services\Html.cs" />
     <Compile Include="Services\Level02Result.cs" />
-    <Compile Include="Services\SynService.asmx.cs">
-      <DependentUpon>SynService.asmx</DependentUpon>
+    <Compile Include="Services\SGQDBContext.cs" />
+    <Compile Include="Services\SyncServices.asmx.cs">
+      <DependentUpon>SyncServices.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewModels\AccountBindingModels.cs" />
@@ -1088,7 +1090,7 @@
     <Content Include="Scripts\tripledes.js" />
     <Content Include="Scripts\x64-core.js" />
     <Content Include="Help.txt" />
-    <Content Include="Services\SynService.asmx" />
+    <Content Include="Services\SyncServices.asmx" />
     <Content Include="Views\Params\crudNxN.js" />
     <Content Include="Views\Params\Index.cshtml" />
     <Content Include="Views\Params\_ParLevel1.cshtml" />
