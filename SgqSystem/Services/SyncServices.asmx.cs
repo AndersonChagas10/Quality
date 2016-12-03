@@ -10,14 +10,14 @@ using SgqSystem.Handlres;
 namespace SgqSystem.Services
 {
     /// <summary>
-    /// Summary description for SynService
+    /// Summary description for SyncServices
     /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-    [System.Web.Script.Services.ScriptService]
-    public class SynService : System.Web.Services.WebService
+     [System.Web.Script.Services.ScriptService]
+    public class SyncServices : System.Web.Services.WebService
     {
 
         #region Funções
@@ -63,7 +63,7 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public string DefaultValueReturn(string valor, string valorDefault)
         {
-            if(string.IsNullOrEmpty(valor) || valor == "undefined" || valor == "null")
+            if (string.IsNullOrEmpty(valor) || valor == "undefined" || valor == "null")
             {
                 return valorDefault;
             }
@@ -102,7 +102,7 @@ namespace SgqSystem.Services
         {
             string sql = "INSERT INTO LogJson ([result],[log],[AddDate],[Device_Id],[AppVersion], [callback]) " +
                          "VALUES " +
-                         "('" + result.Replace("'", "") + "', '" + log.Replace("'", "") + "', GETDATE(), '" + deviceId  + "', '" + AppVersion + "', '" + callback + "')";
+                         "('" + result.Replace("'", "") + "', '" + log.Replace("'", "") + "', GETDATE(), '" + deviceId + "', '" + AppVersion + "', '" + callback + "')";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -135,9 +135,6 @@ namespace SgqSystem.Services
         }
 
         #endregion
-
-
-
         #region Json
         /// <summary>
         /// Método Para Inserir Resultado da Coleta
@@ -243,6 +240,7 @@ namespace SgqSystem.Services
 
                 //Coloca Biased/Unbiased no Cattle Type
                 string baisedUnbaised = result[27];
+                baisedUnbaised = DefaultValueReturn(baisedUnbaised, "0");
                 if (baisedUnbaised != "0")
                 {
                     cattletype = baisedUnbaised;
@@ -256,31 +254,31 @@ namespace SgqSystem.Services
 
                 //Gera o Cabeçalho do Level02
                 string level02HeaderJSon = phase;
-                       level02HeaderJSon += ";" + startphasedate;
-                       level02HeaderJSon += ";" + cattletype;
-                       level02HeaderJSon += ";" + chainspeed;
-                       level02HeaderJSon += ";" + lotnumber;
-                       level02HeaderJSon += ";" + mudscore;
-                       level02HeaderJSon += ";" + consecutivefailurelevel;
-                       level02HeaderJSon += ";" + consecutivefailuretotal;
-                       level02HeaderJSon += ";" + notavaliable;
-                       level02HeaderJSon += ";" + completed;
-                       level02HeaderJSon += ";" + havePhases;
-                       level02HeaderJSon += ";" + CollectionLevel02Id;
-                       level02HeaderJSon += ";" + correctiveActionCompleted;
-                       level02HeaderJSon += ";" + completeReaudit;
+                level02HeaderJSon += ";" + startphasedate;
+                level02HeaderJSon += ";" + cattletype;
+                level02HeaderJSon += ";" + chainspeed;
+                level02HeaderJSon += ";" + lotnumber;
+                level02HeaderJSon += ";" + mudscore;
+                level02HeaderJSon += ";" + consecutivefailurelevel;
+                level02HeaderJSon += ";" + consecutivefailuretotal;
+                level02HeaderJSon += ";" + notavaliable;
+                level02HeaderJSon += ";" + completed;
+                level02HeaderJSon += ";" + havePhases;
+                level02HeaderJSon += ";" + CollectionLevel02Id;
+                level02HeaderJSon += ";" + correctiveActionCompleted;
+                level02HeaderJSon += ";" + completeReaudit;
 
                 //Verifica o Resultado do Level03
                 string level03ResultJson = result[22];
                 //Decodifica a o resultado
                 level03ResultJson = HttpUtility.UrlDecode(level03ResultJson, System.Text.Encoding.Default);
                 //Ação Corretiva
-                string correctiveActionJson =  result[23];
+                string correctiveActionJson = result[23];
                 //Verifica se tem reauditoria pendente
                 string haveReaudit = result[24];
                 //Convert Reauditoria Pendente para valor correto
                 haveReaudit = DefaultValueReturn(haveReaudit, "0");
-                if(haveReaudit != "0")
+                if (haveReaudit != "0")
                 {
                     haveReaudit = "1";
                 }
@@ -288,7 +286,7 @@ namespace SgqSystem.Services
                 string haveCorrectiveAction = result[25];
                 //Converte ação corretiva para valor correto
                 haveCorrectiveAction = DefaultValueReturn(haveCorrectiveAction, "0");
-                if(haveCorrectiveAction == "havecorrectiveaction")
+                if (haveCorrectiveAction == "havecorrectiveaction")
                 {
                     haveCorrectiveAction = "1";
                 }
@@ -299,7 +297,7 @@ namespace SgqSystem.Services
                 sql += "INSERT INTO [dbo].[CollectionJson] " +
                        "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
                        "VALUES " +
-                       "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit+ "','" + haveCorrectiveAction   + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
+                       "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
             }
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -348,12 +346,12 @@ namespace SgqSystem.Services
         public string ProcessJson(string device)
         {
 
-            if(string.IsNullOrEmpty(device))
+            if (string.IsNullOrEmpty(device))
             {
                 return "informe o device";
             }
             //Se for igual web busca de todos os dispositivos
-            if(device == "web")
+            if (device == "web")
             {
                 device = null;
             }
@@ -429,7 +427,7 @@ namespace SgqSystem.Services
 
                                 //Unidade
                                 string unitId = r[4].ToString();
-                               
+
                                 //Period
                                 string period = r[5].ToString();
                                 //Shift
@@ -460,7 +458,7 @@ namespace SgqSystem.Services
                                 string StartPhase = arrayHeader[1];
                                 string Evaluation = r[15].ToString();
                                 string Sample = r[16].ToString();
-                                
+
                                 string CattleType = arrayHeader[2];
                                 CattleType = DefaultValueReturn(CattleType, "0");
 
@@ -469,11 +467,11 @@ namespace SgqSystem.Services
 
                                 string ConsecuticeFalireIs = arrayHeader[6];
                                 ConsecuticeFalireIs = DefaultValueReturn(arrayHeader[6], "0");
-                                if(ConsecuticeFalireIs != "0")
+                                if (ConsecuticeFalireIs != "0")
                                 {
                                     ConsecuticeFalireIs = "1";
                                 }
-                               
+
                                 string ConsecutiveFailureTotal = arrayHeader[7];
                                 ConsecutiveFailureTotal = DefaultValueReturn(ConsecutiveFailureTotal, "0");
 
@@ -490,7 +488,7 @@ namespace SgqSystem.Services
 
                                 string completed = arrayHeader[9];
                                 completed = BoolCompletedConverter(completed);
-                                
+
 
                                 string havePhases = arrayHeader[10];
                                 havePhases = BoolConverter(havePhases);
@@ -500,20 +498,20 @@ namespace SgqSystem.Services
                                 string haveReaudit = r[20].ToString();
                                 haveReaudit = BoolConverter(haveReaudit);
                                 string haveCorrectiveAction = r[21].ToString();
-                                haveCorrectiveAction = BoolConverter(haveCorrectiveAction); 
+                                haveCorrectiveAction = BoolConverter(haveCorrectiveAction);
 
                                 string reauditNumber = r[22].ToString();
                                 reauditNumber = DefaultValueReturn(reauditNumber, "0");
 
                                 int ConsolidationLevel01Id = InsertConsoliDationLevel01(unitId, level01, level01CollectionDate);
-                                if(ConsolidationLevel01Id == 0)
+                                if (ConsolidationLevel01Id == 0)
                                 {
                                     /*return "erro consolidation level01"*/
                                     return "error";
                                 }
 
                                 int ConsolidationLevel02Id = InsertConsoliDationLevel02(ConsolidationLevel01Id.ToString(), level02, unitId, level02CollectionDate);
-                                if(ConsolidationLevel02Id == 0)
+                                if (ConsolidationLevel02Id == 0)
                                 {
                                     //return  "Erro Consolidation Level02";
                                     return "error";
@@ -522,7 +520,7 @@ namespace SgqSystem.Services
                                 bool update = false;
                                 string idCollectionLevel02 = arrayHeader[11];
                                 idCollectionLevel02 = DefaultValueReturn(idCollectionLevel02, "0");
-                                if(idCollectionLevel02 != "0")
+                                if (idCollectionLevel02 != "0")
                                 {
                                     update = true;
                                 }
@@ -531,7 +529,7 @@ namespace SgqSystem.Services
                                                                                   StartPhase, Evaluation, Sample, CattleType, ChainSpeed, ConsecuticeFalireIs, ConsecutiveFailureTotal, LotNumber, MudScore, NotEvaluateIs, Duplicated, haveReaudit,
                                                                                   haveCorrectiveAction, havePhases, completed, idCollectionLevel02);
 
-                                if(CollectionLevel02Id == 0)
+                                if (CollectionLevel02Id == 0)
                                 {
                                     //return "erro Collection level02";
                                     return "error";
@@ -563,9 +561,9 @@ namespace SgqSystem.Services
                                 {
                                     reauditCompleted = haveReaudit;
                                 }
-                                
 
-                                if (update == true && (correctiveActionCompleted == "0" || reauditCompleted== "0"))
+
+                                if (update == true && (correctiveActionCompleted == "0" || reauditCompleted == "0"))
                                 {
                                     int updateCorrectiveAction = updateLevel02CorrectiveActionReaudit(CollectionLevel02Id.ToString(), correctiveActionCompleted, reauditCompleted);
                                     if (updateCorrectiveAction == 0)
@@ -576,7 +574,7 @@ namespace SgqSystem.Services
                                 }
 
                                 int CollectionLevel03Id = InsertCollectionLevel03(CollectionLevel02Id.ToString(), level02, objson, AuditorId, Duplicated);
-                                if(CollectionLevel03Id == 0)
+                                if (CollectionLevel03Id == 0)
                                 {
                                     //return "Erro Level03";
                                     return "error";
@@ -607,18 +605,18 @@ namespace SgqSystem.Services
                                     string preventativeMeasure = arrayCorrectiveAction[9];
                                     preventativeMeasure = HttpUtility.UrlDecode(preventativeMeasure, System.Text.Encoding.Default);
 
-                                    int CorrectiveActionId = correctiveActionInsert(AuditorId, CollectionLevel02Id.ToString(), slaugthersignature, techinicalsignature, datetimeslaughter, 
+                                    int CorrectiveActionId = correctiveActionInsert(AuditorId, CollectionLevel02Id.ToString(), slaugthersignature, techinicalsignature, datetimeslaughter,
                                                                                    datetimetechinical, datecorrectiveaction, auditstarttime, descriptionFailure, immediateCorrectiveAction,
                                                                                    productDisposition, preventativeMeasure);
 
-                                    if(CorrectiveActionId == 0)
+                                    if (CorrectiveActionId == 0)
                                     {
                                         //return "erro CorrectiveAction";
                                         return "error";
                                     }
                                 }
                                 int jsonUpdate = updateJson(Id);
-                                if(jsonUpdate  == 0)
+                                if (jsonUpdate == 0)
                                 {
                                     //return "Erro Json";
                                     return "error";
@@ -737,7 +735,7 @@ namespace SgqSystem.Services
 
             //Script de Insert para consolidação
             string sql = "INSERT ConsolidationLevel01 ([UnitId],[DepartmentId],[Level01Id],[AddDate],[AlterDate],[ConsolidationDate]) " +
-                         "VALUES " + 
+                         "VALUES " +
                          "('" + unitId + "','" + departmentId + "','" + level01Id + "', GetDate(),null, CONVERT(DATE, '" + collectionDate + "')) " +
                          "SELECT @@IDENTITY AS 'Identity'";
 
@@ -950,7 +948,7 @@ namespace SgqSystem.Services
         /// <param name="id">Id da Coleta</param>
         /// <returns></returns>
         public int InsertCollectionLevel02(string ConsolidationLevel02Id, string Level01Id, string Level02Id, string UnitId, string AuditorId, string Shift, string Period, string Phase, string Reaudit, string ReauditNumber, string CollectionDate,
-                                           string StartPhase, string Evaluation, string Sample, string CatteType, string ChainSpeed, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string LotNumber, string MudScore, 
+                                           string StartPhase, string Evaluation, string Sample, string CatteType, string ChainSpeed, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string LotNumber, string MudScore,
                                            string NotEvaluateIs, string Duplicated, string haveReaudit, string haveCorrectiveAction, string HavePhase, string Completed, string id)
         {
 
@@ -972,7 +970,7 @@ namespace SgqSystem.Services
             string sql = null;
 
             //Se o Id for igual a zero é um insert
-            if(id == "0")
+            if (id == "0")
             {
                 sql = "INSERT INTO CollectionLevel02 ([ConsolidationLevel02Id],[Level01Id],[Level02Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[CattleTypeId],[Chainspeed],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[LotNumber],[Mudscore],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed]) " +
                 "VALUES" +
@@ -1002,7 +1000,7 @@ namespace SgqSystem.Services
                         connection.Open();
                         var i = Convert.ToInt32(command.ExecuteScalar());
                         //Se o script for executado corretamente retorna o Id
-                        if(i > 0)
+                        if (i > 0)
                         {
                             return i;
                         }
@@ -1063,7 +1061,7 @@ namespace SgqSystem.Services
 
                 string conform = result[3];
                 string valueText = result[6];
-                if(string.IsNullOrEmpty(valueText))
+                if (string.IsNullOrEmpty(valueText))
                 {
                     valueText = "undefined";
                 }
@@ -1071,7 +1069,7 @@ namespace SgqSystem.Services
                 id = DefaultValueReturn(id, "0");
 
                 //Se o Id for zeros
-                if(id == "0")
+                if (id == "0")
                 {
                     //Gera Script de Insert
                     sql += "INSERT INTO CollectionLevel03 ([CollectionLevel02Id],[Level03Id],[AddDate],[AlterDate],[ConformedIs],[Value],[ValueText],[Duplicated]) " +
@@ -1100,7 +1098,7 @@ namespace SgqSystem.Services
                         connection.Open();
                         var i = Convert.ToInt32(command.ExecuteScalar());
                         //Se o script foi executado, retorna o Id
-                        if(i > 0)
+                        if (i > 0)
                         {
                             return i;
                         }
@@ -1238,7 +1236,7 @@ namespace SgqSystem.Services
                 return null;
             }
         }
-        
+
         [WebMethod]
         public string reciveLastData(string unidadeId)
         {
@@ -1261,7 +1259,7 @@ namespace SgqSystem.Services
         /// <param name="unidadeId">Id da Unidade</param>
         /// <param name="lastDate">Se False, traz o resultado do dia atual somente, se True, traz o ultimo resultado sem o dia atual</param>
         /// <returns></returns>
-        public string GetConsolidationLevel01(string unidadeId, bool lastDate=false)
+        public string GetConsolidationLevel01(string unidadeId, bool lastDate = false)
         {
 
             string atualCollectionDate = DateTime.Now.ToString("yyyyMMdd");
@@ -1272,7 +1270,7 @@ namespace SgqSystem.Services
                 collectionDate = GetMaxDateCollection(DateTime.Now);
                 atualCollectionDate = collectionDate;
             }
-         
+
             string sql = "SELECT Id, Level01Id, ConsolidationDate FROM ConsolidationLevel01 WHERE ConsolidationDate BETWEEN '" + collectionDate + " 00:00:00' AND '" + atualCollectionDate + " 23:59:59' GROUP BY Id, Level01Id, ConsolidationDate";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -1305,10 +1303,10 @@ namespace SgqSystem.Services
                                 string period = null;
                                 string reaudit = null;
                                 string reauditNumber = null;
-                              
+
                                 string lastevaluate = null;
                                 int lastsample = 0;
-                               
+
                                 int evaluate = 0;
                                 int sample = 0;
                                 var Level02ResultList = new List<Level02Result>();
@@ -1318,11 +1316,11 @@ namespace SgqSystem.Services
                                 var periods = (from p in Level02ResultList
                                                group p by p.period into g
                                                select new { period = g.Key }).ToList();
-                   
+
                                 foreach (var p in periods)
                                 {
                                     string Level01ResultByPeruid = null;
-                                    var Level02ResultByPeriod = Level02ResultList.Where(pe => pe.period == p.period).GroupBy(s => s.reaudit).ToList() ;
+                                    var Level02ResultByPeriod = Level02ResultList.Where(pe => pe.period == p.period).GroupBy(s => s.reaudit).ToList();
 
                                     foreach (var l2p in Level02ResultByPeriod)
                                     {
@@ -1481,7 +1479,7 @@ namespace SgqSystem.Services
                                 string Id = r[0].ToString();
                                 string Level02Id = r[1].ToString();
 
-                                if(string.IsNullOrEmpty(ConsolidationLevel02Ids))
+                                if (string.IsNullOrEmpty(ConsolidationLevel02Ids))
                                 {
                                     ConsolidationLevel02Ids = Id;
                                 }
@@ -1490,13 +1488,13 @@ namespace SgqSystem.Services
                                     ConsolidationLevel02Ids += "," + Id;
                                 }
 
-                                if(string.IsNullOrEmpty(level02Ids))
+                                if (string.IsNullOrEmpty(level02Ids))
                                 {
                                     level02Ids = Level02Id;
                                 }
                                 else
                                 {
-                                    level02Ids +=  "," +Level02Id;
+                                    level02Ids += "," + Level02Id;
 
                                 }
 
@@ -1521,7 +1519,7 @@ namespace SgqSystem.Services
 
         public string GetCollectionLevel02(string ConsolidationLevel02Ids, string Level01Id, string Level02Ids, string UnidadeId, ref List<Level02Result> Level02ResultList)
         {
-            if(string.IsNullOrEmpty(ConsolidationLevel02Ids) || string.IsNullOrEmpty(Level02Ids))
+            if (string.IsNullOrEmpty(ConsolidationLevel02Ids) || string.IsNullOrEmpty(Level02Ids))
             {
                 return null;
             }
@@ -1552,7 +1550,7 @@ namespace SgqSystem.Services
                                 int phase = Convert.ToInt32(r[5]);
                                 bool reauditIs = Convert.ToBoolean(r[6]);
                                 int reauditnumber = Convert.ToInt32(r[7]);
-                               
+
                                 DateTime CollectionDate = Convert.ToDateTime(r[8]);
                                 string date = CollectionDate.ToString("MMddyyyy");
 
@@ -1563,7 +1561,7 @@ namespace SgqSystem.Services
                                 //Estão como int mas tem que abstratir para uma funcao verifica através do banco de dados o tipo que tem que mostrar
                                 int cattletype = Convert.ToInt32(r[12]);
                                 int baisedUnbaised = 0;
-                                if(Level01Id == "1")
+                                if (Level01Id == "1")
                                 {
                                     baisedUnbaised = cattletype;
                                 }
@@ -1585,23 +1583,23 @@ namespace SgqSystem.Services
                                 string Level03Result = GetCollectionLevel03(Id, date, AuditorId, ref defects);
                                 string completedReauditTag = null;
                                 //Procedimento só para HTP, ideal passar para o banco de dados
-                                if(haveReaudit == false && defects > 0 && Level01Id == "1")
+                                if (haveReaudit == false && defects > 0 && Level01Id == "1")
                                 {
                                     completedReauditTag = " completereaudit=\"completereaudit\"";
                                 }
 
                                 string haveReauditTag = null;
-                                if(haveReaudit == true)
+                                if (haveReaudit == true)
                                 {
                                     haveReauditTag = " havereaudit=\"havereaudit\"";
                                 }
                                 string haveCorrectiveActionTag = null;
-                                if(haveCorrectiveAction == true)
+                                if (haveCorrectiveAction == true)
                                 {
                                     haveCorrectiveActionTag = " havecorrectiveaction=\"havecorrectiveaction\"";
                                 }
 
-                                string Level02Result = "<div id=\"" + Id + "\" class=\"level02Result\" level01id=\"" + Level01Id + "\" level02id=\"" + level02id + "\" unidadeid=\"" + UnidadeId + "\" date=\"" + date + "\" datetime=\"" + CollectionDate.ToString("MM/dd/yyyy HH:mm:ss:fff") + "\" auditorid=\"" + AuditorId + "\" shift=\"" + shift + "\" period=\"" + period + "\" defects=\"" + defects +"\" reaudit=\"" + reauditIs.ToString().ToLower() + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" reauditnumber=\"" + reauditnumber+ "\" phase=\"" + phase + "\" startphasedate=\"" + startphasedate + "\" cattletype=\"" + cattletype + "\" chainspeed=\"" + chainspeed + "\" lotnumber=\"" + lotnumber + "\" mudscore=\"" + mudscore + "\" consecutivefailurelevel=\"undefined\" consecutivefailuretotal=\"undefined\" notavaliable=\"" + notavaliable.ToLower() +"\" sync=\"true\"" + completedReauditTag + haveReauditTag + haveCorrectiveActionTag + ">" +
+                                string Level02Result = "<div id=\"" + Id + "\" class=\"level02Result\" level01id=\"" + Level01Id + "\" level02id=\"" + level02id + "\" unidadeid=\"" + UnidadeId + "\" date=\"" + date + "\" datetime=\"" + CollectionDate.ToString("MM/dd/yyyy HH:mm:ss:fff") + "\" auditorid=\"" + AuditorId + "\" shift=\"" + shift + "\" period=\"" + period + "\" defects=\"" + defects + "\" reaudit=\"" + reauditIs.ToString().ToLower() + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" reauditnumber=\"" + reauditnumber + "\" phase=\"" + phase + "\" startphasedate=\"" + startphasedate + "\" cattletype=\"" + cattletype + "\" chainspeed=\"" + chainspeed + "\" lotnumber=\"" + lotnumber + "\" mudscore=\"" + mudscore + "\" consecutivefailurelevel=\"undefined\" consecutivefailuretotal=\"undefined\" notavaliable=\"" + notavaliable.ToLower() + "\" sync=\"true\"" + completedReauditTag + haveReauditTag + haveCorrectiveActionTag + ">" +
                                                        Level03Result +
                                                        "</div>";
 
@@ -1641,7 +1639,7 @@ namespace SgqSystem.Services
         }
         public string GetCollectionLevel03(string CollectionLevel02Id, string date, string auditorId, ref int defects)
         {
-            string sql = "SELECT [Id], [Level03Id], [ConformedIs], [Value], [ValueText] FROM CollectionLevel03 WHERE CollectionLevel02Id = '" +  CollectionLevel02Id+ "'";
+            string sql = "SELECT [Id], [Level03Id], [ConformedIs], [Value], [ValueText] FROM CollectionLevel03 WHERE CollectionLevel02Id = '" + CollectionLevel02Id + "'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -1660,7 +1658,7 @@ namespace SgqSystem.Services
                                 string level03id = r[1].ToString();
                                 bool conformedIs = Convert.ToBoolean(r[2]);
                                 int value = Convert.ToInt32(r[3]);
-                                if(conformedIs == false && value == 0)
+                                if (conformedIs == false && value == 0)
                                 {
                                     value = 1;
                                 }
@@ -1668,7 +1666,7 @@ namespace SgqSystem.Services
                                 defects += value;
 
                                 string valueText = r[4].ToString();
-                                if(valueText == "undefined")
+                                if (valueText == "undefined")
                                 {
                                     valueText = " valuetext";
                                 }
@@ -1677,8 +1675,8 @@ namespace SgqSystem.Services
                                     valueText = " valuetext=\"" + valueText + "\"";
                                     defects += 1;
                                 }
-                               Level03Results += "<div id=\"" + id + "\" class=\"level03Result\" level03id=\"" + level03id + "\" date=\"" + date + "\" value=\"" + value + "\" conform=\"" + conformedIs.ToString().ToLower() + "\" auditorid=\"" + auditorId + "\" totalerror=\"null\"" + valueText + ">" +
-                                                 "</div>";
+                                Level03Results += "<div id=\"" + id + "\" class=\"level03Result\" level03id=\"" + level03id + "\" date=\"" + date + "\" value=\"" + value + "\" conform=\"" + conformedIs.ToString().ToLower() + "\" auditorid=\"" + auditorId + "\" totalerror=\"null\"" + valueText + ">" +
+                                                  "</div>";
                             }
                             return Level03Results;
                         }
@@ -1697,6 +1695,283 @@ namespace SgqSystem.Services
             }
         }
 
+        #endregion
+        #region App
+        [WebMethod]
+        public string getAPP()
+        {
+            var html = new Html();
+
+            string login = GetLoginAPP();
+
+            string APPMain = getAPPMain();
+
+            return APPMain;
+        }
+        public string getAPPMain()
+        {
+            var html = new Html();
+
+                              
+                                                                                                                                                                                                           
+            string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
+
+            string container = html.div(
+
+                                         outerhtml: breadCrumb +
+                                                    GetLevel01()
+                
+                                        , classe: "container");
+
+            return html.div(
+                            outerhtml: navBar() +
+                                       rightMenu() +
+                                       html.div(classe: "overlay", style: "display:none") +
+                                       container +
+                                       footer(),
+                             classe: "App"
+                           );
+        }
+
+        public string navBar()
+        {
+            string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                         " +
+                           "    <div class=\"container\">                                                                                                                                                  " +
+                           "        <div class=\"navbar-header\" style=\"width: 100%\">                                                                                                                    " +
+                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" aria-hidden=\"true\"></i> Data Collection</a>                  " +
+                           "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                   " +
+                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div>          " +
+                           "        </div>                                                                                                                                                                 " +
+                           "    </div>                                                                                                                                                                     " +
+                           "</div>                                                                                                                                                                         ";
+
+            return navBar;
+        }
+        public string rightMenu()
+        {   
+            string menu =  "<div class=\"rightMenu\">                                                                                                  " + 
+                           "     <div class=\"list-group list-group-inverse rightMenuList\">                                                           " +
+                           "         <a href= \"#\" id=\"btnSync\" class=\"list-group-item\">Sync</a>                                                  " +
+                           "         <a href= \"#\" id=\"btnLogout\" class=\"list-group-item\">Logout</a>                                              " +
+                           "         <a href= \"#\" id=\"btnLog\" class=\"list-group-item\">View Log</a>                                               " +
+                           "         <a href= \"#\" id=\"btnCollectDB\" class=\"list-group-item\">View DataBase</a>                                    " +
+                           "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">Clear DataBase</a>                                " +
+                           "         <span id=\"version\" class=\"list-group-item\">Version: <span class=\"number\"></span></span>                     " +
+                           "         <span id=\"ambiente\" class=\"list-group-item\"><span class=\"base\"></span></span>                               " +
+                           "     </div>                                                                                                                " +
+                           " </div>                                                                                                                    ";
+
+            return menu;
+        }
+        public string footer()
+        {
+            string foot = "<footer class=\"footer\">                                                                                                                                       " +
+                          "   <p style=\"color:white; margin-left:16px; margin-right:16px; margin-top: 12px;\">                                                                      " +
+                          "       <span class=\"user\">Admin</span> - <span class=\"unit\">Colorado</span><span class=\"urlPrefix\"></span>                                          " +
+                          "       <span class=\"status pull-right\"></span>                                                                                                          " +
+                          "       <div class=\"progress\">                                                                                                                           " +
+                          "           <div class=\"statusProgress progress-bar\" role=\"progressbar\" aria-valuenow=\"70\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>          " +
+                          "       </div>                                                                                                                                             " +
+                          "   </p>                                                                                                                                                   " +
+                          "</footer>                                                                                                                                                 ";
+
+            return foot;
+        }
+    public string GetLevel01()
+        {
+            var html = new Html();
+
+            //Instanciamos a Classe ParLevel01 Dapper
+            var ParLevel1DB = new SGQDBContext.ParLevel1();
+
+            //Buscamos os ParLevel11 para a unidade selecionada
+            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList("1");
+
+            //Agrupamos o ParLevel1 por ParCriticalLevel
+            var parLevel1GroupByCriticalLevel = parLevel1List.OrderBy(p => p.ParCriticalLevel_Id).GroupBy(p => p.ParCriticalLevel_Id);
+
+            //Instanciamos uma variável para não gerenciar a utilizar do ParCriticalLevel
+            bool ParCriticalLevel = false;
+
+            //Instanciamos uma variável para instanciar a lista de level1
+            string listlevel1 = null;
+            //Percorremos a lista de agrupada
+            foreach (var parLevel1Group in parLevel1GroupByCriticalLevel)
+            {
+                //Instanciamos uma variável level01GroupList
+                string level01GroupList = null;
+                //Instanciamos uma variável list parLevel1 para adicionar os parLevel1
+                string parLevel1 = null;
+                //Instanciamos uma variável para verificar o nome do ParCriticalLevel
+                string nameParCritialLevel = null;
+                //Percorremos a Lista dos Agrupamento
+                foreach (var parlevel1 in parLevel1Group)
+                {
+                    //Se o ParLevel1 contem um ParCritialLevel_Id
+                    if (parlevel1.ParCriticalLevel_Id > 0)
+                    {
+                        //O ParLevel1 vai estar dentro de um accordon
+                        ParCriticalLevel = true;
+                        //Pego o nome do ParCriticalLevel para não precisar fazer outra pesquisa
+                        nameParCritialLevel = parlevel1.ParCriticalLevel_Name;
+                        //Incremento os itens que estaram no ParLevel1                
+
+                        string level01 = html.link(
+
+                                                  id: parlevel1.Id.ToString(),
+                                                  classe: "level1 col-xs-7",
+                                                  //Aqui vai as tags do level01
+                                                  tags: "",
+                                                  outerhtml: parlevel1.Name
+                                                 );
+
+                        level01 += html.div(
+                                            //aqui vai os botoes
+                                            outerhtml: null,
+                                            classe: "userInfo col-xs-5");
+
+
+                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
+                    }
+                    else
+                    {
+                        //Caso o ParLevel1 não contenha um ParCritialLevel_Id apenas incremento os itens de ParLevel1
+                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name);
+                    }
+                }
+
+                //Quando termina o loop dos itens agrupados por ParCritialLevel 
+                //Se contem ParCritialLevel
+                if (ParCriticalLevel == true)
+                {
+                    Html.bootstrapcolor? color = null;
+                    if (parLevel1Group.Key == 1)
+                    {
+                        color = Html.bootstrapcolor.danger;
+                    }
+                    else if (parLevel1Group.Key == 2)
+                    {
+                        color = Html.bootstrapcolor.warning;
+                    }
+                    else if (parLevel1Group.Key == 3)
+                    {
+                        color = Html.bootstrapcolor.info;
+                    }
+                    //Adicionamos os itens em um acordeon
+                    parLevel1 = html.accordeon(
+                                                id: parLevel1Group.Key.ToString(),
+                                                label: nameParCritialLevel,
+                                                color: color,
+                                                outerhtml: parLevel1);
+                }
+                else
+                {
+                    //Adicionamos os itens e um listgroup
+                    level01GroupList = html.listgroup(
+                                                   outerhtml: parLevel1
+                                                );
+                }
+
+                //Adicionar a lista de level01 agrupados ou não a lsita geral
+                listlevel1 += parLevel1;
+
+            }
+            return html.div(
+                            outerhtml: listlevel1,
+                            classe: "level1List"
+                            );
+        }
+    public string GetLevel02()
+    {
+        return null;
+    }
+    public string GetLevel03()
+    {
+        return null;
+    }
+        public string GetLoginAPP()
+        {
+            var html = new Html();
+            string head = html.div(classe: "head");
+
+            #region form
+
+            #region Unit
+
+
+            string selectUnit = html.option("1", "Unit 1", tags: "ip=\"localhost/SgqSystem\"");
+
+
+            selectUnit = html.select(selectUnit, "selectUnit");
+
+            #endregion
+
+            #region shift
+            string selectShit = html.option("0", "Select the shift") +
+                                html.option("1", "Shift A") +
+                                html.option("2", "Shift B");
+
+            selectShit = html.select(selectShit, id: "shift");
+            #endregion
+
+            string formOuterHtml = html.head(Html.h.h2, outerhtml: "Please sign in") +
+                                  selectUnit +
+                                  selectShit +
+                                  html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
+                                  html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: true) +
+                                  html.label(labelfor: "inputPassword", classe: "sr-only", outerhtml: "Password") +
+                                  html.input(id: "inputPassword", placeholder: "Password", required: true, disabled: true) +
+                                  html.button(label: "Sign in", id: "btnLogin", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "Authenticating...") +
+
+                                  html.div(id: "messageError", classe: "alert alert-danger hide", tags: "role=\"alert\"",
+                                           outerhtml: html.span(classe: "icon-remove-sign") + "<strong>Error! </strong>" + html.span(id: "mensagemErro")) +
+
+                                  html.div(classe: "divLoadFiles",
+                                           outerhtml: html.span(classe: "messageLoading")) +
+
+                                  html.div(id: "messageAlert", 
+                                           classe: "alert alert-info hide",
+                                           tags: "role=\"alert\"",
+                                           outerhtml: html.span(id: "mensagemAlerta", classe: "icon-info-sign")) +
+
+                                  html.div(id: "messageSuccess", 
+                                           classe: "alert alert-success hide",
+                                           tags: "role=\"alert\"",
+                                           outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle"));
+            string form = html.form(
+                                    outerhtml: formOuterHtml
+                                    , classe: "form-signin");
+
+            #endregion
+
+            #region foot
+            string footOuterHtml = html.br() +
+                                   html.br() +
+                                   html.br() +
+                                   html.span(
+                                              outerhtml: "Version" +
+                                                         html.span(classe: "number")
+                                             , id: "versionLogin") +
+                                   html.span(
+                                               outerhtml: html.span(classe: "base")
+                                             , id: "ambienteLogin"
+
+                                            );
+
+            string foot = html.div(
+                                    outerhtml: footOuterHtml
+                                    , classe: "foot", style: "text-align:center");
+
+            #endregion
+
+            return html.div(
+                                outerhtml: head +
+                                           form +
+                                           foot
+                            
+                                ,classe: "login"
+                            );
+        }
         #endregion
     }
 }

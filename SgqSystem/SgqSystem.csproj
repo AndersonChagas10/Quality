@@ -48,6 +48,10 @@
       <HintPath>..\packages\AutoMapper.5.0.2\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="GridMvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Grid.Mvc.3.0.0\lib\net40\GridMvc.dll</HintPath>
       <Private>True</Private>
@@ -392,9 +396,11 @@
     <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
     <Compile Include="Secirity\SessionPersister.cs" />
+    <Compile Include="Services\Html.cs" />
     <Compile Include="Services\Level02Result.cs" />
-    <Compile Include="Services\SynService.asmx.cs">
-      <DependentUpon>SynService.asmx</DependentUpon>
+    <Compile Include="Services\SGQDBContext.cs" />
+    <Compile Include="Services\SyncServices.asmx.cs">
+      <DependentUpon>SyncServices.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewModels\AccountBindingModels.cs" />
@@ -1051,7 +1057,7 @@
     <Content Include="Scripts\tripledes.js" />
     <Content Include="Scripts\x64-core.js" />
     <Content Include="Help.txt" />
-    <Content Include="Services\SynService.asmx" />
+    <Content Include="Services\SyncServices.asmx" />
     <Content Include="Views\Globalization\index2.html" />
     <Content Include="Views\Params\_ParLevel1.cshtml" />
     <Content Include="Web.config">
@@ -1169,6 +1175,7 @@
     <Content Include="Views\Merge\_DivResults.cshtml" />
     <Content Include="Views\HtmlTeste\_IndexTeste.cshtml" />
     <Content Include="Views\HtmlTeste\_IndexTeste_old.cshtml" />
+    <Content Include="Views\HtmlTeste\_IndexTeste - Copy.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

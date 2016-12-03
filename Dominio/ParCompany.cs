@@ -30,6 +30,11 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
+        public string Initials { get; set; }
+        public Nullable<int> SIF { get; set; }
+        public Nullable<int> CompanyNumber { get; set; }
+        public string IPServer { get; set; }
+        public string DBServer { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParCompanyXStructure> ParCompanyXStructure { get; set; }
