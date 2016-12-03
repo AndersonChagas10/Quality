@@ -1,11 +1,12 @@
 ﻿using DTO.BaseEntity;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace DTO.DTO.Params
 {
     public class ParEvaluationDTO : EntityBase
     {
-        public int ParCompany_Id { get; set; }
+        public Nullable<int> ParCompany_Id { get; set; }
         public int ParLevel2_Id { get; set; }
 
         [Required(ErrorMessage = "Avaliação deve ser maior que 0.")]

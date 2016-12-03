@@ -15,7 +15,7 @@ namespace Dominio
     public partial class ParEvaluation
     {
         public int Id { get; set; }
-        public int ParCompany_Id { get; set; }
+        public Nullable<int> ParCompany_Id { get; set; }
         public int ParLevel2_Id { get; set; }
         public int Number { get; set; }
         public Nullable<System.DateTime> AddDate { get; set; }

@@ -362,7 +362,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParCompany_Id" Type="int" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="int" />
           <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
           <Property Name="Number" Type="int" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" />
@@ -400,7 +400,7 @@
           <Property Name="ParCompany_Id" Type="int" />
           <Property Name="PercentValue" Type="decimal" Precision="10" Scale="5" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParHeaderField">
@@ -674,7 +674,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParCompany_Id" Type="int" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="int" />
           <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
           <Property Name="Number" Type="int" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -1058,7 +1058,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParEvaluation_ParCompany">
-          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="1" />
+          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
           <End Role="ParEvaluation" Type="Self.ParEvaluation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParCompany">
@@ -1502,7 +1502,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParSample_ParCompany">
-          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="1" />
+          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
           <End Role="ParSample" Type="Self.ParSample" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParCompany">
@@ -2625,7 +2625,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="Int32" />
           <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
           <Property Name="Number" Type="Int32" Nullable="false" />
           <Property Name="AddDate" Type="DateTime" Precision="7" />
@@ -2669,7 +2669,7 @@
           <Property Name="ParCompany_Id" Type="Int32" />
           <Property Name="PercentValue" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
           <Property Name="AddDate" Type="DateTime" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParGoal_ParCompany" FromRole="ParGoal" ToRole="ParCompany" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParGoal_ParLevel1" FromRole="ParGoal" ToRole="ParLevel1" />
@@ -3008,7 +3008,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="Int32" />
           <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
           <Property Name="Number" Type="Int32" Nullable="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
@@ -3346,7 +3346,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParEvaluation_ParCompany">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
           <End Type="SgqDbModel.ParEvaluation" Role="ParEvaluation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParCompany">
@@ -3394,7 +3394,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ParSample_ParCompany">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
           <End Type="SgqDbModel.ParSample" Role="ParSample" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ParCompany">
