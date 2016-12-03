@@ -475,25 +475,6 @@ namespace Data.Repositories
 
         public void AddUpdateParLevel3Value(ParLevel3Value paramLevel3Value, int ParLevel3_Id)
         {
-            if (paramLevel3Value.ParLevel3InputType_Id == 3)
-            {
-                paramLevel3Value.ParLevel3BoolFalse_Id = null;
-                paramLevel3Value.ParLevel3BoolTrue_Id = null;
-            }
-
-            if (paramLevel3Value.ParLevel3InputType_Id == 1)
-            {
-                paramLevel3Value.IntervalMax = 0;
-                paramLevel3Value.IntervalMin = 0;
-                paramLevel3Value.AcceptableValueBetween = null;
-                paramLevel3Value.ParMeasurementUnit_Id = null;
-            }
-
-            if (paramLevel3Value.ParCompany_Id <= 0)
-            {
-                paramLevel3Value.ParCompany_Id = null;
-            }
-
             paramLevel3Value.ParLevel3_Id = ParLevel3_Id;
             if (paramLevel3Value.Id == 0)
             {

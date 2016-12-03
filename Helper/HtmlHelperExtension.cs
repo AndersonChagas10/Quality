@@ -24,15 +24,5 @@ namespace Helper
             return new MvcHtmlString(strLink);
         }
 
-        //public static MvcHtmlString DdlComSelect(this HtmlHelper html,
-        //                                      string name,
-        //                                      decimal valor,
-        //                                      string idInput,
-        //                                      string classe
-        //                                      )
-        //{
-        //    string strLink = html.TextBox(name, valor.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), htmlAttributes: new { id = idInput, @class = classe, @onkeypress = "return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 46 || event.charCode == 0 " }).ToString();
-        //    return new MvcHtmlString(strLink);
-        //}
     }
 }

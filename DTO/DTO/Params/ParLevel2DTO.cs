@@ -63,7 +63,7 @@ namespace DTO.DTO.Params
                 var opt = new SelectListItem() { Text = i.Id.ToString() + " - " + i.Name, Value = i.Id.ToString() };
                 if (listParLevel3Level2Dto.Where(r => r.ParLevel3_Id == i.Id).Count() > 0)
                 {
-                    groupSelecionado.Name = "Vinculado: " + listParLevel3Level2Dto.FirstOrDefault(r => r.ParLevel3_Id == i.Id).ParLevel2.Name;
+                    groupSelecionado.Name = "Vinculado";//: " + listParLevel3Level2Dto.FirstOrDefault(r => r.ParLevel3_Id == i.Id).ParLevel2.Name;
                     opt.Group = groupSelecionado;
                 }
                 else
