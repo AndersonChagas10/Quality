@@ -15,8 +15,6 @@ namespace SgqSystem.Controllers.Params
 
         public ParamsController(IParamsDomain paramDomain)
         {
-            //Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-            //Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
             _paramDomain = paramDomain;
             if(ViewModel == null)
                 ViewModel = new ParamsViewModel(_paramDomain.CarregaDropDownsParams());/*Cria view model vazio.*/

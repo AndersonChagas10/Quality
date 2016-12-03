@@ -22,6 +22,9 @@ namespace Dominio.Services
         private IBaseRepository<ParLevel1> _baseRepoParLevel1;
         private IBaseRepository<ParLevel2> _baseRepoParLevel2;
         private IBaseRepository<ParLevel3> _baseRepoParLevel3;
+        private IBaseRepositoryNoLazyLoad<ParLevel1> _baseRepoParLevel1NLL;
+        private IBaseRepositoryNoLazyLoad<ParLevel2> _baseRepoParLevel2NLL;
+        private IBaseRepositoryNoLazyLoad<ParLevel3> _baseRepoParLevel3NLL;
         private IBaseRepository<ParLevel1XCluster> _baseRepoParLevel1XCluster;
         private IBaseRepository<ParFrequency> _baseParFrequency;
         private IBaseRepository<ParConsolidationType> _baseParConsolidationType;
@@ -60,6 +63,9 @@ namespace Dominio.Services
         public ParamsDomain(IBaseRepository<ParLevel1> baseRepoParLevel1,
                             IBaseRepository<ParLevel2> baseRepoParLevel2,
                             IBaseRepository<ParLevel3> baseRepoParLevel3,
+                            IBaseRepositoryNoLazyLoad<ParLevel1> baseRepoParLevel1NoLazyLoad,
+                            IBaseRepositoryNoLazyLoad<ParLevel2> baseRepoParLevel2NoLazyLoad,
+                            IBaseRepositoryNoLazyLoad<ParLevel3> baseRepoParLevel3NoLazyLoad,
                             IBaseRepository<ParLevel1XCluster> baseParLevel1XCluster,
                             IBaseRepository<ParFrequency> baseParFrequency,
                             IBaseRepository<ParConsolidationType> baseParConsolidationType,
@@ -104,6 +110,9 @@ namespace Dominio.Services
             _baseRepoParLevel1 = baseRepoParLevel1;
             _baseRepoParLevel2 = baseRepoParLevel2;
             _baseRepoParLevel3 = baseRepoParLevel3;
+            _baseRepoParLevel1NLL = baseRepoParLevel1NoLazyLoad;
+            _baseRepoParLevel2NLL = baseRepoParLevel2NoLazyLoad;
+            _baseRepoParLevel3NLL = baseRepoParLevel3NoLazyLoad;
             _baseRepoParLevel1XCluster = baseParLevel1XCluster;
             _baseParFrequency = baseParFrequency;
             _baseParConsolidationType = baseParConsolidationType;
@@ -208,7 +217,7 @@ namespace Dominio.Services
             parlevel1Dto.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(parlevel1.ParLevel1XHeaderField.Where(r => r.IsActive == true).OrderBy(r => r.IsActive));/*Cabeçalhos*/
 
             parlevel1Dto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();
-            parlevel1Dto.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2.GetAll()), parlevel1Dto.listParLevel3Level2Level1Dto);
+            parlevel1Dto.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2NLL.GetAll()), parlevel1Dto.listParLevel3Level2Level1Dto);
 
             return parlevel1Dto;
         }
@@ -278,7 +287,7 @@ namespace Dominio.Services
             /*Cria select Level 2 e 3 vinculados*/
             paramsDto.listParLevel3GroupDto = new List<ParLevel3GroupDTO>();
             level2.listParLevel3GroupDto = Mapper.Map<List<ParLevel3GroupDTO>>(parLevel2.ParLevel3Group.OrderByDescending(r => r.IsActive));
-            level2.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3.GetAll()), level2.listParLevel3Level2Dto);
+            level2.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3NLL.GetAll()), level2.listParLevel3Level2Dto);
 
             if (parLevel2.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == level3Id) != null)/*Peso do vinculo*/
                 level2.pesoDoVinculoSelecionado = parLevel2.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == level3Id).Weight;
@@ -299,7 +308,10 @@ namespace Dominio.Services
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel3 saveParamLevel3 = Mapper.Map<ParLevel3>(paramsDto.parLevel3Dto);
 
-            paramsDto.parLevel3Dto.listLevel3Value.ForEach(r => r.preparaParaInsertEmBanco());
+            if (paramsDto.parLevel3Dto.listLevel3Value != null)
+                if(paramsDto.parLevel3Dto.listLevel3Value.Count() > 0)
+                    paramsDto.parLevel3Dto.listLevel3Value.ForEach(r => r.preparaParaInsertEmBanco());
+
             List<ParLevel3Value> listSaveParamLevel3Value = Mapper.Map<List<ParLevel3Value>>(paramsDto.parLevel3Dto.listLevel3Value);
 
             List<ParRelapse> listParRelapse = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel3Dto.listParRelapseDto);/*Reincidencia*/
@@ -425,45 +437,48 @@ namespace Dominio.Services
 
         public ParamsDdl CarregaDropDownsParams()
         {
-            var DdlParConsolidation = Mapper.Map<List<ParConsolidationTypeDTO>>(_baseParConsolidationType.GetAllAsNoTracking());
+            lock (this)
+            {
+                var DdlParConsolidation = Mapper.Map<List<ParConsolidationTypeDTO>>(_baseParConsolidationType.GetAllAsNoTracking());
 
-            var DdlFrequency = Mapper.Map<List<ParFrequencyDTO>>(_baseParFrequency.GetAllAsNoTracking());
-            var DdlparLevel1 = Mapper.Map<List<ParLevel1DTO>>(_baseRepoParLevel1.GetAllAsNoTracking());
-            var DdlparLevel2 = Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2.GetAllAsNoTracking());
-            var DdlparLevel3 = Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3.GetAllAsNoTracking());
+                var DdlFrequency = Mapper.Map<List<ParFrequencyDTO>>(_baseParFrequency.GetAllAsNoTracking());
+                var DdlparLevel1 = Mapper.Map<List<ParLevel1DTO>>(_baseRepoParLevel1NLL.GetAllAsNoTracking());
+                var DdlparLevel2 = Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2NLL.GetAllAsNoTracking());
+                var DdlparLevel3 = Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3NLL.GetAllAsNoTracking());
 
-            var DdlparCluster = Mapper.Map<List<ParClusterDTO>>(_baseParCluster.GetAllAsNoTracking());
-            var DdlparLevelDefinition = Mapper.Map<List<ParLevelDefinitonDTO>>(_baseParLevelDefiniton.GetAllAsNoTracking());
-            var DdlParFieldType = Mapper.Map<List<ParFieldTypeDTO>>(_baseParFieldType.GetAllAsNoTracking());
-            var DdlParDepartment = Mapper.Map<List<ParDepartmentDTO>>(_baseParDepartment.GetAllAsNoTracking());
-            var DdlParNotConformityRule = Mapper.Map<List<ParNotConformityRuleDTO>>(_baseParNotConformityRule.GetAllAsNoTracking());
+                var DdlparCluster = Mapper.Map<List<ParClusterDTO>>(_baseParCluster.GetAllAsNoTracking());
+                var DdlparLevelDefinition = Mapper.Map<List<ParLevelDefinitonDTO>>(_baseParLevelDefiniton.GetAllAsNoTracking());
+                var DdlParFieldType = Mapper.Map<List<ParFieldTypeDTO>>(_baseParFieldType.GetAllAsNoTracking());
+                var DdlParDepartment = Mapper.Map<List<ParDepartmentDTO>>(_baseParDepartment.GetAllAsNoTracking());
+                var DdlParNotConformityRule = Mapper.Map<List<ParNotConformityRuleDTO>>(_baseParNotConformityRule.GetAllAsNoTracking());
 
-            var DdlParLocal_Level1 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAllAsNoTracking().Where(p => p.Level == 1));
-            var DdlParLocal_Level2 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAllAsNoTracking().Where(p => p.Level == 2));
+                var DdlParLocal_Level1 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAllAsNoTracking().Where(p => p.Level == 1));
+                var DdlParLocal_Level2 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAllAsNoTracking().Where(p => p.Level == 2));
 
-            var DdlParCounter_Level1 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAllAsNoTracking().Where(p => p.Level == 1));
-            var DdlParCounter_Level2 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAllAsNoTracking().Where(p => p.Level == 2));
+                var DdlParCounter_Level1 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAllAsNoTracking().Where(p => p.Level == 1));
+                var DdlParCounter_Level2 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAllAsNoTracking().Where(p => p.Level == 2));
 
-            var DdlParLevel3InputType = Mapper.Map<List<ParLevel3InputTypeDTO>>(_baseParLevel3InputType.GetAllAsNoTracking());
-            var DdlParMeasurementUnit = Mapper.Map<List<ParMeasurementUnitDTO>>(_baseParMeasurementUnit.GetAllAsNoTracking());
+                var DdlParLevel3InputType = Mapper.Map<List<ParLevel3InputTypeDTO>>(_baseParLevel3InputType.GetAllAsNoTracking());
+                var DdlParMeasurementUnit = Mapper.Map<List<ParMeasurementUnitDTO>>(_baseParMeasurementUnit.GetAllAsNoTracking());
 
-            var DdlParLevel3BoolFalse = Mapper.Map<List<ParLevel3BoolFalseDTO>>(_baseParLevel3BoolFalse.GetAllAsNoTracking());
-            var DdlParLevel3BoolTrue = Mapper.Map<List<ParLevel3BoolTrueDTO>>(_baseParLevel3BoolTrue.GetAllAsNoTracking());
+                var DdlParLevel3BoolFalse = Mapper.Map<List<ParLevel3BoolFalseDTO>>(_baseParLevel3BoolFalse.GetAllAsNoTracking());
+                var DdlParLevel3BoolTrue = Mapper.Map<List<ParLevel3BoolTrueDTO>>(_baseParLevel3BoolTrue.GetAllAsNoTracking());
 
-            var DdlparCrit = Mapper.Map<List<ParCriticalLevelDTO>>(_baseRepoParCriticalLevel.GetAllAsNoTracking());
+                var DdlparCrit = Mapper.Map<List<ParCriticalLevelDTO>>(_baseRepoParCriticalLevel.GetAllAsNoTracking());
 
-            var DdlparCompany = Mapper.Map<List<ParCompanyDTO>>(_baseRepoParCompany.GetAllAsNoTracking());
+                var DdlparCompany = Mapper.Map<List<ParCompanyDTO>>(_baseRepoParCompany.GetAllAsNoTracking());
 
-            var retorno = new ParamsDdl();
+                var retorno = new ParamsDdl();
 
-            retorno.SetDdlsNivel123(DdlparLevel1,
-                            DdlparLevel2,
-                            DdlparLevel3);
+                retorno.SetDdlsNivel123(DdlparLevel1,
+                                DdlparLevel2,
+                                DdlparLevel3);
 
-            retorno.SetDdls(DdlParConsolidation, DdlFrequency, DdlparCluster, DdlparLevelDefinition, DdlParFieldType, DdlParDepartment, DdlParCounter_Level1,
-                            DdlParLocal_Level1, DdlParCounter_Level2, DdlParLocal_Level2, DdlParNotConformityRule, DdlParLevel3InputType, DdlParMeasurementUnit,
-                            DdlParLevel3BoolFalse, DdlParLevel3BoolTrue, DdlparCrit, DdlparCompany);
-            return retorno;
+                retorno.SetDdls(DdlParConsolidation, DdlFrequency, DdlparCluster, DdlparLevelDefinition, DdlParFieldType, DdlParDepartment, DdlParCounter_Level1,
+                                DdlParLocal_Level1, DdlParCounter_Level2, DdlParLocal_Level2, DdlParNotConformityRule, DdlParLevel3InputType, DdlParMeasurementUnit,
+                                DdlParLevel3BoolFalse, DdlParLevel3BoolTrue, DdlparCrit, DdlparCompany);
+                return retorno; 
+            }
         }
 
         #endregion

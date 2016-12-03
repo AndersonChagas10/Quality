@@ -65,6 +65,7 @@
     <Compile Include="Example.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\Repositories\IBaseRepositoryNoLazyLoad.cs" />
     <Compile Include="Interfaces\Repositories\ICorrectiveActionRepository.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
     <Compile Include="Interfaces\Repositories\IGetDataResultRepository.cs" />

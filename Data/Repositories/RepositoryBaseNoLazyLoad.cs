@@ -13,7 +13,7 @@ namespace Data.Repositories
     /// Repositório Base, classe de gerencia do Banco de Dados.
     /// </summary>
     /// <typeparam name="T">Object reconhecido pelo DataBase: EntityBase</typeparam>
-    public class RepositoryBase<T> : IDisposable, IBaseRepository<T> where T : class
+    public class RepositoryBaseNoLazyLoad<T> : IDisposable, IBaseRepositoryNoLazyLoad<T> where T : class
     {
 
         /// <summary>
@@ -30,9 +30,10 @@ namespace Data.Repositories
         /// Construtor.
         /// </summary>
         /// <param name="Db"></param>
-        public RepositoryBase(SgqDbDevEntities Db)
+        public RepositoryBaseNoLazyLoad(SgqDbDevEntities Db)
         {
             db = Db;
+            db.Configuration.LazyLoadingEnabled = false;
             //db.Database.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;");
         }
 

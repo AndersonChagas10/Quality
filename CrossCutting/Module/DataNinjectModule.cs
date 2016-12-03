@@ -9,6 +9,7 @@ namespace CrossCutting.IOC.Module
         public override void Load()
         {
             Bind(typeof(IBaseRepository<>)).To(typeof(RepositoryBase<>));
+            Bind(typeof(IBaseRepositoryNoLazyLoad<>)).To(typeof(RepositoryBaseNoLazyLoad<>));
             Bind(typeof(IGetDataResultRepository<>)).To(typeof(GetDataResultRepository<>));
             Bind(typeof(IRelatorioColetaRepository<>)).To(typeof(RelatorioColetaRepository<>));
             Bind<IUserRepository>().To<UserRepository>();
