@@ -1,6 +1,4 @@
-﻿using DTO;
-using DTO.DTO;
-using SgqSystem.Secirity;
+﻿using SgqSystem.Secirity;
 using System;
 using System.Diagnostics;
 using System.Web;
@@ -11,7 +9,7 @@ namespace SgqSystem.Controllers
     public class HomeController : BaseController
     {
 
-        [CustomAuthorize(Roles = "Admin")]
+        [CustomAuthorize()]
         public ActionResult Index()
         {
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();

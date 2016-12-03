@@ -6,7 +6,8 @@ using SgqSystem.ViewModels;
 using System.Web.Mvc;
 namespace SgqSystem.Controllers
 {
-    [CustomAuthorize(Roles = "Admin")]
+    //techservices
+    [CustomAuthorize()]
     public class ReportsController : BaseController
     {
 

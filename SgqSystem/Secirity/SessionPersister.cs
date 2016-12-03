@@ -13,6 +13,8 @@ namespace SgqSystem.Secirity
             {
                 if (HttpContext.Current == null)
                     return string.Empty;
+
+
                 var sessionaVar = HttpContext.Current.Session[userNameSessionVar];
                 if (sessionaVar != null)
                     return sessionaVar as string;
@@ -20,7 +22,9 @@ namespace SgqSystem.Secirity
             }
             set
             {
-                HttpContext.Current.Session[userNameSessionVar] = value;
+               
+
+                //HttpContext.Current.Session[userNameSessionVar] = value;
             }
         }
 
