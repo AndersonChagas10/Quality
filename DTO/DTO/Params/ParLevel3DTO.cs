@@ -11,8 +11,8 @@ namespace DTO.DTO.Params
         [MaxLength(140, ErrorMessage = "O tamanho máximo do Nome são 140 caracteres.")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "A Descrição é obrigatória.")]
-        [MinLength(3, ErrorMessage = "O tamanho mínimo da Descrição deve ser 3 caracteres.")]
+        //[Required(ErrorMessage = "A Descrição é obrigatória.")]
+        [MinLength(0, ErrorMessage = "O tamanho mínimo da Descrição deve ser 3 caracteres.")]
         [MaxLength(140, ErrorMessage = "O tamanho máximo da Descrição deve ser no 140 caracteres.")]
         public string Description { get; set; }
 
