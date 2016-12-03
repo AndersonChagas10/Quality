@@ -1122,5 +1122,13 @@
     });
 
 
+    timeoutAjax = 20000;
+    if(window.location.host.indexOf("localhost") != -1){
+        timeoutAjax = 500000;
+    }
+    $.ajaxSetup({
+        
+        timeout: timeoutAjax //Time in milliseconds
+    });
 
 </script>

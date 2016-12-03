@@ -22,6 +22,8 @@ namespace Dominio.Interfaces.Repositories
 
         IEnumerable<T> GetAll();
 
+        IEnumerable<T> GetAllAsNoTracking();
+
         void Update(T obj);
 
         void UpdateAll(IEnumerable<T> listObj);

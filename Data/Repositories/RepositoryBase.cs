@@ -1,5 +1,4 @@
 ﻿using Dominio;
-using Dominio.Entities.BaseEntity;
 using Dominio.Interfaces.Repositories;
 using DTO.Helpers;
 using System;
@@ -175,6 +174,14 @@ namespace Data.Repositories
         {
 
             var aaa = Entity.AsQueryable();
+
+            return Entity.ToList();
+        }
+
+        public IEnumerable<T> GetAllAsNoTracking()
+        {
+            db.Configuration.LazyLoadingEnabled = false;
+            var aaa = Entity.AsQueryable().AsNoTracking();
 
             return Entity.ToList();
         }
