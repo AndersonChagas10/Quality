@@ -1,7 +1,10 @@
 ﻿@model SgqSystem.ViewModels.ParamsViewModel
 
 <script>
-    
+    var versao = "1.0.5";
+
+
+    var baseAmbiente = "GRT Local"
     //assim que todos os arquivos foram carregados
     $(document).ready(function () {
         //clearLastSync();
@@ -32,15 +35,15 @@
     document.addEventListener("deviceready", onDeviceReady, false);
 
     //assim que o dispositivo estiver pronto
-    function onDeviceReady() {
-        //cria o arquivo que grava a ultima sincronizacao
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
-            fs.root.getFile("sync.txt", { create: true, exclusive: false }, function (fileEntry) {
-            }, onErrorCreateFile);
-        }, onErrorLoadFs);
+    //function onDeviceReady() {
+    //    //cria o arquivo que grava a ultima sincronizacao
+    //    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+    //        fs.root.getFile("sync.txt", { create: true, exclusive: false }, function (fileEntry) {
+    //        }, onErrorCreateFile);
+    //    }, onErrorLoadFs);
 
 
-    }
+    //}
 
     //criacao do file plugin
     window.addEventListener('filePluginIsReady', function () {
@@ -204,151 +207,72 @@
     }
 
 
-    $(document).on('click', '.level01List .level01', function (e) {
-        //Seleciona o Nivel 01
-        var level01 = $(this);
 
-        //Verifica se o level02List não está visivel
-        if (!$('.level02List').is(':visible')) {
-            //verifica se os itens estão preenchidos
-            var itensOk = checkInputsSelect();
-            //se não estireverem
-            if (itensOk == false) {
-                //Paro a execução do sistema para enviar a mensagem
-                return false;
-            }
-        }
-
-        //Zero total de defeitos
-        $('.level01Result').removeClass('selected');
-
-        //Verifico se já existe resultado para o periodo.
-        //var atualResult = getAtualResult(level01);
-
-        //Instancio configuração de avaliação, por padrão o mínimo é 1;
-        var evaluateConf = 1;
-
-
-        //verifico se trabalho com avaliacoes
-        if (level01.attr('haveevaluates')) {
-
-            evaluateConf = parseInt($('.level02Group[level01id=' + level01.attr('id') + '] .level02:first').attr('totalsets'));
-        }
-
-
-        //Verifico o ultimo resultado gerado.
-        var resultPeriod = getAtualResult(level01);
-
-        if (!resultPeriod.length && !level01.attr('havephases')) {
-            resultPeriod = getLastReauditResultPeriod(level01, $('#selectPeriod').val());
-            if (resultPeriod.length && (resultPeriod.attr('date') != $('.App').attr('date')) && (resultPeriod.attr('period') == $('.App').attr('period'))) {
-                resultPeriod = getAtualResult(level01);
-            }
-        }
-        //Se o resultado teve uma reauditoria completa
-        if (resultPeriod.attr('completereaudit')) {
-            //vou buscar a reauditoria como resultado
-            resultPeriod = getLastReauditResultPeriod(level01, resultPeriod.attr('period'));
-        }
-
-
-        var resultHaveReaudit = getResultHaveReaudit(level01);
-        if (!resultPeriod.length && resultHaveReaudit.length && !level01.attr('startreaudit')) {
-            openMessageModal("Pending Audit or Re-audit " + $('#selectPeriod option[value=' + resultHaveReaudit.attr('period') + ']').text(), 'Please, complete to move to next audit');
-            return false;
-        }
-        //Se não foi encontrado resultado para o periodo, mas foi encontrada uma reauditoria.
-        if (resultHaveReaudit.length) {
-            //if (!resultPeriod.length && resultHaveReaudit.length) {
-            //Assuma a reauditoria como resultado do periodo.
-            resultPeriod = resultHaveReaudit;
-        }
-
-        //Se o resultado do periodo gerou uma reauditoria estou iniciando/continuando uma reauditoria
-        if (resultPeriod.attr('havereaudit') && level01.attr('startreaudit')) {
-            //Busca o ultimo resultado com reauditoria igual a true
-            resultPeriod = getLastReauditResultPeriod(level01, resultPeriod.attr('period'));
-        }
-        //Reseta o level02
-        level02Reset($('.level02Group[level01id=' + level01.attr('id') + '] .level02'));
-
-        //Se está iniciando/continuando uma reauditoria e não tem resultado ou o resultado é uma reauditoria e o resultado do periodo gerou uma reauditoria e inicia/continua a reauditoria
-        if ((level01.attr('startreaudit') && !resultPeriod.length) || (resultPeriod.attr('reaudit') == "true" && resultPeriod.attr('havereaudit') && level01.attr('startreaudit'))) {
-            //Busca ultimo resultado que tem reauditoria
-            resultPeriod = getResultHaveReaudit(level01);
-
-            //Verifica o total de defeitos
-            var totalDefects = parseInt(resultPeriod.attr('totaldefects'));
-
-
-            //Percorremos o resultado do periodo.
-            resultPeriod.children('.level02Result').each(function (e) {
-                //Regra HTP e CFF
-                if (totalDefects > 22 || level01.attr('haveevaluates')) {
-                    //Se tem mais de 22 defeitos ou tenho mais de uma avaliação.
-                    return false;
-                }
-                //Instancia o resultado.
-                var result = $(this);
-                //Verica o level02.
-                var level02 = $('.level02[id=' + result.attr('level02id') + ']');
-                //Informa temporáriamente o level01 do resultado como selecionado.
-                $('.level01[id=' + result.attr('level01id') + ']').addClass('selected');
-                //Informa temporariamente o level01 do resultado como selecionado.
-                $('.level02[id=' + result.attr('level02id') + ']').addClass('selected');
-                //temos que localizar onde desativa o botao na em outro evento
-                var btnNa = level02.siblings('.userInfo').children('div').children('.na');
-                btnNa.removeClass('naSelected').removeAttr('disabled');
-
-                //Se o resultado não teve reauditoria.
-                if (!result.attr('havereaudit')) {
-                    //Iniciamos ele como não avaliado.
-                    //Com isso irá gerar um novo resultado se não tiver outro
-                    btnNa.click();
-                }
-
-                //Removo a classe temporaria do level01 e level02
-                $('.level01[id=' + result.attr('level01id') + ']').removeClass('selected');
-                $('.level02[id=' + result.attr('level02id') + ']').removeClass('selected');
-
-            });
-
-            //Se level01 tem mais de uma avaliação
-            if (level01.attr('haveevaluates')) {
-                //Se o resultado do periodo está completo
-                if (resultPeriod.attr('completed')) {
-                    //Verifica o numero da reauditoria.
-                    var reauditNumber = parseInt(resultPeriod.attr('reauditnumber'));
-                    //Incrementa o numero
-                    reauditNumber++;
-                    //Informa a proxima reauditoria
-                    level01.attr('reauditnumber', reauditNumber);
-                }
-                //Reseta o level02
-                level02Reset($('.level02Group[level01id=' + level01.attr('id') + '] .level02:first'));
-            }
-            //Instancia o resultado como o resultado selecionado.
-            resultPeriod = $('.level01Result.selected');
-        }
-
-        //Limpa atributos do level02
-        $('.level02').removeAttr('phase').removeAttr('reauditnumber').children('.levelInfo').text('');
-        //Limpa botoes Nao Avaliado
-        $('.btnNotAvaliable').removeClass('naSelected').removeAttr('disabled');
-
-        //Preenche os valores do Level02Group caso tenha
-
-        resultPreencher(resultPeriod);
-        if (level01.attr('havephases')) {
-            getPhases(level01);
-        }
-
-        CreateHeader($('.level02List .painel'), getLevel1($(this).attr('id')).cabecalhosInclusos, getLevel1($(this).attr('id')).contadoresIncluidos);
-
-        //Mostra o level02Group.
-        showLevel02(level01);
-
+    
+    $(document).on('click', '.level1List .level1', function (e) {
+        //Reseta Level1 selecionado
+        $('.level1').removeClass('selected');
+        //Instancia o Objeto de Level1
+        var level1 = $(this);
+        //Define o Level1 selecionado
+        level1.addClass('selected');
+        //Abre o Level2
+        openLevel2(level1);
     });
+
+
+    
+    //$(document).on('click', '.level2Group .level2')
+    //{
+    //    //Reseta o Level2 selecionado
+    //    $('.level2').removeClass('selected');
+    //    //Instancia o Objeto de Level2
+    //    var level2 = $(this);
+    //    //Define o Level2 selecionado
+    //    level2.addClass('selected');
+    //    //Abre o Level3
+    //    openLevel3(level2);
+    //}
+    
+
+    function openLevel2(level1) {
+        //Oculta Lista de Level1
+        var level1List = level1.parents('.level1List');
+
+        level1List.fadeOut("fast", function (e) {
+            //Oculta os grupos de monitoramentos
+            $('.level2Group').addClass('hide');
+            //Instancia todos os monitoramentos
+            var level2List = $('.level2List');
+            //Instancia o grupo de Level2 referente ao Level1 selecionado
+            var level2Group = level2List.children('.level2Group[level01id=' + level01.attr('id') + ']');
+            //Mosta o grupo selecionado
+            level02Group.removeClass('hide');
+            //Mostra a tela do monitoramento
+            level2List.removeClass('hide').show();
+        });   
+    }
+
+    //function openLevel3(level2) {
+    //    //Oculta Lista de Level2
+    //    var level2List = level1.parents('.level02List');
+
+    //    level2List.fadeOut("fast", function (e) {
+    //        //Oculta os grupos de tarefas
+    //        $('.level33Group').addClass('hide');
+    //        //Instancia todas tarefas
+    //        var level3List = $('.level3List');
+    //        //Instancia o grupo de Level3 referente ao Level2 selecionado
+    //        var level3Group = level3List.children('.level3Group[level02id=' + level01.attr('id') + ']');
+    //        //Mosta o grupo selecionado
+    //        level03Group.removeClass('hide');
+    //        //Mostra a tela de tarefa
+    //        level3List.removeClass('hide').show();
+    //    });
+    //}
+
+
+
     function getPhases(level01) {
         var resultsLevel01Phase = $('.level01Result[level01id=' + level01.attr('id') + '][reaudit=false][shift=' + $('.App').attr('shift') + '][completed=completed]:last');
 

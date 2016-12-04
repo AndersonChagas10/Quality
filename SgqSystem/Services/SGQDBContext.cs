@@ -60,7 +60,7 @@ namespace SGQDBContext
         //    }
         //}
 
-        public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(string ParCompany_Id)
+        public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id)
         {
 
             SqlConnection db = new SqlConnection(conexao);
@@ -85,5 +85,49 @@ namespace SGQDBContext
             return parLevel1List;
         }
     }
+    public partial class ParLevel2
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public int Evaluate { get; set; }
+        public int Sample { get; set; }
 
+        public ParLevel2()
+        {
+
+        }
+
+        public IEnumerable<ParLevel2> getLevel2ByLevel1(int ParLevel1_Id, int ParCompany_Id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PE.Number AS Evaluate, PS.Number AS Sample FROM " +
+                         "ParLevel3Level2 P32                                                                                        " +
+                         "INNER JOIN ParLevel3Level2Level1 P321                                                                      " +
+                         "ON P321.ParLevel3Level2_Id = P32.Id                                                                        " +
+                         "INNER JOIN ParLevel2 PL2                                                                                   " +
+                         "ON PL2.Id = P32.ParLevel2_Id                                                                               " +
+                         "INNER JOIN ParEvaluation PE                                                                                " +
+                         "ON PE.ParLevel2_Id = PL2.Id                                                                                " +
+                         "INNER JOIN ParSample PS                                                                                    " +
+                         "ON PS.ParLevel2_Id = PL2.Id                                                                                " +
+                         "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'                                                           " +
+                         "GROUP BY PL2.Id, PL2.Name, PE.Number, PS.Number                                                            ";
+
+            var parLevel2List = db.Query<ParLevel2>(sql);
+
+            return parLevel2List;
+
+        }
+    }
+    public partial class ParLevel3
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int ParCriticalLevel_Id { get; set; }
+        public string ParCriticalLevel_Name { get; set; }
+        public bool HasSaveLevel2 { get; set; }
+        public bool HasNoApplicableLevel2 { get; set; }
+    }
 }

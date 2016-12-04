@@ -1207,6 +1207,7 @@
     <Content Include="Views\ParCompany\Index.cshtml" />
     <Content Include="Views\ParCompany\ParStructure.cshtml" />
     <Content Include="Views\ParCompany\ParStructureGroup.cshtml" />
+    <Content Include="Views\HtmlTeste\_IndexTeste - Copy.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

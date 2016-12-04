@@ -16,7 +16,7 @@ namespace SgqSystem.Services
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-     [System.Web.Script.Services.ScriptService]
+    [System.Web.Script.Services.ScriptService]
     public class SyncServices : System.Web.Services.WebService
     {
 
@@ -1712,15 +1712,15 @@ namespace SgqSystem.Services
         {
             var html = new Html();
 
-                              
-                                                                                                                                                                                                           
+
+
             string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
 
             string container = html.div(
 
                                          outerhtml: breadCrumb +
                                                     GetLevel01()
-                
+
                                         , classe: "container");
 
             return html.div(
@@ -1748,8 +1748,8 @@ namespace SgqSystem.Services
             return navBar;
         }
         public string rightMenu()
-        {   
-            string menu =  "<div class=\"rightMenu\">                                                                                                  " + 
+        {
+            string menu = "<div class=\"rightMenu\">                                                                                                  " +
                            "     <div class=\"list-group list-group-inverse rightMenuList\">                                                           " +
                            "         <a href= \"#\" id=\"btnSync\" class=\"list-group-item\">Sync</a>                                                  " +
                            "         <a href= \"#\" id=\"btnLogout\" class=\"list-group-item\">Logout</a>                                              " +
@@ -1777,15 +1777,17 @@ namespace SgqSystem.Services
 
             return foot;
         }
-    public string GetLevel01()
+        public string GetLevel01()
         {
             var html = new Html();
+
+            int ParCompany_Id = 1;
 
             //Instanciamos a Classe ParLevel01 Dapper
             var ParLevel1DB = new SGQDBContext.ParLevel1();
 
             //Buscamos os ParLevel11 para a unidade selecionada
-            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList("1");
+            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id);
 
             //Agrupamos o ParLevel1 por ParCriticalLevel
             var parLevel1GroupByCriticalLevel = parLevel1List.OrderBy(p => p.ParCriticalLevel_Id).GroupBy(p => p.ParCriticalLevel_Id);
@@ -1795,6 +1797,8 @@ namespace SgqSystem.Services
 
             //Instanciamos uma variável para instanciar a lista de level1
             string listlevel1 = null;
+            string listLevel2 = null;
+            string listLevel3 = null;
             //Percorremos a lista de agrupada
             foreach (var parLevel1Group in parLevel1GroupByCriticalLevel)
             {
@@ -1830,7 +1834,6 @@ namespace SgqSystem.Services
                                             outerhtml: null,
                                             classe: "userInfo col-xs-5");
 
-
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
                     }
                     else
@@ -1838,8 +1841,9 @@ namespace SgqSystem.Services
                         //Caso o ParLevel1 não contenha um ParCritialLevel_Id apenas incremento os itens de ParLevel1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name);
                     }
-                }
 
+                    listLevel2 += GetLevel02(parlevel1, ParCompany_Id);
+                }
                 //Quando termina o loop dos itens agrupados por ParCritialLevel 
                 //Se contem ParCritialLevel
                 if (ParCriticalLevel == true)
@@ -1871,24 +1875,73 @@ namespace SgqSystem.Services
                                                    outerhtml: parLevel1
                                                 );
                 }
-
                 //Adicionar a lista de level01 agrupados ou não a lsita geral
                 listlevel1 += parLevel1;
-
             }
             return html.div(
                             outerhtml: listlevel1,
                             classe: "level1List"
-                            );
+                            ) +
+                   html.div(
+                            outerhtml: listLevel2,
+                            classe: "level2List hide"
+                           );
+
         }
-    public string GetLevel02()
-    {
-        return null;
-    }
-    public string GetLevel03()
-    {
-        return null;
-    }
+        public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id)
+        {
+            var ParLevel2DB = new SGQDBContext.ParLevel2();
+
+            var parlevel02List = ParLevel2DB.getLevel2ByLevel1(ParLevel1.Id, ParCompany_Id);
+
+            var html = new Html();
+
+            string level02List = null;
+            string ParLevel2List = null;
+            foreach (var parlevel2 in parlevel02List)
+            {
+                string level02 = html.link(
+                                            id: parlevel2.Id.ToString(),
+                                            classe: "level2 col-xs-5",
+                                            //Aqui vai as tags do level01
+                                            tags: "",
+                                            outerhtml: parlevel2.Name
+                                           );
+
+                level02 += html.div(
+                                        //aqui vai os botoes
+                                    outerhtml: null,
+                                    classe: "counters col-xs-5"
+                                    );
+
+                level02 += html.div(
+                                   //aqui vai os botoes
+                                   outerhtml: null,
+                                   classe: "userInfo col-xs-2"
+                                   );
+
+                ParLevel2List += html.listgroupItem(
+                                                    id: parlevel2.Id.ToString(),
+                                                    classe: "row",
+                                                    outerhtml: level02
+                                                    );
+            }
+
+            if(!string.IsNullOrEmpty(ParLevel2List))
+            {
+                ParLevel2List = html.listgroup(
+                                                outerhtml: ParLevel2List,
+                                                tags: "level01Id=\"" + ParLevel1.Id + "\""
+                                               , classe: "level2Group hide");
+            }
+
+            return ParLevel2List;
+        }
+
+        public string GetLevel03()
+        {
+            return null;
+        }
         public string GetLoginAPP()
         {
             var html = new Html();
@@ -1929,12 +1982,12 @@ namespace SgqSystem.Services
                                   html.div(classe: "divLoadFiles",
                                            outerhtml: html.span(classe: "messageLoading")) +
 
-                                  html.div(id: "messageAlert", 
+                                  html.div(id: "messageAlert",
                                            classe: "alert alert-info hide",
                                            tags: "role=\"alert\"",
                                            outerhtml: html.span(id: "mensagemAlerta", classe: "icon-info-sign")) +
 
-                                  html.div(id: "messageSuccess", 
+                                  html.div(id: "messageSuccess",
                                            classe: "alert alert-success hide",
                                            tags: "role=\"alert\"",
                                            outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle"));
@@ -1968,8 +2021,8 @@ namespace SgqSystem.Services
                                 outerhtml: head +
                                            form +
                                            foot
-                            
-                                ,classe: "login"
+
+                                , classe: "login"
                             );
         }
         #endregion

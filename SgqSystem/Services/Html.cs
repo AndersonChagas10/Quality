@@ -205,11 +205,16 @@ namespace SgqSystem.Services
             }
             return "<option value=\"" + value + "\"" + tags + ">" + label + "</option>";
         }
-        public string listgroup(string id=null, string classe=null, string outerhtml=null)
+        public string listgroup(string id=null, string classe=null, string outerhtml=null, string tags=null)
         {
             classe += " list-group";
 
-            return "<ul id=\"" + id + "\" class=\"" + classe.Trim() + "\">" + 
+            if(!string.IsNullOrEmpty(tags))
+            {
+                tags = " " + tags;
+            }
+
+            return "<ul id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + ">" + 
                     outerhtml +
                     "</ul>";
         }
