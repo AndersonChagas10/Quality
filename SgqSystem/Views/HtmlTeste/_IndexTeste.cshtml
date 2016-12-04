@@ -5787,15 +5787,10 @@
 <!--Parameretrization-->
 <script>
 
-    var level1  = @Html.Raw(Json.Encode(@Model.paramsDto.collectionObject));
-
-    level1.forEach(function(o, c){
-
-        o.DdlLevel2Vinculados = null;
-        //o.listParLevel3Level2Level1Dto = null;
-
-
-    });
+    //var level1  = Html.Raw(Json.Encode(Model.paramsDto.collectionObject));
+    //level1.forEach(function(o, c){
+    //    o.DdlLevel2Vinculados = null;
+    //});
 
     function CreateHeader(levelHeader, cabecalhosInclusos, contadoresIncluidos){
 
@@ -5910,7 +5905,6 @@
 
     function CreateLevel1Group(listLevel1) {
 
-        //As colunhas do Level1 estão relacionadas as @*Heder do Level1*@ no Html. Caso alterar o tanho das divs aqui deve ser alterada no HTML também
         listLevel1.forEach(function(o, c){
 
 
@@ -6414,7 +6408,5 @@
         }
         return {};
     }
-
-
 
 </script>
