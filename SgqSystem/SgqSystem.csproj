@@ -410,6 +410,10 @@
       <DependentUpon>SyncServices.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Services\SyncServices_novo.asmx.cs">
+      <DependentUpon>SyncServices_novo.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ViewModels\AccountBindingModels.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\BaseEntityViewModel\EntityBaseViewModel.cs" />
@@ -1091,6 +1095,7 @@
     <Content Include="Scripts\x64-core.js" />
     <Content Include="Help.txt" />
     <Content Include="Services\SyncServices.asmx" />
+    <Content Include="Services\SyncServices_novo.asmx" />
     <Content Include="Views\Params\crudNxN.js" />
     <Content Include="Views\Params\Index.cshtml" />
     <Content Include="Views\Params\_ParLevel1.cshtml" />
@@ -1277,7 +1282,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63128</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
