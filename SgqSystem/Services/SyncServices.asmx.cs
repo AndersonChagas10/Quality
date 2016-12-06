@@ -774,6 +774,58 @@ namespace SgqSystem.Services
                 return 0;
             }
         }
+        public int InsertConsoliDationLevel1(string unitId, string level01Id, string collectionDate, string departmentId = "1")
+        {
+            //Verifico se já existe consolidação para o dia informado
+            int CollectionLevel01Id = GetLevel01Consolidation(unitId, level01Id, collectionDate);
+            if (CollectionLevel01Id > 0)
+            {
+                //Se existir, retorna o Id da Consolidação
+                return CollectionLevel01Id;
+            }
+
+            //Script de Insert para consolidação
+            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel_Id],[AddDate],[AlterDate],[ConsolidationDate]) " +
+                         "VALUES " +
+                         "('" + unitId + "','" + departmentId + "','" + level01Id + "', GetDate(),null, CONVERT(DATE, '" + collectionDate + "')) " +
+                         "SELECT @@IDENTITY AS 'Identity'";
+
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        var i = Convert.ToInt32(command.ExecuteScalar());
+                        //Se o registro for inserido retorno o Id da Consolidação
+                        if (i > 0)
+                        {
+                            return i;
+                        }
+                        else
+                        {
+                            //Caso ocorra algum erro, retorno zero
+                            return 0;
+                        }
+                    }
+                }
+            }
+            //Caso ocorra alguma Exception, grava o log e retorna zero
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(level01Id, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel01");
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(level01Id, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel01");
+                return 0;
+            }
+        }
+
         /// <summary>
         /// Retorna o Id da Consolidação
         /// </summary>
@@ -1706,8 +1758,49 @@ namespace SgqSystem.Services
 
             string APPMain = getAPPMain();
 
-            return APPMain;
+            return login +
+                   APPMain +
+                   html.div(classe: "Results hide") +
+                   html.div(classe: "Users hide");
         }
+        public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
+        {
+            int evaluate = 1;
+            var evaluateConf = ParEvaluateCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
+            if (evaluateConf != null)
+            {
+                evaluate = evaluateConf.Evaluate;
+            }
+            else
+            {
+                evaluateConf = ParEvaluatePadrao.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
+                if (evaluateConf != null)
+                {
+                    evaluate = evaluateConf.Evaluate;
+                }
+            }
+            return evaluate;
+        }
+
+        public int getSample(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Sample> ParSampleCompany, IEnumerable<SGQDBContext.ParLevel2Sample> ParSamplePadrao)
+        {
+            int sample = 1;
+            var sampleConf = ParSampleCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
+            if (sampleConf != null)
+            {
+                sample = sampleConf.Sample;
+            }
+            else
+            {
+                sampleConf = ParSamplePadrao.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
+                if (sampleConf != null)
+                {
+                    sample = sampleConf.Sample;
+                }
+            }
+            return sample;
+        }
+
         public string getAPPMain()
         {
             var html = new Html();
@@ -1723,14 +1816,51 @@ namespace SgqSystem.Services
 
                                         , classe: "container");
 
+            string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btnSave btnRounded btn-warning hide\"><i class=\"fa fa-save\"></i></button><!--Save-->" +
+                                "<button class=\"btn btn-lg btn-danger btnCA hide\">Corrective Action</button><!--Corrective Action-->";
+
+            string message = "<div class=\"message padding20\" style=\"display:none\">                                                                                      " +
+                             "   <h1 class=\"head\">Titulo</h1>                                                                                                           " +
+                             "   <div class=\"body font16\">Mensagem</div>                                                                                                " +
+                             "   <div class=\"foot\"><button id=\"btnMessageOk\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> Ok</button></div>      " +
+                             "</div>                                                                                                                                    ";
+            // string messageConfirm = null;
+            //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                         " +
+            //                       "</div>                                                                                                                                                                                                    ";
+
+            string viewModal = "<div class=\"viewModal\" style=\"display:none;\">" +
+                               "     <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\">View <a href=\"#\" class=\"pull-right close\" style=\"color: #000;text-decoration:none\">X</a></div> " +
+                               "     <div class=\"body\" style=\"height:565px; overflow-y: auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                           " +
+                               "</div>                                                                                                                                                                                                    ";
+
+            string messageConfirm = "<div class=\"messageConfirm padding20\" style=\"display:none\">                                                                                                " +
+                                        "    <h1 class=\"head\">Titulo</h1>                                                                                                                             " +
+                                        "    <div class=\"body font16\"> <div class=\"txtMessage\"></div>                                                                                               " +
+                                        "        <input type=\"password\" id=\"passMessageComfirm\" placeholder=\"Password\" class=\"form-control input-sm\" style=\"max-width:160px;\" /> </div>       " +
+                                        "    <div class=\"foot\"><button id=\"btnMessageYes\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> Yes </button></div>                 " +
+                                        "    <div class=\"foot\"><button id=\"btnMessageNo\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> No </button></div>                   " +
+                                        "</div>                                                                                                                                                         ";
+
+
+
+            //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                       " +
+            //                    "    <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\">View <a href=\"#\" class=\"pull-right close\" style=\"color:#000;text-decoration:none\">X</a></div> " +
+            //                    "    <div class=\"body\" style=\"height:565px;overflow-y:auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                            " +
+            //                    "</div>                                                                                                                                                                                                  ";
+
             return html.div(
                             outerhtml: navBar() +
                                        rightMenu() +
                                        html.div(classe: "overlay", style: "display:none") +
                                        container +
+                                       buttons +
                                        footer(),
-                             classe: "App"
-                           );
+                             classe: "App hide",
+                             tags: "breadmainlevel=\"Indicadores\""
+                           ) +
+                           viewModal +
+                           message +
+                           messageConfirm  ;
         }
 
         public string navBar()
@@ -1841,8 +1971,11 @@ namespace SgqSystem.Services
                         //Caso o ParLevel1 não contenha um ParCritialLevel_Id apenas incremento os itens de ParLevel1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name);
                     }
+                    string level3Group = null;
 
-                    listLevel2 += GetLevel02(parlevel1, ParCompany_Id);
+                    listLevel2 += GetLevel02(parlevel1, ParCompany_Id, ref level3Group);
+
+                    listLevel3 += level3Group;
                 }
                 //Quando termina o loop dos itens agrupados por ParCritialLevel 
                 //Se contem ParCritialLevel
@@ -1878,54 +2011,170 @@ namespace SgqSystem.Services
                 //Adicionar a lista de level01 agrupados ou não a lsita geral
                 listlevel1 += parLevel1;
             }
+
+            string avaliacoes = html.div(
+                                          outerhtml: "<b style=\"width:100px;display:inline-block\">Avaliações</b>" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal"),
+                                        style: "font-size: 16px");
+            string amostrar = html.div(
+                                          outerhtml: "<b style=\"width:100px;display:inline-block\">Amostras</b>" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal"),
+                                        style: "font-size: 16px");
+
+            string painellevel3 = html.div(
+                                            outerhtml: avaliacoes +
+                                                       amostrar,
+                
+                                           classe: "painel painelLevel03 padding10");
+
             return html.div(
                             outerhtml: listlevel1,
                             classe: "level1List"
                             ) +
                    html.div(
                             outerhtml: listLevel2,
-                            classe: "level2List hide"
+                            classe: "level2List col-xs-12 hide"
+                           ) +
+                   html.div(
+                            outerhtml: painellevel3+
+                                       listLevel3,
+                            classe: "level3List  List col-xs-12 hide"
                            );
 
         }
-        public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id)
+        public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, ref string level3Group)
         {
             var ParLevel2DB = new SGQDBContext.ParLevel2();
 
-            var parlevel02List = ParLevel2DB.getLevel2ByLevel1(ParLevel1.Id, ParCompany_Id);
+            var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id);
 
             var html = new Html();
 
-            string level02List = null;
             string ParLevel2List = null;
+            string headerList = null;
+
+            var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate();
+            var ParSampleDB = new SGQDBContext.ParLevel2Sample();
+
+
+
+            var ParEvaluatePadrao = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
+                                                              ParCompany_Id: null);
+
+            var ParEvaluateCompany = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
+                                                               ParCompany_Id: ParCompany_Id);
+
+            var ParSamplePadrao = ParSampleDB.getSample(ParLevel1: ParLevel1,
+                                                        ParCompany_Id: null);
+
+            var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
+                                                        ParCompany_Id: ParCompany_Id);
+
             foreach (var parlevel2 in parlevel02List)
             {
-                string level02 = html.link(
-                                            id: parlevel2.Id.ToString(),
-                                            classe: "level2 col-xs-5",
-                                            //Aqui vai as tags do level01
-                                            tags: "",
-                                            outerhtml: parlevel2.Name
-                                           );
+                int evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
+                int sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
 
-                level02 += html.div(
+
+                string headerCounter = html.div(
+                                                outerhtml: null,
+                                                classe: "col-xs-2"
+                                              ) +
+                                      html.div(
+                                                outerhtml: null,
+                                                classe: "col-xs-2"
+                                              ) +
+                                      html.div(
+                                                outerhtml: "<b>Avaliaçoes</b>",
+                                                classe: "col-xs-4",
+                                                style: "text-align:center"
+                                              ) +
+                                      html.div(
+                                                outerhtml: "<b>Amostras</b>",
+                                                classe: "col-xs-4",
+                                                style: "text-align:center"
+                                              ); ;
+
+                headerCounter = html.div(
                                         //aqui vai os botoes
-                                    outerhtml: null,
-                                    classe: "counters col-xs-5"
+                                    outerhtml: headerCounter,
+                                    classe: "counters col-xs-4"
+                                    );
+                string classXSLevel2 = " col-xs-5";
+                string counters = html.div(
+                                                outerhtml: null,
+                                                classe: "col-xs-2"
+                                              ) +
+                                      html.div(
+                                                outerhtml: null,
+                                                classe: "col-xs-2"
+                                              ) +
+                                      html.div(
+                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
+                                                classe: "col-xs-4",
+                                                style: "text-align:center"
+                                              ) +
+                                      html.div(
+                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal"),
+                                                classe: "col-xs-4",
+                                                style: "text-align:center"
+                                              );
+
+                counters = html.div(
+                                        //aqui vai os botoes
+                                    outerhtml: counters,
+                                    classe: "counters col-xs-4"
                                     );
 
-                level02 += html.div(
-                                   //aqui vai os botoes
-                                   outerhtml: null,
-                                   classe: "userInfo col-xs-2"
-                                   );
+                string buttons = null;
+                string buttonsHeaders = null;
+               if(ParLevel1.HasNoApplicableLevel2 == true|| ParLevel1.HasSaveLevel2 == true)
+                {
+                    buttons = html.div(
+                                 //aqui vai os botoes
+                                 outerhtml: null,
+                                 classe: "userInfo col-xs-3"
+                                 );
+
+                    buttonsHeaders = html.div(
+                                             outerhtml: null,
+                                             classe: "userInfo col-xs-3"
+                                             );
+                }
+                else
+                {
+                    classXSLevel2 = " col-xs-8";
+                }
+
+                string level02Header = html.div(classe: classXSLevel2) +
+                                       headerCounter +
+                                       buttonsHeaders;
+
+                headerList = html.listgroupItem(
+                                                classe: "row",
+                                                outerhtml: level02Header
+                                               );
+
+                //podemos aplicar os defeitos
+                string level2 = html.level2(id: parlevel2.Id.ToString(),
+                                            label: parlevel2.Name,
+                                            classe: classXSLevel2,
+                                            evaluate: evaluate,
+                                            sample: sample);
 
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
                                                     classe: "row",
-                                                    outerhtml: level02
+                                                    outerhtml: level2 +
+                                                               counters +
+                                                               buttons
                                                     );
+
+                string groupLevel3 = GetLevel03(ParLevel1, parlevel2);
+
+                level3Group += groupLevel3;
             }
+
+            ParLevel2List = headerList +
+                            ParLevel2List;
 
             if(!string.IsNullOrEmpty(ParLevel2List))
             {
@@ -1937,10 +2186,97 @@ namespace SgqSystem.Services
 
             return ParLevel2List;
         }
-
-        public string GetLevel03()
+        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2)
         {
-            return null;
+            var html = new Html();
+
+            var ParLevel3DB = new SGQDBContext.ParLevel3();
+            var parlevel3List = ParLevel3DB.getLevel3ByLevel2(ParLevel2.Id);
+
+            string btnNaoAvaliado = html.button(
+                                       label: html.span(
+                                                         classe: "cursorPointer iconsArea",
+                                                         outerhtml: "N/A"
+                                                        ),
+                                       classe: "btn-warning btnNotAvaliable na font11"
+                                   );
+
+            string parLevel3Group = null;
+
+            foreach (var parLevel3 in parlevel3List)
+            {
+
+                string classInput = null;
+                string tags = null;
+                string labels = null;
+                string input = null;
+
+                if (parLevel3.ParLevel3InputType_Id == 1)
+                {
+                    classInput = " boolean";
+                    input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+
+                }
+                else
+                {
+                    classInput = " interval";
+                    tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+
+                    labels = html.div(
+                                     outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                     classe: "font10",
+                                     style: "font-size: 11px; margin-top:7px;"
+                                   );
+
+                    input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                   intervalMin: parLevel3.IntervalMin,
+                                                   intervalMax: parLevel3.IntervalMax,
+                                                   unitName: parLevel3.ParMeasurementUnit_Name);
+
+                }
+
+                string level3 = html.link(
+                                           outerhtml: parLevel3.Name,
+                                           classe: "col-xs-4"
+                                          ); 
+                    labels = html.div(
+                                            outerhtml: labels,
+                                            classe: "col-xs-3"
+                                        );
+                string counters = html.div(
+                                            outerhtml: input,
+                                            classe: "col-xs-3 counters"
+                                          );
+                string buttons = html.div(
+                                           outerhtml: btnNaoAvaliado,
+                                           classe: "col-xs-2",
+                                           style: "text-align:right"
+                                         );
+
+                string level3List = html.listgroupItem(
+                                                      id: parLevel3.Id.ToString(),
+                                                      classe: "level3 row" + classInput,
+                                                      tags: tags,
+                                                      outerhtml: level3 +
+                                                                 labels +
+                                                                 counters +
+                                                                 buttons
+                                                    );
+
+                parLevel3Group += level3List;
+            }
+
+            if (!string.IsNullOrEmpty(parLevel3Group))
+            {
+                parLevel3Group = html.div(
+                                           classe: "level3Group",
+                                           tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
+
+                                           outerhtml: parLevel3Group
+                                         );
+            }
+            return parLevel3Group;
+
         }
         public string GetLoginAPP()
         {
@@ -1952,7 +2288,7 @@ namespace SgqSystem.Services
             #region Unit
 
 
-            string selectUnit = html.option("1", "Unit 1", tags: "ip=\"localhost/SgqSystem\"");
+            string selectUnit = html.option("1", "Unit 1", tags: "ip=\"192.168.25.200/SgqMaster\"");
 
 
             selectUnit = html.select(selectUnit, "selectUnit");
@@ -1973,7 +2309,7 @@ namespace SgqSystem.Services
                                   html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
                                   html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: true) +
                                   html.label(labelfor: "inputPassword", classe: "sr-only", outerhtml: "Password") +
-                                  html.input(id: "inputPassword", placeholder: "Password", required: true, disabled: true) +
+                                  html.input(type: Html.type.password, id: "inputPassword", placeholder: "Password", required: true, disabled: true) +
                                   html.button(label: "Sign in", id: "btnLogin", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "Authenticating...") +
 
                                   html.div(id: "messageError", classe: "alert alert-danger hide", tags: "role=\"alert\"",
