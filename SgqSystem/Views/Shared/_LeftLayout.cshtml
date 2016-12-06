@@ -53,6 +53,36 @@
                     <span class="arrow"></span>
                 </a>
             </li>
+            <li class="nav-item" id="navbar6">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="fa fa-thermometer"></i>
+                    <span class="title">@Resources.Resource.volume</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub-menu">
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index", "CepDesossas")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.cep_desossa</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index", "CepRecortes")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.cep_recortes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index", "VacuoGRDs")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.vacuo_grd</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index", "Pcc1b")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.pcc1b</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            
         </ul>
     </div>
 </div>
@@ -63,5 +93,15 @@
         $('.nav-item').removeClass('active').removeClass('start').removeClass('open');
         $('#' + id).addClass('active').addClass('start').addClass('open');
     };
+
+    $('.nav-item').click(function () {
+        if($(this).hasClass('open')){
+            $(this).children('.sub-menu').css("display", "none");
+            $(this).removeClass('open');
+        } else {
+            $(this).addClass('open');
+            $(this).children('.sub-menu').css("display", "block");
+        }
+    });
         
 </script>

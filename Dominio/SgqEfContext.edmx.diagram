@@ -6,63 +6,72 @@
     <edmx:Diagrams>
       <Diagram DiagramId="41481c9360bf485fb122760b8cb9857f" Name="Diagram1" ZoomLevel="67">
         <EntityTypeShape EntityType="SgqDbModel.BkpCollection" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SgqDbModel.CepDesossa" Width="1.5" PointX="11.25" PointY="36.5" />
+        <EntityTypeShape EntityType="SgqDbModel.CepRecortes" Width="1.5" PointX="14.25" PointY="25" />
         <EntityTypeShape EntityType="SgqDbModel.CollectionHtml" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="SgqDbModel.CollectionJson" Width="1.5" PointX="0.75" PointY="4.75" />
-        <EntityTypeShape EntityType="SgqDbModel.CollectionLevel02" Width="1.5" PointX="22" PointY="3.125" />
-        <EntityTypeShape EntityType="SgqDbModel.CollectionLevel03" Width="1.5" PointX="27.25" PointY="5.5" />
-        <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel01" Width="1.5" PointX="17.5" PointY="37.75" />
-        <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel02" Width="1.5" PointX="19.75" PointY="39.5" />
-        <EntityTypeShape EntityType="SgqDbModel.CorrectiveAction" Width="1.5" PointX="24.25" PointY="4.75" />
-        <EntityTypeShape EntityType="SgqDbModel.Department" Width="1.5" PointX="15.25" PointY="35" />
-        <EntityTypeShape EntityType="SgqDbModel.Example" Width="1.5" PointX="2.75" PointY="4.75" />
-        <EntityTypeShape EntityType="SgqDbModel.Level01" Width="1.5" PointX="15.25" PointY="41.25" />
-        <EntityTypeShape EntityType="SgqDbModel.Level02" Width="1.5" PointX="17.5" PointY="44.5" />
-        <EntityTypeShape EntityType="SgqDbModel.Level03" Width="1.5" PointX="25" PointY="0.875" />
-        <EntityTypeShape EntityType="SgqDbModel.LogJson" Width="1.5" PointX="10.75" PointY="7.75" />
-        <EntityTypeShape EntityType="SgqDbModel.LogSgqGlobal" Width="1.5" PointX="0.75" PointY="11.75" />
-        <EntityTypeShape EntityType="SgqDbModel.ParCluster" Width="1.5" PointX="6" PointY="31.875" />
-        <EntityTypeShape EntityType="SgqDbModel.ParClusterGroup" Width="1.5" PointX="3.75" PointY="32.125" />
-        <EntityTypeShape EntityType="SgqDbModel.ParCompany" Width="1.5" PointX="6" PointY="8.625" />
-        <EntityTypeShape EntityType="SgqDbModel.ParCompanyCluster" Width="1.5" PointX="14.25" PointY="16.5" />
-        <EntityTypeShape EntityType="SgqDbModel.ParCompanyXStructure" Width="1.5" PointX="8.25" PointY="8.625" />
-        <EntityTypeShape EntityType="SgqDbModel.ParConsolidationType" Width="1.5" PointX="3.75" PointY="10.75" />
-        <EntityTypeShape EntityType="SgqDbModel.ParCounter" Width="1.5" PointX="6" PointY="39.125" />
-        <EntityTypeShape EntityType="SgqDbModel.ParCounterXLocal" Width="1.5" PointX="8.25" PointY="25" />
-        <EntityTypeShape EntityType="SgqDbModel.ParCriticalLevel" Width="1.5" PointX="6" PointY="35.75" />
-        <EntityTypeShape EntityType="SgqDbModel.ParDepartment" Width="1.5" PointX="0.75" PointY="16.75" />
-        <EntityTypeShape EntityType="SgqDbModel.ParEvaluation" Width="1.5" PointX="5.25" PointY="14.5" />
-        <EntityTypeShape EntityType="SgqDbModel.ParFieldType" Width="1.5" PointX="6.75" PointY="5.25" />
-        <EntityTypeShape EntityType="SgqDbModel.ParFrequency" Width="1.5" PointX="0.75" PointY="20.5" />
-        <EntityTypeShape EntityType="SgqDbModel.ParGoal" Width="1.5" PointX="8.25" PointY="16.5" />
-        <EntityTypeShape EntityType="SgqDbModel.ParHeaderField" Width="1.5" PointX="9" PointY="3.125" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel1" Width="1.5" PointX="6" PointY="18.5" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel1XCluster" Width="1.5" PointX="8.25" PointY="20.375" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel1XHeaderField" Width="1.5" PointX="11.25" PointY="16.625" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel2" Width="1.5" PointX="3" PointY="19.5" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel3" Width="1.5" PointX="11.25" PointY="30.75" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel3BoolFalse" Width="1.5" PointX="14.25" PointY="28.625" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel3BoolTrue" Width="1.5" PointX="14.25" PointY="8.75" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel3Group" Width="1.5" PointX="5.25" PointY="27.5" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel3InputType" Width="1.5" PointX="14.25" PointY="12.625" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel3Level2" Width="1.5" PointX="13.5" PointY="24.25" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel3Level2Level1" Width="1.5" PointX="14.25" PointY="20.625" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel3Value" Width="1.5" PointX="16.5" PointY="18.875" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevelDefiniton" Width="1.5" PointX="6.75" PointY="2.125" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLocal" Width="1.5" PointX="6" PointY="42.25" />
-        <EntityTypeShape EntityType="SgqDbModel.ParMeasurementUnit" Width="1.5" PointX="14.25" PointY="31.5" />
-        <EntityTypeShape EntityType="SgqDbModel.ParMultipleValues" Width="1.5" PointX="11.25" PointY="3.375" />
-        <EntityTypeShape EntityType="SgqDbModel.ParNotConformityRule" Width="1.5" PointX="9" PointY="29.75" />
-        <EntityTypeShape EntityType="SgqDbModel.ParNotConformityRuleXLevel" Width="1.5" PointX="11.25" PointY="24.75" />
-        <EntityTypeShape EntityType="SgqDbModel.ParRelapse" Width="1.5" PointX="11.25" PointY="20" />
-        <EntityTypeShape EntityType="SgqDbModel.ParSample" Width="1.5" PointX="8.25" PointY="12.5" />
-        <EntityTypeShape EntityType="SgqDbModel.ParStructure" Width="1.5" PointX="6" PointY="45.375" />
-        <EntityTypeShape EntityType="SgqDbModel.ParStructureGroup" Width="1.5" PointX="3.75" PointY="45.625" />
+        <EntityTypeShape EntityType="SgqDbModel.CollectionJson" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SgqDbModel.CollectionLevel02" Width="1.5" PointX="20" PointY="4.875" />
+        <EntityTypeShape EntityType="SgqDbModel.CollectionLevel03" Width="1.5" PointX="22.25" PointY="7.125" />
+        <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel01" Width="1.5" PointX="15.5" PointY="54.875" />
+        <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel02" Width="1.5" PointX="17.75" PointY="53.25" />
+        <EntityTypeShape EntityType="SgqDbModel.CorrectiveAction" Width="1.5" PointX="25.25" PointY="6.375" />
+        <EntityTypeShape EntityType="SgqDbModel.Department" Width="1.5" PointX="13.25" PointY="52" />
+        <EntityTypeShape EntityType="SgqDbModel.Example" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="SgqDbModel.Level01" Width="1.5" PointX="13.25" PointY="54.75" />
+        <EntityTypeShape EntityType="SgqDbModel.Level02" Width="1.5" PointX="15.5" PointY="48.75" />
+        <EntityTypeShape EntityType="SgqDbModel.Level03" Width="1.5" PointX="20" PointY="1.625" />
+        <EntityTypeShape EntityType="SgqDbModel.LogJson" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SgqDbModel.LogSgqGlobal" Width="1.5" PointX="6.75" PointY="4.75" />
+        <EntityTypeShape EntityType="SgqDbModel.NQA" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="SgqDbModel.ParCluster" Width="1.5" PointX="6" PointY="47.5" />
+        <EntityTypeShape EntityType="SgqDbModel.ParClusterGroup" Width="1.5" PointX="3.75" PointY="47.75" />
+        <EntityTypeShape EntityType="SgqDbModel.ParCompany" Width="1.5" PointX="12" PointY="16.75" />
+        <EntityTypeShape EntityType="SgqDbModel.ParCompanyCluster" Width="1.5" PointX="17.25" PointY="37.375" />
+        <EntityTypeShape EntityType="SgqDbModel.ParCompanyXStructure" Width="1.5" PointX="14.25" PointY="18.375" />
+        <EntityTypeShape EntityType="SgqDbModel.ParCompanyXUserSgq" Width="1.5" PointX="17" PointY="13.5" />
+        <EntityTypeShape EntityType="SgqDbModel.ParConsolidationType" Width="1.5" PointX="3.75" PointY="22.375" />
+        <EntityTypeShape EntityType="SgqDbModel.ParCounter" Width="1.5" PointX="12" PointY="45" />
+        <EntityTypeShape EntityType="SgqDbModel.ParCounterXLocal" Width="1.5" PointX="14.25" PointY="31.75" />
+        <EntityTypeShape EntityType="SgqDbModel.ParCriticalLevel" Width="1.5" PointX="6" PointY="14.625" />
+        <EntityTypeShape EntityType="SgqDbModel.ParDepartment" Width="1.5" PointX="0.75" PointY="28.375" />
+        <EntityTypeShape EntityType="SgqDbModel.ParEvaluation" Width="1.5" PointX="11.25" PointY="23.25" />
+        <EntityTypeShape EntityType="SgqDbModel.ParFieldType" Width="1.5" PointX="6.75" PointY="21" />
+        <EntityTypeShape EntityType="SgqDbModel.ParFrequency" Width="1.5" PointX="0.75" PointY="32.25" />
+        <EntityTypeShape EntityType="SgqDbModel.ParGoal" Width="1.5" PointX="8.25" PointY="32.25" />
+        <EntityTypeShape EntityType="SgqDbModel.ParHeaderField" Width="1.5" PointX="9" PointY="18.875" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel1" Width="1.5" PointX="6" PointY="29.875" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel1XCluster" Width="1.5" PointX="8.25" PointY="28" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel1XHeaderField" Width="1.5" PointX="11.25" PointY="27.375" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel2" Width="1.5" PointX="3" PointY="31.125" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel3" Width="1.5" PointX="5.25" PointY="43.25" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel3BoolFalse" Width="1.5" PointX="15" PointY="41.875" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel3BoolTrue" Width="1.5" PointX="15" PointY="22" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel3Group" Width="1.5" PointX="5.25" PointY="38.75" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel3InputType" Width="1.5" PointX="15" PointY="2.875" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel3Level2" Width="1.5" PointX="7.5" PointY="41.625" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel3Level2Level1" Width="1.5" PointX="8.25" PointY="24.375" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel3Value" Width="1.5" PointX="17.25" PointY="25.25" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevelDefiniton" Width="1.5" PointX="6.75" PointY="17.875" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLocal" Width="1.5" PointX="12" PointY="41.875" />
+        <EntityTypeShape EntityType="SgqDbModel.ParMeasurementUnit" Width="1.5" PointX="15" PointY="44.875" />
+        <EntityTypeShape EntityType="SgqDbModel.ParMultipleValues" Width="1.5" PointX="11.25" PointY="8.125" />
+        <EntityTypeShape EntityType="SgqDbModel.ParNotConformityRule" Width="1.5" PointX="6" PointY="51.375" />
+        <EntityTypeShape EntityType="SgqDbModel.ParNotConformityRuleXLevel" Width="1.5" PointX="8.25" PointY="36.5" />
+        <EntityTypeShape EntityType="SgqDbModel.ParRelapse" Width="1.5" PointX="14.25" PointY="36.75" />
+        <EntityTypeShape EntityType="SgqDbModel.ParSample" Width="1.5" PointX="5.25" PointY="26.25" />
+        <EntityTypeShape EntityType="SgqDbModel.ParStructure" Width="1.5" PointX="12" PointY="12.125" />
+        <EntityTypeShape EntityType="SgqDbModel.ParStructureGroup" Width="1.5" PointX="9.75" PointY="12.375" />
+        <EntityTypeShape EntityType="SgqDbModel.Pcc1b" Width="1.5" PointX="17.25" PointY="31.125" />
         <EntityTypeShape EntityType="SgqDbModel.Period" Width="1.5" PointX="2.75" PointY="7.75" />
-        <EntityTypeShape EntityType="SgqDbModel.Shift" Width="1.5" PointX="11.75" PointY="0.75" />
-        <EntityTypeShape EntityType="SgqDbModel.sysdiagrams" Width="1.5" PointX="10.75" PointY="11.75" />
-        <EntityTypeShape EntityType="SgqDbModel.Unit" Width="1.5" PointX="15.25" PointY="37.75" />
-        <EntityTypeShape EntityType="SgqDbModel.UnitUser" Width="1.5" PointX="19" PointY="6" />
-        <EntityTypeShape EntityType="SgqDbModel.UserSgq" Width="1.5" PointX="16.75" PointY="5.25" />
+        <EntityTypeShape EntityType="SgqDbModel.Shift" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SgqDbModel.Unit" Width="1.5" PointX="13.25" PointY="58" />
+        <EntityTypeShape EntityType="SgqDbModel.UnitUser" Width="1.5" PointX="17" PointY="7.625" />
+        <EntityTypeShape EntityType="SgqDbModel.UserSgq" Width="1.5" PointX="14.75" PointY="6.75" />
+        <EntityTypeShape EntityType="SgqDbModel.VacuoGRD" Width="1.5" PointX="11.25" PointY="31.5" />
+        <AssociationConnector Association="SgqDbModel.FK__CepDesoss__ParCo__17D860BF" />
+        <AssociationConnector Association="SgqDbModel.FK__CepDesoss__ParLe__18CC84F8" />
+        <AssociationConnector Association="SgqDbModel.FK__CepRecort__ParCo__1407CFDB" />
+        <AssociationConnector Association="SgqDbModel.FK__CepRecort__ParLe__14FBF414" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_Level01" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_Level02" />
@@ -81,14 +90,18 @@
         <AssociationConnector Association="SgqDbModel.FK_ParCluster_ParClusterGroup" />
         <AssociationConnector Association="SgqDbModel.FK_ParCompanyCluster_ParCluster" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XCluster_ParCluster" />
+        <AssociationConnector Association="SgqDbModel.FK__Pcc1b__ParCompan__1BA8F1A3" />
+        <AssociationConnector Association="SgqDbModel.FK__VacuoGRD__ParCom__10373EF7" />
         <AssociationConnector Association="SgqDbModel.FK_ParCompanyCluster_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParCompanyXStructure_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParEvaluation_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParGoal_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParSample_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParCompanyXStructure_ParStructure" />
+        <AssociationConnector Association="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1_ParConsolidationType" />
         <AssociationConnector Association="SgqDbModel.FK_ParCounterLocal_ParCounter" />
         <AssociationConnector Association="SgqDbModel.FK_ParCounterLocal_ParLevel1" />
@@ -106,6 +119,8 @@
         <AssociationConnector Association="SgqDbModel.FK_ParHeaderField_ParLevelDefinition" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" />
         <AssociationConnector Association="SgqDbModel.FK_ParMultipleValues_ParHeaderField" />
+        <AssociationConnector Association="SgqDbModel.FK__Pcc1b__ParLevel1__1C9D15DC" />
+        <AssociationConnector Association="SgqDbModel.FK__VacuoGRD__ParLev__112B6330" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" />
