@@ -74,7 +74,7 @@ namespace SgqSystem
             bundles.Add(new StyleBundle("~/Content/Theme").Include(
                 "~/Scripts/theme/css/components.min.css",
                 "~/Scripts/theme/css/darkblue.min.css",
-                "~/Scripts/theme/font-awesome-4.6.3/css/font-awesome.min.css",
+                "~/Scripts/theme/font-awesome-4.7.0/css/font-awesome.min.css",
                 "~/Scripts/theme/css/layout.min.css",
                 "~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css"
             ));

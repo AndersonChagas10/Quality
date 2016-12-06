@@ -17,8 +17,13 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParCompany()
         {
+            this.CepDesossa = new HashSet<CepDesossa>();
+            this.CepRecortes = new HashSet<CepRecortes>();
+            this.Pcc1b = new HashSet<Pcc1b>();
+            this.VacuoGRD = new HashSet<VacuoGRD>();
             this.ParCompanyCluster = new HashSet<ParCompanyCluster>();
             this.ParCompanyXStructure = new HashSet<ParCompanyXStructure>();
+            this.ParCompanyXUserSgq = new HashSet<ParCompanyXUserSgq>();
             this.ParEvaluation = new HashSet<ParEvaluation>();
             this.ParGoal = new HashSet<ParGoal>();
             this.ParLevel3Value = new HashSet<ParLevel3Value>();
@@ -37,11 +42,22 @@ namespace Dominio
         public Nullable<int> CompanyNumber { get; set; }
         public string IPServer { get; set; }
         public string DBServer { get; set; }
+        public Nullable<decimal> IntegrationId { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CepDesossa> CepDesossa { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CepRecortes> CepRecortes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Pcc1b> Pcc1b { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VacuoGRD> VacuoGRD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParCompanyCluster> ParCompanyCluster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParCompanyXStructure> ParCompanyXStructure { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParCompanyXUserSgq> ParCompanyXUserSgq { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParEvaluation> ParEvaluation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
