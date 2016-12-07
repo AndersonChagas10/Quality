@@ -1,0 +1,91 @@
+﻿@model Dominio.NQA
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>NQA</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NivelGeralInspecao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NivelGeralInspecao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TamanhoLoteMin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TamanhoLoteMin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TamanhoLoteMax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TamanhoLoteMax)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amostra)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amostra)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioInsercao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioInsercao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataInsercao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataInsercao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioAlteracao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioAlteracao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataAlteracao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataAlteracao)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar8");
+
+</script>

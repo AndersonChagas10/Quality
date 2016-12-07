@@ -1,0 +1,130 @@
+﻿@model IEnumerable<Dominio.Pcc1b>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 600px;">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                    <a href="@Url.Action("Index", "Pcc1b")">PCC1B</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.pcc1b</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
+                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.pcc1b</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                <p>
+                                    @Html.ActionLink("Create New", "Create")
+                                </p>
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.ParLevel1.Name)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.ParCompany.Name)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Indicador)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Unidade)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Departamento)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Meta)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Avaliacoes)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Amostras)
+                                        </th>
+                                        <th></th>
+                                    </tr>
+
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ParLevel1.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ParCompany.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Indicador)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Unidade)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Departamento)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Meta)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Avaliacoes)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Amostras)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar6");
+
+</script>

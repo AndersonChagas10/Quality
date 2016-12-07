@@ -34,6 +34,12 @@
     <Compile Include="BkpCollection.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="CepDesossa.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CepRecortes.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="CollectionHtml.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -100,6 +106,9 @@
     <Compile Include="LogSgqGlobal.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="NQA.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParCluster.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -113,6 +122,9 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParCompanyXStructure.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParCompanyXUserSgq.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParConsolidationType.cs">
@@ -211,6 +223,9 @@
     <Compile Include="ParStructureGroup.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Pcc1b.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Period.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -242,9 +257,6 @@
     <Compile Include="Shift.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagrams.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Unit.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -252,6 +264,9 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="UserSgq.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VacuoGRD.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
   </ItemGroup>

@@ -168,7 +168,7 @@ namespace SgqSystem.Services
                 disabledTag = " disabled";
             }
 
-            return "<button type=\"" + type.ToString() + "\" class=\"" + classe.Trim() + "\" " + dataloading  + disabledTag + ">" + label + "</button>";
+            return "<button type=\"" + type.ToString() + "\" id=\"" +  id + "\" class=\"" + classe.Trim() + "\" " + dataloading  + disabledTag + ">" + label + "</button>";
         }
         /// <summary>
         /// Retorna um select
@@ -218,10 +218,17 @@ namespace SgqSystem.Services
                     outerhtml +
                     "</ul>";
         }
-        public string listgroupItem(string id=null, string classe=null, string outerhtml=null)
+        public string listgroupItem(string id=null, string classe=null, string tags=null, string outerhtml=null)
         {
             classe += " list-group-item";
-            return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\">" + outerhtml + "</li>";
+
+            if(!string.IsNullOrEmpty(tags))
+            {
+                tags = " " + tags;
+                tags = tags.Trim();
+            }
+
+            return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + ">" + outerhtml + "</li>";
         }
         public string accordeon(string id, string label, string classe=null, string outerhtml=null, bool aberto=true, bootstrapcolor? color=null)
         {
@@ -309,6 +316,52 @@ namespace SgqSystem.Services
             }
             return "<a id=\"" + id + "\" href=\"" + href + "\" class=\"" + classe + "\"" + tags + ">" + outerhtml + "</a>";
         }
-    }
 
+        public string campoBinario(string id, string booltrueName, string boolfalseName, string classe = null)
+        {
+            //classe = " list-group-item level03  row";
+
+            //string binario = "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\">" +
+            //                     "<div class=\"col-xs-9\"></div>" +
+            //                     "<div class=\"col-xs-3 text-center\">" +
+            //                        "<span class=\"pull-right marginRight30 response\" value=\"1\" booltrueName=\"" + booltrueName + "\" boolfalseName=\"" + boolfalseName + "\">" + booltrueName + "</span>" +
+            //                     "</div>" +
+            //                 "</li>";
+            string binario = "<span class=\"pull-right marginRight30 response\" value=\"1\" booltrueName=\"" + booltrueName + "\" boolfalseName=\"" + boolfalseName + "\">" + booltrueName + "</span>";
+
+            return binario;
+        }
+        public string campoIntervalo(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue=0, string unitName=null, string classe=null)
+        {
+            //definir min value //min=\"0\" 
+            //definir max value
+            //definir default value
+
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\">                                                                                                  " +
+                                 "    <span class=\"input-group-btn btn-minus\">                                                                                                                              " +
+                                 "         <button class=\"btn btn-default\" type=\"button\">                                                                                                                 " +
+                                 "             <i class=\"fa fa-minus\" aria-hidden=\"true\"></i>                                                                                                             " +
+                                 "             </button></span><input value=\"" + defaultValue + "\" defaultvalue=\"" + defaultValue + "\" type=\"number\" class=\"form-control text-center levelValue\">     " +
+                                 "             <span class=\"input-group-btn btn-plus\"><button class=\"btn btn-default\" type=\"button\">                                                                    " +
+                                 "             <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>                                                                                                              " +
+                                 "         </button>                                                                                                                                                          " +
+                                 "     </span>                                                                                                                                                                " +
+                                 "</div>                                                                                                                                                                      ";
+            return intervalo;
+        }
+        public string level2(string id, string label, string classe=null, int defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false)
+        {
+            return link(
+                           id: id, 
+                           classe: "level2" +  classe,
+                           tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\"",
+                           outerhtml: span(outerhtml: label, classe: "levelName")
+                       );
+        }
+    }
 }

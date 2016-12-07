@@ -1,0 +1,224 @@
+﻿@model Dominio.CepRecortes
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 600px;">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                    <a href="@Url.Action("Index", "CepRecortes")">@Resources.Resource.cep_recortes</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.cep_recortes</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
+                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.cep_recortes</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+
+                                <div>
+                                    <dl class="dl-horizontal">
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.Indicador)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Indicador)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.Unidade)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Unidade)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.Data)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Data)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.Departamento)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Departamento)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.HorasTrabalhadasPorDia)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.HorasTrabalhadasPorDia)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.QtdadeMediaKgRecProdDia)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.QtdadeMediaKgRecProdDia)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.QtdadeMediaKgRecProdHora)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.QtdadeMediaKgRecProdHora)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.NBR)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.NBR)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.TotalKgAvaliaHoraProd)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.TotalKgAvaliaHoraProd)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.QtadeTrabEsteiraRecortes)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.QtadeTrabEsteiraRecortes)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.TotalAvaliaColaborEsteirHoraProd)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.TotalAvaliaColaborEsteirHoraProd)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.TamanhoAmostra)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.TamanhoAmostra)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.TotalAmostraAvaliaColabEsteiraHoraProd)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.TotalAmostraAvaliaColabEsteiraHoraProd)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.Avaliacoes)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Avaliacoes)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.Amostras)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Amostras)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.AddDate)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.AddDate)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.AlterDate)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.AlterDate)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.ParCompany.Name)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.ParCompany.Name)
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.ParLevel1.Name)
+                                        </dt>
+
+                                        <dd>
+                                            @Html.DisplayFor(model => model.ParLevel1.Name)
+                                        </dd>
+
+                                    </dl>
+                                </div>
+                                <p>
+                                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+                                    @Html.ActionLink("Back to List", "Index")
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar6");
+
+</script>

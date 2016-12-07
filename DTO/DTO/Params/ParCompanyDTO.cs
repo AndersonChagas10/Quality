@@ -1,4 +1,6 @@
 ﻿using DTO.BaseEntity;
+using DTO.DTO.Params;
+using System.Collections.Generic;
 
 namespace DTO.DTO.Params
 {
@@ -13,5 +15,8 @@ namespace DTO.DTO.Params
         public int CompanyNumber { get; set; }
         public string IPServer { get; set; }
         public string DBServer { get; set; }
+
+        public List<ParCompanyXStructureDTO> ListParCompanyXStructure { get; set; }
+        public List<ParCompanyClusterDTO> ListParCompanyCluster { get; set; }
     }
 }

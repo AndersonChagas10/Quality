@@ -714,4 +714,22 @@
   <data name="close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="cep_desossa" xml:space="preserve">
+    <value>CEP Desossa</value>
+  </data>
+  <data name="cep_recortes" xml:space="preserve">
+    <value>CEP Recortes</value>
+  </data>
+  <data name="nqa" xml:space="preserve">
+    <value>NQA</value>
+  </data>
+  <data name="pcc1b" xml:space="preserve">
+    <value>PCC1B</value>
+  </data>
+  <data name="vacuo_grd" xml:space="preserve">
+    <value>Vácuo GRD</value>
+  </data>
+  <data name="volume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
 </root>
