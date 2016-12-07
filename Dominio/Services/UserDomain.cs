@@ -74,6 +74,7 @@ namespace Dominio.Services
                     AutenticaAdEUA(userDto);//Autenticação no AD JBS USA
                 }
 
+                userByName = _userRepo.GetByName(userDto.Name);
                 userByName.Password = Guard.Criptografar3DES(userDto.Password);
                 _userRepo.Salvar(userByName);
                 return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(userByName));
@@ -109,17 +110,19 @@ namespace Dominio.Services
             if (userByName == null)//Não existe no nosso DB
             {
                 CriaUSerSgqPeloUserSgqBR(userDto);
-                AtualizaRolesSgqBrPelosDadosDoErp(userDto);
-                userByName = _userRepo.GetByName(userDto.Name);
-            }
-            else //Se ele existe no DB, atualizo.
-            {
-                AtualizaRolesSgqBrPelosDadosDoErp(userDto);
+                //AtualizaRolesSgqBrPelosDadosDoErp(userDto);
+                //userByName.Id = _userRepo.GetByName(userDto.Name).Id;
             }
 
-            var isUser = _userRepo.AuthenticationLogin(userByName);
+            var user = Mapper.Map<UserDTO, UserSgq>(userDto);
+            user.Password = Guard.Criptografar3DES(user.Password);
+            var isUser = _userRepo.AuthenticationLogin(user);
             if (isUser.IsNull())
                 throw new ExceptionHelper("User not found, please verify Username and Password.");
+
+            userDto.Id = isUser.Id;
+            AtualizaRolesSgqBrPelosDadosDoErp(userDto);
+
         }
 
         private void AtualizaRolesSgqBrPelosDadosDoErp(UserDTO userDto)
@@ -128,41 +131,45 @@ namespace Dominio.Services
             {
 
                 var usuarioSgqBr = db.Usuario.FirstOrDefault(r => r.cSigla.ToLower() == userDto.Name.ToLower());
-                var usuarioPerfilEmpresaSgqBr = db.UsuarioPerfilEmpresa.Where(r => r.nCdUsuario == usuarioSgqBr.nCdUsuario).ToList();
-                var rolesSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id).ToList();
-                var allCompanySgqGlobal = _baseParCompany.GetAll();
-
-                var pqp = new List<ParCompanyDTO>();
-
-                foreach (var upe in usuarioPerfilEmpresaSgqBr)
+                    
+                if (usuarioSgqBr != null)
                 {
-                    var perfilSgqBr = db.Perfil.FirstOrDefault(r => r.nCdPerfil == upe.nCdPerfil).nCdPerfil.ToString();
-                    var parCompanySgqGlobal = allCompanySgqGlobal.FirstOrDefault(r => r.IntegrationId == upe.nCdEmpresa);
-                    if (parCompanySgqGlobal != null)
+                    var usuarioPerfilEmpresaSgqBr = db.UsuarioPerfilEmpresa.Where(r => r.nCdUsuario == usuarioSgqBr.nCdUsuario);
+                    var rolesSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id);
+                    var allCompanySgqGlobal = _baseParCompany.GetAll();
+
+                    foreach (var upe in usuarioPerfilEmpresaSgqBr)
                     {
-                        if (rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr))/*Se existe no global e existe no ERP*/
+                        var perfilSgqBr = db.Perfil.FirstOrDefault(r => r.nCdPerfil == upe.nCdPerfil).nCdPerfil.ToString();
+                        var parCompanySgqGlobal = allCompanySgqGlobal.FirstOrDefault(r => r.IntegrationId == upe.nCdEmpresa);
+                        if (parCompanySgqGlobal != null)
                         {
-                            //Nao faz nada.
-                        }
-                        else if (!rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id))/*Se não existe no global*/
-                        {
-                            var adicionaRoleGlobal = new ParCompanyXUserSgq()
+                            if (rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr))/*Se existe no global e existe no ERP*/
                             {
-                                ParCompany_Id = parCompanySgqGlobal.Id,
-                                UserSgq_Id = userDto.Id,
-                                Role = perfilSgqBr
-                            };
-                            _baseParCompanyXUserSgq.AddOrUpdate(adicionaRoleGlobal);
+                                var atualizaRole = rolesSgqGlobal.FirstOrDefault(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr);
+                                atualizaRole.Role = perfilSgqBr;
+                                _baseParCompanyXUserSgq.AddOrUpdate(atualizaRole);
+                            }
+                            else if (!rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id))/*Se não existe no global*/
+                            {
+                                var adicionaRoleGlobal = new ParCompanyXUserSgq()
+                                {
+                                    ParCompany_Id = parCompanySgqGlobal.Id,
+                                    UserSgq_Id = userDto.Id,
+                                    Role = perfilSgqBr
+                                };
+                                _baseParCompanyXUserSgq.AddOrUpdate(adicionaRoleGlobal);
+                            }
                         }
                     }
+
+                    var todosOsPerfisSgqBrAssociados = db.Perfil.Where(r => usuarioPerfilEmpresaSgqBr.Any(upe => upe.nCdPerfil == r.nCdPerfil));
+                    var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => todosOsPerfisSgqBrAssociados.Any(t => !(t.nCdPerfil.ToString() == r.Role)));
+
+                    foreach (var removerPerfilSgqGlobal in existentesSomenteSgqGlobal)/*remove se existir no global e nao existir no br*/
+                        _baseParCompanyXUserSgq.Remove(removerPerfilSgqGlobal);
+
                 }
-
-                var todosOsPerfisSgqBrAssociados = db.Perfil.Where(r => usuarioPerfilEmpresaSgqBr.Any(upe => upe.nCdPerfil == r.nCdPerfil)).ToList();
-                var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => !todosOsPerfisSgqBrAssociados.Any(t => t.nCdPerfil.ToString() == r.Role));
-
-                foreach (var removerPerfilSgqGlobal in existentesSomenteSgqGlobal)/*remove se existir no global e nao existir no br*/
-                    _baseParCompanyXUserSgq.Remove(removerPerfilSgqGlobal);
-
 
             }
 

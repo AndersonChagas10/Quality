@@ -558,9 +558,6 @@
     <Compile Include="Sugestoes.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagrams.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="TarefaAmostras.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>

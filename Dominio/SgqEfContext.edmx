@@ -815,16 +815,6 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterTime" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="Unit">
           <Key>
             <PropertyRef Name="Id" />
@@ -1864,7 +1854,6 @@
           <EntitySet Name="Pcc1b" EntityType="Self.Pcc1b" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Period" EntityType="Self.Period" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UnitUser" EntityType="Self.UnitUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSgq" EntityType="Self.UserSgq" Schema="dbo" store:Type="Tables" />
@@ -2203,6 +2192,7 @@
           <EntitySet Name="NQA" EntityType="SgqDbModel.NQA" />
           <EntitySet Name="ParCluster" EntityType="SgqDbModel.ParCluster" />
           <EntitySet Name="ParClusterGroup" EntityType="SgqDbModel.ParClusterGroup" />
+          <EntitySet Name="ParCompany" EntityType="SgqDbModel.ParCompany" />
           <EntitySet Name="ParCompanyCluster" EntityType="SgqDbModel.ParCompanyCluster" />
           <EntitySet Name="ParCompanyXStructure" EntityType="SgqDbModel.ParCompanyXStructure" />
           <EntitySet Name="ParCompanyXUserSgq" EntityType="SgqDbModel.ParCompanyXUserSgq" />
@@ -2241,14 +2231,21 @@
           <EntitySet Name="Pcc1b" EntityType="SgqDbModel.Pcc1b" />
           <EntitySet Name="Period" EntityType="SgqDbModel.Period" />
           <EntitySet Name="Shift" EntityType="SgqDbModel.Shift" />
-          <EntitySet Name="sysdiagrams" EntityType="SgqDbModel.sysdiagrams" />
           <EntitySet Name="Unit" EntityType="SgqDbModel.Unit" />
           <EntitySet Name="UnitUser" EntityType="SgqDbModel.UnitUser" />
           <EntitySet Name="UserSgq" EntityType="SgqDbModel.UserSgq" />
           <EntitySet Name="VacuoGRD" EntityType="SgqDbModel.VacuoGRD" />
+          <AssociationSet Name="FK__CepDesoss__ParCo__17D860BF" Association="SgqDbModel.FK__CepDesoss__ParCo__17D860BF">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="CepDesossa" EntitySet="CepDesossa" />
+          </AssociationSet>
           <AssociationSet Name="FK__CepDesoss__ParLe__18CC84F8" Association="SgqDbModel.FK__CepDesoss__ParLe__18CC84F8">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="CepDesossa" EntitySet="CepDesossa" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CepRecort__ParCo__1407CFDB" Association="SgqDbModel.FK__CepRecort__ParCo__1407CFDB">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="CepRecortes" EntitySet="CepRecortes" />
           </AssociationSet>
           <AssociationSet Name="FK__CepRecort__ParLe__14FBF414" Association="SgqDbModel.FK__CepRecort__ParLe__14FBF414">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
@@ -2325,6 +2322,46 @@
           <AssociationSet Name="FK_ParLevel1XCluster_ParCluster" Association="SgqDbModel.FK_ParLevel1XCluster_ParCluster">
             <End Role="ParCluster" EntitySet="ParCluster" />
             <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pcc1b__ParCompan__1BA8F1A3" Association="SgqDbModel.FK__Pcc1b__ParCompan__1BA8F1A3">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="Pcc1b" EntitySet="Pcc1b" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VacuoGRD__ParCom__10373EF7" Association="SgqDbModel.FK__VacuoGRD__ParCom__10373EF7">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="VacuoGRD" EntitySet="VacuoGRD" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParCompanyCluster_ParCompany" Association="SgqDbModel.FK_ParCompanyCluster_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParCompanyCluster" EntitySet="ParCompanyCluster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParCompanyXStructure_ParCompany" Association="SgqDbModel.FK_ParCompanyXStructure_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParCompanyXStructure" EntitySet="ParCompanyXStructure" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParCompanyXUserSgq_ParCompany" Association="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParCompanyXUserSgq" EntitySet="ParCompanyXUserSgq" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParEvaluation_ParCompany" Association="SgqDbModel.FK_ParEvaluation_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParEvaluation" EntitySet="ParEvaluation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParGoal_ParCompany" Association="SgqDbModel.FK_ParGoal_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParGoal" EntitySet="ParGoal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Value_ParCompany" Association="SgqDbModel.FK_ParLevel3Value_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParLevel3Value" EntitySet="ParLevel3Value" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParNotConformityRuleXLevel_ParCompany" Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParNotConformityRuleXLevel" EntitySet="ParNotConformityRuleXLevel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParSample_ParCompany" Association="SgqDbModel.FK_ParSample_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParSample" EntitySet="ParSample" />
           </AssociationSet>
           <AssociationSet Name="FK_ParCompanyXStructure_ParStructure" Association="SgqDbModel.FK_ParCompanyXStructure_ParStructure">
             <End Role="ParStructure" EntitySet="ParStructure" />
@@ -2506,55 +2543,6 @@
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="UnitUser" EntitySet="UnitUser" />
           </AssociationSet>
-          <EntitySet Name="ParCompany" EntityType="SgqDbModel.ParCompany" />
-          <AssociationSet Name="FK__CepDesoss__ParCo__17D860BF" Association="SgqDbModel.FK__CepDesoss__ParCo__17D860BF">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="CepDesossa" EntitySet="CepDesossa" />
-          </AssociationSet>
-          <AssociationSet Name="FK__CepRecort__ParCo__1407CFDB" Association="SgqDbModel.FK__CepRecort__ParCo__1407CFDB">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="CepRecortes" EntitySet="CepRecortes" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Pcc1b__ParCompan__1BA8F1A3" Association="SgqDbModel.FK__Pcc1b__ParCompan__1BA8F1A3">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="Pcc1b" EntitySet="Pcc1b" />
-          </AssociationSet>
-          <AssociationSet Name="FK__VacuoGRD__ParCom__10373EF7" Association="SgqDbModel.FK__VacuoGRD__ParCom__10373EF7">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="VacuoGRD" EntitySet="VacuoGRD" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParCompanyCluster_ParCompany" Association="SgqDbModel.FK_ParCompanyCluster_ParCompany">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParCompanyCluster" EntitySet="ParCompanyCluster" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParCompanyXStructure_ParCompany" Association="SgqDbModel.FK_ParCompanyXStructure_ParCompany">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParCompanyXStructure" EntitySet="ParCompanyXStructure" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParCompanyXUserSgq_ParCompany" Association="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParCompanyXUserSgq" EntitySet="ParCompanyXUserSgq" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParEvaluation_ParCompany" Association="SgqDbModel.FK_ParEvaluation_ParCompany">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParEvaluation" EntitySet="ParEvaluation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParGoal_ParCompany" Association="SgqDbModel.FK_ParGoal_ParCompany">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParGoal" EntitySet="ParGoal" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel3Value_ParCompany" Association="SgqDbModel.FK_ParLevel3Value_ParCompany">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParLevel3Value" EntitySet="ParLevel3Value" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParNotConformityRuleXLevel_ParCompany" Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParNotConformityRuleXLevel" EntitySet="ParNotConformityRuleXLevel" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParSample_ParCompany" Association="SgqDbModel.FK_ParSample_ParCompany">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParSample" EntitySet="ParSample" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="BkpCollection">
           <Key>
@@ -2588,8 +2576,8 @@
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="ParCompany_id" Type="Int32" />
           <Property Name="ParLevel1_id" Type="Int32" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__CepDesoss__ParLe__18CC84F8" FromRole="CepDesossa" ToRole="ParLevel1" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK__CepDesoss__ParCo__17D860BF" FromRole="CepDesossa" ToRole="ParCompany" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__CepDesoss__ParLe__18CC84F8" FromRole="CepDesossa" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="CepRecortes">
           <Key>
@@ -2615,8 +2603,8 @@
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="ParCompany_id" Type="Int32" />
           <Property Name="ParLevel1_id" Type="Int32" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__CepRecort__ParLe__14FBF414" FromRole="CepRecortes" ToRole="ParLevel1" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK__CepRecort__ParCo__1407CFDB" FromRole="CepRecortes" ToRole="ParCompany" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__CepRecort__ParLe__14FBF414" FromRole="CepRecortes" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="CollectionHtml">
           <Key>
@@ -2904,6 +2892,35 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParCluster" Relationship="SgqDbModel.FK_ParCluster_ParClusterGroup" FromRole="ParClusterGroup" ToRole="ParCluster" />
         </EntityType>
+        <EntityType Name="ParCompany">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Initials" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SIF" Type="Int32" />
+          <Property Name="CompanyNumber" Type="Int32" />
+          <Property Name="IPServer" Type="String" MaxLength="155" FixedLength="false" Unicode="true" />
+          <Property Name="DBServer" Type="String" MaxLength="155" FixedLength="false" Unicode="true" />
+          <Property Name="IntegrationId" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="CepDesossa" Relationship="SgqDbModel.FK__CepDesoss__ParCo__17D860BF" FromRole="ParCompany" ToRole="CepDesossa" />
+          <NavigationProperty Name="CepRecortes" Relationship="SgqDbModel.FK__CepRecort__ParCo__1407CFDB" FromRole="ParCompany" ToRole="CepRecortes" />
+          <NavigationProperty Name="Pcc1b" Relationship="SgqDbModel.FK__Pcc1b__ParCompan__1BA8F1A3" FromRole="ParCompany" ToRole="Pcc1b" />
+          <NavigationProperty Name="VacuoGRD" Relationship="SgqDbModel.FK__VacuoGRD__ParCom__10373EF7" FromRole="ParCompany" ToRole="VacuoGRD" />
+          <NavigationProperty Name="ParCompanyCluster" Relationship="SgqDbModel.FK_ParCompanyCluster_ParCompany" FromRole="ParCompany" ToRole="ParCompanyCluster" />
+          <NavigationProperty Name="ParCompanyXStructure" Relationship="SgqDbModel.FK_ParCompanyXStructure_ParCompany" FromRole="ParCompany" ToRole="ParCompanyXStructure" />
+          <NavigationProperty Name="ParCompanyXUserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany" FromRole="ParCompany" ToRole="ParCompanyXUserSgq" />
+          <NavigationProperty Name="ParEvaluation" Relationship="SgqDbModel.FK_ParEvaluation_ParCompany" FromRole="ParCompany" ToRole="ParEvaluation" />
+          <NavigationProperty Name="ParGoal" Relationship="SgqDbModel.FK_ParGoal_ParCompany" FromRole="ParCompany" ToRole="ParGoal" />
+          <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParCompany" FromRole="ParCompany" ToRole="ParLevel3Value" />
+          <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" FromRole="ParCompany" ToRole="ParNotConformityRuleXLevel" />
+          <NavigationProperty Name="ParSample" Relationship="SgqDbModel.FK_ParSample_ParCompany" FromRole="ParCompany" ToRole="ParSample" />
+        </EntityType>
         <EntityType Name="ParCompanyCluster">
           <Key>
             <PropertyRef Name="Id" />
@@ -2927,8 +2944,8 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParStructure" Relationship="SgqDbModel.FK_ParCompanyXStructure_ParStructure" FromRole="ParCompanyXStructure" ToRole="ParStructure" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParCompanyXStructure_ParCompany" FromRole="ParCompanyXStructure" ToRole="ParCompany" />
+          <NavigationProperty Name="ParStructure" Relationship="SgqDbModel.FK_ParCompanyXStructure_ParStructure" FromRole="ParCompanyXStructure" ToRole="ParStructure" />
         </EntityType>
         <EntityType Name="ParCompanyXUserSgq">
           <Key>
@@ -2938,8 +2955,8 @@
           <Property Name="UserSgq_Id" Type="Int32" Nullable="false" />
           <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
           <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq" FromRole="ParCompanyXUserSgq" ToRole="UserSgq" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany" FromRole="ParCompanyXUserSgq" ToRole="ParCompany" />
+          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq" FromRole="ParCompanyXUserSgq" ToRole="UserSgq" />
         </EntityType>
         <EntityType Name="ParConsolidationType">
           <Key>
@@ -3018,8 +3035,8 @@
           <Property Name="AddDate" Type="DateTime" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParEvaluation_ParLevel2" FromRole="ParEvaluation" ToRole="ParLevel2" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParEvaluation_ParCompany" FromRole="ParEvaluation" ToRole="ParCompany" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParEvaluation_ParLevel2" FromRole="ParEvaluation" ToRole="ParLevel2" />
         </EntityType>
         <EntityType Name="ParFieldType">
           <Key>
@@ -3058,8 +3075,8 @@
           <Property Name="AddDate" Type="DateTime" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParGoal_ParLevel1" FromRole="ParGoal" ToRole="ParLevel1" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParGoal_ParCompany" FromRole="ParGoal" ToRole="ParCompany" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParGoal_ParLevel1" FromRole="ParGoal" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="ParHeaderField">
           <Key>
@@ -3283,12 +3300,12 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParLevel3Value_ParCompany" FromRole="ParLevel3Value" ToRole="ParCompany" />
           <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3" FromRole="ParLevel3Value" ToRole="ParLevel3" />
           <NavigationProperty Name="ParLevel3BoolFalse" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolFalse" FromRole="ParLevel3Value" ToRole="ParLevel3BoolFalse" />
           <NavigationProperty Name="ParLevel3BoolTrue" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolTrue" FromRole="ParLevel3Value" ToRole="ParLevel3BoolTrue" />
           <NavigationProperty Name="ParLevel3InputType" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3InputType" FromRole="ParLevel3Value" ToRole="ParLevel3InputType" />
           <NavigationProperty Name="ParMeasurementUnit" Relationship="SgqDbModel.FK_ParLevel3Value_ParMeasurementUnit" FromRole="ParLevel3Value" ToRole="ParMeasurementUnit" />
-          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParLevel3Value_ParCompany" FromRole="ParLevel3Value" ToRole="ParCompany" />
         </EntityType>
         <EntityType Name="ParLevelDefiniton">
           <Key>
@@ -3369,11 +3386,11 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" FromRole="ParNotConformityRuleXLevel" ToRole="ParCompany" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" FromRole="ParNotConformityRuleXLevel" ToRole="ParLevel1" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel2" FromRole="ParNotConformityRuleXLevel" ToRole="ParLevel2" />
           <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel3" FromRole="ParNotConformityRuleXLevel" ToRole="ParLevel3" />
           <NavigationProperty Name="ParNotConformityRule" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParNotConformityRule" FromRole="ParNotConformityRuleXLevel" ToRole="ParNotConformityRule" />
-          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" FromRole="ParNotConformityRuleXLevel" ToRole="ParCompany" />
         </EntityType>
         <EntityType Name="ParRelapse">
           <Key>
@@ -3405,8 +3422,8 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParSample_ParLevel2" FromRole="ParSample" ToRole="ParLevel2" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParSample_ParCompany" FromRole="ParSample" ToRole="ParCompany" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParSample_ParLevel2" FromRole="ParSample" ToRole="ParLevel2" />
         </EntityType>
         <EntityType Name="ParStructure">
           <Key>
@@ -3458,8 +3475,8 @@
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="ParCompany_id" Type="Int32" />
           <Property Name="ParLevel1_id" Type="Int32" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__Pcc1b__ParLevel1__1C9D15DC" FromRole="Pcc1b" ToRole="ParLevel1" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK__Pcc1b__ParCompan__1BA8F1A3" FromRole="Pcc1b" ToRole="ParCompany" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__Pcc1b__ParLevel1__1C9D15DC" FromRole="Pcc1b" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="Period">
           <Key>
@@ -3478,16 +3495,6 @@
           <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterTime" Type="DateTime" Nullable="false" Precision="7" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="Unit">
           <Key>
@@ -3553,9 +3560,21 @@
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="ParCompany_id" Type="Int32" />
           <Property Name="ParLevel1_id" Type="Int32" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__VacuoGRD__ParLev__112B6330" FromRole="VacuoGRD" ToRole="ParLevel1" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK__VacuoGRD__ParCom__10373EF7" FromRole="VacuoGRD" ToRole="ParCompany" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__VacuoGRD__ParLev__112B6330" FromRole="VacuoGRD" ToRole="ParLevel1" />
         </EntityType>
+        <Association Name="FK__CepDesoss__ParCo__17D860BF">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
+          <End Type="SgqDbModel.CepDesossa" Role="CepDesossa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CepDesossa">
+              <PropertyRef Name="ParCompany_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__CepDesoss__ParLe__18CC84F8">
           <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
           <End Type="SgqDbModel.CepDesossa" Role="CepDesossa" Multiplicity="*" />
@@ -3565,6 +3584,18 @@
             </Principal>
             <Dependent Role="CepDesossa">
               <PropertyRef Name="ParLevel1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CepRecort__ParCo__1407CFDB">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
+          <End Type="SgqDbModel.CepRecortes" Role="CepRecortes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CepRecortes">
+              <PropertyRef Name="ParCompany_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3793,6 +3824,126 @@
             </Principal>
             <Dependent Role="ParLevel1XCluster">
               <PropertyRef Name="ParCluster_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pcc1b__ParCompan__1BA8F1A3">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
+          <End Type="SgqDbModel.Pcc1b" Role="Pcc1b" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pcc1b">
+              <PropertyRef Name="ParCompany_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VacuoGRD__ParCom__10373EF7">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
+          <End Type="SgqDbModel.VacuoGRD" Role="VacuoGRD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VacuoGRD">
+              <PropertyRef Name="ParCompany_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParCompanyCluster_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
+          <End Type="SgqDbModel.ParCompanyCluster" Role="ParCompanyCluster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParCompanyCluster">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParCompanyXStructure_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
+          <End Type="SgqDbModel.ParCompanyXStructure" Role="ParCompanyXStructure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParCompanyXStructure">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParCompanyXUserSgq_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
+          <End Type="SgqDbModel.ParCompanyXUserSgq" Role="ParCompanyXUserSgq" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParCompanyXUserSgq">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParEvaluation_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParEvaluation" Role="ParEvaluation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParEvaluation">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParGoal_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParGoal" Role="ParGoal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParGoal">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Value_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParLevel3Value" Role="ParLevel3Value" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Value">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParNotConformityRuleXLevel_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParNotConformityRuleXLevel" Role="ParNotConformityRuleXLevel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParNotConformityRuleXLevel">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParSample_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParSample" Role="ParSample" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParSample">
+              <PropertyRef Name="ParCompany_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4336,179 +4487,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ParCompany">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="Initials" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SIF" Type="Int32" />
-          <Property Name="CompanyNumber" Type="Int32" />
-          <Property Name="IPServer" Type="String" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="DBServer" Type="String" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="IntegrationId" Type="Decimal" Precision="18" Scale="0" />
-          <NavigationProperty Name="CepDesossa" Relationship="SgqDbModel.FK__CepDesoss__ParCo__17D860BF" FromRole="ParCompany" ToRole="CepDesossa" />
-          <NavigationProperty Name="CepRecortes" Relationship="SgqDbModel.FK__CepRecort__ParCo__1407CFDB" FromRole="ParCompany" ToRole="CepRecortes" />
-          <NavigationProperty Name="Pcc1b" Relationship="SgqDbModel.FK__Pcc1b__ParCompan__1BA8F1A3" FromRole="ParCompany" ToRole="Pcc1b" />
-          <NavigationProperty Name="VacuoGRD" Relationship="SgqDbModel.FK__VacuoGRD__ParCom__10373EF7" FromRole="ParCompany" ToRole="VacuoGRD" />
-          <NavigationProperty Name="ParCompanyCluster" Relationship="SgqDbModel.FK_ParCompanyCluster_ParCompany" FromRole="ParCompany" ToRole="ParCompanyCluster" />
-          <NavigationProperty Name="ParCompanyXStructure" Relationship="SgqDbModel.FK_ParCompanyXStructure_ParCompany" FromRole="ParCompany" ToRole="ParCompanyXStructure" />
-          <NavigationProperty Name="ParCompanyXUserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany" FromRole="ParCompany" ToRole="ParCompanyXUserSgq" />
-          <NavigationProperty Name="ParEvaluation" Relationship="SgqDbModel.FK_ParEvaluation_ParCompany" FromRole="ParCompany" ToRole="ParEvaluation" />
-          <NavigationProperty Name="ParGoal" Relationship="SgqDbModel.FK_ParGoal_ParCompany" FromRole="ParCompany" ToRole="ParGoal" />
-          <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParCompany" FromRole="ParCompany" ToRole="ParLevel3Value" />
-          <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" FromRole="ParCompany" ToRole="ParNotConformityRuleXLevel" />
-          <NavigationProperty Name="ParSample" Relationship="SgqDbModel.FK_ParSample_ParCompany" FromRole="ParCompany" ToRole="ParSample" />
-        </EntityType>
-        <Association Name="FK__CepDesoss__ParCo__17D860BF">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
-          <End Type="SgqDbModel.CepDesossa" Role="CepDesossa" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CepDesossa">
-              <PropertyRef Name="ParCompany_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__CepRecort__ParCo__1407CFDB">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
-          <End Type="SgqDbModel.CepRecortes" Role="CepRecortes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CepRecortes">
-              <PropertyRef Name="ParCompany_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Pcc1b__ParCompan__1BA8F1A3">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
-          <End Type="SgqDbModel.Pcc1b" Role="Pcc1b" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Pcc1b">
-              <PropertyRef Name="ParCompany_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__VacuoGRD__ParCom__10373EF7">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
-          <End Type="SgqDbModel.VacuoGRD" Role="VacuoGRD" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="VacuoGRD">
-              <PropertyRef Name="ParCompany_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCompanyCluster_ParCompany">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
-          <End Type="SgqDbModel.ParCompanyCluster" Role="ParCompanyCluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCompanyCluster">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCompanyXStructure_ParCompany">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
-          <End Type="SgqDbModel.ParCompanyXStructure" Role="ParCompanyXStructure" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCompanyXStructure">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCompanyXUserSgq_ParCompany">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
-          <End Type="SgqDbModel.ParCompanyXUserSgq" Role="ParCompanyXUserSgq" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCompanyXUserSgq">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParEvaluation_ParCompany">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParEvaluation" Role="ParEvaluation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParEvaluation">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParGoal_ParCompany">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParGoal" Role="ParGoal" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParGoal">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel3Value_ParCompany">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParLevel3Value" Role="ParLevel3Value" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3Value">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParNotConformityRuleXLevel_ParCompany">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParNotConformityRuleXLevel" Role="ParNotConformityRuleXLevel" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParNotConformityRuleXLevel">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParSample_ParCompany">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParSample" Role="ParSample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParSample">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4844,6 +4822,24 @@
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="ParClusterGroupParent_Id" ColumnName="ParClusterGroupParent_Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParCompany">
+            <EntityTypeMapping TypeName="SgqDbModel.ParCompany">
+              <MappingFragment StoreEntitySet="ParCompany">
+                <ScalarProperty Name="IntegrationId" ColumnName="IntegrationId" />
+                <ScalarProperty Name="DBServer" ColumnName="DBServer" />
+                <ScalarProperty Name="IPServer" ColumnName="IPServer" />
+                <ScalarProperty Name="CompanyNumber" ColumnName="CompanyNumber" />
+                <ScalarProperty Name="SIF" ColumnName="SIF" />
+                <ScalarProperty Name="Initials" ColumnName="Initials" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -5366,17 +5362,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="SgqDbModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Unit">
             <EntityTypeMapping TypeName="SgqDbModel.Unit">
               <MappingFragment StoreEntitySet="Unit">
@@ -5432,24 +5417,6 @@
                 <ScalarProperty Name="Data" ColumnName="Data" />
                 <ScalarProperty Name="Unidade" ColumnName="Unidade" />
                 <ScalarProperty Name="Indicador" ColumnName="Indicador" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParCompany">
-            <EntityTypeMapping TypeName="SgqDbModel.ParCompany">
-              <MappingFragment StoreEntitySet="ParCompany">
-                <ScalarProperty Name="IntegrationId" ColumnName="IntegrationId" />
-                <ScalarProperty Name="DBServer" ColumnName="DBServer" />
-                <ScalarProperty Name="IPServer" ColumnName="IPServer" />
-                <ScalarProperty Name="CompanyNumber" ColumnName="CompanyNumber" />
-                <ScalarProperty Name="SIF" ColumnName="SIF" />
-                <ScalarProperty Name="Initials" ColumnName="Initials" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
