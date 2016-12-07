@@ -13,5 +13,6 @@ namespace DTO.DTO.Params
         public int CompanyNumber { get; set; }
         public string IPServer { get; set; }
         public string DBServer { get; set; }
+        public string RolePerCompany { get; set; }
     }
 }

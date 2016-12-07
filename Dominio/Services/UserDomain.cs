@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Dominio.Interfaces.Repositories;
 using Dominio.Interfaces.Services;
+using DTO;
 using DTO.DTO;
+using DTO.DTO.Params;
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;
@@ -15,7 +17,11 @@ namespace Dominio.Services
 {
     public class UserDomain : IUserDomain
     {
+        #region Parametros e construtores.
+
         private readonly IUserRepository _userRepo;
+        private readonly IBaseRepository<ParCompanyXUserSgq> _baseParCompanyXUserSgq;
+        private readonly IBaseRepository<ParCompany> _baseParCompany;
 
         private static string dominio = "global.corp.prod";
 
@@ -25,13 +31,21 @@ namespace Dominio.Services
         /// Construtor para Inversion of Control.
         /// </summary>
         /// <param name="userRepo"> Repositório de Usuario, interface de comunicação com Data. </param>
-        public UserDomain(IUserRepository userRepo)
+        public UserDomain(IUserRepository userRepo
+            , IBaseRepository<ParCompanyXUserSgq> baseParCompanyXUserSgq
+            , IBaseRepository<ParCompany> baseParCompany)
         {
+            _baseParCompany = baseParCompany;
+            _baseParCompanyXUserSgq = baseParCompanyXUserSgq;
             _userRepo = userRepo;
         }
 
+        #endregion
+
+        #region AuthenticationLogin
+
         /// <summary>
-        /// VErifica se existe Usuario e Senha Correspondentes no Banco de dados.
+        /// Verifica se existe Usuario e Senha Correspondentes no Banco de dados.
         /// </summary>
         /// <param name="name"> Nome do Usuário. </param>
         /// <param name="password"> Senha do Usuário. </param>
@@ -40,34 +54,30 @@ namespace Dominio.Services
         {
             try
             {
-
-                userDto.Password = DecryptStringAES(userDto.Password);
-
                 if (userDto.IsNull())
                     throw new ExceptionHelper("Username and Password are required.");
 
                 userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
-
+                userDto.Password = DecryptStringAES(userDto.Password);
                 var userByName = _userRepo.GetByName(userDto.Name);
+
+                //Pega dados da table antiga e converte para sistema novo.
+                if (GlobalConfig.Brasil)
+                {
+                    LoginBraSil(userDto, userByName);
+                }
 
                 if (userByName == null)
                 {
                     throw new ExceptionHelper("User not found, please verify Username and Password.");
                 }
 
-                //Autenticação no AD JBS USA
-                if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
+                if (GlobalConfig.Eua)
                 {
-                    var user = Mapper.Map<UserDTO, UserSgq>(userDto);
-                    user.Password = Criptografar3DES(user.Password);
-                    var isUser = _userRepo.AuthenticationLogin(user);
-                    if (isUser.IsNull())
-                    {
-                        throw new ExceptionHelper("User not found, please verify Username and Password.");
-                    }
+                    AutenticaAdEUA(userDto);
                 }
 
-                userByName.Password = Criptografar3DES(userDto.Password);
+                userByName.Password = Guard.Criptografar3DES(userDto.Password);
 
                 _userRepo.Salvar(userByName);
 
@@ -78,9 +88,135 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                return new GenericReturn<UserDTO>(e, falhaGeral);
+                return new GenericReturn<UserDTO>(e, falhaGeral + e.Message);
             }
         }
+
+        private void AutenticaAdEUA(UserDTO userDto)
+        {
+            //Autenticação no AD JBS USA
+            if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
+            {
+                var user = Mapper.Map<UserDTO, UserSgq>(userDto);
+                user.Password = Guard.Criptografar3DES(user.Password);
+                var isUser = _userRepo.AuthenticationLogin(user);
+                if (isUser.IsNull())
+                {
+                    throw new ExceptionHelper("User not found, please verify Username and Password.");
+                }
+            }
+        }
+
+        private void LoginBraSil(UserDTO userDto, UserSgq userByName)
+        {
+            if (userByName == null)//Não existe no nosso DB
+            {
+                CriaUSerSgqPeloUserSgqBR(userDto);
+                AtualizaRolesSgqBrPelosDadosDoErp(userDto);
+            }
+            else //Se ele existe no DB, atualizo.
+            {
+                AtualizaRolesSgqBrPelosDadosDoErp(userDto);
+            }
+        }
+
+        private void AtualizaRolesSgqBrPelosDadosDoErp(UserDTO userDto)
+        {
+            using (var db = new SGQ_GlobalEntities())
+            {
+
+                var usuarioSgqBr = db.Usuario.FirstOrDefault(r => r.cSigla.ToLower() == userDto.Name.ToLower());
+                var usuarioPerfilEmpresaSgqBr = db.UsuarioPerfilEmpresa.Where(r => r.nCdUsuario == usuarioSgqBr.nCdUsuario).ToList();
+                var rolesSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id).ToList();
+                var allCompanySgqGlobal = _baseParCompany.GetAll();
+
+                var pqp = new List<ParCompanyDTO>();
+
+                foreach (var upe in usuarioPerfilEmpresaSgqBr)
+                {
+                    var perfilSgqBr = db.Perfil.FirstOrDefault(r => r.nCdPerfil == upe.nCdPerfil).nCdPerfil.ToString();
+                    var parCompanySgqGlobal = allCompanySgqGlobal.FirstOrDefault(r => r.IntegrationId == upe.nCdEmpresa);
+                    if (parCompanySgqGlobal != null)
+                    {
+                        if (rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr))/*Se existe no global e existe no ERP*/
+                        {
+                            //Nao faz nada.
+                        }
+                        else if (!rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id))/*Se não existe no global*/
+                        {
+                            var adicionaRoleGlobal = new ParCompanyXUserSgq()
+                            {
+                                ParCompany_Id = parCompanySgqGlobal.Id,
+                                UserSgq_Id = userDto.Id,
+                                Role = perfilSgqBr
+                            };
+                            _baseParCompanyXUserSgq.AddOrUpdate(adicionaRoleGlobal);
+                        }
+                    }
+                }
+
+                var todosOsPerfisSgqBrAssociados = db.Perfil.Where(r => usuarioPerfilEmpresaSgqBr.Any(upe => upe.nCdPerfil == r.nCdPerfil)).ToList();
+                var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => !todosOsPerfisSgqBrAssociados.Any(t => t.nCdPerfil.ToString() == r.Role));
+
+                foreach (var removerPerfilSgqGlobal in existentesSomenteSgqGlobal)/*remove se existir no global e nao existir no br*/
+                    _baseParCompanyXUserSgq.Remove(removerPerfilSgqGlobal);
+
+
+            }
+
+        }
+
+        private void CriaUSerSgqPeloUserSgqBR(UserDTO userDto)
+        {
+            using (var db = new SGQ_GlobalEntities())
+            {
+                try
+                {
+                    var existenteNoDbAntigo = db.Usuario.FirstOrDefault(r => r.cSigla.ToLower() == userDto.Name.ToLower());
+                    if (existenteNoDbAntigo != null)//Porem existe no DB antigo.
+                    {
+                        UserSgq newUserSgq;
+
+                        try
+                        {
+                            newUserSgq = new UserSgq()
+                            {
+                                Name = existenteNoDbAntigo.cSigla.ToLower(),
+                                FullName = existenteNoDbAntigo.cNmUsuario,
+                                Email = existenteNoDbAntigo.cEMail,
+                                Password = Guard.Criptografar3DES(userDto.Password),
+                            };
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception("Erro ao criar usuario Sgq Brasil", e);
+                        }
+
+                        try
+                        {
+                            _userRepo.Salvar(newUserSgq);//Slava e cria o ID
+                            userDto.Id = newUserSgq.Id;
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception("Error ao salvar o usuario SGQ Brasil > new UserDomain SGQ Global", e);
+                        }
+
+                    }
+                    else
+                    {
+                        throw new Exception("User not found, please verify Username and Password.");
+                    }
+                }
+                catch (Exception e)
+                {
+                    new CreateLog(new Exception("Realizando Rollback em CriaUSerSgqPeloUserSgqBR", e));
+                    throw e;
+                }
+            }
+        } 
+
+        #endregion
 
         public GenericReturn<List<UserDTO>> GetAllUserValidationAd(UserDTO userDto)
         {
@@ -95,15 +231,15 @@ namespace Dominio.Services
                 //userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
 
                 //Autenticação no AD JBS USA
-               // if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
-               // {
-                    //var user = Mapper.Map<UserDTO, UserSgq>(userDto);
-                    //user.Password = Criptografar3DES(user.Password);
-                    //var isUser = _userRepo.AuthenticationLogin(user);
-                    //if (isUser.IsNull())
-                    //{
-                    //    throw new ExceptionHelper("User not found, please verify Username and Password.");
-                    //}
+                // if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
+                // {
+                //var user = Mapper.Map<UserDTO, UserSgq>(userDto);
+                //user.Password = Criptografar3DES(user.Password);
+                //var isUser = _userRepo.AuthenticationLogin(user);
+                //if (isUser.IsNull())
+                //{
+                //    throw new ExceptionHelper("User not found, please verify Username and Password.");
+                //}
                 //}
 
                 var retorno = Mapper.Map<List<UserSgq>, List<UserDTO>>(_userRepo.GetAllUser());
@@ -112,7 +248,7 @@ namespace Dominio.Services
                 {
                     if (!string.IsNullOrEmpty(i.Password))
                     {
-                        i.Password = Descriptografar3DES(i.Password);
+                        i.Password = Guard.Descriptografar3DES(i.Password);
                         i.Password = EncryptStringAES(i.Password);
                     }
                 }
@@ -137,6 +273,8 @@ namespace Dominio.Services
                 return new GenericReturn<UserDTO>(e, "CAnnot get user by name.");
             }
         }
+
+        #region Auxiliares REMOVER E PASSAR PARA CLASSE GUARD.
 
         public static bool CheckUserInAD(string domain, string username, string password, string userVerific)
         {
@@ -185,83 +323,6 @@ namespace Dominio.Services
                 return false;
             }
         }
-
-        #region Constantes para Criptografar
-
-        /// <summary>     
-        /// Representação de valor em base 64 (Chave Interna)    
-        /// O Valor representa a transformação para base64 de     
-        /// um conjunto de 32 caracteres (8 * 32 = 256bits)      
-        /// </summary>     
-        const string cryptoKey3DES = "90A4F2C1DC40CE1F";
-
-        #endregion
-
-        #region Criptografia 3DES
-
-        public static string Criptografar3DES(string Message)
-        {
-            try
-            {
-                byte[] Results = null;
-                System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
-                MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
-                byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey3DES));
-                TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
-                TDESAlgorithm.Key = TDESKey;
-                TDESAlgorithm.Mode = CipherMode.ECB;
-                TDESAlgorithm.Padding = PaddingMode.PKCS7;
-                byte[] DataToEncrypt = UTF8.GetBytes(Message);
-                try
-                {
-                    ICryptoTransform Encryptor = TDESAlgorithm.CreateEncryptor();
-                    Results = Encryptor.TransformFinalBlock(DataToEncrypt, 0, DataToEncrypt.Length);
-                }
-                finally
-                {
-                    TDESAlgorithm.Clear();
-                    HashProvider.Clear();
-                }
-                return Convert.ToBase64String(Results);
-            }
-            catch (Exception)
-            {
-                return Message;
-            }
-        }
-
-        public static string Descriptografar3DES(string Message)
-        {
-            try
-            {
-                byte[] Results = null;
-                System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
-                MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
-                byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey3DES));
-                TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
-                TDESAlgorithm.Key = TDESKey;
-                TDESAlgorithm.Mode = CipherMode.ECB;
-                TDESAlgorithm.Padding = PaddingMode.PKCS7;
-                byte[] DataToDecrypt = Convert.FromBase64String(Message);
-                try
-                {
-                    ICryptoTransform Decryptor = TDESAlgorithm.CreateDecryptor();
-                    Results = Decryptor.TransformFinalBlock(DataToDecrypt, 0, DataToDecrypt.Length);
-                }
-                finally
-                {
-                    TDESAlgorithm.Clear();
-                    HashProvider.Clear();
-                }
-                return UTF8.GetString(Results);
-            }
-            catch (Exception)
-            {
-                return Message;
-            }
-        }
-
-        #endregion
 
         public static string EncryptStringAES(string cipherText)
         {
@@ -408,6 +469,7 @@ namespace Dominio.Services
             return plaintext;
         }
 
+        #endregion
     }
 
 }

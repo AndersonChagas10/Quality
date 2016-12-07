@@ -20,7 +20,6 @@ namespace SgqSystem.Secirity
         {
 
             // I need to read cookie values here
-            //Assuming user comes back after several hours. several < 12.
             //Read the cookie from Request.
             HttpCookie cookie = filterContext.HttpContext.Request.Cookies.Get("webControlCookie");
             if (cookie == null)
@@ -31,10 +30,11 @@ namespace SgqSystem.Secirity
             }
             else
             {
+                //Extends cookie ttl
                 cookie.Expires = DateTime.Now.AddMinutes(30);
                 //ok - cookie is found.
                 //Gracefully check if the cookie has the key-value as expected.
-                if (!string.IsNullOrEmpty(this.Roles))
+                if (!string.IsNullOrEmpty(Roles))
                 {
                     if (!string.IsNullOrEmpty(cookie.Values["roles"]))
                     {
@@ -65,7 +65,7 @@ namespace SgqSystem.Secirity
         {
             var roles = role.Split(new char[] { ',' });
             //return true;
-            return roles.Any(r => this.Roles.Contains(r));
+            return roles.Any(r => Roles.Contains(r));
         }
     }
 }

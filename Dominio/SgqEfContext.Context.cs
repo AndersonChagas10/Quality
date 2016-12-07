@@ -32,6 +32,8 @@ namespace Dominio
         }
     
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
+        public virtual DbSet<CepDesossa> CepDesossa { get; set; }
+        public virtual DbSet<CepRecortes> CepRecortes { get; set; }
         public virtual DbSet<CollectionHtml> CollectionHtml { get; set; }
         public virtual DbSet<CollectionJson> CollectionJson { get; set; }
         public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
@@ -46,11 +48,12 @@ namespace Dominio
         public virtual DbSet<Level03> Level03 { get; set; }
         public virtual DbSet<LogJson> LogJson { get; set; }
         public virtual DbSet<LogSgqGlobal> LogSgqGlobal { get; set; }
+        public virtual DbSet<NQA> NQA { get; set; }
         public virtual DbSet<ParCluster> ParCluster { get; set; }
         public virtual DbSet<ParClusterGroup> ParClusterGroup { get; set; }
-        public virtual DbSet<ParCompany> ParCompany { get; set; }
         public virtual DbSet<ParCompanyCluster> ParCompanyCluster { get; set; }
         public virtual DbSet<ParCompanyXStructure> ParCompanyXStructure { get; set; }
+        public virtual DbSet<ParCompanyXUserSgq> ParCompanyXUserSgq { get; set; }
         public virtual DbSet<ParConsolidationType> ParConsolidationType { get; set; }
         public virtual DbSet<ParCounter> ParCounter { get; set; }
         public virtual DbSet<ParCounterXLocal> ParCounterXLocal { get; set; }
@@ -83,11 +86,14 @@ namespace Dominio
         public virtual DbSet<ParSample> ParSample { get; set; }
         public virtual DbSet<ParStructure> ParStructure { get; set; }
         public virtual DbSet<ParStructureGroup> ParStructureGroup { get; set; }
+        public virtual DbSet<Pcc1b> Pcc1b { get; set; }
         public virtual DbSet<Period> Period { get; set; }
         public virtual DbSet<Shift> Shift { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<UnitUser> UnitUser { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
+        public virtual DbSet<VacuoGRD> VacuoGRD { get; set; }
+        public virtual DbSet<ParCompany> ParCompany { get; set; }
     }
 }

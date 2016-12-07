@@ -28,11 +28,11 @@ namespace Dominio
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
     
-        public virtual ParCompany ParCompany { get; set; }
         public virtual ParLevel3 ParLevel3 { get; set; }
         public virtual ParLevel3BoolFalse ParLevel3BoolFalse { get; set; }
         public virtual ParLevel3BoolTrue ParLevel3BoolTrue { get; set; }
         public virtual ParLevel3InputType ParLevel3InputType { get; set; }
         public virtual ParMeasurementUnit ParMeasurementUnit { get; set; }
+        public virtual ParCompany ParCompany { get; set; }
     }
 }
