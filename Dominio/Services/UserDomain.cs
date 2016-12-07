@@ -57,39 +57,34 @@ namespace Dominio.Services
                 if (userDto.IsNull())
                     throw new ExceptionHelper("Username and Password are required.");
 
-                userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
                 userDto.Password = DecryptStringAES(userDto.Password);
+                userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
                 var userByName = _userRepo.GetByName(userDto.Name);
 
-                //Pega dados da table antiga e converte para sistema novo.
                 if (GlobalConfig.Brasil)
                 {
                     LoginBraSil(userDto, userByName);
                 }
 
-                if (userByName == null)
-                {
-                    throw new ExceptionHelper("User not found, please verify Username and Password.");
-                }
-
                 if (GlobalConfig.Eua)
                 {
-                    AutenticaAdEUA(userDto);
+                    if (userByName == null)
+                        throw new ExceptionHelper("User not found, please verify Username and Password.");
+
+                    AutenticaAdEUA(userDto);//Autenticação no AD JBS USA
                 }
 
                 userByName.Password = Guard.Criptografar3DES(userDto.Password);
-
                 _userRepo.Salvar(userByName);
-
-                var retorno = Mapper.Map<UserSgq, UserDTO>(userByName);
-
-                return new GenericReturn<UserDTO>(retorno);
+                return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(userByName));
 
             }
             catch (Exception e)
             {
                 return new GenericReturn<UserDTO>(e, falhaGeral + e.Message);
             }
+
+
         }
 
         private void AutenticaAdEUA(UserDTO userDto)
@@ -101,9 +96,11 @@ namespace Dominio.Services
                 user.Password = Guard.Criptografar3DES(user.Password);
                 var isUser = _userRepo.AuthenticationLogin(user);
                 if (isUser.IsNull())
-                {
                     throw new ExceptionHelper("User not found, please verify Username and Password.");
-                }
+
+                //userByName.Password = Guard.Criptografar3DES(userDto.Password);
+                //_userRepo.Salvar(userByName);
+                //return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(userByName));
             }
         }
 
@@ -113,11 +110,16 @@ namespace Dominio.Services
             {
                 CriaUSerSgqPeloUserSgqBR(userDto);
                 AtualizaRolesSgqBrPelosDadosDoErp(userDto);
+                userByName = _userRepo.GetByName(userDto.Name);
             }
             else //Se ele existe no DB, atualizo.
             {
                 AtualizaRolesSgqBrPelosDadosDoErp(userDto);
             }
+
+            var isUser = _userRepo.AuthenticationLogin(userByName);
+            if (isUser.IsNull())
+                throw new ExceptionHelper("User not found, please verify Username and Password.");
         }
 
         private void AtualizaRolesSgqBrPelosDadosDoErp(UserDTO userDto)
@@ -214,7 +216,7 @@ namespace Dominio.Services
                     throw e;
                 }
             }
-        } 
+        }
 
         #endregion
 
