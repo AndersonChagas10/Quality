@@ -3,7 +3,7 @@
 @using (Html.BeginForm())
 {
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <table class="table-erp">
                 <tbody>
                     <tr class="row hide">
@@ -11,23 +11,67 @@
                     </tr>
                     <tr class="row">
                         @Table.GerarColuna(@Html.Editor("parCompanyDTO.Name", new { htmlAttributes = new { @id = "parCompanyDTO_Name", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row">
                         @Table.GerarColuna(@Html.Editor("parCompanyDTO.Description", new { htmlAttributes = new { @id = "parCompanyDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top, colspan: 2)
                     </tr>
                     <tr class="row">
                         @Table.GerarColuna(@Html.Editor("parCompanyDTO.Initials", new { htmlAttributes = new { @id = "parCompanyDTO_Initials", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.initials), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row">
                         @Table.GerarColuna(@Html.Editor("parCompanyDTO.SIF", new { htmlAttributes = new { @id = "parCompanyDTO_SIF", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.sif), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row">
                         @Table.GerarColuna(@Html.Editor("parCompanyDTO.CompanyNumber", new { htmlAttributes = new { @id = "parCompanyDTO_CompanyNumber", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.company_number), Table.PosicaoLabel.top)
                     </tr>
                     <tr class="row">
                         @Table.GerarColuna(@Html.Editor("parCompanyDTO.IPServer", new { htmlAttributes = new { @id = "parCompanyDTO_IPServer", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.ip_server), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row">
                         @Table.GerarColuna(@Html.Editor("parCompanyDTO.DBServer", new { htmlAttributes = new { @id = "parCompanyDTO_DBServer", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.db_server), Table.PosicaoLabel.top)
+                    </tr>
+                    <tr class="row">
                         <td class="td-erp">
                             <button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick="indexParCompany.enviarDadosParaApi($($('form')[0]).serializeObject());" class='btn btn-primary btn-sm margin pull-right'><i class="fa fa-save"></i> @Resources.Resource.save</button>
-                        </td> 
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-lg-6">
+            <table class="table-erp">
+                <tbody>
+                    <tr class="row">
+                        @Table.GerarColunaButton(@Html.DropDownList("structureGroupListId", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "structureGroupListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnSaveCompany' onclick='structureGroupListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
                     </tr>
                 </tbody>
             </table>
 
+            <table class="table-erp table table-condensed table-bordered table-margin" id="structureGroupList">
+                <tbody>
+                </tbody>
+            </table>
+
+            <br />
+
+            <table class="table-erp">
+                <tbody>
+                    <tr class="row">
+                        @Table.GerarColunaButton(@Html.DropDownList("clusterListId", new SelectList(ViewBag.listaParCluster, "Id", "Name"), Resources.Resource.select + "...", new { @id = "clusterListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnSaveCompany' onclick='clusterListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table-erp table table-condensed table-bordered table-margin" id="clusterList">
+                <tbody>
+                </tbody>
+            </table>
+
+        </div>
+
+
+        <div class="col-lg-12">
             <table class="table-erp table table-condensed table-bordered table-margin">
                 <thead>
                     <tr>
@@ -56,11 +100,32 @@
                     }
                 </tbody>
             </table>
-
         </div>
     </div>
 }
 
 <script>
+
+    function clusterListAdd() {
+        if ($('#clusterListId :selected').val() != "") {
+            if ($('#clusterList').children('tbody').children('tr[value=' + $('#clusterListId :selected').val() + ']').length == 0)
+                $('#clusterList').children('tbody').append('<tr value=' + $('#clusterListId :selected').val() + '><td>' + $('#clusterListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeClusterList(' + $('#clusterListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
+        }        
+    }
+
+    function structureGroupListAdd() {
+        if ($('#structureGroupListId :selected').val() != "") {
+            if ($('#structureGroupList').children('tbody').children('tr[value=' + $('#structureGroupListId :selected').val() + ']').length == 0)
+                $('#structureGroupList').children('tbody').append('<tr value=' + $('#structureGroupListId :selected').val() + '><td>' + $('#structureGroupListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeStructureGroupList(' + $('#structureGroupListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
+        }
+    }
+
+    function removeClusterList(value) {
+        $('#clusterList').children('tbody').children('tr[value=' + value + ']').remove();
+    }
+
+    function removeStructureGroupList(value) {
+        $('#structureGroupList').children('tbody').children('tr[value=' + value + ']').remove();
+    }
 
 </script>

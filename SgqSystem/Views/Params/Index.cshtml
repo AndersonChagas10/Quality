@@ -783,6 +783,7 @@
         resetaForm: function() {
             $('#parLevel2Select2').val('-1');
             indexParamsLevel2.GetLevel2('-1');
+            initialFormLevel2 = $($('form')[1]).clone();
 
             //$('#ParLevel2').empty();
             //$('#ParLevel2').append(parLevel2Empty);
@@ -852,6 +853,8 @@
                         openMessageModal("Alerta", statusmessage);
                     }
 
+                    initialFormLevel3 = $($('form')[2]).clone();
+
                 }).fail(function (e, h, x) {
                     //closeLoader();
                     $btn.button('loading');
@@ -898,6 +901,8 @@
             }
 
             indexParamsLevel3.resetValidacao();
+
+            initialFormLevel3 = $($('form')[2]).clone();
         },/*Executa ao selecionar um level3*/
         GetLevel3: function(valorSelecionado, valorSelecionadoLevel2, isSave) {
             //openLoader(indexParamsLevel3.loading_the_level3);
@@ -928,10 +933,10 @@
                         $("#parLevel3Select2").val(retornoId);
                     }
                 }
+                               
+                reloadPopovers();
 
                 initialFormLevel3 = $($('form')[2]).clone();
-                //closeLoader();
-                reloadPopovers();
 
             });
         },/*Busca dados do level3 na API*/
@@ -946,6 +951,7 @@
         resetaForm: function(){
             $('#parLevel3Select2').val('-1');
             indexParamsLevel3.GetLevel3('-1');
+            initialFormLevel3 = $($('form')[2]).clone();
 
             //$('#ParLevel3').empty();
             //$('#ParLevel3').append(parLevel3Empty);
@@ -1089,6 +1095,8 @@
             }
             if(callback != undefined)
                 callback();
+
+            initialFormLevel3 = $($('form')[2]).clone();
         });
     }
 

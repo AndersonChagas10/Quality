@@ -90,6 +90,7 @@
     <Compile Include="DTO\Params\NxN.cs" />
     <Compile Include="DTO\Params\ParamsDdl.cs" />
     <Compile Include="DTO\Params\ParamsDTO.cs" />
+    <Compile Include="DTO\Params\ParCompanyClusterDTO.cs" />
     <Compile Include="DTO\Params\ParCompanyXStructureDTO.cs" />
     <Compile Include="DTO\Params\ParCriticalLevelDTO.cs" />
     <Compile Include="DTO\Params\ParDepartmentDTO.cs" />
