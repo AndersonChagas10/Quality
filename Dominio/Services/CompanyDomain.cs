@@ -13,19 +13,22 @@ namespace Dominio.Services
         private IBaseRepository<ParCompany> _baseRepoParCompany;
         private IBaseRepository<ParStructure> _baseRepoParStructure;
         private IBaseRepository<ParStructureGroup> _baseRepoParStructureGroup;
-        //private IBaseRepository<ParCompanyXStructure> _baseRepoParCompanyXStructure;
+        private IBaseRepository<ParCompanyXStructure> _baseRepoParCompanyXStructure;
+        private IBaseRepository<ParCompanyCluster> _baseRepoParCompanyCluster;
 
         public CompanyDomain(
             IBaseRepository<ParCompany> baseRepoParCompany,
             IBaseRepository<ParStructure> baseRepoParStructure,
-            IBaseRepository<ParStructureGroup> baseRepoParStructureGroup
-            //IBaseRepository<ParCompanyXStructure> baseRepoParCompanyXStructure
+            IBaseRepository<ParStructureGroup> baseRepoParStructureGroup,
+            IBaseRepository<ParCompanyXStructure> baseRepoParCompanyXStructure,
+            IBaseRepository<ParCompanyCluster> baseRepoParCompanyCluster
             )
         {
             _baseRepoParCompany = baseRepoParCompany;
             _baseRepoParStructure = baseRepoParStructure;
             _baseRepoParStructureGroup = baseRepoParStructureGroup;
-            //_baseRepoParCompanyXStructure = baseRepoParCompanyXStructure;
+            _baseRepoParCompanyXStructure = baseRepoParCompanyXStructure;
+            _baseRepoParCompanyCluster = baseRepoParCompanyCluster;
         }
 
         #endregion
@@ -50,6 +53,24 @@ namespace Dominio.Services
             _baseRepoParCompany.Commit();
 
             parCompanyDTO.Id = parCompanySalvar.Id;
+
+            if (parCompanyDTO.ListParCompanyCluster != null)
+                foreach (var parCompanyCluster in parCompanyDTO.ListParCompanyCluster)
+                {
+                    parCompanyCluster.ParCompany_Id = parCompanyDTO.Id;
+                    ParCompanyCluster parCompanyClusterSalvar = Mapper.Map<ParCompanyCluster>(parCompanyCluster);
+                    _baseRepoParCompanyCluster.AddOrUpdateNotCommit(parCompanyClusterSalvar);
+                    _baseRepoParCompanyCluster.Commit();
+                }
+
+            if (parCompanyDTO.ListParCompanyXStructure != null)
+                foreach (var parCompanyXStructure in parCompanyDTO.ListParCompanyXStructure)
+                {
+                    parCompanyXStructure.ParCompany_Id = parCompanyDTO.Id;
+                    ParCompanyXStructure parCompanyXStructureSalvar = Mapper.Map<ParCompanyXStructure>(parCompanyXStructure);
+                    _baseRepoParCompanyXStructure.AddOrUpdateNotCommit(parCompanyXStructureSalvar);
+                    _baseRepoParCompanyXStructure.Commit();
+                }
 
             return parCompanyDTO;
         }

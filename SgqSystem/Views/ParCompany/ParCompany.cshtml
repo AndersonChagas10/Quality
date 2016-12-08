@@ -106,26 +106,43 @@
 
 <script>
 
-    function clusterListAdd() {
-        if ($('#clusterListId :selected').val() != "") {
-            if ($('#clusterList').children('tbody').children('tr[value=' + $('#clusterListId :selected').val() + ']').length == 0)
-                $('#clusterList').children('tbody').append('<tr value=' + $('#clusterListId :selected').val() + '><td>' + $('#clusterListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeClusterList(' + $('#clusterListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
-        }        
+    function clusterListAdd(modal) {
+        if(modal){
+             
+        }else{
+            if ($('#clusterListId :selected').val() != "") {
+                if ($('#clusterList').children('tbody').children('tr[value=' + $('#clusterListId :selected').val() + ']').length == 0)
+                    $('#clusterList').children('tbody').append('<tr value=' + $('#clusterListId :selected').val() + '><td>' + $('#clusterListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeClusterList(' + $('#clusterListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
+            } 
+        }
+              
     }
 
-    function structureGroupListAdd() {
-        if ($('#structureGroupListId :selected').val() != "") {
-            if ($('#structureGroupList').children('tbody').children('tr[value=' + $('#structureGroupListId :selected').val() + ']').length == 0)
-                $('#structureGroupList').children('tbody').append('<tr value=' + $('#structureGroupListId :selected').val() + '><td>' + $('#structureGroupListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeStructureGroupList(' + $('#structureGroupListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
+    function structureGroupListAdd(modal) {
+        if(modal){
+            
+        }else{
+            if ($('#structureGroupListId :selected').val() != "") {
+                if ($('#structureGroupList').children('tbody').children('tr[value=' + $('#structureGroupListId :selected').val() + ']').length == 0)
+                    $('#structureGroupList').children('tbody').append('<tr value=' + $('#structureGroupListId :selected').val() + '><td>' + $('#structureGroupListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeStructureGroupList(' + $('#structureGroupListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
+            }
         }
     }
 
-    function removeClusterList(value) {
-        $('#clusterList').children('tbody').children('tr[value=' + value + ']').remove();
+    function removeClusterList(value, modal) {
+        if(modal){
+            
+        }else{
+            $('#clusterList').children('tbody').children('tr[value=' + value + ']').remove();
+        }
     }
 
-    function removeStructureGroupList(value) {
-        $('#structureGroupList').children('tbody').children('tr[value=' + value + ']').remove();
+    function removeStructureGroupList(value, modal) {
+        if(modal){
+            
+        }else{
+            $('#structureGroupList').children('tbody').children('tr[value=' + value + ']').remove();
+        }
     }
 
 </script>

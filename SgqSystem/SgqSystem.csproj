@@ -351,6 +351,7 @@
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyXStructureMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterMapperProfile.cs" />
@@ -999,6 +1000,24 @@
     <Content Include="Scripts\i18n\vi.js" />
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
+    <Content Include="Scripts\inputmask\inputmask\inputmask.date.extensions.js" />
+    <Content Include="Scripts\inputmask\inputmask\inputmask.dependencyLib.js" />
+    <Content Include="Scripts\inputmask\inputmask\inputmask.extensions.js" />
+    <Content Include="Scripts\inputmask\inputmask\inputmask.js" />
+    <Content Include="Scripts\inputmask\inputmask\inputmask.numeric.extensions.js" />
+    <Content Include="Scripts\inputmask\inputmask\inputmask.phone.extensions.js" />
+    <Content Include="Scripts\inputmask\inputmask\inputmask.regex.extensions.js" />
+    <Content Include="Scripts\inputmask\inputmask\jquery.inputmask.js" />
+    <Content Include="Scripts\inputmask\jquery.inputmask.bundle.js" />
+    <Content Include="Scripts\inputmask\min\inputmask\inputmask.date.extensions.min.js" />
+    <Content Include="Scripts\inputmask\min\inputmask\inputmask.dependencyLib.min.js" />
+    <Content Include="Scripts\inputmask\min\inputmask\inputmask.extensions.min.js" />
+    <Content Include="Scripts\inputmask\min\inputmask\inputmask.min.js" />
+    <Content Include="Scripts\inputmask\min\inputmask\inputmask.numeric.extensions.min.js" />
+    <Content Include="Scripts\inputmask\min\inputmask\inputmask.phone.extensions.min.js" />
+    <Content Include="Scripts\inputmask\min\inputmask\inputmask.regex.extensions.min.js" />
+    <Content Include="Scripts\inputmask\min\inputmask\jquery.inputmask.min.js" />
+    <Content Include="Scripts\inputmask\min\jquery.inputmask.bundle.min.js" />
     <Content Include="Scripts\jquery-3.1.0.js" />
     <Content Include="Scripts\jquery-3.1.0.min.js" />
     <Content Include="Scripts\jquery-3.1.0.slim.js" />
@@ -1006,6 +1025,7 @@
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.mask.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -1312,7 +1332,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63128</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

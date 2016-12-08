@@ -27,6 +27,7 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParCompanyXStructureMapperProfile>();
                 x.AddProfile<ParStructureMapperProfile>();
                 x.AddProfile<ParStructureGroupMapperProfile>();
+                x.AddProfile<ParCompanyClusterProfile>();
 
 
                 /*

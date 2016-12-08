@@ -9,8 +9,8 @@ namespace DTO.DTO.Params
 {
     public class ParCompanyClusterDTO : EntityBase
     {
-        public string ParCompany_Id { get; set; }
-        public string ParCluster_Id { get; set; }
+        public int ParCompany_Id { get; set; }
+        public int ParCluster_Id { get; set; }
         public bool Active { get; set; }
     }
 }

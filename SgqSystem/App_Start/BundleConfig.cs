@@ -50,6 +50,7 @@ namespace SgqSystem
 
             bundles.Add(new ScriptBundle("~/bundles/DatePikerContent").Include(
                     "~/Scripts/moment.min.js",
+                    "~/Scripts/inputmask/jquery.inputmask.bundle.js",
                     "~/Scripts/daterangepicker.js",
                     "~/Scripts/DatePikerReady.js"));
 
