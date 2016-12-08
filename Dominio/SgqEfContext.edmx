@@ -156,6 +156,36 @@
           <Property Name="ValueText" Type="varchar(max)" Nullable="false" />
           <Property Name="Duplicated" Type="bit" />
         </EntityType>
+        <EntityType Name="CollectionLevel2">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConsolidationLevel2_Id" Type="int" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="int" Nullable="false" />
+          <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
+          <Property Name="UnitId" Type="int" Nullable="false" />
+          <Property Name="AuditorId" Type="int" Nullable="false" />
+          <Property Name="Shift" Type="int" Nullable="false" />
+          <Property Name="Period" Type="int" Nullable="false" />
+          <Property Name="Phase" Type="int" Nullable="false" />
+          <Property Name="ReauditIs" Type="bit" Nullable="false" />
+          <Property Name="ReauditNumber" Type="int" Nullable="false" />
+          <Property Name="CollectionDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="StartPhaseDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="EvaluationNumber" Type="int" />
+          <Property Name="Sample" Type="int" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="ConsecutiveFailureIs" Type="bit" Nullable="false" />
+          <Property Name="ConsecutiveFailureTotal" Type="int" Nullable="false" />
+          <Property Name="NotEvaluatedIs" Type="bit" Nullable="false" />
+          <Property Name="Duplicated" Type="bit" Nullable="false" />
+          <Property Name="HaveCorrectiveAction" Type="bit" />
+          <Property Name="HaveReaudit" Type="bit" />
+          <Property Name="HavePhase" Type="bit" />
+          <Property Name="Completed" Type="bit" />
+        </EntityType>
         <EntityType Name="ConsolidationLevel01">
           <Key>
             <PropertyRef Name="Id" />
@@ -175,6 +205,30 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Level01ConsolidationId" Type="int" Nullable="false" />
           <Property Name="Level02Id" Type="int" Nullable="false" />
+          <Property Name="UnitId" Type="int" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="ConsolidationDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="ConsolidationLevel1">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UnitId" Type="int" Nullable="false" />
+          <Property Name="DepartmentId" Type="int" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="int" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="ConsolidationDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ConsolidationLevel2">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConsolidationLevel1_Id" Type="int" Nullable="false" />
+          <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
           <Property Name="UnitId" Type="int" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
@@ -551,6 +605,18 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ParLevel2Level1">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="int" Nullable="false" />
+          <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="int" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="ParLevel3">
           <Key>
             <PropertyRef Name="Id" />
@@ -785,7 +851,7 @@
           <Property Name="Departamento" Type="varchar" MaxLength="255" />
           <Property Name="VolumeAnimais" Type="int" />
           <Property Name="Quartos" Type="int" />
-          <Property Name="Meta" Type="decimal" Precision="2" Scale="0" />
+          <Property Name="Meta" Type="decimal" Precision="10" Scale="5" />
           <Property Name="ToleranciaDia" Type="real" />
           <Property Name="Nivel11" Type="real" />
           <Property Name="Nivel12" Type="real" />
@@ -805,6 +871,22 @@
           <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Result_Level3">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CollectionLevel2_Id" Type="int" Nullable="false" />
+          <Property Name="ParLevel3_Id" Type="int" Nullable="false" />
+          <Property Name="ParLevel3_Name" Type="nvarchar(max)" />
+          <Property Name="Weight" Type="decimal" Precision="10" Scale="5" />
+          <Property Name="IntervalMin" Type="nvarchar(max)" />
+          <Property Name="IntervalMax" Type="nvarchar(max)" />
+          <Property Name="Value" Type="nvarchar(max)" />
+          <Property Name="ValueText" Type="nvarchar(max)" />
+          <Property Name="IsConform" Type="bit" />
+          <Property Name="IsNotEvaluate" Type="bit" />
         </EntityType>
         <EntityType Name="Shift">
           <Key>
@@ -1038,6 +1120,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CollectionLevel2_ConsolidationLevel2">
+          <End Role="ConsolidationLevel2" Type="Self.ConsolidationLevel2" Multiplicity="1" />
+          <End Role="CollectionLevel2" Type="Self.CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidationLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="ConsolidationLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2_ParLevel1">
+          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="1" />
+          <End Role="CollectionLevel2" Type="Self.CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2_ParLevel2">
+          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="1" />
+          <End Role="CollectionLevel2" Type="Self.CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="ParLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2_UserSgq">
+          <End Role="UserSgq" Type="Self.UserSgq" Multiplicity="1" />
+          <End Role="CollectionLevel2" Type="Self.CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="AuditorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ConsolidationLevel01_Department">
           <End Role="Department" Type="Self.Department" Multiplicity="1" />
           <End Role="ConsolidationLevel01" Type="Self.ConsolidationLevel01" Multiplicity="*" />
@@ -1098,6 +1228,66 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ConsolidationLevel1_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="ConsolidationLevel1" Type="Self.ConsolidationLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel1">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel1_Level1">
+          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="1" />
+          <End Role="ConsolidationLevel1" Type="Self.ConsolidationLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel1">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel1_Unit">
+          <End Role="Unit" Type="Self.Unit" Multiplicity="1" />
+          <End Role="ConsolidationLevel1" Type="Self.ConsolidationLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel1">
+              <PropertyRef Name="UnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel2_ConsolidationLevel1">
+          <End Role="ConsolidationLevel1" Type="Self.ConsolidationLevel1" Multiplicity="1" />
+          <End Role="ConsolidationLevel2" Type="Self.ConsolidationLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidationLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel2">
+              <PropertyRef Name="ConsolidationLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel2_ParLevel2">
+          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="1" />
+          <End Role="ConsolidationLevel2" Type="Self.ConsolidationLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel2">
+              <PropertyRef Name="ParLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CorrectiveAction_CollectionLevel02">
           <End Role="CollectionLevel02" Type="Self.CollectionLevel02" Multiplicity="1" />
           <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="*" />
@@ -1143,6 +1333,30 @@
             </Principal>
             <Dependent Role="CorrectiveAction">
               <PropertyRef Name="SlaughterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Level2Level1_ParLevel1">
+          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="1" />
+          <End Role="ParLevel2Level1" Type="Self.ParLevel2Level1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2Level1">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Level2Level1_ParLevel2">
+          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="1" />
+          <End Role="ParLevel2Level1" Type="Self.ParLevel2Level1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2Level1">
+              <PropertyRef Name="ParLevel2_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1770,6 +1984,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Result_Level3_CollectionLevel2">
+          <End Role="CollectionLevel2" Type="Self.CollectionLevel2" Multiplicity="1" />
+          <End Role="Result_Level3" Type="Self.Result_Level3" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Result_Level3">
+              <PropertyRef Name="CollectionLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Result_Level3_ParLevel3">
+          <End Role="ParLevel3" Type="Self.ParLevel3" Multiplicity="1" />
+          <End Role="Result_Level3" Type="Self.Result_Level3" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Result_Level3">
+              <PropertyRef Name="ParLevel3_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UnitUser_Unit">
           <End Role="Unit" Type="Self.Unit" Multiplicity="1" />
           <End Role="UnitUser" Type="Self.UnitUser" Multiplicity="*" />
@@ -1802,8 +2040,11 @@
           <EntitySet Name="CollectionJson" EntityType="Self.CollectionJson" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionLevel02" EntityType="Self.CollectionLevel02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionLevel03" EntityType="Self.CollectionLevel03" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CollectionLevel2" EntityType="Self.CollectionLevel2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConsolidationLevel01" EntityType="Self.ConsolidationLevel01" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConsolidationLevel02" EntityType="Self.ConsolidationLevel02" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConsolidationLevel1" EntityType="Self.ConsolidationLevel1" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConsolidationLevel2" EntityType="Self.ConsolidationLevel2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CorrectiveAction" EntityType="Self.CorrectiveAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Example" EntityType="Self.Example" Schema="dbo" store:Type="Tables" />
@@ -1833,6 +2074,7 @@
           <EntitySet Name="ParLevel1XCluster" EntityType="Self.ParLevel1XCluster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel1XHeaderField" EntityType="Self.ParLevel1XHeaderField" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2" EntityType="Self.ParLevel2" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParLevel2Level1" EntityType="Self.ParLevel2Level1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3" EntityType="Self.ParLevel3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolFalse" EntityType="Self.ParLevel3BoolFalse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolTrue" EntityType="Self.ParLevel3BoolTrue" Schema="dbo" store:Type="Tables" />
@@ -1853,6 +2095,7 @@
           <EntitySet Name="ParStructureGroup" EntityType="Self.ParStructureGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pcc1b" EntityType="Self.Pcc1b" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Period" EntityType="Self.Period" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Result_Level3" EntityType="Self.Result_Level3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UnitUser" EntityType="Self.UnitUser" Schema="dbo" store:Type="Tables" />
@@ -1914,6 +2157,22 @@
             <End Role="Level03" EntitySet="Level03" />
             <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
           </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_ConsolidationLevel2" Association="Self.FK_CollectionLevel2_ConsolidationLevel2">
+            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_ParLevel1" Association="Self.FK_CollectionLevel2_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_ParLevel2" Association="Self.FK_CollectionLevel2_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_UserSgq" Association="Self.FK_CollectionLevel2_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
           <AssociationSet Name="FK_ConsolidationLevel01_Department" Association="Self.FK_ConsolidationLevel01_Department">
             <End Role="Department" EntitySet="Department" />
             <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
@@ -1934,6 +2193,26 @@
             <End Role="Level02" EntitySet="Level02" />
             <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
           </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel1_Department" Association="Self.FK_ConsolidationLevel1_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel1_Level1" Association="Self.FK_ConsolidationLevel1_Level1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel1_Unit" Association="Self.FK_ConsolidationLevel1_Unit">
+            <End Role="Unit" EntitySet="Unit" />
+            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel2_ConsolidationLevel1" Association="Self.FK_ConsolidationLevel2_ConsolidationLevel1">
+            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
+            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel2_ParLevel2" Association="Self.FK_ConsolidationLevel2_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
+          </AssociationSet>
           <AssociationSet Name="FK_CorrectiveAction_CollectionLevel02" Association="Self.FK_CorrectiveAction_CollectionLevel02">
             <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
@@ -1949,6 +2228,14 @@
           <AssociationSet Name="FK_CorrectiveAction_UserSgq2" Association="Self.FK_CorrectiveAction_UserSgq2">
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Level2Level1_ParLevel1" Association="Self.FK_Level2Level1_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel2Level1" EntitySet="ParLevel2Level1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Level2Level1_ParLevel2" Association="Self.FK_Level2Level1_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ParLevel2Level1" EntitySet="ParLevel2Level1" />
           </AssociationSet>
           <AssociationSet Name="FK_ParCluster_ParClusterGroup" Association="Self.FK_ParCluster_ParClusterGroup">
             <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
@@ -2158,6 +2445,14 @@
             <End Role="ParStructureGroup" EntitySet="ParStructureGroup" />
             <End Role="ParStructure" EntitySet="ParStructure" />
           </AssociationSet>
+          <AssociationSet Name="FK_Result_Level3_CollectionLevel2" Association="Self.FK_Result_Level3_CollectionLevel2">
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+            <End Role="Result_Level3" EntitySet="Result_Level3" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Result_Level3_ParLevel3" Association="Self.FK_Result_Level3_ParLevel3">
+            <End Role="ParLevel3" EntitySet="ParLevel3" />
+            <End Role="Result_Level3" EntitySet="Result_Level3" />
+          </AssociationSet>
           <AssociationSet Name="FK_UnitUser_Unit" Association="Self.FK_UnitUser_Unit">
             <End Role="Unit" EntitySet="Unit" />
             <End Role="UnitUser" EntitySet="UnitUser" />
@@ -2179,8 +2474,11 @@
           <EntitySet Name="CollectionJson" EntityType="SgqDbModel.CollectionJson" />
           <EntitySet Name="CollectionLevel02" EntityType="SgqDbModel.CollectionLevel02" />
           <EntitySet Name="CollectionLevel03" EntityType="SgqDbModel.CollectionLevel03" />
+          <EntitySet Name="CollectionLevel2" EntityType="SgqDbModel.CollectionLevel2" />
           <EntitySet Name="ConsolidationLevel01" EntityType="SgqDbModel.ConsolidationLevel01" />
           <EntitySet Name="ConsolidationLevel02" EntityType="SgqDbModel.ConsolidationLevel02" />
+          <EntitySet Name="ConsolidationLevel1" EntityType="SgqDbModel.ConsolidationLevel1" />
+          <EntitySet Name="ConsolidationLevel2" EntityType="SgqDbModel.ConsolidationLevel2" />
           <EntitySet Name="CorrectiveAction" EntityType="SgqDbModel.CorrectiveAction" />
           <EntitySet Name="Department" EntityType="SgqDbModel.Department" />
           <EntitySet Name="Example" EntityType="SgqDbModel.Example" />
@@ -2210,6 +2508,7 @@
           <EntitySet Name="ParLevel1XCluster" EntityType="SgqDbModel.ParLevel1XCluster" />
           <EntitySet Name="ParLevel1XHeaderField" EntityType="SgqDbModel.ParLevel1XHeaderField" />
           <EntitySet Name="ParLevel2" EntityType="SgqDbModel.ParLevel2" />
+          <EntitySet Name="ParLevel2Level1" EntityType="SgqDbModel.ParLevel2Level1" />
           <EntitySet Name="ParLevel3" EntityType="SgqDbModel.ParLevel3" />
           <EntitySet Name="ParLevel3BoolFalse" EntityType="SgqDbModel.ParLevel3BoolFalse" />
           <EntitySet Name="ParLevel3BoolTrue" EntityType="SgqDbModel.ParLevel3BoolTrue" />
@@ -2230,6 +2529,7 @@
           <EntitySet Name="ParStructureGroup" EntityType="SgqDbModel.ParStructureGroup" />
           <EntitySet Name="Pcc1b" EntityType="SgqDbModel.Pcc1b" />
           <EntitySet Name="Period" EntityType="SgqDbModel.Period" />
+          <EntitySet Name="Result_Level3" EntityType="SgqDbModel.Result_Level3" />
           <EntitySet Name="Shift" EntityType="SgqDbModel.Shift" />
           <EntitySet Name="Unit" EntityType="SgqDbModel.Unit" />
           <EntitySet Name="UnitUser" EntityType="SgqDbModel.UnitUser" />
@@ -2279,6 +2579,26 @@
             <End Role="Level03" EntitySet="Level03" />
             <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
           </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_ConsolidationLevel2" Association="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2">
+            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_ParLevel1" Association="SgqDbModel.FK_CollectionLevel2_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_ParLevel2" Association="SgqDbModel.FK_CollectionLevel2_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_UserSgq" Association="SgqDbModel.FK_CollectionLevel2_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Result_Level3_CollectionLevel2" Association="SgqDbModel.FK_Result_Level3_CollectionLevel2">
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+            <End Role="Result_Level3" EntitySet="Result_Level3" />
+          </AssociationSet>
           <AssociationSet Name="FK_ConsolidationLevel01_Department" Association="SgqDbModel.FK_ConsolidationLevel01_Department">
             <End Role="Department" EntitySet="Department" />
             <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
@@ -2298,6 +2618,26 @@
           <AssociationSet Name="FK_ConsolidationLevel02_Level02" Association="SgqDbModel.FK_ConsolidationLevel02_Level02">
             <End Role="Level02" EntitySet="Level02" />
             <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel1_Department" Association="SgqDbModel.FK_ConsolidationLevel1_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel1_Level1" Association="SgqDbModel.FK_ConsolidationLevel1_Level1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel1_Unit" Association="SgqDbModel.FK_ConsolidationLevel1_Unit">
+            <End Role="Unit" EntitySet="Unit" />
+            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel2_ConsolidationLevel1" Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1">
+            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
+            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel2_ParLevel2" Association="SgqDbModel.FK_ConsolidationLevel2_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
           </AssociationSet>
           <AssociationSet Name="FK_CorrectiveAction_UserSgq" Association="SgqDbModel.FK_CorrectiveAction_UserSgq">
             <End Role="UserSgq" EntitySet="UserSgq" />
@@ -2447,6 +2787,10 @@
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="VacuoGRD" EntitySet="VacuoGRD" />
           </AssociationSet>
+          <AssociationSet Name="FK_Level2Level1_ParLevel1" Association="SgqDbModel.FK_Level2Level1_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel2Level1" EntitySet="ParLevel2Level1" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParLevel1XCluster_ParLevel1" Association="SgqDbModel.FK_ParLevel1XCluster_ParLevel1">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
@@ -2466,6 +2810,10 @@
           <AssociationSet Name="FK_ParRelapse_ParLevel1" Association="SgqDbModel.FK_ParRelapse_ParLevel1">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ParRelapse" EntitySet="ParRelapse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Level2Level1_ParLevel2" Association="SgqDbModel.FK_Level2Level1_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ParLevel2Level1" EntitySet="ParLevel2Level1" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel3Group_ParLevel2" Association="SgqDbModel.FK_ParLevel3Group_ParLevel2">
             <End Role="ParLevel2" EntitySet="ParLevel2" />
@@ -2502,6 +2850,10 @@
           <AssociationSet Name="FK_ParRelapse_ParLevel3" Association="SgqDbModel.FK_ParRelapse_ParLevel3">
             <End Role="ParLevel3" EntitySet="ParLevel3" />
             <End Role="ParRelapse" EntitySet="ParRelapse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Result_Level3_ParLevel3" Association="SgqDbModel.FK_Result_Level3_ParLevel3">
+            <End Role="ParLevel3" EntitySet="ParLevel3" />
+            <End Role="Result_Level3" EntitySet="Result_Level3" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel3Value_ParLevel3BoolFalse" Association="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolFalse">
             <End Role="ParLevel3BoolFalse" EntitySet="ParLevel3BoolFalse" />
@@ -2707,6 +3059,41 @@
           <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" FromRole="CollectionLevel03" ToRole="CollectionLevel02" />
           <NavigationProperty Name="Level03" Relationship="SgqDbModel.FK_CollectionLevel03_Level03" FromRole="CollectionLevel03" ToRole="Level03" />
         </EntityType>
+        <EntityType Name="CollectionLevel2">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConsolidationLevel2_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
+          <Property Name="UnitId" Type="Int32" Nullable="false" />
+          <Property Name="AuditorId" Type="Int32" Nullable="false" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="Period" Type="Int32" Nullable="false" />
+          <Property Name="Phase" Type="Int32" Nullable="false" />
+          <Property Name="ReauditIs" Type="Boolean" Nullable="false" />
+          <Property Name="ReauditNumber" Type="Int32" Nullable="false" />
+          <Property Name="CollectionDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="StartPhaseDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="EvaluationNumber" Type="Int32" />
+          <Property Name="Sample" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="ConsecutiveFailureIs" Type="Boolean" Nullable="false" />
+          <Property Name="ConsecutiveFailureTotal" Type="Int32" Nullable="false" />
+          <Property Name="NotEvaluatedIs" Type="Boolean" Nullable="false" />
+          <Property Name="Duplicated" Type="Boolean" Nullable="false" />
+          <Property Name="HaveCorrectiveAction" Type="Boolean" />
+          <Property Name="HaveReaudit" Type="Boolean" />
+          <Property Name="HavePhase" Type="Boolean" />
+          <Property Name="Completed" Type="Boolean" />
+          <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="CollectionLevel2" ToRole="ConsolidationLevel2" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="CollectionLevel2" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel2" FromRole="CollectionLevel2" ToRole="ParLevel2" />
+          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="CollectionLevel2" ToRole="UserSgq" />
+          <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_CollectionLevel2" FromRole="CollectionLevel2" ToRole="Result_Level3" />
+        </EntityType>
         <EntityType Name="ConsolidationLevel01">
           <Key>
             <PropertyRef Name="Id" />
@@ -2737,6 +3124,37 @@
           <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="ConsolidationLevel02" ToRole="CollectionLevel02" />
           <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01" FromRole="ConsolidationLevel02" ToRole="ConsolidationLevel01" />
           <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_ConsolidationLevel02_Level02" FromRole="ConsolidationLevel02" ToRole="Level02" />
+        </EntityType>
+        <EntityType Name="ConsolidationLevel1">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UnitId" Type="Int32" Nullable="false" />
+          <Property Name="DepartmentId" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="ConsolidationDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Department" Relationship="SgqDbModel.FK_ConsolidationLevel1_Department" FromRole="ConsolidationLevel1" ToRole="Department" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ConsolidationLevel1" ToRole="ParLevel1" />
+          <NavigationProperty Name="Unit" Relationship="SgqDbModel.FK_ConsolidationLevel1_Unit" FromRole="ConsolidationLevel1" ToRole="Unit" />
+          <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" FromRole="ConsolidationLevel1" ToRole="ConsolidationLevel2" />
+        </EntityType>
+        <EntityType Name="ConsolidationLevel2">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConsolidationLevel1_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
+          <Property Name="UnitId" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="ConsolidationDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="ConsolidationLevel2" ToRole="CollectionLevel2" />
+          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" FromRole="ConsolidationLevel2" ToRole="ConsolidationLevel1" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" FromRole="ConsolidationLevel2" ToRole="ParLevel2" />
         </EntityType>
         <EntityType Name="CorrectiveAction">
           <Key>
@@ -2771,6 +3189,7 @@
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Department" FromRole="Department" ToRole="ConsolidationLevel01" />
+          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Department" FromRole="Department" ToRole="ConsolidationLevel1" />
         </EntityType>
         <EntityType Name="Example">
           <Key>
@@ -3123,12 +3542,15 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CepDesossa" Relationship="SgqDbModel.FK__CepDesoss__ParLe__18CC84F8" FromRole="ParLevel1" ToRole="CepDesossa" />
           <NavigationProperty Name="CepRecortes" Relationship="SgqDbModel.FK__CepRecort__ParLe__14FBF414" FromRole="ParLevel1" ToRole="CepRecortes" />
+          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="ParLevel1" ToRole="CollectionLevel2" />
+          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ParLevel1" ToRole="ConsolidationLevel1" />
           <NavigationProperty Name="ParConsolidationType" Relationship="SgqDbModel.FK_ParLevel1_ParConsolidationType" FromRole="ParLevel1" ToRole="ParConsolidationType" />
           <NavigationProperty Name="ParCounterXLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel1" FromRole="ParLevel1" ToRole="ParCounterXLocal" />
           <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParLevel1_ParFrequency" FromRole="ParLevel1" ToRole="ParFrequency" />
           <NavigationProperty Name="ParGoal" Relationship="SgqDbModel.FK_ParGoal_ParLevel1" FromRole="ParLevel1" ToRole="ParGoal" />
           <NavigationProperty Name="Pcc1b" Relationship="SgqDbModel.FK__Pcc1b__ParLevel1__1C9D15DC" FromRole="ParLevel1" ToRole="Pcc1b" />
           <NavigationProperty Name="VacuoGRD" Relationship="SgqDbModel.FK__VacuoGRD__ParLev__112B6330" FromRole="ParLevel1" ToRole="VacuoGRD" />
+          <NavigationProperty Name="ParLevel2Level1" Relationship="SgqDbModel.FK_Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel2Level1" />
           <NavigationProperty Name="ParLevel1XCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XCluster" />
           <NavigationProperty Name="ParLevel1XHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XHeaderField" />
           <NavigationProperty Name="ParLevel3Level2Level1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel3Level2Level1" />
@@ -3179,15 +3601,32 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel2" FromRole="ParLevel2" ToRole="CollectionLevel2" />
+          <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" FromRole="ParLevel2" ToRole="ConsolidationLevel2" />
           <NavigationProperty Name="ParCounterXLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel2" FromRole="ParLevel2" ToRole="ParCounterXLocal" />
           <NavigationProperty Name="ParDepartment" Relationship="SgqDbModel.FK_ParLevel2_ParDepartment" FromRole="ParLevel2" ToRole="ParDepartment" />
           <NavigationProperty Name="ParEvaluation" Relationship="SgqDbModel.FK_ParEvaluation_ParLevel2" FromRole="ParLevel2" ToRole="ParEvaluation" />
           <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParLevel2_ParFrequency" FromRole="ParLevel2" ToRole="ParFrequency" />
+          <NavigationProperty Name="ParLevel2Level1" Relationship="SgqDbModel.FK_Level2Level1_ParLevel2" FromRole="ParLevel2" ToRole="ParLevel2Level1" />
           <NavigationProperty Name="ParLevel3Group" Relationship="SgqDbModel.FK_ParLevel3Group_ParLevel2" FromRole="ParLevel2" ToRole="ParLevel3Group" />
           <NavigationProperty Name="ParLevel3Level2" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel2" FromRole="ParLevel2" ToRole="ParLevel3Level2" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel2" FromRole="ParLevel2" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel2" FromRole="ParLevel2" ToRole="ParRelapse" />
           <NavigationProperty Name="ParSample" Relationship="SgqDbModel.FK_ParSample_ParLevel2" FromRole="ParLevel2" ToRole="ParSample" />
+        </EntityType>
+        <EntityType Name="ParLevel2Level1">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="Int32" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_Level2Level1_ParLevel1" FromRole="ParLevel2Level1" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_Level2Level1_ParLevel2" FromRole="ParLevel2Level1" ToRole="ParLevel2" />
         </EntityType>
         <EntityType Name="ParLevel3">
           <Key>
@@ -3204,6 +3643,7 @@
           <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3" FromRole="ParLevel3" ToRole="ParLevel3Value" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel3" FromRole="ParLevel3" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel3" FromRole="ParLevel3" ToRole="ParRelapse" />
+          <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_ParLevel3" FromRole="ParLevel3" ToRole="Result_Level3" />
         </EntityType>
         <EntityType Name="ParLevel3BoolFalse">
           <Key>
@@ -3464,7 +3904,7 @@
           <Property Name="Departamento" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="VolumeAnimais" Type="Int32" />
           <Property Name="Quartos" Type="Int32" />
-          <Property Name="Meta" Type="Decimal" Precision="2" Scale="0" />
+          <Property Name="Meta" Type="Decimal" Precision="10" Scale="5" />
           <Property Name="ToleranciaDia" Type="Single" />
           <Property Name="Nivel11" Type="Single" />
           <Property Name="Nivel12" Type="Single" />
@@ -3487,6 +3927,24 @@
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
         </EntityType>
+        <EntityType Name="Result_Level3">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CollectionLevel2_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel3_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel3_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Weight" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="IntervalMin" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IntervalMax" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ValueText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsConform" Type="Boolean" />
+          <Property Name="IsNotEvaluate" Type="Boolean" />
+          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_Result_Level3_CollectionLevel2" FromRole="Result_Level3" ToRole="CollectionLevel2" />
+          <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_Result_Level3_ParLevel3" FromRole="Result_Level3" ToRole="ParLevel3" />
+        </EntityType>
         <EntityType Name="Shift">
           <Key>
             <PropertyRef Name="Id" />
@@ -3508,6 +3966,7 @@
           <Property Name="Code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Ip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Unit" FromRole="Unit" ToRole="ConsolidationLevel01" />
+          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Unit" FromRole="Unit" ToRole="ConsolidationLevel1" />
           <NavigationProperty Name="UnitUser" Relationship="SgqDbModel.FK_UnitUser_Unit" FromRole="Unit" ToRole="UnitUser" />
         </EntityType>
         <EntityType Name="UnitUser">
@@ -3536,6 +3995,7 @@
           <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="UserSgq" ToRole="CollectionLevel02" />
+          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="UserSgq" ToRole="CollectionLevel2" />
           <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq" FromRole="UserSgq" ToRole="CorrectiveAction" />
           <NavigationProperty Name="CorrectiveAction1" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq1" FromRole="UserSgq" ToRole="CorrectiveAction" />
           <NavigationProperty Name="CorrectiveAction2" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq2" FromRole="UserSgq" ToRole="CorrectiveAction" />
@@ -3695,6 +4155,66 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CollectionLevel2_ConsolidationLevel2">
+          <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidationLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="ConsolidationLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2_ParLevel2">
+          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="ParLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2_UserSgq">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="AuditorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Result_Level3_CollectionLevel2">
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.Result_Level3" Role="Result_Level3" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Result_Level3">
+              <PropertyRef Name="CollectionLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ConsolidationLevel01_Department">
           <End Type="SgqDbModel.Department" Role="Department" Multiplicity="1" />
           <End Type="SgqDbModel.ConsolidationLevel01" Role="ConsolidationLevel01" Multiplicity="*" />
@@ -3752,6 +4272,66 @@
             </Principal>
             <Dependent Role="ConsolidationLevel02">
               <PropertyRef Name="Level02Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel1_Department">
+          <End Type="SgqDbModel.Department" Role="Department" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel1">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel1_Level1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel1">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel1_Unit">
+          <End Type="SgqDbModel.Unit" Role="Unit" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel1">
+              <PropertyRef Name="UnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel2_ConsolidationLevel1">
+          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidationLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel2">
+              <PropertyRef Name="ConsolidationLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel2_ParLevel2">
+          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel2">
+              <PropertyRef Name="ParLevel2_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4199,6 +4779,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Level2Level1_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel2Level1" Role="ParLevel2Level1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2Level1">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParLevel1XCluster_ParLevel1">
           <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
           <End Type="SgqDbModel.ParLevel1XCluster" Role="ParLevel1XCluster" Multiplicity="*" />
@@ -4256,6 +4848,18 @@
             </Principal>
             <Dependent Role="ParRelapse">
               <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Level2Level1_ParLevel2">
+          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel2Level1" Role="ParLevel2Level1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2Level1">
+              <PropertyRef Name="ParLevel2_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4363,6 +4967,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ParRelapse">
+              <PropertyRef Name="ParLevel3_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Result_Level3_ParLevel3">
+          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="1" />
+          <End Type="SgqDbModel.Result_Level3" Role="Result_Level3" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Result_Level3">
               <PropertyRef Name="ParLevel3_Id" />
             </Dependent>
           </ReferentialConstraint>
@@ -4651,6 +5267,37 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CollectionLevel2">
+            <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel2">
+              <MappingFragment StoreEntitySet="CollectionLevel2">
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="HavePhase" ColumnName="HavePhase" />
+                <ScalarProperty Name="HaveReaudit" ColumnName="HaveReaudit" />
+                <ScalarProperty Name="HaveCorrectiveAction" ColumnName="HaveCorrectiveAction" />
+                <ScalarProperty Name="Duplicated" ColumnName="Duplicated" />
+                <ScalarProperty Name="NotEvaluatedIs" ColumnName="NotEvaluatedIs" />
+                <ScalarProperty Name="ConsecutiveFailureTotal" ColumnName="ConsecutiveFailureTotal" />
+                <ScalarProperty Name="ConsecutiveFailureIs" ColumnName="ConsecutiveFailureIs" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Sample" ColumnName="Sample" />
+                <ScalarProperty Name="EvaluationNumber" ColumnName="EvaluationNumber" />
+                <ScalarProperty Name="StartPhaseDate" ColumnName="StartPhaseDate" />
+                <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
+                <ScalarProperty Name="ReauditNumber" ColumnName="ReauditNumber" />
+                <ScalarProperty Name="ReauditIs" ColumnName="ReauditIs" />
+                <ScalarProperty Name="Phase" ColumnName="Phase" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="AuditorId" ColumnName="AuditorId" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
+                <ScalarProperty Name="ConsolidationLevel2_Id" ColumnName="ConsolidationLevel2_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ConsolidationLevel01">
             <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel01">
               <MappingFragment StoreEntitySet="ConsolidationLevel01">
@@ -4673,6 +5320,32 @@
                 <ScalarProperty Name="UnitId" ColumnName="UnitId" />
                 <ScalarProperty Name="Level02Id" ColumnName="Level02Id" />
                 <ScalarProperty Name="Level01ConsolidationId" ColumnName="Level01ConsolidationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConsolidationLevel1">
+            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel1">
+              <MappingFragment StoreEntitySet="ConsolidationLevel1">
+                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConsolidationLevel2">
+            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel2">
+              <MappingFragment StoreEntitySet="ConsolidationLevel2">
+                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
+                <ScalarProperty Name="ConsolidationLevel1_Id" ColumnName="ConsolidationLevel1_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -5077,6 +5750,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ParLevel2Level1">
+            <EntityTypeMapping TypeName="SgqDbModel.ParLevel2Level1">
+              <MappingFragment StoreEntitySet="ParLevel2Level1">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
+                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ParLevel3">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel3">
               <MappingFragment StoreEntitySet="ParLevel3">
@@ -5348,6 +6034,23 @@
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Result_Level3">
+            <EntityTypeMapping TypeName="SgqDbModel.Result_Level3">
+              <MappingFragment StoreEntitySet="Result_Level3">
+                <ScalarProperty Name="IsNotEvaluate" ColumnName="IsNotEvaluate" />
+                <ScalarProperty Name="IsConform" ColumnName="IsConform" />
+                <ScalarProperty Name="ValueText" ColumnName="ValueText" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="IntervalMax" ColumnName="IntervalMax" />
+                <ScalarProperty Name="IntervalMin" ColumnName="IntervalMin" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="ParLevel3_Name" ColumnName="ParLevel3_Name" />
+                <ScalarProperty Name="ParLevel3_Id" ColumnName="ParLevel3_Id" />
+                <ScalarProperty Name="CollectionLevel2_Id" ColumnName="CollectionLevel2_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

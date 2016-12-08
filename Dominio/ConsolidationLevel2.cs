@@ -12,29 +12,25 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class Unit
+    public partial class ConsolidationLevel2
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Unit()
+        public ConsolidationLevel2()
         {
-            this.ConsolidationLevel01 = new HashSet<ConsolidationLevel01>();
-            this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
-            this.UnitUser = new HashSet<UnitUser>();
+            this.CollectionLevel2 = new HashSet<CollectionLevel2>();
         }
     
         public int Id { get; set; }
-        public string Name { get; set; }
+        public int ConsolidationLevel1_Id { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public int UnitId { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public Nullable<int> Number { get; set; }
-        public string Code { get; set; }
-        public string Ip { get; set; }
+        public Nullable<System.DateTime> ConsolidationDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UnitUser> UnitUser { get; set; }
+        public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
+        public virtual ConsolidationLevel1 ConsolidationLevel1 { get; set; }
+        public virtual ParLevel2 ParLevel2 { get; set; }
     }
 }

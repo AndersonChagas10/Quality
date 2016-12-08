@@ -102,7 +102,8 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Meta, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Meta, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.HiddenFor(model => model.Meta)
+                                                @Html.Editor("MetaFake", new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Meta, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -203,12 +204,14 @@
         $('#Amostras').val($(this).val() * 4);
     });
 
-    $('#Meta').on('input', function () {
-        var calc = ($('#Quartos').val() * (Number(($('#Meta').val().substring(0, 6).replace(',', '.'))) / 100));
-        $('#ToleranciaDia').val(calc ? calc : 0);
-        $('#Nivel11').val(calc / 3 ? calc / 3 : 0);
-        $('#Nivel12').val(calc / 3 * 2 ? calc / 3 * 2 : 0);
-        $('#Nivel13').val(calc ? calc : 0);
+    $('#MetaFake').on('input', function () {
+        var calc = ($('#Quartos').val() * (Number(($('#MetaFake').val().substring(0, 6).replace(',', '.'))) / 100));
+        $('#ToleranciaDia').val(calc ? parseInt(calc) : 0);
+        $('#Nivel11').val(calc / 3 ? parseInt(calc / 3) : 0);
+        $('#Nivel12').val(calc / 3 * 2 ? parseInt(calc / 3 * 2) : 0);
+        $('#Nivel13').val(calc ? parseInt(calc) : 0);
+
+        $('#Meta').val(Number(($('#MetaFake').val().substring(0, 6).replace(',', '.'))));
     });
 
     
@@ -219,7 +222,8 @@
     });
 
     $(document).ready(function () {
-        $('#Meta').inputmask({ mask: "999,99%" });
+        $('#MetaFake').inputmask({ mask: "999,99%" });
+        $('#Avaliacoes').val(1);
     });
 
 </script>

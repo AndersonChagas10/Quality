@@ -18,6 +18,7 @@ namespace Dominio
         public UserSgq()
         {
             this.CollectionLevel02 = new HashSet<CollectionLevel02>();
+            this.CollectionLevel2 = new HashSet<CollectionLevel2>();
             this.CorrectiveAction = new HashSet<CorrectiveAction>();
             this.CorrectiveAction1 = new HashSet<CorrectiveAction>();
             this.CorrectiveAction2 = new HashSet<CorrectiveAction>();
@@ -38,6 +39,8 @@ namespace Dominio
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel02> CollectionLevel02 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CorrectiveAction> CorrectiveAction { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
