@@ -1263,7 +1263,7 @@ namespace SgqSystem.Services
                 return null;
             }
         }
-
+        
         [WebMethod]
         public string reciveLastData(string unidadeId)
         {
