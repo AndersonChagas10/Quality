@@ -923,7 +923,6 @@ namespace SgqSystem.Services
         }
 
         #endregion
-
         #region Collection Level02
         /// <summary>
         /// Metodo que grava a coleta
@@ -1986,6 +1985,10 @@ namespace SgqSystem.Services
         }
         public string GetLevel01()
         {
+            ///SE NÃO HOUVER NENHUM LEVEL1, LEVEL2, LEVEL3 INFORMAR QUE NÃO ENCONTROU MONITORAMENTOS
+
+
+
             var html = new Html();
 
             int ParCompany_Id = 1;
