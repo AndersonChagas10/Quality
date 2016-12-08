@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5d52c881ac784cc086c0eb875e74969c" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Acoes" Width="1.5" PointX="14.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.AcoesCorretivas" Width="1.5" PointX="17.25" PointY="36.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.AcoesPreventivas" Width="1.5" PointX="14.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.AcompanhamentoTarefa" Width="1.5" PointX="24.75" PointY="50" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Alertas" Width="1.5" PointX="11.25" PointY="49" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.AreasParticipantes" Width="1.5" PointX="15.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Cabecalho" Width="1.5" PointX="12.75" PointY="58.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Campo" Width="1.5" PointX="15" PointY="61.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CaracteristicaTipificacao" Width="1.5" PointX="14.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CaracteristicaTipificacaoSequencial" Width="1.5" PointX="17" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CategoriaProdutos" Width="1.5" PointX="17.25" PointY="23.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Categorias" Width="1.5" PointX="12" PointY="23.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CausaEspecifica" Width="1.5" PointX="0.75" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CausaGenerica" Width="1.5" PointX="12.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Classificacao" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ClassificacaoProduto" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ClusterDepartamentos" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Clusters" Width="1.5" PointX="0.75" PointY="49.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ConfiguracaoEmail" Width="1.5" PointX="5.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ConfiguracaoEmailPA" Width="1.5" PointX="7.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ContramedidaEspecifica" Width="1.5" PointX="10.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ContramedidaGenerica" Width="1.5" PointX="5.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.DepartamentoOperacoes" Width="1.5" PointX="17.25" PointY="32.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.DepartamentoProdutos" Width="1.5" PointX="14.25" PointY="23.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Departamentos" Width="1.5" PointX="9" PointY="35" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.DesvioNiveis" Width="1.5" PointX="9.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Desvios" Width="1.5" PointX="11.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Empresa" Width="1.5" PointX="16.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Empresas" Width="1.5" PointX="16.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Equipamentos" Width="1.5" PointX="8.25" PointY="49.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.EquipamentosAvaliados" Width="1.5" PointX="16.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Estados" Width="1.5" PointX="3.75" PointY="46.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_CausaEspecifica" Width="1.5" PointX="3" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_CausaGenerica" Width="1.5" PointX="15" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_ContramedidaEspecifica" Width="1.5" PointX="13" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_ContramedidaGenerica" Width="1.5" PointX="8" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_GrupoCausa" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_PlanoDeAcaoQuemQuandoComo" Width="1.5" PointX="21.75" PointY="51.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.FamiliaProdutos" Width="1.5" PointX="8.25" PointY="45" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.FormularioTratamentoAnomalia" Width="1.5" PointX="17.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoCabecalho" Width="1.5" PointX="12.75" PointY="67.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoCausa" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoProjeto" Width="1.5" PointX="8.25" PointY="58.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoTipoAvaliacaoMonitoramentos" Width="1.5" PointX="14.25" PointY="36.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoTipoAvaliacoes" Width="1.5" PointX="12" PointY="26.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Horarios" Width="1.5" PointX="11.25" PointY="45.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.LogAlteracoes" Width="1.5" PointX="0.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.LogOperacaoPA" Width="1.5" PointX="2.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.LogSgq" Width="1.5" PointX="18.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Metas" Width="1.5" PointX="3" PointY="56.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.MonitoramentoEquipamentos" Width="1.5" PointX="8.25" PointY="31.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Monitoramentos" Width="1.5" PointX="6" PointY="35.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.MonitoramentosConcorrentes" Width="1.5" PointX="14.25" PointY="48.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.MultiplaEscolha" Width="1.5" PointX="17.25" PointY="62.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Niveis" Width="1.5" PointX="17.25" PointY="41.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.NiveisUsuarios" Width="1.5" PointX="19.5" PointY="47.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.NQA" Width="1.5" PointX="18.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Observacoes" Width="1.5" PointX="18.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ObservacoesPadroes" Width="1.5" PointX="17.25" PointY="27.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Operacoes" Width="1.5" PointX="0.75" PointY="39" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_acompanhamento_tarefa" Width="1.5" PointX="9.75" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_campo" Width="1.5" PointX="7.5" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_configuracao_email" Width="1.5" PointX="19.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_empresa" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_grupo_projeto" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_log_operacao" Width="1.5" PointX="19.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_multipla_escolha" Width="1.5" PointX="9.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_participante" Width="1.5" PointX="3" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_projeto" Width="1.5" PointX="5.25" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_tarefa" Width="1.5" PointX="7.5" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_vinculo_campo_tarefa" Width="1.5" PointX="12" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_vinculo_participante_multipla_escolha" Width="1.5" PointX="12" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_vinculo_participante_projeto" Width="1.5" PointX="10.5" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Pacotes" Width="1.5" PointX="0.75" PointY="35.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.PacotesOperacoes" Width="1.5" PointX="3" PointY="42.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.PadraoMonitoramentos" Width="1.5" PointX="14.25" PointY="43.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.PadraoTolerancias" Width="1.5" PointX="14.25" PointY="32.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Padroes" Width="1.5" PointX="12" PointY="33.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.PenalidadeReincidencia" Width="1.5" PointX="4.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Perfil" Width="1.5" PointX="6.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.PlanoDeAcaoQuemQuandoComo" Width="1.5" PointX="19.5" PointY="51.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Pontos" Width="1.5" PointX="3" PointY="49.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Produto" Width="1.5" PointX="8.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ProdutoInNatura" Width="1.5" PointX="13.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Produtos" Width="1.5" PointX="3.75" PointY="30" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ProdutosAvaliados" Width="1.5" PointX="15.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Projeto" Width="1.5" PointX="10.5" PointY="58" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Regionais" Width="1.5" PointX="3.75" PointY="54.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Resultados" Width="1.5" PointX="20.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ResultadosData" Width="1.5" PointX="20.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ResultadosPCC" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Sugestoes" Width="1.5" PointX="0.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.sysdiagrams" Width="1.5" PointX="6.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaAmostras" Width="1.5" PointX="11.25" PointY="53.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaAvaliacoes" Width="1.5" PointX="15.25" PointY="53.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaCategorias" Width="1.5" PointX="14.25" PointY="28" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaMonitoramentos" Width="1.5" PointX="8.25" PointY="39.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaPA" Width="1.5" PointX="19.5" PointY="54.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Tarefas" Width="1.5" PointX="6" PointY="28.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Terceiro" Width="1.5" PointX="10.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TipificacaoReal" Width="1.5" PointX="8.25" PointY="54.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TipoAvaliacoes" Width="1.5" PointX="9.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Unidades" Width="1.5" PointX="6" PointY="47" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.UnidadesMedidas" Width="1.5" PointX="12" PointY="62.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Usuario" Width="1.5" PointX="22.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.UsuarioPerfilEmpresa" Width="1.5" PointX="22.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Usuarios" Width="1.5" PointX="17.25" PointY="45.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.UsuarioUnidades" Width="1.5" PointX="22.5" PointY="47.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoContagem" Width="1.5" PointX="22.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacao" Width="1.5" PointX="8.25" PointY="99.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoComparacao" Width="1.5" PointX="19.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoResultados" Width="1.5" PointX="22.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoTarefaIntegracao" Width="1.5" PointX="8.25" PointY="62.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoValidacao" Width="1.5" PointX="2.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoCampoCabecalho" Width="1.5" PointX="19.5" PointY="59.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoCampoTarefa" Width="1.5" PointX="21.75" PointY="57.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoParticipanteMultiplaEscolha" Width="1.5" PointX="22.5" PointY="54.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoParticipanteProjeto" Width="1.5" PointX="15.75" PointY="58.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VolumeAbate" Width="1.5" PointX="8.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VolumeProducao" Width="1.5" PointX="11.25" PointY="37.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Z_Sistema" Width="1.5" PointX="24.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ControleMetaTolerancia" Width="1.5" PointX="24.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.MacTablet" Width="1.5" PointX="24.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Resultados_BKP_OCT" Width="1.5" PointX="24.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ScorecardConsolidadoDia" Width="1.5" PointX="21.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Tipificacao" Width="1.5" PointX="24.75" PointY="22.75" IsExpanded="true" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_AcoesCorretivas_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_AcoesCorretivas_Tarefas" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_AcompanhamentoTarefa_Participante" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_AcompanhamentoTarefa_Tarefa" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Alertas_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Alertas_Tarefas" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Alertas_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Cabecalho_Participante" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Cabecalho_Projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Tarefa_Cabecalho" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoCabecalho_Cabecalho" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Campo_GrupoCabecalho" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Campo_Projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_MultiplaEscolha_Campo" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoCabecalho_Campo" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoTarefa_Campo" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_CategoriaProdutos_Categorias" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_CategoriaProdutos_Produtos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_TarefaCategorias_Categorias" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_FormularioAnomaliaCausaEspecifica_CausaEspecifica" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_FormularioAnomaliaCausaGenerica_CausaGenerica" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Pontos_Clusters" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Unidades_Clusters" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_FormularioAnomaliaContramedidaEspecifica_ContramedidaEspecifica" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_FormularioAnomaliaContramedidaGenerica_ContramedidaGenerica" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_DepartamentoOperacoes_Departamentos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_DepartamentoOperacoes_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_DepartamentoProdutos_Departamentos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_DepartamentoProdutos_Produtos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ObservacoesPadroes_Departamentos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_TarefaAvaliacoes_Departamentos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Tarefas_Departamentos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VolumeProducao_Departamentos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Equipamentos_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Unidades_Estados" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_FormularioAnomaliaGrupoCausa_GrupoCausa" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_FormularioAnomaliaPlanoDeAcaoQuemQuandoComo_PlanoDeAcaoQuemQuandoComo" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_FamiliaProdutos_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_FamiliaProdutos_Produtos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_FamiliaProdutos_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_GrupoCabecalho_Projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoCabecalho_GrupoCabecalho" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_GrupoProjeto_Empresa" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Projeto_GrupoProjeto" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_GrupoTipoAvaliacaoMonitoramentos_GrupoTipoAvaliacao" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_GrupoTipoAvaliacaoMonitoramentos_Monitoramentos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_GrupoTipoAvaliacoes_Negativo" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_GrupoTipoAvaliacoes_Positivo" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Horarios_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Horarios_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Metas_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_MonitoramentoEquipamentos_Monitoramentos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_MonitoramentosConcorrentes_Concorrentes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_MonitoramentosConcorrentes_Monitoramentos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_PadraoMonitoramentos_Monitoramentos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_PadraoTolerancias_Monitoramentos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_TarefaMonitoramentos_Monitoramentos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VerificacaoTipificacaoTarefaIntegracao_Monitoramentos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_MonitoramentosConcorrentes_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_MonitoramentosConcorrentes_Tarefas" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_MonitoramentosConcorrentes_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoCabecalho_MultiplaEscolha" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoTarefa_MultiplaEscolha" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoParticipanteMultiplaEscolha_MultiplaEscolha" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_NiveisUsuarios_Niveis" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_NiveisUsuarios_Usuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ObservacoesPadroes_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ObservacoesPadroes_Tarefas" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_PacotesOperacoes_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Pontos_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_TarefaAvaliacoes_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Tarefas_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_TipificacaoReal_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VolumeProducao_Operacoes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_acompanhamento_tarefa_pa_tarefa" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_campo_projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_multipla_escolha" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_vinculo_campo_tarefa_pa_campo" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_grupo_projeto_pa_empresa" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_participante_pa_empresa" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_projeto_pa_empresa" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_projeto_pa_grupo_projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_vinculo_campo_tarefa_pa_multipla_escolha" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_vinculo_multipla_escolha_participante" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_tarefa_pa_participante" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_vinculo_campo_tarefa_pa_participante" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_vinculo_participante_multipla_escolha" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_vinculo_participante_projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_tarefa_pa_projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_vinculo_projeto_participante" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_pa_vinculo_campo_tarefa_pa_tarefa" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_PacotesOperacoes_Pacotes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_PadraoMonitoramentos_Padroes" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_PadraoMonitoramentos_UnidadeMedidaLegenda" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_PadraoMonitoramentos_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_PadraoMonitoramentos_UnidadesMedidas" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_PadraoTolerancias_PadroesNivel1" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_PadraoTolerancias_PadroesNivel3" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_PlanoDeAcaoQuemQuandoComo_Usuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Tarefas_Produtos" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Tarefa_Projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoParticipanteProjeto_Projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Unidades_Regionais" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Usuarios_Regionais" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_TarefaAmostras_Tarefas" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_TarefaAmostras_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_TarefaAvaliacoes_Tarefas" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_TarefaAvaliacoes_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_TarefaCategorias_Tarefas" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_TarefaMonitoramentos_Tarefas" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_TarefaMonitoramentos_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Tarefa_Participante" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoTarefa_Tarefa" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_TipificacaoReal_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_Usuarios_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_UsuarioUnidades_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VerificacaoTipificacao_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VolumeProducao_Unidades" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_UsuarioUnidades_Usuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoCabecalho_Participante" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoTarefa_Participante" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoParticipanteMultiplaEscolha_Participante" ManuallyRouted="false" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoParticipanteProjeto_Participante" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

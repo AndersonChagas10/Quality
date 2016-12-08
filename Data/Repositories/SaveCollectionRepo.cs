@@ -53,7 +53,6 @@ namespace Data.Repositories
                             /**/
                             InserecollectionLevel02ECollectionLevel03(collectionLevel02, listCollectionLelve3);//listCollectionLelve3 DA CollectionLevel02
                             transaction.Commit();
-
                         }
                         catch (Exception e)
                         {

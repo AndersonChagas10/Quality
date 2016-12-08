@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Config";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var urlCheck = Url.Action("CheckGC", "GlobalConfigApi");
+    var urlAlter = Url.Action("AlterGC", "GlobalConfigApi");
+}
+
+<h2>Config</h2>
+
+
+<table style="background-color:white">
+    <tr>
+        <td>
+            <label>Checar versão global</label>
+        </td>
+        <td>
+            <button id="check" onclick="check();"> Checar Versão Global</button>
+        </td>
+        <td id="resultsCheck">
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label>Mudar Versão global</label>
+        </td>
+        <td>
+            <select id="seletor">
+                <option value="1">Brasil</option>
+                <option value="2">EUA</option>
+            </select>
+        </td>
+        <td>
+            <button id="alter" onclick="alter();"> Alterar Versão Global</button>
+        </td>
+    </tr>
+</table>
+
+<script>
+
+    function check() {
+        $.post('@Html.Raw(urlCheck)', function (data) { $('#resultsCheck').empty().html(data); });
+    }
+
+    function alter() {
+        $.post('@Html.Raw(urlAlter)' + '/' + $('#seletor :selected').val(), function (data) {
+            check();
+        });
+    }
+</script>
+

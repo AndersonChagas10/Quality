@@ -1,5 +1,6 @@
 ﻿using Dominio.Interfaces.Services;
 using DTO.Helpers;
+using Helper;
 using SgqSystem.ViewModels;
 using System;
 using System.Web;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Api
 {
+    [HandleController()]
     public class UserAuthenticationController : BaseController
     {
 
@@ -37,27 +39,33 @@ namespace SgqSystem.Controllers.Api
 
             if (isAuthorized.Retorno.IsNotNull())
             {
-                //create a cookie
-                HttpCookie myCookie = new HttpCookie("webControlCookie");
-                
-                //Add key-values in the cookie
-                myCookie.Values.Add("userId", isAuthorized.Retorno.Id.ToString());
-                myCookie.Values.Add("userName", isAuthorized.Retorno.Name);
-                myCookie.Values.Add("roles", isAuthorized.Retorno.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
-
-                //set cookie expiry date-time. Made it to last for next 12 hours.
-                myCookie.Expires = DateTime.Now.AddMinutes(30);
-                
-                //Most important, write the cookie to client.
-                Response.Cookies.Add(myCookie);
-
-                //SessionPersister.Username = isAuthorized.Retorno.Name;
+                CreateCookie(isAuthorized);
                 return RedirectToAction("Index", "Home");
             }
             else
                 ModelState.AddModelError("", isAuthorized.Mensagem);
 
             return View(user);
+        }
+
+        private void CreateCookie(GenericReturn<DTO.DTO.UserDTO> isAuthorized)
+        {
+            //create a cookie
+            HttpCookie myCookie = new HttpCookie("webControlCookie");
+
+            //Add key-values in the cookie
+            myCookie.Values.Add("userId", isAuthorized.Retorno.Id.ToString());
+            myCookie.Values.Add("userName", isAuthorized.Retorno.Name);
+            if (isAuthorized.Retorno.Role != null)
+                myCookie.Values.Add("roles", isAuthorized.Retorno.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
+            else
+                myCookie.Values.Add("roles", "");
+
+            //set cookie expiry date-time. Made it to last for next 12 hours.
+            myCookie.Expires = DateTime.Now.AddMinutes(30);
+
+            //Most important, write the cookie to client.
+            Response.Cookies.Add(myCookie);
         }
 
         public ActionResult LogOut(UserViewModel user)

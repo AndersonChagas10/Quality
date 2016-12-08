@@ -18,10 +18,14 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>63128</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -309,6 +313,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
+    <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
     <Compile Include="Controllers\Api\Login\LoginController.cs" />
     <Compile Include="Controllers\Api\NewSync\NewSyncController.cs" />
@@ -316,6 +321,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CepDesossasController.cs" />
     <Compile Include="Controllers\CepRecortesController.cs" />
+    <Compile Include="Controllers\GlobalConfigController.cs" />
     <Compile Include="Controllers\NQAsController.cs" />
     <Compile Include="Controllers\Params\ParCompanyController.cs" />
     <Compile Include="Controllers\ConsolidacaoTestes\ConsolidacaoTestesController.cs" />
@@ -411,10 +417,6 @@
     <Compile Include="Services\Html.cs" />
     <Compile Include="Services\Level02Result.cs" />
     <Compile Include="Services\SGQDBContext.cs" />
-    <Compile Include="Services\SyncServices_Antigo.asmx.cs">
-      <DependentUpon>SyncServices_Antigo.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Services\SyncServices.asmx.cs">
       <DependentUpon>SyncServices.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -950,6 +952,7 @@
     <None Include="Properties\PublishProfiles\ParamsInterno.pubxml" />
     <None Include="Properties\PublishProfiles\PublishEUA.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ DEV.pubxml" />
+    <None Include="Properties\PublishProfiles\SgqBrasilGlobal.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\GuardJs.js" />
     <Content Include="Scripts\i18n\ar.js" />
@@ -1099,7 +1102,6 @@
     <Content Include="Scripts\tripledes.js" />
     <Content Include="Scripts\x64-core.js" />
     <Content Include="Help.txt" />
-    <Content Include="Services\SyncServices_Antigo.asmx" />
     <Content Include="Services\SyncServices.asmx" />
     <Content Include="Views\Params\crudNxN.js" />
     <Content Include="Views\Params\Index.cshtml" />
@@ -1137,16 +1139,6 @@
     <Content Include="Views\FileControl\Index.cshtml" />
     <Content Include="Views\Shared\_FormToQueryFullScreen.cshtml" />
     <Content Include="Views\Charts\DataCollectionChart.cshtml" />
-    <Content Include="Web - Copy.config" />
-    <Content Include="Web - Copy.Debug.config">
-      <DependentUpon>Web - Copy.config</DependentUpon>
-    </Content>
-    <Content Include="Web - Copy.DeployInterno.config">
-      <DependentUpon>Web - Copy.config</DependentUpon>
-    </Content>
-    <Content Include="Web - Copy.Release.config">
-      <DependentUpon>Web - Copy.config</DependentUpon>
-    </Content>
     <Content Include="Views\Example\Index.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Params\_ParLevel2.cshtml" />
@@ -1184,32 +1176,31 @@
     <Content Include="Views\ParCompany\Index.cshtml" />
     <Content Include="Views\ParCompany\ParStructure.cshtml" />
     <Content Include="Views\ParCompany\ParStructureGroup.cshtml" />
-    <Content Include="Views\HtmlTeste\_IndexTeste - Copy.cshtml" />
-    <Content Include="Views\VacuoGRDs\Create.cshtml" />
-    <Content Include="Views\VacuoGRDs\Delete.cshtml" />
-    <Content Include="Views\VacuoGRDs\Details.cshtml" />
-    <Content Include="Views\VacuoGRDs\Edit.cshtml" />
-    <Content Include="Views\VacuoGRDs\Index.cshtml" />
-    <Content Include="Views\CepRecortes\Create.cshtml" />
-    <Content Include="Views\CepRecortes\Delete.cshtml" />
-    <Content Include="Views\CepRecortes\Details.cshtml" />
-    <Content Include="Views\CepRecortes\Edit.cshtml" />
-    <Content Include="Views\CepRecortes\Index.cshtml" />
     <Content Include="Views\CepDesossas\Create.cshtml" />
     <Content Include="Views\CepDesossas\Delete.cshtml" />
     <Content Include="Views\CepDesossas\Details.cshtml" />
     <Content Include="Views\CepDesossas\Edit.cshtml" />
     <Content Include="Views\CepDesossas\Index.cshtml" />
-    <Content Include="Views\Pcc1b\Create.cshtml" />
-    <Content Include="Views\Pcc1b\Delete.cshtml" />
-    <Content Include="Views\Pcc1b\Details.cshtml" />
-    <Content Include="Views\Pcc1b\Edit.cshtml" />
-    <Content Include="Views\Pcc1b\Index.cshtml" />
+    <Content Include="Views\CepRecortes\Create.cshtml" />
+    <Content Include="Views\CepRecortes\Delete.cshtml" />
+    <Content Include="Views\CepRecortes\Details.cshtml" />
+    <Content Include="Views\CepRecortes\Edit.cshtml" />
+    <Content Include="Views\CepRecortes\Index.cshtml" />
     <Content Include="Views\NQAs\Create.cshtml" />
     <Content Include="Views\NQAs\Delete.cshtml" />
     <Content Include="Views\NQAs\Details.cshtml" />
     <Content Include="Views\NQAs\Edit.cshtml" />
     <Content Include="Views\NQAs\Index.cshtml" />
+    <Content Include="Views\Pcc1b\Create.cshtml" />
+    <Content Include="Views\Pcc1b\Delete.cshtml" />
+    <Content Include="Views\Pcc1b\Details.cshtml" />
+    <Content Include="Views\Pcc1b\Edit.cshtml" />
+    <Content Include="Views\Pcc1b\Index.cshtml" />
+    <Content Include="Views\VacuoGRDs\Create.cshtml" />
+    <Content Include="Views\VacuoGRDs\Delete.cshtml" />
+    <Content Include="Views\VacuoGRDs\Details.cshtml" />
+    <Content Include="Views\VacuoGRDs\Edit.cshtml" />
+    <Content Include="Views\VacuoGRDs\Index.cshtml" />
     <Content Include="Scripts\theme\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />
     <Content Include="Scripts\theme\font-awesome-4.7.0\fonts\fontawesome-webfont.ttf" />
     <Content Include="Scripts\theme\font-awesome-4.7.0\fonts\fontawesome-webfont.woff" />
@@ -1243,6 +1234,7 @@
     <Content Include="Scripts\theme\font-awesome-4.7.0\scss\_screen-reader.scss" />
     <Content Include="Scripts\theme\font-awesome-4.7.0\scss\_stacked.scss" />
     <Content Include="Scripts\theme\font-awesome-4.7.0\scss\_variables.scss" />
+    <Content Include="Views\GlobalConfig\Config.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1263,7 +1255,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CrossCutting\CrossCutting.csproj">

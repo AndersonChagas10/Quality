@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dominio.Interfaces.Repositories;
 using Dominio.Interfaces.Services;
+using DTO;
 using DTO.DTO;
 using DTO.Helpers;
 using System;
@@ -15,7 +16,11 @@ namespace Dominio.Services
 {
     public class UserDomain : IUserDomain
     {
+        #region Parametros e construtores.
+
         private readonly IUserRepository _userRepo;
+        private readonly IBaseRepository<ParCompanyXUserSgq> _baseParCompanyXUserSgq;
+        private readonly IBaseRepository<ParCompany> _baseParCompany;
 
         private static string dominio = "global.corp.prod";
 
@@ -25,13 +30,21 @@ namespace Dominio.Services
         /// Construtor para Inversion of Control.
         /// </summary>
         /// <param name="userRepo"> Repositório de Usuario, interface de comunicação com Data. </param>
-        public UserDomain(IUserRepository userRepo)
+        public UserDomain(IUserRepository userRepo
+            , IBaseRepository<ParCompanyXUserSgq> baseParCompanyXUserSgq
+            , IBaseRepository<ParCompany> baseParCompany)
         {
+            _baseParCompany = baseParCompany;
+            _baseParCompanyXUserSgq = baseParCompanyXUserSgq;
             _userRepo = userRepo;
         }
 
+        #endregion
+
+        #region AuthenticationLogin
+
         /// <summary>
-        /// VErifica se existe Usuario e Senha Correspondentes no Banco de dados.
+        /// Verifica se existe Usuario e Senha Correspondentes no Banco de dados.
         /// </summary>
         /// <param name="name"> Nome do Usuário. </param>
         /// <param name="password"> Senha do Usuário. </param>
@@ -40,36 +53,260 @@ namespace Dominio.Services
         {
             try
             {
+                UserSgq userByName;
                 if (userDto.IsNull())
                     throw new ExceptionHelper("Username and Password are required.");
-
-                userDto.Password = DecryptStringAES(userDto.Password);
-                userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
-                var userByName = _userRepo.GetByName(userDto.Name);
-
-                if (userByName == null)
-                    throw new ExceptionHelper("User not found, please verify Username and Password.");
-
-                //Autenticação no AD JBS USA
-                if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
+                try
                 {
-                    var user = Mapper.Map<UserDTO, UserSgq>(userDto);
-                    user.Password = Criptografar3DES(user.Password);
-                    var isUser = _userRepo.AuthenticationLogin(user);
-                    if (isUser.IsNull())
-                        throw new ExceptionHelper("User not found, please verify Username and Password.");
+
+                    userDto.Password = DecryptStringAES(userDto.Password);
+                    userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
+                    userByName = _userRepo.GetByName(userDto.Name);
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Erro inesperado ao validar objeto e buscar user pelo nome SGq Global.", e);
                 }
 
-                userByName.Password = Criptografar3DES(userDto.Password);
-                _userRepo.Salvar(userByName);
-                return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(userByName));
+                if (GlobalConfig.Brasil)
+                {
+                    LoginBraSil(userDto, userByName);
+                }
+
+                if (GlobalConfig.Eua)
+                {
+                    if (userByName == null)
+                        throw new ExceptionHelper("User not found, please verify Username and Password.");
+
+                    AutenticaAdEUA(userDto);//Autenticação no AD JBS USA
+                }
+
+                try
+                {
+                    userByName = _userRepo.GetByName(userDto.Name);
+                    userByName.Password = Guard.Criptografar3DES(userDto.Password);
+                    _userRepo.Salvar(userByName);
+                    return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(userByName));
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Erro ao tentar atualizar o usuario no post back da autenticação.", e);
+                }
 
             }
             catch (Exception e)
             {
-                return new GenericReturn<UserDTO>(e, falhaGeral);
+                new CreateLog(e);
+                return new GenericReturn<UserDTO>(e, falhaGeral + e.Message);
+            }
+
+
+        }
+
+        private void AutenticaAdEUA(UserDTO userDto)
+        {
+            //Autenticação no AD JBS USA
+            if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
+            {
+                var user = Mapper.Map<UserDTO, UserSgq>(userDto);
+                user.Password = Guard.Criptografar3DES(user.Password);
+                var isUser = _userRepo.AuthenticationLogin(user);
+                if (isUser.IsNull())
+                    throw new ExceptionHelper("User not found, please verify Username and Password.");
+
+                //userByName.Password = Guard.Criptografar3DES(userDto.Password);
+                //_userRepo.Salvar(userByName);
+                //return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(userByName));
             }
         }
+
+        private void LoginBraSil(UserDTO userDto, UserSgq userByName)
+        {
+            try
+            {
+                if (userByName == null)//Não existe no nosso DB
+                {
+                    CriaUSerSgqPeloUserSgqBR(userDto);
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao criar o usuario Sgq Global a partir do ERP Sgq Brasil", e);
+            }
+
+            try
+            {
+                var user = Mapper.Map<UserDTO, UserSgq>(userDto);
+                user.Password = Guard.Criptografar3DES(user.Password);
+                var isUser = _userRepo.AuthenticationLogin(user);
+                if (isUser.IsNull())
+                    throw new ExceptionHelper("User not found, please verify Username and Password.");
+
+                userDto.Id = isUser.Id;
+                AtualizaRolesSgqBrPelosDadosDoErp(userDto);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro após criar usuario Sgq Global a partir do ERP Sgq Brasil", e);
+            }
+
+        }
+
+        private void AtualizaRolesSgqBrPelosDadosDoErp(UserDTO userDto)
+        {
+            using (var db = new SGQ_GlobalEntities())
+            {
+                Usuario usuarioSgqBr;
+                try
+                {
+
+                    usuarioSgqBr = db.Usuario.FirstOrDefault(r => r.cSigla.ToLower() == userDto.Name.ToLower());
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Erro ao buscar dados do usuario do ERP JSB", e);
+                }
+                    
+                if (usuarioSgqBr != null)
+                {
+                    IEnumerable<UsuarioPerfilEmpresa> usuarioPerfilEmpresaSgqBr;
+                    IEnumerable<ParCompanyXUserSgq> rolesSgqGlobal;
+                    IEnumerable<ParCompany> allCompanySgqGlobal;
+
+                    try
+                    {
+                        usuarioPerfilEmpresaSgqBr = db.UsuarioPerfilEmpresa.Where(r => r.nCdUsuario == usuarioSgqBr.nCdUsuario);
+                        rolesSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id);
+                        allCompanySgqGlobal = _baseParCompany.GetAll();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Erro ao buscar dados de roles do ERP da JBS", e);
+                    }
+
+                    foreach (var upe in usuarioPerfilEmpresaSgqBr)
+                    {
+                        try
+                        {
+                            var perfilSgqBr = db.Perfil.FirstOrDefault(r => r.nCdPerfil == upe.nCdPerfil).nCdPerfil.ToString();
+                            var parCompanySgqGlobal = allCompanySgqGlobal.FirstOrDefault(r => r.IntegrationId == upe.nCdEmpresa);
+                            if (parCompanySgqGlobal != null)
+                            {
+                                if (rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr))/*Se existe no global e existe no ERP*/
+                                {
+                                    try
+                                    {
+                                        var atualizaRole = rolesSgqGlobal.FirstOrDefault(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr);
+                                        atualizaRole.Role = perfilSgqBr;
+                                        _baseParCompanyXUserSgq.AddOrUpdate(atualizaRole);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        throw new Exception("Erro ao atualizar uma role existente no SGQ Global e ERP JBS", e);
+                                    }
+                                }
+                                else if (!rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id))/*Se não existe no global*/
+                                {
+                                    try
+                                    {
+                                        var adicionaRoleGlobal = new ParCompanyXUserSgq()
+                                        {
+                                            ParCompany_Id = parCompanySgqGlobal.Id,
+                                            UserSgq_Id = userDto.Id,
+                                            Role = perfilSgqBr
+                                        };
+                                        _baseParCompanyXUserSgq.AddOrUpdate(adicionaRoleGlobal);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        throw new Exception("Erro ao criar uma nova Role para SGQ Global ", e);
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception("Erro no loop usuarioPerfilEmpresaSgqBr", e);
+                        }
+                    }
+
+                    try
+                    {
+                        var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll();
+                        var todosOsPerfisSgqBrAssociados = db.Perfil.Where(r => usuarioPerfilEmpresaSgqBr.Any(upe => upe.nCdPerfil == r.nCdPerfil));
+                        if (todosOsPerfisSgqBrAssociados != null)
+                        {
+                            existentesSomenteSgqGlobal = existentesSomenteSgqGlobal.Where(r => todosOsPerfisSgqBrAssociados.Any(t => !(t.nCdPerfil.ToString() == r.Role)));
+
+                            foreach (var removerPerfilSgqGlobal in existentesSomenteSgqGlobal)/*remove se existir no global e nao existir no br*/
+                                _baseParCompanyXUserSgq.Remove(removerPerfilSgqGlobal);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+
+                        throw new Exception("Erro ao remover uma role existente no sgq global, e removida do ERP JBS", e);
+                    }
+
+                }
+
+            }
+
+        }
+
+        private void CriaUSerSgqPeloUserSgqBR(UserDTO userDto)
+        {
+            using (var db = new SGQ_GlobalEntities())
+            {
+                try
+                {
+                    var existenteNoDbAntigo = db.Usuario.FirstOrDefault(r => r.cSigla.ToLower() == userDto.Name.ToLower());
+                    if (existenteNoDbAntigo != null)//Porem existe no DB antigo.
+                    {
+                        UserSgq newUserSgq;
+
+                        try
+                        {
+                            newUserSgq = new UserSgq()
+                            {
+                                Name = existenteNoDbAntigo.cSigla.ToLower(),
+                                FullName = existenteNoDbAntigo.cNmUsuario,
+                                Email = existenteNoDbAntigo.cEMail,
+                                Password = Guard.Criptografar3DES(userDto.Password),
+                            };
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception("Erro ao criar usuario Sgq Brasil", e);
+                        }
+
+                        try
+                        {
+                            _userRepo.Salvar(newUserSgq);//Slava e cria o ID
+                            userDto.Id = newUserSgq.Id;
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception("Error ao salvar o usuario SGQ Brasil > new UserDomain SGQ Global", e);
+                        }
+
+                    }
+                    else
+                    {
+                        throw new Exception("User not found, please verify Username and Password.");
+                    }
+                }
+                catch (Exception e)
+                {
+                    new CreateLog(new Exception("Realizando Rollback em CriaUSerSgqPeloUserSgqBR", e));
+                    throw e;
+                }
+            }
+        }
+
+        #endregion
 
         public GenericReturn<List<UserDTO>> GetAllUserValidationAd(UserDTO userDto)
         {
@@ -84,15 +321,15 @@ namespace Dominio.Services
                 //userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
 
                 //Autenticação no AD JBS USA
-               // if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
-               // {
-                    //var user = Mapper.Map<UserDTO, UserSgq>(userDto);
-                    //user.Password = Criptografar3DES(user.Password);
-                    //var isUser = _userRepo.AuthenticationLogin(user);
-                    //if (isUser.IsNull())
-                    //{
-                    //    throw new ExceptionHelper("User not found, please verify Username and Password.");
-                    //}
+                // if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
+                // {
+                //var user = Mapper.Map<UserDTO, UserSgq>(userDto);
+                //user.Password = Criptografar3DES(user.Password);
+                //var isUser = _userRepo.AuthenticationLogin(user);
+                //if (isUser.IsNull())
+                //{
+                //    throw new ExceptionHelper("User not found, please verify Username and Password.");
+                //}
                 //}
 
                 var retorno = Mapper.Map<List<UserSgq>, List<UserDTO>>(_userRepo.GetAllUser());
@@ -101,7 +338,7 @@ namespace Dominio.Services
                 {
                     if (!string.IsNullOrEmpty(i.Password))
                     {
-                        i.Password = Descriptografar3DES(i.Password);
+                        i.Password = Guard.Descriptografar3DES(i.Password);
                         i.Password = EncryptStringAES(i.Password);
                     }
                 }
@@ -126,6 +363,8 @@ namespace Dominio.Services
                 return new GenericReturn<UserDTO>(e, "CAnnot get user by name.");
             }
         }
+
+        #region Auxiliares REMOVER E PASSAR PARA CLASSE GUARD.
 
         public static bool CheckUserInAD(string domain, string username, string password, string userVerific)
         {
@@ -174,83 +413,6 @@ namespace Dominio.Services
                 return false;
             }
         }
-
-        #region Constantes para Criptografar
-
-        /// <summary>     
-        /// Representação de valor em base 64 (Chave Interna)    
-        /// O Valor representa a transformação para base64 de     
-        /// um conjunto de 32 caracteres (8 * 32 = 256bits)      
-        /// </summary>     
-        const string cryptoKey3DES = "90A4F2C1DC40CE1F";
-
-        #endregion
-
-        #region Criptografia 3DES
-
-        public static string Criptografar3DES(string Message)
-        {
-            try
-            {
-                byte[] Results = null;
-                System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
-                MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
-                byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey3DES));
-                TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
-                TDESAlgorithm.Key = TDESKey;
-                TDESAlgorithm.Mode = CipherMode.ECB;
-                TDESAlgorithm.Padding = PaddingMode.PKCS7;
-                byte[] DataToEncrypt = UTF8.GetBytes(Message);
-                try
-                {
-                    ICryptoTransform Encryptor = TDESAlgorithm.CreateEncryptor();
-                    Results = Encryptor.TransformFinalBlock(DataToEncrypt, 0, DataToEncrypt.Length);
-                }
-                finally
-                {
-                    TDESAlgorithm.Clear();
-                    HashProvider.Clear();
-                }
-                return Convert.ToBase64String(Results);
-            }
-            catch (Exception)
-            {
-                return Message;
-            }
-        }
-
-        public static string Descriptografar3DES(string Message)
-        {
-            try
-            {
-                byte[] Results = null;
-                System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
-                MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
-                byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey3DES));
-                TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
-                TDESAlgorithm.Key = TDESKey;
-                TDESAlgorithm.Mode = CipherMode.ECB;
-                TDESAlgorithm.Padding = PaddingMode.PKCS7;
-                byte[] DataToDecrypt = Convert.FromBase64String(Message);
-                try
-                {
-                    ICryptoTransform Decryptor = TDESAlgorithm.CreateDecryptor();
-                    Results = Decryptor.TransformFinalBlock(DataToDecrypt, 0, DataToDecrypt.Length);
-                }
-                finally
-                {
-                    TDESAlgorithm.Clear();
-                    HashProvider.Clear();
-                }
-                return UTF8.GetString(Results);
-            }
-            catch (Exception)
-            {
-                return Message;
-            }
-        }
-
-        #endregion
 
         public static string EncryptStringAES(string cipherText)
         {
@@ -397,6 +559,7 @@ namespace Dominio.Services
             return plaintext;
         }
 
+        #endregion
     }
 
 }

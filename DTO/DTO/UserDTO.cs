@@ -26,6 +26,7 @@ namespace DTO.DTO
         public List<UnitUserDTO> UnitUser { get; set; }
 
         public string Role { get; set; }
+        public bool isBrasil { get; set; }
 
         /// <summary>
         /// Construtor Padrão
