@@ -77,6 +77,7 @@ namespace SGQDBContext
                          " INNER JOIN ParCriticalLevel CL                                                                                             " +
                          " ON CL.Id = P1C.ParCriticalLevel_Id                                                                                         " +
                          " WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
+                         " AND P1.IsActive = 1                                                                                                        " +
                          " ORDER BY CL.Name                                                                                                           ";
 
             //var parLevel1List = (List<ParLevel1>)db.Query<ParLevel1>(sql);
@@ -110,6 +111,7 @@ namespace SGQDBContext
                          "INNER JOIN ParLevel2 PL2                                     " +
                          "ON PL2.Id = P32.ParLevel2_Id                                 " +
                          "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'             " +
+                         " AND PL2.IsActive = 1                                             " +          
                          "GROUP BY PL2.Id, PL2.Name                                    ";
 
             var parLevel2List = db.Query<ParLevel2>(sql);
@@ -250,8 +252,8 @@ namespace SGQDBContext
                          "INNER JOIN ParLevel2 L2                                                                                                                                                                                                                                                                                                                                     " +
                          "        ON L2.Id = L32.ParLevel2_Id                                                                                                                                                                                                                                                                                                                         " +
                          "                                                                                                                                                                                                                                                                                                                                                            " +
-                         "WHERE                                                                                                                                                                                                                                                                                                                                                       " +
-                         "L2.Id = '" +  ParLevel2_Id + "'                                                                                                                                                                                                                                                                                                                             ";
+                         "WHERE  L3.IsActive = 1                                                                                                                                                                                                                                                                                                                                                     " +
+                         " AND L2.Id = '" +  ParLevel2_Id + "'                                                                                                                                                                                                                                                                                                                             ";
 
             var parLevel3List = db.Query<ParLevel3>(sql);
 
