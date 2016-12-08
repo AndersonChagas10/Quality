@@ -1,4 +1,5 @@
-﻿using SgqSystem.Secirity;
+﻿using Helper;
+using SgqSystem.Secirity;
 using System;
 using System.Diagnostics;
 using System.Web;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
+    [HandleController()]
     public class HomeController : BaseController
     {
 
