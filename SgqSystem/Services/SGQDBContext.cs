@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using Dapper;
+using System;
 
 namespace SGQDBContext
 {
@@ -197,7 +198,6 @@ namespace SGQDBContext
 
 
     }
-
     public partial class ParLevel3
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -217,6 +217,15 @@ namespace SGQDBContext
         public string ParMeasurementUnit_Name { get; set; }
         public decimal Weight { get; set; }
 
+        public IEnumerable<ParLevel3> getList()
+        {
+            SqlConnection db = new SqlConnection(conexao);
+            string sql = "SELECT Id, Name FROM ParLevel3";
+            var parLevel3List = db.Query<ParLevel3>(sql);
+
+            return parLevel3List;
+
+        }
         public IEnumerable<ParLevel3> getLevel3ByLevel2(int ParLevel2_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
@@ -249,4 +258,73 @@ namespace SGQDBContext
             return parLevel3List;
         }                                                                                                                                                                                                                                                                                                                                                                          
     }
+ 
+    public partial class Level2Result
+    {
+        public int ParLevel1_Id { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public int Unit_Id { get; set; }
+        public int Shift { get; set; }
+        public int Period { get; set; }
+
+        public DateTime CollectionDate { get; set; }
+
+        public int EvaluateLast { get; set; }
+        public int SampleLast { get; set; }
+
+        public IEnumerable<Level2Result> getList(string UnidadeId)
+        {
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+            SqlConnection db = new SqlConnection(conexao);
+            string sql = "SELECT                                                           " +
+                        "   ParLevel1_Id                                                   " +
+                        "    , ParLevel2_Id                                                " +
+                        "    , UnitId      AS Unit_Id                                      " +
+                        "    , Shift                                                       " +
+                        "    , Period                                                      " +
+                        "    , CollectionDate                                              " +
+                        "    ,max(EvaluationNumber) as EvaluateLast                        " +
+                        "    ,max(Sample) as SampleLast                                    " +
+                        "   FROM                                                           " +
+                        "   (                                                              " +
+                        "    SELECT                                                        " +
+                        "                                                                  " +
+                        "    ParLevel1_Id                                                  " +
+                        "    , ParLevel2_Id                                                " +
+                        "    , UnitId                                                      " +
+                        "    , Shift                                                       " +
+                        "    , Period                                                      " +
+                        "    , convert(date, CollectionDate) as CollectionDate             " +
+                        "    , EvaluationNumber                                            " +
+                        "    , max(Sample) as Sample                                       " +
+                        "                                                                  " +
+                        "    FROM CollectionLevel2                                         " +
+                        "                                                                  " +
+                        "    where UnitId = '" + UnidadeId + "'                            " +
+                        "                                                                  " +
+                        "    group by                                                      " +
+                        "    ParLevel1_Id                                                  " +
+                        "    , ParLevel2_Id                                                " +
+                        "    , UnitId                                                      " +
+                        "    , Shift                                                       " +
+                        "    , Period                                                      " +
+                        "    , convert(date, CollectionDate)                               " +
+                        "    , EvaluationNumber                                            " +
+                        "   ) ultimas_amostras                                             " +
+                        "                                                                  " +
+                        "   group by                                                       " +
+                        "   ParLevel1_Id                                                   " +
+                        "   , ParLevel2_Id                                                 " +
+                        "   , UnitId                                                       " +
+                        "   , Shift                                                        " +
+                        "   , Period                                                       " +
+                        "   , CollectionDate                                               ";
+           
+            var Level2ResultList = db.Query<Level2Result>(sql);
+
+            return Level2ResultList;
+
+        }
+    }   
 }

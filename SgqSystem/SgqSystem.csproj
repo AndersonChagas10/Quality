@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -411,12 +411,12 @@
     <Compile Include="Services\Html.cs" />
     <Compile Include="Services\Level02Result.cs" />
     <Compile Include="Services\SGQDBContext.cs" />
-    <Compile Include="Services\SyncServices.asmx.cs">
-      <DependentUpon>SyncServices.asmx</DependentUpon>
+    <Compile Include="Services\SyncServices_Antigo.asmx.cs">
+      <DependentUpon>SyncServices_Antigo.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Services\SyncServices_novo.asmx.cs">
-      <DependentUpon>SyncServices_novo.asmx</DependentUpon>
+    <Compile Include="Services\SyncServices.asmx.cs">
+      <DependentUpon>SyncServices.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewModels\AccountBindingModels.cs" />
@@ -1099,8 +1099,8 @@
     <Content Include="Scripts\tripledes.js" />
     <Content Include="Scripts\x64-core.js" />
     <Content Include="Help.txt" />
+    <Content Include="Services\SyncServices_Antigo.asmx" />
     <Content Include="Services\SyncServices.asmx" />
-    <Content Include="Services\SyncServices_novo.asmx" />
     <Content Include="Views\Params\crudNxN.js" />
     <Content Include="Views\Params\Index.cshtml" />
     <Content Include="Views\Params\_ParLevel1.cshtml" />
