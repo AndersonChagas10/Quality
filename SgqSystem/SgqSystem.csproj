@@ -319,10 +319,10 @@
     <Compile Include="Controllers\Api\NewSync\NewSyncController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\CepDesossasController.cs" />
-    <Compile Include="Controllers\CepRecortesController.cs" />
+    <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
+    <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
     <Compile Include="Controllers\GlobalConfigController.cs" />
-    <Compile Include="Controllers\NQAsController.cs" />
+    <Compile Include="Controllers\VolumeProducao\NQAsController.cs" />
     <Compile Include="Controllers\Params\ParCompanyController.cs" />
     <Compile Include="Controllers\ConsolidacaoTestes\ConsolidacaoTestesController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
@@ -343,9 +343,9 @@
     <Compile Include="Controllers\Params\ParClustersController.cs" />
     <Compile Include="Controllers\Params\ParDepartmentsController.cs" />
     <Compile Include="Controllers\Params\ParMeasurementUnitsController.cs" />
-    <Compile Include="Controllers\Pcc1bController.cs" />
+    <Compile Include="Controllers\VolumeProducao\Pcc1bController.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
-    <Compile Include="Controllers\VacuoGRDsController.cs" />
+    <Compile Include="Controllers\VolumeProducao\VacuoGRDsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
