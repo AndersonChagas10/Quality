@@ -44,6 +44,10 @@ namespace SgqSystem.Secirity
                         if (!IsInRole(roles))
                             filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
                     }
+                    else
+                    {
+                        filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
+                    }
                 }
             }
           

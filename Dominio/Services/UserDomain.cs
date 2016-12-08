@@ -3,7 +3,6 @@ using Dominio.Interfaces.Repositories;
 using Dominio.Interfaces.Services;
 using DTO;
 using DTO.DTO;
-using DTO.DTO.Params;
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;
@@ -54,12 +53,21 @@ namespace Dominio.Services
         {
             try
             {
+                UserSgq userByName;
                 if (userDto.IsNull())
                     throw new ExceptionHelper("Username and Password are required.");
+                try
+                {
 
-                userDto.Password = DecryptStringAES(userDto.Password);
-                userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
-                var userByName = _userRepo.GetByName(userDto.Name);
+                    userDto.Password = DecryptStringAES(userDto.Password);
+                    userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
+                    userByName = _userRepo.GetByName(userDto.Name);
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Erro inesperado ao validar objeto e buscar user pelo nome SGq Global.", e);
+                }
 
                 if (GlobalConfig.Brasil)
                 {
@@ -74,14 +82,22 @@ namespace Dominio.Services
                     AutenticaAdEUA(userDto);//Autenticação no AD JBS USA
                 }
 
-                userByName = _userRepo.GetByName(userDto.Name);
-                userByName.Password = Guard.Criptografar3DES(userDto.Password);
-                _userRepo.Salvar(userByName);
-                return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(userByName));
+                try
+                {
+                    userByName = _userRepo.GetByName(userDto.Name);
+                    userByName.Password = Guard.Criptografar3DES(userDto.Password);
+                    _userRepo.Salvar(userByName);
+                    return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(userByName));
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Erro ao tentar atualizar o usuario no post back da autenticação.", e);
+                }
 
             }
             catch (Exception e)
             {
+                new CreateLog(e);
                 return new GenericReturn<UserDTO>(e, falhaGeral + e.Message);
             }
 
@@ -107,21 +123,34 @@ namespace Dominio.Services
 
         private void LoginBraSil(UserDTO userDto, UserSgq userByName)
         {
-            if (userByName == null)//Não existe no nosso DB
+            try
             {
-                CriaUSerSgqPeloUserSgqBR(userDto);
-                //AtualizaRolesSgqBrPelosDadosDoErp(userDto);
-                //userByName.Id = _userRepo.GetByName(userDto.Name).Id;
+                if (userByName == null)//Não existe no nosso DB
+                {
+                    CriaUSerSgqPeloUserSgqBR(userDto);
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao criar o usuario Sgq Global a partir do ERP Sgq Brasil", e);
             }
 
-            var user = Mapper.Map<UserDTO, UserSgq>(userDto);
-            user.Password = Guard.Criptografar3DES(user.Password);
-            var isUser = _userRepo.AuthenticationLogin(user);
-            if (isUser.IsNull())
-                throw new ExceptionHelper("User not found, please verify Username and Password.");
+            try
+            {
+                var user = Mapper.Map<UserDTO, UserSgq>(userDto);
+                user.Password = Guard.Criptografar3DES(user.Password);
+                var isUser = _userRepo.AuthenticationLogin(user);
+                if (isUser.IsNull())
+                    throw new ExceptionHelper("User not found, please verify Username and Password.");
 
-            userDto.Id = isUser.Id;
-            AtualizaRolesSgqBrPelosDadosDoErp(userDto);
+                userDto.Id = isUser.Id;
+                AtualizaRolesSgqBrPelosDadosDoErp(userDto);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro após criar usuario Sgq Global a partir do ERP Sgq Brasil", e);
+            }
 
         }
 
@@ -129,45 +158,97 @@ namespace Dominio.Services
         {
             using (var db = new SGQ_GlobalEntities())
             {
+                Usuario usuarioSgqBr;
+                try
+                {
 
-                var usuarioSgqBr = db.Usuario.FirstOrDefault(r => r.cSigla.ToLower() == userDto.Name.ToLower());
+                    usuarioSgqBr = db.Usuario.FirstOrDefault(r => r.cSigla.ToLower() == userDto.Name.ToLower());
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Erro ao buscar dados do usuario do ERP JSB", e);
+                }
                     
                 if (usuarioSgqBr != null)
                 {
-                    var usuarioPerfilEmpresaSgqBr = db.UsuarioPerfilEmpresa.Where(r => r.nCdUsuario == usuarioSgqBr.nCdUsuario);
-                    var rolesSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id);
-                    var allCompanySgqGlobal = _baseParCompany.GetAll();
+                    IEnumerable<UsuarioPerfilEmpresa> usuarioPerfilEmpresaSgqBr;
+                    IEnumerable<ParCompanyXUserSgq> rolesSgqGlobal;
+                    IEnumerable<ParCompany> allCompanySgqGlobal;
+
+                    try
+                    {
+                        usuarioPerfilEmpresaSgqBr = db.UsuarioPerfilEmpresa.Where(r => r.nCdUsuario == usuarioSgqBr.nCdUsuario);
+                        rolesSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id);
+                        allCompanySgqGlobal = _baseParCompany.GetAll();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Erro ao buscar dados de roles do ERP da JBS", e);
+                    }
 
                     foreach (var upe in usuarioPerfilEmpresaSgqBr)
                     {
-                        var perfilSgqBr = db.Perfil.FirstOrDefault(r => r.nCdPerfil == upe.nCdPerfil).nCdPerfil.ToString();
-                        var parCompanySgqGlobal = allCompanySgqGlobal.FirstOrDefault(r => r.IntegrationId == upe.nCdEmpresa);
-                        if (parCompanySgqGlobal != null)
+                        try
                         {
-                            if (rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr))/*Se existe no global e existe no ERP*/
+                            var perfilSgqBr = db.Perfil.FirstOrDefault(r => r.nCdPerfil == upe.nCdPerfil).nCdPerfil.ToString();
+                            var parCompanySgqGlobal = allCompanySgqGlobal.FirstOrDefault(r => r.IntegrationId == upe.nCdEmpresa);
+                            if (parCompanySgqGlobal != null)
                             {
-                                var atualizaRole = rolesSgqGlobal.FirstOrDefault(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr);
-                                atualizaRole.Role = perfilSgqBr;
-                                _baseParCompanyXUserSgq.AddOrUpdate(atualizaRole);
-                            }
-                            else if (!rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id))/*Se não existe no global*/
-                            {
-                                var adicionaRoleGlobal = new ParCompanyXUserSgq()
+                                if (rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr))/*Se existe no global e existe no ERP*/
                                 {
-                                    ParCompany_Id = parCompanySgqGlobal.Id,
-                                    UserSgq_Id = userDto.Id,
-                                    Role = perfilSgqBr
-                                };
-                                _baseParCompanyXUserSgq.AddOrUpdate(adicionaRoleGlobal);
+                                    try
+                                    {
+                                        var atualizaRole = rolesSgqGlobal.FirstOrDefault(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr);
+                                        atualizaRole.Role = perfilSgqBr;
+                                        _baseParCompanyXUserSgq.AddOrUpdate(atualizaRole);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        throw new Exception("Erro ao atualizar uma role existente no SGQ Global e ERP JBS", e);
+                                    }
+                                }
+                                else if (!rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id))/*Se não existe no global*/
+                                {
+                                    try
+                                    {
+                                        var adicionaRoleGlobal = new ParCompanyXUserSgq()
+                                        {
+                                            ParCompany_Id = parCompanySgqGlobal.Id,
+                                            UserSgq_Id = userDto.Id,
+                                            Role = perfilSgqBr
+                                        };
+                                        _baseParCompanyXUserSgq.AddOrUpdate(adicionaRoleGlobal);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        throw new Exception("Erro ao criar uma nova Role para SGQ Global ", e);
+                                    }
+                                }
                             }
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception("Erro no loop usuarioPerfilEmpresaSgqBr", e);
                         }
                     }
 
-                    var todosOsPerfisSgqBrAssociados = db.Perfil.Where(r => usuarioPerfilEmpresaSgqBr.Any(upe => upe.nCdPerfil == r.nCdPerfil));
-                    var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => todosOsPerfisSgqBrAssociados.Any(t => !(t.nCdPerfil.ToString() == r.Role)));
+                    try
+                    {
+                        var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll();
+                        var todosOsPerfisSgqBrAssociados = db.Perfil.Where(r => usuarioPerfilEmpresaSgqBr.Any(upe => upe.nCdPerfil == r.nCdPerfil));
+                        if (todosOsPerfisSgqBrAssociados != null)
+                        {
+                            existentesSomenteSgqGlobal = existentesSomenteSgqGlobal.Where(r => todosOsPerfisSgqBrAssociados.Any(t => !(t.nCdPerfil.ToString() == r.Role)));
 
-                    foreach (var removerPerfilSgqGlobal in existentesSomenteSgqGlobal)/*remove se existir no global e nao existir no br*/
-                        _baseParCompanyXUserSgq.Remove(removerPerfilSgqGlobal);
+                            foreach (var removerPerfilSgqGlobal in existentesSomenteSgqGlobal)/*remove se existir no global e nao existir no br*/
+                                _baseParCompanyXUserSgq.Remove(removerPerfilSgqGlobal);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+
+                        throw new Exception("Erro ao remover uma role existente no sgq global, e removida do ERP JBS", e);
+                    }
 
                 }
 
