@@ -20,14 +20,13 @@ namespace SgqSystem.Services
         public int reauditNumber { get; set; }
         public bool completed { get; set; }
         public int defects { get; set; }
-        public int baisedUnbaised { get; set; }
         public Level02Result()
         {
 
         }
 
         public Level02Result(string unidadeId, int period, int shift, int evaluate, int sample, string result, bool haveCorrectiveAction, bool haveReaudit, 
-                             bool havePhases, bool reaudit, int reauditNumber, bool completed, int defects, int baisedUnbaised)
+                             bool havePhases, bool reaudit, int reauditNumber, bool completed, int defects)
         {
             this.unidadeId = unidadeId;
             this.period = period;
@@ -42,7 +41,6 @@ namespace SgqSystem.Services
             this.reauditNumber = reauditNumber;
             this.completed = completed;
             this.defects = defects;
-            this.baisedUnbaised = baisedUnbaised;
         }
     }
 }

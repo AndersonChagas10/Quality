@@ -1698,7 +1698,6 @@ namespace SgqSystem.Services2
                                         string level02Results = null;
                                         int More3Errors = 0;
                                         int SideWithErrors = 0;
-                                        int baisedUnbaised = 0;
                                         string biasedunbiasedtag = null;
 
                                         string haveReauditTag = null;
@@ -1750,7 +1749,6 @@ namespace SgqSystem.Services2
                                             reaudit = rs.reaudit.ToString().ToLower();
                                             reauditNumber = rs.reauditNumber.ToString();
                                             level02Results += rs.result;
-                                            baisedUnbaised = rs.baisedUnbaised;
                                             //alterar para verificar por parametro
                                             if (rs.defects > 0 && Level01Id == "3")
                                             {
@@ -1760,10 +1758,6 @@ namespace SgqSystem.Services2
                                                     More3Errors++;
                                                 }
                                             }
-                                        }
-                                        if (baisedUnbaised > 0)
-                                        {
-                                            biasedunbiasedtag = " biasedunbiased=\"" + baisedUnbaised + "\"";
                                         }
                                         Level01ResultByPeruid += "<div class=\"level01Result\" level01id=\"" + Level01Id + "\" unidadeid=\"" + unidadeId + "\" date=\"" + ConsolidationDate.ToString("MMddyyyy") + "\" datetime=\"" + ConsolidationDate.ToString("MM/dd/yyyy HH:mm:ss") + "\" shift=\"" + shift + "\" period=\"" + p.period + "\" reaudit=\"" + reaudit + "\" reauditnumber=\"" + reauditNumber + "\" totalevaluate=\"" + totalEvaluate + "\" sidewitherros=\"" + SideWithErrors + "\" more3defects=\"" + More3Errors + "\" lastevaluate=\"" + lastevaluate + "\" lastsample=\"" + lastsample + "\" evaluate=\"" + evaluate + "\" sync=\"true\"" + haveCorrectiveActionTag + haveReauditTag + completedSampleTag + biasedunbiasedtag + completedTag + ">" +
                                                                  level02Results +
@@ -1986,8 +1980,7 @@ namespace SgqSystem.Services2
                                                                  reaudit: reauditIs,
                                                                  reauditNumber: reauditnumber,
                                                                  completed: completed,
-                                                                 defects: defects,
-                                                                 baisedUnbaised: baisedUnbaised);
+                                                                 defects: defects);
 
                                 Level02ResultList.Add(l2Result);
 
