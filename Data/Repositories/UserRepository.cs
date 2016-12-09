@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Repositories;
+using DTO.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,8 +34,19 @@ namespace Data.Repositories
         public UserSgq AuthenticationLogin(UserSgq user)
         {
 
-            var result = db.Set<UserSgq>().Where(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(user.Password)).FirstOrDefault();
-            // var result = db.Set<UserSgq>().FirstOrDefault(r => r.Name.ToLower().Equals(user.Name.ToLower()) && r.Password.Equals(user.Password));
+            var result = db.Set<UserSgq>().FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(user.Password));
+            if (result == null)/*Verifica no caso de a senha estar descriptografada no DB e atualiza a mesma ,agora criptografada, no db.*/
+            {
+                var userByName = db.Set<UserSgq>().FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()));
+                if (Guard.Criptografar3DES(userByName.Password).Equals(user.Password))
+                {
+                    result = userByName;
+                    result.Password = Guard.Criptografar3DES(result.Password);
+                    Salvar(result);
+                }
+
+            }
+
             return result;
         }
 

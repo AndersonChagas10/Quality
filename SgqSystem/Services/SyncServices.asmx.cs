@@ -4,7 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Data.SqlClient;
+using System.Web.Helpers;
+using SgqSystem.Handlres;
 using System.Web.Http.Cors;
+using SgqSystem.Services;
 
 namespace SgqSystem.Services
 {
@@ -13,9 +16,9 @@ namespace SgqSystem.Services
     /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
-    [System.ComponentModel.ToolboxItem(false)]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
 
+    [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     [System.Web.Script.Services.ScriptService]
     public class SyncServices : System.Web.Services.WebService
@@ -71,7 +74,7 @@ namespace SgqSystem.Services
             return valor;
         }
         /// <summary>
-        /// Converter para Booleano Padrão Sql um valor passado
+        /// Converte um valor string para padrão sql
         /// </summary>
         /// <param name="valor">valor True ou False</param>
         /// <returns></returns>
@@ -87,6 +90,11 @@ namespace SgqSystem.Services
                 return "0";
             }
         }
+        /// <summary>
+        /// Convert um valor string para booleano 
+        /// </summary>
+        /// <param name="valor"></param>
+        /// <returns></returns>
         public string BoolCompletedConverter(string valor)
         {
             valor = valor.ToLower();
@@ -99,6 +107,15 @@ namespace SgqSystem.Services
                 return "0";
             }
         }
+        /// <summary>
+        /// Inserir Log no Banco
+        /// </summary>
+        /// <param name="result">Resultado</param>
+        /// <param name="log">Mensagem de Log</param>
+        /// <param name="deviceId">Id do Dispositivo</param>
+        /// <param name="AppVersion">Versão do APP</param>
+        /// <param name="callback">Callback que chamou</param>
+        /// <returns></returns>
         public int insertLogJson(string result, string log, string deviceId, string AppVersion, string callback)
         {
             string sql = "INSERT INTO LogJson ([result],[log],[AddDate],[Device_Id],[AppVersion], [callback]) " +
@@ -346,7 +363,7 @@ namespace SgqSystem.Services
         [WebMethod]
         public string ProcessJson(string device)
         {
-
+            //Se não passar um device ou web
             if (string.IsNullOrEmpty(device))
             {
                 return "informe o device";
@@ -460,8 +477,10 @@ namespace SgqSystem.Services
                                 string Evaluation = r[15].ToString();
                                 string Sample = r[16].ToString();
 
+                                //Funções tem que passar para o cabecalho
                                 string CattleType = arrayHeader[2];
                                 CattleType = DefaultValueReturn(CattleType, "0");
+                                //Funções tem que passar para o cabecalho
 
                                 string ChainSpeed = arrayHeader[3];
                                 ChainSpeed = DefaultValueReturn(ChainSpeed, "0");
@@ -476,9 +495,11 @@ namespace SgqSystem.Services
                                 string ConsecutiveFailureTotal = arrayHeader[7];
                                 ConsecutiveFailureTotal = DefaultValueReturn(ConsecutiveFailureTotal, "0");
 
+                                
+                                //Funções tem que passar para o cabecalho
                                 string LotNumber = arrayHeader[4];
                                 LotNumber = DefaultValueReturn(LotNumber, "0");
-
+                                //Funções tem que passar para o cabecalho
                                 string MudScore = arrayHeader[5];
                                 MudScore = DefaultValueReturn(MudScore, "0");
 
@@ -489,7 +510,6 @@ namespace SgqSystem.Services
 
                                 string completed = arrayHeader[9];
                                 completed = BoolCompletedConverter(completed);
-
 
                                 string havePhases = arrayHeader[10];
                                 havePhases = BoolConverter(havePhases);
@@ -504,37 +524,45 @@ namespace SgqSystem.Services
                                 string reauditNumber = r[22].ToString();
                                 reauditNumber = DefaultValueReturn(reauditNumber, "0");
 
-                                int ConsolidationLevel01Id = InsertConsoliDationLevel01(unitId, level01, level01CollectionDate);
-                                if (ConsolidationLevel01Id == 0)
+                                int ConsolidationLevel1Id = InsertConsolidationLevel1(unitId, level01, level01CollectionDate);
+                                if (ConsolidationLevel1Id == 0)
                                 {
                                     /*return "erro consolidation level01"*/
                                     return "error";
                                 }
 
-                                int ConsolidationLevel02Id = InsertConsoliDationLevel02(ConsolidationLevel01Id.ToString(), level02, unitId, level02CollectionDate);
-                                if (ConsolidationLevel02Id == 0)
+                                int ConsolidationLevel2Id = InsertConsolidationLevel2(ConsolidationLevel1Id.ToString(), level02, unitId, level02CollectionDate);
+                                if (ConsolidationLevel2Id == 0)
                                 {
                                     //return  "Erro Consolidation Level02";
                                     return "error";
                                 }
 
+                                //Instancia  variavel para verificar se é atualizaçãos
                                 bool update = false;
-                                string idCollectionLevel02 = arrayHeader[11];
-                                idCollectionLevel02 = DefaultValueReturn(idCollectionLevel02, "0");
-                                if (idCollectionLevel02 != "0")
+                                //Verifica o Id do CollectionLevel2 na Matriz
+                                string idCollectionLevel2 = arrayHeader[11];
+
+                                //Se se não conter nenhum Id define zero
+                                idCollectionLevel2 = DefaultValueReturn(idCollectionLevel2, "0");
+                                if (idCollectionLevel2 != "0")
                                 {
+                                    //Se for diferente de zero, então estamos atualizando um resultado
                                     update = true;
                                 }
 
-                                int CollectionLevel02Id = InsertCollectionLevel02(ConsolidationLevel02Id.ToString(), level01, level02, unitId, AuditorId, shift, period, Phase, Reaudit, reauditNumber, level02CollectionDate,
-                                                                                  StartPhase, Evaluation, Sample, CattleType, ChainSpeed, ConsecuticeFalireIs, ConsecutiveFailureTotal, LotNumber, MudScore, NotEvaluateIs, Duplicated, haveReaudit,
-                                                                                  haveCorrectiveAction, havePhases, completed, idCollectionLevel02);
+                                //Inserir/Atualiza o Resultado Collectio Level2
+                                int CollectionLevel2Id = InsertCollectionLevel2(ConsolidationLevel2Id.ToString(), level01, level02, unitId, AuditorId, shift, period, Phase, Reaudit, reauditNumber, level02CollectionDate,
+                                                                                  StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit,
+                                                                                  haveCorrectiveAction, havePhases, completed, idCollectionLevel2);
 
-                                if (CollectionLevel02Id == 0)
+                                if (CollectionLevel2Id == 0)
                                 {
                                     //return "erro Collection level02";
                                     return "error";
                                 }
+                                
+
                                 string correctiveActionCompleted = arrayHeader[12];
                                 if (haveCorrectiveAction == "0")
                                 {
@@ -548,6 +576,7 @@ namespace SgqSystem.Services
                                 {
                                     correctiveActionCompleted = haveCorrectiveAction;
                                 }
+
                                 string reauditCompleted = arrayHeader[13];
 
                                 if (haveReaudit == "0")
@@ -563,24 +592,26 @@ namespace SgqSystem.Services
                                     reauditCompleted = haveReaudit;
                                 }
 
-
+                                //Se for uma atualização e ação corretiv for zero
                                 if (update == true && (correctiveActionCompleted == "0" || reauditCompleted == "0"))
                                 {
-                                    int updateCorrectiveAction = updateLevel02CorrectiveActionReaudit(CollectionLevel02Id.ToString(), correctiveActionCompleted, reauditCompleted);
+                                    int updateCorrectiveAction = updateLevel02CorrectiveActionReaudit(CollectionLevel2Id.ToString(), correctiveActionCompleted, reauditCompleted);
                                     if (updateCorrectiveAction == 0)
                                     {
                                         //return "erro update correctiveaction";
                                         return "error";
                                     }
                                 }
-
-                                int CollectionLevel03Id = InsertCollectionLevel03(CollectionLevel02Id.ToString(), level02, objson, AuditorId, Duplicated);
-                                if (CollectionLevel03Id == 0)
+                                //Inserir/Atualiza CollectionLevel3
+                                //Importate criar versionamento ParLevel1, ParLevel2, ParLevel3 para não gravar strings nas coletas e melhorar desempanho de gravações
+                                int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), level02, objson, AuditorId, Duplicated);
+                                if (CollectionLevel3Id == 0)
                                 {
                                     //return "Erro Level03";
                                     return "error";
                                 }
 
+                                //Se existir ação Corretira
                                 if (!string.IsNullOrEmpty(correctiveActionJson))
                                 {
                                     correctiveActionJson = correctiveActionJson.Replace("<correctiveaction>", "").Replace("</correctiveaction>", "");
@@ -606,7 +637,7 @@ namespace SgqSystem.Services
                                     string preventativeMeasure = arrayCorrectiveAction[9];
                                     preventativeMeasure = HttpUtility.UrlDecode(preventativeMeasure, System.Text.Encoding.Default);
 
-                                    int CorrectiveActionId = correctiveActionInsert(AuditorId, CollectionLevel02Id.ToString(), slaugthersignature, techinicalsignature, datetimeslaughter,
+                                    int CorrectiveActionId = correctiveActionInsert(AuditorId, CollectionLevel2Id.ToString(), slaugthersignature, techinicalsignature, datetimeslaughter,
                                                                                    datetimetechinical, datecorrectiveaction, auditstarttime, descriptionFailure, immediateCorrectiveAction,
                                                                                    productDisposition, preventativeMeasure);
 
@@ -616,6 +647,8 @@ namespace SgqSystem.Services
                                         return "error";
                                     }
                                 }
+                                //Caso todos os itens estejam salbos atualiza arquivo json
+                                //Colocar Transação e verificar impacto
                                 int jsonUpdate = updateJson(Id);
                                 if (jsonUpdate == 0)
                                 {
@@ -644,6 +677,11 @@ namespace SgqSystem.Services
 
             }
         }
+        /// <summary>
+        /// Atualiza Json após ser processado
+        /// </summary>
+        /// <param name="JsonId"></param>
+        /// <returns></returns>
         public int updateJson(string JsonId)
         {
             string sql = "UPDATE CollectionJson SET IsProcessed=1 WHERE ID='" + JsonId + "'";
@@ -679,6 +717,13 @@ namespace SgqSystem.Services
                 return 0;
             }
         }
+        /// <summary>
+        /// Atualiza CollectionLevel2 se tiver ação corretiva
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="correctiveAction"></param>
+        /// <param name="reaudit"></param>
+        /// <returns></returns>
         public int updateLevel02CorrectiveActionReaudit(string id, string correctiveAction, string reaudit)
         {
             string sql = "UPDATE CollectionLevel02 SET HaveCorrectiveAction='" + correctiveAction + "', HaveReaudit='" + reaudit + "' WHERE ID='" + id + "'";
@@ -724,57 +769,6 @@ namespace SgqSystem.Services
         /// <param name="collectionDate">Data da Coleta que verifica a consolidação</param>
         /// <param name="departmentId">Id do Departamento</param>
         /// <returns></returns>
-        public int InsertConsoliDationLevel01(string unitId, string level01Id, string collectionDate, string departmentId = "1")
-        {
-            //Verifico se já existe consolidação para o dia informado
-            int CollectionLevel01Id = GetLevel01Consolidation(unitId, level01Id, collectionDate);
-            if (CollectionLevel01Id > 0)
-            {
-                //Se existir, retorna o Id da Consolidação
-                return CollectionLevel01Id;
-            }
-
-            //Script de Insert para consolidação
-            string sql = "INSERT ConsolidationLevel01 ([UnitId],[DepartmentId],[Level01Id],[AddDate],[AlterDate],[ConsolidationDate]) " +
-                         "VALUES " +
-                         "('" + unitId + "','" + departmentId + "','" + level01Id + "', GetDate(),null, CONVERT(DATE, '" + collectionDate + "')) " +
-                         "SELECT @@IDENTITY AS 'Identity'";
-
-
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-                        var i = Convert.ToInt32(command.ExecuteScalar());
-                        //Se o registro for inserido retorno o Id da Consolidação
-                        if (i > 0)
-                        {
-                            return i;
-                        }
-                        else
-                        {
-                            //Caso ocorra algum erro, retorno zero
-                            return 0;
-                        }
-                    }
-                }
-            }
-            //Caso ocorra alguma Exception, grava o log e retorna zero
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(level01Id, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel01");
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(level01Id, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel01");
-                return 0;
-            }
-        }
         public int InsertConsolidationLevel1(string unitId, string level01Id, string collectionDate, string departmentId = "1")
         {
             //Verifico se já existe consolidação para o dia informado
@@ -786,7 +780,7 @@ namespace SgqSystem.Services
             }
 
             //Script de Insert para consolidação
-            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel_Id],[AddDate],[AlterDate],[ConsolidationDate]) " +
+            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate]) " +
                          "VALUES " +
                          "('" + unitId + "','" + departmentId + "','" + level01Id + "', GetDate(),null, CONVERT(DATE, '" + collectionDate + "')) " +
                          "SELECT @@IDENTITY AS 'Identity'";
@@ -817,12 +811,12 @@ namespace SgqSystem.Services
             //Caso ocorra alguma Exception, grava o log e retorna zero
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(level01Id, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel01");
+                int insertLog = insertLogJson(level01Id, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel1");
                 return 0;
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(level01Id, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel01");
+                int insertLog = insertLogJson(level01Id, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel1");
                 return 0;
             }
         }
@@ -834,46 +828,6 @@ namespace SgqSystem.Services
         /// <param name="level01Id">Id do Level01</param>
         /// <param name="collectionDate">Data da Consolidação</param>
         /// <returns></returns>
-        public int GetLevel01Consolidation(string unitId, string level01Id, string collectionDate)
-        {
-            //Converte a data no padrão de busca do Banco de Dados
-            collectionDate = Convert.ToDateTime(collectionDate).ToString("yyyy-MM-dd");
-
-            string sql = "SELECT Id FROM ConsolidationLevel01 WHERE UnitId = '" + unitId + "' AND Level01Id= '" + level01Id + "' AND CONVERT(date, ConsolidationDate) = '" + collectionDate + "'";
-
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-                        using (SqlDataReader r = command.ExecuteReader())
-                        {
-                            //Se encontrar, retorna o Id da Consolidação
-                            if (r.Read())
-                            {
-                                return Convert.ToInt32(r[0]);
-                            }
-                            //Se não encontrar, retorna zero
-                            return 0;
-                        }
-                    }
-                }
-            }
-            //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel01Consolidation");
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel01Consolidation");
-                return 0;
-            }
-        }
         public int GetLevel1Consolidation(string unitId, string level01Id, string collectionDate)
         {
             //Converte a data no padrão de busca do Banco de Dados
@@ -905,12 +859,12 @@ namespace SgqSystem.Services
             //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel01Consolidation");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
                 return 0;
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel01Consolidation");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
                 return 0;
             }
         }
@@ -925,56 +879,6 @@ namespace SgqSystem.Services
         /// <param name="unitId">Id da Unidade</param>
         /// <param name="collectionDate">Data da Consolidação</param>
         /// <returns></returns>
-        public int InsertConsoliDationLevel02(string Level01ConsolidationId, string Level02Id, string unitId, string collectionDate)
-        {
-            //Verifica se já existe uma consolidação para o level02
-            int CollectionLevel02Id = GetLevel02Consolidation(Level01ConsolidationId, Level02Id);
-            if (CollectionLevel02Id > 0)
-            {
-                //Se existir consolidação retorna o ID
-                return CollectionLevel02Id;
-            }
-
-            //Gera o Script de Insert no Banco
-            string sql = "INSERT ConsolidationLevel02 ([Level01ConsolidationId], [Level02Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate]) " +
-                         "VALUES  " +
-                         "('" + Level01ConsolidationId + "', '" + Level02Id + "', '" + unitId + "', GETDATE(), NULL, CAST(N'" + collectionDate + "' AS DateTime)) " +
-                         "SELECT @@IDENTITY AS 'Identity'";
-
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-                        var i = Convert.ToInt32(command.ExecuteScalar());
-                        //Se inserir corretamente, retorno o Id da Consolidação
-                        if (i > 0)
-                        {
-                            return i;
-                        }
-                        else
-                        {
-                            //Caso não ocorra a inserção, retorno zero
-                            return 0;
-                        }
-                    }
-                }
-            }
-            //Caso ocorra qualquer Exception, insere no log e retorna zero
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel02");
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel02");
-                return 0;
-            }
-        }
         public int InsertConsolidationLevel2(string Level01ConsolidationId, string Level02Id, string unitId, string collectionDate)
         {
             //Verifica se já existe uma consolidação para o level02
@@ -1016,49 +920,21 @@ namespace SgqSystem.Services
             //Caso ocorra qualquer Exception, insere no log e retorna zero
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel02");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel2");
                 return 0;
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel02");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertConsoliDationLevel2");
                 return 0;
             }
         }
-
-        public int GetLevel02Consolidation(string Level01ConsolidationId, string Level02Id)
-        {
-            string sql = "SELECT Id FROM ConsolidationLevel02 WHERE Level01ConsolidationId = '" + Level01ConsolidationId + "' AND Level02Id= '" + Level02Id + "'";
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-                        using (SqlDataReader r = command.ExecuteReader())
-                        {
-                            if (r.Read())
-                            {
-                                return Convert.ToInt32(r[0]);
-                            }
-                            return 0;
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel02Consolidation");
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel02Consolidation");
-                return 0;
-            }
-        }
+        /// <summary>
+        /// Retorna Id da Consolidação do Level2
+        /// </summary>
+        /// <param name="Level01ConsolidationId"></param>
+        /// <param name="Level02Id"></param>
+        /// <returns></returns>
         public int GetLevel2Consolidation(string Level01ConsolidationId, string Level02Id)
         {
             string sql = "SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = '" + Level01ConsolidationId + "' AND ParLevel2_Id= '" + Level02Id + "'";
@@ -1083,18 +959,17 @@ namespace SgqSystem.Services
             }
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel02Consolidation");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel2Consolidation");
                 return 0;
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel02Consolidation");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel2Consolidation");
                 return 0;
             }
         }
 
         #endregion
-
         #region Collection Level02
         /// <summary>
         /// Metodo que grava a coleta
@@ -1127,87 +1002,8 @@ namespace SgqSystem.Services
         /// <param name="Completed">Se o level01 está completo(todos os level02 dentro do level01 estão completos)</param>
         /// <param name="id">Id da Coleta</param>
         /// <returns></returns>
-        public int InsertCollectionLevel02(string ConsolidationLevel02Id, string Level01Id, string Level02Id, string UnitId, string AuditorId, string Shift, string Period, string Phase, string Reaudit, string ReauditNumber, string CollectionDate,
-                                           string StartPhase, string Evaluation, string Sample, string CatteType, string ChainSpeed, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string LotNumber, string MudScore,
-                                           string NotEvaluateIs, string Duplicated, string haveReaudit, string haveCorrectiveAction, string HavePhase, string Completed, string id)
-        {
-
-            //Verificamos a data da phase
-            ///Estava danto erro na conversão de DateMin value então deixei a conversão por string mesmo
-            if (string.IsNullOrEmpty(StartPhase) || StartPhase == "null" || StartPhase == "undefined")
-            {
-                StartPhase = "'0001-01-01 00:00:00'";
-            }
-            else
-            {
-                DateTime dataPhase = DateCollectConvert(StartPhase);
-
-                StartPhase = "CAST(N'" + dataPhase.ToString("yyyy-MM-dd 00:00:00") + "' AS DateTime)";
-            }
-
-            //Converte a data da coleta
-            string collectionDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            string sql = null;
-
-            //Se o Id for igual a zero é um insert
-            if (id == "0")
-            {
-                sql = "INSERT INTO CollectionLevel02 ([ConsolidationLevel02Id],[Level01Id],[Level02Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[CattleTypeId],[Chainspeed],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[LotNumber],[Mudscore],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed]) " +
-                "VALUES" +
-                "('" + ConsolidationLevel02Id + "','" + Level01Id + "','" + Level02Id + "','" + UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + Reaudit + "','" + ReauditNumber + "', CAST(N'" + CollectionDate + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + CatteType + "','" + ChainSpeed + "','" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + LotNumber + "','" + MudScore + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "')";
-
-                sql += " SELECT @@IDENTITY AS 'Identity'";
-
-            }
-            else
-            {
-                ///podemos melhorar a verificação para Id zero, id null e id not null
-                //Caso contrário  é u Update
-                sql = "UPDATE CollectionLevel02 SET NotEvaluatedIs='" + NotEvaluateIs + "' WHERE Id='" + id + "'";
-
-                sql += " SELECT '" + id + "' AS 'Identity'";
-
-            }
-
-
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-                        var i = Convert.ToInt32(command.ExecuteScalar());
-                        //Se o script for executado corretamente retorna o Id
-                        if (i > 0)
-                        {
-                            return i;
-                        }
-                        else
-                        {
-                            //Se o script não for executado corretamente, retorna zero
-                            return 0;
-                        }
-
-                    }
-                }
-            }
-            //Caso ocorra alguma exception, grava no log e retorna zero
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel02");
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel02");
-                return 0;
-            }
-        }
-
         public int InsertCollectionLevel2(string ConsolidationLevel02Id, string Level01Id, string Level02Id, string UnitId, string AuditorId, string Shift, string Period, string Phase, string Reaudit, string ReauditNumber, string CollectionDate,
-                                           string StartPhase, string Evaluation, string Sample,  string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs, 
+                                           string StartPhase, string Evaluation, string Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
                                            string Duplicated, string haveReaudit, string haveCorrectiveAction, string HavePhase, string Completed, string id)
         {
 
@@ -1274,12 +1070,12 @@ namespace SgqSystem.Services
             //Caso ocorra alguma exception, grava no log e retorna zero
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel02");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2");
                 return 0;
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel02");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2");
                 return 0;
             }
         }
@@ -1296,93 +1092,6 @@ namespace SgqSystem.Services
         /// <param name="auditorId">Id do Auditor</param>
         /// <param name="duplicated">Duplicado</param>
         /// <returns></returns>
-        public int InsertCollectionLevel03(string CollectionLevel02Id, string level02, string level03Results, string auditorId, string duplicated)
-        {
-            ///coloquei uma @ para replace, mas podemos utilizar o padrão de ; ou <> desde que todos os campos venha do script com escape()
-            //string obj, string collectionDate, string level01id, string unit, string period, string shift, string device, string version
-
-            //Prepara a string para ser convertida em Array
-            level03Results = level03Results.Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", "");
-            //Gera o Array
-            string[] arrayResults = level03Results.Split('@');
-            //"trocar o virgula do value text";
-
-            string sql = null;
-            //Percorre o Array para gerar os inserts
-            for (int i = 0; i < arrayResults.Length; i++)
-            {
-                //Gera o array com o resultado
-                var result = arrayResults[i].Split(',');
-
-                //Instancia as variáveis para preencher o script
-                string Level03Id = result[0];
-                string value = result[2];
-                value = DefaultValueReturn(value, "0");
-
-                string conform = result[3];
-                string valueText = result[6];
-                if (string.IsNullOrEmpty(valueText))
-                {
-                    valueText = "undefined";
-                }
-                string id = result[7];
-                id = DefaultValueReturn(id, "0");
-
-                //Se o Id for zeros
-                if (id == "0")
-                {
-                    //Gera Script de Insert
-                    sql += "INSERT INTO CollectionLevel03 ([CollectionLevel02Id],[Level03Id],[AddDate],[AlterDate],[ConformedIs],[Value],[ValueText],[Duplicated]) " +
-                            "VALUES " +
-                            "('" + CollectionLevel02Id + "','" + Level03Id + "',GETDATE(),NULL,'" + conform + "','" + value + "','" + valueText + "','" + duplicated + "') ";
-
-                    sql += "SELECT @@IDENTITY AS 'Identity'";
-                }
-                else
-                {
-                    //Gera Script de Update
-                    sql += "UPDATE CollectionLevel03 SET ConformedIs='" + conform + "', Value='" + value + "', ValueText='" + valueText + "' WHERE id='" + id + "'";
-                    sql += "SELECT '" + id + "' AS 'Identity'";
-                }
-
-
-            }
-
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-                        var i = Convert.ToInt32(command.ExecuteScalar());
-                        //Se o script foi executado, retorna o Id
-                        if (i > 0)
-                        {
-                            return i;
-                        }
-                        else
-                        {
-                            //Caso ocorra algum erro, retorna zero
-                            return 0;
-                        }
-
-                    }
-                }
-            }
-            //Caso ocorra Exception, insere no banco e retorna zero
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel03");
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel03");
-                return 0;
-            }
-        }
         public int InsertCollectionLevel3(string CollectionLevel02Id, string level02, string level03Results, string auditorId, string duplicated)
         {
             ///coloquei uma @ para replace, mas podemos utilizar o padrão de ; ou <> desde que todos os campos venha do script com escape()
@@ -1407,6 +1116,8 @@ namespace SgqSystem.Services
                 value = DefaultValueReturn(value, "0");
 
                 string conform = result[3];
+                conform = BoolConverter(conform);
+
                 string valueText = result[6];
                 if (string.IsNullOrEmpty(valueText))
                 {
@@ -1414,45 +1125,39 @@ namespace SgqSystem.Services
                 }
                 string id = result[7];
 
-                string name = null;
+                string weight = result[8];
+                weight = DefaultValueReturn(weight, "1");
 
-                string weight = null;
-                string intervalMin = null;
-                string intervalMax = null;
-                string isnotEvaluate = null;
+                string name = result[9];
+
+                string intervalMin = result[10];
+                intervalMin = DefaultValueReturn(intervalMin, "0");
+
+                string intervalMax = result[11];
+                intervalMax = DefaultValueReturn(intervalMax, "0");
+
+                string isnotEvaluate = result[12];
+                isnotEvaluate = DefaultValueReturn(isnotEvaluate, "0");
+
+                isnotEvaluate = BoolConverter(isnotEvaluate);
 
                 id = DefaultValueReturn(id, "0");
 
-
-                if(id == "0")
+                if (id == "0")
                 {
-                    sql += "INSERT INTO Result_ParLevel3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate]) " +
+                    sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate]) " +
                            "VALUES " +
-                           "('" + CollectionLevel02Id + "','" + Level03Id + "','" + name + "','" + weight + "','" + intervalMin + "','" + intervalMax + "', '" + value + "','" + valueText + "','" + conform + "','" + isnotEvaluate + "')";
+                           "('" + CollectionLevel02Id + "','" + Level03Id + "', (SELECT Name FROM ParLevel3 WHERE Id='" + Level03Id + "'),'" + weight + "','" + intervalMin + "','" + intervalMax + "', '" + value + "','" + valueText + "','" + conform + "','" + isnotEvaluate + "') ";
+
+                    sql += " SELECT @@IDENTITY AS 'Identity'";
+
                 }
                 else
                 {
-                    sql += "UPDATE Result_ParLevel3 SET IsConform='" + conform + "', IsNotEvaluate='" + isnotEvaluate + "', Value='" + value + "', ValueText='" + valueText + "' WHERE Id='" + id + "'";
+                    sql += "UPDATE Result_Level3 SET IsConform='" + conform + "', IsNotEvaluate='" + isnotEvaluate + "', Value='" + value + "', ValueText='" + valueText + "' WHERE Id='" + id + "' ";
+                    sql += " SELECT '" + id + "' AS 'Identity'";
+
                 }
-
-
-                ////Se o Id for zeros
-                //if (id == "0")
-                //{
-                //    //Gera Script de Insert
-                //    sql += "INSERT INTO CollectionLevel03 ([CollectionLevel02Id],[Level03Id],[AddDate],[AlterDate],[ConformedIs],[Value],[ValueText],[Duplicated]) " +
-                //            "VALUES " +
-                //            "('" + CollectionLevel02Id + "','" + Level03Id + "',GETDATE(),NULL,'" + conform + "','" + value + "','" + valueText + "','" + duplicated + "') ";
-
-                //    sql += "SELECT @@IDENTITY AS 'Identity'";
-                //}
-                //else
-                //{
-                //    //Gera Script de Update
-                //    sql += "UPDATE CollectionLevel03 SET ConformedIs='" + conform + "', Value='" + value + "', ValueText='" + valueText + "' WHERE id='" + id + "'";
-                //    sql += "SELECT '" + id + "' AS 'Identity'";
-                //}
-
 
             }
 
@@ -1491,7 +1196,6 @@ namespace SgqSystem.Services
                 return 0;
             }
         }
-
 
         #endregion
         #region Corrective Action
@@ -1606,7 +1310,7 @@ namespace SgqSystem.Services
                 return null;
             }
         }
-
+        
         [WebMethod]
         public string reciveLastData(string unidadeId)
         {
@@ -1621,7 +1325,8 @@ namespace SgqSystem.Services
         [WebMethod]
         public string reciveData(string unidadeId)
         {
-            return GetConsolidationLevel01(unidadeId);
+            string data = GetConsolidationLevel01(unidadeId);
+            return data;
         }
         /// <summary>
         /// Metodo que verifica as consolidações necessárias
@@ -1629,167 +1334,235 @@ namespace SgqSystem.Services
         /// <param name="unidadeId">Id da Unidade</param>
         /// <param name="lastDate">Se False, traz o resultado do dia atual somente, se True, traz o ultimo resultado sem o dia atual</param>
         /// <returns></returns>
-        public string GetConsolidationLevel01(string unidadeId, bool lastDate = false)
+        //public string GetConsolidationLevel01(string unidadeId, bool lastDate = false)
+        //{
+
+        //    string atualCollectionDate = DateTime.Now.ToString("yyyyMMdd");
+        //    string collectionDate = atualCollectionDate;
+
+        //    if (lastDate == true)
+        //    {
+        //        collectionDate = GetMaxDateCollection(DateTime.Now);
+        //        atualCollectionDate = collectionDate;
+        //    }
+
+        //    string sql = "SELECT Id, ParLevel1_Id, ConsolidationDate FROM ConsolidationLevel1 WHERE ConsolidationDate BETWEEN '" + collectionDate + " 00:00:00' AND '" + atualCollectionDate + " 23:59:59' GROUP BY Id, ParLevel1_Id, ConsolidationDate";
+
+        //    string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //    try
+        //    {
+        //        using (SqlConnection connection = new SqlConnection(conexao))
+        //        {
+        //            using (SqlCommand command = new SqlCommand(sql, connection))
+        //            {
+        //                connection.Open();
+        //                using (SqlDataReader r = command.ExecuteReader())
+        //                {
+        //                    //Lista de Level01
+        //                    string Results = null;
+
+        //                    while (r.Read())
+        //                    {
+        //                        Results += GetColletionlevel2()
+        //                    }
+        //                    return Results;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (SqlException ex)
+        //    {
+        //        int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetConsolidationLevel01");
+        //        //return null;
+        //        return "error";
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetConsolidationLevel01");
+        //        //return null;
+        //        return "error";
+        //    }
+        //}
+
+        public string GetConsolidationLevel01(string UnidadeId, bool lastDate = false)
         {
+            var Level2ResultDB = new SGQDBContext.Level2Result();
 
-            string atualCollectionDate = DateTime.Now.ToString("yyyyMMdd");
-            string collectionDate = atualCollectionDate;
+            var Level2ResultList = Level2ResultDB.getList(UnidadeId: UnidadeId);
 
-            if (lastDate == true)
+            string Results = null;
+            foreach (var Level2Result in Level2ResultList)
             {
-                collectionDate = GetMaxDateCollection(DateTime.Now);
-                atualCollectionDate = collectionDate;
+                Results += "<div class=\"Resultlevel2\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\"></div>";
             }
 
-            string sql = "SELECT Id, Level01Id, ConsolidationDate FROM ConsolidationLevel01 WHERE ConsolidationDate BETWEEN '" + collectionDate + " 00:00:00' AND '" + atualCollectionDate + " 23:59:59' GROUP BY Id, Level01Id, ConsolidationDate";
+            return Results;
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-                        using (SqlDataReader r = command.ExecuteReader())
-                        {
-                            //Lista de Level01
-                            string level01Results = null;
 
-                            while (r.Read())
-                            {
-                                //Instancia variáveis de verificação 
-                                bool completed = false;
-                                bool havephases = false;
-                                bool havereaudit = false;
-                                bool havecorrectiveaction = false;
-
-                                string Id = r[0].ToString();
-                                string Level01Id = r[1].ToString();
-                                DateTime ConsolidationDate = Convert.ToDateTime(r[2]);
-
-                                string datetime = null;
-                                string shift = null;
-                                string period = null;
-                                string reaudit = null;
-                                string reauditNumber = null;
-
-                                string lastevaluate = null;
-                                int lastsample = 0;
-
-                                int evaluate = 0;
-                                int sample = 0;
-                                var Level02ResultList = new List<Level02Result>();
-
-                                GetConsolidationLevel02(Id, Level01Id, unidadeId, ref Level02ResultList);
-
-                                var periods = (from p in Level02ResultList
-                                               group p by p.period into g
-                                               select new { period = g.Key }).ToList();
-
-                                foreach (var p in periods)
-                                {
-                                    string Level01ResultByPeruid = null;
-                                    var Level02ResultByPeriod = Level02ResultList.Where(pe => pe.period == p.period).GroupBy(s => s.reaudit).ToList();
-
-                                    foreach (var l2p in Level02ResultByPeriod)
-                                    {
-                                        string level02Results = null;
-                                        int More3Errors = 0;
-                                        int SideWithErrors = 0;
-                                        int baisedUnbaised = 0;
-                                        string biasedunbiasedtag = null;
-
-                                        string haveReauditTag = null;
-                                        string haveCorrectiveActionTag = null;
-                                        string completedSampleTag = null;
-                                        string completedTag = null;
-                                        //Valor Mockado deve ser alterado pela configuração do ParLevel02
-                                        int totalEvaluate = 1;
-                                        int totalSample = 1;
-
-                                        if (Level01Id == "3")
-                                        {
-                                            totalEvaluate = 5;
-                                            totalSample = 10;
-                                        }
-
-                                        foreach (var rs in l2p)
-                                        {
-                                            evaluate = rs.evaluate;
-                                            totalEvaluate = evaluate;
-
-                                            sample = rs.sample;
-                                            lastsample = rs.sample;
-
-                                            completed = rs.completed;
-                                            shift = rs.shift.ToString();
-
-                                            havephases = rs.havePhases;
-                                            havereaudit = rs.haveReaudit;
-                                            havecorrectiveaction = rs.haveCorrectiveAction;
-                                            if (completed == true && havereaudit == true)
-                                            {
-                                                haveReauditTag = " havereaudit=\"havereaudit\"";
-                                            }
-                                            if (completed == true && havecorrectiveaction == true)
-                                            {
-                                                haveCorrectiveActionTag = " havecorrectiveaction=\"havecorrectiveaction\"";
-                                            }
-                                            if (totalEvaluate > 1 && totalSample == sample)
-                                            {
-                                                completedSampleTag = " completedsample=\"completedsample\"";
-                                            }
-                                            if (completed == true && evaluate == totalEvaluate && sample == totalSample)
-                                            {
-                                                completedTag = " completed=\"completed\"";
-                                            }
-                                            datetime = collectionDate;
-                                            lastevaluate = rs.evaluate.ToString();
-                                            reaudit = rs.reaudit.ToString().ToLower();
-                                            reauditNumber = rs.reauditNumber.ToString();
-                                            level02Results += rs.result;
-                                            baisedUnbaised = rs.baisedUnbaised;
-                                            //alterar para verificar por parametro
-                                            if (rs.defects > 0 && Level01Id == "3")
-                                            {
-                                                SideWithErrors++;
-                                                if (rs.defects >= 3)
-                                                {
-                                                    More3Errors++;
-                                                }
-                                            }
-                                        }
-                                        if (baisedUnbaised > 0)
-                                        {
-                                            biasedunbiasedtag = " biasedunbiased=\"" + baisedUnbaised + "\"";
-                                        }
-                                        Level01ResultByPeruid += "<div class=\"level01Result\" level01id=\"" + Level01Id + "\" unidadeid=\"" + unidadeId + "\" date=\"" + ConsolidationDate.ToString("MMddyyyy") + "\" datetime=\"" + ConsolidationDate.ToString("MM/dd/yyyy HH:mm:ss") + "\" shift=\"" + shift + "\" period=\"" + p.period + "\" reaudit=\"" + reaudit + "\" reauditnumber=\"" + reauditNumber + "\" totalevaluate=\"" + totalEvaluate + "\" sidewitherros=\"" + SideWithErrors + "\" more3defects=\"" + More3Errors + "\" lastevaluate=\"" + lastevaluate + "\" lastsample=\"" + lastsample + "\" evaluate=\"" + evaluate + "\" sync=\"true\"" + haveCorrectiveActionTag + haveReauditTag + completedSampleTag + biasedunbiasedtag + completedTag + ">" +
-                                                                 level02Results +
-                                                                 "</div>";
-                                    }
-                                    level01Results += Level01ResultByPeruid;
-                                }
-                            }
-                            return level01Results;
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetConsolidationLevel01");
-                //return null;
-                return "error";
-
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetConsolidationLevel01");
-                //return null;
-                return "error";
-            }
         }
+        //public string GetConsolidationLevel01(string unidadeId, bool lastDate = false)
+        //{
+
+        //    string atualCollectionDate = DateTime.Now.ToString("yyyyMMdd");
+        //    string collectionDate = atualCollectionDate;
+
+        //    if (lastDate == true)
+        //    {
+        //        collectionDate = GetMaxDateCollection(DateTime.Now);
+        //        atualCollectionDate = collectionDate;
+        //    }
+
+        //    string sql = "SELECT Id, ParLevel1_Id, ConsolidationDate FROM ConsolidationLevel1 WHERE ConsolidationDate BETWEEN '" + collectionDate + " 00:00:00' AND '" + atualCollectionDate + " 23:59:59' GROUP BY Id, ParLevel1_Id, ConsolidationDate";
+
+        //    string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //    try
+        //    {
+        //        using (SqlConnection connection = new SqlConnection(conexao))
+        //        {
+        //            using (SqlCommand command = new SqlCommand(sql, connection))
+        //            {
+        //                connection.Open();
+        //                using (SqlDataReader r = command.ExecuteReader())
+        //                {
+        //                    //Lista de Level01
+        //                    string level01Results = null;
+
+        //                    while (r.Read())
+        //                    {
+        //                        //Instancia variáveis de verificação 
+        //                        bool completed = false;
+        //                        bool havephases = false;
+        //                        bool havereaudit = false;
+        //                        bool havecorrectiveaction = false;
+
+        //                        string Id = r[0].ToString();
+        //                        string Level01Id = r[1].ToString();
+        //                        DateTime ConsolidationDate = Convert.ToDateTime(r[2]);
+
+        //                        string datetime = null;
+        //                        string shift = null;
+        //                        string period = null;
+        //                        string reaudit = null;
+        //                        string reauditNumber = null;
+
+        //                        string lastevaluate = null;
+        //                        int lastsample = 0;
+
+        //                        int evaluate = 0;
+        //                        int sample = 0;
+        //                        var Level02ResultList = new List<Level02Result>();
+
+        //                        GetConsolidationLevel02(Id, Level01Id, unidadeId, ref Level02ResultList);
+
+        //                        var periods = (from p in Level02ResultList
+        //                                       group p by p.period into g
+        //                                       select new { period = g.Key }).ToList();
+
+        //                        foreach (var p in periods)
+        //                        {
+        //                            string Level01ResultByPeruid = null;
+        //                            var Level02ResultByPeriod = Level02ResultList.Where(pe => pe.period == p.period).GroupBy(s => s.reaudit).ToList();
+
+        //                            foreach (var l2p in Level02ResultByPeriod)
+        //                            {
+        //                                string level02Results = null;
+        //                                int More3Errors = 0;
+        //                                int SideWithErrors = 0;
+        //                                int baisedUnbaised = 0;
+        //                                string biasedunbiasedtag = null;
+
+        //                                string haveReauditTag = null;
+        //                                string haveCorrectiveActionTag = null;
+        //                                string completedSampleTag = null;
+        //                                string completedTag = null;
+        //                                //Valor Mockado deve ser alterado pela configuração do ParLevel02
+        //                                int totalEvaluate = 1;
+        //                                int totalSample = 1;
+
+        //                                if (Level01Id == "3")
+        //                                {
+        //                                    totalEvaluate = 5;
+        //                                    totalSample = 10;
+        //                                }
+
+        //                                foreach (var rs in l2p)
+        //                                {
+        //                                    evaluate = rs.evaluate;
+        //                                    totalEvaluate = evaluate;
+
+        //                                    sample = rs.sample;
+        //                                    lastsample = rs.sample;
+
+        //                                    completed = rs.completed;
+        //                                    shift = rs.shift.ToString();
+
+        //                                    havephases = rs.havePhases;
+        //                                    havereaudit = rs.haveReaudit;
+        //                                    havecorrectiveaction = rs.haveCorrectiveAction;
+        //                                    if (completed == true && havereaudit == true)
+        //                                    {
+        //                                        haveReauditTag = " havereaudit=\"havereaudit\"";
+        //                                    }
+        //                                    if (completed == true && havecorrectiveaction == true)
+        //                                    {
+        //                                        haveCorrectiveActionTag = " havecorrectiveaction=\"havecorrectiveaction\"";
+        //                                    }
+        //                                    if (totalEvaluate > 1 && totalSample == sample)
+        //                                    {
+        //                                        completedSampleTag = " completedsample=\"completedsample\"";
+        //                                    }
+        //                                    if (completed == true && evaluate == totalEvaluate && sample == totalSample)
+        //                                    {
+        //                                        completedTag = " completed=\"completed\"";
+        //                                    }
+        //                                    datetime = collectionDate;
+        //                                    lastevaluate = rs.evaluate.ToString();
+        //                                    reaudit = rs.reaudit.ToString().ToLower();
+        //                                    reauditNumber = rs.reauditNumber.ToString();
+        //                                    level02Results += rs.result;
+        //                                    //alterar para verificar por parametro
+        //                                    if (rs.defects > 0 && Level01Id == "3")
+        //                                    {
+        //                                        SideWithErrors++;
+        //                                        if (rs.defects >= 3)
+        //                                        {
+        //                                            More3Errors++;
+        //                                        }
+        //                                    }
+        //                                }
+        //                                if (baisedUnbaised > 0)
+        //                                {
+        //                                    biasedunbiasedtag = " biasedunbiased=\"" + baisedUnbaised + "\"";
+        //                                }
+        //                                Level01ResultByPeruid += "<div class=\"level01Result\" level01id=\"" + Level01Id + "\" unidadeid=\"" + unidadeId + "\" date=\"" + ConsolidationDate.ToString("MMddyyyy") + "\" datetime=\"" + ConsolidationDate.ToString("MM/dd/yyyy HH:mm:ss") + "\" shift=\"" + shift + "\" period=\"" + p.period + "\" reaudit=\"" + reaudit + "\" reauditnumber=\"" + reauditNumber + "\" totalevaluate=\"" + totalEvaluate + "\" sidewitherros=\"" + SideWithErrors + "\" more3defects=\"" + More3Errors + "\" lastevaluate=\"" + lastevaluate + "\" lastsample=\"" + lastsample + "\" evaluate=\"" + evaluate + "\" sync=\"true\"" + haveCorrectiveActionTag + haveReauditTag + completedSampleTag + biasedunbiasedtag + completedTag + ">" +
+        //                                                         level02Results +
+        //                                                         "</div>";
+        //                            }
+        //                            level01Results += Level01ResultByPeruid;
+        //                        }
+        //                    }
+        //                    return level01Results;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (SqlException ex)
+        //    {
+        //        int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetConsolidationLevel01");
+        //        //return null;
+        //        return "error";
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetConsolidationLevel01");
+        //        //return null;
+        //        return "error";
+        //    }
+        //}
+
+
         public string getMaxEvaluate(string CollectionLevel02Ids, string Level02Ids)
         {
             string sql = "SELECT MAX([EvaluationNumber]) FROM CollectionLevel02 WHERE ConsolidationLevel02id IN (" + CollectionLevel02Ids + ") AND Level02id IN (" + Level02Ids + ")";
@@ -1826,187 +1599,150 @@ namespace SgqSystem.Services
             }
         }
 
-        public string GetConsolidationLevel02(string ConsolidationLevel01ID, string Level01Id, string unidadeId, ref List<Level02Result> Level02ResultList)
-        {
+        //public string GetColletionlevel2(string ConsolidationLevel02Ids, string Level01Id, string Level02Ids, string UnidadeId)
+        //{
+        //    if (string.IsNullOrEmpty(ConsolidationLevel02Ids) || string.IsNullOrEmpty(Level02Ids))
+        //    {
+        //        return null;
+        //    }
 
-            string sql = "SELECT [Id], [Level02Id] FROM ConsolidationLevel02 WHERE Level01ConsolidationId='" + ConsolidationLevel01ID + "' AND UnitId='" + unidadeId + "'";
+        //    var Level2ResultDB = new SGQDBContext.Level2Result();
 
-
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-                        string ConsolidationLevel02Ids = null;
-                        string level02Ids = null;
-                        using (SqlDataReader r = command.ExecuteReader())
-                        {
-                            while (r.Read())
-                            {
-                                string Id = r[0].ToString();
-                                string Level02Id = r[1].ToString();
-
-                                if (string.IsNullOrEmpty(ConsolidationLevel02Ids))
-                                {
-                                    ConsolidationLevel02Ids = Id;
-                                }
-                                else
-                                {
-                                    ConsolidationLevel02Ids += "," + Id;
-                                }
-
-                                if (string.IsNullOrEmpty(level02Ids))
-                                {
-                                    level02Ids = Level02Id;
-                                }
-                                else
-                                {
-                                    level02Ids += "," + Level02Id;
-
-                                }
-
-                            }
-                            GetCollectionLevel02(ConsolidationLevel02Ids, Level01Id, level02Ids, unidadeId, ref Level02ResultList);
-                            return null;
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetConsolidationLevel02");
-                return null;
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetConsolidationLevel02");
-                return null;
-            }
-        }
-
-        public string GetCollectionLevel02(string ConsolidationLevel02Ids, string Level01Id, string Level02Ids, string UnidadeId, ref List<Level02Result> Level02ResultList)
-        {
-            if (string.IsNullOrEmpty(ConsolidationLevel02Ids) || string.IsNullOrEmpty(Level02Ids))
-            {
-                return null;
-            }
-            //string maxEvaluate = getMaxEvaluate(ConsolidationLevel02Ids, Level02Ids);
-            //maxEvaluate = " AND EvaluationNumber = '" + maxEvaluate + "'";
-            string maxEvaluate = null;
-            string sql = "SELECT [Id], [Level02id], [AuditorId], [Shift], [Period], [Phase], [ReauditIs], [ReauditNumber], [CollectionDate], [StartPhaseDate], [EvaluationNumber], [Sample], [CattleTypeId], [Chainspeed], [LotNumber], [Mudscore], [NotEvaluatedIs], [HaveCorrectiveAction], [HaveReaudit], [HavePhase], [Completed] FROM CollectionLevel02 WHERE ConsolidationLevel02Id IN (" + ConsolidationLevel02Ids + ") AND Level01Id='" + Level01Id + "' AND Level02Id IN (" + Level02Ids + ") " + maxEvaluate + " AND UnitId='" + UnidadeId + "' AND Duplicated=0";
-
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-                        using (SqlDataReader r = command.ExecuteReader())
-                        {
-                            int i = 0;
-                            while (r.Read())
-                            {
-                                string Id = r[0].ToString();
-                                string level02id = r[1].ToString();
-
-                                string AuditorId = r[2].ToString();
-                                int shift = Convert.ToInt32(r[3]);
-                                int period = Convert.ToInt32(r[4]);
-                                int phase = Convert.ToInt32(r[5]);
-                                bool reauditIs = Convert.ToBoolean(r[6]);
-                                int reauditnumber = Convert.ToInt32(r[7]);
-
-                                DateTime CollectionDate = Convert.ToDateTime(r[8]);
-                                string date = CollectionDate.ToString("MMddyyyy");
-
-                                string startphasedate = r[9].ToString();
-                                int evaluate = Convert.ToInt32(r[10]);
-                                int sample = Convert.ToInt32(r[11]);
-
-                                //Estão como int mas tem que abstratir para uma funcao verifica através do banco de dados o tipo que tem que mostrar
-                                int cattletype = Convert.ToInt32(r[12]);
-                                int baisedUnbaised = 0;
-                                if (Level01Id == "1")
-                                {
-                                    baisedUnbaised = cattletype;
-                                }
-                                int chainspeed = Convert.ToInt32(r[13]);
-                                int lotnumber = Convert.ToInt32(r[14]);
-                                int mudscore = Convert.ToInt32(r[15]);
+        //    var Level2ResultList = Level2ResultDB.getList(UnidadeId);
 
 
-                                string notavaliable = r[16].ToString();
-                                bool haveCorrectiveAction = Convert.ToBoolean(r[17]);
-                                bool haveReaudit = Convert.ToBoolean(r[18]);
-                                var havePhases = Convert.ToBoolean(r[19]);
-                                bool completed = Convert.ToBoolean(r[20]);
+        //    string Results = null;
+        //    foreach (var Level2Result in Level2ResultList)
+        //    {
+        //        Results += "<div class=\"Resultlevel2\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.Evaluate + "\" Sample=\"" + Level2Result.Sample + "\"></div>";
+        //    }
 
-                                //a date tem que ter o formato brasil e outroa paises que seram utilizado, montar o framewowrk
-                                //atualizar defects
-                                int defects = 0;
+        //    return Results;
+        //    //string maxEvaluate = getMaxEvaluate(ConsolidationLevel02Ids, Level02Ids);
+        //    //return null;
 
-                                string Level03Result = GetCollectionLevel03(Id, date, AuditorId, ref defects);
-                                string completedReauditTag = null;
-                                //Procedimento só para HTP, ideal passar para o banco de dados
-                                if (haveReaudit == false && defects > 0 && Level01Id == "1")
-                                {
-                                    completedReauditTag = " completereaudit=\"completereaudit\"";
-                                }
+        //}
 
-                                string haveReauditTag = null;
-                                if (haveReaudit == true)
-                                {
-                                    haveReauditTag = " havereaudit=\"havereaudit\"";
-                                }
-                                string haveCorrectiveActionTag = null;
-                                if (haveCorrectiveAction == true)
-                                {
-                                    haveCorrectiveActionTag = " havecorrectiveaction=\"havecorrectiveaction\"";
-                                }
 
-                                string Level02Result = "<div id=\"" + Id + "\" class=\"level02Result\" level01id=\"" + Level01Id + "\" level02id=\"" + level02id + "\" unidadeid=\"" + UnidadeId + "\" date=\"" + date + "\" datetime=\"" + CollectionDate.ToString("MM/dd/yyyy HH:mm:ss:fff") + "\" auditorid=\"" + AuditorId + "\" shift=\"" + shift + "\" period=\"" + period + "\" defects=\"" + defects + "\" reaudit=\"" + reauditIs.ToString().ToLower() + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" reauditnumber=\"" + reauditnumber + "\" phase=\"" + phase + "\" startphasedate=\"" + startphasedate + "\" cattletype=\"" + cattletype + "\" chainspeed=\"" + chainspeed + "\" lotnumber=\"" + lotnumber + "\" mudscore=\"" + mudscore + "\" consecutivefailurelevel=\"undefined\" consecutivefailuretotal=\"undefined\" notavaliable=\"" + notavaliable.ToLower() + "\" sync=\"true\"" + completedReauditTag + haveReauditTag + haveCorrectiveActionTag + ">" +
-                                                       Level03Result +
-                                                       "</div>";
+        //public string GetCollectionLevel02(string ConsolidationLevel02Ids, string Level01Id, string Level02Ids, string UnidadeId, ref List<Level02Result> Level02ResultList)
+        //{
+        //    if (string.IsNullOrEmpty(ConsolidationLevel02Ids) || string.IsNullOrEmpty(Level02Ids))
+        //    {
+        //        return null;
+        //    }
+        //    //string maxEvaluate = getMaxEvaluate(ConsolidationLevel02Ids, Level02Ids);
+        //    //maxEvaluate = " AND EvaluationNumber = '" + maxEvaluate + "'";
+        //    string maxEvaluate = null;                                                                                                                                                  
+        //    string sql = "SELECT [Id], [ParLevel2_Id], [AuditorId], [Shift], [Period], [Phase], [ReauditIs], [ReauditNumber], [CollectionDate], [StartPhaseDate], [EvaluationNumber], [Sample], [NotEvaluatedIs], [HaveCorrectiveAction], [HaveReaudit], [HavePhase], [Completed] FROM CollectionLevel2 WHERE ConsolidationLevel2_Id    IN (" + ConsolidationLevel02Ids + ") AND ParLevel1_Id='" + Level01Id + "' AND ParLevel2_Id IN (" + Level02Ids + ") " + maxEvaluate + " AND UnitId='" + UnidadeId + "' AND Duplicated=0";
 
-                                var l2Result = new Level02Result(unidadeId: UnidadeId,
-                                                                 period: period,
-                                                                 shift: shift,
-                                                                 evaluate: evaluate,
-                                                                 sample: sample,
-                                                                 result: Level02Result,
-                                                                 haveCorrectiveAction: haveCorrectiveAction,
-                                                                 haveReaudit: haveReaudit,
-                                                                 havePhases: havePhases,
-                                                                 reaudit: reauditIs,
-                                                                 reauditNumber: reauditnumber,
-                                                                 completed: completed,
-                                                                 defects: defects,
-                                                                 baisedUnbaised: baisedUnbaised);
+        //    string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //    try
+        //    {
+        //        using (SqlConnection connection = new SqlConnection(conexao))
+        //        {
+        //            using (SqlCommand command = new SqlCommand(sql, connection))
+        //            {
+        //                connection.Open();
+        //                using (SqlDataReader r = command.ExecuteReader())
+        //                {
+        //                    int i = 0;
+        //                    while (r.Read())
+        //                    {
+        //                        string Id = r[0].ToString();
+        //                        string level02id = r[1].ToString();
 
-                                Level02ResultList.Add(l2Result);
+        //                        string AuditorId = r[2].ToString();
+        //                        int shift = Convert.ToInt32(r[3]);
+        //                        int period = Convert.ToInt32(r[4]);
+        //                        int phase = Convert.ToInt32(r[5]);
+        //                        bool reauditIs = Convert.ToBoolean(r[6]);
+        //                        int reauditnumber = Convert.ToInt32(r[7]);
 
-                            }
-                            return null;
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetCollectionLevel02");
-                return null;
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetCollectionLevel02");
-                return null;
-            }
-        }
+        //                        DateTime CollectionDate = Convert.ToDateTime(r[8]);
+        //                        string date = CollectionDate.ToString("MMddyyyy");
+
+        //                        string startphasedate = r[9].ToString();
+        //                        int evaluate = Convert.ToInt32(r[10]);
+        //                        int sample = Convert.ToInt32(r[11]);
+
+        //                        //Estão como int mas tem que abstratir para uma funcao verifica através do banco de dados o tipo que tem que mostrar
+        //                        //int cattletype = Convert.ToInt32(r[12]);
+        //                        //int baisedUnbaised = 0;
+        //                        //if (Level01Id == "1")
+        //                        //{
+        //                        //    baisedUnbaised = cattletype;
+        //                        //}
+        //                        //int chainspeed = Convert.ToInt32(r[13]);
+        //                        //int lotnumber = Convert.ToInt32(r[14]);
+        //                        //int mudscore = Convert.ToInt32(r[15]);
+
+
+        //                        string notavaliable = r[12].ToString();
+        //                        bool haveCorrectiveAction = Convert.ToBoolean(r[13]);
+        //                        bool haveReaudit = Convert.ToBoolean(r[14]);
+        //                        var havePhases = Convert.ToBoolean(r[15]);
+        //                        bool completed = Convert.ToBoolean(r[16]);
+
+        //                        //a date tem que ter o formato brasil e outroa paises que seram utilizado, montar o framewowrk
+        //                        //atualizar defects
+        //                        int defects = 0;
+
+        //                        string Level03Result = GetCollectionLevel03(Id, date, AuditorId, ref defects);
+        //                        string completedReauditTag = null;
+        //                        //Procedimento só para HTP, ideal passar para o banco de dados
+        //                        if (haveReaudit == false && defects > 0 && Level01Id == "1")
+        //                        {
+        //                            completedReauditTag = " completereaudit=\"completereaudit\"";
+        //                        }
+
+        //                        string haveReauditTag = null;
+        //                        if (haveReaudit == true)
+        //                        {
+        //                            haveReauditTag = " havereaudit=\"havereaudit\"";
+        //                        }
+        //                        string haveCorrectiveActionTag = null;
+        //                        if (haveCorrectiveAction == true)
+        //                        {
+        //                            haveCorrectiveActionTag = " havecorrectiveaction=\"havecorrectiveaction\"";
+        //                        }
+
+        //                        string Level02Result = "<div id=\"" + Id + "\" class=\"level02Result\" level01id=\"" + Level01Id + "\" level02id=\"" + level02id + "\" unidadeid=\"" + UnidadeId + "\" date=\"" + date + "\" datetime=\"" + CollectionDate.ToString("MM/dd/yyyy HH:mm:ss:fff") + "\" auditorid=\"" + AuditorId + "\" shift=\"" + shift + "\" period=\"" + period + "\" defects=\"" + defects + "\" reaudit=\"" + reauditIs.ToString().ToLower() + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" reauditnumber=\"" + reauditnumber + "\" phase=\"" + phase + "\" startphasedate=\"" + startphasedate + "\"  consecutivefailurelevel=\"undefined\" consecutivefailuretotal=\"undefined\" notavaliable=\"" + notavaliable.ToLower() + "\" sync=\"true\"" + completedReauditTag + haveReauditTag + haveCorrectiveActionTag + ">" +
+        //                                               Level03Result +
+        //                                               "</div>";
+
+        //                        var l2Result = new Level02Result(unidadeId: UnidadeId,
+        //                                                         period: period,
+        //                                                         shift: shift,
+        //                                                         evaluate: evaluate,
+        //                                                         sample: sample,
+        //                                                         result: Level02Result,
+        //                                                         haveCorrectiveAction: haveCorrectiveAction,
+        //                                                         haveReaudit: haveReaudit,
+        //                                                         havePhases: havePhases,
+        //                                                         reaudit: reauditIs,
+        //                                                         reauditNumber: reauditnumber,
+        //                                                         completed: completed,
+        //                                                         defects: defects);
+
+        //                        Level02ResultList.Add(l2Result);
+
+        //                    }
+        //                    return null;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (SqlException ex)
+        //    {
+        //        int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetCollectionLevel02");
+        //        return null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetCollectionLevel02");
+        //        return null;
+        //    }
+        //}
         public string GetCollectionLevel03(string CollectionLevel02Id, string date, string auditorId, ref int defects)
         {
             string sql = "SELECT [Id], [Level03Id], [ConformedIs], [Value], [ValueText] FROM CollectionLevel03 WHERE CollectionLevel02Id = '" + CollectionLevel02Id + "'";
@@ -2067,76 +1803,123 @@ namespace SgqSystem.Services
 
         #endregion
         #region App
+        /// <summary>
+        /// Função que retorna a tela inicial do App
+        /// </summary>
+        /// <returns></returns>
         [WebMethod]
         public string getAPP()
         {
             var html = new Html();
 
+            //Tela de login
             string login = GetLoginAPP();
 
+            //Tela do APP
+            //Podemos dividir a requisição em mais arquivos, verificas as possibilidades
+            //Podemos gerar um metodo de verificação se tela realmente precisa de atualiazação
             string APPMain = getAPPMain();
 
+            //Divs de Resultados e Usuários
+            string supports = "<div class=\"Results hide\"></div>" +
+                              "<div class=\"ResultsConsolidation hide\"></div>" +
+                              "<div class=\"Users hide\"></div>";
+                
             return login +
                    APPMain +
-                   html.div(classe: "Results hide") +
-                   html.div(classe: "Users hide");
+                   supports;
         }
+        /// <summary>
+        /// Recupera ultima avaliação
+        /// </summary>
+        /// <param name="parlevel2"></param>
+        /// <param name="ParEvaluateCompany"></param>
+        /// <param name="ParEvaluatePadrao"></param>
+        /// <returns></returns>
         public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
+            //Define avaliação como 1
             int evaluate = 1;
             var evaluateConf = ParEvaluateCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
+            //Se existe avaliação da company
             if (evaluateConf != null)
             {
+                //recupera avaliação da company
                 evaluate = evaluateConf.Evaluate;
             }
             else
             {
+                //se existe avaliação padrão
                 evaluateConf = ParEvaluatePadrao.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
                 if (evaluateConf != null)
                 {
+                    //recipera avaliação padrão
                     evaluate = evaluateConf.Evaluate;
                 }
             }
+            //retorna avaliação
             return evaluate;
         }
-
+        /// <summary>
+        /// Recupera ultima amostra
+        /// </summary>
+        /// <param name="parlevel2"></param>
+        /// <param name="ParSampleCompany"></param>
+        /// <param name="ParSamplePadrao"></param>
+        /// <returns></returns>
         public int getSample(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Sample> ParSampleCompany, IEnumerable<SGQDBContext.ParLevel2Sample> ParSamplePadrao)
         {
+            //Define a sample como 1
             int sample = 1;
             var sampleConf = ParSampleCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
+            //Se existe sample da company
             if (sampleConf != null)
             {
+                //recupera  valor da sample da company
                 sample = sampleConf.Sample;
             }
             else
             {
+                //Se existe sample padrão
                 sampleConf = ParSamplePadrao.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
                 if (sampleConf != null)
                 {
+                    //recupera a sample padrão
                     sample = sampleConf.Sample;
                 }
             }
             return sample;
         }
-
+        /// <summary>
+        /// Recupera tela APP
+        /// </summary>
+        /// <returns></returns>
         public string getAPPMain()
         {
+            //Precisamos passar as unidades
+
             var html = new Html();
 
-
-
+            //BreadCrum
+            //Opções do BreadCrumb podem vir do banco de dados
             string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
 
+            //Recupera os monitoramentos e tarefas
+            string App = GetLevel01();
+
+            //Gera container
             string container = html.div(
 
                                          outerhtml: breadCrumb +
-                                                    GetLevel01()
+                                                    App
 
                                         , classe: "container");
 
+            //Button Save
             string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btnSave btnRounded btn-warning hide\"><i class=\"fa fa-save\"></i></button><!--Save-->" +
-                                "<button class=\"btn btn-lg btn-danger btnCA hide\">Corrective Action</button><!--Corrective Action-->";
+                             " <button class=\"btn btn-lg btn-danger btnCA hide\">Corrective Action</button><!--Corrective Action-->";
 
+            //Mensagem
             string message = "<div class=\"message padding20\" style=\"display:none\">                                                                                      " +
                              "   <h1 class=\"head\">Titulo</h1>                                                                                                           " +
                              "   <div class=\"body font16\">Mensagem</div>                                                                                                " +
@@ -2146,7 +1929,8 @@ namespace SgqSystem.Services
             //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                         " +
             //                       "</div>                                                                                                                                                                                                    ";
 
-            string viewModal = "<div class=\"viewModal\" style=\"display:none;\">" +
+            //Tela de visualização
+          string viewModal = "<div class=\"viewModal\" style=\"display:none;\">" +
                                "     <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\">View <a href=\"#\" class=\"pull-right close\" style=\"color: #000;text-decoration:none\">X</a></div> " +
                                "     <div class=\"body\" style=\"height:565px; overflow-y: auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                           " +
                                "</div>                                                                                                                                                                                                    ";
@@ -2159,26 +1943,22 @@ namespace SgqSystem.Services
                                         "    <div class=\"foot\"><button id=\"btnMessageNo\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> No </button></div>                   " +
                                         "</div>                                                                                                                                                         ";
 
-
-
-            //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                       " +
-            //                    "    <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\">View <a href=\"#\" class=\"pull-right close\" style=\"color:#000;text-decoration:none\">X</a></div> " +
-            //                    "    <div class=\"body\" style=\"height:565px;overflow-y:auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                            " +
-            //                    "</div>                                                                                                                                                                                                  ";
+            string overlay = "<div class=\"overlay\" style=\"display:none\"></div>";
 
             return html.div(
                             outerhtml: navBar() +
                                        rightMenu() +
-                                       html.div(classe: "overlay", style: "display:none") +
+                                       overlay +
                                        container +
                                        buttons +
                                        footer(),
                              classe: "App hide",
+                             //Nome que apareçe no main 
                              tags: "breadmainlevel=\"Indicadores\""
                            ) +
                            viewModal +
                            message +
-                           messageConfirm  ;
+                           messageConfirm;
         }
 
         public string navBar()
@@ -2225,8 +2005,13 @@ namespace SgqSystem.Services
 
             return foot;
         }
+        /// <summary>
+        /// Recupera Level1 e seus monitoramentos e tarefas relacionados
+        /// </summary>
+        /// <returns></returns>
         public string GetLevel01()
         {
+            ///SE NÃO HOUVER NENHUM LEVEL1, LEVEL2, LEVEL3 INFORMAR QUE NÃO ENCONTROU MONITORAMENTOS
             var html = new Html();
 
             int ParCompany_Id = 1;
@@ -2243,7 +2028,8 @@ namespace SgqSystem.Services
             //Instanciamos uma variável para não gerenciar a utilizar do ParCriticalLevel
             bool ParCriticalLevel = false;
 
-            //Instanciamos uma variável para instanciar a lista de level1
+            //Instanciamos uma variável para instanciar a lista de level1, level2 e level3
+            //Esses itens podem ser transformados funções menores
             string listlevel1 = null;
             string listLevel2 = null;
             string listLevel3 = null;
@@ -2267,7 +2053,7 @@ namespace SgqSystem.Services
                         //Pego o nome do ParCriticalLevel para não precisar fazer outra pesquisa
                         nameParCritialLevel = parlevel1.ParCriticalLevel_Name;
                         //Incremento os itens que estaram no ParLevel1                
-
+                        //Gera linha Level1
                         string level01 = html.link(
 
                                                   id: parlevel1.Id.ToString(),
@@ -2276,12 +2062,13 @@ namespace SgqSystem.Services
                                                   tags: "",
                                                   outerhtml: parlevel1.Name
                                                  );
-
+                        //Adiciona Div Lateral
                         level01 += html.div(
                                             //aqui vai os botoes
                                             outerhtml: null,
                                             classe: "userInfo col-xs-5");
 
+                        //Incrementa level1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
                     }
                     else
@@ -2289,10 +2076,13 @@ namespace SgqSystem.Services
                         //Caso o ParLevel1 não contenha um ParCritialLevel_Id apenas incremento os itens de ParLevel1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name);
                     }
+                    //Instancia variável para receber todos os level3
                     string level3Group = null;
 
+                    //Busca os Level2 e reforna no level3Group;
                     listLevel2 += GetLevel02(parlevel1, ParCompany_Id, ref level3Group);
 
+                    //Incrementa Level3Group
                     listLevel3 += level3Group;
                 }
                 //Quando termina o loop dos itens agrupados por ParCritialLevel 
@@ -2330,19 +2120,9 @@ namespace SgqSystem.Services
                 listlevel1 += parLevel1;
             }
 
-            string avaliacoes = html.div(
-                                          outerhtml: "<b style=\"width:100px;display:inline-block\">Avaliações</b>" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal"),
-                                        style: "font-size: 16px");
-            string amostrar = html.div(
-                                          outerhtml: "<b style=\"width:100px;display:inline-block\">Amostras</b>" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal"),
-                                        style: "font-size: 16px");
 
-            string painellevel3 = html.div(
-                                            outerhtml: avaliacoes +
-                                                       amostrar,
-                
-                                           classe: "painel painelLevel03 padding10");
-
+            //Retona as lista
+            //Podemos gerar uma verificação de atualizações
             return html.div(
                             outerhtml: listlevel1,
                             classe: "level1List"
@@ -2352,70 +2132,90 @@ namespace SgqSystem.Services
                             classe: "level2List col-xs-12 hide"
                            ) +
                    html.div(
-                            outerhtml: painellevel3+
-                                       listLevel3,
+                            outerhtml: listLevel3,
                             classe: "level3List  List col-xs-12 hide"
                            );
 
         }
+        /// <summary>
+        /// Gera Linhas do level2
+        /// </summary>
+        /// <param name="ParLevel1"></param>
+        /// <param name="ParCompany_Id"></param>
+        /// <param name="level3Group"></param>
+        /// <returns></returns>
         public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, ref string level3Group)
         {
+            //Inicializa ParLevel2
             var ParLevel2DB = new SGQDBContext.ParLevel2();
-
+            //Pega uma lista de ParLevel2
+            //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
             var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id);
 
             var html = new Html();
 
+            //Instancia parLevel2List
             string ParLevel2List = null;
+            //Instancia headerlist
             string headerList = null;
 
+            //Inicializa Avaliações e Amostras
             var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate();
             var ParSampleDB = new SGQDBContext.ParLevel2Sample();
 
 
-
+            //Verifica avaliações padrão
             var ParEvaluatePadrao = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
                                                               ParCompany_Id: null);
 
+            //Verifica avaliações pela company informada
             var ParEvaluateCompany = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
                                                                ParCompany_Id: ParCompany_Id);
 
+            //Verifia amostra padrão
             var ParSamplePadrao = ParSampleDB.getSample(ParLevel1: ParLevel1,
                                                         ParCompany_Id: null);
 
+            //Verifica amostra pela company informada
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
                                                         ParCompany_Id: ParCompany_Id);
 
+            //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List)
             {
+                //Verifica se pega avaliações e amostras padrão ou da company
                 int evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
                 int sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
 
-
+                //Colocar função de gerar cabeçalhos por selectbox
+                //Monta os cabecalhos
+                #region Cabecalhos e Contadores
                 string headerCounter = html.div(
-                                                outerhtml: null,
-                                                classe: "col-xs-2"
-                                              ) +
-                                      html.div(
-                                                outerhtml: null,
-                                                classe: "col-xs-2"
-                                              ) +
-                                      html.div(
-                                                outerhtml: "<b>Avaliaçoes</b>",
-                                                classe: "col-xs-4",
-                                                style: "text-align:center"
-                                              ) +
-                                      html.div(
-                                                outerhtml: "<b>Amostras</b>",
-                                                classe: "col-xs-4",
-                                                style: "text-align:center"
-                                              ); ;
+                                               outerhtml: null,
+                                               classe: "col-xs-2"
+                                             ) +
+                                     html.div(
+                                               outerhtml: null,
+                                               classe: "col-xs-2"
+                                             ) +
+                                     html.div(
+                                               outerhtml: "<b>Avaliaçoes</b>",
+                                               classe: "col-xs-4",
+                                               style: "text-align:center"
+                                             ) +
+                                     html.div(
+                                               outerhtml: "<b>Amostras</b>",
+                                               classe: "col-xs-4",
+                                               style: "text-align:center"
+                                             ); ;
 
                 headerCounter = html.div(
-                                        //aqui vai os botoes
+                                    //aqui vai os botoes
                                     outerhtml: headerCounter,
                                     classe: "counters col-xs-4"
                                     );
+
+
                 string classXSLevel2 = " col-xs-5";
                 string counters = html.div(
                                                 outerhtml: null,
@@ -2437,14 +2237,17 @@ namespace SgqSystem.Services
                                               );
 
                 counters = html.div(
-                                        //aqui vai os botoes
+                                    //aqui vai os botoes
                                     outerhtml: counters,
                                     classe: "counters col-xs-4"
                                     );
 
+                #endregion
                 string buttons = null;
                 string buttonsHeaders = null;
-               if(ParLevel1.HasNoApplicableLevel2 == true|| ParLevel1.HasSaveLevel2 == true)
+                //Caso tenha funções de não aplicado, coloca os botões nas respectivas linhas
+                //Como vai ficar se o item tem varias avaliações?vai ter botão salvar na linha do monitoramento?
+                if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true)
                 {
                     buttons = html.div(
                                  //aqui vai os botoes
@@ -2462,6 +2265,7 @@ namespace SgqSystem.Services
                     classXSLevel2 = " col-xs-8";
                 }
 
+
                 string level02Header = html.div(classe: classXSLevel2) +
                                        headerCounter +
                                        buttonsHeaders;
@@ -2478,6 +2282,7 @@ namespace SgqSystem.Services
                                             evaluate: evaluate,
                                             sample: sample);
 
+                //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
                                                     classe: "row",
@@ -2486,16 +2291,18 @@ namespace SgqSystem.Services
                                                                buttons
                                                     );
 
+                //Gera monitoramento do level3
                 string groupLevel3 = GetLevel03(ParLevel1, parlevel2);
-
                 level3Group += groupLevel3;
             }
 
             ParLevel2List = headerList +
                             ParLevel2List;
 
-            if(!string.IsNullOrEmpty(ParLevel2List))
+            //Se contem  monitoramentos
+            if (!string.IsNullOrEmpty(ParLevel2List))
             {
+                //Gera agrupamento dw Level2 para o Level1
                 ParLevel2List = html.listgroup(
                                                 outerhtml: ParLevel2List,
                                                 tags: "level01Id=\"" + ParLevel1.Id + "\""
@@ -2504,13 +2311,24 @@ namespace SgqSystem.Services
 
             return ParLevel2List;
         }
+        /// <summary>
+        /// Retorna Level3 
+        /// </summary>
+        /// <param name="ParLevel1"></param>
+        /// <param name="ParLevel2"></param>
+        /// <returns></returns>
         public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2)
         {
             var html = new Html();
 
+            //Inicializa ParLevel3
             var ParLevel3DB = new SGQDBContext.ParLevel3();
+            //Pega uma lista de parleve3
+            //pode colocar par level3 por unidades, como nos eua
             var parlevel3List = ParLevel3DB.getLevel3ByLevel2(ParLevel2.Id);
 
+            //Coloca botão de não avaliado ParLevel3
+            //vai ter que ter uma configuração na parametrização
             string btnNaoAvaliado = html.button(
                                        label: html.span(
                                                          classe: "cursorPointer iconsArea",
@@ -2519,7 +2337,9 @@ namespace SgqSystem.Services
                                        classe: "btn-warning btnNotAvaliable na font11"
                                    );
 
+            //Instancia uma veriavel para gerar o agrupamento
             string parLevel3Group = null;
+
 
             foreach (var parLevel3 in parlevel3List)
             {
@@ -2529,14 +2349,16 @@ namespace SgqSystem.Services
                 string labels = null;
                 string input = null;
 
+                //Se for booelan
                 if (parLevel3.ParLevel3InputType_Id == 1)
                 {
                     classInput = " boolean";
                     input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
-
                 }
                 else
                 {
+                    //se não é um intervalo
+                    //tem que gerar uma mascara para os inputs e para os labels
                     classInput = " interval";
                     tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
 
@@ -2553,24 +2375,32 @@ namespace SgqSystem.Services
 
                 }
 
+                //Gera o level3
                 string level3 = html.link(
-                                           outerhtml: parLevel3.Name,
+                                           outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
                                            classe: "col-xs-4"
-                                          ); 
-                    labels = html.div(
-                                            outerhtml: labels,
-                                            classe: "col-xs-3"
-                                        );
+                                          );
+                //gera os labels
+                labels = html.div(
+                                        outerhtml: labels,
+                                        classe: "col-xs-3"
+                                    );
+
+                //gera os contadores
                 string counters = html.div(
                                             outerhtml: input,
                                             classe: "col-xs-3 counters"
                                           );
+                //gera os botoes
                 string buttons = html.div(
                                            outerhtml: btnNaoAvaliado,
                                            classe: "col-xs-2",
                                            style: "text-align:right"
                                          );
+                //Comandos para intervalos
+                tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
 
+                //Gera uma linha de level3
                 string level3List = html.listgroupItem(
                                                       id: parLevel3.Id.ToString(),
                                                       classe: "level3 row" + classInput,
@@ -2584,18 +2414,41 @@ namespace SgqSystem.Services
                 parLevel3Group += level3List;
             }
 
+            //Avaliações e amostas para painel
+            string avaliacoes = html.div(
+                              outerhtml: "<b style=\"width:100px;display:inline-block\">Avaliações</b>" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal"),
+                            style: "font-size: 16px");
+            string amostrar = html.div(
+                                          outerhtml: "<b style=\"width:100px;display:inline-block\">Amostras</b>" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal"),
+                                        style: "font-size: 16px");
+
+            //Painel
+            //O interessante é um painel só mas no momento está um painel para cada level3group
+            string painellevel3 = html.listgroupItem(
+                                                        outerhtml: avaliacoes +
+                                                                   amostrar,
+
+                                           classe: "painel painelLevel03 row");
+
+
+            //Se tiver level3 gera o agrupamento no padrão
             if (!string.IsNullOrEmpty(parLevel3Group))
             {
                 parLevel3Group = html.div(
                                            classe: "level3Group",
                                            tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                                           outerhtml: parLevel3Group
+                                           outerhtml: painellevel3 +
+                                                      parLevel3Group
                                          );
             }
             return parLevel3Group;
 
         }
+        /// <summary>
+        /// Retorna tela de login
+        /// </summary>
+        /// <returns></returns>
         public string GetLoginAPP()
         {
             var html = new Html();
