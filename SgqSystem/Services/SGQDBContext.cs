@@ -20,46 +20,6 @@ namespace SGQDBContext
 
         }
 
-        //public List<ParLevel1> getList()
-        //{
-
-        //    string sql = " SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name      " +
-        //                 " FROM ParLevel1 P1                                                                                          " +
-        //                 " INNER JOIN ParLevel1XCluster P1C                                                                           " +
-        //                 " ON P1C.ParLevel1_Id = P1.Id                                                                                " +
-        //                 " INNER JOIN ParCluster C                                                                                    " +
-        //                 " ON C.Id = P1C.ParCluster_Id                                                                                " +
-        //                 " INNER JOIN ParCompanyCluster CC                                                                            " +
-        //                 " ON CC.ParCluster_Id = P1C.ParCluster_Id                                                                    " +
-        //                 " INNER JOIN ParCriticalLevel CL                                                                             " +
-        //                 " ON CL.Id = P1C.ParCriticalLevel_Id                                                                         " +
-        //                 " WHERE CC.ParCompany_Id = 1                                                                                 " +
-        //                 " order by CL.Name                                                                                           ";
-
-        //    string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-        //    using (SqlConnection connection = new SqlConnection(conexao))
-        //    {
-        //        using (SqlCommand command = new SqlCommand(sql, connection))
-        //        {
-        //            connection.Open();
-        //            using (SqlDataReader r = command.ExecuteReader())
-        //            {
-        //                var parLevel1List = new List<ParLevel1>();
-        //                while (r.Read())
-        //                {
-        //                    var parLevel1 = new ParLevel1();
-        //                    parLevel1.Id = Convert.ToInt32(r[0]);
-        //                    parLevel1.Name = r[1].ToString();
-        //                    parLevel1.ParCriticalLevel_Id = Convert.ToInt32(r[2]);
-        //                    parLevel1.ParCriticalLevel_Name = r[3].ToString();
-
-        //                    parLevel1List.Add(parLevel1);
-        //                }
-        //                return parLevel1List;
-        //            }
-        //        }
-        //    }
-        //}
 
         public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id)
         {
@@ -111,7 +71,7 @@ namespace SGQDBContext
                          "INNER JOIN ParLevel2 PL2                                     " +
                          "ON PL2.Id = P32.ParLevel2_Id                                 " +
                          "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'             " +
-                         " AND PL2.IsActive = 1                                             " +          
+                         " AND PL2.IsActive = 1                                        " +          
                          "GROUP BY PL2.Id, PL2.Name                                    ";
 
             var parLevel2List = db.Query<ParLevel2>(sql);
