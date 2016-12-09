@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Security.Cryptography;
 using System.Web.Mvc;
 
 namespace DTO.Helpers
@@ -249,6 +250,82 @@ namespace DTO.Helpers
             {
                 //Retorna Data Inválida.
                 return "Data " + data + " Invalida ";
+            }
+        }
+
+        #endregion
+
+        #region Criptografia 3DES
+
+       
+        /// <summary>     
+        /// Representação de valor em base 64 (Chave Interna)    
+        /// O Valor representa a transformação para base64 de     
+        /// um conjunto de 32 caracteres (8 * 32 = 256bits)      
+        /// </summary>     
+        const string cryptoKey3DES = "90A4F2C1DC40CE1F";
+
+        public static string Criptografar3DES(string Message)
+        {
+            try
+            {
+                byte[] Results = null;
+                System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
+                MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
+                byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey3DES));
+                TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
+                TDESAlgorithm.Key = TDESKey;
+                TDESAlgorithm.Mode = CipherMode.ECB;
+                TDESAlgorithm.Padding = PaddingMode.PKCS7;
+                byte[] DataToEncrypt = UTF8.GetBytes(Message);
+                try
+                {
+                    ICryptoTransform Encryptor = TDESAlgorithm.CreateEncryptor();
+                    Results = Encryptor.TransformFinalBlock(DataToEncrypt, 0, DataToEncrypt.Length);
+                }
+                finally
+                {
+                    TDESAlgorithm.Clear();
+                    HashProvider.Clear();
+                }
+                return Convert.ToBase64String(Results);
+            }
+            catch (Exception e)
+            {
+                new CreateLog(new Exception("Erro no metodo Guard.Criptografar3DES", e));
+                return Message;
+            }
+        }
+
+        public static string Descriptografar3DES(string Message)
+        {
+            try
+            {
+                byte[] Results = null;
+                System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
+                MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
+                byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(cryptoKey3DES));
+                TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
+                TDESAlgorithm.Key = TDESKey;
+                TDESAlgorithm.Mode = CipherMode.ECB;
+                TDESAlgorithm.Padding = PaddingMode.PKCS7;
+                byte[] DataToDecrypt = Convert.FromBase64String(Message);
+                try
+                {
+                    ICryptoTransform Decryptor = TDESAlgorithm.CreateDecryptor();
+                    Results = Decryptor.TransformFinalBlock(DataToDecrypt, 0, DataToDecrypt.Length);
+                }
+                finally
+                {
+                    TDESAlgorithm.Clear();
+                    HashProvider.Clear();
+                }
+                return UTF8.GetString(Results);
+            }
+            catch (Exception e)
+            {
+                new CreateLog(new Exception("Erro no metodo Guard.Descriptografar3DES", e));
+                return Message;
             }
         }
 
