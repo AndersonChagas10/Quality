@@ -1,0 +1,62 @@
+﻿<div class="row">
+
+    <div class="col-xs-6">
+        @if (ViewBag.level2LevelCompany != null)
+        {
+            <div>ParLevel2 Incluso</div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nome</th>
+                        <th id="nameLevel1">Ativo Para: </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in ViewBag.level2LevelCompany)
+                {
+                        <tr>
+                            <td>@i.ParLevel1.Id</td>
+                            <td>@i.ParLevel1.Name</td>
+                            <td>Remover</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+            </table>
+        }
+    </div>
+
+    <div class="col-xs-6">
+        @if (ViewBag.level2LevelSemCompany != null)
+        {
+            <div>ParLevel2 Não Incluso</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nome</th>
+                        <th id="nameLevel1">Ativo Para: </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in ViewBag.level2LevelSemCompany)
+                {
+                        <tr>
+                            <td>@i.ParLevel1.Id</td>
+                            <td>@i.ParLevel1.Name</td>
+                            <td>Adicionar</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+            </table>
+        }
+    </div>
+
+</div>

@@ -3,6 +3,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var urlCheck = Url.Action("CheckGC", "GlobalConfigApi");
     var urlAlter = Url.Action("AlterGC", "GlobalConfigApi");
+    var urlSenha = Url.Action("RecSenha", "GlobalConfigApi");
+    var urlConverteValorCalculado = Url.Action("ConverteValorCalculadoString", "GlobalConfigApi");
+    var urlConverteValorCalculadoDecimal = Url.Action("DesconverteValorCalculadoDecimal", "GlobalConfigApi");
 }
 
 <h2>Config</h2>
@@ -34,9 +37,29 @@
             <button id="alter" onclick="alter();"> Alterar Versão Global</button>
         </td>
     </tr>
+    <tr id="secret">
+        <td>recuperar senha</td>
+        <td><input id="senha" /></td>
+        <td> <button id="alter" onclick="senha();"> Recuperar</button> </td>
+    </tr>
+    <tr>
+        <td><button id="alter" onclick="ConverteValorCalculado();"> Testar Guard.ConverteValorCalculado RETURN DECIMAL</button> </td>
+        <td><button id="alter" onclick="DesconverteValorCalculado();"> Testar Guard.ConverteValorCalculado RETURN STRING</button> </td>
+        <td></td>
+    </tr>
 </table>
 
+
+
 <script>
+
+    function ConverteValorCalculado() {
+        $.post('@Html.Raw(urlConverteValorCalculado)', function (r) { console.log(r); alert(r); });
+    }
+
+    function DesconverteValorCalculado() {
+        $.post('@Html.Raw(urlConverteValorCalculadoDecimal)', function (r) { console.log(r); alert(r); });
+    }
 
     function check() {
         $.post('@Html.Raw(urlCheck)', function (data) { $('#resultsCheck').empty().html(data); });
@@ -46,6 +69,14 @@
         $.post('@Html.Raw(urlAlter)' + '/' + $('#seletor :selected').val(), function (data) {
             check();
         });
+    }
+
+    function senha() {
+
+        $.post('@Html.Raw(urlSenha)' + '/' + $('#senha').val(), function (data) {
+            $("#senha").val(data);
+        });
+
     }
 </script>
 
