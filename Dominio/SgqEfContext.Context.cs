@@ -31,6 +31,11 @@ namespace Dominio
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<CollectionLevel2> CollectionLevel2 { get; set; }
+        public virtual DbSet<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
+        public virtual DbSet<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
+        public virtual DbSet<ParLevel2Level1> ParLevel2Level1 { get; set; }
+        public virtual DbSet<Result_Level3> Result_Level3 { get; set; }
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
         public virtual DbSet<CepDesossa> CepDesossa { get; set; }
         public virtual DbSet<CepRecortes> CepRecortes { get; set; }
@@ -38,11 +43,8 @@ namespace Dominio
         public virtual DbSet<CollectionJson> CollectionJson { get; set; }
         public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
         public virtual DbSet<CollectionLevel03> CollectionLevel03 { get; set; }
-        public virtual DbSet<CollectionLevel2> CollectionLevel2 { get; set; }
         public virtual DbSet<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
         public virtual DbSet<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
-        public virtual DbSet<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
-        public virtual DbSet<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
         public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Example> Example { get; set; }
@@ -72,7 +74,6 @@ namespace Dominio
         public virtual DbSet<ParLevel1XCluster> ParLevel1XCluster { get; set; }
         public virtual DbSet<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
         public virtual DbSet<ParLevel2> ParLevel2 { get; set; }
-        public virtual DbSet<ParLevel2Level1> ParLevel2Level1 { get; set; }
         public virtual DbSet<ParLevel3> ParLevel3 { get; set; }
         public virtual DbSet<ParLevel3BoolFalse> ParLevel3BoolFalse { get; set; }
         public virtual DbSet<ParLevel3BoolTrue> ParLevel3BoolTrue { get; set; }
@@ -93,11 +94,11 @@ namespace Dominio
         public virtual DbSet<ParStructureGroup> ParStructureGroup { get; set; }
         public virtual DbSet<Pcc1b> Pcc1b { get; set; }
         public virtual DbSet<Period> Period { get; set; }
-        public virtual DbSet<Result_Level3> Result_Level3 { get; set; }
         public virtual DbSet<Shift> Shift { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<UnitUser> UnitUser { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
         public virtual DbSet<VacuoGRD> VacuoGRD { get; set; }
+        public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
     }
 }

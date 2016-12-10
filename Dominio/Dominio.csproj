@@ -380,6 +380,9 @@
     <Compile Include="ParLevel2Level1.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParLevel2XHeaderField.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParLevel3.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

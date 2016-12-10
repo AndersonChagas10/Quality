@@ -119,7 +119,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Nivel11, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Nivel11, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.EditorFor(model => model.Nivel11, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
                                                 @Html.ValidationMessageFor(model => model.Nivel11, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -127,7 +127,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Nivel12, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Nivel12, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.EditorFor(model => model.Nivel12, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
                                                 @Html.ValidationMessageFor(model => model.Nivel12, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -135,7 +135,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Nivel13, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Nivel13, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.EditorFor(model => model.Nivel13, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
                                                 @Html.ValidationMessageFor(model => model.Nivel13, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -198,32 +198,34 @@
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar6");
-    
-    $('#VolumeAnimais').on('input', function () {
-        $('#Quartos').val($(this).val() * 4);
-        $('#Amostras').val($(this).val() * 4);
-    });
 
-    $('#MetaFake').on('input', function () {
+    $('#MetaFake, #VolumeAnimais').on('input', function () {
+        $('#Quartos').val($('#VolumeAnimais').val() * 4);
+        $('#Amostras').val($('#VolumeAnimais').val() * 4);
+
         var calc = ($('#Quartos').val() * (Number(($('#MetaFake').val().substring(0, 6).replace(',', '.'))) / 100));
-        $('#ToleranciaDia').val(calc ? parseInt(calc) : 0);
-        $('#Nivel11').val(calc / 3 ? parseInt(calc / 3) : 0);
-        $('#Nivel12').val(calc / 3 * 2 ? parseInt(calc / 3 * 2) : 0);
-        $('#Nivel13').val(calc ? parseInt(calc) : 0);
+        $('#ToleranciaDia').val(calc ? calc : 0);
+        $('#Nivel11').val(calc / 3 ? calc / 3 : 0);
+        $('#Nivel12').val(calc / 3 * 2 ? calc / 3 * 2 : 0);
+        $('#Nivel13').val(calc ? calc : 0);
 
-        $('#Meta').val(Number(($('#MetaFake').val().substring(0, 6).replace(',', '.'))));
+        $('#Meta').val(Number(($('#MetaFake').val().substring(0, 6))));
     });
-
     
-
     $('#Data').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true
     });
 
     $(document).ready(function () {
-        $('#MetaFake').inputmask({ mask: "999,99%" });
+
+        if('@Resources.Resource.resource_id' == "en_us")
+            $('#MetaFake').inputmask({ mask: "999.99%" });
+        else
+            $('#MetaFake').inputmask({ mask: "999,99%" });
+
         $('#Avaliacoes').val(1);
+        $('#MetaFake').val($('#Meta').val()/100);
     });
 
 </script>

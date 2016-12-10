@@ -2045,6 +2045,7 @@ namespace SgqSystem.Services
         public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, ref string level3Group)
         {
             var ParLevel2DB = new SGQDBContext.ParLevel2();
+            
 
             var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id);
 
@@ -2070,12 +2071,18 @@ namespace SgqSystem.Services
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
                                                         ParCompany_Id: ParCompany_Id);
 
+            string mainHeaderList = html.div(outerhtml: "",
+                                        classe: "panel panel-default");
+
+            string mainHeaderPanel = html.div(outerhtml: mainHeaderList,
+                                        classe: "row");
+
             foreach (var parlevel2 in parlevel02List)
             {
                 int evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
                 int sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
 
-
+                
                 string headerCounter = html.div(
                                                 outerhtml: null,
                                                 classe: "col-xs-2"

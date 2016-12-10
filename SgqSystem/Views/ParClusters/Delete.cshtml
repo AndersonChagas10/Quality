@@ -44,12 +44,12 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
 
-                                <h3>Are you sure you want to delete this?</h3>
+                                <h3>@Resources.Resource.confirm_delete</h3>
                                 <div>
                                     <hr />
                                     <dl class="dl-horizontal">
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.Name)
+                                            @Resources.Resource.name
                                         </dt>
 
                                         <dd>
@@ -57,7 +57,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.Description)
+                                            @Resources.Resource.description
                                         </dt>
 
                                         <dd>
@@ -65,7 +65,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.ParClusterParent_Id)
+                                            @Resources.Resource.cluster
                                         </dt>
 
                                         <dd>
@@ -73,31 +73,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.AddDate)
-                                        </dt>
-
-                                        <dd>
-                                            @Html.DisplayFor(model => model.AddDate)
-                                        </dd>
-
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.AlterDate)
-                                        </dt>
-
-                                        <dd>
-                                            @Html.DisplayFor(model => model.AlterDate)
-                                        </dd>
-
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.IsActive)
-                                        </dt>
-
-                                        <dd>
-                                            @Html.DisplayFor(model => model.IsActive)
-                                        </dd>
-
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.ParClusterGroup.Name)
+                                            @Resources.Resource.cluster_group
                                         </dt>
 
                                         <dd>
@@ -111,8 +87,8 @@
                                         @Html.AntiForgeryToken()
 
                                         <div class="form-actions no-color">
-                                            <input type="submit" value="Delete" class="btn btn-default" /> |
-                                            @Html.ActionLink("Back to List", "Index")
+                                            <input type="submit" value="@Resources.Resource.delete" class="btn btn-default" /> |
+                                            @Html.ActionLink(Resources.Resource.back_to_list, "Index")
                                         </div>
                                     }
                                 </div>

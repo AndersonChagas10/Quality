@@ -43,24 +43,15 @@
                             <div class="tab-pane active" id="setup_tab">
 
                                 <p>
-                                    @Html.ActionLink("Create New", "Create")
+                                    @Html.ActionLink(Resources.Resource._new, "Create")
                                 </p>
                                 <table class="table">
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Name)
+                                            @Resources.Resource.name
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Description)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.AddDate)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.AlterDate)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.Active)
+                                            @Resources.Resource.description    
                                         </th>
                                         <th></th>
                                     </tr>
@@ -75,18 +66,9 @@
                                                 @Html.DisplayFor(modelItem => item.Description)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.AddDate)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.AlterDate)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Active)
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }) |
+                                                @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |
+                                                @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })
                                             </td>
                                         </tr>
                                     }

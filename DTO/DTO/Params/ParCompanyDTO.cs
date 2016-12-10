@@ -1,4 +1,5 @@
 ﻿using DTO.BaseEntity;
+using System.Collections.Generic;
 
 namespace DTO.DTO.Params
 {
@@ -14,5 +15,7 @@ namespace DTO.DTO.Params
         public string IPServer { get; set; }
         public string DBServer { get; set; }
         public string RolePerCompany { get; set; }
+        public List<ParCompanyClusterDTO> ListParCompanyCluster { get; set; }
+        public List<ParCompanyXStructureDTO> ListParCompanyXStructure { get; set; }
     }
 }

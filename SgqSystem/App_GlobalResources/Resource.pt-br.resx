@@ -726,4 +726,34 @@
   <data name="volume" xml:space="preserve">
     <value>Volume</value>
   </data>
+  <data name="resource_id" xml:space="preserve">
+    <value>pt_br</value>
+  </data>
+  <data name="_new" xml:space="preserve">
+    <value>Novo</value>
+  </data>
+  <data name="details" xml:space="preserve">
+    <value>Detalhes</value>
+  </data>
+  <data name="add_date" xml:space="preserve">
+    <value>Data de adição</value>
+  </data>
+  <data name="alter_date" xml:space="preserve">
+    <value>Data de alteração</value>
+  </data>
+  <data name="back_to_list" xml:space="preserve">
+    <value>Voltar para a lista</value>
+  </data>
+  <data name="cluster_group" xml:space="preserve">
+    <value>Grupo de Cluster</value>
+  </data>
+  <data name="create" xml:space="preserve">
+    <value>Criar</value>
+  </data>
+  <data name="is_active" xml:space="preserve">
+    <value>Esta ativo</value>
+  </data>
+  <data name="confirm_delete" xml:space="preserve">
+    <value>Deseja deletar esse registro</value>
+  </data>
 </root>

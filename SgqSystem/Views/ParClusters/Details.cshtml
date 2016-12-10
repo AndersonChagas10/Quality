@@ -47,7 +47,7 @@
                                 <div>
                                     <dl class="dl-horizontal">
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.Name)
+                                            @Resources.Resource.name
                                         </dt>
 
                                         <dd>
@@ -55,7 +55,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.Description)
+                                            @Resources.Resource.description
                                         </dt>
 
                                         <dd>
@@ -63,7 +63,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.ParClusterParent_Id)
+                                            @Resources.Resource.cluster
                                         </dt>
 
                                         <dd>
@@ -71,7 +71,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.AddDate)
+                                            @Resources.Resource.add_date
                                         </dt>
 
                                         <dd>
@@ -79,7 +79,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.AlterDate)
+                                            @Resources.Resource.alter_date
                                         </dt>
 
                                         <dd>
@@ -87,7 +87,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.IsActive)
+                                            @Resources.Resource.is_active
                                         </dt>
 
                                         <dd>
@@ -95,7 +95,7 @@
                                         </dd>
 
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.ParClusterGroup.Name)
+                                            @Resources.Resource.cluster_group
                                         </dt>
 
                                         <dd>
@@ -105,8 +105,8 @@
                                     </dl>
                                 </div>
                                 <p>
-                                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-                                    @Html.ActionLink("Back to List", "Index")
+                                    @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = Model.Id }) |
+                                    @Html.ActionLink(Resources.Resource.back_to_list, "Index")
                                 </p>
                             </div>
 
