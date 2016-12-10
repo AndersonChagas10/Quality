@@ -289,41 +289,69 @@ namespace SGQDBContext
 
         }
     }
-    
-    //public partial class ParLevel2Header
-    //{
-    //    string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
-    //    public IEnumerable<ParLevel2Header> getLevel3ByLevel2(int ParLevel2_Id)
-    //    {
-    //        SqlConnection db = new SqlConnection(conexao);
+    public partial class ParLevel2Header
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
-    //        string sql = "SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
-    //                     "L3V.IntervalMin AS IntervalMin, L3V.IntervalMax AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight                                                                                                                                                                                                                                    " +
-    //                     "FROM ParLevel3 L3                                                                                                                                                                                                                                                                                                                                           " +
-    //                     "INNER JOIN ParLevel3Value L3V                                                                                                                                                                                                                                                                                                                               " +
-    //                     "        ON L3V.ParLevel3_Id = L3.Id                                                                                                                                                                                                                                                                                                                         " +
-    //                     "INNER JOIN ParLevel3InputType L3IT                                                                                                                                                                                                                                                                                                                          " +
-    //                     "        ON L3IT.Id = L3V.ParLevel3InputType_Id                                                                                                                                                                                                                                                                                                              " +
-    //                     "LEFT JOIN ParLevel3BoolFalse L3BF                                                                                                                                                                                                                                                                                                                           " +
-    //                     "        ON L3BF.Id = L3V.ParLevel3BoolFalse_Id                                                                                                                                                                                                                                                                                                              " +
-    //                     "LEFT JOIN ParLevel3BoolTrue L3BT                                                                                                                                                                                                                                                                                                                            " +
-    //                     "        ON L3BT.Id = L3V.ParLevel3BoolTrue_Id                                                                                                                                                                                                                                                                                                               " +
-    //                     "LEFT JOIN ParMeasurementUnit MU                                                                                                                                                                                                                                                                                                                             " +
-    //                     "        ON MU.Id = L3V.ParMeasurementUnit_Id                                                                                                                                                                                                                                                                                                                " +
-    //                     "LEFT JOIN ParLevel3Level2 L32                                                                                                                                                                                                                                                                                                                               " +
-    //                     "        ON L32.ParLevel3_Id = L3.Id                                                                                                                                                                                                                                                                                                                         " +
-    //                     "LEFT JOIN ParLevel3Group L3G                                                                                                                                                                                                                                                                                                                                " +
-    //                     "        ON L3G.Id = L32.ParLevel3Group_Id                                                                                                                                                                                                                                                                                                                   " +
-    //                     "INNER JOIN ParLevel2 L2                                                                                                                                                                                                                                                                                                                                     " +
-    //                     "        ON L2.Id = L32.ParLevel2_Id                                                                                                                                                                                                                                                                                                                         " +
-    //                     "                                                                                                                                                                                                                                                                                                                                                            " +
-    //                     "WHERE                                                                                                                                                                                                                                                                                                                                                       " +
-    //                     "L2.Id = '" + ParLevel2_Id + "'                                                                                                                                                                                                                                                                                                                             ";
+        public int ParHeaderField_Id { get; set; }
+        public string ParHeaderField_Name { get; set; }
+        public int ParFieldType_Id { get; set; }
 
-    //        var parLevel3List = db.Query<ParLevel3>(sql);
+        public IEnumerable<ParLevel2Header> getHeaderByLevel1(int ParLevel1_Id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+            
+            string sql = "select PH.Id as ParHeaderField_Id, PH.Name as ParHeaderField_Name, PT.Id as ParFieldType_Id from ParLevel2XHeaderField PL  " +
+                         "left join ParHeaderField PH on PH.Id = PL.ParHeaderField_Id                                                              " +
+                         "left join ParLevelDefiniton PD on PH.ParLevelDefinition_Id = PD.Id                                                       " +
+                         "left join ParFieldType PT on PH.ParFieldType_Id = PT.Id                                                                  " +
+                         "where                                                                                                                    " +
+                         "PD.Id = 1 and                                                                                                            " +
+                         "PL.ParLevel1_Id = "+ ParLevel1_Id + " and                                                                                " +
+                         "PL.IsActive = 1 and PH.IsActive = 1 and PD.IsActive = 1;                                                                 ";
 
-    //        return parLevel3List;
-    //    }
-    //}
+            var parLevel3List = db.Query<ParLevel2Header>(sql);
+
+            return parLevel3List;
+        }
+
+        public IEnumerable<ParLevel2Header> getHeaderByLevel1Level2(int ParLevel1_Id, int ParLevel2_Id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select PH.Id as ParHeaderField_Id, PH.Name as ParHeaderField_Name, PT.Id as ParFieldType_Id from ParLevel2XHeaderField PL " +
+                         "  left join ParHeaderField PH on PH.Id = PL.ParHeaderField_Id                                                             " +
+                         "  left join ParLevelDefiniton PD on PH.ParLevelDefinition_Id = PD.Id                                                      " +
+                         "  left join ParFieldType PT on PH.ParFieldType_Id = PT.Id                                                                 " +
+                         "  where                                                                                                                   " +
+                         "  PD.Id = 1 and                                                                                                           " +
+                         "  PL.ParLevel1_Id = " + ParLevel1_Id + " and PL.ParLevel2_Id = " + ParLevel2_Id                                           +
+                         "  PL.IsActive = 1 and PH.IsActive = 1 and PD.IsActive = 1;                                                                ";
+
+            var parLevel3List = db.Query<ParLevel2Header>(sql);
+
+            return parLevel3List;
+        }
+    }
+
+    public partial class ParFieldType
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public int Id;
+        public string Name;
+
+        public IEnumerable<ParFieldType> getMultipleValues(int ParHeaderField_Id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "SELECT Id, Name FROM ParMultipleValues                                "+
+                         "WHERE ParHeaderField_Id = '"+ ParHeaderField_Id + "' and IsActive = 1;        ";
+
+            var multipleValues = db.Query<ParFieldType>(sql);
+
+            return multipleValues;
+        }
+    }
 }

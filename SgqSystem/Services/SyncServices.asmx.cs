@@ -74,7 +74,7 @@ namespace SgqSystem.Services
             return valor;
         }
         /// <summary>
-        /// Converte um valor string para padrão sql
+        /// Converter para Booleano Padrão Sql um valor passado
         /// </summary>
         /// <param name="valor">valor True ou False</param>
         /// <returns></returns>
@@ -90,11 +90,6 @@ namespace SgqSystem.Services
                 return "0";
             }
         }
-        /// <summary>
-        /// Convert um valor string para booleano 
-        /// </summary>
-        /// <param name="valor"></param>
-        /// <returns></returns>
         public string BoolCompletedConverter(string valor)
         {
             valor = valor.ToLower();
@@ -107,15 +102,6 @@ namespace SgqSystem.Services
                 return "0";
             }
         }
-        /// <summary>
-        /// Inserir Log no Banco
-        /// </summary>
-        /// <param name="result">Resultado</param>
-        /// <param name="log">Mensagem de Log</param>
-        /// <param name="deviceId">Id do Dispositivo</param>
-        /// <param name="AppVersion">Versão do APP</param>
-        /// <param name="callback">Callback que chamou</param>
-        /// <returns></returns>
         public int insertLogJson(string result, string log, string deviceId, string AppVersion, string callback)
         {
             string sql = "INSERT INTO LogJson ([result],[log],[AddDate],[Device_Id],[AppVersion], [callback]) " +
@@ -363,7 +349,7 @@ namespace SgqSystem.Services
         [WebMethod]
         public string ProcessJson(string device)
         {
-            //Se não passar um device ou web
+
             if (string.IsNullOrEmpty(device))
             {
                 return "informe o device";
@@ -477,10 +463,8 @@ namespace SgqSystem.Services
                                 string Evaluation = r[15].ToString();
                                 string Sample = r[16].ToString();
 
-                                //Funções tem que passar para o cabecalho
                                 string CattleType = arrayHeader[2];
                                 CattleType = DefaultValueReturn(CattleType, "0");
-                                //Funções tem que passar para o cabecalho
 
                                 string ChainSpeed = arrayHeader[3];
                                 ChainSpeed = DefaultValueReturn(ChainSpeed, "0");
@@ -495,11 +479,9 @@ namespace SgqSystem.Services
                                 string ConsecutiveFailureTotal = arrayHeader[7];
                                 ConsecutiveFailureTotal = DefaultValueReturn(ConsecutiveFailureTotal, "0");
 
-                                
-                                //Funções tem que passar para o cabecalho
                                 string LotNumber = arrayHeader[4];
                                 LotNumber = DefaultValueReturn(LotNumber, "0");
-                                //Funções tem que passar para o cabecalho
+
                                 string MudScore = arrayHeader[5];
                                 MudScore = DefaultValueReturn(MudScore, "0");
 
@@ -510,6 +492,7 @@ namespace SgqSystem.Services
 
                                 string completed = arrayHeader[9];
                                 completed = BoolCompletedConverter(completed);
+
 
                                 string havePhases = arrayHeader[10];
                                 havePhases = BoolConverter(havePhases);
@@ -538,20 +521,14 @@ namespace SgqSystem.Services
                                     return "error";
                                 }
 
-                                //Instancia  variavel para verificar se é atualizaçãos
                                 bool update = false;
-                                //Verifica o Id do CollectionLevel2 na Matriz
                                 string idCollectionLevel2 = arrayHeader[11];
-
-                                //Se se não conter nenhum Id define zero
                                 idCollectionLevel2 = DefaultValueReturn(idCollectionLevel2, "0");
                                 if (idCollectionLevel2 != "0")
                                 {
-                                    //Se for diferente de zero, então estamos atualizando um resultado
                                     update = true;
                                 }
 
-                                //Inserir/Atualiza o Resultado Collectio Level2
                                 int CollectionLevel2Id = InsertCollectionLevel2(ConsolidationLevel2Id.ToString(), level01, level02, unitId, AuditorId, shift, period, Phase, Reaudit, reauditNumber, level02CollectionDate,
                                                                                   StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit,
                                                                                   haveCorrectiveAction, havePhases, completed, idCollectionLevel2);
@@ -561,8 +538,6 @@ namespace SgqSystem.Services
                                     //return "erro Collection level02";
                                     return "error";
                                 }
-                                
-
                                 string correctiveActionCompleted = arrayHeader[12];
                                 if (haveCorrectiveAction == "0")
                                 {
@@ -576,7 +551,6 @@ namespace SgqSystem.Services
                                 {
                                     correctiveActionCompleted = haveCorrectiveAction;
                                 }
-
                                 string reauditCompleted = arrayHeader[13];
 
                                 if (haveReaudit == "0")
@@ -592,7 +566,7 @@ namespace SgqSystem.Services
                                     reauditCompleted = haveReaudit;
                                 }
 
-                                //Se for uma atualização e ação corretiv for zero
+
                                 if (update == true && (correctiveActionCompleted == "0" || reauditCompleted == "0"))
                                 {
                                     int updateCorrectiveAction = updateLevel02CorrectiveActionReaudit(CollectionLevel2Id.ToString(), correctiveActionCompleted, reauditCompleted);
@@ -602,8 +576,7 @@ namespace SgqSystem.Services
                                         return "error";
                                     }
                                 }
-                                //Inserir/Atualiza CollectionLevel3
-                                //Importate criar versionamento ParLevel1, ParLevel2, ParLevel3 para não gravar strings nas coletas e melhorar desempanho de gravações
+
                                 int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), level02, objson, AuditorId, Duplicated);
                                 if (CollectionLevel3Id == 0)
                                 {
@@ -611,7 +584,6 @@ namespace SgqSystem.Services
                                     return "error";
                                 }
 
-                                //Se existir ação Corretira
                                 if (!string.IsNullOrEmpty(correctiveActionJson))
                                 {
                                     correctiveActionJson = correctiveActionJson.Replace("<correctiveaction>", "").Replace("</correctiveaction>", "");
@@ -647,8 +619,6 @@ namespace SgqSystem.Services
                                         return "error";
                                     }
                                 }
-                                //Caso todos os itens estejam salbos atualiza arquivo json
-                                //Colocar Transação e verificar impacto
                                 int jsonUpdate = updateJson(Id);
                                 if (jsonUpdate == 0)
                                 {
@@ -677,11 +647,6 @@ namespace SgqSystem.Services
 
             }
         }
-        /// <summary>
-        /// Atualiza Json após ser processado
-        /// </summary>
-        /// <param name="JsonId"></param>
-        /// <returns></returns>
         public int updateJson(string JsonId)
         {
             string sql = "UPDATE CollectionJson SET IsProcessed=1 WHERE ID='" + JsonId + "'";
@@ -717,13 +682,6 @@ namespace SgqSystem.Services
                 return 0;
             }
         }
-        /// <summary>
-        /// Atualiza CollectionLevel2 se tiver ação corretiva
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="correctiveAction"></param>
-        /// <param name="reaudit"></param>
-        /// <returns></returns>
         public int updateLevel02CorrectiveActionReaudit(string id, string correctiveAction, string reaudit)
         {
             string sql = "UPDATE CollectionLevel02 SET HaveCorrectiveAction='" + correctiveAction + "', HaveReaudit='" + reaudit + "' WHERE ID='" + id + "'";
@@ -929,12 +887,7 @@ namespace SgqSystem.Services
                 return 0;
             }
         }
-        /// <summary>
-        /// Retorna Id da Consolidação do Level2
-        /// </summary>
-        /// <param name="Level01ConsolidationId"></param>
-        /// <param name="Level02Id"></param>
-        /// <returns></returns>
+
         public int GetLevel2Consolidation(string Level01ConsolidationId, string Level02Id)
         {
             string sql = "SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = '" + Level01ConsolidationId + "' AND ParLevel2_Id= '" + Level02Id + "'";
@@ -1310,7 +1263,7 @@ namespace SgqSystem.Services
                 return null;
             }
         }
-        
+
         [WebMethod]
         public string reciveLastData(string unidadeId)
         {
@@ -1803,123 +1756,79 @@ namespace SgqSystem.Services
 
         #endregion
         #region App
-        /// <summary>
-        /// Função que retorna a tela inicial do App
-        /// </summary>
-        /// <returns></returns>
         [WebMethod]
         public string getAPP()
         {
             var html = new Html();
 
-            //Tela de login
             string login = GetLoginAPP();
 
-            //Tela do APP
-            //Podemos dividir a requisição em mais arquivos, verificas as possibilidades
-            //Podemos gerar um metodo de verificação se tela realmente precisa de atualiazação
             string APPMain = getAPPMain();
 
-            //Divs de Resultados e Usuários
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
                               "<div class=\"Users hide\"></div>";
-                
+
             return login +
                    APPMain +
                    supports;
         }
-        /// <summary>
-        /// Recupera ultima avaliação
-        /// </summary>
-        /// <param name="parlevel2"></param>
-        /// <param name="ParEvaluateCompany"></param>
-        /// <param name="ParEvaluatePadrao"></param>
-        /// <returns></returns>
         public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
-            //Define avaliação como 1
             int evaluate = 1;
             var evaluateConf = ParEvaluateCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
-            //Se existe avaliação da company
             if (evaluateConf != null)
             {
-                //recupera avaliação da company
                 evaluate = evaluateConf.Evaluate;
             }
             else
             {
-                //se existe avaliação padrão
                 evaluateConf = ParEvaluatePadrao.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
                 if (evaluateConf != null)
                 {
-                    //recipera avaliação padrão
                     evaluate = evaluateConf.Evaluate;
                 }
             }
-            //retorna avaliação
             return evaluate;
         }
-        /// <summary>
-        /// Recupera ultima amostra
-        /// </summary>
-        /// <param name="parlevel2"></param>
-        /// <param name="ParSampleCompany"></param>
-        /// <param name="ParSamplePadrao"></param>
-        /// <returns></returns>
+
         public int getSample(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Sample> ParSampleCompany, IEnumerable<SGQDBContext.ParLevel2Sample> ParSamplePadrao)
         {
-            //Define a sample como 1
             int sample = 1;
             var sampleConf = ParSampleCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
-            //Se existe sample da company
             if (sampleConf != null)
             {
-                //recupera  valor da sample da company
                 sample = sampleConf.Sample;
             }
             else
             {
-                //Se existe sample padrão
                 sampleConf = ParSamplePadrao.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
                 if (sampleConf != null)
                 {
-                    //recupera a sample padrão
                     sample = sampleConf.Sample;
                 }
             }
             return sample;
         }
-        /// <summary>
-        /// Recupera tela APP
-        /// </summary>
-        /// <returns></returns>
+
         public string getAPPMain()
         {
-            //Precisamos passar as unidades
-
             var html = new Html();
 
-            //BreadCrum
-            //Opções do BreadCrumb podem vir do banco de dados
+
+
             string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
 
-            //Recupera os monitoramentos e tarefas
-            string App = GetLevel01();
-
-            //Gera container
             string container = html.div(
 
                                          outerhtml: breadCrumb +
-                                                    App
+                                                    GetLevel01()
 
                                         , classe: "container");
 
-            //Button Save
             string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btnSave btnRounded btn-warning hide\"><i class=\"fa fa-save\"></i></button><!--Save-->" +
-                             " <button class=\"btn btn-lg btn-danger btnCA hide\">Corrective Action</button><!--Corrective Action-->";
+                                "<button class=\"btn btn-lg btn-danger btnCA hide\">Corrective Action</button><!--Corrective Action-->";
 
-            //Mensagem
             string message = "<div class=\"message padding20\" style=\"display:none\">                                                                                      " +
                              "   <h1 class=\"head\">Titulo</h1>                                                                                                           " +
                              "   <div class=\"body font16\">Mensagem</div>                                                                                                " +
@@ -1929,8 +1838,7 @@ namespace SgqSystem.Services
             //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                         " +
             //                       "</div>                                                                                                                                                                                                    ";
 
-            //Tela de visualização
-          string viewModal = "<div class=\"viewModal\" style=\"display:none;\">" +
+            string viewModal = "<div class=\"viewModal\" style=\"display:none;\">" +
                                "     <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\">View <a href=\"#\" class=\"pull-right close\" style=\"color: #000;text-decoration:none\">X</a></div> " +
                                "     <div class=\"body\" style=\"height:565px; overflow-y: auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                           " +
                                "</div>                                                                                                                                                                                                    ";
@@ -1943,17 +1851,21 @@ namespace SgqSystem.Services
                                         "    <div class=\"foot\"><button id=\"btnMessageNo\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> No </button></div>                   " +
                                         "</div>                                                                                                                                                         ";
 
-            string overlay = "<div class=\"overlay\" style=\"display:none\"></div>";
+
+
+            //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                       " +
+            //                    "    <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\">View <a href=\"#\" class=\"pull-right close\" style=\"color:#000;text-decoration:none\">X</a></div> " +
+            //                    "    <div class=\"body\" style=\"height:565px;overflow-y:auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                            " +
+            //                    "</div>                                                                                                                                                                                                  ";
 
             return html.div(
                             outerhtml: navBar() +
                                        rightMenu() +
-                                       overlay +
+                                       html.div(classe: "overlay", style: "display:none") +
                                        container +
                                        buttons +
                                        footer(),
                              classe: "App hide",
-                             //Nome que apareçe no main 
                              tags: "breadmainlevel=\"Indicadores\""
                            ) +
                            viewModal +
@@ -2005,13 +1917,12 @@ namespace SgqSystem.Services
 
             return foot;
         }
-        /// <summary>
-        /// Recupera Level1 e seus monitoramentos e tarefas relacionados
-        /// </summary>
-        /// <returns></returns>
         public string GetLevel01()
         {
             ///SE NÃO HOUVER NENHUM LEVEL1, LEVEL2, LEVEL3 INFORMAR QUE NÃO ENCONTROU MONITORAMENTOS
+
+
+
             var html = new Html();
 
             int ParCompany_Id = 1;
@@ -2028,8 +1939,7 @@ namespace SgqSystem.Services
             //Instanciamos uma variável para não gerenciar a utilizar do ParCriticalLevel
             bool ParCriticalLevel = false;
 
-            //Instanciamos uma variável para instanciar a lista de level1, level2 e level3
-            //Esses itens podem ser transformados funções menores
+            //Instanciamos uma variável para instanciar a lista de level1
             string listlevel1 = null;
             string listLevel2 = null;
             string listLevel3 = null;
@@ -2053,7 +1963,7 @@ namespace SgqSystem.Services
                         //Pego o nome do ParCriticalLevel para não precisar fazer outra pesquisa
                         nameParCritialLevel = parlevel1.ParCriticalLevel_Name;
                         //Incremento os itens que estaram no ParLevel1                
-                        //Gera linha Level1
+
                         string level01 = html.link(
 
                                                   id: parlevel1.Id.ToString(),
@@ -2062,13 +1972,12 @@ namespace SgqSystem.Services
                                                   tags: "",
                                                   outerhtml: parlevel1.Name
                                                  );
-                        //Adiciona Div Lateral
+
                         level01 += html.div(
                                             //aqui vai os botoes
                                             outerhtml: null,
                                             classe: "userInfo col-xs-5");
 
-                        //Incrementa level1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
                     }
                     else
@@ -2076,13 +1985,10 @@ namespace SgqSystem.Services
                         //Caso o ParLevel1 não contenha um ParCritialLevel_Id apenas incremento os itens de ParLevel1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name);
                     }
-                    //Instancia variável para receber todos os level3
                     string level3Group = null;
 
-                    //Busca os Level2 e reforna no level3Group;
                     listLevel2 += GetLevel02(parlevel1, ParCompany_Id, ref level3Group);
 
-                    //Incrementa Level3Group
                     listLevel3 += level3Group;
                 }
                 //Quando termina o loop dos itens agrupados por ParCritialLevel 
@@ -2121,8 +2027,7 @@ namespace SgqSystem.Services
             }
 
 
-            //Retona as lista
-            //Podemos gerar uma verificação de atualizações
+
             return html.div(
                             outerhtml: listlevel1,
                             classe: "level1List"
@@ -2137,85 +2042,144 @@ namespace SgqSystem.Services
                            );
 
         }
-        /// <summary>
-        /// Gera Linhas do level2
-        /// </summary>
-        /// <param name="ParLevel1"></param>
-        /// <param name="ParCompany_Id"></param>
-        /// <param name="level3Group"></param>
-        /// <returns></returns>
         public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, ref string level3Group)
         {
-            //Inicializa ParLevel2
             var ParLevel2DB = new SGQDBContext.ParLevel2();
-            //Pega uma lista de ParLevel2
-            //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
+
             var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id);
 
             var html = new Html();
 
-            //Instancia parLevel2List
             string ParLevel2List = null;
-            //Instancia headerlist
             string headerList = null;
 
-            //Inicializa Avaliações e Amostras
             var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate();
             var ParSampleDB = new SGQDBContext.ParLevel2Sample();
+            var ParLevel2HeaderDB = new SGQDBContext.ParLevel2Header();
+            var ParFieldTypeDB = new SGQDBContext.ParFieldType();
 
 
-            //Verifica avaliações padrão
             var ParEvaluatePadrao = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
                                                               ParCompany_Id: null);
 
-            //Verifica avaliações pela company informada
             var ParEvaluateCompany = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
                                                                ParCompany_Id: ParCompany_Id);
 
-            //Verifia amostra padrão
             var ParSamplePadrao = ParSampleDB.getSample(ParLevel1: ParLevel1,
                                                         ParCompany_Id: null);
 
-            //Verifica amostra pela company informada
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
                                                         ParCompany_Id: ParCompany_Id);
+            
+            var painelLevel2HeaderListHtml = "";
 
-            //Enquando houver lista de level2
+            foreach (var header in ParLevel2HeaderDB.getHeaderByLevel1(ParLevel1.Id))
+            {
+                //ParFieldType 
+                switch (header.ParFieldType_Id)
+                {
+                    //Multipla Escolha
+                    case 1:
+                        var listMultiple = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
+                        var htmlMultiple = "";
+
+                        foreach (var value in listMultiple)
+                        {
+                            htmlMultiple += "<option value='" + value.Id + "'>" + value.Name + "</option>";
+                        }
+
+                        painelLevel2HeaderListHtml += html.div(
+                                            outerhtml: "<select class='form-control input-sm'>" + htmlMultiple + "</select>",
+                                            classe: "col-xs-4 col-md-3 col-sm-3 col-lg-3"
+                                            );
+                        break;
+
+                    //Integrações
+                    case 2:
+                        painelLevel2HeaderListHtml += html.div(
+                                                outerhtml: "<div class='form-control input-sm'>" + header.ParHeaderField_Name + "</div>",
+                                                classe: "col-xs-4 col-md-3 col-sm-3 col-lg-3"
+                                              );
+                        break;
+
+                    //Binário
+                    case 3:
+                        var listBinario = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
+                        var htmlBinario = "";
+
+                        foreach (var value in listBinario)
+                        {
+                            htmlBinario += "<option value='" + value.Id + "'>" + value.Name + "</option>";
+                        }
+
+                        painelLevel2HeaderListHtml += html.div(
+                                            outerhtml: "<select class='form-control input-sm'>" + htmlBinario + "</select>",
+                                            classe: "col-xs-4 col-md-3 col-sm-3 col-lg-3"
+                                            );
+                        break;
+
+                    //Texto
+                    case 4:
+                        painelLevel2HeaderListHtml += html.div(
+                                                outerhtml: "<input class='form-control input-sm' type='text' id='" + header.ParHeaderField_Id + "' placeholder='" + header.ParHeaderField_Name + "'>",
+                                                classe: "col-xs-4 col-md-3 col-sm-3 col-lg-3"
+                                              );
+                        break;
+
+                    //Numérico
+                    case 5:
+                        painelLevel2HeaderListHtml += html.div(
+                                                outerhtml: "<input class='form-control input-sm' type='number' id='" + header.ParHeaderField_Id + "' placeholder='" + header.ParHeaderField_Name + "'>",
+                                                classe: "col-xs-4 col-md-3 col-sm-3 col-lg-3"
+                                              );
+                        break;
+
+                    //Data
+                    case 6:
+                        painelLevel2HeaderListHtml += html.div(
+                                                outerhtml: "<input class='form-control input-sm' type='date' id='" + header.ParHeaderField_Id + "' placeholder='" + header.ParHeaderField_Name + "'>",
+                                                classe: "col-xs-4 col-md-3 col-sm-3 col-lg-3"
+                                              );
+                        break;
+                }
+                
+            }
+
+            string painellevel2 = html.listgroupItem(
+                                                        outerhtml: painelLevel2HeaderListHtml,
+
+                                           classe: "painel painelLevel02 row");
+
             foreach (var parlevel2 in parlevel02List)
             {
-                //Verifica se pega avaliações e amostras padrão ou da company
                 int evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
                 int sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
 
-                //Colocar função de gerar cabeçalhos por selectbox
-                //Monta os cabecalhos
-                #region Cabecalhos e Contadores
+
                 string headerCounter = html.div(
-                                               outerhtml: null,
-                                               classe: "col-xs-2"
-                                             ) +
-                                     html.div(
-                                               outerhtml: null,
-                                               classe: "col-xs-2"
-                                             ) +
-                                     html.div(
-                                               outerhtml: "<b>Avaliaçoes</b>",
-                                               classe: "col-xs-4",
-                                               style: "text-align:center"
-                                             ) +
-                                     html.div(
-                                               outerhtml: "<b>Amostras</b>",
-                                               classe: "col-xs-4",
-                                               style: "text-align:center"
-                                             ); ;
+                                                outerhtml: null,
+                                                classe: "col-xs-2"
+                                              ) +
+                                      html.div(
+                                                outerhtml: null,
+                                                classe: "col-xs-2"
+                                              ) +
+                                      html.div(
+                                                outerhtml: "<b>Avaliaçoes</b>",
+                                                classe: "col-xs-4",
+                                                style: "text-align:center"
+                                              ) +
+                                      html.div(
+                                                outerhtml: "<b>Amostras</b>",
+                                                classe: "col-xs-4",
+                                                style: "text-align:center"
+                                              ); ;
 
                 headerCounter = html.div(
                                     //aqui vai os botoes
                                     outerhtml: headerCounter,
                                     classe: "counters col-xs-4"
                                     );
-
-
                 string classXSLevel2 = " col-xs-5";
                 string counters = html.div(
                                                 outerhtml: null,
@@ -2242,11 +2206,8 @@ namespace SgqSystem.Services
                                     classe: "counters col-xs-4"
                                     );
 
-                #endregion
                 string buttons = null;
                 string buttonsHeaders = null;
-                //Caso tenha funções de não aplicado, coloca os botões nas respectivas linhas
-                //Como vai ficar se o item tem varias avaliações?vai ter botão salvar na linha do monitoramento?
                 if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true)
                 {
                     buttons = html.div(
@@ -2265,7 +2226,6 @@ namespace SgqSystem.Services
                     classXSLevel2 = " col-xs-8";
                 }
 
-
                 string level02Header = html.div(classe: classXSLevel2) +
                                        headerCounter +
                                        buttonsHeaders;
@@ -2282,7 +2242,6 @@ namespace SgqSystem.Services
                                             evaluate: evaluate,
                                             sample: sample);
 
-                //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
                                                     classe: "row",
@@ -2291,18 +2250,16 @@ namespace SgqSystem.Services
                                                                buttons
                                                     );
 
-                //Gera monitoramento do level3
                 string groupLevel3 = GetLevel03(ParLevel1, parlevel2);
+
                 level3Group += groupLevel3;
             }
 
-            ParLevel2List = headerList +
+            ParLevel2List = painellevel2 + headerList +
                             ParLevel2List;
 
-            //Se contem  monitoramentos
             if (!string.IsNullOrEmpty(ParLevel2List))
             {
-                //Gera agrupamento dw Level2 para o Level1
                 ParLevel2List = html.listgroup(
                                                 outerhtml: ParLevel2List,
                                                 tags: "level01Id=\"" + ParLevel1.Id + "\""
@@ -2311,24 +2268,13 @@ namespace SgqSystem.Services
 
             return ParLevel2List;
         }
-        /// <summary>
-        /// Retorna Level3 
-        /// </summary>
-        /// <param name="ParLevel1"></param>
-        /// <param name="ParLevel2"></param>
-        /// <returns></returns>
         public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2)
         {
             var html = new Html();
 
-            //Inicializa ParLevel3
             var ParLevel3DB = new SGQDBContext.ParLevel3();
-            //Pega uma lista de parleve3
-            //pode colocar par level3 por unidades, como nos eua
             var parlevel3List = ParLevel3DB.getLevel3ByLevel2(ParLevel2.Id);
 
-            //Coloca botão de não avaliado ParLevel3
-            //vai ter que ter uma configuração na parametrização
             string btnNaoAvaliado = html.button(
                                        label: html.span(
                                                          classe: "cursorPointer iconsArea",
@@ -2337,9 +2283,7 @@ namespace SgqSystem.Services
                                        classe: "btn-warning btnNotAvaliable na font11"
                                    );
 
-            //Instancia uma veriavel para gerar o agrupamento
             string parLevel3Group = null;
-
 
             foreach (var parLevel3 in parlevel3List)
             {
@@ -2349,16 +2293,14 @@ namespace SgqSystem.Services
                 string labels = null;
                 string input = null;
 
-                //Se for booelan
                 if (parLevel3.ParLevel3InputType_Id == 1)
                 {
                     classInput = " boolean";
                     input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+
                 }
                 else
                 {
-                    //se não é um intervalo
-                    //tem que gerar uma mascara para os inputs e para os labels
                     classInput = " interval";
                     tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
 
@@ -2375,32 +2317,26 @@ namespace SgqSystem.Services
 
                 }
 
-                //Gera o level3
                 string level3 = html.link(
                                            outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
                                            classe: "col-xs-4"
                                           );
-                //gera os labels
                 labels = html.div(
                                         outerhtml: labels,
                                         classe: "col-xs-3"
                                     );
-
-                //gera os contadores
                 string counters = html.div(
                                             outerhtml: input,
                                             classe: "col-xs-3 counters"
                                           );
-                //gera os botoes
                 string buttons = html.div(
                                            outerhtml: btnNaoAvaliado,
                                            classe: "col-xs-2",
                                            style: "text-align:right"
                                          );
-                //Comandos para intervalos
+
                 tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
 
-                //Gera uma linha de level3
                 string level3List = html.listgroupItem(
                                                       id: parLevel3.Id.ToString(),
                                                       classe: "level3 row" + classInput,
@@ -2414,7 +2350,6 @@ namespace SgqSystem.Services
                 parLevel3Group += level3List;
             }
 
-            //Avaliações e amostas para painel
             string avaliacoes = html.div(
                               outerhtml: "<b style=\"width:100px;display:inline-block\">Avaliações</b>" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal"),
                             style: "font-size: 16px");
@@ -2422,8 +2357,7 @@ namespace SgqSystem.Services
                                           outerhtml: "<b style=\"width:100px;display:inline-block\">Amostras</b>" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal"),
                                         style: "font-size: 16px");
 
-            //Painel
-            //O interessante é um painel só mas no momento está um painel para cada level3group
+
             string painellevel3 = html.listgroupItem(
                                                         outerhtml: avaliacoes +
                                                                    amostrar,
@@ -2431,7 +2365,7 @@ namespace SgqSystem.Services
                                            classe: "painel painelLevel03 row");
 
 
-            //Se tiver level3 gera o agrupamento no padrão
+
             if (!string.IsNullOrEmpty(parLevel3Group))
             {
                 parLevel3Group = html.div(
@@ -2445,10 +2379,6 @@ namespace SgqSystem.Services
             return parLevel3Group;
 
         }
-        /// <summary>
-        /// Retorna tela de login
-        /// </summary>
-        /// <returns></returns>
         public string GetLoginAPP()
         {
             var html = new Html();
