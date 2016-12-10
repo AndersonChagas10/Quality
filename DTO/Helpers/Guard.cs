@@ -11,6 +11,68 @@ namespace DTO.Helpers
     public static class Guard
     {
 
+        #region Campo Calculado
+
+        public static decimal ConverteValorCalculado(string valorString)
+        {
+            valorString = valorString.ToUpper().Replace(',', '.');
+            double v1 = double.Parse(valorString.Split('X')[0], CultureInfo.InvariantCulture);
+            double v2 = double.Parse(valorString.Split('^')[1]);
+            var resultado = v1 * Math.Pow(10, v2);
+            var retorno = Convert.ToDecimal(resultado, CultureInfo.InvariantCulture);
+            return retorno;
+        }
+
+        public static string ConverteValorCalculado(decimal valorDecimal)
+        {
+
+            int dezElevado = 0;
+            if (valorDecimal > 0)//SE POSITIVO
+            {
+                if (valorDecimal > 10)//é maior que 10?
+                {
+                    while (valorDecimal > 10)
+                    {
+                        valorDecimal = valorDecimal / 10;
+                        dezElevado++;
+                    }
+                }
+                else if (valorDecimal < 1)//Esta entre 1 e 0?
+                {
+                    while (valorDecimal < 1)
+                    {
+                        valorDecimal = valorDecimal * 10;
+                        dezElevado--;
+                    }
+                }
+            }
+            else//SE NEGATIVO
+            {
+                if (valorDecimal < -10)//É menor que 10?
+                {
+                    while (valorDecimal < -10)
+                    {
+                        valorDecimal = valorDecimal / 10;
+                        dezElevado++;
+                    }
+                }
+                else if (valorDecimal > -1)//Esta entre -1 e 0?
+                {
+                    while (valorDecimal > -1)
+                    {
+                        valorDecimal = valorDecimal * 10;
+                        dezElevado--;
+                    }
+                }
+            }
+
+            var resultado = valorDecimal.ToString("G29") + "x10^" + dezElevado.ToString();
+
+            return resultado;
+        }
+
+        #endregion
+
         #region CONVERT
 
         public static bool ConverteValor<T>(this object valor, out T resultado, T valorPadrao, string paramiterName)

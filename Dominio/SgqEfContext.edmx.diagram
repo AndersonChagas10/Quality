@@ -145,6 +145,24 @@
         <AssociationConnector Association="SgqDbModel.FK_ParStructure_ParStructureGroup" />
         <AssociationConnector Association="SgqDbModel.FK_UnitUser_Unit" />
         <AssociationConnector Association="SgqDbModel.FK_UnitUser_UserSgq" />
+        <EntityTypeShape EntityType="SgqDbModel.CollectionLevel2" Width="1.5" PointX="17" PointY="22.875" />
+        <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel1" Width="1.5" PointX="12.5" PointY="71.625" />
+        <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel2" Width="1.5" PointX="14.75" PointY="71.75" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel2Level1" Width="1.5" PointX="17.25" PointY="38.5" />
+        <EntityTypeShape EntityType="SgqDbModel.Result_Level3" Width="1.5" PointX="19.25" PointY="21.375" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_ParLevel2" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_UserSgq" />
+        <AssociationConnector Association="SgqDbModel.FK_Result_Level3_CollectionLevel2" />
+        <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel1_Department" />
+        <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel1_Level1" />
+        <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel1_Unit" />
+        <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" />
+        <AssociationConnector Association="SgqDbModel.FK_Level2Level1_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_Level2Level1_ParLevel2" />
+        <AssociationConnector Association="SgqDbModel.FK_Result_Level3_ParLevel3" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

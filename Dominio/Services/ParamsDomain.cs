@@ -18,6 +18,7 @@ namespace Dominio.Services
     {
 
         #region Constructor
+
         /*Repo Genericos, carregam ddls*/
         private IBaseRepository<ParLevel1> _baseRepoParLevel1;
         private IBaseRepository<ParLevel2> _baseRepoParLevel2;
@@ -25,6 +26,7 @@ namespace Dominio.Services
         private IBaseRepositoryNoLazyLoad<ParLevel1> _baseRepoParLevel1NLL;
         private IBaseRepositoryNoLazyLoad<ParLevel2> _baseRepoParLevel2NLL;
         private IBaseRepositoryNoLazyLoad<ParLevel3> _baseRepoParLevel3NLL;
+        private IBaseRepositoryNoLazyLoad<ParLevel2Level1> _baseRepoParLevel2Level1;
         private IBaseRepository<ParLevel1XCluster> _baseRepoParLevel1XCluster;
         private IBaseRepository<ParFrequency> _baseParFrequency;
         private IBaseRepository<ParConsolidationType> _baseParConsolidationType;
@@ -98,8 +100,10 @@ namespace Dominio.Services
                             IBaseRepository<ParLevel3Level2Level1> baseRepoParLevel3Level2Level1,
                             IParLevel3Repository repoParLevel3,
                             IBaseRepository<ParCriticalLevel> baseRepoParCriticalLevel,
-                            IBaseRepository<ParCompany> baseRepoParCompany)
+                            IBaseRepository<ParCompany> baseRepoParCompany,
+                            IBaseRepositoryNoLazyLoad<ParLevel2Level1> baseRepoParLevel2Level1)
         {
+            _baseRepoParLevel2Level1 = baseRepoParLevel2Level1;
             _baseRepoParCompany = baseRepoParCompany;
             _baseRepoParCriticalLevel = baseRepoParCriticalLevel;
             _paramsRepo = paramsRepo;
@@ -517,26 +521,47 @@ namespace Dominio.Services
 
         public ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2, int idLevel3)
         {
-            var existsL3L2 = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
+            var allLevel1Level2 = _baseRepoParLevel3Level2.GetAll();
+            /*Verifica se existe vinculo no level2 e level 3 selecionado na tela*/
+            var existsL3L2 = allLevel1Level2.FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
             if (existsL3L2 == null)
                 throw new ExceptionHelper("É necessário vincular o level3 ao level 2 antes de realizar esta operação.");
 
-            var vinculoLevel2Level3 = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
-            var objToSave = new ParLevel3Level2Level1()
+            /*Se o vinculo level2 e level3 Cria objeto do Level3Level2Level1*/
+            var objToSave = new ParLevel3Level2Level1();
+            objToSave.ParLevel1_Id = idLevel1;
+            objToSave.ParLevel3Level2_Id = existsL3L2.Id;
+
+            /*Verifica se o vinculo ja existe, se já existe, ele ALTERA colocando o ID no objeto NOVO*/
+            var existsLevel3Level2Level1 = _baseRepoParLevel3Level2Level1.GetAll().FirstOrDefault(r => r.ParLevel3Level2_Id == existsL3L2.Id);
+            if (existsLevel3Level2Level1 != null)
             {
-                ParLevel1_Id = idLevel1,
-                ParLevel3Level2_Id = vinculoLevel2Level3.Id
-            };
+                existsLevel3Level2Level1.ParLevel1_Id = objToSave.ParLevel1_Id;
+                existsLevel3Level2Level1.ParLevel3Level2_Id = objToSave.ParLevel3Level2_Id;
+                existsLevel3Level2Level1.Active = objToSave.Active;
+                _baseRepoParLevel3Level2Level1.AddOrUpdate(existsLevel3Level2Level1);/*Salva Vinculo Level3Level2Level1*/
+                objToSave = existsLevel3Level2Level1;
+            }
+            else
+            {
+                _baseRepoParLevel3Level2Level1.AddOrUpdate(objToSave);/*Salva Vinculo Level3Level2Level1*/
+            }
 
-            var exists = _baseRepoParLevel3Level2Level1.GetAll().FirstOrDefault(r => r.ParLevel3Level2_Id == vinculoLevel2Level3.Id);
-            if (exists != null)
-                objToSave.Id = exists.Id;
 
-            _baseRepoParLevel3Level2Level1.AddOrUpdate(objToSave);
+            /*Objeto ParLEvel2Level1 que é salvo caso não exista vinculo com key level1 e level2 já registrados na tabela ParLevel2Level1*/
+            var level2level1 = new ParLevel2Level1();
+            level2level1.IsActive = true;
+            level2level1.ParCompany_Id = null;
+            level2level1.ParLevel1_Id = objToSave.ParLevel1_Id;
+            level2level1.ParLevel2_Id = objToSave.ParLevel3Level2.ParLevel2_Id;
+
+            var existeParLevel2Level1 = _baseRepoParLevel2Level1.GetAll().FirstOrDefault(r => r.ParLevel1_Id == level2level1.ParLevel1_Id && r.ParLevel2_Id == level2level1.ParLevel2_Id);
+            if (existeParLevel2Level1 == null)
+                _baseRepoParLevel2Level1.AddOrUpdate(level2level1);
 
             return Mapper.Map<ParLevel3Level2Level1DTO>(objToSave);
-        }
 
+        }
 
         public ParLevel3GroupDTO RemoveParLevel3Group(int Id)
         {
@@ -546,7 +571,6 @@ namespace Dominio.Services
             //_paramsRepo.RemoveParLevel3Group(parLevel3Group);
             return Mapper.Map<ParLevel3GroupDTO>(parLevel3Group);
         }
-
 
         #endregion
 

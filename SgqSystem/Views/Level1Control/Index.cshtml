@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var url = Url.Action("SelectLevel1", "Level1Control");
+}
+
+<h2>Index</h2>
+
+<div>ParCompany</div>
+<div>@Html.DropDownList("ParCompany", new SelectList(ViewBag.ParCompany, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control input-sm" })</div>
+
+<div id="tables">
+    @Html.Partial("_ParLevel2OnParCompany")
+</div>
+
+<script>
+
+    var urlJs = '@Html.Raw(url)'
+    $('#ParCompany').on("change", function() {
+        $.get(urlJs, { companyId: $('#ParCompany :selected').val() }, function (r) {
+            $('#tables').empty().append(r);
+        });
+    });
+
+</script>

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using Dominio.Interfaces.Repositories;
-using DTO.Helpers;
 using AutoMapper;
 
 namespace Dominio.Services
@@ -11,14 +10,16 @@ namespace Dominio.Services
     {
 
         private readonly IBaseRepository<T> _repositoryBase;
+        private readonly IBaseRepositoryNoLazyLoad<T> _repositoryBaseNll;
         private string inseridoOk { get { return "Data successfully saved."; } }
         private string AlteradoOk { get { return "Data successfully changed."; } }
         private string NaoInserido { get { return "It was not possible to insert data."; } }
         private string emptyObj { get { return "It was not possible to insert data, object is empity."; } }
 
-        public BaseDomain(IBaseRepository<T> repo)
+        public BaseDomain(IBaseRepository<T> repositoryBase, IBaseRepositoryNoLazyLoad<T> repositoryBaseNll)
         {
-            _repositoryBase = repo;
+            _repositoryBase = repositoryBase;
+            _repositoryBaseNll = repositoryBaseNll;
         }
 
 
@@ -44,6 +45,24 @@ namespace Dominio.Services
         {
            var result = _repositoryBase.First();
            return Mapper.Map<Y>(result);
+        }
+
+        public Y GetByIdNoLazyLoad(int id)
+        {
+            var result = _repositoryBaseNll.GetById(id);
+            return Mapper.Map<Y>(result);
+        }
+
+        public IEnumerable<Y> GetAllNoLazyLoad()
+        {
+            var result = Mapper.Map<IEnumerable<Y>>(_repositoryBaseNll.GetAll());
+            return result;
+        }
+
+        public Y FirstNoLazyLoad()
+        {
+            var result = _repositoryBaseNll.First();
+            return Mapper.Map<Y>(result);
         }
 
         #region Metodos não liberados para front
