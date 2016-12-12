@@ -1,8 +1,9 @@
 ﻿GuardJs = {
 
     mascaraCampoCalculado: function (e) {
+      if ($(e).val() == "0")
+          $(e).val("");
       $(e).inputmask({ mask: '9{1,10}x10^9{1,5}', reverse: true, clearIfNotMatch: true });
-
     },
     mascaraPorcentegem:  function(e){
      

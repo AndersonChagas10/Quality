@@ -36,8 +36,8 @@
                
                 <tr class="row ParIntervalos" style="display: none;">
                     @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                    @Table.GerarColuna(@Html.DecimalFormatado("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, "parLevel3Value_IntervalMin", "form-control input-sm"), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                    @Table.GerarColunaButton(@Html.DecimalFormatado("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, "parLevel3Value_IntervalMax", "form-control input-sm"), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
+                    @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, "parLevel3Value_IntervalMin", "form-control input-sm maskDecimal"), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
+                    @Table.GerarColunaButton(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, "parLevel3Value_IntervalMax", "form-control input-sm maskDecimal"), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
                     <td style="display: none;">
                         <label>@Resources.Resource.values_between</label>
                         <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
@@ -52,8 +52,8 @@
                              
                 <tr class="row ParCalculado" style="display: none;">
                     @Table.GerarColunaButton(@Html.DropDownList("ParCalculado.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                    @Table.GerarColuna(@Html.TextBox("ParCalculado.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                    @Table.GerarColunaButton(@Html.TextBox("ParCalculado.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
+                    @Table.GerarColuna(@Html.TextBox("ParCalculado.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, htmlAttributes: new { @class = "form-control input-sm maskCalculado" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
+                    @Table.GerarColunaButton(@Html.TextBox("ParCalculado.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, htmlAttributes: new { @class = "form-control input-sm maskCalculado" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
                     <td style="display: none;">
                         <label>@Resources.Resource.values_between</label>
                         <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
@@ -462,6 +462,7 @@
         if ($("#selectTipoInput option:selected").val() == "1") {
             resetaParIntervalos();
             resetaParBinarios();
+            $('.ParCalculado').hide();
             $('.ParIntervalos').hide();
             $('.ParBinarios').fadeIn();
             $('#companyValueL3').fadeIn();
@@ -470,6 +471,7 @@
         if ($("#selectTipoInput option:selected").val() == "3") {
             resetaParIntervalos();
             resetaParBinarios();
+            $('.ParCalculado').hide();
             $('.ParBinarios').hide();
             $('.ParIntervalos').fadeIn();
         }
@@ -477,12 +479,19 @@
         if ($("#selectTipoInput option:selected").val() == "4") {
             resetaParIntervalos();
             resetaParBinarios();
-
+            $('.ParCalculado').fadeIn();
             $('.ParBinarios').hide();
             $('.ParIntervalos').hide();
         }
     });
 
+    function resetaParCalculado(){
+        $('#selectUnidadeParL3Value').val(-1);
+        $('#ParCalculado_IntervalMin').val("");
+        $('#ParCalculado_IntervalMax').val("");
+        $('#selectUnidadeDeMedidas').val(-1);
+    }
+    
     function resetaParIntervalos(){
         $('#selectUnidadeDeMedidas').val(-1);
         $('#paramsDto_parLevel3Value_IntervalMin').val("");
@@ -527,9 +536,9 @@
         modalPontos.appendTo('body');
         if(grouLevel2Selected > 0)
             $('#paramsDto_parLevel3Dto_listGroupsLevel2').val(grouLevel2Selected)
-
-        $('#ParCalculado_IntervalMax').inputmask({ mask: '9{1,10}x10^9{1,5}', reverse: true, clearIfNotMatch: true });
-        $('#ParCalculado_IntervalMax').inputmask({ mask: '9{1,10}x10^9{1,5}', reverse: true, clearIfNotMatch: true });
+        
+        GuardJs.mascaraCampoCalculado('#ParCalculado_IntervalMin')
+        GuardJs.mascaraCampoCalculado('#ParCalculado_IntervalMax')
 
         updateAllTables();
 
