@@ -52,7 +52,5 @@ namespace Dominio
         public virtual ICollection<ParCompanyXUserSgq> ParCompanyXUserSgq { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UnitUser> UnitUser { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
     }
 }

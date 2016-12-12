@@ -17,15 +17,11 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>
-    </IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>
-    </IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>
-    </IISExpressUseClassicPipelineMode>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort>63128</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -359,6 +355,7 @@
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel2Level1MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyXStructureMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />
@@ -657,27 +654,6 @@
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
     <Content Include="Content\select2.min.css" />
-    <Content Include="DataCollect\Content\bootstrap-modal-bs3patch.css" />
-    <Content Include="DataCollect\Content\bootstrap-modal.css" />
-    <Content Include="DataCollect\Content\bootstrap.css" />
-    <Content Include="DataCollect\Content\bootstrap.min.css" />
-    <Content Include="DataCollect\Content\Geral.css" />
-    <Content Include="DataCollect\Img\beef.jpg" />
-    <Content Include="DataCollect\Img\fundoSGQ.jpg" />
-    <Content Include="DataCollect\Img\GRTJBSLogo.png" />
-    <Content Include="DataCollect\Img\login.png" />
-    <Content Include="DataCollect\Img\sgq.jpg" />
-    <Content Include="DataCollect\Img\SGQLogo01.png" />
-    <Content Include="DataCollect\Img\ui-bg_diagonal-maze_75_ddd_10x10.png" />
-    <Content Include="DataCollect\index.html" />
-    <Content Include="DataCollect\Scripts\bootstrap-modal.js" />
-    <Content Include="DataCollect\Scripts\bootstrap-modalmanager.js" />
-    <Content Include="DataCollect\Scripts\bootstrap.js" />
-    <Content Include="DataCollect\Scripts\bootstrap.min.js" />
-    <Content Include="DataCollect\Scripts\correctiveaction.js" />
-    <Content Include="DataCollect\Scripts\DataBase.js" />
-    <Content Include="DataCollect\Scripts\File.js" />
-    <Content Include="DataCollect\Scripts\Methods.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1254,10 +1230,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\HelpPage\Views\Shared\" />
     <Folder Include="Arquivos\uploads\" />
-    <Folder Include="DataCollect\Plugins\float_button\" />
-    <Folder Include="DataCollect\Plugins\font-awesome\" />
-    <Folder Include="DataCollect\Plugins\jquery\" />
-    <Folder Include="DataCollect\Plugins\sidebar\" />
+    <Folder Include="DataCollect\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
     <Folder Include="Views\WebService\" />
@@ -1315,7 +1288,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63128</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
