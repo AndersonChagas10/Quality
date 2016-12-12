@@ -24,7 +24,6 @@ namespace Dominio
             this.CorrectiveAction2 = new HashSet<CorrectiveAction>();
             this.ParCompanyXUserSgq = new HashSet<ParCompanyXUserSgq>();
             this.UnitUser = new HashSet<UnitUser>();
-            this.CollectionLevel2 = new HashSet<CollectionLevel2>();
         }
     
         public int Id { get; set; }

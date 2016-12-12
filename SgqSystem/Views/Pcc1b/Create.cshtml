@@ -217,12 +217,11 @@
         showDropdowns: true
     });
 
+   
+
     $(document).ready(function () {
 
-        if('@Resources.Resource.resource_id' == "en_us")
-            $('#MetaFake').inputmask({ mask: "999.99%" });
-        else
-            $('#MetaFake').inputmask({ mask: "999,99%" });
+        GuardJs.mascaraPorcentegem('#MetaFake');
 
         $('#Avaliacoes').val(1);
         $('#MetaFake').val($('#Meta').val()/100);

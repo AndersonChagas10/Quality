@@ -1,5 +1,12 @@
 ﻿GuardJs = {
 
+    mascaraPorcentegem:  function(seletor){
+        if('@Resources.Resource.resource_id' == "en_us")
+            $(e).inputmask({ mask: "999.99%" });
+        else
+            $(e).inputmask({ mask: "999,99%" });
+    },
+
     message: "One or more fields are requireds: ",
 
     /*

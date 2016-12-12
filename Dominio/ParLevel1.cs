@@ -31,9 +31,6 @@ namespace Dominio
             this.ParLevel3Level2Level1 = new HashSet<ParLevel3Level2Level1>();
             this.ParNotConformityRuleXLevel = new HashSet<ParNotConformityRuleXLevel>();
             this.ParRelapse = new HashSet<ParRelapse>();
-            this.CollectionLevel2 = new HashSet<CollectionLevel2>();
-            this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
-            this.ParLevel2Level1 = new HashSet<ParLevel2Level1>();
         }
     
         public int Id { get; set; }
