@@ -31,11 +31,6 @@ namespace Dominio
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<CollectionLevel2> CollectionLevel2 { get; set; }
-        public virtual DbSet<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
-        public virtual DbSet<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
-        public virtual DbSet<ParLevel2Level1> ParLevel2Level1 { get; set; }
-        public virtual DbSet<Result_Level3> Result_Level3 { get; set; }
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
         public virtual DbSet<CepDesossa> CepDesossa { get; set; }
         public virtual DbSet<CepRecortes> CepRecortes { get; set; }
@@ -99,6 +94,10 @@ namespace Dominio
         public virtual DbSet<UnitUser> UnitUser { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
         public virtual DbSet<VacuoGRD> VacuoGRD { get; set; }
-        public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
+        public virtual DbSet<CollectionLevel2> CollectionLevel2 { get; set; }
+        public virtual DbSet<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
+        public virtual DbSet<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
+        public virtual DbSet<ParLevel2Level1> ParLevel2Level1 { get; set; }
+        public virtual DbSet<Result_Level3> Result_Level3 { get; set; }
     }
 }

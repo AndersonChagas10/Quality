@@ -106,19 +106,25 @@
     <Compile Include="CollectionLevel03.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="CollectionLevel2.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ConfiguracaoEmail.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ConfiguracaoEmailPA.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="CollectionLevel2.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="ConsolidationLevel01.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ConsolidationLevel02.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConsolidationLevel1.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConsolidationLevel2.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ContramedidaEspecifica.cs">
@@ -129,12 +135,6 @@
     </Compile>
     <Compile Include="ControleMetaTolerancia.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ConsolidationLevel1.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ConsolidationLevel2.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="CorrectiveAction.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -380,9 +380,6 @@
     <Compile Include="ParLevel2Level1.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ParLevel2XHeaderField.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="ParLevel3.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -525,11 +522,11 @@
     <Compile Include="Resultados_BKP_OCT.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ScorecardConsolidadoDia.cs">
-      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Result_Level3.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScorecardConsolidadoDia.cs">
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Services\CorrectiveActionDomain.cs" />
     <Compile Include="Services\CompanyDomain.cs" />

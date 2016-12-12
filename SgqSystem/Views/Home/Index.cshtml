@@ -1,6 +1,6 @@
 ﻿@{
     var urlDataCollection = Url.Action("", "DataCollect");
-    var urlManagement = Url.Action("CorrectiveActionReport", "Reports");
+    var urlManagement = Url.Action("Index","Gestao");
     var urlCustomization = Url.Action("Index", "Params");
     var version = ViewBag.Asembly;
 }
@@ -8,11 +8,15 @@
 <!-- BEGIN CONTENT BODY -->
 <div class="page-content" style="min-height: 525px; padding: 32px;">
     <div class="center-main row">
-        <div class="col-xs-4"><div class="center-button"><a href="@urlDataCollection">@Resources.Resource.data_collection</a></div></div>
-        <div class="col-xs-4"><div class="center-button"><a href="@urlManagement">@Resources.Resource.management</a></div></div>
-        <div class="col-xs-4"><div class="center-button"><a href="@urlCustomization">@Resources.Resource.customization</a></div></div>
-    </div>
-</div>
+
+            <div class="col-xs-0 col-md-3 col-ls-3"></div>
+
+            <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button"><a href="@urlDataCollection"><img src="~/Imagens/tablet.png" /><br /><br />@Resources.Resource.data_collection</a></div></div>
+            <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button"><a href="@urlManagement"><img src="~/Imagens/chart.png" /><br /><br />@Resources.Resource.management</a></div></div>
+            <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button"><a href="@urlCustomization"><img src="~/Imagens/stack.png" /><br /><br />@Resources.Resource.customization</a></div></div>
+
+            <div class="col-xs-4 col-md-3 col-ls-3"></div>
+        </div>
 
 @section Scripts {
 

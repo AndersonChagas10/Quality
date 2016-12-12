@@ -1,0 +1,428 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+
+
+    #divMenu {
+        width: 450px;
+        height: 450px;
+        margin: auto;
+        background-image: url('/Imagens/setas.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 400px;
+        font-family: 'Century Gothic';
+        font-size: small;
+    }
+
+    #linha {
+        position: relative;
+        height: 150px;
+        width: 450px;
+    }
+
+    .centro {
+        text-align: center;
+    }
+
+    .circuloPDCA {
+        border-radius: 50% !important; 
+        display: inline-block;
+        cursor: pointer;
+        background-color: yellow;
+        width: 150px;
+        height: 150px !important;
+        text-align: center;
+        font-weight: bold;
+        color: #333;
+    }
+
+    #circulo1Plan {
+        background-color: #e5e498;
+        padding-top: 60px;
+        height: 90px;
+    }
+
+    #circulo2Do {
+        background-color: #9fe598;
+        float: right;
+        padding-top: 50px;
+        height: 100px;
+    }
+
+    #circulo3Check {
+        background-color: #e59898;
+        padding-top: 40px;
+        height: 110px;
+    }
+
+    #circulo4Action {
+        background-color: #b4bcc5;
+        float: left;
+        padding-top: 60px;
+        height: 90px;
+    }
+
+    .fundoMenu {
+        position: absolute;
+        height: 450px;
+        width: 450px;
+    }
+
+    #fundoMenuSuperior {
+        position: absolute;
+        top: 0px;
+        height: 450px;
+        width: 450px;
+        display: none;
+        z-index: 1;
+    }
+
+    .menu {
+        position: relative;
+        height: 290px;
+        width: 290px;
+        margin: auto;
+        top: 85px;
+        border-radius: 20%;
+    }
+
+    .corpoMenuCampos {
+        position: relative;
+        height: 220px;
+        width: 220px;
+        margin-right: auto;
+        margin-left: auto;
+        top: 130px;
+    }
+
+    .menuCampos {
+        position: relative;
+        height: 220px;
+        width: 220px;
+        display: table;
+    }
+
+    #menu1Plan {
+        display: none;
+        top: 60px;
+        z-index: 10;
+    }
+
+    #menu2Do {
+        display: none;
+        right: 45px;
+        z-index: 10;
+    }
+
+        #menu2Do .interno {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -110px;
+            right: 0;
+            width: 50%;
+            height: 50%;
+            margin: auto;
+        }
+
+    #menu3Check {
+        display: none;
+        top: -40px;
+        z-index: 10;
+    }
+
+        #menu3Check .interno {
+            position: absolute;
+            bottom: 0;
+        }
+
+    #menu4Action {
+        display: none;
+        left: 45px;
+        z-index: 10;
+    }
+
+        #menu4Action .interno {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -110px;
+            right: 0;
+            width: 50%;
+            height: 50%;
+            margin: auto;
+        }
+
+
+    .botaoFecharMenu {
+        width: 220px;
+        background-color: #410404;
+        font-size: xx-small;
+        color: #fff;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    /*menu*/
+
+    #divMenu ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        width: 220px;
+        text-align: center;
+    }
+
+    #divMenu     ul li {
+            position: relative;
+        }
+
+    #divMenu li ul {
+        position: absolute;
+        left: 220px;
+        top: 0;
+        display: none;
+    }
+
+    #divMenu ul li a {
+        display: block;
+        text-decoration: none;
+        color: #000;
+        background: #eee;
+        padding: 5px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    /* Fix IE. Hide from IE Mac \*/
+    * #divMenu html ul li {
+        float: left;
+    }
+
+        * #divMenu html ul li a {
+            height: 1%;
+        }
+    /* End */
+
+    #divMenu li:hover ul {
+        display: block;
+    }
+
+    #divMenu ul li a:hover {
+        text-decoration: none;
+        font-weight: bold;
+        background: #ccc;
+    }
+</style>
+
+
+
+<div class="page-content" style="min-height: 525px; padding: 32px;">
+
+    <div id="divMenu">
+
+        <div class="fundoMenu">
+
+            <div id="menu" class="menu">
+
+            </div>
+
+        </div>
+
+        <div id="linha" class="centro">
+
+            <div id="circulo1Plan" class="circuloPDCA" onmouseover="setBgColor(this.id,'#ddb708', '#fff')" onmouseout="setBgColor(this.id,'#e5e498', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
+
+                Planejamento
+
+            </div>
+
+        </div>
+
+        <div id="linha">
+
+            <div id="circulo4Action" class="circuloPDCA" onmouseover="setBgColor(this.id,'#7b8fa4', '#fff')" onmouseout="setBgColor(this.id,'#b4bcc5', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
+
+                Problemas Crônicos e Relatos de Anomalia
+
+            </div>
+
+            <div id="circulo2Do" class="circuloPDCA" onmouseover="setBgColor(this.id,'#2d5f0f', '#fff')" onmouseout="setBgColor(this.id,'#9fe598', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
+
+                Execução da Coleta de dados e Planos de Ação
+
+            </div>
+
+        </div>
+
+        <div id="linha" class="centro">
+
+            <div id="circulo3Check" class="circuloPDCA" onmouseover="setBgColor(this.id,'#cb5454', '#fff')" onmouseout="setBgColor(this.id,'#e59898', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
+
+                Avaliação de Resultados e Comunicacão dos Desvios
+
+            </div>
+
+        </div>
+
+        <div id="fundoMenuSuperior">
+
+
+
+            <div class="corpoMenuCampos">
+
+                <div id="menu1Plan" class="menuCampos">
+
+                    <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
+
+                    <ul id="nav">
+
+                        <li><a href="#">Visão Geral da Área</a>
+
+                        <li><a href="#">Plano de Ação</a></li>
+                    </ul>
+
+                </div>
+
+                <div id="menu2Do" class="menuCampos">
+
+                    <div class="interno">
+
+                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
+
+                        <ul id="nav">
+
+                            <li>
+                                <a href="#">Relatórios de coletas</a>
+                                <ul>
+                                    <li><a href="#">Paramentrizações</a></li>
+                                    <li><a href="#">Utilização do SGQ</a></li>
+                                    <li><a href="#">Apontamentos Diários</a></li>
+                                    <li><a href="#">Verificação do tipificação</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div id="menu3Check" class="menuCampos">
+
+                    <div class="interno">
+
+                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
+
+                        <ul id="nav">
+                            <li><a href="#">Reunião Diária</a></li>
+                            <li><a href="#">Não Conformidades</a></li>
+                            <li><a href="#">Cartas CEP</a></li>
+                            <li><a href="#">Scorecard</a></li>
+                            <li><a href="#">Evolutivo dos indicadores</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div id="menu4Action" class="menuCampos">
+
+                    <div class="interno">
+
+                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
+
+                        <ul id="nav">
+                            <li><a href="#">Reincidências</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+		startList = function() {
+		if (document.all&&document.getElementById) {
+		navRoot = document.getElementById("menuDropDown");
+		for (i=0; i<navRoot.childNodes.length; i++) {
+		node = navRoot.childNodes[i];
+		if (node.nodeName=="LI") {
+		node.onmouseover=function() {
+		this.className+=" over";
+		  }
+		  node.onmouseout=function() {
+		  this.className=this.className.replace
+			(" over", "");
+		   }
+		   }
+		  }
+		 }
+		}
+		window.onload=startList;
+</script>
+
+<script>
+
+function setBgColor(id,color,font){
+
+	document.getElementById(id).style.backgroundColor = color;
+	document.getElementById(id).style.color = font;
+
+}
+
+
+function showHide(id, menu){
+
+
+	if(document.getElementById(menu).style.display == 'none'){
+
+		document.getElementById(menu).style.display = 'block';
+
+		document.getElementById('circulo1Plan').style.display = 'none';
+		document.getElementById('circulo2Do').style.display = 'none';
+		document.getElementById('circulo3Check').style.display = 'none';
+		document.getElementById('circulo4Action').style.display = 'none';
+
+		document.getElementById('menu1Plan').style.display = 'none';
+		document.getElementById('menu2Do').style.display = 'none';
+		document.getElementById('menu3Check').style.display = 'none';
+		document.getElementById('menu4Action').style.display = 'none';
+
+		document.getElementById('divMenu').style.backgroundImage = 'none';
+
+
+		var meuMenu = 'menu' + id.substring(7,20);
+
+
+		document.getElementById(id).style.display = 'inline-block';
+		document.getElementById(meuMenu).style.display = 'inline-block';
+
+	}else{
+
+		document.getElementById(menu).style.display = 'none';
+
+		document.getElementById('circulo1Plan').style.display = 'inline-block';
+		document.getElementById('circulo2Do').style.display = 'inline-block';
+		document.getElementById('circulo3Check').style.display = 'inline-block';
+		document.getElementById('circulo4Action').style.display = 'inline-block';
+
+		document.getElementById('menu1Plan').style.display = 'none';
+		document.getElementById('menu2Do').style.display = 'none';
+		document.getElementById('menu3Check').style.display = 'none';
+		document.getElementById('menu4Action').style.display = 'none';
+
+		document.getElementById('divMenu').style.backgroundImage = "url('/Imagens/setas.png')";
+
+
+	}
+
+}
+
+</script>

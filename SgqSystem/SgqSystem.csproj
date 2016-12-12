@@ -17,11 +17,15 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
-    <IISExpressSSLPort>63128</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -315,6 +319,8 @@
     <Compile Include="Controllers\Api\NewSync\NewSyncController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\GestaoController.cs" />
+    <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
     <Compile Include="Controllers\GlobalConfigController.cs" />
@@ -353,7 +359,7 @@
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
-    <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel2Level1MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyXStructureMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterMapperProfile.cs" />
@@ -676,8 +682,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Imagens\Brazil.png" />
+    <Content Include="Imagens\chart.png" />
     <Content Include="Imagens\Logo.png" />
+    <Content Include="Imagens\setas.png" />
     <Content Include="Imagens\Spain.png" />
+    <Content Include="Imagens\stack.png" />
+    <Content Include="Imagens\tablet.png" />
     <Content Include="Imagens\United-States.png" />
     <Content Include="Scripts\aes.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
@@ -999,24 +1009,6 @@
     <Content Include="Scripts\i18n\vi.js" />
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
-    <Content Include="Scripts\inputmask\inputmask\inputmask.date.extensions.js" />
-    <Content Include="Scripts\inputmask\inputmask\inputmask.dependencyLib.js" />
-    <Content Include="Scripts\inputmask\inputmask\inputmask.extensions.js" />
-    <Content Include="Scripts\inputmask\inputmask\inputmask.js" />
-    <Content Include="Scripts\inputmask\inputmask\inputmask.numeric.extensions.js" />
-    <Content Include="Scripts\inputmask\inputmask\inputmask.phone.extensions.js" />
-    <Content Include="Scripts\inputmask\inputmask\inputmask.regex.extensions.js" />
-    <Content Include="Scripts\inputmask\inputmask\jquery.inputmask.js" />
-    <Content Include="Scripts\inputmask\jquery.inputmask.bundle.js" />
-    <Content Include="Scripts\inputmask\min\inputmask\inputmask.date.extensions.min.js" />
-    <Content Include="Scripts\inputmask\min\inputmask\inputmask.dependencyLib.min.js" />
-    <Content Include="Scripts\inputmask\min\inputmask\inputmask.extensions.min.js" />
-    <Content Include="Scripts\inputmask\min\inputmask\inputmask.min.js" />
-    <Content Include="Scripts\inputmask\min\inputmask\inputmask.numeric.extensions.min.js" />
-    <Content Include="Scripts\inputmask\min\inputmask\inputmask.phone.extensions.min.js" />
-    <Content Include="Scripts\inputmask\min\inputmask\inputmask.regex.extensions.min.js" />
-    <Content Include="Scripts\inputmask\min\inputmask\jquery.inputmask.min.js" />
-    <Content Include="Scripts\inputmask\min\jquery.inputmask.bundle.min.js" />
     <Content Include="Scripts\jquery-3.1.0.js" />
     <Content Include="Scripts\jquery-3.1.0.min.js" />
     <Content Include="Scripts\jquery-3.1.0.slim.js" />
@@ -1024,7 +1016,6 @@
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.mask.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -1251,6 +1242,10 @@
     <Content Include="Scripts\theme\font-awesome-4.7.0\scss\_stacked.scss" />
     <Content Include="Scripts\theme\font-awesome-4.7.0\scss\_variables.scss" />
     <Content Include="Views\GlobalConfig\Config.cshtml" />
+    <Content Include="Views\Level1Control\Index.cshtml" />
+    <Content Include="Views\Level1Control\_ParLevel2OnParCompany.cshtml" />
+    <Content Include="Views\Level1Control\_ParLevel2OffParCompany.cshtml" />
+    <Content Include="Views\Gestao\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1264,6 +1259,7 @@
     <Folder Include="DataCollect\Plugins\jquery\" />
     <Folder Include="DataCollect\Plugins\sidebar\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\EspecificarMonitoramentos\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>
@@ -1296,7 +1292,7 @@
   <ItemGroup>
     <Content Include="App_GlobalResources\Resource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource2.designer.cs</LastGenOutput>
+      <LastGenOutput>Resource1.designer.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -1323,9 +1319,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63128</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost:63128/</IISAppRootUrl>
+          <IISUrl>http://localhost:2469/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>http://eduardolucasmaia.ngrok.io:63128/</CustomServerUrl>

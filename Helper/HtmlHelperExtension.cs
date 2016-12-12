@@ -13,6 +13,15 @@ namespace Helper
         }
 
 
+        /// <summary>
+        /// Retorna input formatado para decimal no caso de resources multiregião
+        /// </summary>
+        /// <param name="html"></param>
+        /// <param name="name"></param>
+        /// <param name="valor"></param>
+        /// <param name="idInput"></param>
+        /// <param name="classe"></param>
+        /// <returns></returns>
         public static MvcHtmlString DecimalFormatado(this HtmlHelper html,
                                                 string name,
                                                 decimal valor,
