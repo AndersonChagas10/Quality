@@ -1,6 +1,6 @@
 ﻿GuardJs = {
 
-    mascaraPorcentegem:  function(seletor){
+    mascaraPorcentegem:  function(e){
         if('@Resources.Resource.resource_id' == "en_us")
             $(e).inputmask({ mask: "999.99%" });
         else

@@ -9,16 +9,20 @@ namespace SgqSystem
         {
             #region Scripts
 
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+            bundles.Add(new ScriptBundle("~/bundles/jquery")
+                .Include("~/Scripts/jquery-{version}.js"));
 
             //HighCharts
             bundles.Add(new ScriptBundle("~/bundles/hc")
                 .Include("~/Scripts/highcharts/4.2.0/highcharts.js")
             );
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
+            bundles.Add(new ScriptBundle("~/bundles/Guard")
+             .Include("~/Scripts/GuardJs.js")
+         );
+
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap")
+                .Include("~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/ScriptTables").Include(
