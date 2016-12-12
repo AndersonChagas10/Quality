@@ -380,6 +380,9 @@
     <Compile Include="ParLevel2Level1.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParLevel2XHeaderField.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParLevel3.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -522,6 +525,9 @@
     <Compile Include="Resultados_BKP_OCT.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ResultLevel2HeaderField.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Result_Level3.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -572,6 +578,9 @@
     </Compile>
     <Compile Include="Sugestoes.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TarefaAmostras.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
