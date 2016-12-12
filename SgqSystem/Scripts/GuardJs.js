@@ -1,10 +1,11 @@
 ﻿GuardJs = {
 
+    mascaraCampoCalculado: function (e) {
+      $(e).inputmask({ mask: '9{1,10}x10^9{1,5}', reverse: true, clearIfNotMatch: true });
+
+    },
     mascaraPorcentegem:  function(e){
-        if('@Resources.Resource.resource_id' == "en_us")
-            $(e).inputmask({ mask: "999.99%" });
-        else
-            $(e).inputmask({ mask: "999,99%" });
+     
     },
 
     message: "One or more fields are requireds: ",

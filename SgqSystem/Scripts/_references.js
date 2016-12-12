@@ -120,7 +120,6 @@
 /// <reference path="inputmask/min/inputmask/inputmask.regex.extensions.min.js" />
 /// <reference path="inputmask/min/inputmask/jquery.inputmask.min.js" />
 /// <reference path="inputmask/min/jquery.inputmask.bundle.min.js" />
-/// <reference path="jquery.mask.min.js" />
 /// <reference path="jquery.validate.js" />
 /// <reference path="jquery.validate.unobtrusive.js" />
 /// <reference path="jquery-3.1.0.js" />

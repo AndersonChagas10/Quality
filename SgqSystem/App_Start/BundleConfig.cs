@@ -19,8 +19,12 @@ namespace SgqSystem
 
             bundles.Add(new ScriptBundle("~/bundles/Guard")
              .Include("~/Scripts/GuardJs.js")
-         );
+            );
 
+            bundles.Add(new ScriptBundle("~/bundles/mask")
+             .Include("~/Scripts/inputmask/min/jquery.inputmask.bundle.min.js")
+            );
+           
             bundles.Add(new ScriptBundle("~/bundles/bootstrap")
                 .Include("~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
