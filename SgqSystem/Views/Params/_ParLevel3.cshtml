@@ -49,6 +49,23 @@
                         <span id="ParIntervalosLabel"></span>
                     </td>
                 </tr>
+                             
+                <tr class="row ParCalculado" style="display: none;">
+                    @Table.GerarColunaButton(@Html.DropDownList("ParCalculado.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
+                    @Table.GerarColuna(@Html.TextBox("ParCalculado.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
+                    @Table.GerarColunaButton(@Html.TextBox("ParCalculado.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
+                    <td style="display: none;">
+                        <label>@Resources.Resource.values_between</label>
+                        <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
+                    </td>
+                </tr>
+                <tr class="row" style="display:none;padding:10px;">
+                    <td colspan="3">
+                        *
+                        <span id="ParIntervalosLabel"></span>
+                    </td>
+                </tr>
+  
                 <tr class="row ParBinarios" style="display: none;">
                     @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
                     @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
@@ -349,51 +366,6 @@
     $('#pesoDefinido').html(hasPeso).show();
     $('#painelPeso').show();
 
-    /*Reincidencia*/
-    //var counterReincidencial3 = 0;
-    //function l3RemoveReincidencia(e) {
-    //    e.parents('tr').find('input[type="hidden"]').attr("disabled", false).attr("name", e.parents('tr').find('input[type="hidden"]').attr('name') + "[" + counterReincidencial3 + "]");
-    //    e.parents('tr').hide();
-    //    counterReincidencial3++;
-    //    console.log(e.parents('tr'));
-    //    updateAllTables();
-    //}
-    //$('#l3BtnAddFrequenciaReincidencia').click(function (e) {
-    //    e.preventDefault();
-    //    if($('#l3SelectFrequenciaReincidencia :selected').val() <= 0){
-    //        openMessageModal("Alerta", "É necessário selecionar a Frequência");
-    //        //alert('É necessário selecionar a Frequência');
-    //        return;
-    //    }
-    //    if($('#l3InputNumeroNC').val().length <= 0){
-    //        openMessageModal("Alerta", "É necessário informar o Número de NC");
-    //        //alert('É necessário informar o Número de NC');
-    //        return;
-    //    }
-    //    if($('#l3InputVigencia').val().length <= 0){
-    //        openMessageModal("Alerta", "É necessário selecionar a Vigência");
-    //        //alert('É necessário selecionar a Vigência');
-    //        return;
-    //    }
-    //    var NcNumber = $('#l3InputNumeroNC').val();
-    //    var Vigencia = $('#l3InputVigencia').val();
-    //    var idFrequencia = $('#l3SelectFrequenciaReincidencia').val()
-    //    var includeItem = true;
-    //    if (includeItem == true) {
-    //        var indexValue = $('#l3TableRepetition tbody tr').not('.existent').length -1;
-    //        var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.parLevel3Dto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
-    //                          '<input class="LocalLevel3Class" type="hidden" name="paramsDto.parLevel3Dto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
-    //                          '<input class="LocalLevel3Class" type="hidden" name="paramsDto.parLevel3Dto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
-    //        var elemento = $('<tr><td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#l3SelectFrequenciaReincidencia option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" onclick="RemoverReincidencia($(this));"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td><tr>');
-    //        $('#l3TableRepetition > tbody').append(elemento[0]);
-    //        $('#l3SelectFrequenciaReincidencia').prop('selectedIndex', 0);
-    //        $('#l3InputNumeroNC, #l3InputVigencia').val("");
-    //        $('#l3InputNumeroNC').focus();
-    //        updateAllTables();
-    //    }
-    //});
-    /*Fim Reincidencia*/
-
     $('#btnUnidadeMedida').click(function (e) {
         $('#modalUnidadeMedida').modal({ backdrop: false });
     });
@@ -488,46 +460,43 @@
 
         //Binários
         if ($("#selectTipoInput option:selected").val() == "1") {
+            resetaParIntervalos();
+            resetaParBinarios();
             $('.ParIntervalos').hide();
             $('.ParBinarios').fadeIn();
             $('#companyValueL3').fadeIn();
-            $('#selectUnidadeDeMedidas').val(-1);
-            $('#paramsDto_parLevel3Value_IntervalMin').val("");
-            $('#paramsDto_parLevel3Value_IntervalMax').val("");
-            $('#parIntervalosType').empty().parents('td').hide();
         }
         //Intervalos
         if ($("#selectTipoInput option:selected").val() == "3") {
+            resetaParIntervalos();
+            resetaParBinarios();
             $('.ParBinarios').hide();
             $('.ParIntervalos').fadeIn();
-            $('#selectConforme').val(-1);
-            $('#selectNaoConforme').val(-1);
-            $('#companyValueL3').fadeIn();
+        }
 
+        if ($("#selectTipoInput option:selected").val() == "4") {
+            resetaParIntervalos();
+            resetaParBinarios();
+
+            $('.ParBinarios').hide();
+            $('.ParIntervalos').hide();
         }
     });
 
-    $('#selectTipoInput').change();
+    function resetaParIntervalos(){
+        $('#selectUnidadeDeMedidas').val(-1);
+        $('#paramsDto_parLevel3Value_IntervalMin').val("");
+        $('#paramsDto_parLevel3Value_IntervalMax').val("");
+        $('#parIntervalosType').empty().parents('td').hide();
+    }
+    
+    function resetaParBinarios(){
+        $('#selectConforme').val(-1);
+        $('#selectNaoConforme').val(-1);
+        $('#companyValueL3').fadeIn();
+    }
 
-    //$('#btnAddFrequenciaReincidenciaLevel3').click(function (e) {
-    //    e.preventDefault();
-    //    var NcNumber = $('#inputNumeroNCLevel3').val();
-    //    var Vigencia = $('#inputVigenciaLevel3').val();
-    //    var idFrequencia = $('#selectFrequenciaReincidenciaLevel3').val()
-    //    var includeItem = true;
-    //    if (includeItem == true) {
-    //        var indexValue = $('#tableRepetitionLevel3 tbody tr').length;
-    //        var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
-    //                          '<input class="LocalLevel3Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
-    //                          '<input class="LocalLevel3Class" type="hidden" name="paramsDto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
-    //        var elemento = $('<tr><td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#selectFrequenciaReincidenciaLevel3 option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" id="btnRemoverFrequenciaReincidenciaLevel3"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td><tr>');
-    //        $('#tableRepetitionLevel3 tbody').append(elemento);
-    //        $('#selectFrequenciaReincidenciaLevel3').prop('selectedIndex', 0);
-    //        $('#inputNumeroNCLevel3, #inputVigencia').val("");
-    //        $('#inputNumeroNCLevel3').focus();
-    //        updateAllTables();
-    //    }
-    //});
+    $('#selectTipoInput').change();
 
     function clicModalBinarioSave () {
         var valInpPos = $('#modalInputPositive').val();
@@ -558,6 +527,9 @@
         modalPontos.appendTo('body');
         if(grouLevel2Selected > 0)
             $('#paramsDto_parLevel3Dto_listGroupsLevel2').val(grouLevel2Selected)
+
+        $('#ParCalculado_IntervalMax').inputmask({ mask: '9{1,10}x10^9{1,5}', reverse: true, clearIfNotMatch: true });
+        $('#ParCalculado_IntervalMax').inputmask({ mask: '9{1,10}x10^9{1,5}', reverse: true, clearIfNotMatch: true });
 
         updateAllTables();
 
