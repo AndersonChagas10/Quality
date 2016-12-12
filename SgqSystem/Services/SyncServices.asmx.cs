@@ -2145,11 +2145,9 @@ namespace SgqSystem.Services
                 
             }
 
-            string painellevel2 = html.listgroupItem(
-                                                        outerhtml: painelLevel2HeaderListHtml,
-
-                                           classe: "painel painelLevel02 row");
-
+            string painellevel2 = html.listgroupItem(outerhtml: painelLevel2HeaderListHtml,
+                                                        classe: "painel painelLevel02 row");
+            
             foreach (var parlevel2 in parlevel02List)
             {
                 int evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
@@ -2178,7 +2176,7 @@ namespace SgqSystem.Services
                 headerCounter = html.div(
                                     //aqui vai os botoes
                                     outerhtml: headerCounter,
-                                    classe: "counters col-xs-4"
+                                    classe: "counters col-xs-4 cursorPointer"
                                     );
                 string classXSLevel2 = " col-xs-5";
                 string counters = html.div(
@@ -2203,7 +2201,7 @@ namespace SgqSystem.Services
                 counters = html.div(
                                     //aqui vai os botoes
                                     outerhtml: counters,
-                                    classe: "counters col-xs-4"
+                                    classe: "counters col-xs-4 cursorPointer"
                                     );
 
                 string buttons = null;
@@ -2285,6 +2283,10 @@ namespace SgqSystem.Services
 
             string parLevel3Group = null;
 
+            string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
+                                                        classe: "painel painelLevel02 row"
+                                                    );
+
             foreach (var parLevel3 in parlevel3List)
             {
 
@@ -2327,7 +2329,7 @@ namespace SgqSystem.Services
                                     );
                 string counters = html.div(
                                             outerhtml: input,
-                                            classe: "col-xs-3 counters"
+                                            classe: "col-xs-3 counters cursorPointer"
                                           );
                 string buttons = html.div(
                                            outerhtml: btnNaoAvaliado,
@@ -2372,7 +2374,7 @@ namespace SgqSystem.Services
                                            classe: "level3Group",
                                            tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                                           outerhtml: painellevel3 +
+                                           outerhtml: painellevel3 + panelButton+
                                                       parLevel3Group
                                          );
             }
