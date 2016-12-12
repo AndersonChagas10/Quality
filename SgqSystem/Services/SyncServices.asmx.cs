@@ -2075,74 +2075,63 @@ namespace SgqSystem.Services
 
             foreach (var header in ParLevel2HeaderDB.getHeaderByLevel1(ParLevel1.Id))
             {
+                var label = "<label class='font-small'>" + header.ParHeaderField_Name + "</label>";
+
+                var form_control = "";
+
                 //ParFieldType 
                 switch (header.ParFieldType_Id)
                 {
                     //Multipla Escolha
-                    case 1:
+                    case 1:                        
                         var listMultiple = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
-                        var htmlMultiple = "";
-
+                        var optionsMultiple = "";
                         foreach (var value in listMultiple)
                         {
-                            htmlMultiple += "<option value='" + value.Id + "'>" + value.Name + "</option>";
+                            optionsMultiple += "<option value='" + value.Id + "'>" + value.Name + "</option>";
                         }
-
-                        painelLevel2HeaderListHtml += html.div(
-                                            outerhtml: "<select class='form-control input-sm'>" + htmlMultiple + "</select>",
-                                            classe: "col-xs-4 col-md-3 col-sm-3 col-lg-3"
-                                            );
+                        form_control = "<select class='form-control input-sm'>" + optionsMultiple + "</select>";
                         break;
-
                     //Integrações
                     case 2:
-                        painelLevel2HeaderListHtml += html.div(
-                                                outerhtml: "<div class='form-control input-sm'>" + header.ParHeaderField_Name + "</div>",
-                                                classe: "col-xs-4 col-md-3 col-sm-3 col-lg-3"
-                                              );
+                        form_control = "<div class='form-control input-sm'>" + header.ParHeaderField_Name + "</div>";
                         break;
-
                     //Binário
                     case 3:
                         var listBinario = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
-                        var htmlBinario = "";
-
+                        var optionsBinario = "";
                         foreach (var value in listBinario)
                         {
-                            htmlBinario += "<option value='" + value.Id + "'>" + value.Name + "</option>";
+                            optionsBinario += "<option value='" + value.Id + "'>" + value.Name + "</option>";
                         }
-
-                        painelLevel2HeaderListHtml += html.div(
-                                            outerhtml: "<select class='form-control input-sm'>" + htmlBinario + "</select>",
-                                            classe: "col-xs-4 col-md-3 col-sm-3 col-lg-3"
-                                            );
+                        form_control = "<select class='form-control input-sm'>" + optionsBinario + "</select>";
                         break;
-
                     //Texto
                     case 4:
-                        painelLevel2HeaderListHtml += html.div(
-                                                outerhtml: "<input class='form-control input-sm' type='text' id='" + header.ParHeaderField_Id + "' placeholder='" + header.ParHeaderField_Name + "'>",
-                                                classe: "col-xs-4 col-md-3 col-sm-3 col-lg-3"
-                                              );
+                        form_control = "<input class='form-control input-sm' type='text' id='" + header.ParHeaderField_Id + "' placeholder='" + header.ParHeaderField_Name + "'>";
                         break;
-
                     //Numérico
                     case 5:
-                        painelLevel2HeaderListHtml += html.div(
-                                                outerhtml: "<input class='form-control input-sm' type='number' id='" + header.ParHeaderField_Id + "' placeholder='" + header.ParHeaderField_Name + "'>",
-                                                classe: "col-xs-4 col-md-3 col-sm-3 col-lg-3"
-                                              );
+                        form_control = "<input class='form-control input-sm' type='number' id='" + header.ParHeaderField_Id + "' placeholder='" + header.ParHeaderField_Name + "'>";
                         break;
-
                     //Data
                     case 6:
-                        painelLevel2HeaderListHtml += html.div(
-                                                outerhtml: "<input class='form-control input-sm' type='date' id='" + header.ParHeaderField_Id + "' placeholder='" + header.ParHeaderField_Name + "'>",
-                                                classe: "col-xs-4 col-md-3 col-sm-3 col-lg-3"
-                                              );
+                        form_control = "<input class='form-control input-sm' type='date' id='" + header.ParHeaderField_Id + "' placeholder='" + header.ParHeaderField_Name + "'>";
                         break;
                 }
-                
+
+                var form_group = html.div(
+                                            outerhtml: label + form_control,
+                                            classe: "form-group",
+                                            style: "margin-bottom: 4px;"
+                                            );
+
+                painelLevel2HeaderListHtml += html.div(
+                                            outerhtml: form_group,
+                                            classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                                            style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                            );
+
             }
 
             string painellevel2 = html.listgroupItem(outerhtml: painelLevel2HeaderListHtml,
