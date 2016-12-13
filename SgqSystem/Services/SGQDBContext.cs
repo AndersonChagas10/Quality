@@ -309,7 +309,10 @@ namespace SGQDBContext
                          "where                                                                                                                    " +
                          "PD.Id = 1 and                                                                                                            " +
                          "PL.ParLevel1_Id = "+ ParLevel1_Id + " and                                                                                " +
-                         "PL.IsActive = 1 and PH.IsActive = 1 and PD.IsActive = 1;                                                                 ";
+                         "PL.IsActive = 1 and PH.IsActive = 1 and PD.IsActive = 1                                                                  " +
+                         "GROUP BY PH.Id, PH.Name, PT.Id;                                                                                          ";
+
+            
 
             var parLevel3List = db.Query<ParLevel2Header>(sql);
 
