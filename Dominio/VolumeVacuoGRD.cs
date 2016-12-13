@@ -12,7 +12,7 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class CepRecortes
+    public partial class VolumeVacuoGRD
     {
         public int Id { get; set; }
         public Nullable<int> Indicador { get; set; }
@@ -20,14 +20,8 @@ namespace Dominio
         public Nullable<System.DateTime> Data { get; set; }
         public string Departamento { get; set; }
         public Nullable<int> HorasTrabalhadasPorDia { get; set; }
-        public Nullable<int> QtdadeMediaKgRecProdDia { get; set; }
-        public Nullable<int> QtdadeMediaKgRecProdHora { get; set; }
-        public Nullable<int> NBR { get; set; }
-        public Nullable<int> TotalKgAvaliaHoraProd { get; set; }
-        public Nullable<int> QtadeTrabEsteiraRecortes { get; set; }
-        public Nullable<int> TotalAvaliaColaborEsteirHoraProd { get; set; }
-        public Nullable<int> TamanhoAmostra { get; set; }
-        public Nullable<int> TotalAmostraAvaliaColabEsteiraHoraProd { get; set; }
+        public Nullable<int> AmostraPorDia { get; set; }
+        public Nullable<int> QtdadeFamiliaProduto { get; set; }
         public Nullable<int> Avaliacoes { get; set; }
         public Nullable<int> Amostras { get; set; }
         public Nullable<System.DateTime> AddDate { get; set; }

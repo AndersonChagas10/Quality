@@ -32,8 +32,6 @@ namespace Dominio
         }
     
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
-        public virtual DbSet<CepDesossa> CepDesossa { get; set; }
-        public virtual DbSet<CepRecortes> CepRecortes { get; set; }
         public virtual DbSet<CollectionHtml> CollectionHtml { get; set; }
         public virtual DbSet<CollectionJson> CollectionJson { get; set; }
         public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
@@ -91,7 +89,6 @@ namespace Dominio
         public virtual DbSet<ParSample> ParSample { get; set; }
         public virtual DbSet<ParStructure> ParStructure { get; set; }
         public virtual DbSet<ParStructureGroup> ParStructureGroup { get; set; }
-        public virtual DbSet<Pcc1b> Pcc1b { get; set; }
         public virtual DbSet<Period> Period { get; set; }
         public virtual DbSet<Result_Level3> Result_Level3 { get; set; }
         public virtual DbSet<Shift> Shift { get; set; }
@@ -99,7 +96,10 @@ namespace Dominio
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<UnitUser> UnitUser { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
-        public virtual DbSet<VacuoGRD> VacuoGRD { get; set; }
+        public virtual DbSet<VolumeCepDesossa> VolumeCepDesossa { get; set; }
+        public virtual DbSet<VolumeCepRecortes> VolumeCepRecortes { get; set; }
+        public virtual DbSet<VolumePcc1b> VolumePcc1b { get; set; }
+        public virtual DbSet<VolumeVacuoGRD> VolumeVacuoGRD { get; set; }
         public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
         public virtual DbSet<ResultLevel2HeaderField> ResultLevel2HeaderField { get; set; }
     }

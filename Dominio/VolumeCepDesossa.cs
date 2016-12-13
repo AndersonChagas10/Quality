@@ -12,7 +12,7 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class CepDesossa
+    public partial class VolumeCepDesossa
     {
         public int Id { get; set; }
         public Nullable<int> Indicador { get; set; }

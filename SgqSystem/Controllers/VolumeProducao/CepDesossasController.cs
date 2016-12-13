@@ -9,11 +9,11 @@ namespace SgqSystem.Controllers
     public class CepDesossasController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
-
+        
         // GET: CepDesossas
         public ActionResult Index()
         {
-            var cepDesossa = db.CepDesossa.Include(c => c.ParCompany).Include(c => c.ParLevel1);
+            var cepDesossa = db.VolumeCepDesossa.Include(c => c.ParCompany).Include(c => c.ParLevel1);
             return View(cepDesossa.ToList());
         }
 
@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CepDesossa cepDesossa = db.CepDesossa.Find(id);
+            VolumeCepDesossa cepDesossa = db.VolumeCepDesossa.Find(id);
             if (cepDesossa == null)
             {
                 return HttpNotFound();
@@ -45,11 +45,11 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] CepDesossa cepDesossa)
+        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepDesossa cepDesossa)
         {
             if (ModelState.IsValid)
             {
-                db.CepDesossa.Add(cepDesossa);
+                db.VolumeCepDesossa.Add(cepDesossa);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CepDesossa cepDesossa = db.CepDesossa.Find(id);
+            VolumeCepDesossa cepDesossa = db.VolumeCepDesossa.Find(id);
             if (cepDesossa == null)
             {
                 return HttpNotFound();
@@ -81,7 +81,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] CepDesossa cepDesossa)
+        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepDesossa cepDesossa)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CepDesossa cepDesossa = db.CepDesossa.Find(id);
+            VolumeCepDesossa cepDesossa = db.VolumeCepDesossa.Find(id);
             if (cepDesossa == null)
             {
                 return HttpNotFound();
@@ -114,8 +114,8 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CepDesossa cepDesossa = db.CepDesossa.Find(id);
-            db.CepDesossa.Remove(cepDesossa);
+            VolumeCepDesossa cepDesossa = db.VolumeCepDesossa.Find(id);
+            db.VolumeCepDesossa.Remove(cepDesossa);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

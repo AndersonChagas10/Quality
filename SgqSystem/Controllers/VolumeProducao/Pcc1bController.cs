@@ -13,7 +13,7 @@ namespace SgqSystem.Controllers
         // GET: Pcc1b
         public ActionResult Index()
         {
-            var pcc1b = db.Pcc1b.Include(p => p.ParCompany).Include(p => p.ParLevel1);
+            var pcc1b = db.VolumePcc1b.Include(p => p.ParCompany).Include(p => p.ParLevel1);
             return View(pcc1b.ToList());
         }
 
@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Pcc1b pcc1b = db.Pcc1b.Find(id);
+            VolumePcc1b pcc1b = db.VolumePcc1b.Find(id);
             if (pcc1b == null)
             {
                 return HttpNotFound();
@@ -45,11 +45,11 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,VolumeAnimais,Quartos,Meta,ToleranciaDia,Nivel11,Nivel12,Nivel13,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] Pcc1b pcc1b)
+        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,VolumeAnimais,Quartos,Meta,ToleranciaDia,Nivel11,Nivel12,Nivel13,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumePcc1b pcc1b)
         {
             if (ModelState.IsValid)
             {
-                db.Pcc1b.Add(pcc1b);
+                db.VolumePcc1b.Add(pcc1b);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Pcc1b pcc1b = db.Pcc1b.Find(id);
+            VolumePcc1b pcc1b = db.VolumePcc1b.Find(id);
             if (pcc1b == null)
             {
                 return HttpNotFound();
@@ -81,7 +81,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,VolumeAnimais,Quartos,Meta,ToleranciaDia,Nivel11,Nivel12,Nivel13,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] Pcc1b pcc1b)
+        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,VolumeAnimais,Quartos,Meta,ToleranciaDia,Nivel11,Nivel12,Nivel13,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumePcc1b pcc1b)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Pcc1b pcc1b = db.Pcc1b.Find(id);
+            VolumePcc1b pcc1b = db.VolumePcc1b.Find(id);
             if (pcc1b == null)
             {
                 return HttpNotFound();
@@ -114,8 +114,8 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Pcc1b pcc1b = db.Pcc1b.Find(id);
-            db.Pcc1b.Remove(pcc1b);
+            VolumePcc1b pcc1b = db.VolumePcc1b.Find(id);
+            db.VolumePcc1b.Remove(pcc1b);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
