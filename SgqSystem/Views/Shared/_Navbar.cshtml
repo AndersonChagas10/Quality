@@ -1,7 +1,8 @@
 ﻿@{
     Layout = null;
 
-    var urlDataCollection = ViewBag.UrlDataCollectBR;
+    //var urlDataCollection = ViewBag.UrlDataCollectBR;
+    var urlDataCollection = Url.Action("", "DataCollect");
     var urlCorrectiveActionReport = Url.Action("CorrectiveActionReport", "Reports");
     var urlDataCollectionReport = Url.Action("DataCollectionReport", "Reports");
     var urlCustomization = Url.Action("Index", "Params");

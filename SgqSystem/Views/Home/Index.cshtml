@@ -1,5 +1,6 @@
 ﻿@{
-    var urlDataCollection = ViewBag.UrlDataCollectBR;
+    //var urlDataCollection = ViewBag.UrlDataCollectBR;
+    var urlDataCollection = Url.Action("", "DataCollect");
     var urlManagement = Url.Action("Index","Gestao");
     var urlCustomization = Url.Action("Index", "Params");
     var version = ViewBag.Asembly;
