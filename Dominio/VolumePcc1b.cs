@@ -12,7 +12,7 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class Pcc1b
+    public partial class VolumePcc1b
     {
         public int Id { get; set; }
         public Nullable<int> Indicador { get; set; }

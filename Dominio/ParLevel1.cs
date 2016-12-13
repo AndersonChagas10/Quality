@@ -17,14 +17,14 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParLevel1()
         {
-            this.CepDesossa = new HashSet<CepDesossa>();
-            this.CepRecortes = new HashSet<CepRecortes>();
             this.CollectionLevel2 = new HashSet<CollectionLevel2>();
             this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
             this.ParCounterXLocal = new HashSet<ParCounterXLocal>();
             this.ParGoal = new HashSet<ParGoal>();
-            this.Pcc1b = new HashSet<Pcc1b>();
-            this.VacuoGRD = new HashSet<VacuoGRD>();
+            this.VolumeCepDesossa = new HashSet<VolumeCepDesossa>();
+            this.VolumeCepRecortes = new HashSet<VolumeCepRecortes>();
+            this.VolumePcc1b = new HashSet<VolumePcc1b>();
+            this.VolumeVacuoGRD = new HashSet<VolumeVacuoGRD>();
             this.ParLevel2Level1 = new HashSet<ParLevel2Level1>();
             this.ParLevel1XCluster = new HashSet<ParLevel1XCluster>();
             this.ParLevel1XHeaderField = new HashSet<ParLevel1XHeaderField>();
@@ -56,10 +56,6 @@ namespace Dominio
         public bool IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CepDesossa> CepDesossa { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CepRecortes> CepRecortes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
@@ -70,9 +66,13 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParGoal> ParGoal { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Pcc1b> Pcc1b { get; set; }
+        public virtual ICollection<VolumeCepDesossa> VolumeCepDesossa { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VacuoGRD> VacuoGRD { get; set; }
+        public virtual ICollection<VolumeCepRecortes> VolumeCepRecortes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VolumePcc1b> VolumePcc1b { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VolumeVacuoGRD> VolumeVacuoGRD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel2Level1> ParLevel2Level1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

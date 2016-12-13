@@ -13,7 +13,7 @@ namespace SgqSystem.Controllers
         // GET: CepRecortes
         public ActionResult Index()
         {
-            var cepRecortes = db.CepRecortes.Include(c => c.ParCompany).Include(c => c.ParLevel1);
+            var cepRecortes = db.VolumeCepRecortes.Include(c => c.ParCompany).Include(c => c.ParLevel1);
             return View(cepRecortes.ToList());
         }
 
@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CepRecortes cepRecortes = db.CepRecortes.Find(id);
+            VolumeCepRecortes cepRecortes = db.VolumeCepRecortes.Find(id);
             if (cepRecortes == null)
             {
                 return HttpNotFound();
@@ -45,11 +45,11 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,QtdadeMediaKgRecProdDia,QtdadeMediaKgRecProdHora,NBR,TotalKgAvaliaHoraProd,QtadeTrabEsteiraRecortes,TotalAvaliaColaborEsteirHoraProd,TamanhoAmostra,TotalAmostraAvaliaColabEsteiraHoraProd,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] CepRecortes cepRecortes)
+        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,QtdadeMediaKgRecProdDia,QtdadeMediaKgRecProdHora,NBR,TotalKgAvaliaHoraProd,QtadeTrabEsteiraRecortes,TotalAvaliaColaborEsteirHoraProd,TamanhoAmostra,TotalAmostraAvaliaColabEsteiraHoraProd,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepRecortes cepRecortes)
         {
             if (ModelState.IsValid)
             {
-                db.CepRecortes.Add(cepRecortes);
+                db.VolumeCepRecortes.Add(cepRecortes);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CepRecortes cepRecortes = db.CepRecortes.Find(id);
+            VolumeCepRecortes cepRecortes = db.VolumeCepRecortes.Find(id);
             if (cepRecortes == null)
             {
                 return HttpNotFound();
@@ -81,7 +81,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,QtdadeMediaKgRecProdDia,QtdadeMediaKgRecProdHora,NBR,TotalKgAvaliaHoraProd,QtadeTrabEsteiraRecortes,TotalAvaliaColaborEsteirHoraProd,TamanhoAmostra,TotalAmostraAvaliaColabEsteiraHoraProd,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] CepRecortes cepRecortes)
+        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,QtdadeMediaKgRecProdDia,QtdadeMediaKgRecProdHora,NBR,TotalKgAvaliaHoraProd,QtadeTrabEsteiraRecortes,TotalAvaliaColaborEsteirHoraProd,TamanhoAmostra,TotalAmostraAvaliaColabEsteiraHoraProd,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepRecortes cepRecortes)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CepRecortes cepRecortes = db.CepRecortes.Find(id);
+            VolumeCepRecortes cepRecortes = db.VolumeCepRecortes.Find(id);
             if (cepRecortes == null)
             {
                 return HttpNotFound();
@@ -114,8 +114,8 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CepRecortes cepRecortes = db.CepRecortes.Find(id);
-            db.CepRecortes.Remove(cepRecortes);
+            VolumeCepRecortes cepRecortes = db.VolumeCepRecortes.Find(id);
+            db.VolumeCepRecortes.Remove(cepRecortes);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

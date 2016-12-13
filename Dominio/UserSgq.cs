@@ -36,6 +36,7 @@ namespace Dominio
         public string FullName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public Nullable<int> ParCompany_Id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel02> CollectionLevel02 { get; set; }
