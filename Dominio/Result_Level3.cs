@@ -25,6 +25,7 @@ namespace Dominio
         public string ValueText { get; set; }
         public Nullable<bool> IsConform { get; set; }
         public Nullable<bool> IsNotEvaluate { get; set; }
+        public Nullable<decimal> Defects { get; set; }
     
         public virtual CollectionLevel2 CollectionLevel2 { get; set; }
         public virtual ParLevel3 ParLevel3 { get; set; }

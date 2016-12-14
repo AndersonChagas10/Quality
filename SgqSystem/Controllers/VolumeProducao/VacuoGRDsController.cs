@@ -13,7 +13,7 @@ namespace SgqSystem.Controllers
         // GET: VacuoGRDs
         public ActionResult Index()
         {
-            var vacuoGRD = db.VacuoGRD.Include(v => v.ParCompany).Include(v => v.ParLevel1);
+            var vacuoGRD = db.VolumeVacuoGRD.Include(v => v.ParCompany).Include(v => v.ParLevel1);
             return View(vacuoGRD.ToList());
         }
 
@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VacuoGRD vacuoGRD = db.VacuoGRD.Find(id);
+            VolumeVacuoGRD vacuoGRD = db.VolumeVacuoGRD.Find(id);
             if (vacuoGRD == null)
             {
                 return HttpNotFound();
@@ -45,11 +45,11 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VacuoGRD vacuoGRD)
+        public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeVacuoGRD vacuoGRD)
         {
             if (ModelState.IsValid)
             {
-                db.VacuoGRD.Add(vacuoGRD);
+                db.VolumeVacuoGRD.Add(vacuoGRD);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VacuoGRD vacuoGRD = db.VacuoGRD.Find(id);
+            VolumeVacuoGRD vacuoGRD = db.VolumeVacuoGRD.Find(id);
             if (vacuoGRD == null)
             {
                 return HttpNotFound();
@@ -81,7 +81,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VacuoGRD vacuoGRD)
+        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeVacuoGRD vacuoGRD)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VacuoGRD vacuoGRD = db.VacuoGRD.Find(id);
+            VolumeVacuoGRD vacuoGRD = db.VolumeVacuoGRD.Find(id);
             if (vacuoGRD == null)
             {
                 return HttpNotFound();
@@ -114,8 +114,8 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            VacuoGRD vacuoGRD = db.VacuoGRD.Find(id);
-            db.VacuoGRD.Remove(vacuoGRD);
+            VolumeVacuoGRD vacuoGRD = db.VolumeVacuoGRD.Find(id);
+            db.VolumeVacuoGRD.Remove(vacuoGRD);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
