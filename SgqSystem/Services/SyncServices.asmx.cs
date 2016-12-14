@@ -258,20 +258,20 @@ namespace SgqSystem.Services
 
                 string level02HeaderJSon = result[13];
                 //Gera o Cabeçalho do Level02
-                //level02HeaderJSon += ";" + phase;
-                //level02HeaderJSon += ";" + startphasedate;
+                level02HeaderJSon += ";" + phase;
+                level02HeaderJSon += ";" + startphasedate;
                 //level02HeaderJSon += ";" + cattletype;
                 //level02HeaderJSon += ";" + chainspeed;
                 //level02HeaderJSon += ";" + lotnumber;
                 //level02HeaderJSon += ";" + mudscore;
-                //level02HeaderJSon += ";" + consecutivefailurelevel;
-                //level02HeaderJSon += ";" + consecutivefailuretotal;
-                //level02HeaderJSon += ";" + notavaliable;
-                //level02HeaderJSon += ";" + completed;
-                //level02HeaderJSon += ";" + havePhases;
-                //level02HeaderJSon += ";" + CollectionLevel02Id;
-                //level02HeaderJSon += ";" + correctiveActionCompleted;
-                //level02HeaderJSon += ";" + completeReaudit;
+                level02HeaderJSon += ";" + consecutivefailurelevel;
+                level02HeaderJSon += ";" + consecutivefailuretotal;
+                level02HeaderJSon += ";" + notavaliable;
+                level02HeaderJSon += ";" + completed;
+                level02HeaderJSon += ";" + havePhases;
+                level02HeaderJSon += ";" + CollectionLevel02Id;
+                level02HeaderJSon += ";" + correctiveActionCompleted;
+                level02HeaderJSon += ";" + completeReaudit;
 
                 //Verifica o Resultado do Level03
                 string level03ResultJson = result[22];
@@ -381,10 +381,10 @@ namespace SgqSystem.Services
 
             if(id > 0)
             {
-                query = "[Id] = '" + id + "'";
+                query = "[Id] = '" + id + "' AND";
             }
 
-            string sql = "SELECT [level01_Id], [Level01CollectionDate], [level02_Id], [Level02CollectionDate], [Unit_Id],[Period], [Shift], [AppVersion], [Ambient], [Device_Id], [Device_Mac] , [Key], [Level03ResultJSon], [Id], [Level02HeaderJson], [Evaluate],[Sample],[AuditorId], [Reaudit], [CorrectiveActionJson],[haveReaudit],[haveCorrectiveAction],[ReauditNumber]  FROM CollectionJson WHERE " + device + " [IsProcessed] = 0";
+            string sql = "SELECT [level01_Id], [Level01CollectionDate], [level02_Id], [Level02CollectionDate], [Unit_Id],[Period], [Shift], [AppVersion], [Ambient], [Device_Id], [Device_Mac] , [Key], [Level03ResultJSon], [Id], [Level02HeaderJson], [Evaluate],[Sample],[AuditorId], [Reaudit], [CorrectiveActionJson],[haveReaudit],[haveCorrectiveAction],[ReauditNumber]  FROM CollectionJson WHERE " + query + " [IsProcessed] = 0";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             string Level02HeaderJson = null;
@@ -560,6 +560,11 @@ namespace SgqSystem.Services
 
                                 int headerFieldId = InsertCollectionLevel2HeaderField(CollectionLevel2Id, headersContadores);
 
+                                if (headerFieldId == 0)
+                                {
+                                    //return "erro Collection level02";
+                                    return "error";
+                                }
 
                                 string correctiveActionCompleted = arrayHeader[9];
                                 if (haveCorrectiveAction == "0")
@@ -1095,7 +1100,7 @@ namespace SgqSystem.Services
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         connection.Open();
-                        var i = Convert.ToInt32(command.ExecuteScalar());
+                        var i = Convert.ToInt32(command.ExecuteNonQuery());
                         //Se o script for executado corretamente retorna o Id
                         if (i > 0)
                         {
