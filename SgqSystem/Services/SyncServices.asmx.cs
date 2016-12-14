@@ -2504,13 +2504,31 @@ namespace SgqSystem.Services
                 parLevel3Group += level3List;
             }
 
+            //< div class="form-group">
+            //      <label for="email" style="
+            //    display: inherit;
+            //">Email:</label>
+            //      <label for="email" style="display: inline-block">Email:</label>
+            //    </div>
+
             //Avaliações e amostas para painel
+            string avaliacoeshtml = html.div(
+                                outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal")+"</label>",
+                                style: "margin-bottom: 4px;",
+                                classe: "form-group");
+            string amostrashtml = html.div(
+                                outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                style: "margin-bottom: 4px;",
+                                classe: "form-group");
+
             string avaliacoes = html.div(
-                              outerhtml: "<b style=\"width:100px;display:inline-block\">Avaliações</b>" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal"),
-                            style: "font-size: 16px");
+                                outerhtml: avaliacoeshtml,
+                                style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
             string amostras = html.div(
-                                          outerhtml: "<b style=\"width:100px;display:inline-block\">Amostras</b>" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal"),
-                                        style: "font-size: 16px");
+                                outerhtml: amostrashtml,
+                                style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
 
             //Painel
             //O interessante é um painel só mas no momento está um painel para cada level3group
