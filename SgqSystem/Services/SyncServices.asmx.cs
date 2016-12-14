@@ -156,7 +156,7 @@ namespace SgqSystem.Services
         /// 5. Após o Insert retorna mensagem para APP.
         /// 6. O processo continua 1 a 5 se repete até finalizar os resultados.
         [WebMethod]
-        public string InsertJson(string ObjResultJSon, string deviceId, string deviceMac)
+        public string InsertJson(string ObjResultJSon, string deviceId, string deviceMac, bool autoSend)
         {
             //Se o objeto Json estiver nulo retornamos nulo
             if (string.IsNullOrEmpty(ObjResultJSon))
@@ -302,6 +302,15 @@ namespace SgqSystem.Services
                        "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
                        "VALUES " +
                        "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
+
+                if(autoSend == true)
+                {
+                    sql += "SELECT @@IDENTITY AS 'Identity'";
+                }
+                else
+                {
+                    sql += "SELECT '1' AS 'Identity'";
+                }
             }
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -311,10 +320,14 @@ namespace SgqSystem.Services
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         connection.Open();
-                        var i = command.ExecuteNonQuery();
+                        // var i = command.ExecuteNonQuery();
+                        var i = Convert.ToInt32(command.ExecuteScalar());
                         if (i > 0)
                         {
-                            //Se a inserção ocorre sem problemas retorna ok
+                            if(autoSend == true)
+                            {
+                                ProcessJson(null, i);
+                            }
                             return null;
                         }
                         else
@@ -347,21 +360,27 @@ namespace SgqSystem.Services
         /// <returns></returns>
         /// Para chamar uma consolidação geral digite [web]
         [WebMethod]
-        public string ProcessJson(string device)
+        public string ProcessJson(string device, int id)
         {
 
-            if (string.IsNullOrEmpty(device))
+            if (string.IsNullOrEmpty(device) && id == 0)
             {
                 return "informe o device";
             }
+            string query = null;
             //Se for igual web busca de todos os dispositivos
             if (device == "web")
             {
-                device = null;
+                query = null;
             }
             else
             {
-                device = "[Device_Id] = '" + device + "' AND";
+                query = "[Device_Id] = '" + device + "' AND";
+            }
+
+            if(id > 0)
+            {
+                query = "[Id] = '" + id + "'";
             }
 
             string sql = "SELECT [level01_Id], [Level01CollectionDate], [level02_Id], [Level02CollectionDate], [Unit_Id],[Period], [Shift], [AppVersion], [Ambient], [Device_Id], [Device_Mac] , [Key], [Level03ResultJSon], [Id], [Level02HeaderJson], [Evaluate],[Sample],[AuditorId], [Reaudit], [CorrectiveActionJson],[haveReaudit],[haveCorrectiveAction],[ReauditNumber]  FROM CollectionJson WHERE " + device + " [IsProcessed] = 0";
@@ -1909,9 +1928,6 @@ namespace SgqSystem.Services
                           "   <p style=\"color:white; margin-left:16px; margin-right:16px; margin-top: 12px;\">                                                                      " +
                           "       <span class=\"user\">Admin</span> - <span class=\"unit\">Colorado</span><span class=\"urlPrefix\"></span>                                          " +
                           "       <span class=\"status pull-right\"></span>                                                                                                          " +
-                          "       <div class=\"progress\">                                                                                                                           " +
-                          "           <div class=\"statusProgress progress-bar\" role=\"progressbar\" aria-valuenow=\"70\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>          " +
-                          "       </div>                                                                                                                                             " +
                           "   </p>                                                                                                                                                   " +
                           "</footer>                                                                                                                                                 ";
 
