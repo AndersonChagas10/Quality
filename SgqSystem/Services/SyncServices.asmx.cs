@@ -258,20 +258,20 @@ namespace SgqSystem.Services
 
                 string level02HeaderJSon = result[13];
                 //Gera o Cabeçalho do Level02
-                level02HeaderJSon = ";" + phase;
-                level02HeaderJSon += ";" + startphasedate;
+                //level02HeaderJSon += ";" + phase;
+                //level02HeaderJSon += ";" + startphasedate;
                 //level02HeaderJSon += ";" + cattletype;
                 //level02HeaderJSon += ";" + chainspeed;
                 //level02HeaderJSon += ";" + lotnumber;
                 //level02HeaderJSon += ";" + mudscore;
-                level02HeaderJSon += ";" + consecutivefailurelevel;
-                level02HeaderJSon += ";" + consecutivefailuretotal;
-                level02HeaderJSon += ";" + notavaliable;
-                level02HeaderJSon += ";" + completed;
-                level02HeaderJSon += ";" + havePhases;
-                level02HeaderJSon += ";" + CollectionLevel02Id;
-                level02HeaderJSon += ";" + correctiveActionCompleted;
-                level02HeaderJSon += ";" + completeReaudit;
+                //level02HeaderJSon += ";" + consecutivefailurelevel;
+                //level02HeaderJSon += ";" + consecutivefailuretotal;
+                //level02HeaderJSon += ";" + notavaliable;
+                //level02HeaderJSon += ";" + completed;
+                //level02HeaderJSon += ";" + havePhases;
+                //level02HeaderJSon += ";" + CollectionLevel02Id;
+                //level02HeaderJSon += ";" + correctiveActionCompleted;
+                //level02HeaderJSon += ";" + completeReaudit;
 
                 //Verifica o Resultado do Level03
                 string level03ResultJson = result[22];
