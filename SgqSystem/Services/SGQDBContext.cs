@@ -357,4 +357,25 @@ namespace SGQDBContext
             return multipleValues;
         }
     }
+
+    public partial class ParLevel1VariableProduction
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public int Id;
+        public string Name;
+
+        public IEnumerable<ParLevel1VariableProduction> getVariable(int ParLevel1_Id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select P.Id, P.Name from ParLevel1VariableProductionXLevel1 PL left join " +
+                         "ParLevel1VariableProduction P on P.Id = PL.ParLevel1VariableProduction_Id " +
+                         " where PL.ParLevel1_Id = "+ ParLevel1_Id + "; ";
+            
+            var list = db.Query<ParLevel1VariableProduction>(sql);
+
+            return list;
+        }
+    }
 }
