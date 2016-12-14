@@ -2510,6 +2510,9 @@ namespace SgqSystem.Services
 
                                            classe: "painel painelLevel03 row");
 
+            string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
+                                                        classe: "painel painelLevel02 row"
+                                                    );
 
             //Se tiver level3 gera o agrupamento no padrão
             if (!string.IsNullOrEmpty(parLevel3Group))
@@ -2518,7 +2521,7 @@ namespace SgqSystem.Services
                                            classe: "level3Group",
                                            tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                                           outerhtml: painellevel3 +
+                                           outerhtml: painellevel3 + panelButton+
                                                       parLevel3Group
                                          );
             }
@@ -2543,11 +2546,11 @@ namespace SgqSystem.Services
 
         //    string parLevel3Group = null;
 
-        //    string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
-        //                                                classe: "painel painelLevel02 row"
-        //                                            );
+        //string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
+        //                                            classe: "painel painelLevel02 row"
+        //                                        );
 
-      
+
 
         //    foreach (var parLevel3 in parlevel3List)
         //    {
