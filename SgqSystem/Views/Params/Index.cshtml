@@ -809,7 +809,7 @@
 
 
         enviarDadosParaApi: function (e) {
-
+            $('#selectTipoInput').val(-1).change();
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
             $.validator.unobtrusive.parse("form");
 
@@ -934,7 +934,7 @@
                 }
                                
                 reloadPopovers();
-
+                defaults();
                 initialFormLevel3 = $($('form')[2]).clone();
 
             });

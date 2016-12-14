@@ -1,5 +1,5 @@
 ﻿using DTO.BaseEntity;
-using System.ComponentModel.DataAnnotations;
+using DTO.Helpers;
 
 namespace DTO.DTO.Params
 {
@@ -16,10 +16,12 @@ namespace DTO.DTO.Params
         public int? ParMeasurementUnit_Id { get; set; }
         public bool? AcceptableValueBetween { get; set; }
 
-        [Range(-999999999.99, 999999999.99)]
         public decimal? IntervalMin { get; set; } = 0;
-        [Range(-999999999.99, 999999999.99)]
         public decimal? IntervalMax { get; set; } = 0;
+
+        public string IntervalMinCalculado { get; set; }
+        public string IntervalMaxCalculado { get; set; }
+
 
         public bool IsActive { get; set; } = true;
 
@@ -33,23 +35,41 @@ namespace DTO.DTO.Params
 
         public void preparaParaInsertEmBanco()
         {
-            if (this.ParLevel3InputType_Id == 3)
+            if (ParLevel3InputType_Id == 3 || ParLevel3InputType_Id == 4)
             {
-                this.ParLevel3BoolFalse_Id = null;
-                this.ParLevel3BoolTrue_Id = null;
+                ParLevel3BoolFalse_Id = null;
+                ParLevel3BoolTrue_Id = null;
             }
 
-            if (this.ParLevel3InputType_Id == 1)
+            if (ParLevel3InputType_Id == 1)
             {
-                this.IntervalMax = 0;
-                this.IntervalMin = 0;
-                this.AcceptableValueBetween = null;
-                this.ParMeasurementUnit_Id = null;
+                IntervalMax = 0;
+                IntervalMin = 0;
+                AcceptableValueBetween = null;
+                ParMeasurementUnit_Id = null;
             }
 
-            if (this.ParCompany_Id <= 0)
-                this.ParCompany_Id = null;
+            if (!string.IsNullOrEmpty(IntervalMaxCalculado) && IntervalMax == 0)
+                IntervalMax = Guard.ConverteValorCalculado(IntervalMaxCalculado);
 
+            if(!string.IsNullOrEmpty(IntervalMinCalculado) && IntervalMin == 0)
+                IntervalMin = Guard.ConverteValorCalculado(IntervalMinCalculado);
+
+            if (ParCompany_Id <= 0)
+                ParCompany_Id = null;
+
+        }
+
+        public void PreparaGet()
+        {
+            if (ParLevel3InputType_Id == 4)
+            {
+                if (IntervalMax.HasValue && IntervalMin.HasValue)
+                {
+                    IntervalMinCalculado = Guard.ConverteValorCalculado(IntervalMin.Value);
+                    IntervalMaxCalculado = Guard.ConverteValorCalculado(IntervalMax.Value);
+                }
+            }
         }
     }
 }

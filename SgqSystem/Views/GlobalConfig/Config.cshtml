@@ -6,12 +6,18 @@
     var urlSenha = Url.Action("RecSenha", "GlobalConfigApi");
     var urlConverteValorCalculado = Url.Action("ConverteValorCalculadoString", "GlobalConfigApi");
     var urlConverteValorCalculadoDecimal = Url.Action("DesconverteValorCalculadoDecimal", "GlobalConfigApi");
+    var linkAtual = Dominio.GlobalConfig.linkDataCollect;
 }
 
 <h2>Config</h2>
 
 
 <table style="background-color:white">
+    <tr>
+        <td>Link Data Collect Atual:</td>
+        <td>@linkAtual</td>
+        <td>Selecione para alterar: @Html.DropDownList("linkDataCollect", new SelectList(ViewBag.linksDataCollect), Resources.Resource.select + "...")</td>
+    </tr>
     <tr>
         <td>
             <label>Checar versão global</label>

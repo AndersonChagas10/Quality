@@ -103,6 +103,9 @@
     <Compile Include="CollectionLevel2.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="CollectionLevel2XParHeaderField.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ConfiguracaoEmail.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
