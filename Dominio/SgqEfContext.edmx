@@ -142,6 +142,17 @@
           <Property Name="HavePhase" Type="bit" />
           <Property Name="Completed" Type="bit" />
         </EntityType>
+        <EntityType Name="CollectionLevel2XParHeaderField">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CollectionLevel2_Id" Type="int" Nullable="false" />
+          <Property Name="ParHeaderField_Id" Type="int" Nullable="false" />
+          <Property Name="ParHeaderField_Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ParFieldType_Id" Type="int" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="ConsolidationLevel01">
           <Key>
             <PropertyRef Name="Id" />
@@ -683,8 +694,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParLevel2XHeaderField' does not have 
           <Property Name="ParCompany_Id" Type="int" />
           <Property Name="ParMeasurementUnit_Id" Type="int" />
           <Property Name="AcceptableValueBetween" Type="bit" />
-          <Property Name="IntervalMin" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="IntervalMax" Type="decimal" Precision="10" Scale="5" />
+          <Property Name="IntervalMin" Type="decimal" Precision="38" Scale="10" />
+          <Property Name="IntervalMax" Type="decimal" Precision="38" Scale="10" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -1217,6 +1228,42 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
             </Principal>
             <Dependent Role="CollectionLevel2">
               <PropertyRef Name="AuditorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2XParHeaderField_CollectionLevel2">
+          <End Role="CollectionLevel2" Type="Self.CollectionLevel2" Multiplicity="1" />
+          <End Role="CollectionLevel2XParHeaderField" Type="Self.CollectionLevel2XParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2XParHeaderField">
+              <PropertyRef Name="CollectionLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2XParHeaderField_ParFieldType">
+          <End Role="ParFieldType" Type="Self.ParFieldType" Multiplicity="1" />
+          <End Role="CollectionLevel2XParHeaderField" Type="Self.CollectionLevel2XParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParFieldType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2XParHeaderField">
+              <PropertyRef Name="ParFieldType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2XParHeaderField_ParHeaderField">
+          <End Role="ParHeaderField" Type="Self.ParHeaderField" Multiplicity="1" />
+          <End Role="CollectionLevel2XParHeaderField" Type="Self.CollectionLevel2XParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParHeaderField">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2XParHeaderField">
+              <PropertyRef Name="ParHeaderField_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2091,6 +2138,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <EntitySet Name="CollectionLevel02" EntityType="Self.CollectionLevel02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionLevel03" EntityType="Self.CollectionLevel03" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionLevel2" EntityType="Self.CollectionLevel2" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CollectionLevel2XParHeaderField" EntityType="Self.CollectionLevel2XParHeaderField" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConsolidationLevel01" EntityType="Self.ConsolidationLevel01" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConsolidationLevel02" EntityType="Self.ConsolidationLevel02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConsolidationLevel1" EntityType="Self.ConsolidationLevel1" Schema="dbo" store:Type="Tables" />
@@ -2249,6 +2297,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <AssociationSet Name="FK_CollectionLevel2_UserSgq" Association="Self.FK_CollectionLevel2_UserSgq">
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2XParHeaderField_CollectionLevel2" Association="Self.FK_CollectionLevel2XParHeaderField_CollectionLevel2">
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+            <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2XParHeaderField_ParFieldType" Association="Self.FK_CollectionLevel2XParHeaderField_ParFieldType">
+            <End Role="ParFieldType" EntitySet="ParFieldType" />
+            <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2XParHeaderField_ParHeaderField" Association="Self.FK_CollectionLevel2XParHeaderField_ParHeaderField">
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+            <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
           </AssociationSet>
           <AssociationSet Name="FK_ConsolidationLevel01_Department" Association="Self.FK_ConsolidationLevel01_Department">
             <End Role="Department" EntitySet="Department" />
@@ -2550,6 +2610,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <EntitySet Name="CollectionLevel02" EntityType="SgqDbModel.CollectionLevel02" />
           <EntitySet Name="CollectionLevel03" EntityType="SgqDbModel.CollectionLevel03" />
           <EntitySet Name="CollectionLevel2" EntityType="SgqDbModel.CollectionLevel2" />
+          <EntitySet Name="CollectionLevel2XParHeaderField" EntityType="SgqDbModel.CollectionLevel2XParHeaderField" />
           <EntitySet Name="ConsolidationLevel01" EntityType="SgqDbModel.ConsolidationLevel01" />
           <EntitySet Name="ConsolidationLevel02" EntityType="SgqDbModel.ConsolidationLevel02" />
           <EntitySet Name="ConsolidationLevel1" EntityType="SgqDbModel.ConsolidationLevel1" />
@@ -2659,9 +2720,21 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
           </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2XParHeaderField_CollectionLevel2" Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2">
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+            <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
+          </AssociationSet>
           <AssociationSet Name="FK_Result_Level3_CollectionLevel2" Association="SgqDbModel.FK_Result_Level3_CollectionLevel2">
             <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
             <End Role="Result_Level3" EntitySet="Result_Level3" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2XParHeaderField_ParFieldType" Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParFieldType">
+            <End Role="ParFieldType" EntitySet="ParFieldType" />
+            <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2XParHeaderField_ParHeaderField" Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParHeaderField">
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+            <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
           </AssociationSet>
           <AssociationSet Name="FK_ConsolidationLevel01_Department" Association="SgqDbModel.FK_ConsolidationLevel01_Department">
             <End Role="Department" EntitySet="Department" />
@@ -3124,7 +3197,22 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="CollectionLevel2" ToRole="ParLevel1" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel2" FromRole="CollectionLevel2" ToRole="ParLevel2" />
           <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="CollectionLevel2" ToRole="UserSgq" />
+          <NavigationProperty Name="CollectionLevel2XParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" FromRole="CollectionLevel2" ToRole="CollectionLevel2XParHeaderField" />
           <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_CollectionLevel2" FromRole="CollectionLevel2" ToRole="Result_Level3" />
+        </EntityType>
+        <EntityType Name="CollectionLevel2XParHeaderField">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CollectionLevel2_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParHeaderField_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParHeaderField_Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ParFieldType_Id" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" FromRole="CollectionLevel2XParHeaderField" ToRole="CollectionLevel2" />
+          <NavigationProperty Name="ParFieldType" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParFieldType" FromRole="CollectionLevel2XParHeaderField" ToRole="ParFieldType" />
+          <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParHeaderField" FromRole="CollectionLevel2XParHeaderField" ToRole="ParHeaderField" />
         </EntityType>
         <EntityType Name="ConsolidationLevel01">
           <Key>
@@ -3500,6 +3588,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CollectionLevel2XParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParFieldType" FromRole="ParFieldType" ToRole="CollectionLevel2XParHeaderField" />
           <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_ParHeaderField_ParFieldType" FromRole="ParFieldType" ToRole="ParHeaderField" />
         </EntityType>
         <EntityType Name="ParFrequency">
@@ -3543,6 +3632,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CollectionLevel2XParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParHeaderField" FromRole="ParHeaderField" ToRole="CollectionLevel2XParHeaderField" />
           <NavigationProperty Name="ParFieldType" Relationship="SgqDbModel.FK_ParHeaderField_ParFieldType" FromRole="ParHeaderField" ToRole="ParFieldType" />
           <NavigationProperty Name="ParLevelDefiniton" Relationship="SgqDbModel.FK_ParHeaderField_ParLevelDefinition" FromRole="ParHeaderField" ToRole="ParLevelDefiniton" />
           <NavigationProperty Name="ParLevel1XHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" FromRole="ParHeaderField" ToRole="ParLevel1XHeaderField" />
@@ -3768,8 +3858,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="ParCompany_Id" Type="Int32" />
           <Property Name="ParMeasurementUnit_Id" Type="Int32" />
           <Property Name="AcceptableValueBetween" Type="Boolean" />
-          <Property Name="IntervalMin" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="IntervalMax" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="IntervalMin" Type="Decimal" Precision="38" Scale="10" />
+          <Property Name="IntervalMax" Type="Decimal" Precision="38" Scale="10" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
@@ -4283,6 +4373,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CollectionLevel2XParHeaderField_CollectionLevel2">
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2XParHeaderField" Role="CollectionLevel2XParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2XParHeaderField">
+              <PropertyRef Name="CollectionLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Result_Level3_CollectionLevel2">
           <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="1" />
           <End Type="SgqDbModel.Result_Level3" Role="Result_Level3" Multiplicity="*" />
@@ -4292,6 +4394,30 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
             </Principal>
             <Dependent Role="Result_Level3">
               <PropertyRef Name="CollectionLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2XParHeaderField_ParFieldType">
+          <End Type="SgqDbModel.ParFieldType" Role="ParFieldType" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2XParHeaderField" Role="CollectionLevel2XParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParFieldType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2XParHeaderField">
+              <PropertyRef Name="ParFieldType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2XParHeaderField_ParHeaderField">
+          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2XParHeaderField" Role="CollectionLevel2XParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParHeaderField">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2XParHeaderField">
+              <PropertyRef Name="ParHeaderField_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5376,6 +5502,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
                 <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="ConsolidationLevel2_Id" ColumnName="ConsolidationLevel2_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CollectionLevel2XParHeaderField">
+            <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel2XParHeaderField">
+              <MappingFragment StoreEntitySet="CollectionLevel2XParHeaderField">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="ParFieldType_Id" ColumnName="ParFieldType_Id" />
+                <ScalarProperty Name="ParHeaderField_Name" ColumnName="ParHeaderField_Name" />
+                <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
+                <ScalarProperty Name="CollectionLevel2_Id" ColumnName="CollectionLevel2_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

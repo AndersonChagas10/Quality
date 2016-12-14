@@ -18,26 +18,27 @@
                 <tr class="row">
 
                     @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm" })
-                            , @Html.Label(Resources.Resource.level3_name)
-                            , Table.PosicaoLabel.top
-                            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }))
+             , @Html.Label(Resources.Resource.level3_name)
+             , Table.PosicaoLabel.top
+             , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }))
 
                     @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm" })
-                            , @Html.Label(Resources.Resource.level3_description)
-                            , Table.PosicaoLabel.top
-                            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }))
+             , @Html.Label(Resources.Resource.level3_description)
+             , Table.PosicaoLabel.top
+             , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }))
 
                     @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "form-control input-sm", @id = "selectTipoInput" })
-                           , @Html.Label(Resources.Resource.data_type_entry)
-                           , Table.PosicaoLabel.top
-                           , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }))
+            , @Html.Label(Resources.Resource.data_type_entry)
+            , Table.PosicaoLabel.top
+            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }))
 
                 </tr>
                
+
                 <tr class="row ParIntervalos" style="display: none;">
                     @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                    @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, "parLevel3Value_IntervalMin", "form-control input-sm maskDecimal"), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                    @Table.GerarColunaButton(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, "parLevel3Value_IntervalMax", "form-control input-sm maskDecimal"), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
+                    @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
+                    @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, new {  @Id = "parLevel3Value_IntervalMax", @class = "form-control input-sm maskDecimal"}), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
                     <td style="display: none;">
                         <label>@Resources.Resource.values_between</label>
                         <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
@@ -49,23 +50,7 @@
                         <span id="ParIntervalosLabel"></span>
                     </td>
                 </tr>
-                             
-                <tr class="row ParCalculado" style="display: none;">
-                    @Table.GerarColunaButton(@Html.DropDownList("ParCalculado.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                    @Table.GerarColuna(@Html.TextBox("ParCalculado.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, htmlAttributes: new { @class = "form-control input-sm maskCalculado" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                    @Table.GerarColunaButton(@Html.TextBox("ParCalculado.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, htmlAttributes: new { @class = "form-control input-sm maskCalculado" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
-                    <td style="display: none;">
-                        <label>@Resources.Resource.values_between</label>
-                        <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
-                    </td>
-                </tr>
-                <tr class="row" style="display:none;padding:10px;">
-                    <td colspan="3">
-                        *
-                        <span id="ParIntervalosLabel"></span>
-                    </td>
-                </tr>
-  
+                
                 <tr class="row ParBinarios" style="display: none;">
                     @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
                     @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
@@ -75,6 +60,12 @@
                    , button: "<button type='button' id='btnSaveCounter' onclick='level3Value.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
                     
                 </tr>
+
+                <tr class="row">
+                    @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
+                </tr>
+
+
             </table>
 
             <table id="tableLevel3Value" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar tipo de dados de entrada:">
@@ -88,7 +79,7 @@
                         <th>@Resources.Resource.values_between</th>
                         <th>@Resources.Resource.positive_value</th>
                         <th>@Resources.Resource.negative_value</th>
-                        <th></th>
+                        <th style="min-width: 65px;"></th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -269,6 +260,7 @@
                     AcceptableValueBetween:         parseInt(parIntervalosType) ? true : false,
                     IntervalMin:                    parLevel3Value_IntervalMin,
                     IntervalMax:                    parLevel3Value_IntervalMax,
+                    IsActive:                       true,
                 };
             }
         },
@@ -284,8 +276,8 @@
                     openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor negativo para o campo binario.");
                     return false;
                 }
-            }
-            else if($('#' + seletorTato + ' #selectTipoInput :selected').val() == 3){ // Intervalo
+            } // Intervalo ou Calculado.
+            else if($('#' + seletorTato + ' #selectTipoInput :selected').val() == 3 || $('#' + seletorTato + ' #selectTipoInput :selected').val() == 4){
                 if($('#' + seletorTato + ' #selectUnidadeDeMedidas :selected').val() <= 0){
                     openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione a unidade de medida.");
                     return false;
@@ -312,7 +304,9 @@
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].ParMeasurementUnit_Id"] = o.ParMeasurementUnit_Id;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].AcceptableValueBetween"] = o.AcceptableValueBetween;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMin"] = o.IntervalMin;
+                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMinCalculado"] = o.IntervalMin;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMax"] = o.IntervalMax;
+                dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IntervalMaxCalculado"] = o.IntervalMax;
                 dados["paramsDto.parLevel" + level + "Dto.listLevel3Value[" + c + "].IsActive"] = o.IsActive;
                 //
             });
@@ -343,6 +337,15 @@
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
                         o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween ? "O valor e aceitavel quando esta entre " + o.IntervalMin + " e " + o.IntervalMax : "O valor e aceitavel quando e menor que " + o.IntervalMin + " ou maior que " + o.IntervalMax;
+                    }else if(o.ParLevel3InputType_Id == 4){
+                        o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
+                        o["ParLevel3BoolFalse_Name"] = "";
+                        o["ParLevel3BoolTrue_Name"] = "";
+                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween ? "O valor e aceitavel quando esta entre " + o.IntervalMinCalculado + " e " + o.IntervalMaxCalculado : "O valor e aceitavel quando e menor que " + o.IntervalMinCalculado + " ou maior que " + o.IntervalMaxCalculado;
+                        o["IntervalMin"] = o.IntervalMinCalculado;
+                        o["IntervalMinCalculado"] = o.IntervalMinCalculado;
+                        o["IntervalMax"] = o.IntervalMaxCalculado;
+                        o["IntervalMaxCalculado"] = o.IntervalMaxCalculado;
                     }
                     //o["AcceptableValueBetween_Name"] = o.ParCriticalLevel.Name;
                     crudNxN.adiciona(o,  id, tdNamess);
@@ -385,7 +388,7 @@
         changeCombo();
 
     });
-
+     
     function changeCombo(){
         //se os dois campos estão nulos
         parIntervalosTypeCreate();
@@ -462,7 +465,6 @@
         if ($("#selectTipoInput option:selected").val() == "1") {
             resetaParIntervalos();
             resetaParBinarios();
-            $('.ParCalculado').hide();
             $('.ParIntervalos').hide();
             $('.ParBinarios').fadeIn();
             $('#companyValueL3').fadeIn();
@@ -471,7 +473,8 @@
         if ($("#selectTipoInput option:selected").val() == "3") {
             resetaParIntervalos();
             resetaParBinarios();
-            $('.ParCalculado').hide();
+            $('#parLevel3Value_IntervalMin').inputmask("numeric");
+            $('#parLevel3Value_IntervalMax').inputmask("numeric");
             $('.ParBinarios').hide();
             $('.ParIntervalos').fadeIn();
         }
@@ -479,9 +482,10 @@
         if ($("#selectTipoInput option:selected").val() == "4") {
             resetaParIntervalos();
             resetaParBinarios();
-            $('.ParCalculado').fadeIn();
+            GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMin');
+            GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMax');
             $('.ParBinarios').hide();
-            $('.ParIntervalos').hide();
+            $('.ParIntervalos').fadeIn();
         }
     });
 
@@ -494,8 +498,8 @@
     
     function resetaParIntervalos(){
         $('#selectUnidadeDeMedidas').val(-1);
-        $('#paramsDto_parLevel3Value_IntervalMin').val("");
-        $('#paramsDto_parLevel3Value_IntervalMax').val("");
+        $('#parLevel3Value_IntervalMin').val("");
+        $('#parLevel3Value_IntervalMax').val("");
         $('#parIntervalosType').empty().parents('td').hide();
     }
     
@@ -537,9 +541,7 @@
         if(grouLevel2Selected > 0)
             $('#paramsDto_parLevel3Dto_listGroupsLevel2').val(grouLevel2Selected)
         
-        GuardJs.mascaraCampoCalculado('#ParCalculado_IntervalMin')
-        GuardJs.mascaraCampoCalculado('#ParCalculado_IntervalMax')
-
+      
         updateAllTables();
 
         $('[data-toggle="popover"]').popover();
