@@ -201,11 +201,18 @@ namespace SgqSystem.Services
 
                 //Pega o Id da Unidade
                 string unidadeId = result[4];
+
+                //MOCK
+                unidadeId = DefaultValueReturn(unidadeId, "1");
                 //Pega o Period
+
+                
                 string period = result[5];
+                period = DefaultValueReturn(period, "1");
+
                 //Pega o Shit
                 string shift = result[6];
-
+                shift = DefaultValueReturn(shift, "1");
 
                 //Pega o Auditor
                 string auditorId = result[7];
@@ -1188,13 +1195,15 @@ namespace SgqSystem.Services
 
                 isnotEvaluate = BoolConverter(isnotEvaluate);
 
+                string punishimentValue = result[13];
+
                 id = DefaultValueReturn(id, "0");
 
                 if (id == "0")
                 {
-                    sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate]) " +
+                    sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue]) " +
                            "VALUES " +
-                           "('" + CollectionLevel02Id + "','" + Level03Id + "', (SELECT Name FROM ParLevel3 WHERE Id='" + Level03Id + "'),'" + weight + "','" + intervalMin + "','" + intervalMax + "', '" + value + "','" + valueText + "','" + conform + "','" + isnotEvaluate + "') ";
+                           "('" + CollectionLevel02Id + "','" + Level03Id + "', (SELECT Name FROM ParLevel3 WHERE Id='" + Level03Id + "'),'" + weight + "','" + intervalMin + "','" + intervalMax + "', '" + value + "','" + valueText + "','" + conform + "','" + isnotEvaluate + "', '" + punishimentValue + "') ";
 
                     sql += " SELECT @@IDENTITY AS 'Identity'";
 
@@ -1434,6 +1443,9 @@ namespace SgqSystem.Services
 
         public string GetConsolidationLevel01(string UnidadeId, bool lastDate = false)
         {
+            //Retirar a unidade tem que vir do app
+            UnidadeId = DefaultValueReturn(UnidadeId, "1");
+
             var Level2ResultDB = new SGQDBContext.Level2Result();
 
             var Level2ResultList = Level2ResultDB.getList(UnidadeId: UnidadeId);
@@ -2344,7 +2356,7 @@ namespace SgqSystem.Services
 
             foreach (var header in list)
             {
-                var label = "<label class='font-small'>" + header.ParHeaderField_Name + "</label>";
+                var label = "<label class=\"font-small\">" + header.ParHeaderField_Name + "</label>";
 
                 var form_control = "";
 
@@ -2357,13 +2369,13 @@ namespace SgqSystem.Services
                         var optionsMultiple = "";
                         foreach (var value in listMultiple)
                         {
-                            optionsMultiple += "<option value='" + value.Id + "'>" + value.Name + "</option>";
+                            optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                         }
-                        form_control = "<select class='form-control input-sm' ParHeaderField_Id='"+header.ParHeaderField_Id+ "' ParFieldType_Id = '"+ header.ParFieldType_Id+"'>" + optionsMultiple + "</select>";
+                        form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\""  + header.ParFieldType_Id + "\">" + optionsMultiple + "</select>";
                         break;
                     //Integrações
                     case 2:
-                        form_control = "<div class='form-control input-sm' ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>" + header.ParHeaderField_Name + "</div>";
+                        form_control = "<div class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id = \"" + header.ParFieldType_Id + "\">" + header.ParHeaderField_Name + "</div>";
                         break;
                     //Binário
                     case 3:
@@ -2371,21 +2383,21 @@ namespace SgqSystem.Services
                         var optionsBinario = "";
                         foreach (var value in listBinario)
                         {
-                            optionsBinario += "<option value='" + value.Id + "'>" + value.Name + "</option>";
+                            optionsBinario += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                         }
-                        form_control = "<select class='form-control input-sm' ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>" + optionsBinario + "</select>";
+                        form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>" + optionsBinario + "</select>";
                         break;
                     //Texto
                     case 4:
-                        form_control = "<input class='form-control input-sm' type='text' ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>";
+                        form_control = "<input class=\"form-control input-sm\" type=\"text\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
                     //Numérico
                     case 5:
-                        form_control = "<input class='form-control input-sm' type='number' ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>";
+                        form_control = "<input class=\"form-control input-sm\" type=\"number\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
                     //Data
                     case 6:
-                        form_control = "<input class='form-control input-sm' type='date' ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>";
+                        form_control = "<input class=\"form-control input-sm\" type=\"date\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
                 }
 
@@ -3138,34 +3150,48 @@ namespace SgqSystem.Services
         {
             var html = new Html();
             string head = html.div(classe: "head");
+            
+            //Verifica as configurações iniciais da tela
+            var ParConfSGQDB = new SGQDBContext.ParConfSGQ();
+            var configuracoes = ParConfSGQDB.get();
+
 
             #region form
 
             #region Unit
+            bool inputsDesabilitados = false;
 
-
-            string selectUnit = html.option("1", "Unit 1", tags: "ip=\"192.168.25.200/SgqMaster\"");
-
-
-            selectUnit = html.select(selectUnit, "selectUnit");
+            string selectUnit = null;
+            if(configuracoes != null && configuracoes.HaveUnitLogin == true)
+            {
+                inputsDesabilitados = true;
+                //coloca as unidades
+                selectUnit  = html.option("1", "Unit 1", tags: "ip=\"192.168.25.200/SgqMaster\"");
+                selectUnit = html.select(selectUnit, "selectUnit");
+            }
 
             #endregion
 
             #region shift
-            string selectShit = html.option("0", "Select the shift") +
-                                html.option("1", "Shift A") +
-                                html.option("2", "Shift B");
+            string selectShit = null;
+            if (configuracoes != null &&  configuracoes.HaveShitLogin == true)
+            {
+                inputsDesabilitados = true;
+                selectShit = html.option("0", "Select the shift") +
+                              html.option("1", "Shift A") +
+                              html.option("2", "Shift B");
 
-            selectShit = html.select(selectShit, id: "shift");
+                selectShit = html.select(selectShit, id: "shift");
+            }
             #endregion
 
             string formOuterHtml = html.head(Html.h.h2, outerhtml: "Please sign in") +
                                   selectUnit +
                                   selectShit +
                                   html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
-                                  html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: true) +
+                                  html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: inputsDesabilitados) +
                                   html.label(labelfor: "inputPassword", classe: "sr-only", outerhtml: "Password") +
-                                  html.input(type: Html.type.password, id: "inputPassword", placeholder: "Password", required: true, disabled: true) +
+                                  html.input(type: Html.type.password, id: "inputPassword", placeholder: "Password", required: true, disabled: inputsDesabilitados) +
                                   html.button(label: "Sign in", id: "btnLogin", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "Authenticating...") +
 
                                   html.div(id: "messageError", classe: "alert alert-danger hide", tags: "role=\"alert\"",
