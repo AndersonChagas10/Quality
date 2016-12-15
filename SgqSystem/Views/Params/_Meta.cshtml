@@ -31,7 +31,7 @@
                                 , Table.PosicaoLabel.top)
 
                           
-                            @Table.GerarColunaButton(@Html.TextBox("percentVal", 0, htmlAttributes: new { @id = "percentVal", @class = "form-control input-sm" })
+                            @Table.GerarColunaButton(@Html.TextBox("percentVal", "", htmlAttributes: new { @id = "percentVal", @class = "form-control input-sm" })
                                 , @Html.Label(Resources.Resource.goal_value)
                                 , Table.PosicaoLabel.top
                                 , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick='" + @click + ";' id=\"\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
@@ -88,13 +88,21 @@
             tdsNames: ['companyName', 'PercentValue', 'btn'],
             getObjAdd: function(isEdit, obj){
                 if(isEdit != undefined){
-                   
+                    obj.PercentValue = $('#' + isEdit + ' #percentVal').val();
+                    obj.ParCompany_Id = $('#' + isEdit + ' #metaCompany :selected').val();
+                    obj.companyName = $('#' + isEdit + ' #metaCompany :selected').text();
                     return obj;
                 }else{
+                    var compName =  $('#' + this.level + ' #metaCompany :selected').text();
+                    var compVal = $('#' + this.level + ' #metaCompany :selected').val();
+                    if(compVal == 0 || compVal == "-1" || compVal == "0" || compVal == -1){
+                        compName = "Todos";
+                    }
+
                     return {/*Objeto*/
                         PercentValue    : $('#' + this.level + ' #percentVal').val(),
-                        ParCompany_Id  : $('#' + this.level + ' #metaCompany :selected').val() ,
-                        companyName  : $('#' + this.level + ' #metaCompany :selected').text() ,
+                        ParCompany_Id  :  compVal,
+                        companyName  :  compName,
                         IsActive: true
                     }
                 }
@@ -102,11 +110,29 @@
             veifyAdd: function(isEdit) {
                 var seletorTato = !!isEdit ? isEdit : this.level;
                 /*Valida se pode criar o objeto*/
-                if($('#' + seletorTato + ' #percentVal').val().length == 0){
+                if($('#' + seletorTato + ' #percentVal').val().replace('%', '').length == 0){
                     openMessageModal("Campo obrigatório:", "O campo Meta precisa ser preenchido.")
                     return false;
                 }
-               
+
+                var companySelected = $('#' + seletorTato + ' #metaCompany :selected').val();
+                var exist = $.grep($('#tableMeta  tbody  tr  td:nth-child(1)'), function(o, c){
+                    if(companySelected == -1){
+                        return $(o).parent().data().ParCompany_Id == 0 || $(o).parent().data().ParCompany_Id == -1;
+                    }
+                    return $(o).parent().data().ParCompany_Id == companySelected;
+                })
+
+                var display = $('#' + seletorTato + ' #metaCompany :selected').text();
+                if(companySelected == -1){
+                    display= "Todas";
+                }
+
+                if(exist.length){
+                    openMessageModal("Dados já cadastrados para a empresa " + display + ".", "")
+                    return false;
+                }
+
                 return true;
             },
             incluiNoObjetoParaSubmit: function(dados){
@@ -120,8 +146,9 @@
                         dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].Id"] = o.Id;
                     }
                  
-                    dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].PercentValue"] = o.PercentValue;
+                    dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].PercentValue"] = o.PercentValue.replace('%', '');
                     dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].ParCompany_Id"] = o.ParCompany_Id;
+                    dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].IsActive"] = o.IsActive;
 
                 });
 
@@ -131,12 +158,13 @@
                 var tdNamess = this.tdsNames;
                 if( this.listObjSalvo != null){ /*Carrega regras de NC*/
                     this.listObjSalvo.forEach(function(o, c){
-                        //console.log(o);
                         if(o.ParCompany != null){
                             o['companyName'] = o.ParCompany.Name;
                         }else{
                             o['companyName'] = "Todas";
                         }
+                        //console.log(o);
+                        o['PercentValue'] = o.PercentValue + '%';
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
                 }
@@ -151,7 +179,8 @@
         };
     }
 
-
-
+    $(document).ready(function () {
+        GuardJs.mascaraPorcentegem('#percentVal')
+    });
 
 </script>

@@ -332,6 +332,9 @@
     <Compile Include="ParCompanyXUserSgq.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParConfSGQ.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParConsolidationType.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -363,6 +366,12 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParLevel1.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel1VariableProduction.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParLevel1VariableProductionXLevel1.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ParLevel1XCluster.cs">

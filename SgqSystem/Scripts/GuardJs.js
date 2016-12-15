@@ -11,11 +11,21 @@
             , showMaskOnHover: false
             , reverse: true
             , clearIfNotMatch: true
+            , clearIncomplete: true
             //, showTooltip: true
         });
     },
-    mascaraPorcentegem: function (e) {
 
+    mascaraPorcentegem: function (e) {
+        $(e).inputmask("decimal", {
+            radixPoint: ".",
+            suffix: "%",
+            clearMaskOnLostFocus: false,
+            placeholder: ' ',
+            showMaskOnFocus: true,
+            showMaskOnHover: false,
+            clearIfNotMatch: true
+        });
     },
 
     message: "One or more fields are requireds: ",

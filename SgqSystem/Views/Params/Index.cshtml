@@ -880,7 +880,7 @@
                                 indexParamsLevel3.selectLevel3();
                             },
                             function(){
-                                $('#parLevel3Select2').val(previous);
+                                $('#parLevel3Select2').val(previous).change();
                                 closeConfirm();
                             });
                     }else{
@@ -1115,6 +1115,10 @@
 
     $(document).ready(function () {
         reloadPopovers();
+
+        //initialFormLevel1 = $('form')[0];
+        //initialFormLevel2 = $('form')[1];
+        //initialFormLevel3 = $('form')[2];
     });
 
     $( document ).ajaxStart(function() {

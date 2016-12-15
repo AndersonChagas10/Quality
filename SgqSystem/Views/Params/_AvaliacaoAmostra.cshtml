@@ -123,6 +123,25 @@
                     openMessageModal("Numero de avaliações inválido.")
                     return false;
                 }
+
+                var companySelected = $('#' + seletorTato + ' #avAmCompany :selected').val();
+                var exist = $.grep($('#tableAvAm  tbody  tr  td:nth-child(1)'), function(o, c){
+                    if(companySelected == -1){
+                        return $(o).parent().data().companyId == 0 || $(o).parent().data().companyId == -1;
+                    }
+                    return $(o).parent().data().companyId == companySelected;
+                })
+
+                var display = $('#' + seletorTato + ' #avAmCompany :selected').text();
+                if(companySelected == -1){
+                    display= "Todas";
+                }
+
+                if(exist.length){
+                    openMessageModal("Dados já cadastrados para a empresa " + display + ".", "")
+                    return false;
+                }
+
                 return true;
             },
             incluiNoObjetoParaSubmit: function(dados){

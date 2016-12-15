@@ -238,7 +238,7 @@ namespace Data.Repositories
             if(paramLevel1Id > 0)
                 goal.ParLevel1_Id = paramLevel1Id;
 
-            if (goal.ParCompany_Id == -1)
+            if (goal.ParCompany_Id == -1 || goal.ParCompany_Id == 0)
                 goal.ParCompany_Id = null;
 
             goal.ParLevel1 = null;

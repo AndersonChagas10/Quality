@@ -212,7 +212,7 @@ namespace Dominio.Services
             var parlevel1 = _baseRepoParLevel1.GetById(idParLevel1);
             var parlevel1Dto = Mapper.Map<ParLevel1DTO>(parlevel1);
             parlevel1Dto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parlevel1.ParCounterXLocal.OrderByDescending(r => r.IsActive));/*Contadores*/
-            parlevel1Dto.listParGoalLevel1 = Mapper.Map<List<ParGoalDTO>>(parlevel1.ParGoal.OrderByDescending(r => r.Active));/*Meta*/
+            parlevel1Dto.listParGoalLevel1 = Mapper.Map<List<ParGoalDTO>>(parlevel1.ParGoal.OrderByDescending(r => r.IsActive));/*Meta*/
             parlevel1Dto.listLevel1XClusterDto = Mapper.Map<List<ParLevel1XClusterDTO>>(parlevel1.ParLevel1XCluster.OrderByDescending(r => r.IsActive));/*Clusters*/
             parlevel1Dto.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(parlevel1.ParLevel3Level2Level1);/*Level 2 e 3 vinculados*/
             parlevel1Dto.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parlevel1.ParRelapse.OrderByDescending(r => r.IsActive));/*Reincidencia*/
