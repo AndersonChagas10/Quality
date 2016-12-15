@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using Dapper;
 using System;
+using System.Linq;
 
 namespace SGQDBContext
 {
@@ -178,6 +179,9 @@ namespace SGQDBContext
         public decimal IntervalMax { get; set; }
         public string ParMeasurementUnit_Name { get; set; }
         public decimal Weight { get; set; }
+        public decimal PunishmentValue { get; set; }
+        public decimal WeiEvaluation { get; set; }
+
 
         public IEnumerable<ParLevel3> getList()
         {
@@ -220,15 +224,13 @@ namespace SGQDBContext
             return parLevel3List;
         }                                                                                                                                                                                                                                                                                                                                                                          
     }
- 
     public partial class Level2Result
     {
         public int ParLevel1_Id { get; set; }
         public int ParLevel2_Id { get; set; }
         public int Unit_Id { get; set; }
         public int Shift { get; set; }
-        public int Period { get; set; }
-
+        public int Period { get; set; }        
         public DateTime CollectionDate { get; set; }
 
         public int EvaluateLast { get; set; }
@@ -355,6 +357,26 @@ namespace SGQDBContext
             var multipleValues = db.Query<ParFieldType>(sql);
 
             return multipleValues;
+        }
+    }
+
+    public partial class ParConfSGQ
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public int Id { get; set; }
+        public bool HaveUnitLogin { get; set; }
+
+        public ParConfSGQ get()
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "SELECT Id, HaveUnitLogin FROM ParConfSGQ";
+
+            var conf = db.Query<ParConfSGQ>(sql).FirstOrDefault();
+
+            return conf;
+
         }
     }
 }
