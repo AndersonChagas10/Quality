@@ -2416,6 +2416,8 @@ namespace SgqSystem.Services
             var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
             //Inicaliza ParFieldType
             var ParFieldTypeDB = new SGQDBContext.ParFieldType();
+            //Inicaliza ParFieldType
+            var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
 
 
             //Pega uma lista de parleve3
@@ -2432,121 +2434,583 @@ namespace SgqSystem.Services
                                        classe: "btn-warning btnNotAvaliable na font11"
                                    );
 
-            //Instancia uma veriavel para gerar o agrupamento
-            string parLevel3Group = null;
+            string tipoTela = "";
 
+            var variableList = ParLevel1VariableProductionDB.getVariable(ParLevel1.Id).ToList();
 
-            foreach (var parLevel3 in parlevel3List)
+            if(variableList.Count > 0)
             {
+                tipoTela = variableList[0].Name;
+            }
 
-                string classInput = null;
-                string tags = null;
-                string labels = null;
-                string input = null;
+            //Tela de bem estar animal
+            if (tipoTela.Equals("BEA"))
+            {
+                //Instancia uma veriavel para gerar o agrupamento
+                string parLevel3Group = null;
 
-                //Se for booelan
-                if (parLevel3.ParLevel3InputType_Id == 1)
+                foreach (var parLevel3 in parlevel3List)
                 {
-                    classInput = " boolean";
-                    input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
-                }
-                else
-                {
-                    //se não é um intervalo
-                    //tem que gerar uma mascara para os inputs e para os labels
-                    classInput = " interval";
-                    tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
 
+                    string classInput = null;
+                    string tags = null;
+                    string labels = null;
+                    string input = null;
+
+                    //Se for booelan
+                    if (parLevel3.ParLevel3InputType_Id == 1)
+                    {
+                        classInput = " boolean";
+                        input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+                    }
+                    else
+                    {
+                        //se não é um intervalo
+                        //tem que gerar uma mascara para os inputs e para os labels
+                        classInput = " interval";
+                        tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+
+                        labels = html.div(
+                                            outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                            classe: "font10",
+                                            style: "font-size: 11px; margin-top:7px;"
+                                        );
+
+                        input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                        intervalMin: parLevel3.IntervalMin,
+                                                        intervalMax: parLevel3.IntervalMax,
+                                                        unitName: parLevel3.ParMeasurementUnit_Name);
+
+                    }
+
+                    //Gera o level3
+                    string level3 = html.link(
+                                                outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
+                                                classe: "col-xs-4"
+                                                );
+                    //gera os labels
                     labels = html.div(
-                                     outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
-                                     classe: "font10",
-                                     style: "font-size: 11px; margin-top:7px;"
-                                   );
+                                            outerhtml: labels,
+                                            classe: "col-xs-3"
+                                        );
 
-                    input = html.campoIntervalo(id: parLevel3.Id.ToString(),
-                                                   intervalMin: parLevel3.IntervalMin,
-                                                   intervalMax: parLevel3.IntervalMax,
-                                                   unitName: parLevel3.ParMeasurementUnit_Name);
+                    //gera os contadores
+                    string counters = html.div(
+                                                outerhtml: input,
+                                                classe: "col-xs-3 counters"
+                                                );
+                    //gera os botoes
+                    string buttons = html.div(
+                                                outerhtml: btnNaoAvaliado,
+                                                classe: "col-xs-2",
+                                                style: "text-align:right"
+                                                );
+                    //Comandos para intervalos
+                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+
+                    //Gera uma linha de level3
+                    string level3List = html.listgroupItem(
+                                                            id: parLevel3.Id.ToString(),
+                                                            classe: "level3 row" + classInput,
+                                                            tags: tags,
+                                                            outerhtml: level3 +
+                                                                        labels +
+                                                                        counters +
+                                                                        buttons
+                                                        );
+
+                    parLevel3Group += level3List;
 
                 }
 
-                //Gera o level3
-                string level3 = html.link(
-                                           outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
-                                           classe: "col-xs-4"
-                                          );
-                //gera os labels
-                labels = html.div(
-                                        outerhtml: labels,
-                                        classe: "col-xs-3"
-                                    );
+                //< div class="form-group">
+                //      <label for="email" style="
+                //    display: inherit;
+                //">Email:</label>
+                //      <label for="email" style="display: inline-block">Email:</label>
+                //    </div>
 
-                //gera os contadores
-                string counters = html.div(
-                                            outerhtml: input,
-                                            classe: "col-xs-3 counters"
-                                          );
-                //gera os botoes
-                string buttons = html.div(
-                                           outerhtml: btnNaoAvaliado,
-                                           classe: "col-xs-2",
-                                           style: "text-align:right"
-                                         );
-                //Comandos para intervalos
-                tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                //Avaliações e amostas para painel
+                string avaliacoeshtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+                string amostrashtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
 
-                //Gera uma linha de level3
-                string level3List = html.listgroupItem(
-                                                      id: parLevel3.Id.ToString(),
-                                                      classe: "level3 row" + classInput,
-                                                      tags: tags,
-                                                      outerhtml: level3 +
-                                                                 labels +
-                                                                 counters +
-                                                                 buttons
-                                                    );
+                string avaliacoes = html.div(
+                                    outerhtml: avaliacoeshtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+                string amostras = html.div(
+                                    outerhtml: amostrashtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
 
-                parLevel3Group += level3List;
+                //Painel
+                //O interessante é um painel só mas no momento está um painel para cada level3group
+
+                var painelLevel3HeaderListHtml = "";
+
+                var labelPecas = "<label class='font-small'>Peças Avaliadas</label>";
+                var formControlPecas = "<input class='form-control input-sm pecasAvaliadas' type='number'>";
+                var formGroupPecas = html.div(
+                                        outerhtml: labelPecas + formControlPecas,
+                                        classe: "form-group header",
+                                        style: "margin-bottom: 4px;"
+                                        );
+
+                painelLevel3HeaderListHtml += html.div(
+                                                outerhtml: formGroupPecas,
+                                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                                );
+                
+                //string HeaderLevel02 = null;
+
+                string painellevel3 = html.listgroupItem(
+                                                            outerhtml: avaliacoes +
+                                                                       amostras +
+                                                                       painelLevel3HeaderListHtml,
+
+                                               classe: "painel painelLevel03 row");
+                
+                //Se tiver level3 gera o agrupamento no padrão
+                if (!string.IsNullOrEmpty(parLevel3Group))
+                {
+                    parLevel3Group = html.div(
+                                               classe: "level3Group BEA",
+                                               tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
+
+                                               outerhtml: painellevel3 +
+                                                          parLevel3Group
+                                             );
+                }
+                return parLevel3Group;
             }
-
-            //Avaliações e amostas para painel
-            string avaliacoes = html.div(
-                              outerhtml: "<b style=\"width:100px;display:inline-block\">Avaliações</b>" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal"),
-                            style: "font-size: 16px");
-            string amostras = html.div(
-                                          outerhtml: "<b style=\"width:100px;display:inline-block\">Amostras</b>" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal"),
-                                        style: "font-size: 16px");
-
-            //Painel
-            //O interessante é um painel só mas no momento está um painel para cada level3group
-
-            var painelLevel3HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html);
-
-            //string HeaderLevel02 = null;
-
-            string painellevel3 = html.listgroupItem(
-                                                        outerhtml: avaliacoes +
-                                                                   amostras  +
-                                                                   painelLevel3HeaderListHtml,
-
-                                           classe: "painel painelLevel03 row");
-
-            string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
-                                                        classe: "painel painelLevel02 row"
-                                                    );
-
-            //Se tiver level3 gera o agrupamento no padrão
-            if (!string.IsNullOrEmpty(parLevel3Group))
+            //Tela da verificação da tipificação
+            else if (tipoTela.Equals("VF"))
             {
-                parLevel3Group = html.div(
-                                           classe: "level3Group",
-                                           tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
+                //Instancia uma veriavel para gerar o agrupamento
+                string parLevel3Group = null;
 
-                                           outerhtml: painellevel3 + panelButton+
-                                                      parLevel3Group
-                                         );
+                foreach (var parLevel3 in parlevel3List)
+                {
+
+                    string classInput = null;
+                    string tags = null;
+                    string labels = null;
+                    string input = null;
+
+                    //Se for booelan
+                    if (parLevel3.ParLevel3InputType_Id == 1)
+                    {
+                        classInput = " boolean";
+                        input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+                    }
+                    else
+                    {
+                        //se não é um intervalo
+                        //tem que gerar uma mascara para os inputs e para os labels
+                        classInput = " interval";
+                        tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+
+                        labels = html.div(
+                                            outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                            classe: "font10",
+                                            style: "font-size: 11px; margin-top:7px;"
+                                        );
+
+                        input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                        intervalMin: parLevel3.IntervalMin,
+                                                        intervalMax: parLevel3.IntervalMax,
+                                                        unitName: parLevel3.ParMeasurementUnit_Name);
+
+                    }
+
+                    //Gera o level3
+                    string level3 = html.link(
+                                                outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
+                                                classe: "col-xs-4"
+                                                );
+                    //gera os labels
+                    labels = html.div(
+                                            outerhtml: labels,
+                                            classe: "col-xs-3"
+                                        );
+
+                    //gera os contadores
+                    string counters = html.div(
+                                                outerhtml: input,
+                                                classe: "col-xs-3 counters"
+                                                );
+                    //gera os botoes
+                    string buttons = html.div(
+                                                outerhtml: btnNaoAvaliado,
+                                                classe: "col-xs-2",
+                                                style: "text-align:right"
+                                                );
+                    //Comandos para intervalos
+                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+
+                    //Gera uma linha de level3
+                    string level3List = html.listgroupItem(
+                                                            id: parLevel3.Id.ToString(),
+                                                            classe: "level3 row" + classInput,
+                                                            tags: tags,
+                                                            outerhtml: level3 +
+                                                                        labels +
+                                                                        counters +
+                                                                        buttons
+                                                        );
+
+                    parLevel3Group += level3List;
+
+                }
+
+                //< div class="form-group">
+                //      <label for="email" style="
+                //    display: inherit;
+                //">Email:</label>
+                //      <label for="email" style="display: inline-block">Email:</label>
+                //    </div>
+
+                //Avaliações e amostas para painel
+                string avaliacoeshtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+                string amostrashtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+
+                string avaliacoes = html.div(
+                                    outerhtml: avaliacoeshtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+                string amostras = html.div(
+                                    outerhtml: amostrashtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+
+                //Painel
+                //O interessante é um painel só mas no momento está um painel para cada level3group
+
+                var label = "<label class='font-small'>Sequencial</label>";
+                var form_control = "<input class='form-control input-sm' type='date' ParHeaderField_Id='' ParFieldType_Id = ''>";
+                var form_group = html.div(
+                                        outerhtml: label + form_control,
+                                        classe: "form-group header",
+                                        style: "margin-bottom: 4px;"
+                                        );
+
+
+                var painelLevel3HeaderListHtml = form_group;
+
+                //string HeaderLevel02 = null;
+
+                string painellevel3 = html.listgroupItem(
+                                                            outerhtml: avaliacoes +
+                                                                       amostras +
+                                                                       painelLevel3HeaderListHtml,
+
+                                               classe: "painel painelLevel03 row");
+
+                string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
+                                                            classe: "painel painelLevel02 row"
+                                                        );
+
+                //Se tiver level3 gera o agrupamento no padrão
+                if (!string.IsNullOrEmpty(parLevel3Group))
+                {
+                    parLevel3Group = html.div(
+                                               classe: "level3Group",
+                                               tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
+
+                                               outerhtml: painellevel3 + panelButton +
+                                                          parLevel3Group
+                                             );
+                }
+                return parLevel3Group;
             }
-            return parLevel3Group;
+            //Tela do PCC1B
+            else if (tipoTela.Equals("PCC1B"))
+            {
+                //Instancia uma veriavel para gerar o agrupamento
+                string parLevel3Group = null;
+
+                foreach (var parLevel3 in parlevel3List)
+                {
+
+                    string classInput = null;
+                    string tags = null;
+                    string labels = null;
+                    string input = null;
+
+                    //Se for booelan
+                    if (parLevel3.ParLevel3InputType_Id == 1)
+                    {
+                        classInput = " boolean";
+                        input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+                    }
+                    else
+                    {
+                        //se não é um intervalo
+                        //tem que gerar uma mascara para os inputs e para os labels
+                        classInput = " interval";
+                        tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+
+                        labels = html.div(
+                                            outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                            classe: "font10",
+                                            style: "font-size: 11px; margin-top:7px;"
+                                        );
+
+                        input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                        intervalMin: parLevel3.IntervalMin,
+                                                        intervalMax: parLevel3.IntervalMax,
+                                                        unitName: parLevel3.ParMeasurementUnit_Name);
+
+                    }
+
+                    //Gera o level3
+                    string level3 = html.link(
+                                                outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
+                                                classe: "col-xs-4"
+                                                );
+                    //gera os labels
+                    labels = html.div(
+                                            outerhtml: labels,
+                                            classe: "col-xs-3"
+                                        );
+
+                    //gera os contadores
+                    string counters = html.div(
+                                                outerhtml: input,
+                                                classe: "col-xs-3 counters"
+                                                );
+                    //gera os botoes
+                    string buttons = html.div(
+                                                outerhtml: btnNaoAvaliado,
+                                                classe: "col-xs-2",
+                                                style: "text-align:right"
+                                                );
+                    //Comandos para intervalos
+                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+
+                    //Gera uma linha de level3
+                    string level3List = html.listgroupItem(
+                                                            id: parLevel3.Id.ToString(),
+                                                            classe: "level3 row" + classInput,
+                                                            tags: tags,
+                                                            outerhtml: level3 +
+                                                                        labels +
+                                                                        counters +
+                                                                        buttons
+                                                        );
+
+                    parLevel3Group += level3List;
+
+                }
+
+                //< div class="form-group">
+                //      <label for="email" style="
+                //    display: inherit;
+                //">Email:</label>
+                //      <label for="email" style="display: inline-block">Email:</label>
+                //    </div>
+
+                //Avaliações e amostas para painel
+                string avaliacoeshtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+                string amostrashtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+
+                string avaliacoes = html.div(
+                                    outerhtml: avaliacoeshtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+                string amostras = html.div(
+                                    outerhtml: amostrashtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+
+                //Painel
+                //O interessante é um painel só mas no momento está um painel para cada level3group
+
+                var painelLevel3HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html);
+
+                //string HeaderLevel02 = null;
+
+                string painellevel3 = html.listgroupItem(
+                                                            outerhtml: avaliacoes +
+                                                                       amostras +
+                                                                       painelLevel3HeaderListHtml,
+
+                                               classe: "painel painelLevel03 row");
+
+                string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
+                                                            classe: "painel painelLevel02 row"
+                                                        );
+
+                //Se tiver level3 gera o agrupamento no padrão
+                if (!string.IsNullOrEmpty(parLevel3Group))
+                {
+                    parLevel3Group = html.div(
+                                               classe: "level3Group",
+                                               tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
+
+                                               outerhtml: painellevel3 + panelButton +
+                                                          parLevel3Group
+                                             );
+                }
+                return parLevel3Group;
+            }
+            //Tela Genérica
+            else
+            {
+                //Instancia uma veriavel para gerar o agrupamento
+                string parLevel3Group = null;
+
+                foreach (var parLevel3 in parlevel3List)
+                {
+
+                    string classInput = null;
+                    string tags = null;
+                    string labels = null;
+                    string input = null;
+
+                    //Se for booelan
+                    if (parLevel3.ParLevel3InputType_Id == 1)
+                    {
+                        classInput = " boolean";
+                        input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+                    }
+                    else
+                    {
+                        //se não é um intervalo
+                        //tem que gerar uma mascara para os inputs e para os labels
+                        classInput = " interval";
+                        tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+
+                        labels = html.div(
+                                            outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                            classe: "font10",
+                                            style: "font-size: 11px; margin-top:7px;"
+                                        );
+
+                        input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                        intervalMin: parLevel3.IntervalMin,
+                                                        intervalMax: parLevel3.IntervalMax,
+                                                        unitName: parLevel3.ParMeasurementUnit_Name);
+
+                    }
+
+                    //Gera o level3
+                    string level3 = html.link(
+                                                outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
+                                                classe: "col-xs-4"
+                                                );
+                    //gera os labels
+                    labels = html.div(
+                                            outerhtml: labels,
+                                            classe: "col-xs-3"
+                                        );
+
+                    //gera os contadores
+                    string counters = html.div(
+                                                outerhtml: input,
+                                                classe: "col-xs-3 counters"
+                                                );
+                    //gera os botoes
+                    string buttons = html.div(
+                                                outerhtml: btnNaoAvaliado,
+                                                classe: "col-xs-2",
+                                                style: "text-align:right"
+                                                );
+                    //Comandos para intervalos
+                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+
+                    //Gera uma linha de level3
+                    string level3List = html.listgroupItem(
+                                                            id: parLevel3.Id.ToString(),
+                                                            classe: "level3 row" + classInput,
+                                                            tags: tags,
+                                                            outerhtml: level3 +
+                                                                        labels +
+                                                                        counters +
+                                                                        buttons
+                                                        );
+
+                    parLevel3Group += level3List;
+
+                }
+
+                //< div class="form-group">
+                //      <label for="email" style="
+                //    display: inherit;
+                //">Email:</label>
+                //      <label for="email" style="display: inline-block">Email:</label>
+                //    </div>
+
+                //Avaliações e amostas para painel
+                string avaliacoeshtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+                string amostrashtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+
+                string avaliacoes = html.div(
+                                    outerhtml: avaliacoeshtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+                string amostras = html.div(
+                                    outerhtml: amostrashtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+
+                //Painel
+                //O interessante é um painel só mas no momento está um painel para cada level3group
+
+                var painelLevel3HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html);
+
+                //string HeaderLevel02 = null;
+
+                string painellevel3 = html.listgroupItem(
+                                                            outerhtml: avaliacoes +
+                                                                       amostras +
+                                                                       painelLevel3HeaderListHtml,
+
+                                               classe: "painel painelLevel03 row");
+
+                string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
+                                                            classe: "painel painelLevel02 row"
+                                                        );
+
+                //Se tiver level3 gera o agrupamento no padrão
+                if (!string.IsNullOrEmpty(parLevel3Group))
+                {
+                    parLevel3Group = html.div(
+                                               classe: "level3Group",
+                                               tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
+
+                                               outerhtml: painellevel3 + panelButton +
+                                                          parLevel3Group
+                                             );
+                }
+                return parLevel3Group;
+            }
+            
 
         }
 

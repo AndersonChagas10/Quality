@@ -37,6 +37,7 @@ namespace Dominio
         public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
         public virtual DbSet<CollectionLevel03> CollectionLevel03 { get; set; }
         public virtual DbSet<CollectionLevel2> CollectionLevel2 { get; set; }
+        public virtual DbSet<CollectionLevel2XParHeaderField> CollectionLevel2XParHeaderField { get; set; }
         public virtual DbSet<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
         public virtual DbSet<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
         public virtual DbSet<ConsolidationLevel1> ConsolidationLevel1 { get; set; }

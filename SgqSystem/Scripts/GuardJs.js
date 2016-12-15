@@ -4,7 +4,7 @@
         if ($(e).val() == "0")
             $(e).val("");
         $(e).inputmask({
-            mask: '[-][+]9{1,10}x10^9{1,5}'
+            mask: '[-][+]9{1,16}[.][9]{15}x10^[-][+]9{1,5}'
             , placeholder: ' '
             , showMaskOnFocus: false
             , clearMaskOnLostFocus: true

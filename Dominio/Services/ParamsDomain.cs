@@ -4,8 +4,6 @@ using DTO.DTO.Params;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 
@@ -313,13 +311,11 @@ namespace Dominio.Services
             ParLevel3 saveParamLevel3 = Mapper.Map<ParLevel3>(paramsDto.parLevel3Dto);
 
             if (paramsDto.parLevel3Dto.listLevel3Value != null)
-                if(paramsDto.parLevel3Dto.listLevel3Value.Count() > 0)
+                if (paramsDto.parLevel3Dto.listLevel3Value.Count() > 0)
                     paramsDto.parLevel3Dto.listLevel3Value.ForEach(r => r.preparaParaInsertEmBanco());
 
             List<ParLevel3Value> listSaveParamLevel3Value = Mapper.Map<List<ParLevel3Value>>(paramsDto.parLevel3Dto.listLevel3Value);
-
             List<ParRelapse> listParRelapse = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel3Dto.listParRelapseDto);/*Reincidencia*/
-            //List<int> listParRelapseRemove = paramsDto.parLevel3Dto.removeReincidencia;
 
             try
             {
@@ -333,8 +329,6 @@ namespace Dominio.Services
             paramsDto.parLevel3Dto.Id = saveParamLevel3.Id;
             return paramsDto;
         }
-
-       
 
         public ParamsDTO AddUpdateLevel3Level2(ParamsDTO paramsDto)
         {
@@ -351,6 +345,7 @@ namespace Dominio.Services
         /// <returns></returns>
         public ParamsDTO GetLevel3(int idParLevel3, int? idParLevel2 = 0)
         {
+
             ParamsDTO retorno = new ParamsDTO();
             var parlevel3 = _baseRepoParLevel3.GetById(idParLevel3);/*ParLevel3*/
             var level3 = Mapper.Map<ParLevel3DTO>(parlevel3);
@@ -370,8 +365,11 @@ namespace Dominio.Services
 
             retorno.parLevel3Value = new ParLevel3ValueDTO();
             level3.listLevel3Value = Mapper.Map<List<ParLevel3ValueDTO>>(parlevel3.ParLevel3Value.OrderByDescending(r => r.IsActive));/*ParLevel 3 Value?*/
+            foreach (var i in level3.listLevel3Value)
+            {
+                i.PreparaGet();
+            }
             retorno.parLevel3Dto = level3;
-
 
             return retorno;
         }
@@ -481,7 +479,7 @@ namespace Dominio.Services
                 retorno.SetDdls(DdlParConsolidation, DdlFrequency, DdlparCluster, DdlparLevelDefinition, DdlParFieldType, DdlParDepartment, DdlParCounter_Level1,
                                 DdlParLocal_Level1, DdlParCounter_Level2, DdlParLocal_Level2, DdlParNotConformityRule, DdlParLevel3InputType, DdlParMeasurementUnit,
                                 DdlParLevel3BoolFalse, DdlParLevel3BoolTrue, DdlparCrit, DdlparCompany);
-                return retorno; 
+                return retorno;
             }
         }
 

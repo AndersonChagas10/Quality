@@ -17,6 +17,7 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParFieldType()
         {
+            this.CollectionLevel2XParHeaderField = new HashSet<CollectionLevel2XParHeaderField>();
             this.ParHeaderField = new HashSet<ParHeaderField>();
         }
     
@@ -27,6 +28,8 @@ namespace Dominio
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CollectionLevel2XParHeaderField> CollectionLevel2XParHeaderField { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParHeaderField> ParHeaderField { get; set; }
     }

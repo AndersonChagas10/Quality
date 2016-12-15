@@ -489,6 +489,11 @@ namespace Data.Repositories
             db.SaveChanges();
         }
 
+        private string VerificaNulo<T>(T prop)
+        {
+            return prop.IsNull() ? "null" : prop.ToString();
+        }
+
         #endregion
 
         #region Global
