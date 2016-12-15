@@ -90,6 +90,7 @@ namespace DTO.DTO.Params
         public List<ParLevel1XClusterDTO> listLevel1XClusterDto { get; set; }
         public List<ParLevel3Level2Level1DTO> listParLevel3Level2Level1Dto { get; set; }
         public List<ParCounterXLocalDTO> listParCounterXLocal { get; set; }
+        public List<ParGoalDTO> listParGoalLevel1 { get; set; }
 
         public IEnumerable<SelectListItem> DdlLevel2Vinculados { get; set; }
         

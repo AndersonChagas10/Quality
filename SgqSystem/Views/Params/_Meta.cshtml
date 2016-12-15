@@ -1,0 +1,157 @@
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+@using SgqSystem.Helpers
+
+@{
+    var level = Model.levelControl;
+    var name = "Meta";
+    var id = "level" + Model.levelControl + "_" + name + "_accordion";
+    var id2 = "#level" + Model.levelControl + "__" + name + "_accordion";
+    var id3 = "#level" + Model.levelControl + "__" + name + "_collapse";
+    var id4 = "level" + Model.levelControl + "__" + name + "_collapse";
+    var click = "MetaL" + Model.levelControl + ".adiciona($(this))";
+}
+
+<div class="panel-group accordion" id="@id">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="@id2" href="@id3" aria-expanded="false"> Meta</a>
+            </h4>
+        </div>
+        <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+
+                <table class="table-erp" id="camposGroup">
+
+                    <tbody>
+                        <tr>
+
+                            @Table.GerarColuna(@Html.DropDownList("metaCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "metaCompany" })
+                                , @Html.Label(Resources.Resource.company)
+                                , Table.PosicaoLabel.top)
+
+                          
+                            @Table.GerarColunaButton(@Html.TextBox("percentVal", 0, htmlAttributes: new { @id = "percentVal", @class = "form-control input-sm" })
+                                , @Html.Label(Resources.Resource.goal_value)
+                                , Table.PosicaoLabel.top
+                                , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick='" + @click + ";' id=\"\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table id="tableMeta" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Meta:">
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>PercentVal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
+
+    function atribuiVariavelMeta (){
+
+        var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto));
+        var levelDomain;
+        var listSalvo;
+
+        if(levelControl == 1){
+            levelDomain = "newLevel1Modal";
+            listSalvo = paramsDto.parLevel1Dto.listParGoalLevel1;//
+            MetaL1 = getCounterObject(levelDomain, listSalvo);//
+            MetaL1.carregaDadosDoDb();//
+        }
+
+    }
+
+    atribuiVariavelMeta();
+
+    function getCounterObject (levelDomain, listSalvo) {
+        return {
+            /*Setup*/
+            levelControl: levelControl,
+            level: levelDomain,
+            listObjSalvo: listSalvo,
+            idTable: 'tableMeta',//
+            tdsNames: ['companyName', 'PercentValue', 'btn'],
+            getObjAdd: function(isEdit, obj){
+                if(isEdit != undefined){
+                   
+                    return obj;
+                }else{
+                    return {/*Objeto*/
+                        PercentValue    : $('#' + this.level + ' #percentVal').val(),
+                        ParCompany_Id  : $('#' + this.level + ' #metaCompany :selected').val() ,
+                        companyName  : $('#' + this.level + ' #metaCompany :selected').text() ,
+                        IsActive: true
+                    }
+                }
+            },
+            veifyAdd: function(isEdit) {
+                var seletorTato = !!isEdit ? isEdit : this.level;
+                /*Valida se pode criar o objeto*/
+                if($('#' + seletorTato + ' #percentVal').val().length == 0){
+                    openMessageModal("Campo obrigatório:", "O campo Meta precisa ser preenchido.")
+                    return false;
+                }
+               
+                return true;
+            },
+            incluiNoObjetoParaSubmit: function(dados){
+
+                var level = this.levelControl;
+                $('#' + this.level + ' #' + this.idTable + ' > tbody > tr ').each(function(c, obj){
+
+                    var o = $(obj).data();
+                    //#edit
+                    if((o.Id != null || o.Id != undefined) && o.Id > 0){
+                        dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].Id"] = o.Id;
+                    }
+                 
+                    dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].PercentValue"] = o.PercentValue;
+                    dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].ParCompany_Id"] = o.ParCompany_Id;
+
+                });
+
+            },
+            carregaDadosDoDb: function(){
+                var id = this.level + ' #' + this.idTable;
+                var tdNamess = this.tdsNames;
+                if( this.listObjSalvo != null){ /*Carrega regras de NC*/
+                    this.listObjSalvo.forEach(function(o, c){
+                        //console.log(o);
+                        if(o.ParCompany != null){
+                            o['companyName'] = o.ParCompany.Name;
+                        }else{
+                            o['companyName'] = "Todas";
+                        }
+                        crudNxN.adiciona(o,  id, tdNamess);
+                    });
+                }
+            },
+            /*Fim Setup*/
+            adiciona: function(e) {
+                if(this.veifyAdd()){
+                    var object = this.getObjAdd();
+                    crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
+                }
+            },
+        };
+    }
+
+
+
+
+</script>

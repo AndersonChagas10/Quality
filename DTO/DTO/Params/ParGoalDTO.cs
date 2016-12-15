@@ -8,5 +8,6 @@ namespace DTO.DTO.Params
         public int ParCompany_Id { get; set; }
         public decimal PercentValue { get; set; }
         public bool Active { get; set; }
+        public ParCompanyDTO ParCompany { get; set; }
     }
 }
