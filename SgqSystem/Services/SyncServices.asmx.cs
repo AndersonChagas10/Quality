@@ -3126,12 +3126,20 @@ namespace SgqSystem.Services
             var html = new Html();
             string head = html.div(classe: "head");
 
+            var ParConfSGQDB = new SGQDBContext.ParConfSGQ();
+            var configuracoes = ParConfSGQDB.get();
+
+           
             #region form
 
             #region Unit
 
 
-            string selectUnit = html.option("1", "Unit 1", tags: "ip=\"192.168.25.200/SgqMaster\"");
+            string selectUnit = null;
+            if(configuracoes.HaveUnitLogin == true)
+            {
+                selectUnit  = html.option("1", "Unit 1", tags: "ip=\"192.168.25.200/SgqMaster\"");
+            }
 
 
             selectUnit = html.select(selectUnit, "selectUnit");
