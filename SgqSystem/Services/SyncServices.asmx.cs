@@ -1937,6 +1937,11 @@ namespace SgqSystem.Services
                                "     <div class=\"body\" style=\"height:565px; overflow-y: auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                           " +
                                "</div>                                                                                                                                                                                                    ";
 
+            string modalVF = "<div class=\"modalVF panel panel-default\" style=\"display:none;\">                            " +
+                               "     <div class=\"head\">View <a href=\"#\" class=\"pull-right close\">x</a></div>           " +
+                               "     <div class=\"body\"></div>                                                              " +
+                               "</div>                                                                                       ";
+
             string messageConfirm = "<div class=\"messageConfirm padding20\" style=\"display:none\">                                                                                                " +
                                         "    <h1 class=\"head\">Titulo</h1>                                                                                                                             " +
                                         "    <div class=\"body font16\"> <div class=\"txtMessage\"></div>                                                                                               " +
@@ -1963,6 +1968,7 @@ namespace SgqSystem.Services
                              tags: "breadmainlevel=\"Indicadores\""
                            ) +
                            viewModal +
+                           modalVF + 
                            message +
                            messageConfirm;
         }
@@ -2187,7 +2193,7 @@ namespace SgqSystem.Services
             //Verifica amostra pela company informada
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
                                                         ParCompany_Id: ParCompany_Id);
-
+            
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List)
             {
@@ -2416,7 +2422,7 @@ namespace SgqSystem.Services
             var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
             //Inicaliza ParFieldType
             var ParFieldTypeDB = new SGQDBContext.ParFieldType();
-            //Inicaliza ParFieldType
+            //Inicaliza ParLevel1VariableProduction
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
 
 
@@ -2602,80 +2608,104 @@ namespace SgqSystem.Services
                     string classInput = null;
                     string tags = null;
                     string labels = null;
-                    string input = null;
-
-                    //Se for booelan
-                    if (parLevel3.ParLevel3InputType_Id == 1)
-                    {
-                        classInput = " boolean";
-                        input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
-                    }
-                    else
-                    {
-                        //se não é um intervalo
-                        //tem que gerar uma mascara para os inputs e para os labels
-                        classInput = " interval";
-                        tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-
-                        labels = html.div(
-                                            outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
-                                            classe: "font10",
-                                            style: "font-size: 11px; margin-top:7px;"
-                                        );
-
-                        input = html.campoIntervalo(id: parLevel3.Id.ToString(),
-                                                        intervalMin: parLevel3.IntervalMin,
-                                                        intervalMax: parLevel3.IntervalMax,
-                                                        unitName: parLevel3.ParMeasurementUnit_Name);
-
-                    }
 
                     //Gera o level3
                     string level3 = html.link(
                                                 outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
-                                                classe: "col-xs-4"
+                                                classe: "col-xs-12 col-sm-12 col-md-12"
                                                 );
+
+                    switch (parLevel3.Name)
+                    {
+                        case "Verificação Tipificação - Falha Operacional":
+                            var listOper = "<div class='col-xs-2' name='CONTUSÃO - SEM CONTUSÃO'>SC</div>";
+                            listOper += "<div class='col-xs-2' name='CONTUSÃO - 1 ALCATRA'>AL</div>";
+                            listOper += "<div class='col-xs-2' name='CONTUSÃO - 2 CONTRA FILÉ'>CF</div>";
+                            listOper += "<div class='col-xs-2' name='CONTUSÃO - 3 ALCATRA E CONTRA FILÉ'>ACF</div>";
+                            labels += html.div(outerhtml: listOper, classe: "row items", name: "Falha Op.", tags: "listtype = multiple");
+                            break;
+                        case "Verificação Tipificação - Gordura":
+                            var listGordura = "<div class='col-xs-2' name='1  Ausente '>1</div>";
+                            listGordura += "<div class='col-xs-2' name='2=  Escassa'>2=</div>";
+                            listGordura += "<div class='col-xs-2' name='3=  Mediana'>3=</div>";
+                            listGordura += "<div class='col-xs-2' name='4  Uniforme'>4</div>";
+                            listGordura += "<div class='col-xs-2' name='5  Excessiva'>5</div>";
+                            labels += html.div(outerhtml: listGordura, classe: "row items", name: "Gordura", tags: "listtype = single");
+                            break;
+                        case "Verificação Tipificação - Contusão":
+                            var listContusao = "<div class='col-xs-2' name='CONTUSÃO - SEM CONTUSÃO'>SC</div>";
+                            listContusao += "<div class='col-xs-2' name='CONTUSÃO - 1 ALCATRA'>AL</div>";
+                            listContusao += "<div class='col-xs-2' name='CONTUSÃO - 2 CONTRA FILÉ'>CF</div>";
+                            listContusao += "<div class='col-xs-2' name='CONTUSÃO - 3 ALCATRA E CONTRA FILÉ'>ACF</div>";
+                            labels += html.div(outerhtml: listContusao, classe: "row items", name: "Contusão", tags: "listtype = multiple");
+                            break;
+                        case "Verificação Tipificação - Idade":
+                            var listIdade = "<div class='col-xs-2' name='Dente de Leite'>0</div>";
+                            listIdade += "<div class='col-xs-2' name='Dois Dentes'>2</div>";
+                            listIdade += "<div class='col-xs-2' name='Quatro Dentes'>4</div>";
+                            listIdade += "<div class='col-xs-2' name='Seis Dentes'>6</div>";
+                            listIdade += "<div class='col-xs-2' name='Oito Dentes'>8</div>";
+                            labels += html.div(outerhtml: listIdade, classe: "row items", name: "Maturidade", tags: "listtype = single");
+                            break;
+                        case "Verificação Tipificação - Sexo":
+                            var listSexo = "<div class='col-xs-2' name='MACHO CASTRADO'>C</div>";
+                            listSexo += "<div class='col-xs-2' name='MACHO INTEIRO'>I</div>";
+                            listSexo += "<div class='col-xs-2' name='FÊMEA'>F</div>";
+                            labels += html.div(outerhtml: listSexo, classe: "row items", name: "Sexo", tags: "listtype = single");
+                            break;
+                    }
+                    
                     //gera os labels
                     labels = html.div(
                                             outerhtml: labels,
-                                            classe: "col-xs-3"
+                                            classe: "col-xs-12 col-sm-12 col-md-12"
                                         );
-
-                    //gera os contadores
-                    string counters = html.div(
-                                                outerhtml: input,
-                                                classe: "col-xs-3 counters"
-                                                );
-                    //gera os botoes
-                    string buttons = html.div(
-                                                outerhtml: btnNaoAvaliado,
-                                                classe: "col-xs-2",
-                                                style: "text-align:right"
-                                                );
+                    
                     //Comandos para intervalos
                     tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
 
                     //Gera uma linha de level3
                     string level3List = html.listgroupItem(
                                                             id: parLevel3.Id.ToString(),
-                                                            classe: "level3 row" + classInput,
+                                                            classe: "level3 row VF" + classInput,
                                                             tags: tags,
                                                             outerhtml: level3 +
-                                                                        labels +
-                                                                        counters +
-                                                                        buttons
+                                                                        labels 
                                                         );
 
                     parLevel3Group += level3List;
 
                 }
 
-                //< div class="form-group">
-                //      <label for="email" style="
-                //    display: inherit;
-                //">Email:</label>
-                //      <label for="email" style="display: inline-block">Email:</label>
-                //    </div>
+                var painelLevel3HeaderListHtml = "";
+
+                var labelSequencial = "<label class='font-small'>Sequencial</label>";
+                var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
+                var formGroupSequencial = html.div(
+                                        outerhtml: labelSequencial + formControlSequencial,
+                                        classe: "form-group header",
+                                        style: "margin-bottom: 4px;"
+                                        );
+
+                var labelBanda = "<label class='font-small'>Banda</label>";
+                var formControlBanda = "<input class='form-control input-sm banda' type='number'>";
+                var formGroupBanda = html.div(
+                                        outerhtml: labelBanda + formControlBanda,
+                                        classe: "form-group header",
+                                        style: "margin-bottom: 4px;"
+                                        );
+
+                painelLevel3HeaderListHtml += html.div(
+                                                outerhtml: formGroupSequencial,
+                                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                                );
+
+                painelLevel3HeaderListHtml += html.div(
+                                                outerhtml: formGroupBanda,
+                                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                                );
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
@@ -2699,29 +2729,12 @@ namespace SgqSystem.Services
                 //Painel
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
-                var label = "<label class='font-small'>Sequencial</label>";
-                var form_control = "<input class='form-control input-sm' type='date' ParHeaderField_Id='' ParFieldType_Id = ''>";
-                var form_group = html.div(
-                                        outerhtml: label + form_control,
-                                        classe: "form-group header",
-                                        style: "margin-bottom: 4px;"
-                                        );
-
-
-                var painelLevel3HeaderListHtml = form_group;
-
-                //string HeaderLevel02 = null;
-
                 string painellevel3 = html.listgroupItem(
                                                             outerhtml: avaliacoes +
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
 
                                                classe: "painel painelLevel03 row");
-
-                string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
-                                                            classe: "painel painelLevel02 row"
-                                                        );
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
@@ -2730,7 +2743,7 @@ namespace SgqSystem.Services
                                                classe: "level3Group",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                                               outerhtml: painellevel3 + panelButton +
+                                               outerhtml: painellevel3 +    
                                                           parLevel3Group
                                              );
                 }
