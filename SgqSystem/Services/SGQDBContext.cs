@@ -304,14 +304,14 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
             
-            string sql = "select PH.Id as ParHeaderField_Id, PH.Name as ParHeaderField_Name, PT.Id as ParFieldType_Id from ParLevel2XHeaderField PL  " +
-                         "left join ParHeaderField PH on PH.Id = PL.ParHeaderField_Id                                                              " +
-                         "left join ParLevelDefiniton PD on PH.ParLevelDefinition_Id = PD.Id                                                       " +
-                         "left join ParFieldType PT on PH.ParFieldType_Id = PT.Id                                                                  " +
-                         "where                                                                                                                    " +
-                         "PD.Id = 1 and                                                                                                            " +
-                         "PL.ParLevel1_Id = "+ ParLevel1_Id + " and                                                                                " +
-                         "PL.IsActive = 1 and PH.IsActive = 1 and PD.IsActive = 1                                                                  " +
+            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PT.Id AS ParFieldType_Id FROM ParLevel2XHeaderField PL  " +
+                         "LEFT JOIN ParHeaderField PH ON PH.Id = PL.ParHeaderField_Id                                                              " +
+                         "LEFT JOIN ParLevelDefiniton PD ON PH.ParLevelDefinition_Id = PD.Id                                                       " +
+                         "LEFT JOIN ParFieldType PT ON PH.ParFieldType_Id = PT.Id                                                                  " +
+                         "WHERE                                                                                                                    " +
+                         "PD.Id = 1 AND                                                                                                            " +
+                         "PL.ParLevel1_Id = "+ ParLevel1_Id + " AND                                                                                " +
+                         "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                  " +
                          "GROUP BY PH.Id, PH.Name, PT.Id;                                                                                          ";
 
             
@@ -325,14 +325,14 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "select PH.Id as ParHeaderField_Id, PH.Name as ParHeaderField_Name, PT.Id as ParFieldType_Id from ParLevel2XHeaderField PL " +
-                         "  left join ParHeaderField PH on PH.Id = PL.ParHeaderField_Id                                                             " +
-                         "  left join ParLevelDefiniton PD on PH.ParLevelDefinition_Id = PD.Id                                                      " +
-                         "  left join ParFieldType PT on PH.ParFieldType_Id = PT.Id                                                                 " +
-                         "  where                                                                                                                   " +
-                         "  PD.Id = 1 and                                                                                                           " +
-                         "  PL.ParLevel1_Id = " + ParLevel1_Id + " and PL.ParLevel2_Id = " + ParLevel2_Id + " and                                   " +
-                         "  PL.IsActive = 1 and PH.IsActive = 1 and PD.IsActive = 1;                                                                ";
+            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PT.Id AS ParFieldType_Id FROM ParLevel2XHeaderField PL " +
+                         "  LEFT JOIN ParHeaderField PH ON PH.Id = PL.ParHeaderField_Id                                                             " +
+                         "  LEFT JOIN ParLevelDefiniton PD ON PH.ParLevelDefinition_Id = PD.Id                                                      " +
+                         "  LEFT JOIN ParFieldType PT ON PH.ParFieldType_Id = PT.Id                                                                 " +
+                         "  WHERE                                                                                                                   " +
+                         "  PD.Id = 1 AND                                                                                                           " +
+                         "  PL.ParLevel1_Id = " + ParLevel1_Id + " AND PL.ParLevel2_Id = " + ParLevel2_Id + " AND                                   " +
+                         "  PL.IsActive = 1 AND PH.IsActive = 1 and PD.IsActive = 1;                                                                ";
 
             var parLevel3List = db.Query<ParLevelHeader>(sql);
 
@@ -344,14 +344,16 @@ namespace SGQDBContext
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
-        public int Id;
-        public string Name;
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal PunishmentValue { get; set; }
 
         public IEnumerable<ParFieldType> getMultipleValues(int ParHeaderField_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT Id, Name FROM ParMultipleValues                                "+
+
+            string sql = "SELECT Id, Name, PunishmentValue FROM ParMultipleValues                       " +
                          "WHERE ParHeaderField_Id = '"+ ParHeaderField_Id + "' and IsActive = 1;        ";
 
             var multipleValues = db.Query<ParFieldType>(sql);
@@ -364,8 +366,8 @@ namespace SGQDBContext
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
-        public int Id;
-        public string Name;
+        public int Id { get; set; }
+        public string Name { get; set; }
 
         public IEnumerable<ParLevel1VariableProduction> getVariable(int ParLevel1_Id)
         {
@@ -387,12 +389,12 @@ namespace SGQDBContext
 
         public int Id { get; set; }
         public bool HaveUnitLogin { get; set; }
-
+        public bool HaveShitLogin { get; set; }
         public ParConfSGQ get()
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT Id, HaveUnitLogin FROM ParConfSGQ";
+            string sql = "SELECT Id, HaveUnitLogin, HaveShitLogin FROM ParConfSGQ";
 
             var conf = db.Query<ParConfSGQ>(sql).FirstOrDefault();
 
