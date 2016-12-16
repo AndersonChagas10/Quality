@@ -9,6 +9,8 @@ using SgqSystem.Handlres;
 using System.Web.Http.Cors;
 using SgqSystem.Services;
 using SGQDBContext;
+using Dominio.Services;
+using DTO.Helpers;
 
 namespace SgqSystem.Services
 {
@@ -202,8 +204,8 @@ namespace SgqSystem.Services
                 //Pega o Id da Unidade
                 string unidadeId = result[4];
 
-                //MOCK
-                unidadeId = DefaultValueReturn(unidadeId, "1");
+                ////MOCK
+                //unidadeId = DefaultValueReturn(unidadeId, "1");
                 //Pega o Period
 
                 
@@ -256,7 +258,7 @@ namespace SgqSystem.Services
                 //{
                 //    cattletype = baisedUnbaised;
                 //}
-
+                string AlertLevel = result[27];
                 string completed = result[28];
                 string havePhases = result[29];
                 string CollectionLevel02Id = result[30];
@@ -279,6 +281,7 @@ namespace SgqSystem.Services
                 level02HeaderJSon += ";" + CollectionLevel02Id;
                 level02HeaderJSon += ";" + correctiveActionCompleted;
                 level02HeaderJSon += ";" + completeReaudit;
+                level02HeaderJSon += ";" + AlertLevel;
 
                 //Verifica o Resultado do Level03
                 string level03ResultJson = result[22];
@@ -306,6 +309,9 @@ namespace SgqSystem.Services
                 string reauditNumber = result[26];
                 reauditNumber = DefaultValueReturn(reauditNumber, "0");
                 //Cria a linah de insert
+
+
+
                 sql += "INSERT INTO [dbo].[CollectionJson] " +
                        "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
                        "VALUES " +
@@ -552,9 +558,11 @@ namespace SgqSystem.Services
                                     update = true;
                                 }
 
+                                string AlertLevel = arrayHeader[11];
+
                                 int CollectionLevel2Id = InsertCollectionLevel2(ConsolidationLevel2Id.ToString(), level01, level02, unitId, AuditorId, shift, period, Phase, Reaudit, reauditNumber, level02CollectionDate,
                                                                                   StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit,
-                                                                                  haveCorrectiveAction, havePhases, completed, idCollectionLevel2);
+                                                                                  haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel);
 
                                 if (CollectionLevel2Id == 0)
                                 {
@@ -562,15 +570,25 @@ namespace SgqSystem.Services
                                     return "error";
                                 }
 
+                                int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), level02, objson, AuditorId, Duplicated);
+                                if (CollectionLevel3Id == 0)
+                                {
+                                    //return "Erro Level03";
+                                    return "error";
+                                }
+
                                 headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
 
 
-                                int headerFieldId = InsertCollectionLevel2HeaderField(CollectionLevel2Id, headersContadores);
-
-                                if (headerFieldId == 0)
+                                if(!string.IsNullOrEmpty(headersContadores))
                                 {
-                                    //return "erro Collection level02";
-                                    return "error";
+                                    int headerFieldId = InsertCollectionLevel2HeaderField(CollectionLevel2Id, headersContadores);
+
+                                    if (headerFieldId == 0)
+                                    {
+                                        //return "erro Collection level02";
+                                        return "error";
+                                    }
                                 }
 
                                 string correctiveActionCompleted = arrayHeader[9];
@@ -612,12 +630,7 @@ namespace SgqSystem.Services
                                     }
                                 }
 
-                                int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), level02, objson, AuditorId, Duplicated);
-                                if (CollectionLevel3Id == 0)
-                                {
-                                    //return "Erro Level03";
-                                    return "error";
-                                }
+                               
 
                                 if (!string.IsNullOrEmpty(correctiveActionJson))
                                 {
@@ -992,7 +1005,7 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public int InsertCollectionLevel2(string ConsolidationLevel02Id, string Level01Id, string Level02Id, string UnitId, string AuditorId, string Shift, string Period, string Phase, string Reaudit, string ReauditNumber, string CollectionDate,
                                            string StartPhase, string Evaluation, string Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
-                                           string Duplicated, string haveReaudit, string haveCorrectiveAction, string HavePhase, string Completed, string id)
+                                           string Duplicated, string haveReaudit, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel)
         {
 
             //Verificamos a data da phase
@@ -1015,9 +1028,9 @@ namespace SgqSystem.Services
             //Se o Id for igual a zero é um insert
             if (id == "0")
             {
-                sql = "INSERT INTO CollectionLevel2 ([ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed]) " +
+                sql = "INSERT INTO CollectionLevel2 ([ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel]) " +
                 "VALUES" +
-                "('" + ConsolidationLevel02Id + "','" + Level01Id + "','" + Level02Id + "','" + UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + Reaudit + "','" + ReauditNumber + "', CAST(N'" + CollectionDate + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "')";
+                "('" + ConsolidationLevel02Id + "','" + Level01Id + "','" + Level02Id + "','" + UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + Reaudit + "','" + ReauditNumber + "', CAST(N'" + CollectionDate + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "')";
 
                 sql += " SELECT @@IDENTITY AS 'Identity'";
             }
@@ -1197,13 +1210,21 @@ namespace SgqSystem.Services
 
                 string punishimentValue = result[13];
 
+                string defects = result[14];
+
+                //aqui tem que mudar no bem estar animal, verificar com o gabriel
+                string evaluation = "1";
+
+                decimal WeiDefects = 0;
+                WeiDefects = (Convert.ToDecimal(defects) + Convert.ToDecimal(punishimentValue)) * Convert.ToDecimal(weight);
+
                 id = DefaultValueReturn(id, "0");
 
                 if (id == "0")
                 {
-                    sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue]) " +
+                    sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiDefects]) " +
                            "VALUES " +
-                           "('" + CollectionLevel02Id + "','" + Level03Id + "', (SELECT Name FROM ParLevel3 WHERE Id='" + Level03Id + "'),'" + weight + "','" + intervalMin + "','" + intervalMax + "', '" + value + "','" + valueText + "','" + conform + "','" + isnotEvaluate + "', '" + punishimentValue + "') ";
+                           "('" + CollectionLevel02Id + "','" + Level03Id + "', (SELECT Name FROM ParLevel3 WHERE Id='" + Level03Id + "'),'" + weight + "','" + intervalMin + "','" + intervalMax + "', '" + value + "','" + valueText + "','" + conform + "','" + isnotEvaluate + "', '" + punishimentValue + "', '" + defects + "', '" + evaluation + "', '" + WeiDefects + "') ";
 
                     sql += " SELECT @@IDENTITY AS 'Identity'";
 
@@ -1444,7 +1465,7 @@ namespace SgqSystem.Services
         public string GetConsolidationLevel01(string UnidadeId, bool lastDate = false)
         {
             //Retirar a unidade tem que vir do app
-            UnidadeId = DefaultValueReturn(UnidadeId, "1");
+            UnidadeId = DefaultValueReturn(UnidadeId, UnidadeId);
 
             var Level2ResultDB = new SGQDBContext.Level2Result();
 
@@ -2086,12 +2107,15 @@ namespace SgqSystem.Services
                         nameParCritialLevel = parlevel1.ParCriticalLevel_Name;
                         //Incremento os itens que estaram no ParLevel1                
                         //Gera linha Level1
+
+                        string tags = "totalavaliado=\"0\" totaldefeitos=\"0\" alertanivel1=\"3\" alertanivel2=\"6\" alertanivel3=\"9\" alertaatual=\"0\" parconsolidationtype_id=\"1\"";
+
                         string level01 = html.link(
 
                                                   id: parlevel1.Id.ToString(),
                                                   classe: "level1 col-xs-7 "+tipoTela,
                                                   //Aqui vai as tags do level01
-                                                  tags: "",
+                                                  tags: tags,
                                                   outerhtml: parlevel1.Name
                                                  );
                         //Adiciona Div Lateral
@@ -2317,7 +2341,11 @@ namespace SgqSystem.Services
                                             label: parlevel2.Name,
                                             classe: classXSLevel2,
                                             evaluate: evaluate,
-                                            sample: sample);
+                                            sample: sample, 
+                                            alertlevel1: "3", 
+                                            alertlevel2: "6",
+                                            alertlevel3: "9",
+                                            AlertLevel: "0");
 
                 //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
@@ -2497,7 +2525,7 @@ namespace SgqSystem.Services
                         //se não é um intervalo
                         //tem que gerar uma mascara para os inputs e para os labels
                         classInput = " interval";
-                        tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                        tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
 
                         labels = html.div(
                                             outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
@@ -2535,9 +2563,11 @@ namespace SgqSystem.Services
                                                 style: "text-align:right"
                                                 );
                     //Comandos para intervalos
-                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                    //tipo do input level3
+                    //
+                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
 
-                    //Gera uma linha de level3
+
                     string level3List = html.listgroupItem(
                                                             id: parLevel3.Id.ToString(),
                                                             classe: "level3 row" + classInput,
@@ -2685,8 +2715,8 @@ namespace SgqSystem.Services
                                         );
                     
                     //Comandos para intervalos
-                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-
+                    //tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
                     //Gera uma linha de level3
                     string level3List = html.listgroupItem(
                                                             id: parLevel3.Id.ToString(),
@@ -2797,8 +2827,8 @@ namespace SgqSystem.Services
                         //se não é um intervalo
                         //tem que gerar uma mascara para os inputs e para os labels
                         classInput = " interval";
-                        tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-
+                        //tags =                                       "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                        tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
                         labels = html.div(
                                             outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
                                             classe: "font10",
@@ -2835,7 +2865,9 @@ namespace SgqSystem.Services
                                                 style: "text-align:right"
                                                 );
                     //Comandos para intervalos
-                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                    //tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
+
 
                     //Gera uma linha de level3
                     string level3List = html.listgroupItem(
@@ -2935,8 +2967,8 @@ namespace SgqSystem.Services
                         //se não é um intervalo
                         //tem que gerar uma mascara para os inputs e para os labels
                         classInput = " interval";
-                        tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-
+                                                              //tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                        tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
                         labels = html.div(
                                             outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
                                             classe: "font10",
@@ -2973,8 +3005,8 @@ namespace SgqSystem.Services
                                                 style: "text-align:right"
                                                 );
                     //Comandos para intervalos
-                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-
+                   // tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
                     //Gera uma linha de level3
                     string level3List = html.listgroupItem(
                                                             id: parLevel3.Id.ToString(),
@@ -3176,7 +3208,7 @@ namespace SgqSystem.Services
             if(configuracoes != null && configuracoes.HaveUnitLogin == true)
             {
                 inputsDesabilitados = true;
-                //coloca as unidades
+                //coloca as unidades vindo do banco ou mocado eua, podemos colocar um arquivo para carregar
                 selectUnit  = html.option("1", "Unit 1", tags: "ip=\"192.168.25.200/SgqMaster\"");
                 selectUnit = html.select(selectUnit, "selectUnit");
             }
@@ -3253,6 +3285,71 @@ namespace SgqSystem.Services
 
                                 , classe: "login"
                             );
+        }
+        #endregion
+        #region Users
+        [WebMethod]
+        public string getCompanyUsers(string ParCompany_Id)
+        {
+            var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq();
+
+            var users = ParCompanyXUserSgqDB.getCompanyUsers(Convert.ToInt32(ParCompany_Id));
+            var html = new Html();
+
+            string usersList = null;
+            foreach (var user in users)
+            {
+                string Password = user.UserSGQ_Pass;
+                Password = Guard.Descriptografar3DES(Password);
+                Password = UserDomain.EncryptStringAES(Password);
+
+                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+            }
+            return usersList;
+        }
+        [WebMethod]
+        public string getUserCompanys(string UserSgq_Id)
+        {
+            var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq();
+
+            var users = ParCompanyXUserSgqDB.getUserCompany(Convert.ToInt32(UserSgq_Id));
+            var html = new Html();
+
+            string usersList = null;
+            foreach (var user in users)
+            {
+                string Password = user.UserSGQ_Pass;
+                Password = Guard.Descriptografar3DES(Password);
+                Password = UserDomain.EncryptStringAES(Password);
+
+                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+            }
+            return usersList;
+        }
+        [WebMethod]
+        public string UserSGQLogin(string UserName, string Password)
+        {
+            var UserSGQDB = new SGQDBContext.UserSGQ();
+            var user = UserSGQDB.getUserByLogin(UserName);
+
+            var html = new Html();
+
+            Password = UserDomain.DecryptStringAES(Password);
+            Password = Guard.Criptografar3DES(Password);
+
+            if (user != null && user.Password == Password)
+            {
+                
+                Password = Guard.Descriptografar3DES(Password);
+                Password = UserDomain.EncryptStringAES(Password);
+                //colocar informação que usuario não tem unidade padrão, mas tem que verificar isso
+                return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+            }
+            else
+            {
+                return "Usuário ou senha inválidos";
+            }
+          
         }
         #endregion
     }
