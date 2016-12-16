@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Dominio.VolumeCepDesossa>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "CEP Dessosa - Volume";
 }
 
 
@@ -14,12 +14,11 @@
             <ul class="page-breadcrumb">
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
-                    <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParMeasurementUnits")">@Resources.Resource.cep_desossa</a>
+                    
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.cep_desossa</span>
+                    <span>Volume de @Resources.Resource.cep_desossa</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -44,24 +43,24 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
-                                    @Html.ActionLink("Create New", "Create")
+                                    @Html.ActionLink("Novo volume de CEP Desossa", "Create")
                                 </p>
                                 <table class="table table-condensed">
                                     <tr>
                                         <th>
                                             @Html.DisplayNameFor(model => model.Data)
                                         </th>
-                                        <th>
+                                        @*<th>
                                             @Html.DisplayNameFor(model => model.ParLevel1.Name)
+                                        </th>*@
+                                        <th>
+                                            Unidade
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.ParCompany.Name)
+                                            Avaliações
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Avaliacoes)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.Amostras)
+                                            Amostras
                                         </th>
                                         <th></th>
                                     </tr>
@@ -70,11 +69,15 @@
                                     {
                                         <tr>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Data)
+
+                                                @*@Html.DisplayFor(modelItem => item.Data.Value)*@
+
+                                                @item.Data.Value.ToString("dd/MM/yyyy")
+
                                             </td>
-                                            <td>
+                                            @*<td>
                                                 @Html.DisplayFor(modelItem => item.ParLevel1.Name)
-                                            </td>
+                                            </td>*@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.ParCompany.Name)
                                             </td>
@@ -85,9 +88,9 @@
                                                 @Html.DisplayFor(modelItem => item.Amostras)
                                             </td>
                                             <td>
-                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+                                                @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                                                @Html.ActionLink("Excluir", "Delete", new { id = item.Id })
                                             </td>
                                         </tr>
                                     }

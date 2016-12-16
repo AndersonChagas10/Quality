@@ -91,6 +91,14 @@ namespace DTO.DTO.Params
             listSample = new List<ParSampleDTO>();
             listEvaluation = new List<ParEvaluationDTO>();
 
+            //var avAmTodas = listParLevel2SampleEvaluationDTO.FirstOrDefault(r => r.companyId == null || r.companyId == 0);
+
+            //if (avAmTodas != null)
+            //{
+            //    var evaluationIgualTodas = listParLevel2SampleEvaluationDTO.Where(r => r.evaluationNumber == avAmTodas.evaluationNumber && r.companyId == avAmTodas.companyId);
+            //    var sampleIgualTodas = listParLevel2SampleEvaluationDTO.Where(r => r.sampleNumber == avAmTodas.sampleNumber && r.companyId == avAmTodas.companyId);
+            //}
+
             if (listParLevel2SampleEvaluationDTO != null)
                 foreach (var i in listParLevel2SampleEvaluationDTO)
                 {

@@ -23,6 +23,18 @@
                 <table class="table-erp" id="camposGroup">
 
                     <tbody>
+                        @*<tr id="todas">
+                            <td class="td-erp"></td>
+
+                            @Table.GerarColuna(@Html.CheckBox("checkAvaliacao", htmlAttributes: new { @class = "form-control input-sm", @id = "checkAvaliacao" })
+                                , @Html.Label("Numero de avaliaçoes específicas")
+                                , Table.PosicaoLabel.top)
+
+                            @Table.GerarColuna(@Html.CheckBox("checkAmostra", htmlAttributes: new { @class = "form-control input-sm", @id = "checkAmostra" })
+                                , @Html.Label("Numero de amostras específicas")
+                                , Table.PosicaoLabel.top)
+
+                        </tr>*@
                         <tr>
 
                             @Table.GerarColuna(@Html.DropDownList("avAmCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "avAmCompany" })
@@ -63,6 +75,8 @@
 
 
 <script>
+
+    function changeCompanyAvAm() {
 
     var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
 

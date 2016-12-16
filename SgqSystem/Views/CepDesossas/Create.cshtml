@@ -1,7 +1,7 @@
 ﻿@model Dominio.VolumeCepDesossa
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "CEP Dessosa - Volume";
 }
 
 <div class="page-content-wrapper">
@@ -14,11 +14,11 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "CepDesossas")">@Resources.Resource.cep_desossa</a>
+                    <a href="@Url.Action("Index", "CepDesossas")">Volume de @Resources.Resource.cep_desossa</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.cep_desossa</span>
+                    <span>Cadastro</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -50,21 +50,24 @@
 
                                     <div class="form-horizontal">
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        <div class="form-group">
+                                        
+                                        @*<div class="form-group">
                                             @Html.LabelFor(model => model.Indicador, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Indicador, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Indicador, "", new { @class = "text-danger" })
                                             </div>
-                                        </div>
-
-                                        <div class="form-group">
+                                        </div>*@
+                                       
+                                        
+                                        @*<div class="form-group">
                                             @Html.LabelFor(model => model.Unidade, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Unidade, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Unidade, "", new { @class = "text-danger" })
                                             </div>
-                                        </div>
+                                        </div>*@
+                                            
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -73,41 +76,18 @@
                                                 @Html.ValidationMessageFor(model => model.Data, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-
-                                        <div class="form-group">
+                                        
+                                        @*<div class="form-group">
                                             @Html.LabelFor(model => model.Departamento, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Departamento, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Departamento, "", new { @class = "text-danger" })
                                             </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.HorasTrabalhadasPorDia, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.HorasTrabalhadasPorDia, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.HorasTrabalhadasPorDia, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.AmostraPorDia, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.AmostraPorDia, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.AmostraPorDia, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.QtdadeFamiliaProduto, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.QtdadeFamiliaProduto, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.QtdadeFamiliaProduto, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
+                                        </div>*@
                                         
+
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParCompany_id, "ParCompany_id", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParCompany_id, "Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParCompany_id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParCompany_id, "", new { @class = "text-danger" })
@@ -115,7 +95,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParLevel1_id, "ParLevel1_id", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParLevel1_id, "Indicador", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParLevel1_id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel1_id, "", new { @class = "text-danger" })
@@ -123,32 +103,68 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Avaliacoes, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.HorasTrabalhadasPorDia, "Horas trabalhadas por dia", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Avaliacoes, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
-                                                @Html.ValidationMessageFor(model => model.Avaliacoes, "", new { @class = "text-danger" })
+                                                @Html.EditorFor(model => model.HorasTrabalhadasPorDia, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.HorasTrabalhadasPorDia, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Amostras, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.AmostraPorDia, "Amostra por dia", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <select id="AmostraPorDia" name="AmostraPorDia" class="form-control valid">
+                                                    <option>60</option>
+                                                    <option>120</option>
+                                                    <option>180</option>
+                                                    <option>360</option>
+                                                    <option>1160</option>
+                                                    <option>1260</option>
+                                                    <option>3260</option>
+                                                </select>
+                                                @*@Html.EditorFor(model => model.AmostraPorDia, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.ValidationMessageFor(model => model.AmostraPorDia, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.QtdadeFamiliaProduto, "Número de famílias cadastradas", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.QtdadeFamiliaProduto, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.QtdadeFamiliaProduto, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        
+                                        
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Avaliacoes, "Avaliações", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.Avaliacoes, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
+                                                @Html.ValidationMessageFor(model => model.Avaliacoes, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.Avaliacoes, htmlAttributes: new { @id = "avaliacaoHidden" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Amostras, "Amostras", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Amostras, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
                                                 @Html.ValidationMessageFor(model => model.Amostras, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.Amostras, htmlAttributes: new {@id = "amostraHidden" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Create" class="btn btn-default" />
+                                                <input type="submit" value="Salvar" class="btn btn-default" /> |
+                                                @Html.ActionLink("Voltar para Volume de CEP Desossa", "Index")
                                             </div>
                                         </div>
                                     </div>
                                 }
 
-                                <div>
-                                    @Html.ActionLink("Back to List", "Index")
-                                </div>
+                             
                             </div>
 
                         </div>
@@ -176,10 +192,12 @@
 
     $('#HorasTrabalhadasPorDia').on('input', function () {        
         $('#Avaliacoes').val($(this).val());
+        $('#avaliacaoHidden').val($(this).val());
     });
 
     $('#AmostraPorDia, #QtdadeFamiliaProduto').on('input', function () {
-        $('#Amostras').val($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val());
+        $('#Amostras').val(Math.ceil($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()));
+        $('#amostraHidden').val(Math.ceil($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()));
     });
 
     $('#Data').daterangepicker({
@@ -190,7 +208,7 @@
     $(document).ready(function () {
 
         $('#Avaliacoes').val($('#HorasTrabalhadasPorDia').val());
-        $('#Amostras').val($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val());
+        $('#Amostras').val(Math.ceil($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()));
 
     });
 
