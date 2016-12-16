@@ -113,7 +113,6 @@ namespace DTO.DTO.Params
                         evaluation.ParCompany_Id = i.companyId;
                     }
 
-
                     listSample.Add(sample);
                     listEvaluation.Add(evaluation);
                 }
