@@ -1,7 +1,6 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Repositories;
 using DTO.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -30,7 +29,7 @@ namespace Data.Repositories
 
         #region ParLevel1
 
-        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<ParCounterXLocal> listaParCounterLocal, List<ParNotConformityRuleXLevel> listNonCoformitRule, List<ParRelapse> reincidencia)
+        public void SaveParLevel1(ParLevel1 paramLevel1, List<ParHeaderField> listaParHeadField, List<ParLevel1XCluster> listaParLevel1XCluster, List<int> removerHeadField, List<ParCounterXLocal> listaParCounterLocal, List<ParNotConformityRuleXLevel> listNonCoformitRule, List<ParRelapse> reincidencia, List<ParGoal> listParGoal)
         {
             using (var ts = db.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
             {
@@ -41,6 +40,11 @@ namespace Data.Repositories
                 if (listaParLevel1XCluster != null)
                     foreach (var Level1XCluster in listaParLevel1XCluster)
                         SalvaLevel1XCluster(Level1XCluster, paramLevel1.Id);
+
+                //Meta
+                if (listParGoal != null)
+                    foreach (var goal in listParGoal)
+                        SalvaGoal(goal, paramLevel1.Id);
 
                 //Counters
                 if (listaParCounterLocal != null)
@@ -54,7 +58,7 @@ namespace Data.Repositories
 
                 //Reincidencia
                 if (reincidencia != null)
-                    foreach(var parRelapse in reincidencia)
+                    foreach (var parRelapse in reincidencia)
                         SaveReincidencia(parRelapse, paramLevel1.Id);
 
                 //Header Fields
@@ -229,6 +233,30 @@ namespace Data.Repositories
             db.SaveChanges(); /*Obtem ID do NxN Level1XCluster*/
         }
 
+        private void SalvaGoal(ParGoal goal, int paramLevel1Id)
+        {
+            if(paramLevel1Id > 0)
+                goal.ParLevel1_Id = paramLevel1Id;
+
+            if (goal.ParCompany_Id == -1 || goal.ParCompany_Id == 0)
+                goal.ParCompany_Id = null;
+
+            goal.ParLevel1 = null;
+            goal.ParCompany = null;
+
+            if (goal.Id == 0)
+            {
+                db.ParGoal.Add(goal);
+            }
+            else
+            {
+                Guard.verifyDate(goal, "AlterDate");
+                db.ParGoal.Attach(goal);
+                db.Entry(goal).State = EntityState.Modified;
+            }
+            db.SaveChanges(); 
+        }
+
         private void SaveReincidencia(ParRelapse parRelapse, int parLevel1Id)
         {
             parRelapse.ParLevel1_Id = parLevel1Id;
@@ -244,7 +272,7 @@ namespace Data.Repositories
                 db.Entry(parRelapse).State = EntityState.Modified;
             }
             db.SaveChanges();
-        } 
+        }
 
         #endregion
 
@@ -252,19 +280,24 @@ namespace Data.Repositories
 
         #region ParLevel2
 
-        public void SaveParLevel2(ParLevel2 paramLevel2, List<ParLevel3Group> listaParLevel3Group, List<ParCounterXLocal> listParCounterXLocal, List<ParNotConformityRuleXLevel> listParamNotConformityRuleXLevel, ParEvaluation paramEvaluation, ParSample paramSample, List<ParRelapse> listParRelapse)
+        public void SaveParLevel2(ParLevel2 paramLevel2, List<ParLevel3Group> listaParLevel3Group, List<ParCounterXLocal> listParCounterXLocal, List<ParNotConformityRuleXLevel> listParamNotConformityRuleXLevel, List<ParEvaluation> listParamEvaluation, List<ParSample> listParamSample, List<ParRelapse> listParRelapse)
         {
             using (var ts = db.Database.BeginTransaction())
             {
                 AddUpdateParLevel2(paramLevel2); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
 
-                if(listParamNotConformityRuleXLevel != null)
-                    foreach(var paramNotConformityRuleXLevel in listParamNotConformityRuleXLevel)
+                if (listParamNotConformityRuleXLevel != null)
+                    foreach (var paramNotConformityRuleXLevel in listParamNotConformityRuleXLevel)
                         AddUpdateParNotConformityRuleXLevel(paramNotConformityRuleXLevel, 2, ParLevel2_Id: paramLevel2.Id);
 
-                AddUpdateParEvaluation(paramEvaluation, paramLevel2.Id);
-                AddUpdateParSample(paramSample, paramLevel2.Id);
+                if (listParamEvaluation.IsNotNull())
+                    foreach (var paramEvaluation in listParamEvaluation)
+                        AddUpdateParEvaluation(paramEvaluation, paramLevel2.Id);
+
+                if (listParamSample.IsNotNull())
+                    foreach (var paramSample in listParamSample)
+                        AddUpdateParSample(paramSample, paramLevel2.Id);
 
                 if (listaParLevel3Group != null)
                     foreach (var Level3Group in listaParLevel3Group)
@@ -333,7 +366,7 @@ namespace Data.Repositories
             //paramNotConformityRuleXLevel.ParLevel1_Id = ParLevel1_Id;
             paramNotConformityRuleXLevel.ParLevel2_Id = ParLevel2_Id;
             //paramNotConformityRuleXLevel.ParLevel3_Id = ParLevel3_Id;
-            
+
             //MOCK
             paramNotConformityRuleXLevel.ParCompany_Id = 1;
             if (paramNotConformityRuleXLevel.Id == 0)
@@ -352,6 +385,11 @@ namespace Data.Repositories
         {
             parEvaluation.ParLevel2_Id = ParLevel2_Id;
 
+            //var todasUnidades = db.ParEvaluation.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel2_Id == ParLevel2_Id);
+            //if (todasUnidades != null)
+            //    if (parEvaluation.Number == todasUnidades.Number)
+            //        return;
+
             if (parEvaluation.Id == 0)
             {
                 db.ParEvaluation.Add(parEvaluation);
@@ -362,11 +400,17 @@ namespace Data.Repositories
                 db.ParEvaluation.Attach(parEvaluation);
                 db.Entry(parEvaluation).State = EntityState.Modified;
             }
+            db.SaveChanges();
         }
 
         private void AddUpdateParSample(ParSample parSample, int ParLevel2_Id)
         {
             parSample.ParLevel2_Id = ParLevel2_Id;
+
+            //var todasUnidades = db.ParSample.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel2_Id == ParLevel2_Id);
+            //if (todasUnidades != null)
+            //    if (parSample.Number == todasUnidades.Number)
+            //        return;
 
             if (parSample.Id == 0)
             {
@@ -378,6 +422,7 @@ namespace Data.Repositories
                 db.ParSample.Attach(parSample);
                 db.Entry(parSample).State = EntityState.Modified;
             }
+            db.SaveChanges();
         }
 
         private void AddUpdateParCounterXLocal(ParCounterXLocal parCounterXLocal, int ParLevel2_Id)
@@ -431,11 +476,11 @@ namespace Data.Repositories
                 if (listParamLevel3Value != null)
                     foreach (var paramLevel3Value in listParamLevel3Value)
                         AddUpdateParLevel3Value(paramLevel3Value, paramLevel3.Id);
-              
+
 
                 if (listParRelapse != null)
                     foreach (var parRelapse in listParRelapse)
-                       SaveReincidenciaLevel3(parRelapse, paramLevel3.Id);
+                        SaveReincidenciaLevel3(parRelapse, paramLevel3.Id);
 
                 db.SaveChanges();
                 ts.Commit();
@@ -604,7 +649,7 @@ namespace Data.Repositories
         public void RemoveParLevel03Group(int Id)
         {
             var parLevel3Group = db.ParLevel3Group.Where(r => r.Id == Id).FirstOrDefault();
-            if(parLevel3Group != null)
+            if (parLevel3Group != null)
             {
                 parLevel3Group.IsActive = false;
                 AddUpdateParLevel3Group(parLevel3Group, parLevel3Group.ParLevel2_Id);

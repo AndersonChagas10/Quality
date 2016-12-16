@@ -14,78 +14,33 @@
 
                 <table class="table-erp">
                     <tbody>
+                        
                         <tr class="row hide">
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Id
-             , new { @class = "form-control input-sm" })
-             , @Html.Label(Resources.Resource.level2)
-             , Table.PosicaoLabel.top
-             , null, null)
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" })
-             , @Html.Label(Resources.Resource.level2)
-             , Table.PosicaoLabel.top
-             , null
-             , null)
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" })
-            , @Html.Label(Resources.Resource.level2)
-            , Table.PosicaoLabel.top
-            , null
-            , null)
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.ParCompany_Id, htmlAttributes: new { @Value = "1" })
-            , @Html.Label(Resources.Resource.level2)
-            , Table.PosicaoLabel.top
-            , null
-            , null)
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Level, htmlAttributes: new { @Value = "2" })
-            , @Html.Label(Resources.Resource.level2)
-            , Table.PosicaoLabel.top
-            , null
-            , null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Id, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)                            
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)                            
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.ParCompany_Id, htmlAttributes: new { @Value = "1" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Level, htmlAttributes: new { @Value = "2" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
                         </tr>
+
                         <tr class="row">
-
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Name, new { @class = "form-control input-sm" })
-             , @Html.Label(Resources.Resource.level2_name)
-             , Table.PosicaoLabel.top
-             , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Name, null, new { @class = "text-danger" }))
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Description, new { @class = "form-control input-sm" })
-            , @Html.Label(Resources.Resource.level2_description)
-            , Table.PosicaoLabel.top
-            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Description, null, new { @class = "text-danger" }))
-
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_name), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Name, null, new { @class = "text-danger" }))
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Description, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_description), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Description, null, new { @class = "text-danger" }))
                         </tr>
+
                         <tr class="row">
-                            @Html.HiddenFor(r => r.paramsDto.parEvaluationDto.Id)
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.Number, new { @class = "form-control input-sm", type = "number", min = "0" })
-            , @Html.Label(Resources.Resource.evaluation)
-            , Table.PosicaoLabel.top
-            , error: @Html.ValidationMessageFor(m => m.paramsDto.parEvaluationDto.Number, null, new { @class = "text-danger" }))
-
-                            @Html.HiddenFor(r => r.paramsDto.parSampleDto.Id)
-                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.Number, new { @class = "form-control input-sm", type = "number", min = "0" })
-            , @Html.Label(Resources.Resource.samples_per_evaluation)
-            , Table.PosicaoLabel.top
-            , error: @Html.ValidationMessageFor(m => m.paramsDto.parSampleDto.Number, null, new { @class = "text-danger" }))
-
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParDepartment_Id", Model.paramsDdl.DdlParDepartment, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.department), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParDepartment_Id, null, new { @class = "text-danger" }))
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
                         </tr>
-                        <tr class="row">
 
-                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParDepartment_Id", Model.paramsDdl.DdlParDepartment, htmlAttributes: new { @class = "form-control input-sm" })
-            , @Html.Label(Resources.Resource.department)
-            , Table.PosicaoLabel.top
-            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParDepartment_Id, null, new { @class = "text-danger" }))
-
-                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm" })
-            , @Html.Label(Resources.Resource.frequency)
-            , Table.PosicaoLabel.top
-            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
-
-                        </tr>
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsEmptyLevel3, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_audit_of_detached_level3), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_audit_of_detached_level3_popover)
                         </tr>
+
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasShowLevel03, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.show_group_on_level3), Table.PosicaoLabel.left, null, null)
                         </tr>
+
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasGroupLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_on_level3), Table.PosicaoLabel.left, null, null)
                         </tr>
@@ -96,6 +51,9 @@
 
                     </tbody>
                 </table>
+
+
+                @Html.Partial("_AvaliacaoAmostra", Model)
 
                 @Html.Partial("_GroupXLevel", Model)
 

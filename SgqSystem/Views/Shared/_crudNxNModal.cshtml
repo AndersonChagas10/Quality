@@ -18,8 +18,19 @@
 </div>
 
 <script>
-    var crudNxN = {
 
+    var crudNxN = {
+        verificaCompany: function (companyName, tableId, clomunIndex) {
+            var isValid = true;
+            $('#tableMeta  tbody  tr  td:nth-child(' + clomunIndex + ')').each(function (c, o) {
+                var existente = $(o).text();
+                if (existente == companyName) {
+                    openMessageModal("Dados já cadastrados para a empresa " + companyName + ".")
+                    isValid = false;
+                }
+            });
+            return isValid;
+        },
         adiciona: function (o, idTable, tdsName) {
 
             var tr = "";
@@ -106,7 +117,7 @@
                     $('#crudNxNEdit').modal('hide');
                 });
             }
-                /*Contadores*/
+            /*Contadores*/
             else if ($(e).parents('#level1_counter_accordion').length || $(e).parents('#level2_counter_accordion').length || $(e).parents('#level3_counter_accordion').length) {
                 crudNxN.modalAlterarContadores(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -118,7 +129,7 @@
                     $('#crudNxNEdit').modal('hide');
                 });
             }
-                /*Reincidencia*/
+            /*Reincidencia*/
             else if ($(e).parents('#level1_reincidencia_accordion').length || $(e).parents('#level2_reincidencia_accordion').length || $(e).parents('#level3_reincidencia_accordion').length) {
                 crudNxN.modalAlterarReincidencia(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -131,6 +142,7 @@
                     $('#crudNxNEdit').modal('hide');
                 });
             }
+            /*Cluster*/
             else if ($(e).parents('#level1_cluster_accordion').length) {
                 crudNxN.modalAlterarCluster(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -143,6 +155,7 @@
                     $('#crudNxNEdit').modal('hide');
                 });
             }
+            /*Grupo L2*/
             else if ($(e).parents('#level2_GroupLevel_accordion').length) {
                 crudNxN.modalAlterarGroupLevel2(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -153,9 +166,55 @@
                     $('#crudNxNEdit').modal('hide');
                 });
             }
+            /*META L1*/
+            else if ($(e).parents('#level1_Meta_accordion').length) { 
+                crudNxN.modalAlterarMeta(obj);//
+                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
+                    var editado = crudNxN.retornaObjetoAlteradoMetaL1(obj);//
+                    $(e).parents('tr').removeData();
+                    $(e).parents('tr').data(editado);
+                    $($(e).parents('tr').find('td')[0]).html(editado.companyName)//
+                    $($(e).parents('tr').find('td')[1]).html(editado.PercentValue)//
+                    $('#crudNxNEdit').modal('hide');
+                    $('#crudNxNEdit #percentVal').inputmask('remove');
+                });
+            }
             $('#crudNxNEdit').modal();
 
         },
+
+        modalAlterarMeta: function(obj) {
+
+            var divDeEdicao = $('#level1__Meta_collapse > div > table.table-erp').clone();
+            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+            $('#crudNxNEdit #metaCompany').val(obj.ParCompany_Id).change();
+            $('#crudNxNEdit #percentVal').val(obj.PercentValue);
+            GuardJs.mascaraPorcentegem('#crudNxNEdit #percentVal');
+            $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
+        },
+        retornaObjetoAlteradoMetaL1: function (obj) {
+            /*Valida se pode criar o objeto*/
+            MetaL1.veifyAdd('crudNxNEdit')
+            MetaL1.getObjAdd('crudNxNEdit', obj);
+            return obj;
+        },
+
+        modalAlterarLevel3Value: function (obj) {
+
+            var divDeEdicao = $('#level1__Meta_collapse > div > table.table-erp').clone();
+            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+            $('#crudNxNEdit #metaCompany').val(obj.ParCompany_Id).change();
+            $('#crudNxNEdit #percentVal').val(obj.PercentValue);
+            GuardJs.mascaraPorcentegem('#crudNxNEdit #percentVal');
+            $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
+        },
+        retornaObjetoAlteradoLevel3Value: function (obj) {
+            /*Valida se pode criar o objeto*/
+            level3Value.veifyAdd('crudNxNEdit')
+            level3Value.getObjAdd('crudNxNEdit', obj);
+            return obj;
+        },
+
 
         modalAlterarRegraNc: function (obj) {
 

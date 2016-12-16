@@ -189,6 +189,7 @@
     public ParMeasurementUnitDTO ParMeasurementUnit { get; set; }
     */
     var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
+
     var level3Value =  {
         /*Setup*/
         levelControl: 3,
@@ -205,8 +206,6 @@
 
                 var companyName = $('#' + level3Value.level + ' #selectUnidadeParL3Value :selected').text();
                 var companyValue = $('#' + level3Value.level + ' #selectUnidadeParL3Value :selected').val();
-
-
 
                 var selectTipoInputName = $('#' + level3Value.level + ' #selectTipoInput :selected').text();
                 var selectTipoInput = $('#' + level3Value.level + ' #selectTipoInput :selected').val();
@@ -282,6 +281,24 @@
                     openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione a unidade de medida.");
                     return false;
                 }
+            }
+
+            var companySelected = $('#' + seletorTato + ' #selectUnidadeParL3Value :selected').val();
+            var exist = $.grep($('#tableLevel3Value  tbody  tr  td:nth-child(1)'), function(o, c){
+                if(companySelected == -1){
+                    return $(o).parent().data().ParCompany_Id == 0 || $(o).parent().data().ParCompany_Id == -1 || $(o).parent().data().ParCompany_Id == null
+                }
+                return $(o).parent().data().ParCompany_Id == companySelected;
+            });
+
+            var display = $('#' + seletorTato + ' #selectUnidadeParL3Value :selected').text();
+            if(companySelected == -1){
+                display= "Todas";
+            }
+
+            if(exist.length){
+                openMessageModal("Dados já cadastrados para a empresa " + display + ".", "")
+                return false;
             }
 
             return true;
@@ -444,7 +461,6 @@
             $("#parIntervalosType").parents("td").hide();
         }
     }
-
 
     $('#selectTipoInput').change(function () {
 

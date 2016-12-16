@@ -9,6 +9,8 @@ using SgqSystem.Handlres;
 using System.Web.Http.Cors;
 using SgqSystem.Services;
 using SGQDBContext;
+using Dominio.Services;
+using DTO.Helpers;
 
 namespace SgqSystem.Services
 {
@@ -201,11 +203,18 @@ namespace SgqSystem.Services
 
                 //Pega o Id da Unidade
                 string unidadeId = result[4];
+
+                ////MOCK
+                //unidadeId = DefaultValueReturn(unidadeId, "1");
                 //Pega o Period
+
+                
                 string period = result[5];
+                period = DefaultValueReturn(period, "1");
+
                 //Pega o Shit
                 string shift = result[6];
-
+                shift = DefaultValueReturn(shift, "1");
 
                 //Pega o Auditor
                 string auditorId = result[7];
@@ -249,7 +258,7 @@ namespace SgqSystem.Services
                 //{
                 //    cattletype = baisedUnbaised;
                 //}
-
+                string AlertLevel = result[27];
                 string completed = result[28];
                 string havePhases = result[29];
                 string CollectionLevel02Id = result[30];
@@ -272,6 +281,7 @@ namespace SgqSystem.Services
                 level02HeaderJSon += ";" + CollectionLevel02Id;
                 level02HeaderJSon += ";" + correctiveActionCompleted;
                 level02HeaderJSon += ";" + completeReaudit;
+                level02HeaderJSon += ";" + AlertLevel;
 
                 //Verifica o Resultado do Level03
                 string level03ResultJson = result[22];
@@ -299,6 +309,9 @@ namespace SgqSystem.Services
                 string reauditNumber = result[26];
                 reauditNumber = DefaultValueReturn(reauditNumber, "0");
                 //Cria a linah de insert
+
+
+
                 sql += "INSERT INTO [dbo].[CollectionJson] " +
                        "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
                        "VALUES " +
@@ -545,9 +558,11 @@ namespace SgqSystem.Services
                                     update = true;
                                 }
 
+                                string AlertLevel = arrayHeader[11];
+
                                 int CollectionLevel2Id = InsertCollectionLevel2(ConsolidationLevel2Id.ToString(), level01, level02, unitId, AuditorId, shift, period, Phase, Reaudit, reauditNumber, level02CollectionDate,
                                                                                   StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit,
-                                                                                  haveCorrectiveAction, havePhases, completed, idCollectionLevel2);
+                                                                                  haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel);
 
                                 if (CollectionLevel2Id == 0)
                                 {
@@ -555,15 +570,25 @@ namespace SgqSystem.Services
                                     return "error";
                                 }
 
+                                int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), level02, objson, AuditorId, Duplicated);
+                                if (CollectionLevel3Id == 0)
+                                {
+                                    //return "Erro Level03";
+                                    return "error";
+                                }
+
                                 headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
 
 
-                                int headerFieldId = InsertCollectionLevel2HeaderField(CollectionLevel2Id, headersContadores);
-
-                                if (headerFieldId == 0)
+                                if(!string.IsNullOrEmpty(headersContadores))
                                 {
-                                    //return "erro Collection level02";
-                                    return "error";
+                                    int headerFieldId = InsertCollectionLevel2HeaderField(CollectionLevel2Id, headersContadores);
+
+                                    if (headerFieldId == 0)
+                                    {
+                                        //return "erro Collection level02";
+                                        return "error";
+                                    }
                                 }
 
                                 string correctiveActionCompleted = arrayHeader[9];
@@ -605,12 +630,7 @@ namespace SgqSystem.Services
                                     }
                                 }
 
-                                int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), level02, objson, AuditorId, Duplicated);
-                                if (CollectionLevel3Id == 0)
-                                {
-                                    //return "Erro Level03";
-                                    return "error";
-                                }
+                               
 
                                 if (!string.IsNullOrEmpty(correctiveActionJson))
                                 {
@@ -985,7 +1005,7 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public int InsertCollectionLevel2(string ConsolidationLevel02Id, string Level01Id, string Level02Id, string UnitId, string AuditorId, string Shift, string Period, string Phase, string Reaudit, string ReauditNumber, string CollectionDate,
                                            string StartPhase, string Evaluation, string Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
-                                           string Duplicated, string haveReaudit, string haveCorrectiveAction, string HavePhase, string Completed, string id)
+                                           string Duplicated, string haveReaudit, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel)
         {
 
             //Verificamos a data da phase
@@ -1008,9 +1028,9 @@ namespace SgqSystem.Services
             //Se o Id for igual a zero é um insert
             if (id == "0")
             {
-                sql = "INSERT INTO CollectionLevel2 ([ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed]) " +
+                sql = "INSERT INTO CollectionLevel2 ([ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel]) " +
                 "VALUES" +
-                "('" + ConsolidationLevel02Id + "','" + Level01Id + "','" + Level02Id + "','" + UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + Reaudit + "','" + ReauditNumber + "', CAST(N'" + CollectionDate + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "')";
+                "('" + ConsolidationLevel02Id + "','" + Level01Id + "','" + Level02Id + "','" + UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + Reaudit + "','" + ReauditNumber + "', CAST(N'" + CollectionDate + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "')";
 
                 sql += " SELECT @@IDENTITY AS 'Identity'";
             }
@@ -1188,13 +1208,23 @@ namespace SgqSystem.Services
 
                 isnotEvaluate = BoolConverter(isnotEvaluate);
 
+                string punishimentValue = result[13];
+
+                string defects = result[14];
+
+                //aqui tem que mudar no bem estar animal, verificar com o gabriel
+                string evaluation = "1";
+
+                decimal WeiDefects = 0;
+                WeiDefects = (Convert.ToDecimal(defects) + Convert.ToDecimal(punishimentValue)) * Convert.ToDecimal(weight);
+
                 id = DefaultValueReturn(id, "0");
 
                 if (id == "0")
                 {
-                    sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate]) " +
+                    sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiDefects]) " +
                            "VALUES " +
-                           "('" + CollectionLevel02Id + "','" + Level03Id + "', (SELECT Name FROM ParLevel3 WHERE Id='" + Level03Id + "'),'" + weight + "','" + intervalMin + "','" + intervalMax + "', '" + value + "','" + valueText + "','" + conform + "','" + isnotEvaluate + "') ";
+                           "('" + CollectionLevel02Id + "','" + Level03Id + "', (SELECT Name FROM ParLevel3 WHERE Id='" + Level03Id + "'),'" + weight + "','" + intervalMin + "','" + intervalMax + "', '" + value + "','" + valueText + "','" + conform + "','" + isnotEvaluate + "', '" + punishimentValue + "', '" + defects + "', '" + evaluation + "', '" + WeiDefects + "') ";
 
                     sql += " SELECT @@IDENTITY AS 'Identity'";
 
@@ -1434,6 +1464,9 @@ namespace SgqSystem.Services
 
         public string GetConsolidationLevel01(string UnidadeId, bool lastDate = false)
         {
+            //Retirar a unidade tem que vir do app
+            UnidadeId = DefaultValueReturn(UnidadeId, UnidadeId);
+
             var Level2ResultDB = new SGQDBContext.Level2Result();
 
             var Level2ResultList = Level2ResultDB.getList(UnidadeId: UnidadeId);
@@ -1937,6 +1970,11 @@ namespace SgqSystem.Services
                                "     <div class=\"body\" style=\"height:565px; overflow-y: auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                           " +
                                "</div>                                                                                                                                                                                                    ";
 
+            string modalVF = "<div class=\"modalVF panel panel-default\" style=\"display:none;\">                            " +
+                               "     <div class=\"head\">View <a href=\"#\" class=\"pull-right close\">x</a></div>           " +
+                               "     <div class=\"body\"></div>                                                              " +
+                               "</div>                                                                                       ";
+
             string messageConfirm = "<div class=\"messageConfirm padding20\" style=\"display:none\">                                                                                                " +
                                         "    <h1 class=\"head\">Titulo</h1>                                                                                                                             " +
                                         "    <div class=\"body font16\"> <div class=\"txtMessage\"></div>                                                                                               " +
@@ -1963,6 +2001,7 @@ namespace SgqSystem.Services
                              tags: "breadmainlevel=\"Indicadores\""
                            ) +
                            viewModal +
+                           modalVF + 
                            message +
                            messageConfirm;
         }
@@ -2021,6 +2060,8 @@ namespace SgqSystem.Services
 
             //Instanciamos a Classe ParLevel01 Dapper
             var ParLevel1DB = new SGQDBContext.ParLevel1();
+            //Inicaliza ParLevel1VariableProduction
+            var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
 
             //Buscamos os ParLevel11 para a unidade selecionada
             var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id);
@@ -2048,6 +2089,15 @@ namespace SgqSystem.Services
                 //Percorremos a Lista dos Agrupamento
                 foreach (var parlevel1 in parLevel1Group)
                 {
+                    string tipoTela = "";
+
+                    var variableList = ParLevel1VariableProductionDB.getVariable(parlevel1.Id).ToList();
+
+                    if (variableList.Count > 0)
+                    {
+                        tipoTela = variableList[0].Name;
+                    }                    
+
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     if (parlevel1.ParCriticalLevel_Id > 0)
                     {
@@ -2057,12 +2107,15 @@ namespace SgqSystem.Services
                         nameParCritialLevel = parlevel1.ParCriticalLevel_Name;
                         //Incremento os itens que estaram no ParLevel1                
                         //Gera linha Level1
+
+                        string tags = "totalavaliado=\"0\" totaldefeitos=\"0\" alertanivel1=\"3\" alertanivel2=\"6\" alertanivel3=\"9\" alertaatual=\"0\" parconsolidationtype_id=\"1\"";
+
                         string level01 = html.link(
 
                                                   id: parlevel1.Id.ToString(),
-                                                  classe: "level1 col-xs-7",
+                                                  classe: "level1 col-xs-7 "+tipoTela,
                                                   //Aqui vai as tags do level01
-                                                  tags: "",
+                                                  tags: tags,
                                                   outerhtml: parlevel1.Name
                                                  );
                         //Adiciona Div Lateral
@@ -2187,7 +2240,7 @@ namespace SgqSystem.Services
             //Verifica amostra pela company informada
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
                                                         ParCompany_Id: ParCompany_Id);
-
+            
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List)
             {
@@ -2288,7 +2341,11 @@ namespace SgqSystem.Services
                                             label: parlevel2.Name,
                                             classe: classXSLevel2,
                                             evaluate: evaluate,
-                                            sample: sample);
+                                            sample: sample, 
+                                            alertlevel1: "3", 
+                                            alertlevel2: "6",
+                                            alertlevel3: "9",
+                                            AlertLevel: "0");
 
                 //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
@@ -2338,7 +2395,7 @@ namespace SgqSystem.Services
 
             foreach (var header in list)
             {
-                var label = "<label class='font-small'>" + header.ParHeaderField_Name + "</label>";
+                var label = "<label class=\"font-small\">" + header.ParHeaderField_Name + "</label>";
 
                 var form_control = "";
 
@@ -2351,13 +2408,13 @@ namespace SgqSystem.Services
                         var optionsMultiple = "";
                         foreach (var value in listMultiple)
                         {
-                            optionsMultiple += "<option value='" + value.Id + "'>" + value.Name + "</option>";
+                            optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                         }
-                        form_control = "<select class='form-control input-sm' ParHeaderField_Id='"+header.ParHeaderField_Id+ "' ParFieldType_Id = '"+ header.ParFieldType_Id+"'>" + optionsMultiple + "</select>";
+                        form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\""  + header.ParFieldType_Id + "\">" + optionsMultiple + "</select>";
                         break;
                     //Integrações
                     case 2:
-                        form_control = "<div class='form-control input-sm' ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>" + header.ParHeaderField_Name + "</div>";
+                        form_control = "<div class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id = \"" + header.ParFieldType_Id + "\">" + header.ParHeaderField_Name + "</div>";
                         break;
                     //Binário
                     case 3:
@@ -2365,21 +2422,21 @@ namespace SgqSystem.Services
                         var optionsBinario = "";
                         foreach (var value in listBinario)
                         {
-                            optionsBinario += "<option value='" + value.Id + "'>" + value.Name + "</option>";
+                            optionsBinario += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                         }
-                        form_control = "<select class='form-control input-sm' ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>" + optionsBinario + "</select>";
+                        form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>" + optionsBinario + "</select>";
                         break;
                     //Texto
                     case 4:
-                        form_control = "<input class='form-control input-sm' type='text' ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>";
+                        form_control = "<input class=\"form-control input-sm\" type=\"text\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
                     //Numérico
                     case 5:
-                        form_control = "<input class='form-control input-sm' type='number' ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>";
+                        form_control = "<input class=\"form-control input-sm\" type=\"number\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
                     //Data
                     case 6:
-                        form_control = "<input class='form-control input-sm' type='date' ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>";
+                        form_control = "<input class=\"form-control input-sm\" type=\"date\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
                 }
 
@@ -2416,7 +2473,7 @@ namespace SgqSystem.Services
             var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
             //Inicaliza ParFieldType
             var ParFieldTypeDB = new SGQDBContext.ParFieldType();
-            //Inicaliza ParFieldType
+            //Inicaliza ParLevel1VariableProduction
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
 
 
@@ -2468,7 +2525,7 @@ namespace SgqSystem.Services
                         //se não é um intervalo
                         //tem que gerar uma mascara para os inputs e para os labels
                         classInput = " interval";
-                        tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                        tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
 
                         labels = html.div(
                                             outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
@@ -2506,9 +2563,11 @@ namespace SgqSystem.Services
                                                 style: "text-align:right"
                                                 );
                     //Comandos para intervalos
-                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                    //tipo do input level3
+                    //
+                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
 
-                    //Gera uma linha de level3
+
                     string level3List = html.listgroupItem(
                                                             id: parLevel3.Id.ToString(),
                                                             classe: "level3 row" + classInput,
@@ -2602,80 +2661,104 @@ namespace SgqSystem.Services
                     string classInput = null;
                     string tags = null;
                     string labels = null;
-                    string input = null;
-
-                    //Se for booelan
-                    if (parLevel3.ParLevel3InputType_Id == 1)
-                    {
-                        classInput = " boolean";
-                        input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
-                    }
-                    else
-                    {
-                        //se não é um intervalo
-                        //tem que gerar uma mascara para os inputs e para os labels
-                        classInput = " interval";
-                        tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-
-                        labels = html.div(
-                                            outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
-                                            classe: "font10",
-                                            style: "font-size: 11px; margin-top:7px;"
-                                        );
-
-                        input = html.campoIntervalo(id: parLevel3.Id.ToString(),
-                                                        intervalMin: parLevel3.IntervalMin,
-                                                        intervalMax: parLevel3.IntervalMax,
-                                                        unitName: parLevel3.ParMeasurementUnit_Name);
-
-                    }
 
                     //Gera o level3
                     string level3 = html.link(
                                                 outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
-                                                classe: "col-xs-4"
+                                                classe: "col-xs-12 col-sm-12 col-md-12"
                                                 );
+
+                    switch (parLevel3.Name)
+                    {
+                        case "Verificação Tipificação - Falha Operacional":
+                            var listOper = "<div class='col-xs-2' name='CONTUSÃO - SEM CONTUSÃO'>SC</div>";
+                            listOper += "<div class='col-xs-2' name='CONTUSÃO - 1 ALCATRA'>AL</div>";
+                            listOper += "<div class='col-xs-2' name='CONTUSÃO - 2 CONTRA FILÉ'>CF</div>";
+                            listOper += "<div class='col-xs-2' name='CONTUSÃO - 3 ALCATRA E CONTRA FILÉ'>ACF</div>";
+                            labels += html.div(outerhtml: listOper, classe: "row items", name: "Falha Op.", tags: "listtype = multiple");
+                            break;
+                        case "Verificação Tipificação - Gordura":
+                            var listGordura = "<div class='col-xs-2' name='1  Ausente '>1</div>";
+                            listGordura += "<div class='col-xs-2' name='2=  Escassa'>2=</div>";
+                            listGordura += "<div class='col-xs-2' name='3=  Mediana'>3=</div>";
+                            listGordura += "<div class='col-xs-2' name='4  Uniforme'>4</div>";
+                            listGordura += "<div class='col-xs-2' name='5  Excessiva'>5</div>";
+                            labels += html.div(outerhtml: listGordura, classe: "row items", name: "Gordura", tags: "listtype = single");
+                            break;
+                        case "Verificação Tipificação - Contusão":
+                            var listContusao = "<div class='col-xs-2' name='CONTUSÃO - SEM CONTUSÃO'>SC</div>";
+                            listContusao += "<div class='col-xs-2' name='CONTUSÃO - 1 ALCATRA'>AL</div>";
+                            listContusao += "<div class='col-xs-2' name='CONTUSÃO - 2 CONTRA FILÉ'>CF</div>";
+                            listContusao += "<div class='col-xs-2' name='CONTUSÃO - 3 ALCATRA E CONTRA FILÉ'>ACF</div>";
+                            labels += html.div(outerhtml: listContusao, classe: "row items", name: "Contusão", tags: "listtype = multiple");
+                            break;
+                        case "Verificação Tipificação - Idade":
+                            var listIdade = "<div class='col-xs-2' name='Dente de Leite'>0</div>";
+                            listIdade += "<div class='col-xs-2' name='Dois Dentes'>2</div>";
+                            listIdade += "<div class='col-xs-2' name='Quatro Dentes'>4</div>";
+                            listIdade += "<div class='col-xs-2' name='Seis Dentes'>6</div>";
+                            listIdade += "<div class='col-xs-2' name='Oito Dentes'>8</div>";
+                            labels += html.div(outerhtml: listIdade, classe: "row items", name: "Maturidade", tags: "listtype = single");
+                            break;
+                        case "Verificação Tipificação - Sexo":
+                            var listSexo = "<div class='col-xs-2' name='MACHO CASTRADO'>C</div>";
+                            listSexo += "<div class='col-xs-2' name='MACHO INTEIRO'>I</div>";
+                            listSexo += "<div class='col-xs-2' name='FÊMEA'>F</div>";
+                            labels += html.div(outerhtml: listSexo, classe: "row items", name: "Sexo", tags: "listtype = single");
+                            break;
+                    }
+                    
                     //gera os labels
                     labels = html.div(
                                             outerhtml: labels,
-                                            classe: "col-xs-3"
+                                            classe: "col-xs-12 col-sm-12 col-md-12"
                                         );
-
-                    //gera os contadores
-                    string counters = html.div(
-                                                outerhtml: input,
-                                                classe: "col-xs-3 counters"
-                                                );
-                    //gera os botoes
-                    string buttons = html.div(
-                                                outerhtml: btnNaoAvaliado,
-                                                classe: "col-xs-2",
-                                                style: "text-align:right"
-                                                );
+                    
                     //Comandos para intervalos
-                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-
+                    //tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
                     //Gera uma linha de level3
                     string level3List = html.listgroupItem(
                                                             id: parLevel3.Id.ToString(),
-                                                            classe: "level3 row" + classInput,
+                                                            classe: "level3 row VF" + classInput,
                                                             tags: tags,
                                                             outerhtml: level3 +
-                                                                        labels +
-                                                                        counters +
-                                                                        buttons
+                                                                        labels 
                                                         );
 
                     parLevel3Group += level3List;
 
                 }
 
-                //< div class="form-group">
-                //      <label for="email" style="
-                //    display: inherit;
-                //">Email:</label>
-                //      <label for="email" style="display: inline-block">Email:</label>
-                //    </div>
+                var painelLevel3HeaderListHtml = "";
+
+                var labelSequencial = "<label class='font-small'>Sequencial</label>";
+                var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
+                var formGroupSequencial = html.div(
+                                        outerhtml: labelSequencial + formControlSequencial,
+                                        classe: "form-group header",
+                                        style: "margin-bottom: 4px;"
+                                        );
+
+                var labelBanda = "<label class='font-small'>Banda</label>";
+                var formControlBanda = "<input class='form-control input-sm banda' type='number'>";
+                var formGroupBanda = html.div(
+                                        outerhtml: labelBanda + formControlBanda,
+                                        classe: "form-group header",
+                                        style: "margin-bottom: 4px;"
+                                        );
+
+                painelLevel3HeaderListHtml += html.div(
+                                                outerhtml: formGroupSequencial,
+                                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                                );
+
+                painelLevel3HeaderListHtml += html.div(
+                                                outerhtml: formGroupBanda,
+                                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                                );
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
@@ -2699,29 +2782,12 @@ namespace SgqSystem.Services
                 //Painel
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
-                var label = "<label class='font-small'>Sequencial</label>";
-                var form_control = "<input class='form-control input-sm' type='date' ParHeaderField_Id='' ParFieldType_Id = ''>";
-                var form_group = html.div(
-                                        outerhtml: label + form_control,
-                                        classe: "form-group header",
-                                        style: "margin-bottom: 4px;"
-                                        );
-
-
-                var painelLevel3HeaderListHtml = form_group;
-
-                //string HeaderLevel02 = null;
-
                 string painellevel3 = html.listgroupItem(
                                                             outerhtml: avaliacoes +
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
 
                                                classe: "painel painelLevel03 row");
-
-                string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
-                                                            classe: "painel painelLevel02 row"
-                                                        );
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
@@ -2730,7 +2796,7 @@ namespace SgqSystem.Services
                                                classe: "level3Group",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                                               outerhtml: painellevel3 + panelButton +
+                                               outerhtml: painellevel3 +    
                                                           parLevel3Group
                                              );
                 }
@@ -2741,7 +2807,7 @@ namespace SgqSystem.Services
             {
                 //Instancia uma veriavel para gerar o agrupamento
                 string parLevel3Group = null;
-
+                
                 foreach (var parLevel3 in parlevel3List)
                 {
 
@@ -2761,8 +2827,8 @@ namespace SgqSystem.Services
                         //se não é um intervalo
                         //tem que gerar uma mascara para os inputs e para os labels
                         classInput = " interval";
-                        tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-
+                        //tags =                                       "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                        tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
                         labels = html.div(
                                             outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
                                             classe: "font10",
@@ -2799,7 +2865,9 @@ namespace SgqSystem.Services
                                                 style: "text-align:right"
                                                 );
                     //Comandos para intervalos
-                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                    //tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
+
 
                     //Gera uma linha de level3
                     string level3List = html.listgroupItem(
@@ -2816,50 +2884,51 @@ namespace SgqSystem.Services
 
                 }
 
-                //< div class="form-group">
-                //      <label for="email" style="
-                //    display: inherit;
-                //">Email:</label>
-                //      <label for="email" style="display: inline-block">Email:</label>
-                //    </div>
-
                 //Avaliações e amostas para painel
-                string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
-                                    style: "margin-bottom: 4px;",
-                                    classe: "form-group");
-                string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
-                                    style: "margin-bottom: 4px;",
-                                    classe: "form-group");
 
-                string avaliacoes = html.div(
-                                    outerhtml: avaliacoeshtml,
-                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
-                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
-                string amostras = html.div(
-                                    outerhtml: amostrashtml,
-                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
-                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+                var painelLevel3HeaderListHtml = "";
 
-                //Painel
-                //O interessante é um painel só mas no momento está um painel para cada level3group
+                var labelSequencial = "<label class='font-small'>Sequencial</label>";
+                var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
+                var formGroupSequencial = html.div(
+                                        outerhtml: labelSequencial + formControlSequencial,
+                                        classe: "form-group header",
+                                        style: "margin-bottom: 4px;"
+                                        );
 
-                var painelLevel3HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html);
+                var labelBanda = "<label class='font-small'>Banda</label>";
+                var formControlBanda = "<input class='form-control input-sm banda' type='number'>";
+                var formGroupBanda = html.div(
+                                        outerhtml: labelBanda + formControlBanda,
+                                        classe: "form-group header",
+                                        style: "margin-bottom: 4px;"
+                                        );
 
-                //string HeaderLevel02 = null;
+                painelLevel3HeaderListHtml += html.div(
+                                                outerhtml: formGroupSequencial,
+                                                classe: "col-xs-5 col-sm-4 col-md-4 col-lg-4",
+                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                                );
+
+                painelLevel3HeaderListHtml += html.div(
+                                                outerhtml: formGroupBanda,
+                                                classe: "col-xs-5 col-sm-4 col-md-4 col-lg-4",
+                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                                );
+
+                var button = html.button(classe: "btn btn-lg btn-success pull-right", label: "<i class='fa fa-bookmark' aria-hidden='true'></i>");
+
+                painelLevel3HeaderListHtml += html.div(
+                                                outerhtml: button,
+                                                classe: "col-xs-2 col-sm-4 col-md-4 col-lg-4",
+                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                                );
 
                 string painellevel3 = html.listgroupItem(
-                                                            outerhtml: avaliacoes +
-                                                                       amostras +
-                                                                       painelLevel3HeaderListHtml,
+                                                            outerhtml: painelLevel3HeaderListHtml,
 
                                                classe: "painel painelLevel03 row");
-
-                string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
-                                                            classe: "painel painelLevel02 row"
-                                                        );
-
+                
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
                 {
@@ -2867,7 +2936,7 @@ namespace SgqSystem.Services
                                                classe: "level3Group",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                                               outerhtml: painellevel3 + panelButton +
+                                               outerhtml: painellevel3 + 
                                                           parLevel3Group
                                              );
                 }
@@ -2898,8 +2967,8 @@ namespace SgqSystem.Services
                         //se não é um intervalo
                         //tem que gerar uma mascara para os inputs e para os labels
                         classInput = " interval";
-                        tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-
+                                                              //tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                        tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
                         labels = html.div(
                                             outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
                                             classe: "font10",
@@ -2936,8 +3005,8 @@ namespace SgqSystem.Services
                                                 style: "text-align:right"
                                                 );
                     //Comandos para intervalos
-                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-
+                   // tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
                     //Gera uma linha de level3
                     string level3List = html.listgroupItem(
                                                             id: parLevel3.Id.ToString(),
@@ -3013,7 +3082,6 @@ namespace SgqSystem.Services
             
 
         }
-
         //public string GetLevel03_novo(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2)
         //{
         //    var html = new Html();
@@ -3125,42 +3193,48 @@ namespace SgqSystem.Services
         {
             var html = new Html();
             string head = html.div(classe: "head");
-
+            
+            //Verifica as configurações iniciais da tela
             var ParConfSGQDB = new SGQDBContext.ParConfSGQ();
             var configuracoes = ParConfSGQDB.get();
 
-           
+
             #region form
 
             #region Unit
-
+            bool inputsDesabilitados = false;
 
             string selectUnit = null;
-            if(configuracoes.HaveUnitLogin == true)
+            if(configuracoes != null && configuracoes.HaveUnitLogin == true)
             {
+                inputsDesabilitados = true;
+                //coloca as unidades vindo do banco ou mocado eua, podemos colocar um arquivo para carregar
                 selectUnit  = html.option("1", "Unit 1", tags: "ip=\"192.168.25.200/SgqMaster\"");
+                selectUnit = html.select(selectUnit, "selectUnit");
             }
-
-
-            selectUnit = html.select(selectUnit, "selectUnit");
 
             #endregion
 
             #region shift
-            string selectShit = html.option("0", "Select the shift") +
-                                html.option("1", "Shift A") +
-                                html.option("2", "Shift B");
+            string selectShit = null;
+            if (configuracoes != null &&  configuracoes.HaveShitLogin == true)
+            {
+                inputsDesabilitados = true;
+                selectShit = html.option("0", "Select the shift") +
+                              html.option("1", "Shift A") +
+                              html.option("2", "Shift B");
 
-            selectShit = html.select(selectShit, id: "shift");
+                selectShit = html.select(selectShit, id: "shift");
+            }
             #endregion
 
             string formOuterHtml = html.head(Html.h.h2, outerhtml: "Please sign in") +
                                   selectUnit +
                                   selectShit +
                                   html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
-                                  html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: true) +
+                                  html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: inputsDesabilitados) +
                                   html.label(labelfor: "inputPassword", classe: "sr-only", outerhtml: "Password") +
-                                  html.input(type: Html.type.password, id: "inputPassword", placeholder: "Password", required: true, disabled: true) +
+                                  html.input(type: Html.type.password, id: "inputPassword", placeholder: "Password", required: true, disabled: inputsDesabilitados) +
                                   html.button(label: "Sign in", id: "btnLogin", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "Authenticating...") +
 
                                   html.div(id: "messageError", classe: "alert alert-danger hide", tags: "role=\"alert\"",
@@ -3211,6 +3285,71 @@ namespace SgqSystem.Services
 
                                 , classe: "login"
                             );
+        }
+        #endregion
+        #region Users
+        [WebMethod]
+        public string getCompanyUsers(string ParCompany_Id)
+        {
+            var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq();
+
+            var users = ParCompanyXUserSgqDB.getCompanyUsers(Convert.ToInt32(ParCompany_Id));
+            var html = new Html();
+
+            string usersList = null;
+            foreach (var user in users)
+            {
+                string Password = user.UserSGQ_Pass;
+                Password = Guard.Descriptografar3DES(Password);
+                Password = UserDomain.EncryptStringAES(Password);
+
+                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+            }
+            return usersList;
+        }
+        [WebMethod]
+        public string getUserCompanys(string UserSgq_Id)
+        {
+            var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq();
+
+            var users = ParCompanyXUserSgqDB.getUserCompany(Convert.ToInt32(UserSgq_Id));
+            var html = new Html();
+
+            string usersList = null;
+            foreach (var user in users)
+            {
+                string Password = user.UserSGQ_Pass;
+                Password = Guard.Descriptografar3DES(Password);
+                Password = UserDomain.EncryptStringAES(Password);
+
+                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+            }
+            return usersList;
+        }
+        [WebMethod]
+        public string UserSGQLogin(string UserName, string Password)
+        {
+            var UserSGQDB = new SGQDBContext.UserSGQ();
+            var user = UserSGQDB.getUserByLogin(UserName);
+
+            var html = new Html();
+
+            Password = UserDomain.DecryptStringAES(Password);
+            Password = Guard.Criptografar3DES(Password);
+
+            if (user != null && user.Password == Password)
+            {
+                
+                Password = Guard.Descriptografar3DES(Password);
+                Password = UserDomain.EncryptStringAES(Password);
+                //colocar informação que usuario não tem unidade padrão, mas tem que verificar isso
+                return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+            }
+            else
+            {
+                return "Usuário ou senha inválidos";
+            }
+          
         }
         #endregion
     }

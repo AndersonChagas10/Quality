@@ -304,14 +304,14 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
             
-            string sql = "select PH.Id as ParHeaderField_Id, PH.Name as ParHeaderField_Name, PT.Id as ParFieldType_Id from ParLevel2XHeaderField PL  " +
-                         "left join ParHeaderField PH on PH.Id = PL.ParHeaderField_Id                                                              " +
-                         "left join ParLevelDefiniton PD on PH.ParLevelDefinition_Id = PD.Id                                                       " +
-                         "left join ParFieldType PT on PH.ParFieldType_Id = PT.Id                                                                  " +
-                         "where                                                                                                                    " +
-                         "PD.Id = 1 and                                                                                                            " +
-                         "PL.ParLevel1_Id = "+ ParLevel1_Id + " and                                                                                " +
-                         "PL.IsActive = 1 and PH.IsActive = 1 and PD.IsActive = 1                                                                  " +
+            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PT.Id AS ParFieldType_Id FROM ParLevel2XHeaderField PL  " +
+                         "LEFT JOIN ParHeaderField PH ON PH.Id = PL.ParHeaderField_Id                                                              " +
+                         "LEFT JOIN ParLevelDefiniton PD ON PH.ParLevelDefinition_Id = PD.Id                                                       " +
+                         "LEFT JOIN ParFieldType PT ON PH.ParFieldType_Id = PT.Id                                                                  " +
+                         "WHERE                                                                                                                    " +
+                         "PD.Id = 1 AND                                                                                                            " +
+                         "PL.ParLevel1_Id = "+ ParLevel1_Id + " AND                                                                                " +
+                         "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                  " +
                          "GROUP BY PH.Id, PH.Name, PT.Id;                                                                                          ";
 
             
@@ -325,14 +325,14 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "select PH.Id as ParHeaderField_Id, PH.Name as ParHeaderField_Name, PT.Id as ParFieldType_Id from ParLevel2XHeaderField PL " +
-                         "  left join ParHeaderField PH on PH.Id = PL.ParHeaderField_Id                                                             " +
-                         "  left join ParLevelDefiniton PD on PH.ParLevelDefinition_Id = PD.Id                                                      " +
-                         "  left join ParFieldType PT on PH.ParFieldType_Id = PT.Id                                                                 " +
-                         "  where                                                                                                                   " +
-                         "  PD.Id = 1 and                                                                                                           " +
-                         "  PL.ParLevel1_Id = " + ParLevel1_Id + " and PL.ParLevel2_Id = " + ParLevel2_Id + " and                                   " +
-                         "  PL.IsActive = 1 and PH.IsActive = 1 and PD.IsActive = 1;                                                                ";
+            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PT.Id AS ParFieldType_Id FROM ParLevel2XHeaderField PL " +
+                         "  LEFT JOIN ParHeaderField PH ON PH.Id = PL.ParHeaderField_Id                                                             " +
+                         "  LEFT JOIN ParLevelDefiniton PD ON PH.ParLevelDefinition_Id = PD.Id                                                      " +
+                         "  LEFT JOIN ParFieldType PT ON PH.ParFieldType_Id = PT.Id                                                                 " +
+                         "  WHERE                                                                                                                   " +
+                         "  PD.Id = 2 AND                                                                                                           " +
+                         "  PL.ParLevel1_Id = " + ParLevel1_Id + " AND PL.ParLevel2_Id = " + ParLevel2_Id + " AND                                   " +
+                         "  PL.IsActive = 1 AND PH.IsActive = 1 and PD.IsActive = 1;                                                                ";
 
             var parLevel3List = db.Query<ParLevelHeader>(sql);
 
@@ -344,14 +344,16 @@ namespace SGQDBContext
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
-        public int Id;
-        public string Name;
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal PunishmentValue { get; set; }
 
         public IEnumerable<ParFieldType> getMultipleValues(int ParHeaderField_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT Id, Name FROM ParMultipleValues                                "+
+
+            string sql = "SELECT Id, Name, PunishmentValue FROM ParMultipleValues                       " +
                          "WHERE ParHeaderField_Id = '"+ ParHeaderField_Id + "' and IsActive = 1;        ";
 
             var multipleValues = db.Query<ParFieldType>(sql);
@@ -364,8 +366,8 @@ namespace SGQDBContext
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
-        public int Id;
-        public string Name;
+        public int Id { get; set; }
+        public string Name { get; set; }
 
         public IEnumerable<ParLevel1VariableProduction> getVariable(int ParLevel1_Id)
         {
@@ -387,17 +389,99 @@ namespace SGQDBContext
 
         public int Id { get; set; }
         public bool HaveUnitLogin { get; set; }
-
+        public bool HaveShitLogin { get; set; }
         public ParConfSGQ get()
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT Id, HaveUnitLogin FROM ParConfSGQ";
+            string sql = "SELECT Id, HaveUnitLogin, HaveShitLogin FROM ParConfSGQ";
 
             var conf = db.Query<ParConfSGQ>(sql).FirstOrDefault();
 
             return conf;
 
+        }
+    }
+    public partial class UserSGQ
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Password { get; set; }
+        public string Login { get; set; }
+        public int ParCompany_Id { get; set; }
+        public string ParCompany_Name { get; set; }
+        public string Role { get; set; }
+        public UserSGQ getUserByLogin(string userLogin)
+        {
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "SELECT U.Id, U.Name AS Login, U.Password, U.FullName AS Name, U.ParCompany_Id , C.Name AS ParCompany_Name, PxU.Role " +
+                         "FROM                                                                                                                " +
+                         "UserSgq U                                                                                                           " +
+                         "INNER JOIN ParCompany C ON U.ParCompany_Id = C.Id                                                                   " +
+                         "INNER JOIN ParCompanyXUserSgq PxU ON U.Id = PxU.UserSgq_Id                                                          " +
+                         "WHERE U.Name = '" + userLogin + "' AND PxU.ParCompany_Id = C.Id                                                     ";                                                                                                                                               
+
+            var user = db.Query<UserSGQ>(sql).FirstOrDefault();
+
+            return user;
+        }
+
+
+    }
+    public partial class ParCompanyXUserSgq
+    {
+        public int UserSGQ_Id { get; set; }
+        public string UserSGQ_Name { get; set; }
+        public string UserSGQ_Login { get; set; }
+        public string UserSGQ_Pass { get; set; }
+       
+        public string Role { get; set; }
+        public int ParCompany_Id { get; set; }
+
+        public string ParCompany_Name { get; set; }
+
+        /// <summary>
+        /// Retorna todos os usuários da unidade
+        /// </summary>
+        /// <param name="ParCompany_Id"></param>
+        /// <returns></returns>
+        public IEnumerable<ParCompanyXUserSgq> getCompanyUsers(int ParCompany_Id)
+        {
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select U.Id AS UserSGQ_Id, U.Name AS UserSGQ_Login, U.FullName AS UserSGQ_Name, U.Password AS UserSGQ_Pass, U.Role, PxC.Role AS Role, C.Id ParCompany_Id, C.Name ParCompany_Name from ParCompanyXUserSgq PxC " +
+                         "INNER JOIN ParCompany C ON PxC.ParCompany_Id = c.Id                                                                                                                                                          " +
+                         "INNER JOIN UserSgq U ON PxC.UserSgq_Id = u.Id                                                                                                                                                                " +
+                         "WHERE PxC.ParCompany_Id='" + ParCompany_Id + "'                                                                                                                                                              ";
+
+            var users = db.Query<ParCompanyXUserSgq>(sql);
+
+            return users;
+        }
+        /// <summary>
+        /// Retorna todas as unidades do usuário
+        /// </summary>
+        /// <param name="UserSgq_Id"></param>
+        /// <returns></returns>
+        public IEnumerable<ParCompanyXUserSgq> getUserCompany(int UserSgq_Id)
+        {
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select U.Id AS UserSGQ_Id, U.Name AS UserSGQ_Login, U.FullName AS UserSGQ_Name, U.Password AS UserSGQ_Pass, U.Role, PxC.Role AS Role, C.Id ParCompany_Id, C.Name ParCompany_Name from ParCompanyXUserSgq PxC " +
+                         "INNER JOIN ParCompany C ON PxC.ParCompany_Id = c.Id                                                                                                                                                          " +
+                         "INNER JOIN UserSgq U ON PxC.UserSgq_Id = u.Id                                                                                                                                                                " +
+                         "WHERE PxC.UserSgq_Id='" + UserSgq_Id + "'                                                                                                                                                              ";
+
+            var companys = db.Query<ParCompanyXUserSgq>(sql);
+
+            return companys;
         }
     }
 }

@@ -57,6 +57,7 @@ namespace Dominio
         public virtual DbSet<ParCompanyCluster> ParCompanyCluster { get; set; }
         public virtual DbSet<ParCompanyXStructure> ParCompanyXStructure { get; set; }
         public virtual DbSet<ParCompanyXUserSgq> ParCompanyXUserSgq { get; set; }
+        public virtual DbSet<ParConfSGQ> ParConfSGQ { get; set; }
         public virtual DbSet<ParConsolidationType> ParConsolidationType { get; set; }
         public virtual DbSet<ParCounter> ParCounter { get; set; }
         public virtual DbSet<ParCounterXLocal> ParCounterXLocal { get; set; }
@@ -101,6 +102,8 @@ namespace Dominio
         public virtual DbSet<VolumeCepRecortes> VolumeCepRecortes { get; set; }
         public virtual DbSet<VolumePcc1b> VolumePcc1b { get; set; }
         public virtual DbSet<VolumeVacuoGRD> VolumeVacuoGRD { get; set; }
+        public virtual DbSet<ParLevel1VariableProduction> ParLevel1VariableProduction { get; set; }
+        public virtual DbSet<ParLevel1VariableProductionXLevel1> ParLevel1VariableProductionXLevel1 { get; set; }
         public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
         public virtual DbSet<ResultLevel2HeaderField> ResultLevel2HeaderField { get; set; }
     }

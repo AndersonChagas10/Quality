@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
+using System;
 
 namespace DTO.DTO.Params
 {
@@ -80,5 +81,82 @@ namespace DTO.DTO.Params
         }
         public List<ParNotConformityRuleXLevelDTO> listParNotConformityRuleXLevelDto { get; set; }
         public List<ParLevel3GroupDTO> listParLevel3GroupDto { get; set; }
+        public List<ParLevel2SampleEvaluationDTO> listParLevel2SampleEvaluationDTO { get; set; }
+
+        public List<ParSampleDTO> listSample { get; set; }
+        public List<ParEvaluationDTO> listEvaluation { get; set; }
+
+        public void CriaListaSampleEvaluation()
+        {
+            listSample = new List<ParSampleDTO>();
+            listEvaluation = new List<ParEvaluationDTO>();
+
+            //var avAmTodas = listParLevel2SampleEvaluationDTO.FirstOrDefault(r => r.companyId == null || r.companyId == 0);
+
+            //if (avAmTodas != null)
+            //{
+            //    var evaluationIgualTodas = listParLevel2SampleEvaluationDTO.Where(r => r.evaluationNumber == avAmTodas.evaluationNumber && r.companyId == avAmTodas.companyId);
+            //    var sampleIgualTodas = listParLevel2SampleEvaluationDTO.Where(r => r.sampleNumber == avAmTodas.sampleNumber && r.companyId == avAmTodas.companyId);
+            //}
+
+            if (listParLevel2SampleEvaluationDTO != null)
+                foreach (var i in listParLevel2SampleEvaluationDTO)
+                {
+
+                    var sample = new ParSampleDTO()
+                    {
+                        Number = i.sampleNumber,
+                        Id = i.sampleId ?? 0
+                    };
+
+                    var evaluation = new ParEvaluationDTO()
+                    {
+                        Number = i.evaluationNumber,
+                        Id = i.evaluationId ?? 0
+                    };
+
+                    if (i.companyId > 0)
+                    {
+                        sample.ParCompany_Id = i.companyId;
+                        evaluation.ParCompany_Id = i.companyId;
+                    }
+
+                    listSample.Add(sample);
+                    listEvaluation.Add(evaluation);
+                }
+        }
+
+        public void RecuperaListaSampleEvaluation()
+        {
+            listParLevel2SampleEvaluationDTO = new List<ParLevel2SampleEvaluationDTO>();
+            if (listEvaluation != null)
+                foreach (var i in listEvaluation)
+                {
+                    var coiso = new ParLevel2SampleEvaluationDTO();
+                    coiso.evaluationId = i.Id;
+                    coiso.evaluationNumber = i.Number;
+
+                    var sample = listSample.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id);
+                    if (sample != null)
+                    {
+                        coiso.sampleId = sample.Id;
+                        coiso.sampleNumber = sample.Number;
+                    }
+                    else
+                    {
+                        coiso.sampleId = 0;
+                        coiso.sampleNumber = listEvaluation.FirstOrDefault(r=>r.ParCompany_Id == null).Number;
+                    }
+
+                    coiso.IsActive = i.IsActive;
+                    coiso.Id = 1;
+                    if (i.ParCompany_Id != null && i.ParCompany_Id > 0)
+                        coiso.companyId = i.ParCompany_Id;
+
+                    listParLevel2SampleEvaluationDTO.Add(coiso);
+
+                }
+
+        }
     }
 }

@@ -518,7 +518,7 @@
                 ContadoresL1.incluiNoObjetoParaSubmit(dados);
                 ReincidenciaL1.incluiNoObjetoParaSubmit(dados);
                 ClusterL1.incluiNoObjetoParaSubmit(dados);
-
+                MetaL1.incluiNoObjetoParaSubmit(dados);
                 //openLoader();
 
                 $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
@@ -671,6 +671,7 @@
                 ContadoresL2.incluiNoObjetoParaSubmit(dados);
                 ReincidenciaL2.incluiNoObjetoParaSubmit(dados);
                 GroupL2.incluiNoObjetoParaSubmit(dados);
+                AvAm2.incluiNoObjetoParaSubmit(dados);
                 //openLoader(indexParamsLevel2.saving_the_level2);
                 $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                     //closeLoader();
@@ -831,6 +832,7 @@
                     //Cluster.UpdateCounter();
                     //Counter.UpdateCounters();
                     var dados = $('#newLevel3Modal > form').serializeObject();
+                    
                     ReincidenciaL3.incluiNoObjetoParaSubmit(dados);
                     level3Value.incluiNoObjetoParaSubmit(dados);
                     
@@ -878,7 +880,7 @@
                                 indexParamsLevel3.selectLevel3();
                             },
                             function(){
-                                $('#parLevel3Select2').val(previous);
+                                $('#parLevel3Select2').val(previous).change();
                                 closeConfirm();
                             });
                     }else{
@@ -1113,6 +1115,10 @@
 
     $(document).ready(function () {
         reloadPopovers();
+
+        //initialFormLevel1 = $('form')[0];
+        //initialFormLevel2 = $('form')[1];
+        //initialFormLevel3 = $('form')[2];
     });
 
     $( document ).ajaxStart(function() {

@@ -1,0 +1,218 @@
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+@using SgqSystem.Helpers
+
+@{
+    var level = Model.levelControl;
+    var id = "level" + Model.levelControl + "_AvAmostra_accordion";
+    var id2 = "#level" + Model.levelControl + "__AvAmostra_accordion";
+    var id3 = "#level" + Model.levelControl + "__AvAmostra_collapse";
+    var id4 = "level" + Model.levelControl + "__AvAmostra_collapse";
+    var click = "AvAm" + Model.levelControl + ".adiciona($(this))";
+}
+
+<div class="panel-group accordion" id="@id">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="@id2" href="@id3" aria-expanded="false"> Avaliação e Amostra</a>
+            </h4>
+        </div>
+        <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+
+                <table class="table-erp" id="camposGroup">
+
+                    <tbody>
+                        @*<tr id="todas">
+                            <td class="td-erp"></td>
+
+                            @Table.GerarColuna(@Html.CheckBox("checkAvaliacao", htmlAttributes: new { @class = "form-control input-sm", @id = "checkAvaliacao" })
+                                , @Html.Label("Numero de avaliaçoes específicas")
+                                , Table.PosicaoLabel.top)
+
+                            @Table.GerarColuna(@Html.CheckBox("checkAmostra", htmlAttributes: new { @class = "form-control input-sm", @id = "checkAmostra" })
+                                , @Html.Label("Numero de amostras específicas")
+                                , Table.PosicaoLabel.top)
+
+                        </tr>*@
+                        <tr>
+
+                            @Table.GerarColuna(@Html.DropDownList("avAmCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "avAmCompany" })
+                                , @Html.Label(Resources.Resource.company)
+                                , Table.PosicaoLabel.top)
+
+                            @Html.HiddenFor(r => r.paramsDto.parEvaluationDto.Id)
+                            @Table.GerarColuna(@Html.TextBox("avaliacao", 0, htmlAttributes: new { @id = "avaliacao", @class = "form-control input-sm", type = "number", min = "0" })
+                                , @Html.Label(Resources.Resource.evaluation)
+                                , Table.PosicaoLabel.top)
+
+                            @Html.HiddenFor(r => r.paramsDto.parSampleDto.Id)
+                            @Table.GerarColunaButton(@Html.TextBox("amostra", 0, htmlAttributes: new { @id = "amostra", @class = "form-control input-sm", type = "number", min = "0" })
+                                , @Html.Label(Resources.Resource.samples_per_evaluation)
+                                , Table.PosicaoLabel.top
+                                , button: "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick='" + @click + ";' id=\"\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table id="tableAvAm" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Avaliação e Amostra:">
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Avaliação</th>
+                            <th>Amostras/Avaliação</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function changeCompanyAvAm() {
+
+    var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
+
+    function atribuiLevelDivCounter (){
+
+        var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto));
+        var levelDomain;
+        var listSalvo;
+
+        if(levelControl == 2){
+            levelDomain = "newLevel2Modal";
+            listSalvo = paramsDto.parLevel2Dto.listParLevel2SampleEvaluationDTO;//
+            AvAm2 = getCounterObject(levelDomain, listSalvo);//
+            AvAm2 .carregaDadosDoDb();//
+        }
+
+    }
+
+    atribuiLevelDivCounter();
+
+    function getCounterObject (levelDomain, listSalvo) {
+        return {
+            /*Setup*/
+            levelControl: levelControl,
+            level: levelDomain,
+            listObjSalvo: listSalvo,
+            idTable: 'tableAvAm',//
+            tdsNames: ['companyName', 'evaluationNumber', 'sampleNumber', 'btn'],
+            getObjAdd: function(isEdit, obj){
+                if(isEdit != undefined){
+                    obj.Name = $('#' + isEdit + ' #inputParLevel03Name').val();
+                    //obj.ParLevel2_Id = $('#' + isEdit + ' #inputParLevel03Name :selected').val();
+                    return obj;
+                }else{
+                    var compId = $('#' + this.level + ' #avAmCompany :selected').val();
+                    var compName = $('#' + this.level + ' #avAmCompany :selected').text();
+                    if(compId == "-1"){
+                        compName = "Todas"
+                    }
+
+                    return {/*Objeto*/
+                        sampleNumber     :  $('#' + this.level + ' #amostra').val(),
+                        evaluationNumber    : $('#' + this.level + ' #avaliacao').val(),
+                        companyId  :  compId,
+                        companyName  : compName,
+                        IsActive: true
+                    }
+                }
+            },
+            veifyAdd: function(isEdit) {
+                var seletorTato = !!isEdit ? isEdit : this.level;
+                /*Valida se pode criar o objeto*/
+                if($('#' + seletorTato + ' #amostra').val().length == 0){
+                    openMessageModal("Numero de amostras inválido.")
+                    return false;
+                }
+                if($('#' + seletorTato + ' #avaliacao').val().length == 0){
+                    openMessageModal("Numero de avaliações inválido.")
+                    return false;
+                }
+
+                var companySelected = $('#' + seletorTato + ' #avAmCompany :selected').val();
+                var exist = $.grep($('#tableAvAm  tbody  tr  td:nth-child(1)'), function(o, c){
+                    if(companySelected == -1){
+                        return $(o).parent().data().companyId == 0 || $(o).parent().data().companyId == -1;
+                    }
+                    return $(o).parent().data().companyId == companySelected;
+                })
+
+                var display = $('#' + seletorTato + ' #avAmCompany :selected').text();
+                if(companySelected == -1){
+                    display= "Todas";
+                }
+
+                if(exist.length){
+                    openMessageModal("Dados já cadastrados para a empresa " + display + ".", "")
+                    return false;
+                }
+
+                return true;
+            },
+            incluiNoObjetoParaSubmit: function(dados){
+
+                var level = this.levelControl;
+                $('#' + this.level + ' #' + this.idTable + ' > tbody > tr ').each(function(c, obj){
+
+                    var o = $(obj).data();
+                    //#edit
+                    if((o.Id != null || o.Id != undefined) && o.Id > 0){
+                        dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].Id"] = o.Id;
+                    }
+
+                    if((o.sampleId != null || o.sampleId != undefined) && o.sampleId > 0){
+                        dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].sampleId"] = o.sampleId;
+                    }
+
+                    if((o.evaluationId != null || o.evaluationId != undefined) && o.evaluationId > 0){
+                        dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].evaluationId"] = o.evaluationId;
+                    }
+
+
+                    dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].sampleNumber"] = o.sampleNumber;
+                    dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].evaluationNumber"] = o.evaluationNumber;
+                    dados["paramsDto.parLevel" + level + "Dto.listParLevel2SampleEvaluationDTO[" + c + "].companyId"] = o.companyId;
+
+                });
+
+            },
+            carregaDadosDoDb: function(){
+                var id = this.level + ' #' + this.idTable;
+                var tdNamess = this.tdsNames;
+                if( this.listObjSalvo != null){ /*Carrega regras de NC*/
+                    this.listObjSalvo.forEach(function(o, c){
+                        if(o.companyId != null){
+                            if(o.companyId != "-1"){
+                                o['companyName'] = $('#avAmCompany option[value=' + o.companyId + ']').text();
+                            }
+                        }else{
+                            o['companyName'] = "Todas";
+                        }
+                        crudNxN.adiciona(o,  id, tdNamess);
+                    });
+                }
+            },
+            /*Fim Setup*/
+            adiciona: function(e) {
+                if(this.veifyAdd()){
+                    var object = this.getObjAdd();
+                    crudNxN.adiciona(object, this.level + ' #' + this.idTable, this.tdsNames);
+
+                }
+            },
+        };
+    }
+
+
+
+
+</script>

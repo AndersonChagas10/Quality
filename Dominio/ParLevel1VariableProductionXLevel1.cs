@@ -12,17 +12,12 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParGoal
+    public partial class ParLevel1VariableProductionXLevel1
     {
         public int Id { get; set; }
+        public int ParLevel1VariableProduction_Id { get; set; }
         public int ParLevel1_Id { get; set; }
-        public Nullable<int> ParCompany_Id { get; set; }
-        public decimal PercentValue { get; set; }
-        public Nullable<System.DateTime> AddDate { get; set; }
+        public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool IsActive { get; set; }
-    
-        public virtual ParCompany ParCompany { get; set; }
-        public virtual ParLevel1 ParLevel1 { get; set; }
     }
 }
