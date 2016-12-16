@@ -354,14 +354,47 @@ namespace SgqSystem.Services
                                  "</div>                                                                                                                                                                      ";
             return intervalo;
         }
-        public string level2(string id, string label, string classe=null, int defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false)
+        public string level2(string id, string label, string classe=null, decimal defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false,
+                             string alertlevel1=null, string alertlevel2=null, string alertlevel3=null, string AlertLevel= null, string ParFrequency_Id=null)
         {
+
+
+            if(!string.IsNullOrEmpty(alertlevel1))
+            {
+                alertlevel1 = " alertlevel1=\"" + alertlevel1 + "\"";
+            }
+
+            if(!string.IsNullOrEmpty(alertlevel2))
+            {
+                alertlevel2 = " alertlevel2=\"" + alertlevel2 + "\"";
+            }
+
+            if(!string.IsNullOrEmpty(alertlevel3))
+            {
+                alertlevel3 = " alertlevel3=\"" + alertlevel3 + "\"";
+            }
+
+            if(!string.IsNullOrEmpty(AlertLevel))
+            {
+                AlertLevel = " alertlevel=\"0\"";
+            }
+
+            if(!string.IsNullOrEmpty(ParFrequency_Id))
+            {
+                ParFrequency_Id = " parfrequency_id=\"" + ParFrequency_Id + "\"";
+            }
+
             return link(
                            id: id, 
                            classe: "level2" +  classe,
-                           tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\"",
+                           tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" " + alertlevel1 + alertlevel2 + alertlevel3 + AlertLevel + ParFrequency_Id,
                            outerhtml: span(outerhtml: label, classe: "levelName")
                        );
         }
+        public string user(int UserSGQ_Id, string UserSGQ_Name, string UserSGQ_Login, string UserSGQ_Pass, string Role, int ParCompany_Id, string ParCompany_Name)
+        {
+            return "<div class=\"user\" userid=\"" + UserSGQ_Id + "\" username=\"" + UserSGQ_Name + "\" userlogin=\"" + UserSGQ_Login.ToLower() + "\" userpass=\"" + UserSGQ_Pass + "\" userprofile=\"" + Role + "\" unidadeid=\"" + ParCompany_Id + "\" unidadename=\"" + ParCompany_Name + "\"></div>";
+        }
+
     }
 }
