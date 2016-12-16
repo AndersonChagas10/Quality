@@ -385,6 +385,11 @@ namespace Data.Repositories
         {
             parEvaluation.ParLevel2_Id = ParLevel2_Id;
 
+            //var todasUnidades = db.ParEvaluation.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel2_Id == ParLevel2_Id);
+            //if (todasUnidades != null)
+            //    if (parEvaluation.Number == todasUnidades.Number)
+            //        return;
+
             if (parEvaluation.Id == 0)
             {
                 db.ParEvaluation.Add(parEvaluation);
@@ -401,6 +406,11 @@ namespace Data.Repositories
         private void AddUpdateParSample(ParSample parSample, int ParLevel2_Id)
         {
             parSample.ParLevel2_Id = ParLevel2_Id;
+
+            //var todasUnidades = db.ParSample.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel2_Id == ParLevel2_Id);
+            //if (todasUnidades != null)
+            //    if (parSample.Number == todasUnidades.Number)
+            //        return;
 
             if (parSample.Id == 0)
             {
