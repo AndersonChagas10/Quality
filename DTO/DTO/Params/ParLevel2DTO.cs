@@ -94,6 +94,7 @@ namespace DTO.DTO.Params
             if (listParLevel2SampleEvaluationDTO != null)
                 foreach (var i in listParLevel2SampleEvaluationDTO)
                 {
+
                     var sample = new ParSampleDTO()
                     {
                         Number = i.sampleNumber,
@@ -128,8 +129,17 @@ namespace DTO.DTO.Params
                     coiso.evaluationId = i.Id;
                     coiso.evaluationNumber = i.Number;
 
-                    coiso.sampleId = listSample.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id).Id;
-                    coiso.sampleNumber = listSample.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id).Number;
+                    var sample = listSample.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id);
+                    if (sample != null)
+                    {
+                        coiso.sampleId = sample.Id;
+                        coiso.sampleNumber = sample.Number;
+                    }
+                    else
+                    {
+                        coiso.sampleId = 0;
+                        coiso.sampleNumber = listEvaluation.FirstOrDefault(r=>r.ParCompany_Id == null).Number;
+                    }
 
                     coiso.IsActive = i.IsActive;
                     coiso.Id = 1;
