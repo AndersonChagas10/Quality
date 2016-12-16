@@ -2097,7 +2097,7 @@ namespace SgqSystem.Services
                         //Incremento os itens que estaram no ParLevel1                
                         //Gera linha Level1
 
-                        string tags = "totalavaliado=\"0\" totaldefeitos=\"0\" alertanivel1=\"3\" alertanivel2=\"6\" alertanivel3=\"9\" alertaatual=\"0\" parconsolidationtype_id=\"1\"";
+                        string tags = "totalavaliado=\"0\" totaldefeitos=\"0\" alertanivel1=\"3\" alertanivel2=\"6\" alertanivel3=\"9\" alertaatual=\"0\" parconsolidationtype_id=\"1\"   avaliacaoultimoalerta=\"0\"";
 
                         string level01 = html.link(
 
