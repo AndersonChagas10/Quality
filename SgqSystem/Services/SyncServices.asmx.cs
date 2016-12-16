@@ -2039,6 +2039,8 @@ namespace SgqSystem.Services
 
             //Instanciamos a Classe ParLevel01 Dapper
             var ParLevel1DB = new SGQDBContext.ParLevel1();
+            //Inicaliza ParLevel1VariableProduction
+            var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
 
             //Buscamos os ParLevel11 para a unidade selecionada
             var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id);
@@ -2066,6 +2068,15 @@ namespace SgqSystem.Services
                 //Percorremos a Lista dos Agrupamento
                 foreach (var parlevel1 in parLevel1Group)
                 {
+                    string tipoTela = "";
+
+                    var variableList = ParLevel1VariableProductionDB.getVariable(parlevel1.Id).ToList();
+
+                    if (variableList.Count > 0)
+                    {
+                        tipoTela = variableList[0].Name;
+                    }                    
+
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     if (parlevel1.ParCriticalLevel_Id > 0)
                     {
@@ -2078,7 +2089,7 @@ namespace SgqSystem.Services
                         string level01 = html.link(
 
                                                   id: parlevel1.Id.ToString(),
-                                                  classe: "level1 col-xs-7",
+                                                  classe: "level1 col-xs-7 "+tipoTela,
                                                   //Aqui vai as tags do level01
                                                   tags: "",
                                                   outerhtml: parlevel1.Name
@@ -2766,7 +2777,7 @@ namespace SgqSystem.Services
             {
                 //Instancia uma veriavel para gerar o agrupamento
                 string parLevel3Group = null;
-
+                
                 foreach (var parLevel3 in parlevel3List)
                 {
 
@@ -2841,50 +2852,51 @@ namespace SgqSystem.Services
 
                 }
 
-                //< div class="form-group">
-                //      <label for="email" style="
-                //    display: inherit;
-                //">Email:</label>
-                //      <label for="email" style="display: inline-block">Email:</label>
-                //    </div>
-
                 //Avaliações e amostas para painel
-                string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
-                                    style: "margin-bottom: 4px;",
-                                    classe: "form-group");
-                string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
-                                    style: "margin-bottom: 4px;",
-                                    classe: "form-group");
 
-                string avaliacoes = html.div(
-                                    outerhtml: avaliacoeshtml,
-                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
-                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
-                string amostras = html.div(
-                                    outerhtml: amostrashtml,
-                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
-                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+                var painelLevel3HeaderListHtml = "";
 
-                //Painel
-                //O interessante é um painel só mas no momento está um painel para cada level3group
+                var labelSequencial = "<label class='font-small'>Sequencial</label>";
+                var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
+                var formGroupSequencial = html.div(
+                                        outerhtml: labelSequencial + formControlSequencial,
+                                        classe: "form-group header",
+                                        style: "margin-bottom: 4px;"
+                                        );
 
-                var painelLevel3HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html);
+                var labelBanda = "<label class='font-small'>Banda</label>";
+                var formControlBanda = "<input class='form-control input-sm banda' type='number'>";
+                var formGroupBanda = html.div(
+                                        outerhtml: labelBanda + formControlBanda,
+                                        classe: "form-group header",
+                                        style: "margin-bottom: 4px;"
+                                        );
 
-                //string HeaderLevel02 = null;
+                painelLevel3HeaderListHtml += html.div(
+                                                outerhtml: formGroupSequencial,
+                                                classe: "col-xs-5 col-sm-4 col-md-4 col-lg-4",
+                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                                );
+
+                painelLevel3HeaderListHtml += html.div(
+                                                outerhtml: formGroupBanda,
+                                                classe: "col-xs-5 col-sm-4 col-md-4 col-lg-4",
+                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                                );
+
+                var button = html.button(classe: "btn btn-lg btn-success pull-right", label: "<i class='fa fa-bookmark' aria-hidden='true'></i>");
+
+                painelLevel3HeaderListHtml += html.div(
+                                                outerhtml: button,
+                                                classe: "col-xs-2 col-sm-4 col-md-4 col-lg-4",
+                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                                );
 
                 string painellevel3 = html.listgroupItem(
-                                                            outerhtml: avaliacoes +
-                                                                       amostras +
-                                                                       painelLevel3HeaderListHtml,
+                                                            outerhtml: painelLevel3HeaderListHtml,
 
                                                classe: "painel painelLevel03 row");
-
-                string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
-                                                            classe: "painel painelLevel02 row"
-                                                        );
-
+                
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
                 {
@@ -2892,7 +2904,7 @@ namespace SgqSystem.Services
                                                classe: "level3Group",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                                               outerhtml: painellevel3 + panelButton +
+                                               outerhtml: painellevel3 + 
                                                           parLevel3Group
                                              );
                 }
@@ -3038,7 +3050,6 @@ namespace SgqSystem.Services
             
 
         }
-
         //public string GetLevel03_novo(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2)
         //{
         //    var html = new Html();
