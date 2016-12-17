@@ -226,7 +226,7 @@
     <value>Descrição do Indicador</value>
   </data>
   <data name="level1_name" xml:space="preserve">
-    <value>Nome do Nível 1</value>
+    <value>Nome do Indicador</value>
   </data>
   <data name="of" xml:space="preserve">
     <value>de</value>
@@ -247,34 +247,34 @@
     <value>Permite editar número de avaliações</value>
   </data>
   <data name="allow_the_edition_of_the_goal_of_the_level1_by_unit" xml:space="preserve">
-    <value>Permite editar meta do nível 1 por unidade</value>
+    <value>Permite editar meta do indicador por unidade</value>
   </data>
   <data name="allow_the_edition_of_the_sample_number" xml:space="preserve">
     <value>Permite editar numeros de amostras</value>
   </data>
   <data name="allow_the_not_applicable_button_on_level2" xml:space="preserve">
-    <value>Botão Não Aplicado (N/A) no level2</value>
+    <value>Botão Não Aplicado (N/A) no monitoramento</value>
   </data>
   <data name="frequency" xml:space="preserve">
     <value>Frequência</value>
   </data>
   <data name="level2_group" xml:space="preserve">
-    <value>Agrupador de level2</value>
+    <value>Agrupador de Monitoramento</value>
   </data>
   <data name="save_button_on_level2" xml:space="preserve">
-    <value>Botão salvar no level 2</value>
+    <value>Botão salvar no Monitoramento</value>
   </data>
   <data name="consolidation_type_popover" xml:space="preserve">
-    <value>Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação!</value>
+    <value>Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.</value>
   </data>
   <data name="select_the_consolidation_type" xml:space="preserve">
     <value>Selecione o tipo de consolidacao</value>
   </data>
   <data name="level1_clusters" xml:space="preserve">
-    <value>Clusters do Level 1</value>
+    <value>Clusters do Indicador</value>
   </data>
   <data name="level1_counter" xml:space="preserve">
-    <value>Contador do level 1</value>
+    <value>Contador do Indicador</value>
   </data>
   <data name="not_conformity_rule" xml:space="preserve">
     <value>Regra de Não conformidade</value>
@@ -289,7 +289,7 @@
     <value>Selecione</value>
   </data>
   <data name="show_level1_counters" xml:space="preserve">
-    <value>Mostrar contadores do nível 1</value>
+    <value>Mostrar contadores do indicador</value>
   </data>
   <data name="value" xml:space="preserve">
     <value>Valor</value>
@@ -331,31 +331,31 @@
     <value>Permite lançamento de tarefa avulso</value>
   </data>
   <data name="allow_the_audit_of_detached_level3_popover" xml:space="preserve">
-    <value>Define if there is a field to register not predicted deviations</value>
+    <value>Define se irá permitir lançamento de tarefa avulso</value>
   </data>
   <data name="conform" xml:space="preserve">
     <value>Conforme</value>
   </data>
   <data name="frequency_popover" xml:space="preserve">
-    <value>Define a frequência que o nível 2 será feito, diariamente, semanalmente, etc.</value>
+    <value>Define a frequência que o nível 2 será feito/executado: diariamente, semanalmente, mensalmente, etc.</value>
   </data>
   <data name="level2_group_popover" xml:space="preserve">
-    <value>Define se haverá agrupamentos no level 2. Se houverem, crie os agrupamentos abaixo.</value>
+    <value>Define se haverá agrupamentos no monitoramento. Se houverem, crie os agrupamentos abaixo.</value>
   </data>
   <data name="level2_name" xml:space="preserve">
-    <value>Nome do Nível 2</value>
+    <value>Nome do Monitoramento</value>
   </data>
   <data name="level3_group" xml:space="preserve">
-    <value>Agrupamento de Level 3</value>
+    <value>Agrupamento de tarefas</value>
   </data>
   <data name="no" xml:space="preserve">
     <value>Não</value>
   </data>
   <data name="not_applicable_on_level_2" xml:space="preserve">
-    <value>Botão N/A no nível 2</value>
+    <value>Botão N/A no Monitoramento</value>
   </data>
   <data name="not_applicable_on_level_2_popover" xml:space="preserve">
-    <value>Define se haverá botão de não avaliado (n/a) no nível 2.</value>
+    <value>Define se haverá botão de não avaliado (n/a) no Monitoramento.</value>
   </data>
   <data name="not_conform" xml:space="preserve">
     <value>Não conforme</value>
@@ -376,13 +376,13 @@
     <value>Regra para reincidência</value>
   </data>
   <data name="save_button_on_level2_popover" xml:space="preserve">
-    <value>Define se haverá botão de salvar no nível 2.</value>
+    <value>Define se haverá botão de salvar no monitoramento.</value>
   </data>
   <data name="save_button_on_level3" xml:space="preserve">
-    <value>Botão salvar no level 3</value>
+    <value>Botão salvar na Tarefa</value>
   </data>
   <data name="save_button_on_level3_popover" xml:space="preserve">
-    <value>Define se haverá botão de salvar no nível 3.</value>
+    <value>Define se haverá botão de salvar na tarefa.</value>
   </data>
   <data name="select_the_frequency" xml:space="preserve">
     <value>Selecione a frequência</value>
@@ -397,10 +397,10 @@
     <value>ID</value>
   </data>
   <data name="allow_level2_group_popover" xml:space="preserve">
-    <value>Define se existirão agrupadores de nivel 2. Se sim, abre uma lista para criar os grupos.</value>
+    <value>Define se existirão agrupadores de monitoramentos. Se sim, abre uma lista para criar os grupos.</value>
   </data>
   <data name="allow_specific_register_by_unit_popover" xml:space="preserve">
-    <value>Define se as unidades terão liberdade de editar o level 1.  Caso a resposta para essa pergunta seja sim, o campo de cadastros específicos será habilitado para a definição de quais edições estarão à disposição da unidade.</value>
+    <value>Define se as unidades terão liberdade de editar o indicador.  Caso a resposta para essa pergunta seja sim, o campo de cadastros específicos será habilitado para a definição de quais edições estarão à disposição da unidade.</value>
   </data>
   <data name="has_alert" xml:space="preserve">
     <value>Emitir alerta</value>
@@ -454,37 +454,37 @@
     <value>Parametrização</value>
   </data>
   <data name="edit_level1" xml:space="preserve">
-    <value>Editar nível 1</value>
+    <value>Editar Indicador</value>
   </data>
   <data name="level1" xml:space="preserve">
-    <value>Nível 1</value>
+    <value>Indicador</value>
   </data>
   <data name="level2" xml:space="preserve">
-    <value>Nível 2</value>
+    <value>Monitoramento</value>
   </data>
   <data name="level3" xml:space="preserve">
-    <value>Nível 3</value>
+    <value>Tarefa</value>
   </data>
   <data name="new_level1" xml:space="preserve">
-    <value>Novo nível 1</value>
+    <value>Novo Indicador</value>
   </data>
   <data name="new_level2" xml:space="preserve">
-    <value>Novo nível 2</value>
+    <value>Novo Monitoramento</value>
   </data>
   <data name="new_level3" xml:space="preserve">
-    <value>Novo nível 3</value>
+    <value>Nova Tarefa</value>
   </data>
   <data name="main_data" xml:space="preserve">
     <value>Dados Principais</value>
   </data>
   <data name="allow_the_edition_of_the_level3_connection" xml:space="preserve">
-    <value>Permite editar vínculo com o nível 3</value>
+    <value>Permite editar vínculo com a tarefa</value>
   </data>
   <data name="allow_the_edition_of_the_level3_connection_popover" xml:space="preserve">
-    <value>Define se as unidades poderão editar/criar os vínculos com os níveis 3</value>
+    <value>Define se as unidades poderão editar/criar os vínculos com as tarefas</value>
   </data>
   <data name="link_number_evaluation" xml:space="preserve">
-    <value>Link com o número avaliação</value>
+    <value>Link com o número da avaliação</value>
   </data>
   <data name="evaluation" xml:space="preserve">
     <value>Avaliação</value>
@@ -499,13 +499,13 @@
     <value>Possui grupos no nível 3</value>
   </data>
   <data name="level2_description" xml:space="preserve">
-    <value>Descrição do nível 2</value>
+    <value>Descrição do Monitoramento</value>
   </data>
   <data name="sample" xml:space="preserve">
     <value>Amostra</value>
   </data>
   <data name="show_group_on_level3" xml:space="preserve">
-    <value>Mostrar Level 3 Agrupado Com Level 2</value>
+    <value>Mostrar as tarefas agrupadas no monitoramento</value>
   </data>
   <data name="counter" xml:space="preserve">
     <value>Contador</value>
@@ -514,10 +514,10 @@
     <value>Contadores</value>
   </data>
   <data name="level3_description" xml:space="preserve">
-    <value>Descrição do nível 3</value>
+    <value>Descrição da tarefa</value>
   </data>
   <data name="level3_name" xml:space="preserve">
-    <value>Nome do nível 3</value>
+    <value>Nome da tarefa</value>
   </data>
   <data name="local" xml:space="preserve">
     <value>Local</value>
@@ -529,10 +529,10 @@
     <value>Reincidência</value>
   </data>
   <data name="save_level2" xml:space="preserve">
-    <value>Salvar nível 2</value>
+    <value>Salve o Monitoramento</value>
   </data>
   <data name="save_level3" xml:space="preserve">
-    <value>Salvar nível 3</value>
+    <value>Salve a Tarefa</value>
   </data>
   <data name="validation" xml:space="preserve">
     <value>Vigência</value>
@@ -583,31 +583,31 @@
     <value>É obrigatório selecionar o tipo de consolidação.</value>
   </data>
   <data name="save_level1" xml:space="preserve">
-    <value>Salve o nível 1</value>
+    <value>Salve o Indicador</value>
   </data>
   <data name="saving_the_level1" xml:space="preserve">
-    <value>Salvando o nível 1</value>
+    <value>Salvando o Indicador</value>
   </data>
   <data name="saving_the_level2" xml:space="preserve">
-    <value>Salvando o nível 2</value>
+    <value>Salvando o Monitoramento</value>
   </data>
   <data name="saving_the_level3" xml:space="preserve">
-    <value>Salvando o nível 3</value>
+    <value>Salvando a Tarefa</value>
   </data>
   <data name="info" xml:space="preserve">
     <value>Info</value>
   </data>
   <data name="loading_the_level1" xml:space="preserve">
-    <value>Carregando o nível 1</value>
+    <value>Carregando o Indicador</value>
   </data>
   <data name="loading_the_level2" xml:space="preserve">
-    <value>Carregando o nível 2</value>
+    <value>Carregando o Monitoramento</value>
   </data>
   <data name="loading_the_level3" xml:space="preserve">
-    <value>Carregando o nível 3</value>
+    <value>Carregando a Tarefa</value>
   </data>
   <data name="removing_the_level3_group" xml:space="preserve">
-    <value>Removendo o grupo do nível 3</value>
+    <value>Removendo o grupo da tarefa</value>
   </data>
   <data name="confirm_the_action" xml:space="preserve">
     <value>Confirme essa ação</value>
@@ -679,7 +679,7 @@
     <value>Novo grupo</value>
   </data>
   <data name="new_structure" xml:space="preserve">
-    <value>Nova estrutura</value>
+    <value>Nova estrutura empresarial</value>
   </data>
   <data name="departments" xml:space="preserve">
     <value>Departamentos</value>
@@ -751,7 +751,7 @@
     <value>Criar</value>
   </data>
   <data name="is_active" xml:space="preserve">
-    <value>Esta ativo</value>
+    <value>Está ativo</value>
   </data>
   <data name="confirm_delete" xml:space="preserve">
     <value>Deseja deletar esse registro</value>

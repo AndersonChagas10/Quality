@@ -35,8 +35,8 @@ namespace SgqSystem.Controllers
         // GET: CepRecortes/Create
         public ActionResult Create()
         {
-            ViewBag.ParCompany_id = new SelectList(db.ParCompany, "Id", "Name");
-            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name");
+            ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name");
+            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 23), "Id", "Name");
             return View();
         }
 
@@ -54,7 +54,7 @@ namespace SgqSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ParCompany_id = new SelectList(db.ParCompany, "Id", "Name", cepRecortes.ParCompany_id);
+            ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepRecortes.ParLevel1_id);
             return View(cepRecortes);
         }
@@ -71,8 +71,8 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ParCompany_id = new SelectList(db.ParCompany, "Id", "Name", cepRecortes.ParCompany_id);
-            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepRecortes.ParLevel1_id);
+            ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
+            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 23), "Id", "Name", cepRecortes.ParLevel1_id);
             return View(cepRecortes);
         }
 
@@ -89,7 +89,7 @@ namespace SgqSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ParCompany_id = new SelectList(db.ParCompany, "Id", "Name", cepRecortes.ParCompany_id);
+            ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepRecortes.ParLevel1_id);
             return View(cepRecortes);
         }

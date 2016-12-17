@@ -15,11 +15,21 @@ namespace DTO.Helpers
 
         public static decimal ConverteValorCalculado(string valorString)
         {
-            valorString = valorString.ToUpper().Replace(',', '.');
-            double v1 = double.Parse(valorString.Split('X')[0], CultureInfo.InvariantCulture);
-            double v2 = double.Parse(valorString.Split('^')[1]);
-            var resultado = v1 * Math.Pow(10, v2);
-            var retorno = Convert.ToDecimal(resultado, CultureInfo.InvariantCulture);
+            decimal number;
+            decimal retorno;
+            if (Decimal.TryParse(valorString, out number))
+            {
+                retorno = number;
+            }else
+            {
+                valorString = valorString.ToUpper().Replace(',', '.');
+                double v1 = double.Parse(valorString.Split('X')[0], CultureInfo.InvariantCulture);
+                double v2 = double.Parse(valorString.Split('^')[1]);
+                var resultado = v1 * Math.Pow(10, v2);
+                retorno = Convert.ToDecimal(resultado, CultureInfo.InvariantCulture);
+                
+            }
+
             return retorno;
         }
 
