@@ -264,24 +264,25 @@ namespace SgqSystem.Services
                 string CollectionLevel02Id = result[30];
                 string correctiveActionCompleted = result[31];
                 string completeReaudit = result[32];
+                string sequential = null;
+                string side = null;
 
-                string level02HeaderJSon = result[13];
                 //Gera o Cabeçalho do Level02
+                string level02HeaderJSon = result[13];
                 level02HeaderJSon += ";" + phase;
                 level02HeaderJSon += ";" + startphasedate;
-                //level02HeaderJSon += ";" + cattletype;
-                //level02HeaderJSon += ";" + chainspeed;
-                //level02HeaderJSon += ";" + lotnumber;
-                //level02HeaderJSon += ";" + mudscore;
                 level02HeaderJSon += ";" + consecutivefailurelevel;
                 level02HeaderJSon += ";" + consecutivefailuretotal;
-                level02HeaderJSon += ";" + notavaliable;
+                level02HeaderJSon += ";" + notavaliable; //[5]
                 level02HeaderJSon += ";" + completed;
                 level02HeaderJSon += ";" + havePhases;
                 level02HeaderJSon += ";" + CollectionLevel02Id;
                 level02HeaderJSon += ";" + correctiveActionCompleted;
-                level02HeaderJSon += ";" + completeReaudit;
+                level02HeaderJSon += ";" + completeReaudit; //[10]
                 level02HeaderJSon += ";" + AlertLevel;
+                level02HeaderJSon += ";" + sequential;
+                level02HeaderJSon += ";" + side;
+
 
                 //Verifica o Resultado do Level03
                 string level03ResultJson = result[22];
@@ -488,6 +489,7 @@ namespace SgqSystem.Services
 
 
                                 Level02HeaderJson = r[14].ToString();
+
                                 string[] arrayHeader = Level02HeaderJson.Split(';');
 
                                 string headersContadores= arrayHeader[0];
@@ -559,10 +561,13 @@ namespace SgqSystem.Services
                                 }
 
                                 string AlertLevel = arrayHeader[11];
+                                AlertLevel = DefaultValueReturn(AlertLevel, "0");
+                                string sequential = arrayHeader[12];
+                                string side = arrayHeader[13];
 
                                 int CollectionLevel2Id = InsertCollectionLevel2(ConsolidationLevel2Id.ToString(), level01, level02, unitId, AuditorId, shift, period, Phase, Reaudit, reauditNumber, level02CollectionDate,
                                                                                   StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit,
-                                                                                  haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel);
+                                                                                  haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side);
 
                                 if (CollectionLevel2Id == 0)
                                 {
@@ -1005,7 +1010,8 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public int InsertCollectionLevel2(string ConsolidationLevel02Id, string Level01Id, string Level02Id, string UnitId, string AuditorId, string Shift, string Period, string Phase, string Reaudit, string ReauditNumber, string CollectionDate,
                                            string StartPhase, string Evaluation, string Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
-                                           string Duplicated, string haveReaudit, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel)
+                                           string Duplicated, string haveReaudit, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel,
+                                           string sequential, string side)
         {
 
             //Verificamos a data da phase
@@ -1024,13 +1030,12 @@ namespace SgqSystem.Services
             //Converte a data da coleta
             string collectionDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             string sql = null;
-
             //Se o Id for igual a zero é um insert
             if (id == "0")
             {
-                sql = "INSERT INTO CollectionLevel2 ([ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel]) " +
+                sql = "INSERT INTO CollectionLevel2 ([ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side]) " +
                 "VALUES" +
-                "('" + ConsolidationLevel02Id + "','" + Level01Id + "','" + Level02Id + "','" + UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + Reaudit + "','" + ReauditNumber + "', CAST(N'" + CollectionDate + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "')";
+                "('" + ConsolidationLevel02Id + "','" + Level01Id + "','" + Level02Id + "','" + UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + Reaudit + "','" + ReauditNumber + "', CAST(N'" + CollectionDate + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "')";
 
                 sql += " SELECT @@IDENTITY AS 'Identity'";
             }
