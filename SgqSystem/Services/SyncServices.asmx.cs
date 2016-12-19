@@ -1216,6 +1216,7 @@ namespace SgqSystem.Services
                 isnotEvaluate = BoolConverter(isnotEvaluate);
 
                 string punishimentValue = result[13];
+                punishimentValue = DefaultValueReturn(punishimentValue, "0");
 
                 string defects = result[14];
 
@@ -2196,15 +2197,26 @@ namespace SgqSystem.Services
                     ParCriticalLevel = true;
                     //Pego o nome do ParCriticalLevel para não precisar fazer outra pesquisa
                     nameParCritialLevel = parlevel1.ParCriticalLevel_Name;
-                    //Incremento os itens que estaram no ParLevel1                
-                    //Gera linha Level1
+                        //Incremento os itens que estaram no ParLevel1                
+                        //Gera linha Level1
+
+                        decimal alertaNivel1 = 0;
+                        decimal alertaNivel2 = 0;
+                        decimal alertaNivel3 = 0;
+                        if(alertas != null)
+                        {
+                            alertaNivel1 = alertas.Nivel1;
+                            alertaNivel2 = alertas.Nivel2;
+                            alertaNivel3 = alertas.Nivel3;
+                        }
+
                     string level01 = html.level1(parlevel1,
                                                  tipoTela: tipoTela,
                                                  totalAvaliado: 0,
                                                  totalDefeitos: 0,
-                                                 alertNivel1: alertas.Nivel1,
-                                                 alertNivel2: alertas.Nivel2,
-                                                 alertaNivel3: alertas.Nivel3,
+                                                 alertNivel1: alertaNivel1,
+                                                 alertNivel2: alertaNivel2,
+                                                 alertaNivel3: alertaNivel3,
                                                  alertaAtual: 0,
                                                  avaliacaoultimoalerta: 0);
                     //Incrementa level1
