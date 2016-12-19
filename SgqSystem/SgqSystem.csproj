@@ -1245,6 +1245,7 @@
     <Content Include="Views\Gestao\Index.cshtml" />
     <Content Include="Views\Params\_AvaliacaoAmostra.cshtml" />
     <Content Include="Views\Params\_Meta.cshtml" />
+    <Content Include="Views\Params\_Pontos.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
