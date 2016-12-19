@@ -166,11 +166,6 @@ namespace SGQDBContext
             sql += "	) META_POR_INDICADOR														";
 
 
-
-
-
-
-
             var parLevel2List = db.Query<ParLevel1Alertas>(sql).FirstOrDefault();
 
             return parLevel2List;
