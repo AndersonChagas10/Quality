@@ -337,7 +337,7 @@
     <value>Conforme</value>
   </data>
   <data name="frequency_popover" xml:space="preserve">
-    <value>Define a frequência que o nível 2 será feito/executado: diariamente, semanalmente, mensalmente, etc.</value>
+    <value>Define a frequência que o monitoramento será feito/executado: diariamente, semanalmente, mensalmente, etc.</value>
   </data>
   <data name="level2_group_popover" xml:space="preserve">
     <value>Define se haverá agrupamentos no monitoramento. Se houverem, crie os agrupamentos abaixo.</value>
@@ -755,5 +755,8 @@
   </data>
   <data name="confirm_delete" xml:space="preserve">
     <value>Deseja deletar esse registro</value>
+  </data>
+  <data name="frequency1_popover" xml:space="preserve">
+    <value>Define a frequência que o indicador será analisado: diariamente, semanalmente, mensalmente, etc.</value>
   </data>
 </root>
