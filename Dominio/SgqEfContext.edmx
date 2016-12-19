@@ -142,6 +142,9 @@
           <Property Name="HavePhase" Type="bit" />
           <Property Name="Completed" Type="bit" />
           <Property Name="ParFrequency_Id" Type="int" />
+          <Property Name="AlertLevel" Type="int" />
+          <Property Name="Sequential" Type="int" />
+          <Property Name="Side" Type="int" />
         </EntityType>
         <EntityType Name="CollectionLevel2XParHeaderField">
           <Key>
@@ -189,6 +192,8 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="ConsolidationDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Defects" Type="decimal" Precision="10" Scale="8" />
+          <Property Name="Evaluation" Type="decimal" Precision="10" Scale="8" />
         </EntityType>
         <EntityType Name="ConsolidationLevel2">
           <Key>
@@ -230,6 +235,33 @@
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="Name" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Deviation">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ParCompany_Id" />
+            <PropertyRef Name="ParLevel1_Id" />
+            <PropertyRef Name="ParLevel2_Id" />
+            <PropertyRef Name="Evaluation" />
+            <PropertyRef Name="Sample" />
+            <PropertyRef Name="AlertNumber" />
+            <PropertyRef Name="Defects" />
+            <PropertyRef Name="DeviationDate" />
+            <PropertyRef Name="AddDate" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="int" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="int" Nullable="false" />
+          <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
+          <Property Name="Evaluation" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Sample" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="AlertNumber" Type="int" Nullable="false" />
+          <Property Name="Defects" Type="decimal" Precision="10" Scale="5" Nullable="false" />
+          <Property Name="DeviationDate" Type="datetime" Nullable="false" />
+          <Property Name="AddDate" Type="datetime" Nullable="false" />
+          <Property Name="sendMail" Type="bit" />
         </EntityType>
         <EntityType Name="Example">
           <Key>
@@ -695,6 +727,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParLevel2XHeaderField' does not have 
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Sampling" Type="decimal" Precision="10" Scale="5" />
         </EntityType>
         <EntityType Name="ParLevel3Level2">
           <Key>
@@ -707,7 +740,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParLevel2XHeaderField' does not have 
           <Property Name="Weight" Type="decimal" Precision="10" Scale="5" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="int" />
         </EntityType>
         <EntityType Name="ParLevel3Level2Level1">
           <Key>
@@ -719,6 +753,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParLevel2XHeaderField' does not have 
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="int" />
         </EntityType>
         <EntityType Name="ParLevel3Value">
           <Key>
@@ -895,6 +930,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParLevel2XHeaderField' does not have 
           <Property Name="Evaluation" Type="decimal" Precision="10" Scale="5" />
           <Property Name="WeiDefects" Type="decimal" Precision="10" Scale="5" />
           <Property Name="CT4Eva3" Type="decimal" Precision="10" Scale="5" />
+          <Property Name="Sampling" Type="decimal" Precision="10" Scale="5" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1838,6 +1874,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParLevel3Level2_ParCompany">
+          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
+          <End Role="ParLevel3Level2" Type="Self.ParLevel3Level2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParLevel3Level2_ParLevel2">
           <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="1" />
           <End Role="ParLevel3Level2" Type="Self.ParLevel3Level2" Multiplicity="*" />
@@ -2246,6 +2294,21 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <EntitySet Name="VolumeCepRecortes" EntityType="Self.VolumeCepRecortes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumePcc1b" EntityType="Self.VolumePcc1b" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumeVacuoGRD" EntityType="Self.VolumeVacuoGRD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Deviation" EntityType="Self.Deviation" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Deviation].[Id] AS [Id], 
+    [Deviation].[ParCompany_Id] AS [ParCompany_Id], 
+    [Deviation].[ParLevel1_Id] AS [ParLevel1_Id], 
+    [Deviation].[ParLevel2_Id] AS [ParLevel2_Id], 
+    [Deviation].[Evaluation] AS [Evaluation], 
+    [Deviation].[Sample] AS [Sample], 
+    [Deviation].[AlertNumber] AS [AlertNumber], 
+    [Deviation].[Defects] AS [Defects], 
+    [Deviation].[DeviationDate] AS [DeviationDate], 
+    [Deviation].[AddDate] AS [AddDate], 
+    [Deviation].[sendMail] AS [sendMail]
+    FROM [dbo].[Deviation] AS [Deviation]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ParLevel1VariableProduction" EntityType="Self.ParLevel1VariableProduction" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ParLevel1VariableProduction].[Id] AS [Id], 
@@ -2548,6 +2611,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParLevel3Group" EntitySet="ParLevel3Group" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2_ParCompany" Association="Self.FK_ParLevel3Level2_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParLevel3Level2_ParLevel2" Association="Self.FK_ParLevel3Level2_ParLevel2">
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
@@ -2737,6 +2804,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <EntitySet Name="VolumeCepRecortes" EntityType="SgqDbModel.VolumeCepRecortes" />
           <EntitySet Name="VolumePcc1b" EntityType="SgqDbModel.VolumePcc1b" />
           <EntitySet Name="VolumeVacuoGRD" EntityType="SgqDbModel.VolumeVacuoGRD" />
+          <EntitySet Name="Deviation" EntityType="SgqDbModel.Deviation" />
           <EntitySet Name="ParLevel1VariableProduction" EntityType="SgqDbModel.ParLevel1VariableProduction" />
           <EntitySet Name="ParLevel1VariableProductionXLevel1" EntityType="SgqDbModel.ParLevel1VariableProductionXLevel1" />
           <EntitySet Name="ParLevel2XHeaderField" EntityType="SgqDbModel.ParLevel2XHeaderField" />
@@ -2900,6 +2968,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <AssociationSet Name="FK_ParGoal_ParCompany" Association="SgqDbModel.FK_ParGoal_ParCompany">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="ParGoal" EntitySet="ParGoal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2_ParCompany" Association="SgqDbModel.FK_ParLevel3Level2_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel3Value_ParCompany" Association="SgqDbModel.FK_ParLevel3Value_ParCompany">
             <End Role="ParCompany" EntitySet="ParCompany" />
@@ -3259,6 +3331,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="HavePhase" Type="Boolean" />
           <Property Name="Completed" Type="Boolean" />
           <Property Name="ParFrequency_Id" Type="Int32" />
+          <Property Name="AlertLevel" Type="Int32" />
+          <Property Name="Sequential" Type="Int32" />
+          <Property Name="Side" Type="Int32" />
           <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="CollectionLevel2" ToRole="ConsolidationLevel2" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="CollectionLevel2" ToRole="ParLevel1" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel2" FromRole="CollectionLevel2" ToRole="ParLevel2" />
@@ -3322,6 +3397,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="ConsolidationDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Defects" Type="Decimal" Precision="10" Scale="8" />
+          <Property Name="Evaluation" Type="Decimal" Precision="10" Scale="8" />
           <NavigationProperty Name="Department" Relationship="SgqDbModel.FK_ConsolidationLevel1_Department" FromRole="ConsolidationLevel1" ToRole="Department" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ConsolidationLevel1" ToRole="ParLevel1" />
           <NavigationProperty Name="Unit" Relationship="SgqDbModel.FK_ConsolidationLevel1_Unit" FromRole="ConsolidationLevel1" ToRole="Unit" />
@@ -3523,6 +3600,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <NavigationProperty Name="ParCompanyXUserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany" FromRole="ParCompany" ToRole="ParCompanyXUserSgq" />
           <NavigationProperty Name="ParEvaluation" Relationship="SgqDbModel.FK_ParEvaluation_ParCompany" FromRole="ParCompany" ToRole="ParEvaluation" />
           <NavigationProperty Name="ParGoal" Relationship="SgqDbModel.FK_ParGoal_ParCompany" FromRole="ParCompany" ToRole="ParGoal" />
+          <NavigationProperty Name="ParLevel3Level2" Relationship="SgqDbModel.FK_ParLevel3Level2_ParCompany" FromRole="ParCompany" ToRole="ParLevel3Level2" />
           <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParCompany" FromRole="ParCompany" ToRole="ParLevel3Value" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" FromRole="ParCompany" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParSample" Relationship="SgqDbModel.FK_ParSample_ParCompany" FromRole="ParCompany" ToRole="ParSample" />
@@ -3888,6 +3966,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Sampling" Type="Decimal" Precision="10" Scale="5" />
           <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3InputType" FromRole="ParLevel3InputType" ToRole="ParLevel3Value" />
         </EntityType>
         <EntityType Name="ParLevel3Level2">
@@ -3901,7 +3980,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="Weight" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="Int32" />
+          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParLevel3Level2_ParCompany" FromRole="ParLevel3Level2" ToRole="ParCompany" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel2" FromRole="ParLevel3Level2" ToRole="ParLevel2" />
           <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel3" FromRole="ParLevel3Level2" ToRole="ParLevel3" />
           <NavigationProperty Name="ParLevel3Group" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel3Group" FromRole="ParLevel3Level2" ToRole="ParLevel3Group" />
@@ -3917,6 +3998,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="Int32" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" FromRole="ParLevel3Level2Level1" ToRole="ParLevel1" />
           <NavigationProperty Name="ParLevel3Level2" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel3Level2" FromRole="ParLevel3Level2Level1" ToRole="ParLevel3Level2" />
         </EntityType>
@@ -4120,6 +4202,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="Evaluation" Type="Decimal" Precision="10" Scale="5" />
           <Property Name="WeiDefects" Type="Decimal" Precision="10" Scale="5" />
           <Property Name="CT4Eva3" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="Sampling" Type="Decimal" Precision="10" Scale="5" />
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_Result_Level3_CollectionLevel2" FromRole="Result_Level3" ToRole="CollectionLevel2" />
           <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_Result_Level3_ParLevel3" FromRole="Result_Level3" ToRole="ParLevel3" />
         </EntityType>
@@ -4284,6 +4367,31 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="ParLevel1_id" Type="Int32" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK__VacuoGRD__ParCom__10373EF7" FromRole="VolumeVacuoGRD" ToRole="ParCompany" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK__VacuoGRD__ParLev__112B6330" FromRole="VolumeVacuoGRD" ToRole="ParLevel1" />
+        </EntityType>
+        <EntityType Name="Deviation">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ParCompany_Id" />
+            <PropertyRef Name="ParLevel1_Id" />
+            <PropertyRef Name="ParLevel2_Id" />
+            <PropertyRef Name="Evaluation" />
+            <PropertyRef Name="Sample" />
+            <PropertyRef Name="AlertNumber" />
+            <PropertyRef Name="Defects" />
+            <PropertyRef Name="DeviationDate" />
+            <PropertyRef Name="AddDate" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
+          <Property Name="Evaluation" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Sample" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="AlertNumber" Type="Int32" Nullable="false" />
+          <Property Name="Defects" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
+          <Property Name="DeviationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="sendMail" Type="Boolean" />
         </EntityType>
         <EntityType Name="ParLevel1VariableProduction">
           <Key>
@@ -4821,6 +4929,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ParGoal">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Level2_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParLevel3Level2" Role="ParLevel3Level2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2">
               <PropertyRef Name="ParCompany_Id" />
             </Dependent>
           </ReferentialConstraint>
@@ -5582,6 +5702,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <EntitySetMapping Name="CollectionLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel2">
               <MappingFragment StoreEntitySet="CollectionLevel2">
+                <ScalarProperty Name="Side" ColumnName="Side" />
+                <ScalarProperty Name="Sequential" ColumnName="Sequential" />
+                <ScalarProperty Name="AlertLevel" ColumnName="AlertLevel" />
                 <ScalarProperty Name="ParFrequency_Id" ColumnName="ParFrequency_Id" />
                 <ScalarProperty Name="Completed" ColumnName="Completed" />
                 <ScalarProperty Name="HavePhase" ColumnName="HavePhase" />
@@ -5652,6 +5775,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <EntitySetMapping Name="ConsolidationLevel1">
             <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel1">
               <MappingFragment StoreEntitySet="ConsolidationLevel1">
+                <ScalarProperty Name="Evaluation" ColumnName="Evaluation" />
+                <ScalarProperty Name="Defects" ColumnName="Defects" />
                 <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
@@ -6148,6 +6273,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <EntitySetMapping Name="ParLevel3InputType">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel3InputType">
               <MappingFragment StoreEntitySet="ParLevel3InputType">
+                <ScalarProperty Name="Sampling" ColumnName="Sampling" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
@@ -6160,7 +6286,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <EntitySetMapping Name="ParLevel3Level2">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel3Level2">
               <MappingFragment StoreEntitySet="ParLevel3Level2">
-                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Weight" ColumnName="Weight" />
@@ -6174,6 +6301,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <EntitySetMapping Name="ParLevel3Level2Level1">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel3Level2Level1">
               <MappingFragment StoreEntitySet="ParLevel3Level2Level1">
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
@@ -6352,6 +6480,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <EntitySetMapping Name="Result_Level3">
             <EntityTypeMapping TypeName="SgqDbModel.Result_Level3">
               <MappingFragment StoreEntitySet="Result_Level3">
+                <ScalarProperty Name="Sampling" ColumnName="Sampling" />
                 <ScalarProperty Name="CT4Eva3" ColumnName="CT4Eva3" />
                 <ScalarProperty Name="WeiDefects" ColumnName="WeiDefects" />
                 <ScalarProperty Name="Evaluation" ColumnName="Evaluation" />
@@ -6519,6 +6648,23 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
                 <ScalarProperty Name="Data" ColumnName="Data" />
                 <ScalarProperty Name="Unidade" ColumnName="Unidade" />
                 <ScalarProperty Name="Indicador" ColumnName="Indicador" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Deviation">
+            <EntityTypeMapping TypeName="SgqDbModel.Deviation">
+              <MappingFragment StoreEntitySet="Deviation">
+                <ScalarProperty Name="sendMail" ColumnName="sendMail" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="DeviationDate" ColumnName="DeviationDate" />
+                <ScalarProperty Name="Defects" ColumnName="Defects" />
+                <ScalarProperty Name="AlertNumber" ColumnName="AlertNumber" />
+                <ScalarProperty Name="Sample" ColumnName="Sample" />
+                <ScalarProperty Name="Evaluation" ColumnName="Evaluation" />
+                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

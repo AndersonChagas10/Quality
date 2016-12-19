@@ -47,6 +47,9 @@ namespace Dominio
         public Nullable<bool> HavePhase { get; set; }
         public Nullable<bool> Completed { get; set; }
         public Nullable<int> ParFrequency_Id { get; set; }
+        public Nullable<int> AlertLevel { get; set; }
+        public Nullable<int> Sequential { get; set; }
+        public Nullable<int> Side { get; set; }
     
         public virtual ConsolidationLevel2 ConsolidationLevel2 { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }

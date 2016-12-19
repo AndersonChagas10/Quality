@@ -247,7 +247,7 @@
     $(".page-sidebar-wrapper").removeClass("hide");
 
     navbarSelect("navbar1");
-      
+
     function openMessageModal(title, content) {
 
         var mensagem = $('#messageModal');
@@ -266,7 +266,7 @@
         var mensagem = $('#messageModal');
         mensagem.fadeOut("fast");
     });
-  
+
     ///initialize switches
 
     function defaults() {
@@ -814,39 +814,40 @@
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
             $.validator.unobtrusive.parse("form");
 
-                //if($('#selectTipoInput :selected').val() == 1){//Binario
-                //    if($('#selectConforme :selected').val() <= 0){
-                //        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor positivo para o campo binario.");
-                //        return;
-                //    }else if($('#selectNaoConforme :selected').val() <= 0){
-                //        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor negativo para o campo binario.");
-                //        return;
-                //    }
-                    
-                //}else{
-                    
-                //}
+            //if($('#selectTipoInput :selected').val() == 1){//Binario
+            //    if($('#selectConforme :selected').val() <= 0){
+            //        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor positivo para o campo binario.");
+            //        return;
+            //    }else if($('#selectNaoConforme :selected').val() <= 0){
+            //        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor negativo para o campo binario.");
+            //        return;
+            //    }
 
-                if ($('#newLevel3Modal > form').valid()) {
-                    //Cabecalhos.UpdateCabecalhos();
-                    //Cluster.UpdateCounter();
-                    //Counter.UpdateCounters();
-                    var dados = $('#newLevel3Modal > form').serializeObject();
-                    
-                    ReincidenciaL3.incluiNoObjetoParaSubmit(dados);
-                    level3Value.incluiNoObjetoParaSubmit(dados);
-                    
+            //}else{
+
+            //}
+
+            if ($('#newLevel3Modal > form').valid()) {
+                //Cabecalhos.UpdateCabecalhos();
+                //Cluster.UpdateCounter();
+                //Counter.UpdateCounters();
+                var dados = $('#newLevel3Modal > form').serializeObject();
+
+                ReincidenciaL3.incluiNoObjetoParaSubmit(dados);
+                level3Value.incluiNoObjetoParaSubmit(dados);
+
                 if(dados['paramsDto.parLevel3Value.IntervalMax'] != undefined && dados['paramsDto.parLevel3Value.IntervalMax'] != null)
                     dados['paramsDto.parLevel3Value.IntervalMax'] = dados['paramsDto.parLevel3Value.IntervalMax'].replace(',', '.');
 
                 if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
                     dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
 
+                PesoL3.incluiNoObjetoParaSubmit(dados);
                 //openLoader(indexParamsLevel3.saving_the_level3);
+                var $btn = $('#btnSaveNewLevel3');
                 $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                     //closeLoader();
 
-                    var $btn = $('#btnSaveNewLevel3');
                     $btn.button('loading');
 
                     if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
@@ -934,7 +935,7 @@
                         $("#parLevel3Select2").val(retornoId);
                     }
                 }
-                               
+
                 reloadPopovers();
                 defaults();
                 initialFormLevel3 = $($('form')[2]).clone();
@@ -1011,48 +1012,7 @@
 
     });
 
-    /*Vincula Level 2 ao level1*/
     var vinculoL2L3 = '@Html.Raw(@vinculoL2L3)';
-    function saveLevel3Level2() {
-
-        /*Level2*/
-        var idLevel2 = $('#paramsDto_parLevel2Dto_Id').val();
-        if (idLevel2 == undefined || idLevel2 <= 0 || idLevel2 == null) {
-            openMessageModal("Alerta", "É necessario selecionar o monitoramento.");
-            //alert("É necessario selecionar o level 2");
-            return;
-        }
-
-        /*Level3*/
-        var idLevel3 = $('#paramsDto_parLevel3Dto_Id').val();
-        if (idLevel3 == undefined || idLevel3 <= 0 || idLevel3 == null) {
-            openMessageModal("Alerta", "É necessario selecionar a tarefa");
-            //alert("É necessario selecionar o level 3");
-            return;
-        }
-
-        var peso = $('#paramsDto_parLevel3Dto_pesoDoVinculo').val().replace(",", ".");
-        if (peso < 0){
-            openMessageModal("Alerta", "O peso deve ser maior ou igual a zero.");
-            //alert("O peso deve ser maior que zero.");
-            return;
-        }
-
-        var  groupoLevel2 = $('#paramsDto_parLevel3Dto_listGroupsLevel2 :selected').val();
-        if( $('#paramsDto_parLevel3Dto_listGroupsLevel2 :selected').val().length == 0){
-            groupoLevel2 = 0;
-        }
-
-        $.get(vinculoL2L3 + '/' + idLevel2 + '/' + idLevel3 + '/' + peso + '/' + groupoLevel2 + '/', function (obj, responseText, xhr) {
-            if (obj != null) {
-                openMessageModal("Feito!", "Tarefa vinculada ao Monitoramento com sucesso! #" + obj.Id);
-                //alert("Vinculado L3 com L2 ID: " + obj.Id);
-                UpdateSelect2Level3(idLevel2, undefined, function(){$('#parLevel3Select2').trigger('change');});
-            }
-            initialFormLevel3 = $($('form')[2]).clone();
-        });
-
-    }
 
     function UpdateSelect2Level2(idLevel1, idNewLevel2, callback) {
         //$('#parLevel2Select2').select2("destroy").remove();
@@ -1070,7 +1030,7 @@
         });
     }
 
-    var selecione = @Html.Raw(Json.Encode(Resources.Resource.select)) 
+    var selecione = @Html.Raw(Json.Encode(Resources.Resource.select))
     function UpdateSelect2Level3(idLevel2, idNewLevel3, callback) {
         //$('#parLevel3Select2').select2("destroy")
         var selecionado = $('#parLevel3Select2 :selected').val();
@@ -1140,7 +1100,7 @@
         timeoutAjax = 500000;
     }
     $.ajaxSetup({
-        
+
         timeout: timeoutAjax //Time in milliseconds
     });
 

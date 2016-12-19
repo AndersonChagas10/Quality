@@ -154,6 +154,9 @@
     <Compile Include="Desvios.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Deviation.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Empresa.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>

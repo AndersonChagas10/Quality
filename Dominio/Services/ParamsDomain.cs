@@ -316,17 +316,36 @@ namespace Dominio.Services
         {
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel3 saveParamLevel3 = Mapper.Map<ParLevel3>(paramsDto.parLevel3Dto);
+            
+            #region Level3Value
 
             if (paramsDto.parLevel3Dto.listLevel3Value != null)
                 if (paramsDto.parLevel3Dto.listLevel3Value.Count() > 0)
                     paramsDto.parLevel3Dto.listLevel3Value.ForEach(r => r.preparaParaInsertEmBanco());
 
             List<ParLevel3Value> listSaveParamLevel3Value = Mapper.Map<List<ParLevel3Value>>(paramsDto.parLevel3Dto.listLevel3Value);
+
+            #endregion
+
+            #region Reincidencia
+
             List<ParRelapse> listParRelapse = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel3Dto.listParRelapseDto);/*Reincidencia*/
+
+            #endregion
+
+            #region Peso de vinculo
+
+            if (paramsDto.parLevel3Dto.listLevel3Level2 != null)
+                if (paramsDto.parLevel3Dto.listLevel3Level2.Count() > 0)
+                    paramsDto.parLevel3Dto.listLevel3Level2.ForEach(r => r.preparaParaInsertEmBanco());
+
+            List<ParLevel3Level2> parLevel3Level2pontos = Mapper.Map<List<ParLevel3Level2>>(paramsDto.parLevel3Dto.listLevel3Level2);
+
+            #endregion
 
             try
             {
-                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse);
+                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2pontos);
             }
             catch (DbUpdateException e)
             {
@@ -355,27 +374,30 @@ namespace Dominio.Services
 
             ParamsDTO retorno = new ParamsDTO();
             var parlevel3 = _baseRepoParLevel3.GetById(idParLevel3);/*ParLevel3*/
-            var level3 = Mapper.Map<ParLevel3DTO>(parlevel3);
+            var level3 = Mapper.Map<ParLevel3DTO>(parlevel3);//Level3
             level3.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parlevel3.ParRelapse.OrderByDescending(r => r.IsActive));/*Reincidencia*/
-            level3.listGroupsLevel2 = Mapper.Map<List<ParLevel3GroupDTO>>(_baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList());
+            level3.listGroupsLevel2 = Mapper.Map<List<ParLevel3GroupDTO>>(_baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList());//DDL
+            level3.listLevel3Level2 = Mapper.Map<List<ParLevel3Level2DTO>>(parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == level3.Id).OrderByDescending(r => r.IsActive));
 
-            if (parlevel3.ParLevel3Level2.FirstOrDefault(r => r.ParLevel2_Id == idParLevel2) != null)/*Id do grupo selecionado no vinculo Level 3 com level 2*/
-                level3.groupLevel2Selected = parlevel3.ParLevel3Level2.FirstOrDefault(r => r.ParLevel2_Id == idParLevel2).ParLevel3Group_Id;
+            if (level3.listLevel3Level2.Count() > 0)/*Id do grupo selecionado no vinculo Level 3 com level 2*/
+                level3.hasVinculo = true;
 
-            if (idParLevel2 > 0)/*Encontra peso do vinculo*/
-            {
-                if (parlevel3.ParLevel3Level2.FirstOrDefault(r => r.ParLevel2_Id == idParLevel2) != null)
-                    level3.pesoDoVinculo = parlevel3.ParLevel3Level2.FirstOrDefault(r => r.ParLevel2_Id == idParLevel2).Weight;
-                else
-                    level3.pesoDoVinculo = 0;
-            }
+            //level3.groupLevel2Selected = parlevel3.ParLevel3Level2.FirstOrDefault(r => r.ParLevel2_Id == idParLevel2).ParLevel3Group_Id;
 
+            //if (idParLevel2 > 0)/*Encontra peso do vinculo*/
+            //{
+            //    if (parlevel3.ParLevel3Level2.FirstOrDefault(r => r.ParLevel2_Id == idParLevel2) != null)
+            //        level3.pesoDoVinculo = parlevel3.ParLevel3Level2.FirstOrDefault(r => r.ParLevel2_Id == idParLevel2).Weight;
+            //    else
+            //        level3.pesoDoVinculo = 0;
+            //}
+
+            /*ParLevel 3 Value*/
             retorno.parLevel3Value = new ParLevel3ValueDTO();
-            level3.listLevel3Value = Mapper.Map<List<ParLevel3ValueDTO>>(parlevel3.ParLevel3Value.OrderByDescending(r => r.IsActive));/*ParLevel 3 Value?*/
-            foreach (var i in level3.listLevel3Value)
-            {
-                i.PreparaGet();
-            }
+            level3.listLevel3Value = Mapper.Map<List<ParLevel3ValueDTO>>(parlevel3.ParLevel3Value.OrderByDescending(r => r.IsActive));
+            foreach (var Level3Value in level3.listLevel3Value)
+                Level3Value.PreparaGet();
+
             retorno.parLevel3Dto = level3;
 
             return retorno;
