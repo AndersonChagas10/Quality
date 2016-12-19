@@ -466,7 +466,7 @@ namespace Data.Repositories
         /// </summary>
         /// <param name="paramLevel3"></param>
         /// <param name="paramLevel3Value"></param>
-        public void SaveParLevel3(ParLevel3 paramLevel3, List<ParLevel3Value> listParamLevel3Value, List<ParRelapse> listParRelapse)
+        public void SaveParLevel3(ParLevel3 paramLevel3, List<ParLevel3Value> listParamLevel3Value, List<ParRelapse> listParRelapse, List<ParLevel3Level2> parLevel3Level2pontos)
         {
             using (var ts = db.Database.BeginTransaction())
             {
@@ -477,10 +477,18 @@ namespace Data.Repositories
                     foreach (var paramLevel3Value in listParamLevel3Value)
                         AddUpdateParLevel3Value(paramLevel3Value, paramLevel3.Id);
 
+                db.SaveChanges();
 
                 if (listParRelapse != null)
                     foreach (var parRelapse in listParRelapse)
                         SaveReincidenciaLevel3(parRelapse, paramLevel3.Id);
+
+                db.SaveChanges();
+
+                if (parLevel3Level2pontos != null)
+                    if (parLevel3Level2pontos.Count() > 0)
+                        foreach (var pontos in parLevel3Level2pontos)
+                            AddUpdateParLevel3Level2(pontos);
 
                 db.SaveChanges();
                 ts.Commit();

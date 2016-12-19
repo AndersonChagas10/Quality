@@ -2007,7 +2007,7 @@ namespace SgqSystem.Services
                              classe: "App hide",
                              tags: "breadmainlevel=\"Indicadores\""
                            ) +
-                           correctiveAction() +
+                           //correctiveAction() +
                            viewModal +
                            modalVF + 
                            message +
@@ -2406,7 +2406,7 @@ namespace SgqSystem.Services
                     string btnNotAvaliable = null;
                     if (ParLevel1.HasNoApplicableLevel2)
                     {
-                        btnNotAvaliable =  "<button class=\"btn btn-warning btnNotAvaliable na\"> " +
+                        btnNotAvaliable =  "<button class=\"btn btn-warning btnNotAvaliableLevel2 na\"> " +
                                            "   <span class=\"cursorPointer iconsArea\">N/A</span> " +
                                            "</button>                                             ";
                     }
@@ -3469,24 +3469,28 @@ namespace SgqSystem.Services
 
             deviations = deviations.Replace("</deviation><deviation>", "&").Replace("<deviation>", "").Replace("</deviation>", "");
             var arrayDeviations = deviations.Split(';');
-            string sql = null;
-            for (int i = 0; i < arrayDeviations.Length; i++)
-            {
-                var deviation = arrayDeviations[i].Split(';');
 
-                string ParCompany_Id = deviation[0];
-                string ParLevel1_Id = deviation[1];
-                string ParLevel2_Id = deviation[2];
-                string Evaluation = deviation[3];
-                string Sample = deviation[4];
-                string alertNumber = deviation[5];
-                string defects = deviation[6];
-                string deviationDate = deviation[7];
+            string ParCompany_Id = arrayDeviations[0];
+            string ParLevel1_Id = arrayDeviations[1];
+            string ParLevel2_Id = arrayDeviations[2];
+            string Evaluation = arrayDeviations[3];
+            string Sample = arrayDeviations[4];
+            string alertNumber = arrayDeviations[5];
+            string defects = arrayDeviations[6];
+            string deviationDate = arrayDeviations[7];
 
-                sql = "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail]) " +
-                             "VALUES " +
-                             "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', GetDate() , GetDate(), 0)";
-            }
+            string sql = "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail]) " +
+             "VALUES " +
+             "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', GetDate() , GetDate(), 0)";
+
+
+            //string sql = null;
+            //for (int i = 0; i < arrayDeviations.Length; i++)
+            //{
+            //    var deviation = arrayDeviations[i].Split(';');
+
+               
+            //}
 
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;

@@ -17,7 +17,8 @@ namespace DTO.DTO.Params
         public string Description { get; set; }
 
         public bool IsActive { get; set; } = true;
-
+        public bool hasVinculo { get; set; }
+        
         public decimal pesoDoVinculo { get; set; }
         public virtual List<ParLevel3ValueDTO> ParLevel3Value { get; set; }
         public List<ParLevel3GroupDTO> listGroupsLevel2 { get; set; }
@@ -26,5 +27,7 @@ namespace DTO.DTO.Params
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
         public List<int> removeReincidencia { get; set; }
         public List<ParLevel3ValueDTO> listLevel3Value { get; set; }
+        public List<ParLevel3Level2DTO> listLevel3Level2 { get; set; }
+
     }
 }

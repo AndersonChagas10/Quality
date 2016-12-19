@@ -938,6 +938,7 @@
     <None Include="Properties\PublishProfiles\PublishEUA.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ DEV.pubxml" />
     <None Include="Properties\PublishProfiles\SgqBrasilGlobal.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQMaster.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\GuardJs.js" />
     <Content Include="Scripts\i18n\ar.js" />
@@ -1244,6 +1245,7 @@
     <Content Include="Views\Gestao\Index.cshtml" />
     <Content Include="Views\Params\_AvaliacaoAmostra.cshtml" />
     <Content Include="Views\Params\_Meta.cshtml" />
+    <Content Include="Views\Params\_Pontos.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
