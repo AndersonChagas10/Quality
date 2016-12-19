@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Params
 {
-    [CustomAuthorize()]
+    //[CustomAuthorize()]
     [HandleController()]
     public class ParamsController : BaseController
     {

@@ -79,7 +79,7 @@
 
     function senha() {
 
-        $.post('@Html.Raw(urlSenha)' + '/' + $('#senha').val(), function (data) {
+        $.post('@Html.Raw(urlSenha)', {'': $('#senha').val()}, function (data) {
             $("#senha").val(data);
         });
 

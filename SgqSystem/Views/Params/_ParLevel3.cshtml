@@ -91,7 +91,12 @@
 
             @Html.Partial("_ReincidenciaXLevel", Model)
 
-            <div class="panel panel-default margin-top">
+            @if (Model.paramsDto.parLevel3Dto.hasVinculo)
+            {
+                @Html.Partial("_Peso", Model)
+            }
+
+            @*<div class="panel panel-default margin-top">
                 <div class="panel-heading"><h4 style="margin: 0px; padding: 10px 15px;">@Resources.Resource.weight</h4></div>
                 <div class="panel-body">
                     <table class="table-erp">
@@ -102,14 +107,14 @@
                     </table>
 
                 </div>
-            </div>
+            </div>*@
 
-            <div id="painelPeso" class="panel panel-default" style="padding: 0px 16px; display:none;">
+            @*<div id="painelPeso" class="panel panel-default" style="padding: 0px 16px; display:none;">
                 <h5>
                     <b>@Resources.Resource.defined_weight: </b>
                     <label id="pesoDefinido"></label>
                 </h5>
-            </div>
+            </div>*@
 
             <button type="button" id="btnSaveNewLevel3" data-loading-text="@Resources.Resource.saving_the_level3" onclick="indexParamsLevel3.enviarDadosParaApi();" class="btn btn-danger margin-button">@Resources.Resource.save_level3</button>
         </div>
@@ -171,6 +176,51 @@
 
 </div>
 <script>
+
+    /*Vinculo Level3Level2*/
+    function saveLevel3Level2() {
+
+        /*Level2*/
+        var idLevel2 = $('#paramsDto_parLevel2Dto_Id').val();
+        if (idLevel2 == undefined || idLevel2 <= 0 || idLevel2 == null) {
+            openMessageModal("Alerta", "É necessario selecionar o monitoramento.");
+            //alert("É necessario selecionar o level 2");
+            return;
+        }
+
+        /*Level3*/
+        var idLevel3 = $('#paramsDto_parLevel3Dto_Id').val();
+        if (idLevel3 == undefined || idLevel3 <= 0 || idLevel3 == null) {
+            openMessageModal("Alerta", "É necessario selecionar a tarefa");
+            //alert("É necessario selecionar o level 3");
+            return;
+        }
+
+        //var peso = $('#paramsDto_parLevel3Dto_pesoDoVinculo').val().replace(",", ".");
+        //if (peso < 0){
+        //    openMessageModal("Alerta", "O peso deve ser maior ou igual a zero.");
+        //    //alert("O peso deve ser maior que zero.");
+        //    return;
+        //}
+
+        //var  groupoLevel2 = $('#paramsDto_parLevel3Dto_listGroupsLevel2 :selected').val();
+        //if( $('#paramsDto_parLevel3Dto_listGroupsLevel2 :selected').val().length == 0){
+        //    groupoLevel2 = 0;
+        //}
+
+        var peso = 0;
+        var groupoLevel2 = 0;
+
+        $.get(vinculoL2L3 + '/' + idLevel2 + '/' + idLevel3 + '/' + peso + '/' + groupoLevel2 + '/', function (obj, responseText, xhr) {
+            if (obj != null) {
+                openMessageModal("Feito!", "Tarefa vinculada ao Monitoramento com sucesso! #" + obj.Id);
+                //alert("Vinculado L3 com L2 ID: " + obj.Id);
+                UpdateSelect2Level3(idLevel2, undefined, function(){$('#parLevel3Select2').trigger('change');});
+            }
+            initialFormLevel3 = $($('form')[2]).clone();
+        });
+
+    }
 
     /*
     public int ParLevel3_Id { get; set; }
@@ -266,7 +316,7 @@
         veifyAdd: function(isEdit) {
             var seletorTato = !!isEdit ? isEdit : level3Value.level;
             /*Valida se pode criar o objeto*/
-           
+
             if($('#' + seletorTato + ' #selectTipoInput :selected').val() == 1){ // Binario
                 if($('#' + seletorTato + ' #selectConforme :selected').val() <= 0){
                     openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor positivo para o campo binario.");
@@ -335,7 +385,7 @@
             if( level3Value.listObjSalvo != null){ /*Carrega regras de NC*/
                 level3Value.listObjSalvo.forEach(function(o, c){
                     o["ParLevel3InputType_Name"] = o.ParLevel3InputType.Name;
-                    
+
                     if(o.ParCompany_Id > 0)
                         o["ParCompany_Name"] = o.ParCompany.Name;
                     else
@@ -405,7 +455,7 @@
         changeCombo();
 
     });
-     
+
     function changeCombo(){
         //se os dois campos estão nulos
         parIntervalosTypeCreate();
@@ -511,14 +561,14 @@
         $('#ParCalculado_IntervalMax').val("");
         $('#selectUnidadeDeMedidas').val(-1);
     }
-    
+
     function resetaParIntervalos(){
         $('#selectUnidadeDeMedidas').val(-1);
         $('#parLevel3Value_IntervalMin').val("");
         $('#parLevel3Value_IntervalMax').val("");
         $('#parIntervalosType').empty().parents('td').hide();
     }
-    
+
     function resetaParBinarios(){
         $('#selectConforme').val(-1);
         $('#selectNaoConforme').val(-1);
@@ -556,12 +606,12 @@
         modalPontos.appendTo('body');
         if(grouLevel2Selected > 0)
             $('#paramsDto_parLevel3Dto_listGroupsLevel2').val(grouLevel2Selected)
-        
-      
+
+
         updateAllTables();
 
         $('[data-toggle="popover"]').popover();
-        
+
         level3Value.carregaDadosDoDb();
 
         $('[data-toggle="popover"]').popover();
