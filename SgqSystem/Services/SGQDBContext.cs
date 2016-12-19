@@ -77,9 +77,9 @@ namespace SGQDBContext
             string sql = "";
 
             sql += "	SELECT														";
-            sql += "	Nivel3														";
-            sql += "	,floor(Nivel3/3)*2 as nivel2														";
-            sql += "	,floor(Nivel3/3) as nivel1														";
+            sql += "	(Nivel3) as nivel3                                             ";
+            sql += "	,(Nivel3 / 3) * 2 as nivel2														";
+            sql += "	,(Nivel3 / 3) as nivel1														";
             sql += "	FROM														";
             sql += "															";
             sql += "	(														";
