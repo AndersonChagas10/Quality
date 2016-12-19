@@ -523,7 +523,6 @@ namespace Dominio.Services
 
             //if (peso <= 0)
             //    peso = 1;
-
             objLelvel2Level3ToSave = new ParLevel3Level2()
             {
                 ParLevel2_Id = idLevel2,
@@ -539,7 +538,10 @@ namespace Dominio.Services
                 objLelvel2Level3ToSave.Weight = peso;
                 objLelvel2Level3ToSave.ParLevel3Group_Id = groupLevel2 == 0 ? null : groupLevel2;
             }
-
+            else
+            {
+                objLelvel2Level3ToSave.Weight = 1;
+            }
 
             _baseRepoParLevel3Level2.AddOrUpdate(objLelvel2Level3ToSave);
             ParLevel3Level2DTO objtReturn = Mapper.Map<ParLevel3Level2DTO>(objLelvel2Level3ToSave);
