@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Dominio.ParMeasurementUnit>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = @Resources.Resource.measurement_units;
 }
 
 <div class="page-content-wrapper">
@@ -67,7 +67,7 @@
                                             </td>
                                             <td>
                                                 @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }) |
-                                                @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |
+                                                @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |*@
                                                 @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })
                                             </td>
                                         </tr>

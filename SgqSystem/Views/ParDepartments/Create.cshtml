@@ -1,7 +1,7 @@
 ﻿@model Dominio.ParDepartment
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = @Resources.Resource.departments;
 }
 
 <div class="page-content-wrapper">
@@ -18,7 +18,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.new_department</span>
+                    <span>Cadastro</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -51,7 +51,7 @@
                                     <div class="form-horizontal">
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Name, Resources.Resource.name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Name, "Departamento", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
@@ -59,7 +59,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Description, Resources.Resource.description, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Description, "Descrição", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
@@ -68,15 +68,14 @@
                                         
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="@Resources.Resource.create" class="btn btn-default" />
+                                                <input type="submit" value="Salvar" class="btn btn-default" /> | 
+                                                @Html.ActionLink("Voltar para Despartamentos", "Index")
                                             </div>
                                         </div>
                                     </div>
                                 }
 
-                                <div>
-                                    @Html.ActionLink(Resources.Resource.back_to_list, "Index")
-                                </div>
+                               
                             </div>
 
                         </div>
