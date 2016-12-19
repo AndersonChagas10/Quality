@@ -97,15 +97,15 @@
                     var groupName =  $('#' + isEdit + ' #pesoGroupLevel2 :selected').text();
                     var groupVal = $('#' + isEdit + ' #pesoGroupLevel2 :selected').val();
 
-                    if(compVal == 0 || compVal == "-1" || compVal == "0" || compVal == -1){
+                    if(compVal == 0 || compVal == "-1" || compVal == "0" || compVal == -1 || compVal == undefined){
                         compName = "Todos";
                     }
 
-                    if(groupVal == 0 || groupVal == "-1" || groupVal == "0" || groupVal == -1){
+                    if(groupVal == 0 || groupVal == "-1" || groupVal == "0" || groupVal == -1 || groupVal == undefined){
                         groupName = "";
                     }
 
-                    obj.Weight = $('#' + isEdit + ' #percentVal').val();
+                    obj.Weight = $('#' + isEdit + ' #peso').val();
                     obj.ParCompany_Id = compVal;
                     obj.companyName = compName;
                     obj.ParLevel3Group_Id = groupVal;
