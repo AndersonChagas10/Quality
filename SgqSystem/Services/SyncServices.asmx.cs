@@ -11,6 +11,8 @@ using SgqSystem.Services;
 using SGQDBContext;
 using Dominio.Services;
 using DTO.Helpers;
+using System.Net.Mail;
+using System.Net;
 
 namespace SgqSystem.Services
 {
@@ -1899,6 +1901,7 @@ namespace SgqSystem.Services
 
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
+                              "<div class=\"Deviations\"></div>" +
                               "<div class=\"Users hide\"></div>";
 
             return login +
@@ -1947,18 +1950,19 @@ namespace SgqSystem.Services
         {
             var html = new Html();
 
-
-
             string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
 
             string container = html.div(
 
                                          outerhtml: breadCrumb +
-                                                    GetLevel01()
+                                                    GetLevel01(ParCompany_Id: 1,
+                                                               dataCollect: DateTime.Now)
 
                                         , classe: "container");
 
             string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btnSave btnRounded btn-warning hide\"><i class=\"fa fa-save\"></i></button><!--Save-->" +
+                             " <button class=\"btn btn-lg btn-danger btnCA hide\">Corrective Action</button><!--Corrective Action-->" +
+    
                                 "<button class=\"btn btn-lg btn-danger btnCA hide\">Corrective Action</button><!--Corrective Action-->";
 
             string message = "<div class=\"message padding20\" style=\"display:none\">                                                                                      " +
@@ -1988,8 +1992,6 @@ namespace SgqSystem.Services
                                         "    <div class=\"foot\"><button id=\"btnMessageNo\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> No </button></div>                   " +
                                         "</div>                                                                                                                                                         ";
 
-
-
             //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                       " +
             //                    "    <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\">View <a href=\"#\" class=\"pull-right close\" style=\"color:#000;text-decoration:none\">X</a></div> " +
             //                    "    <div class=\"body\" style=\"height:565px;overflow-y:auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                            " +
@@ -2005,12 +2007,12 @@ namespace SgqSystem.Services
                              classe: "App hide",
                              tags: "breadmainlevel=\"Indicadores\""
                            ) +
+                           correctiveAction() +
                            viewModal +
                            modalVF + 
                            message +
                            messageConfirm;
         }
-
         public string navBar()
         {
             string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                         " +
@@ -2041,6 +2043,103 @@ namespace SgqSystem.Services
 
             return menu;
         }
+        public string correctiveAction()
+        {
+            string correctiveAction = "<div id=\"correctiveActionModal\" class=\"container panel panel-default modal-padrao\" style=\"display:none\">                                   " +
+            "    <div class=\"panel-body\">                                                                                                               " +
+            "        <!--<div class=\"modal-header\">                                                                                                     " +
+            "            <button type=\"button\" class=\"close\" data-dismiss =\"modal\" aria-hidden=\"true\">×</button >" +
+                "        </div>-->                                                                                                                          " +
+                "        <div class=\"modal-body\"> " +
+                "            <h2>Corrective Action</h2>                                                                                                     " +
+                "            <div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\"> " +
+                "                <span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span> " +
+                "            </div>                                                                                                                         " +
+                "            <div class=\"row formCorrectiveAction\">" +
+                "                                                                                                                                           " +
+                "                <div class=\"panel panel-default\">" +
+                "                    <div class=\"panel-body\"> " +
+                "                        <div class=\"row\"> " +
+                "                            <div class=\"col-xs-6\" id =\"CorrectiveActionTaken\"> " +
+                "                                <b class=\"font16\"> Corrective Action Taken:<br/></b> " +
+                "                                <b>Date/Time:</b> <span id=\"datetime\"></span><br/>                                                  " +
+                "                                <b>Auditor:</b><span id=\"auditor\"></span><br/>                                                  " +
+                "                                                                                                                                           " +
+                "                                   <b> Shift: </b><span id=\"shift\"></span><br/>                                                   " +
+                "                                                                                                                                           " +
+                "                                  </div>                                                                                                 " +
+                "                                                                                                                                           " +
+                "                                <div class=\"col-xs-6\" id =\"AuditInformation\"> " +
+                "                                <b class=\"font16\"> Audit Information:<br/></b> " +
+                "                                <b>Audit: </b><span id=\"auditText\"></span><br/>                                                     " +
+                "                                <b> Start Time: </b><span id=\"starttime\"></span><br/>                                             " +
+                "                                                                                                                                           " +
+                "                                   < b > Period: </b><span id=\"correctivePeriod\"></span>                                              " +
+                "                                                                                                                                           " +
+                "                                  </ div >                                                                                                 " +
+                "                                                                                                                                           " +
+                "                              </ div >                                                                                                     " +
+                "                                                                                                                                           " +
+                "                          </ div >                                                                                                         " +
+                "                                                                                                                                           " +
+                "                      </ div >                                                                                                             " +
+                "                                                                                                                                           " +
+                "                      < div class=\"form-group\"> " +
+                "                    <label>Description of Failure:</label>                                                                                 " +
+                "                    <textarea id = \"DescriptionFailure\" class=\"form-control custom-control\" rows =\"3\" style =\"resize:none\"></ textarea> " +
+                "                </div>                                                                                                                     " +
+                "                <div class=\"form-group\"> " +
+                "                    <label>Immediate Corrective Action:</label>                                                                            " +
+                "                    <textarea id=\"ImmediateCorrectiveAction\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea> " +
+                "                </div>                                                                                                                     " +
+                "                <div class=\"form-group\"> " +
+                "                    <label>Product Disposition:</label>                                                                                    " +
+                "                    <textarea id = \"ProductDisposition\" class=\"form-control custom-control\" rows =\"3\" style =\"resize:none\"></ textarea> " +
+                "                </div>                                                                                                                     " +
+                "                <div class=\"form-group\">" +
+                "                    <label>Preventative Measure:</label>                                                                                   " +
+                "                    <textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows =\"3\" style =\"resize:none\"></textarea> " +
+                "                </div>                                                                                                                     " +
+                "                <div class=\"row\"> " +
+                "                    <div class=\"col-xs-6\"> " +
+                "                        <div class=\"SlaugtherSignature hide\"> " +
+                "                            <h4>Slaughter Signature</h4>                                                                                   " +
+                "                            <div class=\"name\"> Admin </div> " +
+                "                            <div class=\"date\"> 08/24/2016 10:31</div> " +
+                "                            <button class=\"btn btn-link btnSlaugtherSignatureRemove\">Remove Signature </button> " +
+                "                        </div>                                                                                                             " +
+                "                    </div>                                                                                                                 " +
+                "                    <div class=\"col-xs-6\"> " +
+                "                        <div class=\"TechinicalSignature hide\"> " +
+                "                            <h4>Technical Signature</h4>                                                                                   " +
+                "                            <div class=\"name\">Admin2</div> " +
+                "                            <div class=\"date\" >08/24/2016</div> " +
+                "                            <button class=\"btn btn-link btnTechinicalSignatureRemove\">Remove Signature </button> " +
+                "                        </div>                                                                                                             " +
+                "                    </div>                                                                                                                 " +
+                "                </div>                                                                                                                     " +
+                "            </div>                                                                                                                         " +
+                "        </div>                                                                                                                             " +
+                "        <div class=\"modal-footer\"> " +
+                "            <span class=\"pull-left\"> " +
+                "                <button class=\"btn btn-default btnSignature btnSlaugtherSignature\"> " +
+                "                    Slaughter Signature                                                                                                    " +
+                "                </button>                                                                                                                  " +
+                "                                                                                                                                           " +
+                "                <button class=\"btn btn-default btnSignature btnTechinicalSignature\"> " +
+                "                    Technical Signature                                                                                                    " +
+                "                </button>                                                                                                                  " +
+                "                                                                                                                                           " +
+                "            </span>                                                                                                                        " +
+                "                                                                                                                                           " +
+                "            <button class=\"btn btn-danger modal-close-ca\">Close</button > " +
+                "            <button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Send </button> " +
+                "        </div>                                                                                                                             " +
+                "    </div>                                                                                                                                 " +
+                "</div>                                                                                                                                     ";
+            return correctiveAction;
+        }
+
         public string footer()
         {
             string foot = "<footer class=\"footer\">                                                                                                                                       " +
@@ -2056,12 +2155,10 @@ namespace SgqSystem.Services
         /// Recupera Level1 e seus monitoramentos e tarefas relacionados
         /// </summary>
         /// <returns></returns>
-        public string GetLevel01()
+        public string GetLevel01(int ParCompany_Id, DateTime dataCollect)
         {
             ///SE NÃO HOUVER NENHUM LEVEL1, LEVEL2, LEVEL3 INFORMAR QUE NÃO ENCONTROU MONITORAMENTOS
             var html = new Html();
-
-            int ParCompany_Id = 1;
 
             //Instanciamos a Classe ParLevel01 Dapper
             var ParLevel1DB = new SGQDBContext.ParLevel1();
@@ -2101,9 +2198,11 @@ namespace SgqSystem.Services
                     if (variableList.Count > 0)
                     {
                         tipoTela = variableList[0].Name;
-                    }                    
-
+                    }
                     //Se o ParLevel1 contem um ParCritialLevel_Id
+                    var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas();
+                    var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dataCollect);
+
                     if (parlevel1.ParCriticalLevel_Id > 0)
                     {
                         //O ParLevel1 vai estar dentro de um accordon
@@ -2112,23 +2211,15 @@ namespace SgqSystem.Services
                         nameParCritialLevel = parlevel1.ParCriticalLevel_Name;
                         //Incremento os itens que estaram no ParLevel1                
                         //Gera linha Level1
-
-                        string tags = "totalavaliado=\"0\" totaldefeitos=\"0\" alertanivel1=\"3\" alertanivel2=\"6\" alertanivel3=\"9\" alertaatual=\"0\" parconsolidationtype_id=\"1\"   avaliacaoultimoalerta=\"0\"";
-
-                        string level01 = html.link(
-
-                                                  id: parlevel1.Id.ToString(),
-                                                  classe: "level1 col-xs-7 "+tipoTela,
-                                                  //Aqui vai as tags do level01
-                                                  tags: tags,
-                                                  outerhtml: parlevel1.Name
-                                                 );
-                        //Adiciona Div Lateral
-                        level01 += html.div(
-                                            //aqui vai os botoes
-                                            outerhtml: null,
-                                            classe: "userInfo col-xs-5");
-
+                        string level01 = html.level1(parlevel1,
+                                                     tipoTela: tipoTela,
+                                                     totalAvaliado: 0,
+                                                     totalDefeitos: 0,
+                                                     alertNivel1: alertas.Nivel1,
+                                                     alertNivel2: alertas.Nivel2,
+                                                     alertaNivel3: alertas.Nivel3,
+                                                     alertaAtual: 0,
+                                                     avaliacaoultimoalerta: 0);
                         //Incrementa level1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
                     }
@@ -2180,8 +2271,6 @@ namespace SgqSystem.Services
                 //Adicionar a lista de level01 agrupados ou não a lsita geral
                 listlevel1 += parLevel1;
             }
-
-
             //Retona as lista
             //Podemos gerar uma verificação de atualizações
             return html.div(
@@ -2228,7 +2317,6 @@ namespace SgqSystem.Services
             //Inicializa Avaliações e Amostras
             var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate();
             var ParSampleDB = new SGQDBContext.ParLevel2Sample();
-
 
             //Verifica avaliações padrão
             var ParEvaluatePadrao = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
@@ -2315,9 +2403,28 @@ namespace SgqSystem.Services
                 //Como vai ficar se o item tem varias avaliações?vai ter botão salvar na linha do monitoramento?
                 if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true)
                 {
+                    string btnNotAvaliable = null;
+                    if (ParLevel1.HasNoApplicableLevel2)
+                    {
+                        btnNotAvaliable =  "<button class=\"btn btn-warning btnNotAvaliable na\"> " +
+                                           "   <span class=\"cursorPointer iconsArea\">N/A</span> " +
+                                           "</button>                                             ";
+                    }
+                    string btnAreaSave = null;
+                    if(ParLevel1.HasSaveLevel2)
+                    {
+                        btnAreaSave =  "<button class=\"btn btn-success hide btnAreaSaveConfirm\">                                                    " +
+                                       "   <span class=\"cursorPointer\">Confirm? <i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
+                                       "</button>                                                                                                      " +
+                                       "<button class=\"btn btn-primary btnAreaSave\">                                                                 " +
+                                       "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i></span>        " +
+                                       "</button>                                                                                                      ";
+                    }
                     buttons = html.div(
                                  //aqui vai os botoes
-                                 outerhtml: null,
+                                 outerhtml: btnAreaSave +
+                                            btnNotAvaliable,
+                                 style: "text-align: right",
                                  classe: "userInfo col-xs-3"
                                  );
 
@@ -2330,7 +2437,6 @@ namespace SgqSystem.Services
                 {
                     classXSLevel2 = " col-xs-8";
                 }
-
 
                 string level02Header = html.div(classe: classXSLevel2) +
                                        headerCounter +
@@ -2346,11 +2452,7 @@ namespace SgqSystem.Services
                                             label: parlevel2.Name,
                                             classe: classXSLevel2,
                                             evaluate: evaluate,
-                                            sample: sample, 
-                                            alertlevel1: "3", 
-                                            alertlevel2: "6",
-                                            alertlevel3: "9",
-                                            AlertLevel: "0");
+                                            sample: sample);
 
                 //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
@@ -2365,15 +2467,11 @@ namespace SgqSystem.Services
                 string groupLevel3 = GetLevel03(ParLevel1, parlevel2);
                 level3Group += groupLevel3;
             }
-
             //aqui tem que fazer a pesquisa se tem itens sao do level1 ex: cca,htp
             //quando tiver cabecalhos tem que replicar no level1
 
-       
-
             ParLevel2List = headerList +
                             ParLevel2List;
-
 
             var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.Id), ParFieldTypeDB, html);
 
@@ -3357,5 +3455,164 @@ namespace SgqSystem.Services
           
         }
         #endregion
+        [WebMethod]
+        public string insertDeviation(string deviations)
+        {
+
+            //var result = deviation.attr('parcompany_id'); // 0
+            //result += ";" + deviation.attr('parlevel1_id'); // 1
+            //result += ";" + deviation.attr('parlevel2_id');// 2
+            //result += ";" + deviation.attr('evaluation');// 3
+            //result += ";" + deviation.attr('sample');// 4
+            //result += ";" + deviation.attr('alertnumber');// 5
+            //result += ";" + deviation.attr('defects');// 6
+            //result += ";" + deviation.attr('deviationdate');// 7
+
+            deviations = deviations.Replace("</deviation><deviation>", "&").Replace("<deviation>", "").Replace("</deviation>", "");
+            var arrayDeviations = deviations.Split(';');
+            string sql = null;
+            for (int i = 0; i < arrayDeviations.Length; i++)
+            {
+                var deviation = arrayDeviations[i].Split(';');
+
+                string ParCompany_Id = deviation[0];
+                string ParLevel1_Id = deviation[1];
+                string ParLevel2_Id = deviation[2];
+                string Evaluation = deviation[3];
+                string Sample = deviation[4];
+                string alertNumber = deviation[5];
+                string defects = deviation[6];
+                string deviationDate = deviation[7];
+
+                sql = "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail]) " +
+                             "VALUES " +
+                             "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', GetDate() , GetDate(), 0)";
+            }
+
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        var i = Convert.ToInt32(command.ExecuteScalar());
+                        //Se o registro for inserido retorno o Id da Consolidação
+                        if (i > 0)
+                        {
+                            return null;
+                        }
+                        else
+                        {
+                            //Caso ocorra algum erro, retorno zero
+                            return null;
+                        }
+                    }
+                }
+            }
+            //Caso ocorra alguma Exception, grava o log e retorna zero
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
+                return "error";
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
+                return "error";
+            }
+        }
+        [WebMethod]
+        public string sendEmailAlerta()
+        {
+            string destinatarios = "antoniobrissolare@hotmail.com";
+            string mensagemEstouro = "Estouro de alerta Nivel [X]";
+
+            try
+            {
+                string termo = "<div style='font-family:Verdana; font-size:10px;color:gray'>Este email é direcionado apenas para a pessoa ou entidade para a qual foi endreçado e pode conter material confidencial ou privilegiado. Qualquer leitura, uso, revelação ou distribuição não autorizados são proibidos. Se você não for o destinatário dessa mensagem, mas não deseja receber mensagens através desse meio, por gentileza, avise o remetente imediatamente</div>";
+
+                string emailRemetente = "services@brzsoftwares.com";
+                string nomeRemetente = "SGQ - GRT Soluções";
+
+                MailMessage mailMessage = new MailMessage();
+                //Endereço que irá aparecer no e-mail do usuário 
+                mailMessage.From = new MailAddress(emailRemetente, nomeRemetente);
+                //destinatarios do e-mail, para incluir mais de um basta separar por ponto e virgula  
+                mailMessage.To.Add(destinatarios);
+
+                mailMessage.Subject = "Alerta";
+                mailMessage.IsBodyHtml = true;
+                //conteudo do corpo do e-mail 
+                mailMessage.Body = "<div style='font-family:Verdana; font-size:14px'>" + mensagemEstouro + "</div>" +
+                                   "<br><br>" +
+
+                                   "<div style='font-family:Verdana; font-size:10px;color:gray'>Esta é uma mensagem automática, por favor não responda. Antes de imprimir pense em seu compromisso com o meio ambiente.</div>" +
+                                   "<br>" +
+                                   termo +
+                                   "<div style='font-family:Verdana; font-size:8px;color:gray'>GRT Soluções Alertas " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "</div>";
+
+                mailMessage.Priority = MailPriority.High;
+
+                string servidorSMTP = "mail.brzsoftwares.com";
+                int portaSMS = 587;
+                string usuarioSMTP = "services@brzsoftwares.com";
+                string senhaSMTP = "#Abn32878732";
+                //smtp do e-mail que irá enviar 
+                SmtpClient smtpClient = new SmtpClient(servidorSMTP, portaSMS);
+                smtpClient.EnableSsl = false;
+                //credenciais da conta que utilizará para enviar o e-mail 
+                smtpClient.Credentials = new NetworkCredential(usuarioSMTP, senhaSMTP);
+                smtpClient.Send(mailMessage);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(mensagemEstouro, ex.Message, null, null, "sendEmail");
+            }
+            return null;
+        }
+        
+        [WebMethod]
+        public string updateLevel1Consolidaton(string ParLevel1_Id, string Unit_Id, string DepartmentId, string Evaluation, string Defects)
+        {
+            //Adicionar o departamento
+            string sql = "UPDATE ConsolidationLevel1 SET Defects='" + Defects + "', Evaluation='" + Evaluation + "' WHERE UnitId='" +  Unit_Id+ "' AND ParLevel1_Id='" + ParLevel1_Id + "'";
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        var i = Convert.ToInt32(command.ExecuteScalar());
+                        //Se o registro for inserido retorno o Id da Consolidação
+                        if (i > 0)
+                        {
+                            return null;
+                        }
+                        else
+                        {
+                            //Caso ocorra algum erro, retorno zero
+                            return null;
+                        }
+                    }
+                }
+            }
+            //Caso ocorra alguma Exception, grava o log e retorna zero
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateLevel1Consolidaton");
+                return "error";
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateLevel1Consolidaton");
+                return "error";
+            }
+        }
     }
 }
