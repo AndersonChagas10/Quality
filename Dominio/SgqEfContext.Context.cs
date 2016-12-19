@@ -102,6 +102,7 @@ namespace Dominio
         public virtual DbSet<VolumeCepRecortes> VolumeCepRecortes { get; set; }
         public virtual DbSet<VolumePcc1b> VolumePcc1b { get; set; }
         public virtual DbSet<VolumeVacuoGRD> VolumeVacuoGRD { get; set; }
+        public virtual DbSet<Deviation> Deviation { get; set; }
         public virtual DbSet<ParLevel1VariableProduction> ParLevel1VariableProduction { get; set; }
         public virtual DbSet<ParLevel1VariableProductionXLevel1> ParLevel1VariableProductionXLevel1 { get; set; }
         public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }

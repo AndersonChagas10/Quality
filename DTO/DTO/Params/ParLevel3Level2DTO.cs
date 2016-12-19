@@ -10,6 +10,7 @@ namespace DTO.DTO.Params
         public decimal Weight { get; set; }
         public bool Active { get; set; } = true;
 
+
         public ParLevel2DTO ParLevel2 { get; set; }
         public ParLevel3DTO ParLevel3 { get; set; }
         public ParLevel3GroupDTO ParLevel3Group { get; set; }

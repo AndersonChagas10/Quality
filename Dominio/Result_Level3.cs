@@ -31,6 +31,7 @@ namespace Dominio
         public Nullable<decimal> Evaluation { get; set; }
         public Nullable<decimal> WeiDefects { get; set; }
         public Nullable<decimal> CT4Eva3 { get; set; }
+        public Nullable<decimal> Sampling { get; set; }
     
         public virtual CollectionLevel2 CollectionLevel2 { get; set; }
         public virtual ParLevel3 ParLevel3 { get; set; }

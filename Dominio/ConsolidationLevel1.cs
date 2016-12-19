@@ -27,6 +27,8 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public System.DateTime ConsolidationDate { get; set; }
+        public Nullable<decimal> Defects { get; set; }
+        public Nullable<decimal> Evaluation { get; set; }
     
         public virtual Department Department { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }
