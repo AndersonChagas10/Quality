@@ -671,7 +671,7 @@
                 ContadoresL2.incluiNoObjetoParaSubmit(dados);
                 ReincidenciaL2.incluiNoObjetoParaSubmit(dados);
                 GroupL2.incluiNoObjetoParaSubmit(dados);
-                AvAm2.incluiNoObjetoParaSubmit(dados);
+                //AvAm2.incluiNoObjetoParaSubmit(dados);
                 //openLoader(indexParamsLevel2.saving_the_level2);
                 $.post(url2, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                     //closeLoader();
@@ -978,19 +978,19 @@
         var idLevel3Level2 = 0;
 
         if (idLevel1 <= 0) {
-            openMessageModal("Alerta", "É necessario selecionar um level 1 para realizar este vinculo.");
+            openMessageModal("Alerta", "É necessario selecionar um indicador para realizar este vínculo.");
             //alert("É necessario selecionar um level 1 para realizar este vinculo.");
             return;
         }
 
         if (idLevel2 <= 0) {
-            openMessageModal("Alerta", "É necessario selecionar um level 2 para realizar este vinculo.");
+            openMessageModal("Alerta", "É necessario selecionar um monitoramento para realizar este vínculo.");
             //alert("É necessario selecionar um level 2 para realizar este vinculo.");
             return;
         }
 
         if (idLevel3 <= 0) {
-            openMessageModal("Alerta", "É necessario selecionar um level 3 realizar este vinculo.");
+            openMessageModal("Alerta", "É necessario selecionar uma tarefa para realizar este vínculo.");
             //alert("É necessario selecionar um level 3 realizar este vinculo.");
             return;
         }
@@ -999,7 +999,7 @@
         $.get(vinculoL1L2 + '/' + idLevel1 + '/' + idLevel2 + '/' + idLevel3, function (obj, responseText, xhr) {
             if (obj != null) {
                 console.log(obj);
-                openMessageModal("Alerta", "Vinculado L3 com L2 ID: " + obj.Id);
+                openMessageModal("Feito!", "Monitoramento e Tarefa vinculados ao Indicador com sucesso! #" + obj.Id);
                 //alert("Vinculado L3 com L2 ID: " + obj.Id);
                 UpdateSelect2Level2(idLevel1);
             }
@@ -1018,7 +1018,7 @@
         /*Level2*/
         var idLevel2 = $('#paramsDto_parLevel2Dto_Id').val();
         if (idLevel2 == undefined || idLevel2 <= 0 || idLevel2 == null) {
-            openMessageModal("Alerta", "É necessario selecionar o level 2.");
+            openMessageModal("Alerta", "É necessario selecionar o monitoramento.");
             //alert("É necessario selecionar o level 2");
             return;
         }
@@ -1026,14 +1026,14 @@
         /*Level3*/
         var idLevel3 = $('#paramsDto_parLevel3Dto_Id').val();
         if (idLevel3 == undefined || idLevel3 <= 0 || idLevel3 == null) {
-            openMessageModal("Alerta", "É necessario selecionar o level 3");
+            openMessageModal("Alerta", "É necessario selecionar a tarefa");
             //alert("É necessario selecionar o level 3");
             return;
         }
 
         var peso = $('#paramsDto_parLevel3Dto_pesoDoVinculo').val().replace(",", ".");
-        if (peso <= 0){
-            openMessageModal("Alerta", "O peso deve ser maior que zero.");
+        if (peso < 0){
+            openMessageModal("Alerta", "O peso deve ser maior ou igual a zero.");
             //alert("O peso deve ser maior que zero.");
             return;
         }
@@ -1045,7 +1045,7 @@
 
         $.get(vinculoL2L3 + '/' + idLevel2 + '/' + idLevel3 + '/' + peso + '/' + groupoLevel2 + '/', function (obj, responseText, xhr) {
             if (obj != null) {
-                openMessageModal("Alerta", "Vinculado L3 com L2 ID: " + obj.Id);
+                openMessageModal("Feito!", "Tarefa vinculada ao Monitoramento com sucesso! #" + obj.Id);
                 //alert("Vinculado L3 com L2 ID: " + obj.Id);
                 UpdateSelect2Level3(idLevel2, undefined, function(){$('#parLevel3Select2').trigger('change');});
             }

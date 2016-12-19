@@ -95,7 +95,7 @@
                                     <tbody>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.DropDownList("headerLevel", Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control input-sm" }), @Html.Label("Nível do Campo"), Table.PosicaoLabel.top, @Html.ErrorManual("nivelCampoCabecalho", "O Nível do Campo deve ser selecionado"), null)
-                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parHeaderFieldDto.Name, new { @class = "form-control input-sm" }), @Html.LabelFor(m => m.paramsDto.parHeaderFieldDto.Name), Table.PosicaoLabel.top, @Html.ErrorManual("nomeCampoCabecalho", "O campo Nome deve ser preenchido para Nível do Campo"), null)
+                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parHeaderFieldDto.Name, new { @class = "form-control input-sm" }), @Html.Label("Nome do campo"), Table.PosicaoLabel.top, @Html.ErrorManual("nomeCampoCabecalho", "O campo Nome deve ser preenchido para Nível do Campo"), null)
                                             @Table.GerarColuna(@Html.DropDownList("parFieldType", Model.paramsDdl.DdlParFieldType, new { @class = "form-control input-sm" }), @Html.Label("Tipo"), Table.PosicaoLabel.top, @Html.ErrorManual("tipoCampoCabecalho", "O campo Tipo deve ser selecionado para Nível do Campo"), null)
                                             @Table.GerarColunaCheckbox(@Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.link_number_evaluation), Table.PosicaoLabel.top, null, null)
                                         </tr>

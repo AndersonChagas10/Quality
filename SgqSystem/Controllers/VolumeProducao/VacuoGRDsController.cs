@@ -35,8 +35,8 @@ namespace SgqSystem.Controllers
         // GET: VacuoGRDs/Create
         public ActionResult Create()
         {
-            ViewBag.ParCompany_id = new SelectList(db.ParCompany, "Id", "Name");
-            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name");
+            ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name");
+            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 22), "Id", "Name");
             return View();
         }
 
@@ -54,7 +54,7 @@ namespace SgqSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ParCompany_id = new SelectList(db.ParCompany, "Id", "Name", vacuoGRD.ParCompany_id);
+            ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", vacuoGRD.ParLevel1_id);
             return View(vacuoGRD);
         }
@@ -71,8 +71,8 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ParCompany_id = new SelectList(db.ParCompany, "Id", "Name", vacuoGRD.ParCompany_id);
-            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", vacuoGRD.ParLevel1_id);
+            ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
+            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 22), "Id", "Name", vacuoGRD.ParLevel1_id);
             return View(vacuoGRD);
         }
 
@@ -89,7 +89,7 @@ namespace SgqSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ParCompany_id = new SelectList(db.ParCompany, "Id", "Name", vacuoGRD.ParCompany_id);
+            ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", vacuoGRD.ParLevel1_id);
             return View(vacuoGRD);
         }
