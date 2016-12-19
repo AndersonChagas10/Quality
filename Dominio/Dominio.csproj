@@ -291,7 +291,7 @@
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="NQA.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Observacoes.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
@@ -586,7 +586,7 @@
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="sysdiagrams.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TarefaAmostras.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
@@ -653,6 +653,9 @@
     </Compile>
     <Compile Include="VerificacaoTipificacaoComparacao.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VerificacaoTipificacaoJBS.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VerificacaoTipificacaoResultados.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>

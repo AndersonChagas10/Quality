@@ -117,6 +117,7 @@ namespace Dominio
         public virtual DbSet<ResultadosData> ResultadosData { get; set; }
         public virtual DbSet<ResultadosPCC> ResultadosPCC { get; set; }
         public virtual DbSet<Sugestoes> Sugestoes { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TarefaAmostras> TarefaAmostras { get; set; }
         public virtual DbSet<TarefaAvaliacoes> TarefaAvaliacoes { get; set; }
         public virtual DbSet<TarefaCategorias> TarefaCategorias { get; set; }

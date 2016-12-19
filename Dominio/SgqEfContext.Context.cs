@@ -32,6 +32,8 @@ namespace Dominio
         }
     
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
+        public virtual DbSet<CaracteristicaTipificacao> CaracteristicaTipificacao { get; set; }
+        public virtual DbSet<CaracteristicaTipificacaoSequencial> CaracteristicaTipificacaoSequencial { get; set; }
         public virtual DbSet<CollectionHtml> CollectionHtml { get; set; }
         public virtual DbSet<CollectionJson> CollectionJson { get; set; }
         public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
@@ -98,6 +100,10 @@ namespace Dominio
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<UnitUser> UnitUser { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
+        public virtual DbSet<VerificacaoTipificacao> VerificacaoTipificacao { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoComparacao> VerificacaoTipificacaoComparacao { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoResultados> VerificacaoTipificacaoResultados { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoTarefaIntegracao> VerificacaoTipificacaoTarefaIntegracao { get; set; }
         public virtual DbSet<VolumeCepDesossa> VolumeCepDesossa { get; set; }
         public virtual DbSet<VolumeCepRecortes> VolumeCepRecortes { get; set; }
         public virtual DbSet<VolumePcc1b> VolumePcc1b { get; set; }
@@ -107,5 +113,6 @@ namespace Dominio
         public virtual DbSet<ParLevel1VariableProductionXLevel1> ParLevel1VariableProductionXLevel1 { get; set; }
         public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
         public virtual DbSet<ResultLevel2HeaderField> ResultLevel2HeaderField { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoJBS> VerificacaoTipificacaoJBS { get; set; }
     }
 }

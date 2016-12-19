@@ -1975,12 +1975,12 @@ namespace SgqSystem.Services
             //                       "</div>                                                                                                                                                                                                    ";
 
             string viewModal = "<div class=\"viewModal\" style=\"display:none;\">" +
-                               "     <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\">View <a href=\"#\" class=\"pull-right close\" style=\"color: #000;text-decoration:none\">X</a></div> " +
+                               "     <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\"><div class=\"title\">View </div><a href=\"#\" class=\"pull-right close\" style=\"color: #000;text-decoration:none\">X</a></div> " +
                                "     <div class=\"body\" style=\"height:565px; overflow-y: auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                           " +
                                "</div>                                                                                                                                                                                                    ";
 
             string modalVF = "<div class=\"modalVF panel panel-default\" style=\"display:none;\">                            " +
-                               "     <div class=\"head\">View <a href=\"#\" class=\"pull-right close\">x</a></div>           " +
+                               "     <div class=\"head row\"><div class='col-xs-8'>View </div><div class='col-xs-4'><a href=\"#\" class=\"pull-right close\">x</a></div></div>           " +
                                "     <div class=\"body\"></div>                                                              " +
                                "</div>                                                                                       ";
 
