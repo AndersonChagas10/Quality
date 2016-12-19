@@ -2913,7 +2913,6 @@ namespace SgqSystem.Services
                 
                 foreach (var parLevel3 in parlevel3List)
                 {
-
                     string classInput = null;
                     string tags = null;
                     string labels = null;

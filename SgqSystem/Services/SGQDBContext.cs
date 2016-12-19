@@ -509,4 +509,25 @@ namespace SGQDBContext
             return companys;
         }
     }
+    public partial class VolumePcc1b
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public int Id { get; set; }
+        public int VolumeAnimais { get; set; }
+        public int Quartos { get; set; }
+        public int Avaliacoes { get; set; }
+        public int Amostras { get; set; }
+
+        public IEnumerable<VolumePcc1b> getVolumePcc1b(int Indicador, int Unidade)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select VP.Id VP.VolumeAnimais, VP.Quartos, VP.Avaliacoes, VP.Amostras from VolumePcc1b VP where VP.Indicador = " + Indicador + " and VP.Unidade = " + Unidade + "; ";
+
+            var list = db.Query<VolumePcc1b>(sql);
+
+            return list;
+        }
+    }
 }
