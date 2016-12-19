@@ -354,40 +354,15 @@ namespace SgqSystem.Services
                                  "</div>                                                                                                                                                                      ";
             return intervalo;
         }
-        public string level2(string id, string label, string classe=null, decimal defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false,
-                             string alertlevel1=null, string alertlevel2=null, string alertlevel3=null, string AlertLevel= null, string ParFrequency_Id=null)
+        //public string level2(string id, string label, string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false,
+        //                     string alertlevel1 = null, string alertlevel2 = null, string alertlevel3 = null, string AlertLevel = null, string ParFrequency_Id = null)
+
+        public string level2(string id, string label, string classe=null, decimal defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false)
         {
-
-
-            if(!string.IsNullOrEmpty(alertlevel1))
-            {
-                alertlevel1 = " alertlevel1=\"" + alertlevel1 + "\"";
-            }
-
-            if(!string.IsNullOrEmpty(alertlevel2))
-            {
-                alertlevel2 = " alertlevel2=\"" + alertlevel2 + "\"";
-            }
-
-            if(!string.IsNullOrEmpty(alertlevel3))
-            {
-                alertlevel3 = " alertlevel3=\"" + alertlevel3 + "\"";
-            }
-
-            if(!string.IsNullOrEmpty(AlertLevel))
-            {
-                AlertLevel = " alertlevel=\"0\"";
-            }
-
-            if(!string.IsNullOrEmpty(ParFrequency_Id))
-            {
-                ParFrequency_Id = " parfrequency_id=\"" + ParFrequency_Id + "\"";
-            }
-
             return link(
                            id: id, 
                            classe: "level2" +  classe,
-                           tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" " + alertlevel1 + alertlevel2 + alertlevel3 + AlertLevel + ParFrequency_Id,
+                           tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" ",
                            outerhtml: span(outerhtml: label, classe: "levelName")
                        );
         }
@@ -395,6 +370,25 @@ namespace SgqSystem.Services
         {
             return "<div class=\"user\" userid=\"" + UserSGQ_Id + "\" username=\"" + UserSGQ_Name + "\" userlogin=\"" + UserSGQ_Login.ToLower() + "\" userpass=\"" + UserSGQ_Pass + "\" userprofile=\"" + Role + "\" unidadeid=\"" + ParCompany_Id + "\" unidadename=\"" + ParCompany_Name + "\"></div>";
         }
+        public string level1(SGQDBContext.ParLevel1 ParLevel1, string tipoTela, int totalAvaliado, decimal totalDefeitos, decimal alertNivel1, decimal alertNivel2, decimal alertaNivel3, int alertaAtual, int avaliacaoultimoalerta)
+        {
 
+            string tags = "parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert + "\" isspecific=\"" + ParLevel1.IsSpecific + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\"";
+
+            string level01 = link(
+
+                                id: ParLevel1.Id.ToString(),
+                                classe: "level1 col-xs-7 " + tipoTela,
+                                //Aqui vai as tags do level01
+                                tags: tags,
+                                outerhtml: ParLevel1.Name
+                                );
+            //Adiciona Div Lateral
+            level01 += div(
+                            //aqui vai os botoes
+                            outerhtml: null,
+                            classe: "userInfo col-xs-5");
+            return level01;
+        }
     }
 }

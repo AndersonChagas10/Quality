@@ -16,6 +16,10 @@ namespace SGQDBContext
         public string ParCriticalLevel_Name { get; set; }
         public bool HasSaveLevel2 { get; set; }
         public bool HasNoApplicableLevel2 { get; set; }
+        public int ParConsolidationType_Id { get; set; }
+        public int ParFrequency_Id { get; set; }
+        public bool HasAlert { get; set; }
+        public bool IsSpecific { get; set; }
         public ParLevel1()
         {
 
@@ -26,8 +30,8 @@ namespace SGQDBContext
         {
 
             SqlConnection db = new SqlConnection(conexao);
-            string sql = " SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2,  " +
-                         " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2                                                                          " +
+            string sql = " SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
+                         " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific                                                                          " +
                          " FROM ParLevel1 P1                                                                                                          " +
                          " INNER JOIN ParLevel1XCluster P1C                                                                                           " +
                          " ON P1C.ParLevel1_Id = P1.Id                                                                                                " +
@@ -48,6 +52,33 @@ namespace SGQDBContext
             return parLevel1List;
         }
     }
+    public partial class ParLevel1Alertas
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        public decimal Nivel1 { get; set; }
+        public decimal Nivel2 { get; set; }
+        public decimal Nivel3 { get; set; }
+
+        //public DateTime DataCollect { get; set; }
+        //public int? Evaluate { get; set; }
+        //public int? Sample { get; set; }
+        //public int? ParCompany_Id_Evaluate { get; set; }
+        //public int? ParCompany_Id_Sample { get; set; }
+        public ParLevel1Alertas()
+        {
+
+        }
+        public ParLevel1Alertas getAlertas(int ParLevel1_Id, int ParCompany_Id, DateTime DataCollect)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select 3 as Nivel1, 6 AS Nivel2, 9 AS Nivel3 ";
+            var parLevel2List = db.Query<ParLevel1Alertas>(sql).FirstOrDefault();
+
+            return parLevel2List;
+        }
+    }
+
     public partial class ParLevel2
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -291,7 +322,6 @@ namespace SGQDBContext
 
         }
     }
-
     public partial class ParLevelHeader
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -339,7 +369,6 @@ namespace SGQDBContext
             return parLevel3List;
         }
     }
-
     public partial class ParFieldType
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -368,7 +397,6 @@ namespace SGQDBContext
 
         public int Id { get; set; }
         public string Name { get; set; }
-
         public IEnumerable<ParLevel1VariableProduction> getVariable(int ParLevel1_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
@@ -382,7 +410,6 @@ namespace SGQDBContext
             return list;
         }
     }
-
     public partial class ParConfSGQ
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -428,8 +455,6 @@ namespace SGQDBContext
 
             return user;
         }
-
-
     }
     public partial class ParCompanyXUserSgq
     {
