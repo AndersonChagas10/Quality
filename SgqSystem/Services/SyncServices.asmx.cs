@@ -2017,7 +2017,7 @@ namespace SgqSystem.Services
             string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                         " +
                            "    <div class=\"container\">                                                                                                                                                  " +
                            "        <div class=\"navbar-header\" style=\"width: 100%\">                                                                                                                    " +
-                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" aria-hidden=\"true\"></i> Data Collection</a>                  " +
+                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" aria-hidden=\"true\"></i> SGQ - Coleta de dados</a>                  " +
                            "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                   " +
                            "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div>          " +
                            "        </div>                                                                                                                                                                 " +
@@ -2031,7 +2031,7 @@ namespace SgqSystem.Services
             string menu = "<div class=\"rightMenu\">                                                                                                  " +
                            "     <div class=\"list-group list-group-inverse rightMenuList\">                                                           " +
                            "         <a href= \"#\" id=\"btnSync\" class=\"list-group-item\">Sincronizar</a>                                                  " +
-                           "         <a href= \"#\" id=\"btnSyncParam\" class=\"list-group-item\" onClick=\"onDeviceReady();\">Parametrizações</a>                                                  " +
+                           "         <a href= \"index.html\" id=\"btnSyncParam\" class=\"list-group-item\" onClick=\"onDeviceReady();\">Parametrizações</a>                                                  " +
 
                            "         <a href= \"#\" id=\"btnLogout\" class=\"list-group-item\">Logout</a>                                              " +
                            "         <a href= \"#\" id=\"btnLog\" class=\"list-group-item\">Visualizar Log</a>                                               " +
@@ -3332,17 +3332,17 @@ namespace SgqSystem.Services
         }
         #endregion
 
-        string formOuterHtml = html.head(Html.h.h2, outerhtml: "Please sign in") +
+        string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre") +
                               selectUnit +
                               selectShit +
                               html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
                               html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: inputsDesabilitados) +
                               html.label(labelfor: "inputPassword", classe: "sr-only", outerhtml: "Password") +
                               html.input(type: Html.type.password, id: "inputPassword", placeholder: "Password", required: true, disabled: inputsDesabilitados) +
-                              html.button(label: "Sign in", id: "btnLogin", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "Authenticating...") +
+                              html.button(label: "Entrar", id: "btnLogin", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "Autenticando...") +
 
                               html.div(id: "messageError", classe: "alert alert-danger hide", tags: "role=\"alert\"",
-                                       outerhtml: html.span(classe: "icon-remove-sign") + "<strong>Error! </strong>" + html.span(id: "mensagemErro")) +
+                                       outerhtml: html.span(classe: "icon-remove-sign") + "<strong>Erro! </strong>" + html.span(id: "mensagemErro")) +
 
                               html.div(classe: "divLoadFiles",
                                        outerhtml: html.span(classe: "messageLoading")) +
