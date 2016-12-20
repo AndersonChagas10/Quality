@@ -31,7 +31,7 @@ namespace SgqSystem.Secirity
             else
             {
                 //Extends cookie ttl
-                cookie.Expires = DateTime.Now.AddMinutes(30);
+                cookie.Expires = DateTime.Now.AddMinutes(60);
                 //ok - cookie is found.
                 //Gracefully check if the cookie has the key-value as expected.
                 if (!string.IsNullOrEmpty(Roles))

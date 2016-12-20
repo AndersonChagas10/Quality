@@ -36,6 +36,11 @@ namespace DTO.Helpers
         public static string ConverteValorCalculado(decimal valorDecimal)
         {
 
+            if (valorDecimal == 0)
+            {
+                return "0x10^0";
+            }
+
             int dezElevado = 0;
             if (valorDecimal > 0)//SE POSITIVO
             {
