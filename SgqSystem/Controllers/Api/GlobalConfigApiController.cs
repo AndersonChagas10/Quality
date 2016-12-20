@@ -28,8 +28,8 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("RecSenha/{senha}")]
-        public string RecSenha(string senha)
+        [Route("RecSenha")]
+        public string RecSenha([FromBody]string senha)
         {
             return Guard.Descriptografar3DES(senha);
         }

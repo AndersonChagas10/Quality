@@ -210,7 +210,7 @@ namespace SgqSystem.Services
                 //unidadeId = DefaultValueReturn(unidadeId, "1");
                 //Pega o Period
 
-                
+
                 string period = result[5];
                 period = DefaultValueReturn(period, "1");
 
@@ -320,7 +320,7 @@ namespace SgqSystem.Services
                        "VALUES " +
                        "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
 
-                if(autoSend == true)
+                if (autoSend == true)
                 {
                     sql += "SELECT @@IDENTITY AS 'Identity'";
                 }
@@ -341,7 +341,7 @@ namespace SgqSystem.Services
                         var i = Convert.ToInt32(command.ExecuteScalar());
                         if (i > 0)
                         {
-                            if(autoSend == true)
+                            if (autoSend == true)
                             {
                                 ProcessJson(null, i);
                             }
@@ -395,7 +395,7 @@ namespace SgqSystem.Services
                 query = "[Device_Id] = '" + device + "' AND";
             }
 
-            if(id > 0)
+            if (id > 0)
             {
                 query = "[Id] = '" + id + "' AND";
             }
@@ -494,7 +494,7 @@ namespace SgqSystem.Services
 
                                 string[] arrayHeader = Level02HeaderJson.Split(';');
 
-                                string headersContadores= arrayHeader[0];
+                                string headersContadores = arrayHeader[0];
 
                                 string Phase = arrayHeader[1];
                                 string AuditorId = r[17].ToString();
@@ -505,7 +505,7 @@ namespace SgqSystem.Services
                                 string Evaluation = r[15].ToString();
                                 string Sample = r[16].ToString();
 
-                               
+
 
                                 string ConsecuticeFalireIs = arrayHeader[3];
                                 ConsecuticeFalireIs = DefaultValueReturn(arrayHeader[6], "0");
@@ -587,7 +587,7 @@ namespace SgqSystem.Services
                                 headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
 
 
-                                if(!string.IsNullOrEmpty(headersContadores))
+                                if (!string.IsNullOrEmpty(headersContadores))
                                 {
                                     int headerFieldId = InsertCollectionLevel2HeaderField(CollectionLevel2Id, headersContadores);
 
@@ -637,7 +637,7 @@ namespace SgqSystem.Services
                                     }
                                 }
 
-                               
+
 
                                 if (!string.IsNullOrEmpty(correctiveActionJson))
                                 {
@@ -1036,10 +1036,10 @@ namespace SgqSystem.Services
             if (id == "0")
             {
                 sql = "INSERT INTO CollectionLevel2 ([ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side]) " +
-                "VALUES" +
-                "('" + ConsolidationLevel02Id + "','" + Level01Id + "','" + Level02Id + "','" + UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + Reaudit + "','" + ReauditNumber + "', CAST(N'" + CollectionDate + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "')";
+                "VALUES " +
+                "('" + ConsolidationLevel02Id + "','" + Level01Id + "','" + Level02Id + "','" + UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + Reaudit + "','" + ReauditNumber + "', CAST(N'" + CollectionDate + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "') ";
 
-                sql += " SELECT @@IDENTITY AS 'Identity'";
+                sql += " SELECT @@IDENTITY AS 'Identity' ";
             }
             else
             {
@@ -1101,23 +1101,23 @@ namespace SgqSystem.Services
                 string ParFieldType_Id = header[1];
                 string Value = header[2];
 
-                 sql +=   "INSERT INTO[dbo].[CollectionLevel2XParHeaderField]               " +
-                          "      ([CollectionLevel2_Id]                                     " +
-                          "      ,[ParHeaderField_Id]                                       " +
-                          "      ,[ParHeaderField_Name]                                     " +
-                          "      ,[ParFieldType_Id]                                         " +
-                          "      ,[Value])                                                  " +
-                          "VALUES                                                           " +
-                          "      ('" + CollectionLevel2Id + "'                              " +
-                          "      ,"+ParHeaderField_Id+"                                     " +
-                          "      ,(SELECT Name FROM ParHeaderField WHERE Id='" + ParHeaderField_Id + "')   " +
-                          "      ,'"+ ParFieldType_Id + "'                                  " +
-                          "      ,'"+ Value + "')                                           ";
+                sql += "INSERT INTO[dbo].[CollectionLevel2XParHeaderField]               " +
+                         "      ([CollectionLevel2_Id]                                     " +
+                         "      ,[ParHeaderField_Id]                                       " +
+                         "      ,[ParHeaderField_Name]                                     " +
+                         "      ,[ParFieldType_Id]                                         " +
+                         "      ,[Value])                                                  " +
+                         "VALUES                                                           " +
+                         "      ('" + CollectionLevel2Id + "'                              " +
+                         "      ," + ParHeaderField_Id + "                                     " +
+                         "      ,(SELECT Name FROM ParHeaderField WHERE Id='" + ParHeaderField_Id + "')   " +
+                         "      ,'" + ParFieldType_Id + "'                                  " +
+                         "      ,'" + Value + "')                                           ";
             }
 
 
 
-         
+
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -1216,6 +1216,7 @@ namespace SgqSystem.Services
                 isnotEvaluate = BoolConverter(isnotEvaluate);
 
                 string punishimentValue = result[13];
+                punishimentValue = DefaultValueReturn(punishimentValue, "0");
 
                 string defects = result[14];
 
@@ -1961,9 +1962,7 @@ namespace SgqSystem.Services
                                         , classe: "container");
 
             string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btnSave btnRounded btn-warning hide\"><i class=\"fa fa-save\"></i></button><!--Save-->" +
-                             " <button class=\"btn btn-lg btn-danger btnCA hide\">Corrective Action</button><!--Corrective Action-->" +
-    
-                                "<button class=\"btn btn-lg btn-danger btnCA hide\">Corrective Action</button><!--Corrective Action-->";
+                             " <button class=\"btn btn-lg btn-danger btnCA hide\">Corrective Action</button><!--Corrective Action-->";
 
             string message = "<div class=\"message padding20\" style=\"display:none\">                                                                                      " +
                              "   <h1 class=\"head\">Titulo</h1>                                                                                                           " +
@@ -2007,9 +2006,9 @@ namespace SgqSystem.Services
                              classe: "App hide",
                              tags: "breadmainlevel=\"Indicadores\""
                            ) +
-                           //correctiveAction() +
+                           correctiveAction() +
                            viewModal +
-                           modalVF + 
+                           modalVF +
                            message +
                            messageConfirm;
         }
@@ -2018,7 +2017,7 @@ namespace SgqSystem.Services
             string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                         " +
                            "    <div class=\"container\">                                                                                                                                                  " +
                            "        <div class=\"navbar-header\" style=\"width: 100%\">                                                                                                                    " +
-                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" aria-hidden=\"true\"></i> Data Collection</a>                  " +
+                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" aria-hidden=\"true\"></i> SGQ - Coleta de dados</a>                  " +
                            "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                   " +
                            "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div>          " +
                            "        </div>                                                                                                                                                                 " +
@@ -2031,12 +2030,14 @@ namespace SgqSystem.Services
         {
             string menu = "<div class=\"rightMenu\">                                                                                                  " +
                            "     <div class=\"list-group list-group-inverse rightMenuList\">                                                           " +
-                           "         <a href= \"#\" id=\"btnSync\" class=\"list-group-item\">Sync</a>                                                  " +
+                           "         <a href= \"#\" id=\"btnSync\" class=\"list-group-item\">Sincronizar</a>                                                  " +
+                           "         <a href= \"index.html\" id=\"btnSyncParam\" class=\"list-group-item\" onClick=\"onDeviceReady();\">Parametrizações</a>                                                  " +
+
                            "         <a href= \"#\" id=\"btnLogout\" class=\"list-group-item\">Logout</a>                                              " +
-                           "         <a href= \"#\" id=\"btnLog\" class=\"list-group-item\">View Log</a>                                               " +
-                           "         <a href= \"#\" id=\"btnCollectDB\" class=\"list-group-item\">View DataBase</a>                                    " +
-                           "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">Clear DataBase</a>                                " +
-                           "         <span id=\"version\" class=\"list-group-item\">Version: <span class=\"number\"></span></span>                     " +
+                           "         <a href= \"#\" id=\"btnLog\" class=\"list-group-item\">Visualizar Log</a>                                               " +
+                           "         <a href= \"#\" id=\"btnCollectDB\" class=\"list-group-item\">Visualizar banco de dados</a>                                    " +
+                           "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">Limpar banco de dados</a>                                " +
+                           "         <span id=\"version\" class=\"list-group-item\">Versão: <span class=\"number\"></span></span>                     " +
                            "         <span id=\"ambiente\" class=\"list-group-item\"><span class=\"base\"></span></span>                               " +
                            "     </div>                                                                                                                " +
                            " </div>                                                                                                                    ";
@@ -2045,588 +2046,586 @@ namespace SgqSystem.Services
         }
         public string correctiveAction()
         {
-            string correctiveAction = "<div id=\"correctiveActionModal\" class=\"container panel panel-default modal-padrao\" style=\"display:none\">                                   " +
-            "    <div class=\"panel-body\">                                                                                                               " +
-            "        <!--<div class=\"modal-header\">                                                                                                     " +
-            "            <button type=\"button\" class=\"close\" data-dismiss =\"modal\" aria-hidden=\"true\">×</button >" +
-                "        </div>-->                                                                                                                          " +
-                "        <div class=\"modal-body\"> " +
-                "            <h2>Corrective Action</h2>                                                                                                     " +
-                "            <div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\"> " +
-                "                <span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span> " +
-                "            </div>                                                                                                                         " +
-                "            <div class=\"row formCorrectiveAction\">" +
-                "                                                                                                                                           " +
-                "                <div class=\"panel panel-default\">" +
-                "                    <div class=\"panel-body\"> " +
-                "                        <div class=\"row\"> " +
-                "                            <div class=\"col-xs-6\" id =\"CorrectiveActionTaken\"> " +
-                "                                <b class=\"font16\"> Corrective Action Taken:<br/></b> " +
-                "                                <b>Date/Time:</b> <span id=\"datetime\"></span><br/>                                                  " +
-                "                                <b>Auditor:</b><span id=\"auditor\"></span><br/>                                                  " +
-                "                                                                                                                                           " +
-                "                                   <b> Shift: </b><span id=\"shift\"></span><br/>                                                   " +
-                "                                                                                                                                           " +
-                "                                  </div>                                                                                                 " +
-                "                                                                                                                                           " +
-                "                                <div class=\"col-xs-6\" id =\"AuditInformation\"> " +
-                "                                <b class=\"font16\"> Audit Information:<br/></b> " +
-                "                                <b>Audit: </b><span id=\"auditText\"></span><br/>                                                     " +
-                "                                <b> Start Time: </b><span id=\"starttime\"></span><br/>                                             " +
-                "                                                                                                                                           " +
-                "                                   < b > Period: </b><span id=\"correctivePeriod\"></span>                                              " +
-                "                                                                                                                                           " +
-                "                                  </ div >                                                                                                 " +
-                "                                                                                                                                           " +
-                "                              </ div >                                                                                                     " +
-                "                                                                                                                                           " +
-                "                          </ div >                                                                                                         " +
-                "                                                                                                                                           " +
-                "                      </ div >                                                                                                             " +
-                "                                                                                                                                           " +
-                "                      < div class=\"form-group\"> " +
-                "                    <label>Description of Failure:</label>                                                                                 " +
-                "                    <textarea id = \"DescriptionFailure\" class=\"form-control custom-control\" rows =\"3\" style =\"resize:none\"></ textarea> " +
-                "                </div>                                                                                                                     " +
-                "                <div class=\"form-group\"> " +
-                "                    <label>Immediate Corrective Action:</label>                                                                            " +
-                "                    <textarea id=\"ImmediateCorrectiveAction\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea> " +
-                "                </div>                                                                                                                     " +
-                "                <div class=\"form-group\"> " +
-                "                    <label>Product Disposition:</label>                                                                                    " +
-                "                    <textarea id = \"ProductDisposition\" class=\"form-control custom-control\" rows =\"3\" style =\"resize:none\"></ textarea> " +
-                "                </div>                                                                                                                     " +
-                "                <div class=\"form-group\">" +
-                "                    <label>Preventative Measure:</label>                                                                                   " +
-                "                    <textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows =\"3\" style =\"resize:none\"></textarea> " +
-                "                </div>                                                                                                                     " +
-                "                <div class=\"row\"> " +
-                "                    <div class=\"col-xs-6\"> " +
-                "                        <div class=\"SlaugtherSignature hide\"> " +
-                "                            <h4>Slaughter Signature</h4>                                                                                   " +
-                "                            <div class=\"name\"> Admin </div> " +
-                "                            <div class=\"date\"> 08/24/2016 10:31</div> " +
-                "                            <button class=\"btn btn-link btnSlaugtherSignatureRemove\">Remove Signature </button> " +
-                "                        </div>                                                                                                             " +
-                "                    </div>                                                                                                                 " +
-                "                    <div class=\"col-xs-6\"> " +
-                "                        <div class=\"TechinicalSignature hide\"> " +
-                "                            <h4>Technical Signature</h4>                                                                                   " +
-                "                            <div class=\"name\">Admin2</div> " +
-                "                            <div class=\"date\" >08/24/2016</div> " +
-                "                            <button class=\"btn btn-link btnTechinicalSignatureRemove\">Remove Signature </button> " +
-                "                        </div>                                                                                                             " +
-                "                    </div>                                                                                                                 " +
-                "                </div>                                                                                                                     " +
-                "            </div>                                                                                                                         " +
-                "        </div>                                                                                                                             " +
-                "        <div class=\"modal-footer\"> " +
-                "            <span class=\"pull-left\"> " +
-                "                <button class=\"btn btn-default btnSignature btnSlaugtherSignature\"> " +
-                "                    Slaughter Signature                                                                                                    " +
-                "                </button>                                                                                                                  " +
-                "                                                                                                                                           " +
-                "                <button class=\"btn btn-default btnSignature btnTechinicalSignature\"> " +
-                "                    Technical Signature                                                                                                    " +
-                "                </button>                                                                                                                  " +
-                "                                                                                                                                           " +
-                "            </span>                                                                                                                        " +
-                "                                                                                                                                           " +
-                "            <button class=\"btn btn-danger modal-close-ca\">Close</button > " +
-                "            <button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Send </button> " +
-                "        </div>                                                                                                                             " +
-                "    </div>                                                                                                                                 " +
-                "</div>                                                                                                                                     ";
+            string correctiveAction = "<div id=\"correctiveActionModal\" class=\"container panel panel-default modal-padrao\" style=\"display:none\">" +
+                                          "<div class=\"panel-body\">" +
+                                          "<!--<div class=\"modal-header\">" +
+                                          "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>" +
+                                          "</div>-->" +
+                                          "<div class=\"modal-body\">" +
+                                               "<h2>Corrective Action</h2>" +
+                                          "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
+                                          "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
+                                          "</div>" +
+                                          "<div class=\"row formCorrectiveAction\">" +
+                                            "<div class=\"panel panel-default\">" +
+                                                "<div class=\"panel-body\">" +
+                                                    "<div class=\"row\">" +
+                                                        "<div class=\"col-xs-6\" id=\"CorrectiveActionTaken\">" +
+                                                            "<b class=\"font16\">Corrective Action Taken:<br /></b>" +
+                                                            "<b>Date/Time:</b> <span id=\"datetime\"></span><br/>" +
+                                                            "<b> Auditor: </b><span id=\"auditor\"></span><br/>" +
+                                                            "<b> Shift: </b><span id=\"shift\"></span><br/>" +
+                                                            "</div>" +
+                                                            "<div class=\"col-xs-6\" id=\"AuditInformation\">" +
+                                                            "<b class=\"font16\">Audit Information:<br/></b>" +
+                                                            "<b>Audit: </b><span id=\"auditText\"></span><br/>" +
+                                                            "<b>Start Time:</b><span id=\"starttime\"></span><br/>" +
+                                                            "<b>Period:</b><span id=\"correctivePeriod\"></span>" +
+                                                            "</div>" +
+                                                            "</div>" +
+                                                      "</div>" +
+                                                    "</div>" +
+                                                      "<div class=\"form-group\">" +
+                                                        "<label>Description of Failure:</label>" +
+                                                        "<textarea id=\"DescriptionFailure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
+                                                    "</div>" +
+                                                    "<div class=\"form-group\">" +
+                                                        "<label>Immediate Corrective Action:</label>" +
+                                                        "<textarea id=\"ImmediateCorrectiveAction\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
+                                                    "</div>" +
+                                                    "<div class=\"form-group\">" +
+                                                        "<label>Product Disposition:</label>" +
+                                                        "<textarea id=\"ProductDisposition\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
+                                                    "</div>" +
+                                                    "<div class=\"form-group\">" +
+                                                        "<label>Preventative Measure:</label>" +
+                                                        "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
+                                                    "</div>" +
+                                                    "<div class=\"row\">" +
+                                                        "<div class=\"col-xs-6\">" +
+                                                            "<div class=\"SlaugtherSignature hide\">" +
+                                                            "<h4>Slaughter Signature</h4>" +
+                                                            "<div class=\"name\">Admin</div>" +
+                                                            "<div class=\"date\">08/24/2016 10:31</div>" +
+                                                             "<button class=\"btn btn-link btnSlaugtherSignatureRemove\">Remove Signature</button>" +
+                                                        "</div>" +
+                                                    "</div>" +
+                                                    "<div class=\"col-xs-6\">" +
+                                                        "<div class=\"TechinicalSignature hide\">" +
+                                                        "<h4>Technical Signature</h4>" +
+                                                        "<div class=\"name\">Admin2</div>" +
+                                                        "<div class=\"date\">08/24/2016</div>" +
+                                                        "<button class=\"btn btn-link btnTechinicalSignatureRemove\">Remove Signature</button>" +
+                                                                    "</div>" +
+                                                                "</div>" +
+                                                            "</div>" +
+                                                        "</div>" +
+                                                    "</div>" +
+                                                    "<div class=\"modal-footer\">" +
+                                                        "<span class=\"pull-left\">" +
+                                                            //"<button class=\"btn btn-default btnSignature btnSlaugtherSignature hide\">" +
+                                                            //    "Slaughter Signature" +
+                                                            //"</button>" +
+                                                            //"<button class=\"btn btn-default btnSignature btnTechinicalSignature hide\">" +
+                                                            //    "Technical Signature" +
+                                                            //"</button>" +
+                                                        "</span>" +
+
+                                                        "<button class=\"btn btn-danger modal-close-ca\">Close</button>" +
+                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Send</button>" +
+                                                    "</div>" +
+                                                "</div>" +
+                                                "</div>";
+
             return correctiveAction;
         }
 
-        public string footer()
+    public string footer()
+    {
+        string foot = "<footer class=\"footer\">                                                                                                                                       " +
+                      "   <p style=\"color:white; margin-left:16px; margin-right:16px; margin-top: 12px;\">                                                                      " +
+                      "       <span class=\"user\">Admin</span> - <span class=\"unit\">Colorado</span> | <span class=\"urlPrefix\"></span>                                          " +
+                      "       <span class=\"status pull-right\"></span>                                                                                                          " +
+                      "   </p>                                                                                                                                                   " +
+                      "</footer>                                                                                                                                                 ";
+
+        return foot;
+    }
+    /// <summary>
+    /// Recupera Level1 e seus monitoramentos e tarefas relacionados
+    /// </summary>
+    /// <returns></returns>
+    public string GetLevel01(int ParCompany_Id, DateTime dataCollect)
+    {
+        ///SE NÃO HOUVER NENHUM LEVEL1, LEVEL2, LEVEL3 INFORMAR QUE NÃO ENCONTROU MONITORAMENTOS
+        var html = new Html();
+
+        //Instanciamos a Classe ParLevel01 Dapper
+        var ParLevel1DB = new SGQDBContext.ParLevel1();
+        //Inicaliza ParLevel1VariableProduction
+        var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
+
+        //Buscamos os ParLevel11 para a unidade selecionada
+        var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id);
+
+        //Agrupamos o ParLevel1 por ParCriticalLevel
+        var parLevel1GroupByCriticalLevel = parLevel1List.OrderBy(p => p.ParCriticalLevel_Id).GroupBy(p => p.ParCriticalLevel_Id);
+
+        //Instanciamos uma variável para não gerenciar a utilizar do ParCriticalLevel
+        bool ParCriticalLevel = false;
+
+        //Instanciamos uma variável para instanciar a lista de level1, level2 e level3
+        //Esses itens podem ser transformados funções menores
+        string listlevel1 = null;
+        string listLevel2 = null;
+        string listLevel3 = null;
+        //Percorremos a lista de agrupada
+        foreach (var parLevel1Group in parLevel1GroupByCriticalLevel)
         {
-            string foot = "<footer class=\"footer\">                                                                                                                                       " +
-                          "   <p style=\"color:white; margin-left:16px; margin-right:16px; margin-top: 12px;\">                                                                      " +
-                          "       <span class=\"user\">Admin</span> - <span class=\"unit\">Colorado</span><span class=\"urlPrefix\"></span>                                          " +
-                          "       <span class=\"status pull-right\"></span>                                                                                                          " +
-                          "   </p>                                                                                                                                                   " +
-                          "</footer>                                                                                                                                                 ";
-
-            return foot;
-        }
-        /// <summary>
-        /// Recupera Level1 e seus monitoramentos e tarefas relacionados
-        /// </summary>
-        /// <returns></returns>
-        public string GetLevel01(int ParCompany_Id, DateTime dataCollect)
-        {
-            ///SE NÃO HOUVER NENHUM LEVEL1, LEVEL2, LEVEL3 INFORMAR QUE NÃO ENCONTROU MONITORAMENTOS
-            var html = new Html();
-
-            //Instanciamos a Classe ParLevel01 Dapper
-            var ParLevel1DB = new SGQDBContext.ParLevel1();
-            //Inicaliza ParLevel1VariableProduction
-            var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
-
-            //Buscamos os ParLevel11 para a unidade selecionada
-            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id);
-
-            //Agrupamos o ParLevel1 por ParCriticalLevel
-            var parLevel1GroupByCriticalLevel = parLevel1List.OrderBy(p => p.ParCriticalLevel_Id).GroupBy(p => p.ParCriticalLevel_Id);
-
-            //Instanciamos uma variável para não gerenciar a utilizar do ParCriticalLevel
-            bool ParCriticalLevel = false;
-
-            //Instanciamos uma variável para instanciar a lista de level1, level2 e level3
-            //Esses itens podem ser transformados funções menores
-            string listlevel1 = null;
-            string listLevel2 = null;
-            string listLevel3 = null;
-            //Percorremos a lista de agrupada
-            foreach (var parLevel1Group in parLevel1GroupByCriticalLevel)
+            //Instanciamos uma variável level01GroupList
+            string level01GroupList = null;
+            //Instanciamos uma variável list parLevel1 para adicionar os parLevel1
+            string parLevel1 = null;
+            //Instanciamos uma variável para verificar o nome do ParCriticalLevel
+            string nameParCritialLevel = null;
+            //Percorremos a Lista dos Agrupamento
+            foreach (var parlevel1 in parLevel1Group)
             {
-                //Instanciamos uma variável level01GroupList
-                string level01GroupList = null;
-                //Instanciamos uma variável list parLevel1 para adicionar os parLevel1
-                string parLevel1 = null;
-                //Instanciamos uma variável para verificar o nome do ParCriticalLevel
-                string nameParCritialLevel = null;
-                //Percorremos a Lista dos Agrupamento
-                foreach (var parlevel1 in parLevel1Group)
+                string tipoTela = "";
+
+                var variableList = ParLevel1VariableProductionDB.getVariable(parlevel1.Id).ToList();
+
+                if (variableList.Count > 0)
                 {
-                    string tipoTela = "";
+                    tipoTela = variableList[0].Name;
+                }
+                //Se o ParLevel1 contem um ParCritialLevel_Id
+                var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas();
+                var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dataCollect);
 
-                    var variableList = ParLevel1VariableProductionDB.getVariable(parlevel1.Id).ToList();
-
-                    if (variableList.Count > 0)
-                    {
-                        tipoTela = variableList[0].Name;
-                    }
-                    //Se o ParLevel1 contem um ParCritialLevel_Id
-                    var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas();
-                    var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dataCollect);
-
-                    if (parlevel1.ParCriticalLevel_Id > 0)
-                    {
-                        //O ParLevel1 vai estar dentro de um accordon
-                        ParCriticalLevel = true;
-                        //Pego o nome do ParCriticalLevel para não precisar fazer outra pesquisa
-                        nameParCritialLevel = parlevel1.ParCriticalLevel_Name;
+                if (parlevel1.ParCriticalLevel_Id > 0)
+                {
+                    //O ParLevel1 vai estar dentro de um accordon
+                    ParCriticalLevel = true;
+                    //Pego o nome do ParCriticalLevel para não precisar fazer outra pesquisa
+                    nameParCritialLevel = parlevel1.ParCriticalLevel_Name;
                         //Incremento os itens que estaram no ParLevel1                
                         //Gera linha Level1
-                        string level01 = html.level1(parlevel1,
-                                                     tipoTela: tipoTela,
-                                                     totalAvaliado: 0,
-                                                     totalDefeitos: 0,
-                                                     alertNivel1: alertas.Nivel1,
-                                                     alertNivel2: alertas.Nivel2,
-                                                     alertaNivel3: alertas.Nivel3,
-                                                     alertaAtual: 0,
-                                                     avaliacaoultimoalerta: 0);
-                        //Incrementa level1
-                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
-                    }
-                    else
-                    {
-                        //Caso o ParLevel1 não contenha um ParCritialLevel_Id apenas incremento os itens de ParLevel1
-                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name);
-                    }
-                    //Instancia variável para receber todos os level3
-                    string level3Group = null;
 
-                    //Busca os Level2 e reforna no level3Group;
-                    listLevel2 += GetLevel02(parlevel1, ParCompany_Id, ref level3Group);
+                        decimal alertaNivel1 = 0;
+                        decimal alertaNivel2 = 0;
+                        decimal alertaNivel3 = 0;
+                        if(alertas != null)
+                        {
+                            alertaNivel1 = alertas.Nivel1;
+                            alertaNivel2 = alertas.Nivel2;
+                            alertaNivel3 = alertas.Nivel3;
+                        }
 
-                    //Incrementa Level3Group
-                    listLevel3 += level3Group;
-                }
-                //Quando termina o loop dos itens agrupados por ParCritialLevel 
-                //Se contem ParCritialLevel
-                if (ParCriticalLevel == true)
-                {
-                    Html.bootstrapcolor? color = null;
-                    if (parLevel1Group.Key == 1)
-                    {
-                        color = Html.bootstrapcolor.danger;
-                    }
-                    else if (parLevel1Group.Key == 2)
-                    {
-                        color = Html.bootstrapcolor.warning;
-                    }
-                    else if (parLevel1Group.Key == 3)
-                    {
-                        color = Html.bootstrapcolor.info;
-                    }
-                    //Adicionamos os itens em um acordeon
-                    parLevel1 = html.accordeon(
-                                                id: parLevel1Group.Key.ToString(),
-                                                label: nameParCritialLevel,
-                                                color: color,
-                                                outerhtml: parLevel1);
+                    string level01 = html.level1(parlevel1,
+                                                 tipoTela: tipoTela,
+                                                 totalAvaliado: 0,
+                                                 totalDefeitos: 0,
+                                                 alertNivel1: alertaNivel1,
+                                                 alertNivel2: alertaNivel2,
+                                                 alertaNivel3: alertaNivel3,
+                                                 alertaAtual: 0,
+                                                 avaliacaoultimoalerta: 0);
+                    //Incrementa level1
+                    parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
                 }
                 else
                 {
-                    //Adicionamos os itens e um listgroup
-                    level01GroupList = html.listgroup(
-                                                   outerhtml: parLevel1
-                                                );
+                    //Caso o ParLevel1 não contenha um ParCritialLevel_Id apenas incremento os itens de ParLevel1
+                    parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name);
                 }
-                //Adicionar a lista de level01 agrupados ou não a lsita geral
-                listlevel1 += parLevel1;
+                //Instancia variável para receber todos os level3
+                string level3Group = null;
+
+                //Busca os Level2 e reforna no level3Group;
+                listLevel2 += GetLevel02(parlevel1, ParCompany_Id, ref level3Group);
+
+                //Incrementa Level3Group
+                listLevel3 += level3Group;
             }
-            //Retona as lista
-            //Podemos gerar uma verificação de atualizações
-            return html.div(
-                            outerhtml: listlevel1,
-                            classe: "level1List"
-                            ) +
-                   html.div(
-                            outerhtml: listLevel2,
-                            classe: "level2List col-xs-12 hide"
-                           ) +
-                   html.div(
-                            outerhtml: listLevel3,
-                            classe: "level3List  List col-xs-12 hide"
-                           );
-
-        }
-		 /// <summary>
-        /// Gera Linhas do level2
-        /// </summary>
-        /// <param name="ParLevel1"></param>
-        /// <param name="ParCompany_Id"></param>
-        /// <param name="level3Group"></param>
-        /// <returns></returns>
-        public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, ref string level3Group)
-        {
-            //Inicializa ParLevel2
-            var ParLevel2DB = new SGQDBContext.ParLevel2();
-            //Pega uma lista de ParLevel2
-            //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
-            var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id);
-
-            //Inicializa Cabecalhos
-            var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
-            //Inicaliza ParFieldType
-            var ParFieldTypeDB = new SGQDBContext.ParFieldType();
-
-            var html = new Html();
-
-            //Instancia parLevel2List
-            string ParLevel2List = null;
-            //Instancia headerlist
-            string headerList = null;
-
-            //Inicializa Avaliações e Amostras
-            var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate();
-            var ParSampleDB = new SGQDBContext.ParLevel2Sample();
-
-            //Verifica avaliações padrão
-            var ParEvaluatePadrao = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
-                                                              ParCompany_Id: null);
-
-            //Verifica avaliações pela company informada
-            var ParEvaluateCompany = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
-                                                               ParCompany_Id: ParCompany_Id);
-
-            //Verifia amostra padrão
-            var ParSamplePadrao = ParSampleDB.getSample(ParLevel1: ParLevel1,
-                                                        ParCompany_Id: null);
-
-            //Verifica amostra pela company informada
-            var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
-                                                        ParCompany_Id: ParCompany_Id);
-            
-            //Enquando houver lista de level2
-            foreach (var parlevel2 in parlevel02List)
+            //Quando termina o loop dos itens agrupados por ParCritialLevel 
+            //Se contem ParCritialLevel
+            if (ParCriticalLevel == true)
             {
-                //Verifica se pega avaliações e amostras padrão ou da company
-                int evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
-                int sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
-
-                //Colocar função de gerar cabeçalhos por selectbox
-                //Monta os cabecalhos
-                #region Cabecalhos e Contadores
-                string headerCounter = html.div(
-                                               outerhtml: null,
-                                               classe: "col-xs-2"
-                                             ) +
-                                     html.div(
-                                               outerhtml: null,
-                                               classe: "col-xs-2"
-                                             ) +
-                                     html.div(
-                                               outerhtml: "<b>Avaliaçoes</b>",
-                                               classe: "col-xs-4",
-                                               style: "text-align:center"
-                                             ) +
-                                     html.div(
-                                               outerhtml: "<b>Amostras</b>",
-                                               classe: "col-xs-4",
-                                               style: "text-align:center"
-                                             ); ;
-
-                headerCounter = html.div(
-                                    //aqui vai os botoes
-                                    outerhtml: headerCounter,
-                                    classe: "counters col-xs-4"
-                                    );
-
-
-                string classXSLevel2 = " col-xs-5";
-                string counters = html.div(
-                                                outerhtml: null,
-                                                classe: "col-xs-2"
-                                              ) +
-                                      html.div(
-                                                outerhtml: null,
-                                                classe: "col-xs-2"
-                                              ) +
-                                      html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
-                                                classe: "col-xs-4",
-                                                style: "text-align:center"
-                                              ) +
-                                      html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal"),
-                                                classe: "col-xs-4",
-                                                style: "text-align:center"
-                                              );
-
-                counters = html.div(
-                                    //aqui vai os botoes
-                                    outerhtml: counters,
-                                    classe: "counters col-xs-4"
-                                    );
-
-                #endregion
-                string buttons = null;
-                string buttonsHeaders = null;
-                //Caso tenha funções de não aplicado, coloca os botões nas respectivas linhas
-                //Como vai ficar se o item tem varias avaliações?vai ter botão salvar na linha do monitoramento?
-                if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true)
+                Html.bootstrapcolor? color = null;
+                if (parLevel1Group.Key == 1)
                 {
-                    string btnNotAvaliable = null;
-                    if (ParLevel1.HasNoApplicableLevel2)
-                    {
-                        btnNotAvaliable =  "<button class=\"btn btn-warning btnNotAvaliableLevel2 na\"> " +
-                                           "   <span class=\"cursorPointer iconsArea\">N/A</span> " +
-                                           "</button>                                             ";
-                    }
-                    string btnAreaSave = null;
-                    if(ParLevel1.HasSaveLevel2)
-                    {
-                        btnAreaSave =  "<button class=\"btn btn-success hide btnAreaSaveConfirm\">                                                    " +
-                                       "   <span class=\"cursorPointer\">Confirm? <i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
-                                       "</button>                                                                                                      " +
-                                       "<button class=\"btn btn-primary btnAreaSave\">                                                                 " +
-                                       "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i></span>        " +
-                                       "</button>                                                                                                      ";
-                    }
-                    buttons = html.div(
-                                 //aqui vai os botoes
-                                 outerhtml: btnAreaSave +
-                                            btnNotAvaliable,
-                                 style: "text-align: right",
-                                 classe: "userInfo col-xs-3"
-                                 );
-
-                    buttonsHeaders = html.div(
-                                             outerhtml: null,
-                                             classe: "userInfo col-xs-3"
-                                             );
+                    color = Html.bootstrapcolor.danger;
                 }
-                else
+                else if (parLevel1Group.Key == 2)
                 {
-                    classXSLevel2 = " col-xs-8";
+                    color = Html.bootstrapcolor.warning;
                 }
+                else if (parLevel1Group.Key == 3)
+                {
+                    color = Html.bootstrapcolor.info;
+                }
+                //Adicionamos os itens em um acordeon
+                parLevel1 = html.accordeon(
+                                            id: parLevel1Group.Key.ToString(),
+                                            label: nameParCritialLevel,
+                                            color: color,
+                                            outerhtml: parLevel1);
+            }
+            else
+            {
+                //Adicionamos os itens e um listgroup
+                level01GroupList = html.listgroup(
+                                               outerhtml: parLevel1
+                                            );
+            }
+            //Adicionar a lista de level01 agrupados ou não a lsita geral
+            listlevel1 += parLevel1;
+        }
+        //Retona as lista
+        //Podemos gerar uma verificação de atualizações
+        return html.div(
+                        outerhtml: listlevel1,
+                        classe: "level1List"
+                        ) +
+               html.div(
+                        outerhtml: listLevel2,
+                        classe: "level2List col-xs-12 hide"
+                       ) +
+               html.div(
+                        outerhtml: listLevel3,
+                        classe: "level3List  List col-xs-12 hide"
+                       );
 
-                string level02Header = html.div(classe: classXSLevel2) +
-                                       headerCounter +
-                                       buttonsHeaders;
+    }
+    /// <summary>
+    /// Gera Linhas do level2
+    /// </summary>
+    /// <param name="ParLevel1"></param>
+    /// <param name="ParCompany_Id"></param>
+    /// <param name="level3Group"></param>
+    /// <returns></returns>
+    public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, ref string level3Group)
+    {
+        //Inicializa ParLevel2
+        var ParLevel2DB = new SGQDBContext.ParLevel2();
+        //Pega uma lista de ParLevel2
+        //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
+        var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id);
 
-                headerList = html.listgroupItem(
+        //Inicializa Cabecalhos
+        var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
+        //Inicaliza ParFieldType
+        var ParFieldTypeDB = new SGQDBContext.ParFieldType();
+
+        var html = new Html();
+
+        //Instancia parLevel2List
+        string ParLevel2List = null;
+        //Instancia headerlist
+        string headerList = null;
+
+        //Inicializa Avaliações e Amostras
+        var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate();
+        var ParSampleDB = new SGQDBContext.ParLevel2Sample();
+
+        //Verifica avaliações padrão
+        var ParEvaluatePadrao = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
+                                                          ParCompany_Id: null);
+
+        //Verifica avaliações pela company informada
+        var ParEvaluateCompany = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
+                                                           ParCompany_Id: ParCompany_Id);
+
+        //Verifia amostra padrão
+        var ParSamplePadrao = ParSampleDB.getSample(ParLevel1: ParLevel1,
+                                                    ParCompany_Id: null);
+
+        //Verifica amostra pela company informada
+        var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
+                                                    ParCompany_Id: ParCompany_Id);
+
+        //Enquando houver lista de level2
+        foreach (var parlevel2 in parlevel02List)
+        {
+            //Verifica se pega avaliações e amostras padrão ou da company
+            int evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
+            int sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
+
+            //Colocar função de gerar cabeçalhos por selectbox
+            //Monta os cabecalhos
+            #region Cabecalhos e Contadores
+            string headerCounter = html.div(
+                                           outerhtml: null,
+                                           classe: "col-xs-2"
+                                         ) +
+                                 html.div(
+                                           outerhtml: null,
+                                           classe: "col-xs-2"
+                                         ) +
+                                 html.div(
+                                           outerhtml: "<b>Av.</b>",
+                                           classe: "col-xs-4",
+                                           style: "text-align:center"
+                                         ) +
+                                 html.div(
+                                           outerhtml: "<b>Am.</b>",
+                                           classe: "col-xs-4",
+                                           style: "text-align:center"
+                                         ); ;
+
+            headerCounter = html.div(
+                                //aqui vai os botoes
+                                outerhtml: headerCounter,
+                                classe: "counters col-xs-4"
+                                );
+
+
+            string classXSLevel2 = " col-xs-5";
+            string counters = html.div(
+                                            outerhtml: null,
+                                            classe: "col-xs-2"
+                                          ) +
+                                  html.div(
+                                            outerhtml: null,
+                                            classe: "col-xs-2"
+                                          ) +
+                                  html.div(
+                                            outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
+                                            classe: "col-xs-4",
+                                            style: "text-align:center"
+                                          ) +
+                                  html.div(
+                                            outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal"),
+                                            classe: "col-xs-4",
+                                            style: "text-align:center"
+                                          );
+
+            counters = html.div(
+                                //aqui vai os botoes
+                                outerhtml: counters,
+                                classe: "counters col-xs-4"
+                                );
+
+            #endregion
+            string buttons = null;
+            string buttonsHeaders = null;
+            //Caso tenha funções de não aplicado, coloca os botões nas respectivas linhas
+            //Como vai ficar se o item tem varias avaliações?vai ter botão salvar na linha do monitoramento?
+            if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true)
+            {
+                string btnNotAvaliable = null;
+                if (ParLevel1.HasNoApplicableLevel2)
+                {
+                    btnNotAvaliable = "<button class=\"btn btn-warning btnNotAvaliableLevel2 na\"> " +
+                                       "   <span class=\"cursorPointer iconsArea\">N/A</span> " +
+                                       "</button>                                             ";
+                }
+                string btnAreaSave = null;
+                if (ParLevel1.HasSaveLevel2)
+                {
+                    btnAreaSave = "<button class=\"btn btn-success hide btnAreaSaveConfirm\">                                                    " +
+                                   "   <span class=\"cursorPointer\">Confirm? <i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
+                                   "</button>                                                                                                      " +
+                                   "<button class=\"btn btn-primary btnAreaSave\">                                                                 " +
+                                   "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i></span>        " +
+                                   "</button>                                                                                                      ";
+                }
+                buttons = html.div(
+                             //aqui vai os botoes
+                             outerhtml: btnAreaSave +
+                                        btnNotAvaliable,
+                             style: "text-align: right",
+                             classe: "userInfo col-xs-3"
+                             );
+
+                buttonsHeaders = html.div(
+                                         outerhtml: null,
+                                         classe: "userInfo col-xs-3"
+                                         );
+            }
+            else
+            {
+                classXSLevel2 = " col-xs-8";
+            }
+
+            string level02Header = html.div(classe: classXSLevel2) +
+                                   headerCounter +
+                                   buttonsHeaders;
+
+            headerList = html.listgroupItem(
+                                            classe: "row",
+                                            outerhtml: level02Header
+                                           );
+
+            //podemos aplicar os defeitos
+            string level2 = html.level2(id: parlevel2.Id.ToString(),
+                                        label: parlevel2.Name,
+                                        classe: classXSLevel2,
+                                        evaluate: evaluate,
+                                        sample: sample);
+
+            //Gera linha do Level2
+            ParLevel2List += html.listgroupItem(
+                                                id: parlevel2.Id.ToString(),
                                                 classe: "row",
-                                                outerhtml: level02Header
-                                               );
+                                                outerhtml: level2 +
+                                                           counters +
+                                                           buttons
+                                                );
 
-                //podemos aplicar os defeitos
-                string level2 = html.level2(id: parlevel2.Id.ToString(),
-                                            label: parlevel2.Name,
-                                            classe: classXSLevel2,
-                                            evaluate: evaluate,
-                                            sample: sample);
-
-                //Gera linha do Level2
-                ParLevel2List += html.listgroupItem(
-                                                    id: parlevel2.Id.ToString(),
-                                                    classe: "row",
-                                                    outerhtml: level2 +
-                                                               counters +
-                                                               buttons
-                                                    );
-
-                //Gera monitoramento do level3
-                string groupLevel3 = GetLevel03(ParLevel1, parlevel2);
-                level3Group += groupLevel3;
-            }
-            //aqui tem que fazer a pesquisa se tem itens sao do level1 ex: cca,htp
-            //quando tiver cabecalhos tem que replicar no level1
-
-            ParLevel2List = headerList +
-                            ParLevel2List;
-
-            var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.Id), ParFieldTypeDB, html);
-
-            painelLevel2HeaderListHtml = html.listgroupItem(
-                                                            outerhtml: painelLevel2HeaderListHtml,
-                                                            classe: "row"
-                                                            );
-            //Se contem  monitoramentos
-            if (!string.IsNullOrEmpty(ParLevel2List))
-            {
-                //Gera agrupamento dw Level2 para o Level1
-                ParLevel2List = html.listgroup(
-                                                outerhtml: painelLevel2HeaderListHtml +
-                                                           ParLevel2List,
-                                                tags: "level01Id=\"" + ParLevel1.Id + "\""
-                                               , classe: "level2Group hide");
-            }
-
-            return ParLevel2List;
+            //Gera monitoramento do level3
+            string groupLevel3 = GetLevel03(ParLevel1, parlevel2);
+            level3Group += groupLevel3;
         }
-        public string GetHeaderHtml(IEnumerable<ParLevelHeader> list, ParFieldType ParFieldTypeDB, Html html)
+        //aqui tem que fazer a pesquisa se tem itens sao do level1 ex: cca,htp
+        //quando tiver cabecalhos tem que replicar no level1
+
+        ParLevel2List = headerList +
+                        ParLevel2List;
+
+        var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.Id), ParFieldTypeDB, html);
+
+        painelLevel2HeaderListHtml = html.listgroupItem(
+                                                        outerhtml: painelLevel2HeaderListHtml,
+                                                        classe: "row"
+                                                        );
+        //Se contem  monitoramentos
+        if (!string.IsNullOrEmpty(ParLevel2List))
         {
-            string retorno = "";
-
-            foreach (var header in list)
-            {
-                var label = "<label class=\"font-small\">" + header.ParHeaderField_Name + "</label>";
-
-                var form_control = "";
-
-                //ParFieldType 
-                switch (header.ParFieldType_Id)
-                {
-                    //Multipla Escolha
-                    case 1:
-                        var listMultiple = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id); 
-                        var optionsMultiple = "";
-                        foreach (var value in listMultiple)
-                        {
-                            optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
-                        }
-                        form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\""  + header.ParFieldType_Id + "\">" + optionsMultiple + "</select>";
-                        break;
-                    //Integrações
-                    case 2:
-                        form_control = "<div class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id = \"" + header.ParFieldType_Id + "\">" + header.ParHeaderField_Name + "</div>";
-                        break;
-                    //Binário
-                    case 3:
-                        var listBinario = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
-                        var optionsBinario = "";
-                        foreach (var value in listBinario)
-                        {
-                            optionsBinario += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
-                        }
-                        form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>" + optionsBinario + "</select>";
-                        break;
-                    //Texto
-                    case 4:
-                        form_control = "<input class=\"form-control input-sm\" type=\"text\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
-                        break;
-                    //Numérico
-                    case 5:
-                        form_control = "<input class=\"form-control input-sm\" type=\"number\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
-                        break;
-                    //Data
-                    case 6:
-                        form_control = "<input class=\"form-control input-sm\" type=\"date\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
-                        break;
-                }
-
-                var form_group = html.div(
-                                            outerhtml: label + form_control,
-                                            classe: "form-group header",
-                                            style: "margin-bottom: 4px;"
-                                            );
-
-                retorno += html.div(
-                                            outerhtml: form_group,
-                                            classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
-                                            style: "padding-right: 4px !important; padding-left: 4px !important;"
-                                            );
-
-            }
-
-            return retorno;
+            //Gera agrupamento dw Level2 para o Level1
+            ParLevel2List = html.listgroup(
+                                            outerhtml: painelLevel2HeaderListHtml +
+                                                       ParLevel2List,
+                                            tags: "level01Id=\"" + ParLevel1.Id + "\""
+                                           , classe: "level2Group hide");
         }
-        /// <summary>
-        /// Retorna Level3 
-        /// </summary>
-        /// <param name="ParLevel1"></param>
-        /// <param name="ParLevel2"></param>
-        /// <returns></returns>
-        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2)
+
+        return ParLevel2List;
+    }
+    public string GetHeaderHtml(IEnumerable<ParLevelHeader> list, ParFieldType ParFieldTypeDB, Html html)
+    {
+        string retorno = "";
+
+        foreach (var header in list)
         {
-            var html = new Html();
+            var label = "<label class=\"font-small\">" + header.ParHeaderField_Name + "</label>";
 
-            //Inicializa ParLevel3
-            var ParLevel3DB = new SGQDBContext.ParLevel3();
+            var form_control = "";
 
-            //Inicializa Cabecalhos
-            var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
-            //Inicaliza ParFieldType
-            var ParFieldTypeDB = new SGQDBContext.ParFieldType();
-            //Inicaliza ParLevel1VariableProduction
-            var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
-
-
-            //Pega uma lista de parleve3
-            //pode colocar par level3 por unidades, como nos eua
-            var parlevel3List = ParLevel3DB.getLevel3ByLevel2(ParLevel2.Id);
-
-            //Coloca botão de não avaliado ParLevel3
-            //vai ter que ter uma configuração na parametrização
-            string btnNaoAvaliado = html.button(
-                                       label: html.span(
-                                                         classe: "cursorPointer iconsArea",
-                                                         outerhtml: "N/A"
-                                                        ),
-                                       classe: "btn-warning btnNotAvaliable na font11"
-                                   );
-
-            string tipoTela = "";
-
-            var variableList = ParLevel1VariableProductionDB.getVariable(ParLevel1.Id).ToList();
-
-            if(variableList.Count > 0)
+            //ParFieldType 
+            switch (header.ParFieldType_Id)
             {
-                tipoTela = variableList[0].Name;
-            }
-
-            //Tela de bem estar animal
-            if (tipoTela.Equals("BEA"))
-            {
-                //Instancia uma veriavel para gerar o agrupamento
-                string parLevel3Group = null;
-
-                foreach (var parLevel3 in parlevel3List)
-                {
-
-                    string classInput = null;
-                    string tags = null;
-                    string labels = null;
-                    string input = null;
-
-                    //Se for booelan
-                    if (parLevel3.ParLevel3InputType_Id == 1)
+                //Multipla Escolha
+                case 1:
+                    var listMultiple = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
+                    var optionsMultiple = "";
+                    foreach (var value in listMultiple)
                     {
-                        classInput = " boolean";
-                        input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+                        optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                     }
-                    else
+                    form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsMultiple + "</select>";
+                    break;
+                //Integrações
+                case 2:
+                    form_control = "<div class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id = \"" + header.ParFieldType_Id + "\">" + header.ParHeaderField_Name + "</div>";
+                    break;
+                //Binário
+                case 3:
+                    var listBinario = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
+                    var optionsBinario = "";
+                    foreach (var value in listBinario)
                     {
-                        //se não é um intervalo
-                        //tem que gerar uma mascara para os inputs e para os labels
+                        optionsBinario += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
+                    }
+                    form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>" + optionsBinario + "</select>";
+                    break;
+                //Texto
+                case 4:
+                    form_control = "<input class=\"form-control input-sm\" type=\"text\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
+                    break;
+                //Numérico
+                case 5:
+                    form_control = "<input class=\"form-control input-sm\" type=\"number\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
+                    break;
+                //Data
+                case 6:
+                    form_control = "<input class=\"form-control input-sm\" type=\"date\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
+                    break;
+            }
+
+            var form_group = html.div(
+                                        outerhtml: label + form_control,
+                                        classe: "form-group header",
+                                        style: "margin-bottom: 4px;"
+                                        );
+
+            retorno += html.div(
+                                        outerhtml: form_group,
+                                        classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                                        style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                        );
+
+        }
+
+        return retorno;
+    }
+    /// <summary>
+    /// Retorna Level3 
+    /// </summary>
+    /// <param name="ParLevel1"></param>
+    /// <param name="ParLevel2"></param>
+    /// <returns></returns>
+    public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2)
+    {
+        var html = new Html();
+
+        //Inicializa ParLevel3
+        var ParLevel3DB = new SGQDBContext.ParLevel3();
+
+        //Inicializa Cabecalhos
+        var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
+        //Inicaliza ParFieldType
+        var ParFieldTypeDB = new SGQDBContext.ParFieldType();
+        //Inicaliza ParLevel1VariableProduction
+        var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
+
+
+        //Pega uma lista de parleve3
+        //pode colocar par level3 por unidades, como nos eua
+        var parlevel3List = ParLevel3DB.getLevel3ByLevel2(ParLevel2.Id);
+
+        //Coloca botão de não avaliado ParLevel3
+        //vai ter que ter uma configuração na parametrização
+        string btnNaoAvaliado = html.button(
+                                   label: html.span(
+                                                     classe: "cursorPointer iconsArea",
+                                                     outerhtml: "N/A"
+                                                    ),
+                                   classe: "btn-warning btnNotAvaliable na font11"
+                               );
+
+        string tipoTela = "";
+
+        var variableList = ParLevel1VariableProductionDB.getVariable(ParLevel1.Id).ToList();
+
+        if (variableList.Count > 0)
+        {
+            tipoTela = variableList[0].Name;
+        }
+
+        //Tela de bem estar animal
+        if (tipoTela.Equals("BEA"))
+        {
+            //Instancia uma veriavel para gerar o agrupamento
+            string parLevel3Group = null;
+
+            foreach (var parLevel3 in parlevel3List)
+            {
+
+                string classInput = null;
+                string tags = null;
+                string labels = null;
+                string input = null;
+
+                //Se for booelan
+                if (parLevel3.ParLevel3InputType_Id == 1)
+                {
+                    classInput = " boolean";
+                    input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+                }
+                else if (parLevel3.ParLevel3InputType_Id == 3)
+                {
                         classInput = " interval";
                         tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
 
@@ -2640,264 +2639,282 @@ namespace SgqSystem.Services
                                                         intervalMin: parLevel3.IntervalMin,
                                                         intervalMax: parLevel3.IntervalMax,
                                                         unitName: parLevel3.ParMeasurementUnit_Name);
-
                     }
-
-                    //Gera o level3
-                    string level3 = html.link(
-                                                outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
-                                                classe: "col-xs-4"
-                                                );
-                    //gera os labels
-                    labels = html.div(
-                                            outerhtml: labels,
-                                            classe: "col-xs-3"
-                                        );
-
-                    //gera os contadores
-                    string counters = html.div(
-                                                outerhtml: input,
-                                                classe: "col-xs-3 counters"
-                                                );
-                    //gera os botoes
-                    string buttons = html.div(
-                                                outerhtml: btnNaoAvaliado,
-                                                classe: "col-xs-2",
-                                                style: "text-align:right"
-                                                );
-                    //Comandos para intervalos
-                    //tipo do input level3
-                    //
+                else
+                {
+                    //se não é um intervalo
+                    //tem que gerar uma mascara para os inputs e para os labels
+                    classInput = " interval";
                     tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
 
+                    labels = html.div(
+                                        outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                        classe: "font10",
+                                        style: "font-size: 11px; margin-top:7px;"
+                                    );
 
-                    string level3List = html.listgroupItem(
-                                                            id: parLevel3.Id.ToString(),
-                                                            classe: "level3 row" + classInput,
-                                                            tags: tags,
-                                                            outerhtml: level3 +
-                                                                        labels +
-                                                                        counters +
-                                                                        buttons
-                                                        );
-
-                    parLevel3Group += level3List;
+                    input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                    intervalMin: parLevel3.IntervalMin,
+                                                    intervalMax: parLevel3.IntervalMax,
+                                                    unitName: parLevel3.ParMeasurementUnit_Name);
 
                 }
 
-                //< div class="form-group">
-                //      <label for="email" style="
-                //    display: inherit;
-                //">Email:</label>
-                //      <label for="email" style="display: inline-block">Email:</label>
-                //    </div>
+                //Gera o level3
+                string level3 = html.link(
+                                            outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
+                                            classe: "col-xs-4"
+                                            );
+                //gera os labels
+                labels = html.div(
+                                        outerhtml: labels,
+                                        classe: "col-xs-3"
+                                    );
 
-                //Avaliações e amostas para painel
-                string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
-                                    style: "margin-bottom: 4px;",
-                                    classe: "form-group");
-                string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
-                                    style: "margin-bottom: 4px;",
-                                    classe: "form-group");
+                //gera os contadores
+                string counters = html.div(
+                                            outerhtml: input,
+                                            classe: "col-xs-3 counters"
+                                            );
+                //gera os botoes
+                string buttons = html.div(
+                                            outerhtml: btnNaoAvaliado,
+                                            classe: "col-xs-2",
+                                            style: "text-align:right"
+                                            );
+                //Comandos para intervalos
+                //tipo do input level3
+                //
+                tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
 
-                string avaliacoes = html.div(
-                                    outerhtml: avaliacoeshtml,
-                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
-                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
-                string amostras = html.div(
-                                    outerhtml: amostrashtml,
-                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
-                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
 
-                //Painel
-                //O interessante é um painel só mas no momento está um painel para cada level3group
+                string level3List = html.listgroupItem(
+                                                        id: parLevel3.Id.ToString(),
+                                                        classe: "level3 row" + classInput,
+                                                        tags: tags,
+                                                        outerhtml: level3 +
+                                                                    labels +
+                                                                    counters +
+                                                                    buttons
+                                                    );
 
-                var painelLevel3HeaderListHtml = "";
+                parLevel3Group += level3List;
 
-                var labelPecas = "<label class='font-small'>Peças Avaliadas</label>";
-                var formControlPecas = "<input class='form-control input-sm pecasAvaliadas' type='number'>";
-                var formGroupPecas = html.div(
-                                        outerhtml: labelPecas + formControlPecas,
-                                        classe: "form-group header",
-                                        style: "margin-bottom: 4px;"
-                                        );
-
-                painelLevel3HeaderListHtml += html.div(
-                                                outerhtml: formGroupPecas,
-                                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
-                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
-                                                );
-                
-                //string HeaderLevel02 = null;
-
-                string painellevel3 = html.listgroupItem(
-                                                            outerhtml: avaliacoes +
-                                                                       amostras +
-                                                                       painelLevel3HeaderListHtml,
-
-                                               classe: "painel painelLevel03 row");
-                
-                //Se tiver level3 gera o agrupamento no padrão
-                if (!string.IsNullOrEmpty(parLevel3Group))
-                {
-                    parLevel3Group = html.div(
-                                               classe: "level3Group BEA",
-                                               tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
-
-                                               outerhtml: painellevel3 +
-                                                          parLevel3Group
-                                             );
-                }
-                return parLevel3Group;
             }
-            //Tela da verificação da tipificação
-            else if (tipoTela.Equals("VF"))
+
+            //< div class="form-group">
+            //      <label for="email" style="
+            //    display: inherit;
+            //">Email:</label>
+            //      <label for="email" style="display: inline-block">Email:</label>
+            //    </div>
+
+            //Avaliações e amostas para painel
+            string avaliacoeshtml = html.div(
+                                outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                style: "margin-bottom: 4px;",
+                                classe: "form-group");
+            string amostrashtml = html.div(
+                                outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                style: "margin-bottom: 4px;",
+                                classe: "form-group");
+
+            string avaliacoes = html.div(
+                                outerhtml: avaliacoeshtml,
+                                style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+            string amostras = html.div(
+                                outerhtml: amostrashtml,
+                                style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+
+            //Painel
+            //O interessante é um painel só mas no momento está um painel para cada level3group
+
+            var painelLevel3HeaderListHtml = "";
+
+            var labelPecas = "<label class='font-small'>Peças Avaliadas</label>";
+            var formControlPecas = "<input class='form-control input-sm pecasAvaliadas' type='number'>";
+            var formGroupPecas = html.div(
+                                    outerhtml: labelPecas + formControlPecas,
+                                    classe: "form-group header",
+                                    style: "margin-bottom: 4px;"
+                                    );
+
+            painelLevel3HeaderListHtml += html.div(
+                                            outerhtml: formGroupPecas,
+                                            classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                                            style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                            );
+
+            //string HeaderLevel02 = null;
+
+            string painellevel3 = html.listgroupItem(
+                                                        outerhtml: avaliacoes +
+                                                                   amostras +
+                                                                   painelLevel3HeaderListHtml,
+
+                                           classe: "painel painelLevel03 row");
+
+            //Se tiver level3 gera o agrupamento no padrão
+            if (!string.IsNullOrEmpty(parLevel3Group))
             {
-                //Instancia uma veriavel para gerar o agrupamento
-                string parLevel3Group = null;
+                parLevel3Group = html.div(
+                                           classe: "level3Group BEA",
+                                           tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                foreach (var parLevel3 in parlevel3List)
-                {
+                                           outerhtml: painellevel3 +
+                                                      parLevel3Group
+                                         );
+            }
+            return parLevel3Group;
+        }
+        //Tela da verificação da tipificação
+        else if (tipoTela.Equals("VF"))
+        {
+            //Instancia uma veriavel para gerar o agrupamento
+            string parLevel3Group = null;
 
-                    string classInput = null;
-                    string tags = null;
-                    string labels = null;
+            foreach (var parLevel3 in parlevel3List)
+            {
 
-                    //Gera o level3
-                    string level3 = html.link(
-                                                outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
-                                                classe: "col-xs-12 col-sm-12 col-md-12"
-                                                );
+                string classInput = null;
+                string tags = null;
+                string labels = null;
 
-                    switch (parLevel3.Name)
-                    {
-                        case "Verificação Tipificação - Falha Operacional":
-                            var listOper = "<div class='col-xs-2' name='CONTUSÃO - SEM CONTUSÃO'>SC</div>";
-                            listOper += "<div class='col-xs-2' name='CONTUSÃO - 1 ALCATRA'>AL</div>";
-                            listOper += "<div class='col-xs-2' name='CONTUSÃO - 2 CONTRA FILÉ'>CF</div>";
-                            listOper += "<div class='col-xs-2' name='CONTUSÃO - 3 ALCATRA E CONTRA FILÉ'>ACF</div>";
-                            labels += html.div(outerhtml: listOper, classe: "row items", name: "Falha Op.", tags: "listtype = multiple");
-                            break;
-                        case "Verificação Tipificação - Gordura":
-                            var listGordura = "<div class='col-xs-2' name='1  Ausente '>1</div>";
-                            listGordura += "<div class='col-xs-2' name='2=  Escassa'>2=</div>";
-                            listGordura += "<div class='col-xs-2' name='3=  Mediana'>3=</div>";
-                            listGordura += "<div class='col-xs-2' name='4  Uniforme'>4</div>";
-                            listGordura += "<div class='col-xs-2' name='5  Excessiva'>5</div>";
-                            labels += html.div(outerhtml: listGordura, classe: "row items", name: "Gordura", tags: "listtype = single");
-                            break;
-                        case "Verificação Tipificação - Contusão":
-                            var listContusao = "<div class='col-xs-2' name='CONTUSÃO - SEM CONTUSÃO'>SC</div>";
-                            listContusao += "<div class='col-xs-2' name='CONTUSÃO - 1 ALCATRA'>AL</div>";
-                            listContusao += "<div class='col-xs-2' name='CONTUSÃO - 2 CONTRA FILÉ'>CF</div>";
-                            listContusao += "<div class='col-xs-2' name='CONTUSÃO - 3 ALCATRA E CONTRA FILÉ'>ACF</div>";
-                            labels += html.div(outerhtml: listContusao, classe: "row items", name: "Contusão", tags: "listtype = multiple");
-                            break;
-                        case "Verificação Tipificação - Idade":
-                            var listIdade = "<div class='col-xs-2' name='Dente de Leite'>0</div>";
-                            listIdade += "<div class='col-xs-2' name='Dois Dentes'>2</div>";
-                            listIdade += "<div class='col-xs-2' name='Quatro Dentes'>4</div>";
-                            listIdade += "<div class='col-xs-2' name='Seis Dentes'>6</div>";
-                            listIdade += "<div class='col-xs-2' name='Oito Dentes'>8</div>";
-                            labels += html.div(outerhtml: listIdade, classe: "row items", name: "Maturidade", tags: "listtype = single");
-                            break;
-                        case "Verificação Tipificação - Sexo":
-                            var listSexo = "<div class='col-xs-2' name='MACHO CASTRADO'>C</div>";
-                            listSexo += "<div class='col-xs-2' name='MACHO INTEIRO'>I</div>";
-                            listSexo += "<div class='col-xs-2' name='FÊMEA'>F</div>";
-                            labels += html.div(outerhtml: listSexo, classe: "row items", name: "Sexo", tags: "listtype = single");
-                            break;
-                    }
-                    
-                    //gera os labels
-                    labels = html.div(
-                                            outerhtml: labels,
+                //Gera o level3
+                string level3 = html.link(
+                                            outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
                                             classe: "col-xs-12 col-sm-12 col-md-12"
-                                        );
-                    
-                    //Comandos para intervalos
-                    //tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
-                    //Gera uma linha de level3
-                    string level3List = html.listgroupItem(
-                                                            id: parLevel3.Id.ToString(),
-                                                            classe: "level3 row VF" + classInput,
-                                                            tags: tags,
-                                                            outerhtml: level3 +
-                                                                        labels 
-                                                        );
+                                            );
 
-                    parLevel3Group += level3List;
-
+                switch (parLevel3.Name)
+                {
+                    case "Verificação Tipificação - Falha Operacional":
+                        var listOper = "<div class='col-xs-2' name='CONTUSÃO - SEM CONTUSÃO'>SC</div>";
+                        listOper += "<div class='col-xs-2' name='CONTUSÃO - 1 ALCATRA'>AL</div>";
+                        listOper += "<div class='col-xs-2' name='CONTUSÃO - 2 CONTRA FILÉ'>CF</div>";
+                        listOper += "<div class='col-xs-2' name='CONTUSÃO - 3 ALCATRA E CONTRA FILÉ'>ACF</div>";
+                        labels += html.div(outerhtml: listOper, classe: "row items", name: "Falha Op.", tags: "listtype = multiple");
+                        break;
+                    case "Verificação Tipificação - Gordura":
+                        var listGordura = "<div class='col-xs-2' name='1  Ausente '>1</div>";
+                        listGordura += "<div class='col-xs-2' name='2=  Escassa'>2=</div>";
+                        listGordura += "<div class='col-xs-2' name='3=  Mediana'>3=</div>";
+                        listGordura += "<div class='col-xs-2' name='4  Uniforme'>4</div>";
+                        listGordura += "<div class='col-xs-2' name='5  Excessiva'>5</div>";
+                        labels += html.div(outerhtml: listGordura, classe: "row items", name: "Gordura", tags: "listtype = single");
+                        break;
+                    case "Verificação Tipificação - Contusão":
+                        var listContusao = "<div class='col-xs-2' name='CONTUSÃO - SEM CONTUSÃO'>SC</div>";
+                        listContusao += "<div class='col-xs-2' name='CONTUSÃO - 1 ALCATRA'>AL</div>";
+                        listContusao += "<div class='col-xs-2' name='CONTUSÃO - 2 CONTRA FILÉ'>CF</div>";
+                        listContusao += "<div class='col-xs-2' name='CONTUSÃO - 3 ALCATRA E CONTRA FILÉ'>ACF</div>";
+                        labels += html.div(outerhtml: listContusao, classe: "row items", name: "Contusão", tags: "listtype = multiple");
+                        break;
+                    case "Verificação Tipificação - Idade":
+                        var listIdade = "<div class='col-xs-2' name='Dente de Leite'>0</div>";
+                        listIdade += "<div class='col-xs-2' name='Dois Dentes'>2</div>";
+                        listIdade += "<div class='col-xs-2' name='Quatro Dentes'>4</div>";
+                        listIdade += "<div class='col-xs-2' name='Seis Dentes'>6</div>";
+                        listIdade += "<div class='col-xs-2' name='Oito Dentes'>8</div>";
+                        labels += html.div(outerhtml: listIdade, classe: "row items", name: "Maturidade", tags: "listtype = single");
+                        break;
+                    case "Verificação Tipificação - Sexo":
+                        var listSexo = "<div class='col-xs-2' name='MACHO CASTRADO'>C</div>";
+                        listSexo += "<div class='col-xs-2' name='MACHO INTEIRO'>I</div>";
+                        listSexo += "<div class='col-xs-2' name='FÊMEA'>F</div>";
+                        labels += html.div(outerhtml: listSexo, classe: "row items", name: "Sexo", tags: "listtype = single");
+                        break;
                 }
 
-                var painelLevel3HeaderListHtml = "";
+                //gera os labels
+                labels = html.div(
+                                        outerhtml: labels,
+                                        classe: "col-xs-12 col-sm-12 col-md-12"
+                                    );
 
-                var labelSequencial = "<label class='font-small'>Sequencial</label>";
-                var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
-                var formGroupSequencial = html.div(
-                                        outerhtml: labelSequencial + formControlSequencial,
-                                        classe: "form-group header",
-                                        style: "margin-bottom: 4px;"
-                                        );
+                //Comandos para intervalos
+                //tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
+                //Gera uma linha de level3
+                string level3List = html.listgroupItem(
+                                                        id: parLevel3.Id.ToString(),
+                                                        classe: "level3 row VF" + classInput,
+                                                        tags: tags,
+                                                        outerhtml: level3 +
+                                                                    labels
+                                                    );
 
-                var labelBanda = "<label class='font-small'>Banda</label>";
-                var formControlBanda = "<input class='form-control input-sm banda' type='number'>";
-                var formGroupBanda = html.div(
-                                        outerhtml: labelBanda + formControlBanda,
-                                        classe: "form-group header",
-                                        style: "margin-bottom: 4px;"
-                                        );
+                parLevel3Group += level3List;
 
-                painelLevel3HeaderListHtml += html.div(
-                                                outerhtml: formGroupSequencial,
-                                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
-                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
-                                                );
+            }
 
-                painelLevel3HeaderListHtml += html.div(
-                                                outerhtml: formGroupBanda,
-                                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
-                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
-                                                );
+            var painelLevel3HeaderListHtml = "";
 
-                //Avaliações e amostas para painel
-                string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
-                                    style: "margin-bottom: 4px;",
-                                    classe: "form-group");
-                string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
-                                    style: "margin-bottom: 4px;",
-                                    classe: "form-group");
+            var labelSequencial = "<label class='font-small'>Sequencial</label>";
+            var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
+            var formGroupSequencial = html.div(
+                                    outerhtml: labelSequencial + formControlSequencial,
+                                    classe: "form-group header",
+                                    style: "margin-bottom: 4px;"
+                                    );
 
-                string avaliacoes = html.div(
-                                    outerhtml: avaliacoeshtml,
-                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
-                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
-                string amostras = html.div(
-                                    outerhtml: amostrashtml,
-                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
-                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+            var labelBanda = "<label class='font-small'>Banda</label>";
+            var formControlBanda = "<input class='form-control input-sm banda' type='number'>";
+            var formGroupBanda = html.div(
+                                    outerhtml: labelBanda + formControlBanda,
+                                    classe: "form-group header",
+                                    style: "margin-bottom: 4px;"
+                                    );
 
-                //Painel
-                //O interessante é um painel só mas no momento está um painel para cada level3group
+            painelLevel3HeaderListHtml += html.div(
+                                            outerhtml: formGroupSequencial,
+                                            classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                                            style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                            );
 
-                string painellevel3 = html.listgroupItem(
-                                                            outerhtml: avaliacoes +
-                                                                       amostras +
-                                                                       painelLevel3HeaderListHtml,
+            painelLevel3HeaderListHtml += html.div(
+                                            outerhtml: formGroupBanda,
+                                            classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                                            style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                            );
 
-                                               classe: "painel painelLevel03 row");
+            //Avaliações e amostas para painel
+            string avaliacoeshtml = html.div(
+                                outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                style: "margin-bottom: 4px;",
+                                classe: "form-group");
+            string amostrashtml = html.div(
+                                outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                style: "margin-bottom: 4px;",
+                                classe: "form-group");
 
-                //Se tiver level3 gera o agrupamento no padrão
-                if (!string.IsNullOrEmpty(parLevel3Group))
-                {
-                    parLevel3Group = html.div(
-                                               classe: "level3Group",
-                                               tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
+            string avaliacoes = html.div(
+                                outerhtml: avaliacoeshtml,
+                                style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+            string amostras = html.div(
+                                outerhtml: amostrashtml,
+                                style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+
+            //Painel
+            //O interessante é um painel só mas no momento está um painel para cada level3group
+
+            string painellevel3 = html.listgroupItem(
+                                                        outerhtml: avaliacoes +
+                                                                   amostras +
+                                                                   painelLevel3HeaderListHtml,
+
+                                           classe: "painel painelLevel03 row");
+
+            //Se tiver level3 gera o agrupamento no padrão
+            if (!string.IsNullOrEmpty(parLevel3Group))
+            {
+                parLevel3Group = html.div(
+                                           classe: "level3Group",
+                                           tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
                                                outerhtml: painellevel3 +    
                                                           parLevel3Group
@@ -2918,704 +2935,704 @@ namespace SgqSystem.Services
                     string labels = null;
                     string input = null;
 
-                    //Se for booelan
-                    if (parLevel3.ParLevel3InputType_Id == 1)
-                    {
-                        classInput = " boolean";
-                        input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
-                    }
-                    else
-                    {
-                        //se não é um intervalo
-                        //tem que gerar uma mascara para os inputs e para os labels
-                        classInput = " interval";
-                        //tags =                                       "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-                        tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
-                        labels = html.div(
-                                            outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
-                                            classe: "font10",
-                                            style: "font-size: 11px; margin-top:7px;"
-                                        );
-
-                        input = html.campoIntervalo(id: parLevel3.Id.ToString(),
-                                                        intervalMin: parLevel3.IntervalMin,
-                                                        intervalMax: parLevel3.IntervalMax,
-                                                        unitName: parLevel3.ParMeasurementUnit_Name);
-
-                    }
-
-                    //Gera o level3
-                    string level3 = html.link(
-                                                outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
-                                                classe: "col-xs-4"
-                                                );
-                    //gera os labels
-                    labels = html.div(
-                                            outerhtml: labels,
-                                            classe: "col-xs-3"
-                                        );
-
-                    //gera os contadores
-                    string counters = html.div(
-                                                outerhtml: input,
-                                                classe: "col-xs-3 counters"
-                                                );
-                    //gera os botoes
-                    string buttons = html.div(
-                                                outerhtml: btnNaoAvaliado,
-                                                classe: "col-xs-2",
-                                                style: "text-align:right"
-                                                );
-                    //Comandos para intervalos
-                    //tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                //Se for booelan
+                if (parLevel3.ParLevel3InputType_Id == 1)
+                {
+                    classInput = " boolean";
+                    input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+                }
+                else
+                {
+                    //se não é um intervalo
+                    //tem que gerar uma mascara para os inputs e para os labels
+                    classInput = " interval";
+                    //tags =                                       "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
                     tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
-
-
-                    //Gera uma linha de level3
-                    string level3List = html.listgroupItem(
-                                                            id: parLevel3.Id.ToString(),
-                                                            classe: "level3 row" + classInput,
-                                                            tags: tags,
-                                                            outerhtml: level3 +
-                                                                        labels +
-                                                                        counters +
-                                                                        buttons
-                                                        );
-
-                    parLevel3Group += level3List;
-
-                }
-
-                //Avaliações e amostas para painel
-
-                var painelLevel3HeaderListHtml = "";
-
-                var labelSequencial = "<label class='font-small'>Sequencial</label>";
-                var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
-                var formGroupSequencial = html.div(
-                                        outerhtml: labelSequencial + formControlSequencial,
-                                        classe: "form-group header",
-                                        style: "margin-bottom: 4px;"
-                                        );
-
-                var labelBanda = "<label class='font-small'>Banda</label>";
-                var formControlBanda = "<input class='form-control input-sm banda' type='number'>";
-                var formGroupBanda = html.div(
-                                        outerhtml: labelBanda + formControlBanda,
-                                        classe: "form-group header",
-                                        style: "margin-bottom: 4px;"
-                                        );
-
-                painelLevel3HeaderListHtml += html.div(
-                                                outerhtml: formGroupSequencial,
-                                                classe: "col-xs-5 col-sm-4 col-md-4 col-lg-4",
-                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
-                                                );
-
-                painelLevel3HeaderListHtml += html.div(
-                                                outerhtml: formGroupBanda,
-                                                classe: "col-xs-5 col-sm-4 col-md-4 col-lg-4",
-                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
-                                                );
-
-                var button = html.button(classe: "btn btn-lg btn-success pull-right", label: "<i class='fa fa-bookmark' aria-hidden='true'></i>");
-
-                painelLevel3HeaderListHtml += html.div(
-                                                outerhtml: button,
-                                                classe: "col-xs-2 col-sm-4 col-md-4 col-lg-4",
-                                                style: "padding-right: 4px !important; padding-left: 4px !important;"
-                                                );
-
-                string painellevel3 = html.listgroupItem(
-                                                            outerhtml: painelLevel3HeaderListHtml,
-
-                                               classe: "painel painelLevel03 row");
-                
-                //Se tiver level3 gera o agrupamento no padrão
-                if (!string.IsNullOrEmpty(parLevel3Group))
-                {
-                    parLevel3Group = html.div(
-                                               classe: "level3Group",
-                                               tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
-
-                                               outerhtml: painellevel3 + 
-                                                          parLevel3Group
-                                             );
-                }
-                return parLevel3Group;
-            }
-            //Tela Genérica
-            else
-            {
-                //Instancia uma veriavel para gerar o agrupamento
-                string parLevel3Group = null;
-
-                foreach (var parLevel3 in parlevel3List)
-                {
-
-                    string classInput = null;
-                    string tags = null;
-                    string labels = null;
-                    string input = null;
-
-                    //Se for booelan
-                    if (parLevel3.ParLevel3InputType_Id == 1)
-                    {
-                        classInput = " boolean";
-                        input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
-                    }
-                    else
-                    {
-                        //se não é um intervalo
-                        //tem que gerar uma mascara para os inputs e para os labels
-                        classInput = " interval";
-                                                              //tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-                        tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
-                        labels = html.div(
-                                            outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
-                                            classe: "font10",
-                                            style: "font-size: 11px; margin-top:7px;"
-                                        );
-
-                        input = html.campoIntervalo(id: parLevel3.Id.ToString(),
-                                                        intervalMin: parLevel3.IntervalMin,
-                                                        intervalMax: parLevel3.IntervalMax,
-                                                        unitName: parLevel3.ParMeasurementUnit_Name);
-
-                    }
-
-                    //Gera o level3
-                    string level3 = html.link(
-                                                outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
-                                                classe: "col-xs-4"
-                                                );
-                    //gera os labels
                     labels = html.div(
-                                            outerhtml: labels,
-                                            classe: "col-xs-3"
-                                        );
+                                        outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                        classe: "font10",
+                                        style: "font-size: 11px; margin-top:7px;"
+                                    );
 
-                    //gera os contadores
-                    string counters = html.div(
-                                                outerhtml: input,
-                                                classe: "col-xs-3 counters"
-                                                );
-                    //gera os botoes
-                    string buttons = html.div(
-                                                outerhtml: btnNaoAvaliado,
-                                                classe: "col-xs-2",
-                                                style: "text-align:right"
-                                                );
-                    //Comandos para intervalos
-                   // tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
-                    //Gera uma linha de level3
-                    string level3List = html.listgroupItem(
-                                                            id: parLevel3.Id.ToString(),
-                                                            classe: "level3 row" + classInput,
-                                                            tags: tags,
-                                                            outerhtml: level3 +
-                                                                        labels +
-                                                                        counters +
-                                                                        buttons
-                                                        );
-
-                    parLevel3Group += level3List;
+                    input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                    intervalMin: parLevel3.IntervalMin,
+                                                    intervalMax: parLevel3.IntervalMax,
+                                                    unitName: parLevel3.ParMeasurementUnit_Name);
 
                 }
 
-                //< div class="form-group">
-                //      <label for="email" style="
-                //    display: inherit;
-                //">Email:</label>
-                //      <label for="email" style="display: inline-block">Email:</label>
-                //    </div>
+                //Gera o level3
+                string level3 = html.link(
+                                            outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
+                                            classe: "col-xs-4"
+                                            );
+                //gera os labels
+                labels = html.div(
+                                        outerhtml: labels,
+                                        classe: "col-xs-3"
+                                    );
 
-                //Avaliações e amostas para painel
-                string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
-                                    style: "margin-bottom: 4px;",
-                                    classe: "form-group");
-                string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
-                                    style: "margin-bottom: 4px;",
-                                    classe: "form-group");
-
-                string avaliacoes = html.div(
-                                    outerhtml: avaliacoeshtml,
-                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
-                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
-                string amostras = html.div(
-                                    outerhtml: amostrashtml,
-                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
-                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
-
-                //Painel
-                //O interessante é um painel só mas no momento está um painel para cada level3group
-
-                var painelLevel3HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html);
-
-                //string HeaderLevel02 = null;
-
-                string painellevel3 = html.listgroupItem(
-                                                            outerhtml: avaliacoes +
-                                                                       amostras +
-                                                                       painelLevel3HeaderListHtml,
-
-                                               classe: "painel painelLevel03 row");
-
-                string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
-                                                            classe: "painel painelLevel02 row"
-                                                        );
-
-                //Se tiver level3 gera o agrupamento no padrão
-                if (!string.IsNullOrEmpty(parLevel3Group))
-                {
-                    parLevel3Group = html.div(
-                                               classe: "level3Group",
-                                               tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
-
-                                               outerhtml: painellevel3 + panelButton +
-                                                          parLevel3Group
-                                             );
-                }
-                return parLevel3Group;
-            }
-            
-
-        }
-        //public string GetLevel03_novo(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2)
-        //{
-        //    var html = new Html();
+                //gera os contadores
+                string counters = html.div(
+                                            outerhtml: input,
+                                            classe: "col-xs-3 counters"
+                                            );
+                //gera os botoes
+                string buttons = html.div(
+                                            outerhtml: btnNaoAvaliado,
+                                            classe: "col-xs-2",
+                                            style: "text-align:right"
+                                            );
+                //Comandos para intervalos
+                //tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
 
 
-        //    var parlevel3List = ParLevel3DB.getLevel3ByLevel2(ParLevel2.Id);
+                //Gera uma linha de level3
+                string level3List = html.listgroupItem(
+                                                        id: parLevel3.Id.ToString(),
+                                                        classe: "level3 row" + classInput,
+                                                        tags: tags,
+                                                        outerhtml: level3 +
+                                                                    labels +
+                                                                    counters +
+                                                                    buttons
+                                                    );
 
-        //    string btnNaoAvaliado = html.button(
-        //                               label: html.span(
-        //                                                 classe: "cursorPointer iconsArea",
-        //                                                 outerhtml: "N/A"
-        //                                                ),
-        //                               classe: "btn-warning btnNotAvaliable na font11"
-        //                           );
+                parLevel3Group += level3List;
 
-        //    string parLevel3Group = null;
-
-        //string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
-        //                                            classe: "painel painelLevel02 row"
-        //                                        );
-
-
-
-        //    foreach (var parLevel3 in parlevel3List)
-        //    {
-
-        //        string classInput = null;
-        //        string tags = null;
-        //        string labels = null;
-        //        string input = null;
-
-        //        if (parLevel3.ParLevel3InputType_Id == 1)
-        //        {
-        //            classInput = " boolean";
-        //            input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
-
-        //        }
-        //        else
-        //        {
-        //            classInput = " interval";
-        //            tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-
-        //            labels = html.div(
-        //                             outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
-        //                             classe: "font10",
-        //                             style: "font-size: 11px; margin-top:7px;"
-        //                           );
-
-        //            input = html.campoIntervalo(id: parLevel3.Id.ToString(),
-        //                                           intervalMin: parLevel3.IntervalMin,
-        //                                           intervalMax: parLevel3.IntervalMax,
-        //                                           unitName: parLevel3.ParMeasurementUnit_Name);
-
-        //        }
-
-        //        string level3 = html.link(
-        //                                   outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
-        //                                   classe: "col-xs-4"
-        //                                  );
-        //        labels = html.div(
-        //                                outerhtml: labels,
-        //                                classe: "col-xs-3"
-        //                            );
-        //        string counters = html.div(
-        //                                    outerhtml: input,
-        //                                    classe: "col-xs-3 counters cursorPointer"
-        //                                  );
-        //        string buttons = html.div(
-        //                                   outerhtml: btnNaoAvaliado,
-        //                                   classe: "col-xs-2",
-        //                                   style: "text-align:right"
-        //                                 );
-
-        //        tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-
-        //        string level3List = html.listgroupItem(
-        //                                              id: parLevel3.Id.ToString(),
-        //                                              classe: "level3 row" + classInput,
-        //                                              tags: tags,
-        //                                              outerhtml: level3 +
-        //                                                         labels +
-        //                                                         counters +
-        //                                                         buttons
-        //                                            );
-
-        //        parLevel3Group += level3List;
-        //    }
-
-        //    string avaliacoes = html.div(
-        //                      outerhtml: "<b style=\"width:100px;display:inline-block\">Avaliações</b>" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal"),
-        //                    style: "font-size: 16px");
-        //    string amostrar = html.div(
-        //                                  outerhtml: "<b style=\"width:100px;display:inline-block\">Amostras</b>" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal"),
-        //                                style: "font-size: 16px");
-
-
-        //    string painellevel3 = html.listgroupItem(
-        //                                                outerhtml: avaliacoes +
-        //                                                           amostrar,
-
-        //                                   classe: "painel painelLevel03 row");
-
-
-
-        //    return parLevel3Group;
-
-        //}
-        public string GetLoginAPP()
-        {
-            var html = new Html();
-            string head = html.div(classe: "head");
-            
-            //Verifica as configurações iniciais da tela
-            var ParConfSGQDB = new SGQDBContext.ParConfSGQ();
-            var configuracoes = ParConfSGQDB.get();
-
-
-            #region form
-
-            #region Unit
-            bool inputsDesabilitados = false;
-
-            string selectUnit = null;
-            if(configuracoes != null && configuracoes.HaveUnitLogin == true)
-            {
-                inputsDesabilitados = true;
-                //coloca as unidades vindo do banco ou mocado eua, podemos colocar um arquivo para carregar
-                selectUnit  = html.option("1", "Unit 1", tags: "ip=\"192.168.25.200/SgqMaster\"");
-                selectUnit = html.select(selectUnit, "selectUnit");
             }
 
-            #endregion
+            //Avaliações e amostas para painel
 
-            #region shift
-            string selectShit = null;
-            if (configuracoes != null &&  configuracoes.HaveShitLogin == true)
-            {
-                inputsDesabilitados = true;
-                selectShit = html.option("0", "Select the shift") +
-                              html.option("1", "Shift A") +
-                              html.option("2", "Shift B");
+            var painelLevel3HeaderListHtml = "";
 
-                selectShit = html.select(selectShit, id: "shift");
-            }
-            #endregion
+            var labelSequencial = "<label class='font-small'>Sequencial</label>";
+            var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
+            var formGroupSequencial = html.div(
+                                    outerhtml: labelSequencial + formControlSequencial,
+                                    classe: "form-group header",
+                                    style: "margin-bottom: 4px;"
+                                    );
 
-            string formOuterHtml = html.head(Html.h.h2, outerhtml: "Please sign in") +
-                                  selectUnit +
-                                  selectShit +
-                                  html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
-                                  html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: inputsDesabilitados) +
-                                  html.label(labelfor: "inputPassword", classe: "sr-only", outerhtml: "Password") +
-                                  html.input(type: Html.type.password, id: "inputPassword", placeholder: "Password", required: true, disabled: inputsDesabilitados) +
-                                  html.button(label: "Sign in", id: "btnLogin", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "Authenticating...") +
+            var labelBanda = "<label class='font-small'>Banda</label>";
+            var formControlBanda = "<input class='form-control input-sm banda' type='number'>";
+            var formGroupBanda = html.div(
+                                    outerhtml: labelBanda + formControlBanda,
+                                    classe: "form-group header",
+                                    style: "margin-bottom: 4px;"
+                                    );
 
-                                  html.div(id: "messageError", classe: "alert alert-danger hide", tags: "role=\"alert\"",
-                                           outerhtml: html.span(classe: "icon-remove-sign") + "<strong>Error! </strong>" + html.span(id: "mensagemErro")) +
-
-                                  html.div(classe: "divLoadFiles",
-                                           outerhtml: html.span(classe: "messageLoading")) +
-
-                                  html.div(id: "messageAlert",
-                                           classe: "alert alert-info hide",
-                                           tags: "role=\"alert\"",
-                                           outerhtml: html.span(id: "mensagemAlerta", classe: "icon-info-sign")) +
-
-                                  html.div(id: "messageSuccess",
-                                           classe: "alert alert-success hide",
-                                           tags: "role=\"alert\"",
-                                           outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle"));
-            string form = html.form(
-                                    outerhtml: formOuterHtml
-                                    , classe: "form-signin");
-
-            #endregion
-
-            #region foot
-            string footOuterHtml = html.br() +
-                                   html.br() +
-                                   html.br() +
-                                   html.span(
-                                              outerhtml: "Version" +
-                                                         html.span(classe: "number")
-                                             , id: "versionLogin") +
-                                   html.span(
-                                               outerhtml: html.span(classe: "base")
-                                             , id: "ambienteLogin"
-
+            painelLevel3HeaderListHtml += html.div(
+                                            outerhtml: formGroupSequencial,
+                                            classe: "col-xs-5 col-sm-4 col-md-4 col-lg-4",
+                                            style: "padding-right: 4px !important; padding-left: 4px !important;"
                                             );
 
-            string foot = html.div(
-                                    outerhtml: footOuterHtml
-                                    , classe: "foot", style: "text-align:center");
+            painelLevel3HeaderListHtml += html.div(
+                                            outerhtml: formGroupBanda,
+                                            classe: "col-xs-5 col-sm-4 col-md-4 col-lg-4",
+                                            style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                            );
 
-            #endregion
+            var button = html.button(classe: "btn btn-lg btn-success pull-right", label: "<i class='fa fa-bookmark' aria-hidden='true'></i>");
 
-            return html.div(
-                                outerhtml: head +
-                                           form +
-                                           foot
+            painelLevel3HeaderListHtml += html.div(
+                                            outerhtml: button,
+                                            classe: "col-xs-2 col-sm-4 col-md-4 col-lg-4",
+                                            style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                            );
 
-                                , classe: "login"
-                            );
-        }
-        #endregion
-        #region Users
-        [WebMethod]
-        public string getCompanyUsers(string ParCompany_Id)
-        {
-            var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq();
+            string painellevel3 = html.listgroupItem(
+                                                        outerhtml: painelLevel3HeaderListHtml,
 
-            var users = ParCompanyXUserSgqDB.getCompanyUsers(Convert.ToInt32(ParCompany_Id));
-            var html = new Html();
+                                           classe: "painel painelLevel03 row");
 
-            string usersList = null;
-            foreach (var user in users)
+            //Se tiver level3 gera o agrupamento no padrão
+            if (!string.IsNullOrEmpty(parLevel3Group))
             {
-                string Password = user.UserSGQ_Pass;
-                Password = Guard.Descriptografar3DES(Password);
-                Password = UserDomain.EncryptStringAES(Password);
+                parLevel3Group = html.div(
+                                           classe: "level3Group",
+                                           tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+                                           outerhtml: painellevel3 +
+                                                      parLevel3Group
+                                         );
             }
-            return usersList;
+            return parLevel3Group;
         }
-        [WebMethod]
-        public string getUserCompanys(string UserSgq_Id)
+        //Tela Genérica
+        else
         {
-            var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq();
+            //Instancia uma veriavel para gerar o agrupamento
+            string parLevel3Group = null;
 
-            var users = ParCompanyXUserSgqDB.getUserCompany(Convert.ToInt32(UserSgq_Id));
-            var html = new Html();
-
-            string usersList = null;
-            foreach (var user in users)
+            foreach (var parLevel3 in parlevel3List)
             {
-                string Password = user.UserSGQ_Pass;
-                Password = Guard.Descriptografar3DES(Password);
-                Password = UserDomain.EncryptStringAES(Password);
 
-                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
-            }
-            return usersList;
-        }
-        [WebMethod]
-        public string UserSGQLogin(string UserName, string Password)
-        {
-            var UserSGQDB = new SGQDBContext.UserSGQ();
-            var user = UserSGQDB.getUserByLogin(UserName);
+                string classInput = null;
+                string tags = null;
+                string labels = null;
+                string input = null;
 
-            var html = new Html();
-
-            Password = UserDomain.DecryptStringAES(Password);
-            Password = Guard.Criptografar3DES(Password);
-
-            if (user != null && user.Password == Password)
-            {
-                
-                Password = Guard.Descriptografar3DES(Password);
-                Password = UserDomain.EncryptStringAES(Password);
-                //colocar informação que usuario não tem unidade padrão, mas tem que verificar isso
-                return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
-            }
-            else
-            {
-                return "Usuário ou senha inválidos";
-            }
-          
-        }
-        #endregion
-        [WebMethod]
-        public string insertDeviation(string deviations)
-        {
-
-            //var result = deviation.attr('parcompany_id'); // 0
-            //result += ";" + deviation.attr('parlevel1_id'); // 1
-            //result += ";" + deviation.attr('parlevel2_id');// 2
-            //result += ";" + deviation.attr('evaluation');// 3
-            //result += ";" + deviation.attr('sample');// 4
-            //result += ";" + deviation.attr('alertnumber');// 5
-            //result += ";" + deviation.attr('defects');// 6
-            //result += ";" + deviation.attr('deviationdate');// 7
-
-            deviations = deviations.Replace("</deviation><deviation>", "&").Replace("<deviation>", "").Replace("</deviation>", "");
-            var arrayDeviations = deviations.Split(';');
-
-            string ParCompany_Id = arrayDeviations[0];
-            string ParLevel1_Id = arrayDeviations[1];
-            string ParLevel2_Id = arrayDeviations[2];
-            string Evaluation = arrayDeviations[3];
-            string Sample = arrayDeviations[4];
-            string alertNumber = arrayDeviations[5];
-            string defects = arrayDeviations[6];
-            string deviationDate = arrayDeviations[7];
-
-            string sql = "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail]) " +
-             "VALUES " +
-             "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', GetDate() , GetDate(), 0)";
-
-
-            //string sql = null;
-            //for (int i = 0; i < arrayDeviations.Length; i++)
-            //{
-            //    var deviation = arrayDeviations[i].Split(';');
-
-               
-            //}
-
-
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
+                //Se for booelan
+                if (parLevel3.ParLevel3InputType_Id == 1)
                 {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    classInput = " boolean";
+                    input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+                }
+                else
+                {
+                    //se não é um intervalo
+                    //tem que gerar uma mascara para os inputs e para os labels
+                    classInput = " interval";
+                    //tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
+                    labels = html.div(
+                                        outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                        classe: "font10",
+                                        style: "font-size: 11px; margin-top:7px;"
+                                    );
+
+                    input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                    intervalMin: parLevel3.IntervalMin,
+                                                    intervalMax: parLevel3.IntervalMax,
+                                                    unitName: parLevel3.ParMeasurementUnit_Name);
+
+                }
+
+                //Gera o level3
+                string level3 = html.link(
+                                            outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
+                                            classe: "col-xs-4"
+                                            );
+                //gera os labels
+                labels = html.div(
+                                        outerhtml: labels,
+                                        classe: "col-xs-3"
+                                    );
+
+                //gera os contadores
+                string counters = html.div(
+                                            outerhtml: input,
+                                            classe: "col-xs-3 counters"
+                                            );
+                //gera os botoes
+                string buttons = html.div(
+                                            outerhtml: btnNaoAvaliado,
+                                            classe: "col-xs-2",
+                                            style: "text-align:right"
+                                            );
+                //Comandos para intervalos
+                // tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
+                //Gera uma linha de level3
+                string level3List = html.listgroupItem(
+                                                        id: parLevel3.Id.ToString(),
+                                                        classe: "level3 row" + classInput,
+                                                        tags: tags,
+                                                        outerhtml: level3 +
+                                                                    labels +
+                                                                    counters +
+                                                                    buttons
+                                                    );
+
+                parLevel3Group += level3List;
+
+            }
+
+            //< div class="form-group">
+            //      <label for="email" style="
+            //    display: inherit;
+            //">Email:</label>
+            //      <label for="email" style="display: inline-block">Email:</label>
+            //    </div>
+
+            //Avaliações e amostas para painel
+            string avaliacoeshtml = html.div(
+                                outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                style: "margin-bottom: 4px;",
+                                classe: "form-group");
+            string amostrashtml = html.div(
+                                outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                style: "margin-bottom: 4px;",
+                                classe: "form-group");
+
+            string avaliacoes = html.div(
+                                outerhtml: avaliacoeshtml,
+                                style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+            string amostras = html.div(
+                                outerhtml: amostrashtml,
+                                style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+
+            //Painel
+            //O interessante é um painel só mas no momento está um painel para cada level3group
+
+            var painelLevel3HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html);
+
+            //string HeaderLevel02 = null;
+
+            string painellevel3 = html.listgroupItem(
+                                                        outerhtml: avaliacoes +
+                                                                   amostras +
+                                                                   painelLevel3HeaderListHtml,
+
+                                           classe: "painel painelLevel03 row");
+
+            string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
+                                                        classe: "painel painelLevel02 row"
+                                                    );
+
+            //Se tiver level3 gera o agrupamento no padrão
+            if (!string.IsNullOrEmpty(parLevel3Group))
+            {
+                parLevel3Group = html.div(
+                                           classe: "level3Group",
+                                           tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
+
+                                           outerhtml: painellevel3 + panelButton +
+                                                      parLevel3Group
+                                         );
+            }
+            return parLevel3Group;
+        }
+
+
+    }
+    //public string GetLevel03_novo(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2)
+    //{
+    //    var html = new Html();
+
+
+    //    var parlevel3List = ParLevel3DB.getLevel3ByLevel2(ParLevel2.Id);
+
+    //    string btnNaoAvaliado = html.button(
+    //                               label: html.span(
+    //                                                 classe: "cursorPointer iconsArea",
+    //                                                 outerhtml: "N/A"
+    //                                                ),
+    //                               classe: "btn-warning btnNotAvaliable na font11"
+    //                           );
+
+    //    string parLevel3Group = null;
+
+    //string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
+    //                                            classe: "painel painelLevel02 row"
+    //                                        );
+
+
+
+    //    foreach (var parLevel3 in parlevel3List)
+    //    {
+
+    //        string classInput = null;
+    //        string tags = null;
+    //        string labels = null;
+    //        string input = null;
+
+    //        if (parLevel3.ParLevel3InputType_Id == 1)
+    //        {
+    //            classInput = " boolean";
+    //            input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+
+    //        }
+    //        else
+    //        {
+    //            classInput = " interval";
+    //            tags = "intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+
+    //            labels = html.div(
+    //                             outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+    //                             classe: "font10",
+    //                             style: "font-size: 11px; margin-top:7px;"
+    //                           );
+
+    //            input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+    //                                           intervalMin: parLevel3.IntervalMin,
+    //                                           intervalMax: parLevel3.IntervalMax,
+    //                                           unitName: parLevel3.ParMeasurementUnit_Name);
+
+    //        }
+
+    //        string level3 = html.link(
+    //                                   outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
+    //                                   classe: "col-xs-4"
+    //                                  );
+    //        labels = html.div(
+    //                                outerhtml: labels,
+    //                                classe: "col-xs-3"
+    //                            );
+    //        string counters = html.div(
+    //                                    outerhtml: input,
+    //                                    classe: "col-xs-3 counters cursorPointer"
+    //                                  );
+    //        string buttons = html.div(
+    //                                   outerhtml: btnNaoAvaliado,
+    //                                   classe: "col-xs-2",
+    //                                   style: "text-align:right"
+    //                                 );
+
+    //        tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+
+    //        string level3List = html.listgroupItem(
+    //                                              id: parLevel3.Id.ToString(),
+    //                                              classe: "level3 row" + classInput,
+    //                                              tags: tags,
+    //                                              outerhtml: level3 +
+    //                                                         labels +
+    //                                                         counters +
+    //                                                         buttons
+    //                                            );
+
+    //        parLevel3Group += level3List;
+    //    }
+
+    //    string avaliacoes = html.div(
+    //                      outerhtml: "<b style=\"width:100px;display:inline-block\">Avaliações</b>" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal"),
+    //                    style: "font-size: 16px");
+    //    string amostrar = html.div(
+    //                                  outerhtml: "<b style=\"width:100px;display:inline-block\">Amostras</b>" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal"),
+    //                                style: "font-size: 16px");
+
+
+    //    string painellevel3 = html.listgroupItem(
+    //                                                outerhtml: avaliacoes +
+    //                                                           amostrar,
+
+    //                                   classe: "painel painelLevel03 row");
+
+
+
+    //    return parLevel3Group;
+
+    //}
+    public string GetLoginAPP()
+    {
+        var html = new Html();
+        string head = html.div(classe: "head");
+
+        //Verifica as configurações iniciais da tela
+        var ParConfSGQDB = new SGQDBContext.ParConfSGQ();
+        var configuracoes = ParConfSGQDB.get();
+
+
+        #region form
+
+        #region Unit
+        bool inputsDesabilitados = false;
+
+        string selectUnit = null;
+        if (configuracoes != null && configuracoes.HaveUnitLogin == true)
+        {
+            inputsDesabilitados = true;
+            //coloca as unidades vindo do banco ou mocado eua, podemos colocar um arquivo para carregar
+            selectUnit = html.option("1", "Unit 1", tags: "ip=\"192.168.25.200/SgqMaster\"");
+            selectUnit = html.select(selectUnit, "selectUnit");
+        }
+
+        #endregion
+
+        #region shift
+        string selectShit = null;
+        if (configuracoes != null && configuracoes.HaveShitLogin == true)
+        {
+            inputsDesabilitados = true;
+            selectShit = html.option("0", "Select the shift") +
+                          html.option("1", "Shift A") +
+                          html.option("2", "Shift B");
+
+            selectShit = html.select(selectShit, id: "shift");
+        }
+        #endregion
+
+        string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre") +
+                              selectUnit +
+                              selectShit +
+                              html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
+                              html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: inputsDesabilitados) +
+                              html.label(labelfor: "inputPassword", classe: "sr-only", outerhtml: "Password") +
+                              html.input(type: Html.type.password, id: "inputPassword", placeholder: "Password", required: true, disabled: inputsDesabilitados) +
+                              html.button(label: "Entrar", id: "btnLogin", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "Autenticando...") +
+
+                              html.div(id: "messageError", classe: "alert alert-danger hide", tags: "role=\"alert\"",
+                                       outerhtml: html.span(classe: "icon-remove-sign") + "<strong>Erro! </strong>" + html.span(id: "mensagemErro")) +
+
+                              html.div(classe: "divLoadFiles",
+                                       outerhtml: html.span(classe: "messageLoading")) +
+
+                              html.div(id: "messageAlert",
+                                       classe: "alert alert-info hide",
+                                       tags: "role=\"alert\"",
+                                       outerhtml: html.span(id: "mensagemAlerta", classe: "icon-info-sign")) +
+
+                              html.div(id: "messageSuccess",
+                                       classe: "alert alert-success hide",
+                                       tags: "role=\"alert\"",
+                                       outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle"));
+        string form = html.form(
+                                outerhtml: formOuterHtml
+                                , classe: "form-signin");
+
+        #endregion
+
+        #region foot
+        string footOuterHtml = html.br() +
+                               html.br() +
+                               html.br() +
+                               html.span(
+                                          outerhtml: "Version" +
+                                                     html.span(classe: "number")
+                                         , id: "versionLogin") +
+                               html.span(
+                                           outerhtml: html.span(classe: "base")
+                                         , id: "ambienteLogin"
+
+                                        );
+
+        string foot = html.div(
+                                outerhtml: footOuterHtml
+                                , classe: "foot", style: "text-align:center");
+
+        #endregion
+
+        return html.div(
+                            outerhtml: head +
+                                       form +
+                                       foot
+
+                            , classe: "login"
+                        );
+    }
+    #endregion
+    #region Users
+    [WebMethod]
+    public string getCompanyUsers(string ParCompany_Id)
+    {
+        var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq();
+
+        var users = ParCompanyXUserSgqDB.getCompanyUsers(Convert.ToInt32(ParCompany_Id));
+        var html = new Html();
+
+        string usersList = null;
+        foreach (var user in users)
+        {
+            string Password = user.UserSGQ_Pass;
+            Password = Guard.Descriptografar3DES(Password);
+            Password = UserDomain.EncryptStringAES(Password);
+
+            usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+        }
+        return usersList;
+    }
+    [WebMethod]
+    public string getUserCompanys(string UserSgq_Id)
+    {
+        var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq();
+
+        var users = ParCompanyXUserSgqDB.getUserCompany(Convert.ToInt32(UserSgq_Id));
+        var html = new Html();
+
+        string usersList = null;
+        foreach (var user in users)
+        {
+            string Password = user.UserSGQ_Pass;
+            Password = Guard.Descriptografar3DES(Password);
+            Password = UserDomain.EncryptStringAES(Password);
+
+            usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+        }
+        return usersList;
+    }
+    [WebMethod]
+    public string UserSGQLogin(string UserName, string Password)
+    {
+        var UserSGQDB = new SGQDBContext.UserSGQ();
+        var user = UserSGQDB.getUserByLogin(UserName);
+
+        var html = new Html();
+
+        Password = UserDomain.DecryptStringAES(Password);
+        Password = Guard.Criptografar3DES(Password);
+
+        if (user != null && user.Password == Password)
+        {
+
+            Password = Guard.Descriptografar3DES(Password);
+            Password = UserDomain.EncryptStringAES(Password);
+            //colocar informação que usuario não tem unidade padrão, mas tem que verificar isso
+            return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+        }
+        else
+        {
+            return "Usuário ou senha inválidos";
+        }
+
+    }
+    #endregion
+    [WebMethod]
+    public string insertDeviation(string deviations)
+    {
+
+        //var result = deviation.attr('parcompany_id'); // 0
+        //result += ";" + deviation.attr('parlevel1_id'); // 1
+        //result += ";" + deviation.attr('parlevel2_id');// 2
+        //result += ";" + deviation.attr('evaluation');// 3
+        //result += ";" + deviation.attr('sample');// 4
+        //result += ";" + deviation.attr('alertnumber');// 5
+        //result += ";" + deviation.attr('defects');// 6
+        //result += ";" + deviation.attr('deviationdate');// 7
+
+        deviations = deviations.Replace("</deviation><deviation>", "&").Replace("<deviation>", "").Replace("</deviation>", "");
+        var arrayDeviations = deviations.Split(';');
+
+        string ParCompany_Id = arrayDeviations[0];
+        string ParLevel1_Id = arrayDeviations[1];
+        string ParLevel2_Id = arrayDeviations[2];
+        string Evaluation = arrayDeviations[3];
+        string Sample = arrayDeviations[4];
+        string alertNumber = arrayDeviations[5];
+        string defects = arrayDeviations[6];
+        string deviationDate = arrayDeviations[7];
+
+        string sql = "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail]) " +
+         "VALUES " +
+         "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', GetDate() , GetDate(), 0)";
+
+
+        //string sql = null;
+        //for (int i = 0; i < arrayDeviations.Length; i++)
+        //{
+        //    var deviation = arrayDeviations[i].Split(';');
+
+
+        //}
+
+
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(conexao))
+            {
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    connection.Open();
+                    var i = Convert.ToInt32(command.ExecuteScalar());
+                    //Se o registro for inserido retorno o Id da Consolidação
+                    if (i > 0)
                     {
-                        connection.Open();
-                        var i = Convert.ToInt32(command.ExecuteScalar());
-                        //Se o registro for inserido retorno o Id da Consolidação
-                        if (i > 0)
-                        {
-                            return null;
-                        }
-                        else
-                        {
-                            //Caso ocorra algum erro, retorno zero
-                            return null;
-                        }
+                        return null;
+                    }
+                    else
+                    {
+                        //Caso ocorra algum erro, retorno zero
+                        return null;
                     }
                 }
             }
-            //Caso ocorra alguma Exception, grava o log e retorna zero
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
-                return "error";
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
-                return "error";
-            }
         }
-        [WebMethod]
-        public string sendEmailAlerta()
+        //Caso ocorra alguma Exception, grava o log e retorna zero
+        catch (SqlException ex)
         {
-            string destinatarios = "antoniobrissolare@hotmail.com";
-            string mensagemEstouro = "Estouro de alerta Nivel [X]";
-
-            try
-            {
-                string termo = "<div style='font-family:Verdana; font-size:10px;color:gray'>Este email é direcionado apenas para a pessoa ou entidade para a qual foi endreçado e pode conter material confidencial ou privilegiado. Qualquer leitura, uso, revelação ou distribuição não autorizados são proibidos. Se você não for o destinatário dessa mensagem, mas não deseja receber mensagens através desse meio, por gentileza, avise o remetente imediatamente</div>";
-
-                string emailRemetente = "services@brzsoftwares.com";
-                string nomeRemetente = "SGQ - GRT Soluções";
-
-                MailMessage mailMessage = new MailMessage();
-                //Endereço que irá aparecer no e-mail do usuário 
-                mailMessage.From = new MailAddress(emailRemetente, nomeRemetente);
-                //destinatarios do e-mail, para incluir mais de um basta separar por ponto e virgula  
-                mailMessage.To.Add(destinatarios);
-
-                mailMessage.Subject = "Alerta";
-                mailMessage.IsBodyHtml = true;
-                //conteudo do corpo do e-mail 
-                mailMessage.Body = "<div style='font-family:Verdana; font-size:14px'>" + mensagemEstouro + "</div>" +
-                                   "<br><br>" +
-
-                                   "<div style='font-family:Verdana; font-size:10px;color:gray'>Esta é uma mensagem automática, por favor não responda. Antes de imprimir pense em seu compromisso com o meio ambiente.</div>" +
-                                   "<br>" +
-                                   termo +
-                                   "<div style='font-family:Verdana; font-size:8px;color:gray'>GRT Soluções Alertas " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "</div>";
-
-                mailMessage.Priority = MailPriority.High;
-
-                string servidorSMTP = "mail.brzsoftwares.com";
-                int portaSMS = 587;
-                string usuarioSMTP = "services@brzsoftwares.com";
-                string senhaSMTP = "#Abn32878732";
-                //smtp do e-mail que irá enviar 
-                SmtpClient smtpClient = new SmtpClient(servidorSMTP, portaSMS);
-                smtpClient.EnableSsl = false;
-                //credenciais da conta que utilizará para enviar o e-mail 
-                smtpClient.Credentials = new NetworkCredential(usuarioSMTP, senhaSMTP);
-                smtpClient.Send(mailMessage);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(mensagemEstouro, ex.Message, null, null, "sendEmail");
-            }
-            return null;
+            int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
+            return "error";
         }
-        
-        [WebMethod]
-        public string updateLevel1Consolidaton(string ParLevel1_Id, string Unit_Id, string DepartmentId, string Evaluation, string Defects)
+        catch (Exception ex)
         {
-            //Adicionar o departamento
-            string sql = "UPDATE ConsolidationLevel1 SET Defects='" + Defects + "', Evaluation='" + Evaluation + "' WHERE UnitId='" +  Unit_Id+ "' AND ParLevel1_Id='" + ParLevel1_Id + "'";
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-                        var i = Convert.ToInt32(command.ExecuteScalar());
-                        //Se o registro for inserido retorno o Id da Consolidação
-                        if (i > 0)
-                        {
-                            return null;
-                        }
-                        else
-                        {
-                            //Caso ocorra algum erro, retorno zero
-                            return null;
-                        }
-                    }
-                }
-            }
-            //Caso ocorra alguma Exception, grava o log e retorna zero
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateLevel1Consolidaton");
-                return "error";
-            }
-            catch (Exception ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateLevel1Consolidaton");
-                return "error";
-            }
+            int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
+            return "error";
         }
     }
+    [WebMethod]
+    public string sendEmailAlerta()
+    {
+        string destinatarios = "antoniobrissolare@hotmail.com";
+        string mensagemEstouro = "Estouro de alerta Nivel [X]";
+
+        try
+        {
+            string termo = "<div style='font-family:Verdana; font-size:10px;color:gray'>Este email é direcionado apenas para a pessoa ou entidade para a qual foi endreçado e pode conter material confidencial ou privilegiado. Qualquer leitura, uso, revelação ou distribuição não autorizados são proibidos. Se você não for o destinatário dessa mensagem, mas não deseja receber mensagens através desse meio, por gentileza, avise o remetente imediatamente</div>";
+
+            string emailRemetente = "services@brzsoftwares.com";
+            string nomeRemetente = "SGQ - GRT Soluções";
+
+            MailMessage mailMessage = new MailMessage();
+            //Endereço que irá aparecer no e-mail do usuário 
+            mailMessage.From = new MailAddress(emailRemetente, nomeRemetente);
+            //destinatarios do e-mail, para incluir mais de um basta separar por ponto e virgula  
+            mailMessage.To.Add(destinatarios);
+
+            mailMessage.Subject = "Alerta";
+            mailMessage.IsBodyHtml = true;
+            //conteudo do corpo do e-mail 
+            mailMessage.Body = "<div style='font-family:Verdana; font-size:14px'>" + mensagemEstouro + "</div>" +
+                               "<br><br>" +
+
+                               "<div style='font-family:Verdana; font-size:10px;color:gray'>Esta é uma mensagem automática, por favor não responda. Antes de imprimir pense em seu compromisso com o meio ambiente.</div>" +
+                               "<br>" +
+                               termo +
+                               "<div style='font-family:Verdana; font-size:8px;color:gray'>GRT Soluções Alertas " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "</div>";
+
+            mailMessage.Priority = MailPriority.High;
+
+            string servidorSMTP = "mail.brzsoftwares.com";
+            int portaSMS = 587;
+            string usuarioSMTP = "services@brzsoftwares.com";
+            string senhaSMTP = "#Abn32878732";
+            //smtp do e-mail que irá enviar 
+            SmtpClient smtpClient = new SmtpClient(servidorSMTP, portaSMS);
+            smtpClient.EnableSsl = false;
+            //credenciais da conta que utilizará para enviar o e-mail 
+            smtpClient.Credentials = new NetworkCredential(usuarioSMTP, senhaSMTP);
+            smtpClient.Send(mailMessage);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            int insertLog = insertLogJson(mensagemEstouro, ex.Message, null, null, "sendEmail");
+        }
+        return null;
+    }
+
+    [WebMethod]
+    public string updateLevel1Consolidaton(string ParLevel1_Id, string Unit_Id, string DepartmentId, string Evaluation, string Defects)
+    {
+        //Adicionar o departamento
+        string sql = "UPDATE ConsolidationLevel1 SET Defects='" + Defects + "', Evaluation='" + Evaluation + "' WHERE UnitId='" + Unit_Id + "' AND ParLevel1_Id='" + ParLevel1_Id + "'";
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(conexao))
+            {
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    connection.Open();
+                    var i = Convert.ToInt32(command.ExecuteScalar());
+                    //Se o registro for inserido retorno o Id da Consolidação
+                    if (i > 0)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        //Caso ocorra algum erro, retorno zero
+                        return null;
+                    }
+                }
+            }
+        }
+        //Caso ocorra alguma Exception, grava o log e retorna zero
+        catch (SqlException ex)
+        {
+            int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateLevel1Consolidaton");
+            return "error";
+        }
+        catch (Exception ex)
+        {
+            int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateLevel1Consolidaton");
+            return "error";
+        }
+    }
+}
 }

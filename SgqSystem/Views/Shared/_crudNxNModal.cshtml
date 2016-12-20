@@ -166,31 +166,81 @@
                     $('#crudNxNEdit').modal('hide');
                 });
             }
-            /*META L1*/
-            else if ($(e).parents('#level1_Meta_accordion').length) { 
-                crudNxN.modalAlterarMeta(obj);//
+            /*Pontos L3*/
+            else if ($(e).parents('#level3_PesoL3_accordion').length) {
+                crudNxN.modalAlterarPesoL3(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
-                    var editado = crudNxN.retornaObjetoAlteradoMetaL1(obj);//
-                    $(e).parents('tr').removeData();
-                    $(e).parents('tr').data(editado);
-                    $($(e).parents('tr').find('td')[0]).html(editado.companyName)//
-                    $($(e).parents('tr').find('td')[1]).html(editado.PercentValue)//
-                    $('#crudNxNEdit').modal('hide');
-                    $('#crudNxNEdit #percentVal').inputmask('remove');
+
+                    if (PesoL3.veifyAdd('crudNxNEdit')) {
+                        var editado = PesoL3.getObjAdd('crudNxNEdit', obj);
+                        $(e).parents('tr').removeData();
+                        $(e).parents('tr').data(editado);
+                        $($(e).parents('tr').find('td')[0]).html(editado.companyName)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.Weight)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.groupName)//
+                        $('#crudNxNEdit').modal('hide');
+                        $('#crudNxNEdit #percentVal').inputmask('remove');
+                    }
+
                 });
             }
+            /*AvAm L2*/
+            else if ($(e).parents('#level2_AvAmostra_accordion').length) {
+                crudNxN.modalAlterarAvAmL2(obj);//
+                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
+
+                    if (AvAm2.veifyAdd('crudNxNEdit')) {//
+                        var editado = AvAm2.getObjAdd('crudNxNEdit', obj);//
+                        $(e).parents('tr').removeData();
+                        $(e).parents('tr').data(editado);
+                        $($(e).parents('tr').find('td')[0]).html(editado.companyName)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.evaluationNumber)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.sampleNumber)//
+                        $('#crudNxNEdit').modal('hide');
+                        $('#crudNxNEdit #percentVal').inputmask('remove');
+                    }
+
+                });
+            }
+
             $('#crudNxNEdit').modal();
 
         },
 
-        modalAlterarMeta: function(obj) {
+        modalAlterarAvAmL2: function (obj) {
+            var divDeEdicao = $('#level2_AvAmostra_accordion > div  table.table-erp').clone();
 
+            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+            $('#crudNxNEdit #avaliacao').val(obj.evaluationNumber);
+            $('#crudNxNEdit #amostra').val(obj.sampleNumber);
+            if (obj.companyId > 0) 
+                $('#crudNxNEdit #avAmCompany').val(obj.companyId).change();
+
+            $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
+            $('#crudNxNEdit #myModalLabel').html($('#tableAvAm').attr('nameModal'));
+        },
+
+        modalAlterarPesoL3: function (obj) {
+            var divDeEdicao = $('#level3__PesoL3_collapse > div > table.table-erp').clone();
+            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+            if (obj.ParCompany_Id > 0) {
+                $('#crudNxNEdit #pesoCompany').val(obj.ParCompany_Id).change();
+            }
+            $('#crudNxNEdit #peso').val(obj.Weight);
+            $('#crudNxNEdit #pesoGroupLevel2').val(obj.ParLevel3Group_Id).change();
+            $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
+            $('#crudNxNEdit #myModalLabel').html($('#tablePeso').attr('nameModal'));
+        },
+
+        modalAlterarMeta: function(obj) {
             var divDeEdicao = $('#level1__Meta_collapse > div > table.table-erp').clone();
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
             $('#crudNxNEdit #metaCompany').val(obj.ParCompany_Id).change();
             $('#crudNxNEdit #percentVal').val(obj.PercentValue);
             GuardJs.mascaraPorcentegem('#crudNxNEdit #percentVal');
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
+            
         },
         retornaObjetoAlteradoMetaL1: function (obj) {
             /*Valida se pode criar o objeto*/

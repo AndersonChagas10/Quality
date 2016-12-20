@@ -29,10 +29,10 @@
                             @Table.GerarColuna(@Html.DropDownList("pesoCompany", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "pesoCompany" })
                                 , @Html.Label(Resources.Resource.company)
                                 , Table.PosicaoLabel.top)
-                            @Table.GerarColuna(@Html.TextBox("peso", "",  htmlAttributes: new { @class = "form-control input-sm" , @id="peso" })
+                            @Table.GerarColuna(@Html.TextBox("peso", "", htmlAttributes: new { @class = "form-control input-sm", @id = "peso", @mask = "numerica" })
                                , @Html.Label(Resources.Resource.inform_the_weight_of_the_level3)
                                , Table.PosicaoLabel.top)
-                            @Table.GerarColunaButton(@Html.DropDownList("pesoGroupLevel2", new SelectList(Model.paramsDto.parLevel3Dto.listGroupsLevel2, dataValueField: "Id", dataTextField: "Name"), Resources.Resource.select + "...", new { @class = "form-control input-sm" , @id= "pesoGroupLevel2" })
+                            @Table.GerarColunaButton(@Html.DropDownList("pesoGroupLevel2", new SelectList(Model.paramsDto.parLevel3Dto.listGroupsLevel2, dataValueField: "Id", dataTextField: "Name"), Resources.Resource.select + "...", new { @class = "form-control input-sm", @id = "pesoGroupLevel2" })
                                , @Html.Label(Resources.Resource.level2_group)
                                , Table.PosicaoLabel.top
                                , button: "<button type='button' class='btn btn-primary btn-sm' onclick='" + @click + "' id=''>" + Resources.Resource.attach + "</button>")
@@ -63,7 +63,7 @@
 
     var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
 
-    function atribuiVariavelMeta (){
+    function atribuiVariavelPeso (){
 
         var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto));
         var levelDomain;
@@ -78,7 +78,7 @@
 
     }
 
-    atribuiVariavelMeta();
+    atribuiVariavelPeso();
 
     function getCounterObject (levelDomain, listSalvo) {
         return {
@@ -97,22 +97,22 @@
                     var groupName =  $('#' + isEdit + ' #pesoGroupLevel2 :selected').text();
                     var groupVal = $('#' + isEdit + ' #pesoGroupLevel2 :selected').val();
 
-                    if(compVal == 0 || compVal == "-1" || compVal == "0" || compVal == -1){
+                    if(compVal == 0 || compVal == "-1" || compVal == "0" || compVal == -1 || compVal == undefined){
                         compName = "Todos";
                     }
 
-                    if(groupVal == 0 || groupVal == "-1" || groupVal == "0" || groupVal == -1){
+                    if(groupVal == 0 || groupVal == "-1" || groupVal == "0" || groupVal == -1 || groupVal == undefined){
                         groupName = "";
                     }
 
-                    obj.Weight = $('#' + isEdit + ' #percentVal').val();
+                    obj.Weight = $('#' + isEdit + ' #peso').val();
                     obj.ParCompany_Id = compVal;
                     obj.companyName = compName;
                     obj.ParLevel3Group_Id = groupVal;
                     obj.groupName = groupName;
                     obj.ParLevel2_Id = $('#paramsDto_parLevel2Dto_Id').val();
                     obj.ParLevel3_Id = $('#paramsDto_parLevel3Dto_Id').val();
-                    
+
                     return obj;
 
                 }else{
@@ -145,30 +145,36 @@
 
             },
             veifyAdd: function(isEdit) {
+                
                 var seletorTato = !!isEdit ? isEdit : this.level;
+
                 /*Valida se pode criar o objeto*/
-                //if($('#' + seletorTato + ' #percentVal').val().replace('%', '').length == 0){
-                //    openMessageModal("Campo obrigatório:", "O campo Meta precisa ser preenchido.")
-                //    return false;
-                //}
+                if($('#' + seletorTato + ' #peso').val().length == 0){
+                    openMessageModal("Campo obrigatório:", "O campo Peso precisa ser preenchido.")
+                    return false;
+                }
 
-                //var companySelected = $('#' + seletorTato + ' #metaCompany :selected').val();
-                //var exist = $.grep($('#tableMeta  tbody  tr  td:nth-child(1)'), function(o, c){
-                //    if(companySelected == -1){
-                //        return $(o).parent().data().ParCompany_Id == 0 || $(o).parent().data().ParCompany_Id == -1;
-                //    }
-                //    return $(o).parent().data().ParCompany_Id == companySelected;
-                //})
+                /*Verifica Unidade*/
+                var companySelected = $('#' + seletorTato + ' #pesoCompany :selected').val();
+                var exist = $.grep($('#tablePeso  tbody  tr  td:nth-child(1)'), function(o, c){
+                    if(companySelected == -1){
+                        return $(o).parent().data().ParCompany_Id == 0 || $(o).parent().data().ParCompany_Id == -1 || $(o).parent().data().ParCompany_Id == null
+                    }
+                    return $(o).parent().data().ParCompany_Id == companySelected;
+                });
 
-                //var display = $('#' + seletorTato + ' #metaCompany :selected').text();
-                //if(companySelected == -1){
-                //    display= "Todas";
-                //}
+                if(!!isEdit){/*Edição*/
+                   
+                } else {/*Inclusão*/
+                    if(exist.length){
+                        var display = $('#' + seletorTato + ' #pesoCompany :selected').text();
+                        if(companySelected == -1)
+                            display= "Todas";
 
-                //if(exist.length){
-                //    openMessageModal("Dados já cadastrados para a empresa " + display + ".", "")
-                //    return false;
-                //}
+                        openMessageModal("Dados já cadastrados para a empresa " + display + ".", "")
+                        return false;
+                    }
+                }
 
                 return true;
             },
@@ -226,6 +232,7 @@
     }
 
     $(document).ready(function () {
+        $('#peso').inputmask("mascaraNumericaPositivaNegativa");
         //GuardJs.mascaraPorcentegem('#percentVal')
     });
 
