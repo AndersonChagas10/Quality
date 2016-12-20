@@ -63,7 +63,7 @@
 
     var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
 
-    function atribuiVariavelMeta (){
+    function atribuiVariavelPeso (){
 
         var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto));
         var levelDomain;
@@ -78,7 +78,7 @@
 
     }
 
-    atribuiVariavelMeta();
+    atribuiVariavelPeso();
 
     function getCounterObject (levelDomain, listSalvo) {
         return {
