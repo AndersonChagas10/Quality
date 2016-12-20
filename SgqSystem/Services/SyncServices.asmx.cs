@@ -1974,14 +1974,11 @@ namespace SgqSystem.Services
             //                       "</div>                                                                                                                                                                                                    ";
 
             string viewModal = "<div class=\"viewModal\" style=\"display:none;\">" +
-                               "     <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\">View <a href=\"#\" class=\"pull-right close\" style=\"color: #000;text-decoration:none\">X</a></div> " +
+                               "     <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\"><div class=\"title\">View </div><a href=\"#\" class=\"pull-right close\" style=\"color: #000;text-decoration:none\">X</a></div> " +
                                "     <div class=\"body\" style=\"height:565px; overflow-y: auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                           " +
                                "</div>                                                                                                                                                                                                    ";
 
-            string modalVF = "<div class=\"modalVF panel panel-default\" style=\"display:none;\">                            " +
-                               "     <div class=\"head\">View <a href=\"#\" class=\"pull-right close\">x</a></div>           " +
-                               "     <div class=\"body\"></div>                                                              " +
-                               "</div>                                                                                       ";
+            string modalVF = "<div class=\"modalVF panel panel-primary\" style=\"display:none;\"></div>";
 
             string messageConfirm = "<div class=\"messageConfirm padding20\" style=\"display:none\">                                                                                                " +
                                         "    <h1 class=\"head\">Titulo</h1>                                                                                                                             " +
@@ -2579,6 +2576,8 @@ namespace SgqSystem.Services
         var ParFieldTypeDB = new SGQDBContext.ParFieldType();
         //Inicaliza ParLevel1VariableProduction
         var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
+        //Inicaliza CaracteristicaTipificacao
+        var CaracteristicaTipificacaoDB = new SGQDBContext.CaracteristicaTipificacao();
 
 
         //Pega uma lista de parleve3
@@ -2807,40 +2806,64 @@ namespace SgqSystem.Services
                 switch (parLevel3.Name)
                 {
                     case "Verificação Tipificação - Falha Operacional":
-                        var listOper = "<div class='col-xs-2' name='CONTUSÃO - SEM CONTUSÃO'>SC</div>";
-                        listOper += "<div class='col-xs-2' name='CONTUSÃO - 1 ALCATRA'>AL</div>";
-                        listOper += "<div class='col-xs-2' name='CONTUSÃO - 2 CONTRA FILÉ'>CF</div>";
-                        listOper += "<div class='col-xs-2' name='CONTUSÃO - 3 ALCATRA E CONTRA FILÉ'>ACF</div>";
-                        labels += html.div(outerhtml: listOper, classe: "row items", name: "Falha Op.", tags: "listtype = multiple");
+                        var listOper = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(206);
+                        var listOperHtml = "";
+                        foreach (var carac in listOper)
+                        {
+                           listOperHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
+                                            carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
+                                            " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
+                                            carac.cSgCaracteristica + "</div>"; ;
+                        }
+                        labels += html.div(outerhtml: listOperHtml, classe: "row items", name: "Falha Op.", tags: "listtype = multiple");
                         break;
                     case "Verificação Tipificação - Gordura":
-                        var listGordura = "<div class='col-xs-2' name='1  Ausente '>1</div>";
-                        listGordura += "<div class='col-xs-2' name='2=  Escassa'>2=</div>";
-                        listGordura += "<div class='col-xs-2' name='3=  Mediana'>3=</div>";
-                        listGordura += "<div class='col-xs-2' name='4  Uniforme'>4</div>";
-                        listGordura += "<div class='col-xs-2' name='5  Excessiva'>5</div>";
-                        labels += html.div(outerhtml: listGordura, classe: "row items", name: "Gordura", tags: "listtype = single");
+                        var listGordura = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(203);
+                        var listGorduraHtml = "";
+                        foreach (var carac in listGordura)
+                        {
+                            listGorduraHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
+                                                carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
+                                                " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
+                                                carac.cSgCaracteristica + "</div>"; ;
+                        }
+                        labels += html.div(outerhtml: listGorduraHtml, classe: "row items", name: "Gordura", tags: "listtype = single");
                         break;
                     case "Verificação Tipificação - Contusão":
-                        var listContusao = "<div class='col-xs-2' name='CONTUSÃO - SEM CONTUSÃO'>SC</div>";
-                        listContusao += "<div class='col-xs-2' name='CONTUSÃO - 1 ALCATRA'>AL</div>";
-                        listContusao += "<div class='col-xs-2' name='CONTUSÃO - 2 CONTRA FILÉ'>CF</div>";
-                        listContusao += "<div class='col-xs-2' name='CONTUSÃO - 3 ALCATRA E CONTRA FILÉ'>ACF</div>";
-                        labels += html.div(outerhtml: listContusao, classe: "row items", name: "Contusão", tags: "listtype = multiple");
+                        var listContusao = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(205);
+                        var listContusaoHtml = "";
+                        foreach (var carac in listContusao)
+                        {
+                            listContusaoHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
+                                                carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
+                                                " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
+                                                carac.cSgCaracteristica + "</div>"; ;
+                        }
+                        labels += html.div(outerhtml: listContusaoHtml, classe: "row items", name: "Contusão", tags: "listtype = multiple");
                         break;
                     case "Verificação Tipificação - Idade":
-                        var listIdade = "<div class='col-xs-2' name='Dente de Leite'>0</div>";
-                        listIdade += "<div class='col-xs-2' name='Dois Dentes'>2</div>";
-                        listIdade += "<div class='col-xs-2' name='Quatro Dentes'>4</div>";
-                        listIdade += "<div class='col-xs-2' name='Seis Dentes'>6</div>";
-                        listIdade += "<div class='col-xs-2' name='Oito Dentes'>8</div>";
-                        labels += html.div(outerhtml: listIdade, classe: "row items", name: "Maturidade", tags: "listtype = single");
+                        var listIdade = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(201);
+                        var listIdadeHtml = "";
+                        foreach (var carac in listIdade)
+                        {
+                            listIdadeHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
+                                                carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
+                                                " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
+                                                carac.cSgCaracteristica + "</div>"; ;
+                        }
+                        labels += html.div(outerhtml: listIdadeHtml, classe: "row items", name: "Maturidade", tags: "listtype = single");
                         break;
                     case "Verificação Tipificação - Sexo":
-                        var listSexo = "<div class='col-xs-2' name='MACHO CASTRADO'>C</div>";
-                        listSexo += "<div class='col-xs-2' name='MACHO INTEIRO'>I</div>";
-                        listSexo += "<div class='col-xs-2' name='FÊMEA'>F</div>";
-                        labels += html.div(outerhtml: listSexo, classe: "row items", name: "Sexo", tags: "listtype = single");
+                        var listSexo = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(207);
+                        var listSexoHtml = "";
+                        foreach (var carac in listSexo)
+                        {
+                            listSexoHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
+                                            carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
+                                            " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
+                                            carac.cSgCaracteristica + "</div>"; ;
+                        }
+                        labels += html.div(outerhtml: listSexoHtml, classe: "row items", name: "Sexo", tags: "listtype = single");
                         break;
                 }
 
@@ -2856,7 +2879,7 @@ namespace SgqSystem.Services
                 //Gera uma linha de level3
                 string level3List = html.listgroupItem(
                                                         id: parLevel3.Id.ToString(),
-                                                        classe: "level3 row VF" + classInput,
+                                                        classe: "level3 row VF",
                                                         tags: tags,
                                                         outerhtml: level3 +
                                                                     labels
@@ -2865,6 +2888,32 @@ namespace SgqSystem.Services
                 parLevel3Group += level3List;
 
             }
+
+            var listAreasParticipantes = CaracteristicaTipificacaoDB.getAreasParticipantes();
+            var items = "";
+
+            foreach (var area in listAreasParticipantes)
+            {
+                items += "<div class='col-xs-2 hide' cNmCaracteristica='" + area.cNmCaracteristica+ "' cIdentificador='" + area.cIdentificador+"' "+
+                        " cNrCaracteristica='" + area.cNrCaracteristica + "' cSgCaracteristica='" + area.cSgCaracteristica + "'>" + 
+                        area.cNmCaracteristica + "</div>";
+            }
+            
+            var areasParticipantes = html.listgroupItem(
+                                            id: "0209",
+                                            classe: "level3 row VF",
+                                            tags: "listtype = multiple",
+                                            outerhtml: html.link(
+                                                            outerhtml: html.span(outerhtml: "Areas Participantes", classe: "levelName"),
+                                                            classe: "col-xs-12 col-sm-12 col-md-12"
+                                                            ) + 
+                                                       html.div(
+                                                            outerhtml: html.div(outerhtml: items, classe: "items row", name: "Areas Participantes", tags: "listtype = multiple"),
+                                                            classe: "col-xs-12 col-sm-12 col-md-12"
+                                                            )
+                                        );
+
+            parLevel3Group = areasParticipantes + parLevel3Group;
 
             var painelLevel3HeaderListHtml = "";
 
@@ -2932,25 +2981,24 @@ namespace SgqSystem.Services
                                            classe: "level3Group",
                                            tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                                           outerhtml: painellevel3 +
-                                                      parLevel3Group
-                                         );
+                                               outerhtml: painellevel3 +    
+                                                          parLevel3Group
+                                             );
+                }
+                return parLevel3Group;
             }
-            return parLevel3Group;
-        }
-        //Tela do PCC1B
-        else if (tipoTela.Equals("PCC1B"))
-        {
-            //Instancia uma veriavel para gerar o agrupamento
-            string parLevel3Group = null;
-
-            foreach (var parLevel3 in parlevel3List)
+            //Tela do PCC1B
+            else if (tipoTela.Equals("PCC1B"))
             {
-
-                string classInput = null;
-                string tags = null;
-                string labels = null;
-                string input = null;
+                //Instancia uma veriavel para gerar o agrupamento
+                string parLevel3Group = null;
+                
+                foreach (var parLevel3 in parlevel3List)
+                {
+                    string classInput = null;
+                    string tags = null;
+                    string labels = null;
+                    string input = null;
 
                 //Se for booelan
                 if (parLevel3.ParLevel3InputType_Id == 1)

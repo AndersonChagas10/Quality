@@ -602,4 +602,59 @@ namespace SGQDBContext
             return companys;
         }
     }
+    public partial class VolumePcc1b
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public int Id { get; set; }
+        public int VolumeAnimais { get; set; }
+        public int Quartos { get; set; }
+        public int Avaliacoes { get; set; }
+        public int Amostras { get; set; }
+
+        public IEnumerable<VolumePcc1b> getVolumePcc1b(int Indicador, int Unidade)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select VP.Id VP.VolumeAnimais, VP.Quartos, VP.Avaliacoes, VP.Amostras from VolumePcc1b VP where VP.Indicador = " + Indicador + " and VP.Unidade = " + Unidade + "; ";
+
+            var list = db.Query<VolumePcc1b>(sql);
+
+            return list;
+        }
+    }
+    public partial class CaracteristicaTipificacao
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public int nCdCaracteristica { get; set; }
+        public String cNmCaracteristica { get; set; }
+        public int cNrCaracteristica { get; set; }
+        public String cSgCaracteristica { get; set; }
+        public String cIdentificador { get; set; }
+
+        public IEnumerable<CaracteristicaTipificacao> getCaracteristicasTipificacao(int id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
+                         " from CaracteristicaTipificacao CP where LEN(CP.cNrCaracteristica) >= 5 and SUBSTRING(CP.cNrCaracteristica, 1, 3) = '" + id+"';";
+
+            var list = db.Query<CaracteristicaTipificacao>(sql);
+
+            return list;
+        }
+
+        public IEnumerable<CaracteristicaTipificacao> getAreasParticipantes()
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
+                         " from AreasParticipantes CP where LEN(cNrCaracteristica) >= 5;";
+
+            var list = db.Query<CaracteristicaTipificacao>(sql);
+
+            return list;
+        }
+    }
 }

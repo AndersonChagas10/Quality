@@ -125,8 +125,8 @@
         <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoParticipanteProjeto" Width="1.5" PointX="15.75" PointY="58.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.VolumeAbate" Width="1.5" PointX="8.75" PointY="23.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.VolumeProducao" Width="1.5" PointX="11.25" PointY="37.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Z_Sistema" Width="1.5" PointX="24.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ControleMetaTolerancia" Width="1.5" PointX="24.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Z_Sistema" Width="1.875" PointX="24.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ControleMetaTolerancia" Width="1.875" PointX="24.75" PointY="4" IsExpanded="true" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.MacTablet" Width="1.5" PointX="24.75" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.Resultados_BKP_OCT" Width="1.5" PointX="24.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.ScorecardConsolidadoDia" Width="1.5" PointX="21.75" PointY="24.75" IsExpanded="true" />
