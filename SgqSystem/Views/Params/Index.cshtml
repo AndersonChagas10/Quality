@@ -849,7 +849,12 @@
                 if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
                     dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
 
-                PesoL3.incluiNoObjetoParaSubmit(dados);
+                try {
+                    PesoL3.incluiNoObjetoParaSubmit(dados);
+                } catch (e) {
+                    console.log(e)
+                    console.log("Exceção controlada, se o level 3 não possui vinculo desconsidere esta mensagem, caso possua entre em contato com o suporte da aplicação.")
+                }
                 //openLoader(indexParamsLevel3.saving_the_level3);
                 var $btn = $('#btnSaveNewLevel3');
                 $.post(url3, dados, function (objetoReturn, statusmessage, respostaCompleta) {
