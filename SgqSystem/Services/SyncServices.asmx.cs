@@ -2134,7 +2134,7 @@ namespace SgqSystem.Services
     {
         string foot = "<footer class=\"footer\">                                                                                                                                       " +
                       "   <p style=\"color:white; margin-left:16px; margin-right:16px; margin-top: 12px;\">                                                                      " +
-                      "       <span class=\"user\">Admin</span> - <span class=\"unit\">Colorado</span><span class=\"urlPrefix\"></span>                                          " +
+                      "       <span class=\"user\">Admin</span> - <span class=\"unit\">Colorado</span> | <span class=\"urlPrefix\"></span>                                          " +
                       "       <span class=\"status pull-right\"></span>                                                                                                          " +
                       "   </p>                                                                                                                                                   " +
                       "</footer>                                                                                                                                                 ";
