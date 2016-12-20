@@ -382,16 +382,6 @@ namespace Dominio.Services
             if (level3.listLevel3Level2.Count() > 0)/*Id do grupo selecionado no vinculo Level 3 com level 2*/
                 level3.hasVinculo = true;
 
-            //level3.groupLevel2Selected = parlevel3.ParLevel3Level2.FirstOrDefault(r => r.ParLevel2_Id == idParLevel2).ParLevel3Group_Id;
-
-            //if (idParLevel2 > 0)/*Encontra peso do vinculo*/
-            //{
-            //    if (parlevel3.ParLevel3Level2.FirstOrDefault(r => r.ParLevel2_Id == idParLevel2) != null)
-            //        level3.pesoDoVinculo = parlevel3.ParLevel3Level2.FirstOrDefault(r => r.ParLevel2_Id == idParLevel2).Weight;
-            //    else
-            //        level3.pesoDoVinculo = 0;
-            //}
-
             /*ParLevel 3 Value*/
             retorno.parLevel3Value = new ParLevel3ValueDTO();
             level3.listLevel3Value = Mapper.Map<List<ParLevel3ValueDTO>>(parlevel3.ParLevel3Value.OrderByDescending(r => r.IsActive));

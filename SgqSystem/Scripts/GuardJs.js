@@ -63,7 +63,7 @@ Inputmask.extendAliases({
 
 GuardJs = {
 
-    mascaraNumericaPositiva : function(){
+    mascaraNumericaPositiva : function(e){
         $(e).inputmask("numericoPositivo");
     },
 
@@ -78,11 +78,11 @@ GuardJs = {
     },
 
     mascaraPorcentegem: function (e) {
-        $(e).inputmask("procentagem");
+        $(e).inputmask("numerico");
     },
 
     mascaraNumerica: function (e) {
-        $(e).inputmask("numerico");
+        $(e).inputmask("numeric");
     },
 
     message: "One or more fields are requireds: ",

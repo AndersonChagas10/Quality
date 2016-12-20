@@ -179,7 +179,7 @@
                         $($(e).parents('tr').find('td')[1]).html(editado.Weight)//
                         $($(e).parents('tr').find('td')[2]).html(editado.groupName)//
                         $('#crudNxNEdit').modal('hide');
-                        $('#crudNxNEdit #percentVal').inputmask('remove');
+                        //$('#crudNxNEdit #percentVal').inputmask('remove');
                     }
 
                 });
@@ -197,7 +197,22 @@
                         $($(e).parents('tr').find('td')[1]).html(editado.evaluationNumber)//
                         $($(e).parents('tr').find('td')[2]).html(editado.sampleNumber)//
                         $('#crudNxNEdit').modal('hide');
-                        $('#crudNxNEdit #percentVal').inputmask('remove');
+                    }
+
+                });
+            }
+            /*Meta L1*/
+            else if ($(e).parents('#level1_Meta_accordion').length) {
+                crudNxN.modalAlterarMetal1(obj);//
+                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
+
+                    if (MetaL1.veifyAdd('crudNxNEdit')) {//
+                        var editado = MetaL1.getObjAdd('crudNxNEdit', obj);//
+                        $(e).parents('tr').removeData();
+                        $(e).parents('tr').data(editado);
+                        $($(e).parents('tr').find('td')[0]).html(editado.companyName)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.PercentValue)//
+                        $('#crudNxNEdit').modal('hide');
                     }
 
                 });
@@ -207,6 +222,21 @@
 
         },
 
+        /*MetaLevel1*/
+        modalAlterarMetal1: function (obj) {
+            var divDeEdicao = $('#level1_Meta_accordion > div  table.table-erp').clone();
+
+            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+            $('#crudNxNEdit #percentVal').val(obj.PercentValue);
+            $('#crudNxNEdit #metaCompany').attr("disabled", true);
+            if (obj.ParCompany_Id > 0)
+                $('#crudNxNEdit #metaCompany').val(obj.ParCompany_Id).change();
+
+            GuardJs.mascaraNumerica('#crudNxNEdit #percentVal');
+            $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
+            $('#crudNxNEdit #myModalLabel').html($('#tableMeta').attr('nameModal'));
+        },
+        /*Avaliação e Amostra L2*/
         modalAlterarAvAmL2: function (obj) {
             var divDeEdicao = $('#level2_AvAmostra_accordion > div  table.table-erp').clone();
 
@@ -214,20 +244,23 @@
 
             $('#crudNxNEdit #avaliacao').val(obj.evaluationNumber);
             $('#crudNxNEdit #amostra').val(obj.sampleNumber);
+            $('#crudNxNEdit #avAmCompany').attr("disabled", true);
             if (obj.companyId > 0) 
                 $('#crudNxNEdit #avAmCompany').val(obj.companyId).change();
 
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
             $('#crudNxNEdit #myModalLabel').html($('#tableAvAm').attr('nameModal'));
         },
-
+        /*Peso L3*/
         modalAlterarPesoL3: function (obj) {
             var divDeEdicao = $('#level3__PesoL3_collapse > div > table.table-erp').clone();
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+            $('#crudNxNEdit #pesoCompany').attr("disabled", true);
             if (obj.ParCompany_Id > 0) {
                 $('#crudNxNEdit #pesoCompany').val(obj.ParCompany_Id).change();
             }
             $('#crudNxNEdit #peso').val(obj.Weight);
+            $('#crudNxNEdit #peso').inputmask("mascaraNumericaPositivaNegativa");
             $('#crudNxNEdit #pesoGroupLevel2').val(obj.ParLevel3Group_Id).change();
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
             $('#crudNxNEdit #myModalLabel').html($('#tablePeso').attr('nameModal'));

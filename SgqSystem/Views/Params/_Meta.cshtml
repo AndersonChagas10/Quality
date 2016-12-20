@@ -21,7 +21,7 @@
         <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
             <div class="panel-body">
 
-                <table class="table-erp" id="camposGroup">
+                <table class="table-erp" id="">
 
                     <tbody>
                         <tr>
@@ -77,7 +77,7 @@
     }
 
     atribuiVariavelMeta();
-
+    
     function getCounterObject (levelDomain, listSalvo) {
         return {
             /*Setup*/
@@ -110,27 +110,31 @@
             veifyAdd: function(isEdit) {
                 var seletorTato = !!isEdit ? isEdit : this.level;
                 /*Valida se pode criar o objeto*/
-                if($('#' + seletorTato + ' #percentVal').val().replace('%', '').length == 0){
+                if($('#' + seletorTato + ' #percentVal').val().length == 0){
                     openMessageModal("Campo obrigatório:", "O campo Meta precisa ser preenchido.")
                     return false;
                 }
 
+                /*Verifica Unidade*/
                 var companySelected = $('#' + seletorTato + ' #metaCompany :selected').val();
                 var exist = $.grep($('#tableMeta  tbody  tr  td:nth-child(1)'), function(o, c){
                     if(companySelected == -1){
-                        return $(o).parent().data().ParCompany_Id == 0 || $(o).parent().data().ParCompany_Id == -1;
+                        return $(o).parent().data().ParCompany_Id == 0 || $(o).parent().data().ParCompany_Id == -1 || $(o).parent().data().ParCompany_Id == null
                     }
                     return $(o).parent().data().ParCompany_Id == companySelected;
-                })
+                });
 
-                var display = $('#' + seletorTato + ' #metaCompany :selected').text();
-                if(companySelected == -1){
-                    display= "Todas";
-                }
+                if(!!isEdit){/*Edição*/
+                   
+                } else {/*Inclusão*/
+                    if(exist.length){
+                        var display = $('#' + seletorTato + ' #metaCompany :selected').text();
+                        if(companySelected == -1)
+                            display= "Todas";
 
-                if(exist.length){
-                    openMessageModal("Dados já cadastrados para a empresa " + display + ".", "")
-                    return false;
+                        openMessageModal("Dados já cadastrados para a empresa " + display + ".", "")
+                        return false;
+                    }
                 }
 
                 return true;
@@ -146,7 +150,7 @@
                         dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].Id"] = o.Id;
                     }
                  
-                    dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].PercentValue"] = o.PercentValue.replace('%', '');
+                    dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].PercentValue"] = o.PercentValue;
                     dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].ParCompany_Id"] = o.ParCompany_Id;
                     dados["paramsDto.parLevel" + level + "Dto.listParGoalLevel1[" + c + "].IsActive"] = o.IsActive;
 
@@ -164,7 +168,7 @@
                             o['companyName'] = "Todas";
                         }
                         //console.log(o);
-                        o['PercentValue'] = o.PercentValue + '%';
+                        o['PercentValue'] = o.PercentValue;
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
                 }
@@ -180,7 +184,7 @@
     }
 
     $(document).ready(function () {
-        //GuardJs.mascaraPorcentegem('#percentVal')
+        GuardJs.mascaraNumerica("#percentVal");
     });
 
 </script>

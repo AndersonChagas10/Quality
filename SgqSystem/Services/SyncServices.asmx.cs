@@ -2639,7 +2639,23 @@ namespace SgqSystem.Services
                                                         intervalMax: parLevel3.IntervalMax,
                                                         unitName: parLevel3.ParMeasurementUnit_Name);
                     }
-                else
+                    else if (parLevel3.ParLevel3InputType_Id == 4)
+                    {
+                        classInput = " calculado";
+                        tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
+
+                        labels = html.div(
+                                            outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                            classe: "font10",
+                                            style: "font-size: 11px; margin-top:7px;"
+                                        );
+
+                        input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                        intervalMin: parLevel3.IntervalMin,
+                                                        intervalMax: parLevel3.IntervalMax,
+                                                        unitName: parLevel3.ParMeasurementUnit_Name);
+                    }
+                    else
                 {
                     //se não é um intervalo
                     //tem que gerar uma mascara para os inputs e para os labels
@@ -3130,6 +3146,49 @@ namespace SgqSystem.Services
                     classInput = " boolean";
                     input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
                 }
+
+                    else if (parLevel3.ParLevel3InputType_Id == 3)
+                    {
+
+
+                        classInput = " interval";
+                        tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
+
+                        labels = html.div(
+                                            outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                            classe: "font10",
+                                            style: "font-size: 11px; margin-top:7px;"
+                                        );
+
+                        input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                        intervalMin: parLevel3.IntervalMin,
+                                                        intervalMax: parLevel3.IntervalMax,
+                                                        unitName: parLevel3.ParMeasurementUnit_Name);
+
+
+                    }
+
+                    else if (parLevel3.ParLevel3InputType_Id == 4)
+                    {
+
+                        
+                            classInput = " calculado";
+                            tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
+
+                            labels = html.div(
+                                                outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                                classe: "font10",
+                                                style: "font-size: 11px; margin-top:7px;"
+                                            );
+
+                            input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                                            intervalMin: parLevel3.IntervalMin,
+                                                            intervalMax: parLevel3.IntervalMax,
+                                                            unitName: parLevel3.ParMeasurementUnit_Name);
+                        
+
+                    }
+
                 else
                 {
                     //se não é um intervalo
@@ -3396,7 +3455,7 @@ namespace SgqSystem.Services
         }
         #endregion
 
-        string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre") +
+        string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre com seu Login") +
                               selectUnit +
                               selectShit +
                               html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
