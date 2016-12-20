@@ -2030,12 +2030,14 @@ namespace SgqSystem.Services
         {
             string menu = "<div class=\"rightMenu\">                                                                                                  " +
                            "     <div class=\"list-group list-group-inverse rightMenuList\">                                                           " +
-                           "         <a href= \"#\" id=\"btnSync\" class=\"list-group-item\">Sync</a>                                                  " +
+                           "         <a href= \"#\" id=\"btnSync\" class=\"list-group-item\">Sincronizar</a>                                                  " +
+                           "         <a href= \"#\" id=\"btnSyncParam\" class=\"list-group-item\" onClick=\"onDeviceReady();\">Parametrizações</a>                                                  " +
+
                            "         <a href= \"#\" id=\"btnLogout\" class=\"list-group-item\">Logout</a>                                              " +
-                           "         <a href= \"#\" id=\"btnLog\" class=\"list-group-item\">View Log</a>                                               " +
-                           "         <a href= \"#\" id=\"btnCollectDB\" class=\"list-group-item\">View DataBase</a>                                    " +
-                           "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">Clear DataBase</a>                                " +
-                           "         <span id=\"version\" class=\"list-group-item\">Version: <span class=\"number\"></span></span>                     " +
+                           "         <a href= \"#\" id=\"btnLog\" class=\"list-group-item\">Visualizar Log</a>                                               " +
+                           "         <a href= \"#\" id=\"btnCollectDB\" class=\"list-group-item\">Visualizar banco de dados</a>                                    " +
+                           "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">Limpar banco de dados</a>                                " +
+                           "         <span id=\"version\" class=\"list-group-item\">Versão: <span class=\"number\"></span></span>                     " +
                            "         <span id=\"ambiente\" class=\"list-group-item\"><span class=\"base\"></span></span>                               " +
                            "     </div>                                                                                                                " +
                            " </div>                                                                                                                    ";
@@ -2352,12 +2354,12 @@ namespace SgqSystem.Services
                                            classe: "col-xs-2"
                                          ) +
                                  html.div(
-                                           outerhtml: "<b>Avaliaçoes</b>",
+                                           outerhtml: "<b>Av.</b>",
                                            classe: "col-xs-4",
                                            style: "text-align:center"
                                          ) +
                                  html.div(
-                                           outerhtml: "<b>Amostras</b>",
+                                           outerhtml: "<b>Am.</b>",
                                            classe: "col-xs-4",
                                            style: "text-align:center"
                                          ); ;
