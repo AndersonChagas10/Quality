@@ -623,4 +623,38 @@ namespace SGQDBContext
             return list;
         }
     }
+    public partial class CaracteristicaTipificacao
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public int nCdCaracteristica { get; set; }
+        public String cNmCaracteristica { get; set; }
+        public int cNrCaracteristica { get; set; }
+        public String cSgCaracteristica { get; set; }
+        public String cIdentificador { get; set; }
+
+        public IEnumerable<CaracteristicaTipificacao> getCaracteristicasTipificacao(int id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
+                         " from CaracteristicaTipificacao CP where LEN(CP.cNrCaracteristica) >= 5 and SUBSTRING(CP.cNrCaracteristica, 1, 3) = '" + id+"';";
+
+            var list = db.Query<CaracteristicaTipificacao>(sql);
+
+            return list;
+        }
+
+        public IEnumerable<CaracteristicaTipificacao> getAreasParticipantes()
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
+                         " from AreasParticipantes CP where LEN(cNrCaracteristica) >= 5;";
+
+            var list = db.Query<CaracteristicaTipificacao>(sql);
+
+            return list;
+        }
+    }
 }
