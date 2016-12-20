@@ -1,9 +1,30 @@
-﻿GuardJs = {
+﻿Inputmask.extendAliases({
+    'numeric': {
+        allowPlus: false,
+        allowMinus: false
+    }
+});
 
-    mascaraCampoCalculado: function (e) {
-        if ($(e).val() == "0")
-            $(e).val("");
-        $(e).inputmask({
+Inputmask.extendAliases({
+    'numericoPositivo': {
+        alias: "numeric",
+        placeholder: '',
+        allowPlus: false,
+        allowMinus: false
+    }
+});
+
+Inputmask.extendAliases({
+    'mascaraNumericaPositivaNegativa': {
+        alias: "numeric",
+        placeholder: '',
+        allowPlus: false,
+        allowMinus: true
+    }
+});
+
+Inputmask.extendAliases({
+    'campoCalculado': {
             mask: '[-][+]9{1,16}[.][9]{15}x10^[-][+]9{1,5}'
             , placeholder: ' '
             , showMaskOnFocus: false
@@ -12,20 +33,56 @@
             , reverse: true
             , clearIfNotMatch: true
             , clearIncomplete: true
-            //, showTooltip: true
-        });
+    //, showTooltip: true
+    }
+});
+
+Inputmask.extendAliases({
+    'procentagem': {
+        radixPoint: ".",
+        suffix: "%",
+        clearMaskOnLostFocus: false,
+        placeholder: ' ',
+        showMaskOnFocus: true,
+        showMaskOnHover: false,
+        clearIfNotMatch: true
+    }
+});
+
+Inputmask.extendAliases({
+    'numerico': {
+        radixPoint: ".",
+        //suffix: "%",
+        clearMaskOnLostFocus: false,
+        placeholder: ' ',
+        showMaskOnFocus: true,
+        showMaskOnHover: false,
+        clearIfNotMatch: true
+    }
+});
+
+GuardJs = {
+
+    mascaraNumericaPositiva : function(){
+        $(e).inputmask("numericoPositivo");
+    },
+
+    mascaraNumericaPositivaNegativa: function () {
+        $(e).inputmask("mascaraNumericaPositivaNegativa");
+    },
+
+    mascaraCampoCalculado: function (e) {
+        if ($(e).val() == "0")
+            $(e).val("");
+        $(e).inputmask("campoCalculado");
     },
 
     mascaraPorcentegem: function (e) {
-        $(e).inputmask("decimal", {
-            radixPoint: ".",
-            suffix: "%",
-            clearMaskOnLostFocus: false,
-            placeholder: ' ',
-            showMaskOnFocus: true,
-            showMaskOnHover: false,
-            clearIfNotMatch: true
-        });
+        $(e).inputmask("procentagem");
+    },
+
+    mascaraNumerica: function (e) {
+        $(e).inputmask("numerico");
     },
 
     message: "One or more fields are requireds: ",
