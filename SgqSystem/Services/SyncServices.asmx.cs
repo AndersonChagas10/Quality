@@ -3186,7 +3186,7 @@ namespace SgqSystem.Services
                                                 style: "font-size: 11px; margin-top:7px;"
                                             );
 
-                            input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                            input = html.campoCalculado(id: parLevel3.Id.ToString(),
                                                             intervalMin: parLevel3.IntervalMin,
                                                             intervalMax: parLevel3.IntervalMax,
                                                             unitName: parLevel3.ParMeasurementUnit_Name);
