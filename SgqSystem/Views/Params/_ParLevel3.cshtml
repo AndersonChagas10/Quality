@@ -18,19 +18,19 @@
                     <tr class="row">
 
                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Name, htmlAttributes: new { @class = "form-control input-sm" })
-             , @Html.Label(Resources.Resource.level3_name)
-             , Table.PosicaoLabel.top
-             , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }))
+                         , @Html.Label(Resources.Resource.level3_name)
+                         , Table.PosicaoLabel.top
+                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Name, null, new { @class = "text-danger" }))
 
                         @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel3Dto.Description, htmlAttributes: new { @class = "form-control input-sm" })
-             , @Html.Label(Resources.Resource.level3_description)
-             , Table.PosicaoLabel.top
-             , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }))
+                         , @Html.Label(Resources.Resource.level3_description)
+                         , Table.PosicaoLabel.top
+                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }))
 
                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "form-control input-sm", @id = "selectTipoInput" })
-            , @Html.Label(Resources.Resource.data_type_entry)
-            , Table.PosicaoLabel.top
-            , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }))
+                         , @Html.Label(Resources.Resource.data_type_entry)
+                         , Table.PosicaoLabel.top
+                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }))
 
                     </tr>
 

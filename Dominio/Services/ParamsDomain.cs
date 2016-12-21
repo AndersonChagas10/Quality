@@ -532,7 +532,7 @@ namespace Dominio.Services
             {
                 objLelvel2Level3ToSave.Weight = 1;
             }
-
+            objLelvel2Level3ToSave.IsActive = true;
             _baseRepoParLevel3Level2.AddOrUpdate(objLelvel2Level3ToSave);
             ParLevel3Level2DTO objtReturn = Mapper.Map<ParLevel3Level2DTO>(objLelvel2Level3ToSave);
             return objtReturn;
