@@ -125,6 +125,7 @@
             },
             veifyAdd: function(isEdit) {
                 var seletorTato = !!isEdit ? isEdit : this.level;
+
                 /*Valida se pode criar o objeto*/
                 if($('#' + seletorTato + ' #amostra').val().length == 0){
                     openMessageModal("Numero de amostras inválido.")

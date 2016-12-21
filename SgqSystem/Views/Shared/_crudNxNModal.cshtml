@@ -217,8 +217,85 @@
 
                 });
             }
+            /*Tipos de dados L3*/
+            else if ($(e).parents('#tableLevel3Value').length) {
+                crudNxN.modalAlterarLevel3Value(obj);//
+                $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
+
+                    if (level3Value.veifyAdd('crudNxNEdit')) {//
+                        var editado = level3Value.getObjAdd('crudNxNEdit', obj);//
+                        $(e).parents('tr').removeData();
+                        $(e).parents('tr').data(editado);
+                        $($(e).parents('tr').find('td')[0]).html(editado.ParLevel3InputType_Name)//
+                        $($(e).parents('tr').find('td')[1]).html(editado.ParCompany_Name)//
+                        $($(e).parents('tr').find('td')[2]).html(editado.ParMeasurementUnit_Name)//
+                        $($(e).parents('tr').find('td')[3]).html(editado.IntervalMin)//
+                        $($(e).parents('tr').find('td')[4]).html(editado.IntervalMax)//
+                        $($(e).parents('tr').find('td')[5]).html(editado.AcceptableValueBetween_Name)//
+                        $($(e).parents('tr').find('td')[6]).html(editado.ParLevel3BoolFalse_Name)//
+                        $($(e).parents('tr').find('td')[7]).html(editado.ParLevel3BoolTrue_Name)//
+                        $('#crudNxNEdit').modal('hide');
+                    }
+
+                });
+            }
 
             $('#crudNxNEdit').modal();
+
+        },
+
+        /*Tipos de dados L3*/
+        modalAlterarLevel3Value: function (obj) {
+            var divDeEdicao;
+
+            divDeEdicao = $('#companyValueL3 > td').clone();
+            $(divDeEdicao).show();
+            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+            if (obj.ParLevel3InputType_Id == 3 || obj.ParLevel3InputType_Id == 4) {
+
+                divDeEdicao = $('.ParIntervalos').clone();
+                $(divDeEdicao).show();
+                $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+                
+                $('#crudNxNEdit #selectUnidadeDeMedidas').val(obj.ParMeasurementUnit_Id).change();
+                $('#crudNxNEdit #parLevel3Value_IntervalMin').val(obj.IntervalMin);
+                $('#crudNxNEdit #parLevel3Value_IntervalMax').val(obj.IntervalMax);
+                $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween).change().show().append();
+                if (obj.ParCompany_Id > 0)
+                    $('#crudNxNEdit #selectUnidadeParL3Value').val(obj.ParCompany_Id).change();
+
+                $(document).on('input', '#crudNxNEdit #parLevel3Value_IntervalMax', function (e) {
+                    changeComboEdit();
+                });
+
+                $(document).on('input', '#crudNxNEdit #parLevel3Value_IntervalMin', function (e) {
+                    changeComboEdit();
+                });
+                $('#crudNxNEdit #parLevel3Value_IntervalMin').trigger('input');
+                $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween ? 1 : 0).change();
+               
+            } else if (obj.ParLevel3InputType_Id == 1) {
+
+                divDeEdicao = $('.ParBinarios').clone();
+                $(divDeEdicao).show();
+                $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+                $('#crudNxNEdit #selectConforme').val(obj.ParLevel3BoolTrue_Id).change();
+                $('#crudNxNEdit #selectNaoConforme').val(obj.ParLevel3BoolFalse_Id).change();
+                if (obj.ParCompany_Id > 0)
+                    $('#crudNxNEdit #selectUnidadeParL3Value').val(obj.ParCompany_Id).change();
+
+            }
+
+            divDeEdicao = $('#selectTipoInput');
+            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+            $('#crudNxNEdit #selectTipoInput').val(obj.ParLevel3InputType_Id).change().hide();
+
+            $('#crudNxNEdit #selectUnidadeParL3Value').attr("disabled", true).parents('tr').show();
+            $('#crudNxNEdit > div > div > div.modal-body').show();
+            $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
+            $('#crudNxNEdit #myModalLabel').html($('#tableLevel3Value').attr('nameModal'));
 
         },
 
@@ -282,21 +359,21 @@
             return obj;
         },
 
-        modalAlterarLevel3Value: function (obj) {
+        //modalAlterarLevel3Value: function (obj) {
 
-            var divDeEdicao = $('#level1__Meta_collapse > div > table.table-erp').clone();
-            $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
-            $('#crudNxNEdit #metaCompany').val(obj.ParCompany_Id).change();
-            $('#crudNxNEdit #percentVal').val(obj.PercentValue);
-            GuardJs.mascaraPorcentegem('#crudNxNEdit #percentVal');
-            $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
-        },
-        retornaObjetoAlteradoLevel3Value: function (obj) {
-            /*Valida se pode criar o objeto*/
-            level3Value.veifyAdd('crudNxNEdit')
-            level3Value.getObjAdd('crudNxNEdit', obj);
-            return obj;
-        },
+        //    var divDeEdicao = $('#level1__Meta_collapse > div > table.table-erp').clone();
+        //    $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+        //    $('#crudNxNEdit #metaCompany').val(obj.ParCompany_Id).change();
+        //    $('#crudNxNEdit #percentVal').val(obj.PercentValue);
+        //    GuardJs.mascaraPorcentegem('#crudNxNEdit #percentVal');
+        //    $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
+        //},
+        //retornaObjetoAlteradoLevel3Value: function (obj) {
+        //    /*Valida se pode criar o objeto*/
+        //    level3Value.veifyAdd('crudNxNEdit')
+        //    level3Value.getObjAdd('crudNxNEdit', obj);
+        //    return obj;
+        //},
 
 
         modalAlterarRegraNc: function (obj) {
