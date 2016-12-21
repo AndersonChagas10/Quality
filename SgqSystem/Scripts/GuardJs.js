@@ -33,6 +33,7 @@ Inputmask.extendAliases({
             , reverse: true
             , clearIfNotMatch: true
             , clearIncomplete: true
+            //, jitMasking: true
     //, showTooltip: true
     }
 });
