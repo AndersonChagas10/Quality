@@ -29,7 +29,7 @@ namespace SgqSystem.Services
             submit
         }
 
-        public enum  bootstrapcolor
+        public enum bootstrapcolor
         {
             _default,
             primary,
@@ -49,13 +49,14 @@ namespace SgqSystem.Services
         /// <param name="style">Styles</param>
         /// <param name="tags">Tags</param>
         /// <returns></returns>
-        public string div(string id = null, string classe = null, string name = null, string outerhtml = null, string style=null, string tags=null) {
+        public string div(string id = null, string classe = null, string name = null, string outerhtml = null, string style = null, string tags = null)
+        {
 
-            if(!string.IsNullOrEmpty(tags))
+            if (!string.IsNullOrEmpty(tags))
             {
                 tags = " " + tags;
             }
-            return "<div id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\"" +  tags + ">" + outerhtml + "</div>";
+            return "<div id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\"" + tags + ">" + outerhtml + "</div>";
         }
         /// <summary>
         /// Retorna um span
@@ -66,7 +67,7 @@ namespace SgqSystem.Services
         /// <param name="outerhtml">Conteudo</param>
         /// <param name="style">Styles</param>
         /// <returns></returns>
-        public string span(string id=null, string classe=null, string name=null, string outerhtml = null, string style=null)
+        public string span(string id = null, string classe = null, string name = null, string outerhtml = null, string style = null)
         {
             return "<span id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\">" + outerhtml + "</span>";
         }
@@ -103,7 +104,7 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public string head(h headnumber, string id = null, string classe = null, string name = null, string outerhtml = null, string style = null)
         {
-            return "<h" + (int)headnumber + "  id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\">"  + outerhtml + "</h" + (int)headnumber + ">";
+            return "<h" + (int)headnumber + "  id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\">" + outerhtml + "</h" + (int)headnumber + ">";
         }
         /// <summary>
         /// Retorna um label
@@ -113,7 +114,7 @@ namespace SgqSystem.Services
         /// <param name="style">Styles</param>
         /// <param name="outerhtml">Conteudo</param>
         /// <returns></returns>
-        public string label(string labelfor = null, string classe=null, string style = null, string outerhtml=null)
+        public string label(string labelfor = null, string classe = null, string style = null, string outerhtml = null)
         {
             return "<label for=\"" + labelfor + "\" class=\"" + classe + "\" style=\"" + style + "\">" + outerhtml + "</label>";
         }
@@ -127,34 +128,34 @@ namespace SgqSystem.Services
         /// <param name="required">Requerido</param>
         /// <param name="disabled">Desabilitado</param>
         /// <returns></returns>
-        public string input(type type = type.text, string id=null, string classe=null, string placeholder=null, bool required=false, bool disabled=false)
+        public string input(type type = type.text, string id = null, string classe = null, string placeholder = null, bool required = false, bool disabled = false)
         {
             string requiredTag = null;
-            if(required == true)
+            if (required == true)
             {
                 requiredTag = " required";
             }
             string disabledTag = null;
-            if(disabled == true)
+            if (disabled == true)
             {
                 disabledTag = " disabled";
             }
             classe += " form-control";
             return "<input type=\"" + type.ToString() + "\" id=\"" + id + "\" class=\"" + classe + "\" placeholder=\"" + placeholder + "\"" + requiredTag + disabledTag + ">";
         }
-       /// <summary>
-       /// Retorna um button
-       /// </summary>
-       /// <param name="label">Label button</param>
-       /// <param name="type">Atributo type (Ex: submit...)</param>
-       /// <param name="id">Atributo id</param>
-       /// <param name="classe">Atributo class</param>
-       /// <param name="dataloading">Mensagem que aparece no botão enquando a requisição é executada</param>
-       /// <param name="disabled">Desabilitado</param>
-       /// <returns></returns>
-        public string button(string label, type type=type.submit, string id=null, string classe=null, string dataloading=null, bool disabled = false)
+        /// <summary>
+        /// Retorna um button
+        /// </summary>
+        /// <param name="label">Label button</param>
+        /// <param name="type">Atributo type (Ex: submit...)</param>
+        /// <param name="id">Atributo id</param>
+        /// <param name="classe">Atributo class</param>
+        /// <param name="dataloading">Mensagem que aparece no botão enquando a requisição é executada</param>
+        /// <param name="disabled">Desabilitado</param>
+        /// <returns></returns>
+        public string button(string label, type type = type.submit, string id = null, string classe = null, string dataloading = null, bool disabled = false)
         {
-            if(!string.IsNullOrEmpty(dataloading))
+            if (!string.IsNullOrEmpty(dataloading))
             {
                 dataloading = " data-loading-text=\"" + dataloading + "\"";
             }
@@ -168,7 +169,7 @@ namespace SgqSystem.Services
                 disabledTag = " disabled";
             }
 
-            return "<button type=\"" + type.ToString() + "\" id=\"" +  id + "\" class=\"" + classe.Trim() + "\" " + dataloading  + disabledTag + ">" + label + "</button>";
+            return "<button type=\"" + type.ToString() + "\" id=\"" + id + "\" class=\"" + classe.Trim() + "\" " + dataloading + disabledTag + ">" + label + "</button>";
         }
         /// <summary>
         /// Retorna um select
@@ -178,17 +179,17 @@ namespace SgqSystem.Services
         /// <param name="classe">Atributo class</param>
         /// <param name="disabled">Desabilitado</param>
         /// <returns></returns>
-        public string select(string options, string id=null, string classe=null, bool disabled=false)
+        public string select(string options, string id = null, string classe = null, bool disabled = false)
         {
             string disabledTag = null;
-            if(disabled == true)
+            if (disabled == true)
             {
                 disabledTag = " disabled";
             }
-            
+
             classe += " form-control";
 
-            return "<select id=\"" + id + "\" class=\"" + classe.Trim() +"\"" + disabledTag + ">" + options + "</select>";
+            return "<select id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + disabledTag + ">" + options + "</select>";
         }
         /// <summary>
         /// Retorna option do select
@@ -197,32 +198,32 @@ namespace SgqSystem.Services
         /// <param name="label">Atributo label</param>
         /// <param name="tags">Tags</param>
         /// <returns></returns>
-        public string option(string value, string label, string tags=null)
+        public string option(string value, string label, string tags = null)
         {
-            if(!string.IsNullOrEmpty(tags))
+            if (!string.IsNullOrEmpty(tags))
             {
                 tags = " " + tags;
             }
             return "<option value=\"" + value + "\"" + tags + ">" + label + "</option>";
         }
-        public string listgroup(string id=null, string classe=null, string outerhtml=null, string tags=null)
+        public string listgroup(string id = null, string classe = null, string outerhtml = null, string tags = null)
         {
             classe += " list-group";
 
-            if(!string.IsNullOrEmpty(tags))
+            if (!string.IsNullOrEmpty(tags))
             {
                 tags = " " + tags;
             }
 
-            return "<ul id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + ">" + 
+            return "<ul id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + ">" +
                     outerhtml +
                     "</ul>";
         }
-        public string listgroupItem(string id=null, string classe=null, string tags=null, string outerhtml=null)
+        public string listgroupItem(string id = null, string classe = null, string tags = null, string outerhtml = null)
         {
             classe += " list-group-item";
 
-            if(!string.IsNullOrEmpty(tags))
+            if (!string.IsNullOrEmpty(tags))
             {
                 tags = " " + tags;
                 tags = tags.Trim();
@@ -230,31 +231,31 @@ namespace SgqSystem.Services
 
             return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + ">" + outerhtml + "</li>";
         }
-        public string accordeon(string id, string label, string classe=null, string outerhtml=null, bool aberto=true, bootstrapcolor? color=null)
+        public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = true, bootstrapcolor? color = null)
         {
             string collapseIn = " in";
-            if(aberto == false)
+            if (aberto == false)
             {
                 collapseIn = null;
             }
 
             string colorPanel = "default";
-            if(color != null)
+            if (color != null)
             {
                 colorPanel = color.ToString();
             }
 
-            return  "  <div class=\"panel-group\">                                                                                                          "+
-                    "    <div class=\"panel panel-" + colorPanel + "\">                                                                                          "+
-                    "      <div class=\"panel-heading\">                                                                                                    "+
-                    "        <h4 class=\"panel-title\">                                                                                                     "+
-                    "          <a data-toggle=\"collapse\" href=\"#collapse" + id +  "\" class=\"\" aria-expanded=\"true\">" + label + "</a>                "+
-                    "      </div>                                                                                                                           "+
-                    "        </h4>                                                                                                                          "+
-                    "      <div id = \"collapse" + id + "\" class=\"panel-collapse collapse" + collapseIn + "\" aria-expanded=\"true\">                     "+
-                    "        <ul class=\"list-group\" style=\"margin:0\">                                                                                   "+
-                             outerhtml                                                                                                                       +
-                    "        </ul>                                                                                                                          "+
+            return "  <div class=\"panel-group\">                                                                                                          " +
+                    "    <div class=\"panel panel-" + colorPanel + "\">                                                                                          " +
+                    "      <div class=\"panel-heading\">                                                                                                    " +
+                    "        <h4 class=\"panel-title\">                                                                                                     " +
+                    "          <a data-toggle=\"collapse\" href=\"#collapse" + id + "\" class=\"\" aria-expanded=\"true\">" + label + "</a>                " +
+                    "      </div>                                                                                                                           " +
+                    "        </h4>                                                                                                                          " +
+                    "      <div id = \"collapse" + id + "\" class=\"panel-collapse collapse" + collapseIn + "\" aria-expanded=\"true\">                     " +
+                    "        <ul class=\"list-group\" style=\"margin:0\">                                                                                   " +
+                             outerhtml +
+                    "        </ul>                                                                                                                          " +
                     "      </div>                                                                                                                           " +
                     "    </div>                                                                                                                             " +
                     "  </div>                                                                                                                               ";
@@ -279,8 +280,8 @@ namespace SgqSystem.Services
             //                              outerhtml: div(outerhtml:"22222222222") +
             //                                         div(outerhtml: "2222222") +
             //                                         div(outerhtml: "33333333")
-                                          
-                                          
+
+
             //                                         );
 
 
@@ -304,13 +305,13 @@ namespace SgqSystem.Services
             //           tags: "role=\"tablist\" aria-multiselectable=\"true\"", 
             //           outerhtml: panel);
         }
-        public string link(string id = null, string classe = null, string href=null, string tags = null, string outerhtml = null)
+        public string link(string id = null, string classe = null, string href = null, string tags = null, string outerhtml = null)
         {
-            if(string.IsNullOrEmpty(href))
+            if (string.IsNullOrEmpty(href))
             {
                 href = "#";
             }
-            if(!string.IsNullOrEmpty(tags))
+            if (!string.IsNullOrEmpty(tags))
             {
                 tags = " " + tags;
             }
@@ -331,7 +332,7 @@ namespace SgqSystem.Services
 
             return binario;
         }
-        public string campoIntervalo(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue=0, string unitName=null, string classe=null)
+        public string campoIntervalo(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
         {
             //definir min value //min=\"0\" 
             //definir max value
@@ -346,7 +347,7 @@ namespace SgqSystem.Services
                                  "    <span class=\"input-group-btn btn-minus\">                                                                                                                              " +
                                  "         <button class=\"btn btn-default\" type=\"button\">                                                                                                                 " +
                                  "             <i class=\"fa fa-minus\" aria-hidden=\"true\"></i>                                                                                                             " +
-                                 "             </button></span><input type=\"text\" class=\"form-control text-center levelValue\">     " +
+                                 "             </button></span><input type=\"text\" class=\"form-control text-center levelValue interval\">     " +
                                  "             <span class=\"input-group-btn btn-plus\"><button class=\"btn btn-default\" type=\"button\">                                                                    " +
                                  "             <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>                                                                                                              " +
                                  "         </button>                                                                                                                                                          " +
@@ -374,14 +375,67 @@ namespace SgqSystem.Services
         //public string level2(string id, string label, string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false,
         //                     string alertlevel1 = null, string alertlevel2 = null, string alertlevel3 = null, string AlertLevel = null, string ParFrequency_Id = null)
 
-        public string level2(string id, string label, string classe=null, decimal defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false)
+        public string level2(string id, string label, string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false)
         {
             return link(
-                           id: id, 
-                           classe: "level2" +  classe,
-                           tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" ",
+                           id: id,
+                           classe: "level2" + classe,
+                           tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\"",
                            outerhtml: span(outerhtml: label, classe: "levelName")
                        );
+        }
+        public string level3(SGQDBContext.ParLevel3 parLevel3, string input, string classe = null, string labelsInputs = null)
+        {
+            //Coloca botão de não avaliado ParLevel3
+            //vai ter que ter uma configuração na parametrização
+            string btnNaoAvaliado = button(
+                                       label: span(
+                                                    classe: "cursorPointer iconsArea",
+                                                    outerhtml: "N/A"
+                                                ),
+                                       classe: "btn-warning btnNotAvaliable na font11"
+                                   );
+
+
+            string tags = " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\"";
+
+
+            //Gera o level3
+            string level3 = link(
+                                        outerhtml: span(outerhtml: parLevel3.Name, classe: "levelName"),
+                                        classe: "col-xs-4"
+                                        );
+
+            //gera os labels
+            string labels = div(
+                                    outerhtml: labelsInputs,
+                                    classe: "col-xs-3"
+                                );
+
+            //gera os contadores
+            string counters = div(
+                                        outerhtml: input,
+                                        classe: "col-xs-3 counters"
+                                        );
+
+            //gera os botoes
+            string buttons = div(
+                                        outerhtml: btnNaoAvaliado,
+                                        classe: "col-xs-2",
+                                        style: "text-align:right"
+                                        );
+
+
+            return  listgroupItem(
+                                    id: parLevel3.Id.ToString(),
+                                    classe: "level3 row" + classe,
+                                    tags: tags,
+                                    outerhtml: level3 +
+                                                labels +
+                                                counters +
+                                                buttons
+                                );
+
         }
         public string user(int UserSGQ_Id, string UserSGQ_Name, string UserSGQ_Login, string UserSGQ_Pass, string Role, int ParCompany_Id, string ParCompany_Name)
         {
@@ -390,7 +444,7 @@ namespace SgqSystem.Services
         public string level1(SGQDBContext.ParLevel1 ParLevel1, string tipoTela, int totalAvaliado, decimal totalDefeitos, decimal alertNivel1, decimal alertNivel2, decimal alertaNivel3, int alertaAtual, int avaliacaoultimoalerta)
         {
 
-            string tags = "parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\"";
+            string tags = "parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\"";
 
             string level01 = link(
 
