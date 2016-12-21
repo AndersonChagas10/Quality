@@ -97,8 +97,13 @@
             tdsNames: ['companyName', 'evaluationNumber', 'sampleNumber', 'btn'],
             getObjAdd: function(isEdit, obj){
                 if(isEdit != undefined){
-                    obj.companyId = $('#' + isEdit + ' #avAmCompany :selected').val();
-                    obj.companyName = $('#' + isEdit + ' #avAmCompany :selected').text();
+                    var compId = $('#' + isEdit + ' #avAmCompany :selected').val();
+                    var compName = $('#' + isEdit + ' #avAmCompany :selected').text();
+                    if(compId == "-1"){
+                        compName = "Todas"
+                    }
+                    obj.companyId = compId;
+                    obj.companyName = compName;
                     obj.sampleNumber = $('#' + isEdit + ' #amostra').val();
                     obj.evaluationNumber = $('#' + isEdit + ' #avaliacao').val();
                     return obj;
@@ -120,6 +125,7 @@
             },
             veifyAdd: function(isEdit) {
                 var seletorTato = !!isEdit ? isEdit : this.level;
+
                 /*Valida se pode criar o objeto*/
                 if($('#' + seletorTato + ' #amostra').val().length == 0){
                     openMessageModal("Numero de amostras inválido.")

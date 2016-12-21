@@ -53,9 +53,12 @@ namespace Dominio.Services
         {
             try
             {
+
                 UserSgq userByName;
+
                 if (userDto.IsNull())
                     throw new ExceptionHelper("Username and Password are required.");
+
                 try
                 {
 
@@ -70,9 +73,7 @@ namespace Dominio.Services
                 }
 
                 if (GlobalConfig.Brasil)
-                {
                     LoginBraSil(userDto, userByName);
-                }
 
                 if (GlobalConfig.Eua)
                 {
