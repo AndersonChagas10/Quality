@@ -1,4 +1,6 @@
-﻿using Helper;
+﻿using Dominio;
+using Dominio.ADO;
+using Helper;
 using SgqSystem.ViewModels;
 using System.Web.Mvc;
 
@@ -12,7 +14,12 @@ namespace SgqSystem.Controllers
         [HandleController()]
         public ActionResult Index()
         {
-            ContextExampleViewModel pvm = new ContextExampleViewModel();
+            using (var db = new FactoryADO(@"SERVERGRT\MSSQLSERVER2014", "SgqDbDev", "1qazmko0", "sa"))
+            {
+               var results = db.executeQuery<UserSgq>("Select * from UserSgq");
+            }
+
+                ContextExampleViewModel pvm = new ContextExampleViewModel();
             return View(pvm);
         }
 

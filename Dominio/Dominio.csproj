@@ -542,6 +542,7 @@
     </Compile>
     <Compile Include="Services\CorrectiveActionDomain.cs" />
     <Compile Include="Services\CompanyDomain.cs" />
+    <Compile Include="ADO\FactoryADO.cs" />
     <Compile Include="Services\GetConsolidateDataCollectionDomain.cs" />
     <Compile Include="Services\ExampleDomain.cs" />
     <Compile Include="Services\ParamsDomain.cs" />
@@ -720,6 +721,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Runtime.Serialization" />
