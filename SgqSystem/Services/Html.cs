@@ -346,7 +346,7 @@ namespace SgqSystem.Services
                                  "    <span class=\"input-group-btn btn-minus\">                                                                                                                              " +
                                  "         <button class=\"btn btn-default\" type=\"button\">                                                                                                                 " +
                                  "             <i class=\"fa fa-minus\" aria-hidden=\"true\"></i>                                                                                                             " +
-                                 "             </button></span><input type=\"text\" class=\"form-control text-center levelValue\">     " +
+                                 "             </button></span><input type=\"text\" value=\"\" class=\"form-control text-center levelValue\">     " +
                                  "             <span class=\"input-group-btn btn-plus\"><button class=\"btn btn-default\" type=\"button\">                                                                    " +
                                  "             <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>                                                                                                              " +
                                  "         </button>                                                                                                                                                          " +
@@ -367,7 +367,7 @@ namespace SgqSystem.Services
             }
 
             string calculado = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\">                                                                                                  " +
-                                 "    <input type=\"text\" class=\"form-control text-center levelValue\">     " +
+                                 "    <input type=\"text\" value=\"\" class=\"form-control text-center levelValue\">     " +
                                  "</div>                                                                                                                                                                      ";
             return calculado;
         }
