@@ -12,14 +12,8 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class VerificacaoTipificacao
+    public partial class DelDados
     {
-        public int Id { get; set; }
-        public int Sequencial { get; set; }
-        public byte Banda { get; set; }
-        public System.DateTime DataHora { get; set; }
-        public int UnidadeId { get; set; }
-        public string Chave { get; set; }
-        public Nullable<bool> Status { get; set; }
+        public int TESTE { get; set; }
     }
 }

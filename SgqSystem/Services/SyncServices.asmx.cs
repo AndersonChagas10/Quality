@@ -2978,7 +2978,7 @@ namespace SgqSystem.Services
             if (!string.IsNullOrEmpty(parLevel3Group))
             {
                 parLevel3Group = html.div(
-                                           classe: "level3Group",
+                                           classe: "level3Group VF",
                                            tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
                                                outerhtml: painellevel3 +    
@@ -3117,7 +3117,7 @@ namespace SgqSystem.Services
             if (!string.IsNullOrEmpty(parLevel3Group))
             {
                 parLevel3Group = html.div(
-                                           classe: "level3Group",
+                                           classe: "level3Group PCC1B",
                                            tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
                                            outerhtml: painellevel3 +

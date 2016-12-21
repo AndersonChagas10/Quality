@@ -255,6 +255,147 @@
         <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoTarefa_Participante" ManuallyRouted="false" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoParticipanteMultiplaEscolha_Participante" ManuallyRouted="false" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoParticipanteProjeto_Participante" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.BkpCollection" Width="1.5" PointX="24.75" PointY="27.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CepDesossa" Width="1.5" PointX="41.25" PointY="37.5" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CepRecortes" Width="1.5" PointX="41.25" PointY="22.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CollectionHtml" Width="1.5" PointX="27.75" PointY="1.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CollectionJson" Width="1.5" PointX="0.75" PointY="28.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CollectionLevel02" Width="1.5" PointX="33" PointY="4" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CollectionLevel03" Width="1.5" PointX="35.25" PointY="6.375" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ConsolidationLevel01" Width="1.5" PointX="28.5" PointY="62" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ConsolidationLevel02" Width="1.5" PointX="30.75" PointY="60.5" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CorrectiveAction" Width="1.5" PointX="38.25" PointY="5.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Department" Width="1.5" PointX="26.25" PointY="66" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Example" Width="1.5" PointX="27.75" PointY="10.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Level01" Width="1.5" PointX="26.25" PointY="62.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Level02" Width="1.5" PointX="28.5" PointY="55.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Level03" Width="1.5" PointX="33" PointY="0.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.LogJson" Width="1.5" PointX="27.75" PointY="13.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.LogSgqGlobal" Width="1.5" PointX="27.75" PointY="17.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParCluster" Width="1.5" PointX="36" PointY="53.5" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParClusterGroup" Width="1.5" PointX="33.75" PointY="53.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParCompany" Width="1.5" PointX="39" PointY="20.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParCompanyCluster" Width="1.5" PointX="44.25" PointY="38.375" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParCompanyXStructure" Width="1.5" PointX="41.25" PointY="19.25" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParConsolidationType" Width="1.5" PointX="30.75" PointY="23.375" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParCounter" Width="1.5" PointX="33" PointY="46.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParCounterXLocal" Width="1.5" PointX="35.25" PointY="36.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParCriticalLevel" Width="1.5" PointX="36" PointY="24.375" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParDepartment" Width="1.5" PointX="27.75" PointY="29.375" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParEvaluation" Width="1.5" PointX="32.25" PointY="27.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParFieldType" Width="1.5" PointX="36.75" PointY="46.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParFrequency" Width="1.5" PointX="27.75" PointY="33.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParGoal" Width="1.5" PointX="41.25" PointY="29.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParHeaderField" Width="1.5" PointX="39" PointY="47.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevel1" Width="1.5" PointX="33" PointY="30.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevel1XCluster" Width="1.5" PointX="38.25" PointY="37.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevel1XHeaderField" Width="1.5" PointX="41.25" PointY="33.25" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevel2" Width="1.5" PointX="30" PointY="32.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevel3" Width="1.5" PointX="33" PointY="19.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevel3BoolFalse" Width="1.5" PointX="42" PointY="42.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevel3BoolTrue" Width="1.5" PointX="42" PointY="11.5" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevel3Group" Width="1.5" PointX="32.25" PointY="40.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevel3InputType" Width="1.5" PointX="42" PointY="15.375" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevel3Level2" Width="1.5" PointX="37.5" PointY="41.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevel3Level2Level1" Width="1.5" PointX="35.25" PointY="33.25" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevel3Value" Width="1.5" PointX="44.25" PointY="20.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevelDefiniton" Width="1.5" PointX="36.75" PointY="49.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLocal" Width="1.5" PointX="33" PointY="43.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParMeasurementUnit" Width="1.5" PointX="42" PointY="7.5" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParMultipleValues" Width="1.5" PointX="41.25" PointY="48" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParNotConformityRule" Width="1.5" PointX="33" PointY="23.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParNotConformityRuleXLevel" Width="1.5" PointX="35.25" PointY="27.375" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParRelapse" Width="1.5" PointX="38.25" PointY="32.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParSample" Width="1.5" PointX="35.25" PointY="41.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParStructure" Width="1.5" PointX="39" PointY="17" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ParStructureGroup" Width="1.5" PointX="36.75" PointY="17.25" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Pcc1b" Width="1.5" PointX="44.25" PointY="32.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Period" Width="1.5" PointX="27.75" PointY="21.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Shift" Width="1.5" PointX="27.75" PointY="24.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Unit" Width="1.5" PointX="26.25" PointY="59.25" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.UnitUser" Width="1.5" PointX="30" PointY="7" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.UserSgq" Width="1.5" PointX="27.75" PointY="6.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VacuoGRD" Width="1.5" PointX="38.25" PointY="27.5" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.DelDados" Width="1.5" PointX="7.75" PointY="5.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Reports_CCA_Audit" Width="1.5" PointX="19.75" PointY="29.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Reports_CFF_Audit" Width="1.5" PointX="21.75" PointY="29.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Reports_HTP_Audit" Width="1.5" PointX="29.75" PointY="10.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VWCFFResults" Width="1.5" PointX="29.75" PointY="1.625" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK__CepDesoss__ParCo__28D80438" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK__CepDesoss__ParLe__29CC2871" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK__CepRecort__ParCo__2AC04CAA" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK__CepRecort__ParLe__2BB470E3" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_CollectionLevel02_ConsolidationLevel02" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_CollectionLevel02_Level01" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_CollectionLevel02_Level02" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_CollectionLevel02_UserSgq" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_CollectionLevel03_CollectionLevel02" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_CorrectiveAction_CollectionLevel02" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_CollectionLevel03_Level03" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ConsolidationLevel01_Department" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ConsolidationLevel01_Level01" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ConsolidationLevel01_Unit" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ConsolidationLevel02_ConsolidationLevel01" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ConsolidationLevel02_Level02" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_CorrectiveAction_UserSgq" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_CorrectiveAction_UserSgq1" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_CorrectiveAction_UserSgq2" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCluster_ParClusterGroup" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCompanyCluster_ParCluster" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel1XCluster_ParCluster" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK__Pcc1b__ParCompan__6AA5C795" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK__VacuoGRD__ParCom__6E765879" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCompanyCluster_ParCompany" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCompanyXStructure_ParCompany" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParEvaluation_ParCompany" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParGoal_ParCompany" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel3Value_ParCompany" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParNotConformityRuleXLevel_ParCompany" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParSample_ParCompany" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCompanyXStructure_ParStructure" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel1_ParConsolidationType" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCounterLocal_ParCounter" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCounterLocal_ParLevel1" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCounterLocal_ParLevel2" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCounterLocal_ParLevel3" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCounterLocal_ParLocal" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel1XCluster_ParCriticalLevel" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel2_ParDepartment" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParEvaluation_ParLevel2" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParHeaderField_ParFieldType" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel1_ParFrequency" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel2_ParFrequency" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParRelapse_ParFrequency" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParGoal_ParLevel1" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParHeaderField_ParLevelDefinition" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel1XHeaderField_ParHeaderField" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParMultipleValues_ParHeaderField" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK__Pcc1b__ParLevel1__6B99EBCE" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK__VacuoGRD__ParLev__6F6A7CB2" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel1XCluster_ParLevel1" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel1XHeaderField_ParLevel1" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel3Level2Level1_ParLevel1" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParNotConformityRuleXLevel_ParLevel1" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParRelapse_ParLevel1" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel3Group_ParLevel2" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel3Level2_ParLevel2" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParNotConformityRuleXLevel_ParLevel2" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParRelapse_ParLevel2" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParSample_ParLevel2" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel3Level2_ParLevel3" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel3Value_ParLevel3" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParNotConformityRuleXLevel_ParLevel3" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParRelapse_ParLevel3" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel3Value_ParLevel3BoolFalse" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel3Value_ParLevel3BoolTrue" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel3Level2_ParLevel3Group" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel3Value_ParLevel3InputType" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel3Level2Level1_ParLevel3Level2" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel3Value_ParMeasurementUnit" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParNotConformityRuleXLevel_ParNotConformityRule" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_ParStructure_ParStructureGroup" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_UnitUser_Unit" />
+        <AssociationConnector Association="SGQ_BrasilModel.FK_UnitUser_UserSgq" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
