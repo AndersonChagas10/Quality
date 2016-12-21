@@ -342,17 +342,34 @@ namespace SgqSystem.Services
                 classe = " " + classe;
             }
 
-            string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\">                                                                                                         " +
-                                 "    <span class=\"input-group-btn btn-minus\">                                                                                                                                     " +
-                                 "         <button class=\"btn btn-default\" type=\"button\">                                                                                                                        " +
-                                 "             <i class=\"fa fa-minus\" aria-hidden=\"true\"></i>                                                                                                                    " +
-                                 "             </button></span><input value=\"" + defaultValue + "\" defaultvalue=\"" + defaultValue + "\" type=\"text\" class=\"form-control text-center levelValue interval\">     " +
-                                 "             <span class=\"input-group-btn btn-plus\"><button class=\"btn btn-default\" type=\"button\">                                                                           " +
-                                 "             <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>                                                                                                                     " +
-                                 "         </button>                                                                                                                                                                 " +
-                                 "     </span>                                                                                                                                                                       " +
-                                 "</div>                                                                                                                                                                             ";
+            string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\">                                                                                                  " +
+                                 "    <span class=\"input-group-btn btn-minus\">                                                                                                                              " +
+                                 "         <button class=\"btn btn-default\" type=\"button\">                                                                                                                 " +
+                                 "             <i class=\"fa fa-minus\" aria-hidden=\"true\"></i>                                                                                                             " +
+                                 "             </button></span><input type=\"text\" class=\"form-control text-center levelValue\">     " +
+                                 "             <span class=\"input-group-btn btn-plus\"><button class=\"btn btn-default\" type=\"button\">                                                                    " +
+                                 "             <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>                                                                                                              " +
+                                 "         </button>                                                                                                                                                          " +
+                                 "     </span>                                                                                                                                                                " +
+                                 "</div>                                                                                                                                                                      ";
             return intervalo;
+        }
+
+        public string campoCalculado(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
+        {
+            //definir min value //min=\"0\" 
+            //definir max value
+            //definir default value
+
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string calculado = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\">                                                                                                  " +
+                                 "    <input type=\"text\" class=\"form-control text-center levelValue\">     " +
+                                 "</div>                                                                                                                                                                      ";
+            return calculado;
         }
         //public string level2(string id, string label, string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false,
         //                     string alertlevel1 = null, string alertlevel2 = null, string alertlevel3 = null, string AlertLevel = null, string ParFrequency_Id = null)
