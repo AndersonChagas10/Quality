@@ -1224,7 +1224,12 @@ namespace SgqSystem.Services
                 string evaluation = "1";
 
                 decimal WeiDefects = 0;
-                WeiDefects = (Convert.ToDecimal(defects) + Convert.ToDecimal(punishimentValue)) * Convert.ToDecimal(weight);
+
+                decimal defeitos = Convert.ToDecimal(defects.ToString().Replace(".", ","));
+                decimal punicao = Convert.ToDecimal(punishimentValue.ToString().Replace(".", ","));
+                decimal peso = Convert.ToDecimal(weight.ToString().Replace(".",","));
+
+                WeiDefects = (defeitos + punicao) * peso;
 
                 id = DefaultValueReturn(id, "0");
 
@@ -1232,7 +1237,7 @@ namespace SgqSystem.Services
                 {
                     sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiDefects]) " +
                            "VALUES " +
-                           "('" + CollectionLevel02Id + "','" + Level03Id + "', (SELECT Name FROM ParLevel3 WHERE Id='" + Level03Id + "'),'" + weight + "','" + intervalMin + "','" + intervalMax + "', '" + value + "','" + valueText + "','" + conform + "','" + isnotEvaluate + "', '" + punishimentValue + "', '" + defects + "', '" + evaluation + "', '" + WeiDefects + "') ";
+                           "('" + CollectionLevel02Id + "','" + Level03Id + "', (SELECT Name FROM ParLevel3 WHERE Id='" + Level03Id + "'),'" + weight + "','" + intervalMin + "','" + intervalMax + "', '" + value + "','" + valueText + "','" + conform + "','" + isnotEvaluate + "', '" + punishimentValue + "', '" + defects + "', '" + evaluation + "', " + WeiDefects.ToString().Replace(",",".") + ") ";
 
                     sql += " SELECT @@IDENTITY AS 'Identity'";
 
