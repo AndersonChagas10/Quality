@@ -18,7 +18,6 @@ namespace Dominio
         public Department()
         {
             this.ConsolidationLevel01 = new HashSet<ConsolidationLevel01>();
-            this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
         }
     
         public int Id { get; set; }
@@ -28,7 +27,5 @@ namespace Dominio
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
     }
 }

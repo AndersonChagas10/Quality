@@ -27,10 +27,8 @@ namespace Dominio
         public decimal Weight { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool IsActive { get; set; }
-        public Nullable<int> ParCompany_Id { get; set; }
+        public bool Active { get; set; }
     
-        public virtual ParCompany ParCompany { get; set; }
         public virtual ParLevel2 ParLevel2 { get; set; }
         public virtual ParLevel3 ParLevel3 { get; set; }
         public virtual ParLevel3Group ParLevel3Group { get; set; }

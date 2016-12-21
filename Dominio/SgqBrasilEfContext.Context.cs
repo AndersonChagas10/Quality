@@ -33,6 +33,7 @@ namespace Dominio
         public virtual DbSet<AcompanhamentoTarefa> AcompanhamentoTarefa { get; set; }
         public virtual DbSet<Alertas> Alertas { get; set; }
         public virtual DbSet<AreasParticipantes> AreasParticipantes { get; set; }
+        public virtual DbSet<BkpCollection> BkpCollection { get; set; }
         public virtual DbSet<Cabecalho> Cabecalho { get; set; }
         public virtual DbSet<Campo> Campo { get; set; }
         public virtual DbSet<CaracteristicaTipificacao> CaracteristicaTipificacao { get; set; }
@@ -45,13 +46,21 @@ namespace Dominio
         public virtual DbSet<ClassificacaoProduto> ClassificacaoProduto { get; set; }
         public virtual DbSet<ClusterDepartamentos> ClusterDepartamentos { get; set; }
         public virtual DbSet<Clusters> Clusters { get; set; }
+        public virtual DbSet<CollectionHtml> CollectionHtml { get; set; }
+        public virtual DbSet<CollectionJson> CollectionJson { get; set; }
+        public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
+        public virtual DbSet<CollectionLevel03> CollectionLevel03 { get; set; }
         public virtual DbSet<ConfiguracaoEmail> ConfiguracaoEmail { get; set; }
         public virtual DbSet<ConfiguracaoEmailPA> ConfiguracaoEmailPA { get; set; }
+        public virtual DbSet<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
+        public virtual DbSet<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
         public virtual DbSet<ContramedidaEspecifica> ContramedidaEspecifica { get; set; }
         public virtual DbSet<ContramedidaGenerica> ContramedidaGenerica { get; set; }
+        public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
         public virtual DbSet<DepartamentoOperacoes> DepartamentoOperacoes { get; set; }
         public virtual DbSet<DepartamentoProdutos> DepartamentoProdutos { get; set; }
         public virtual DbSet<Departamentos> Departamentos { get; set; }
+        public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<DesvioNiveis> DesvioNiveis { get; set; }
         public virtual DbSet<Desvios> Desvios { get; set; }
         public virtual DbSet<Empresa> Empresa { get; set; }
@@ -59,6 +68,7 @@ namespace Dominio
         public virtual DbSet<Equipamentos> Equipamentos { get; set; }
         public virtual DbSet<EquipamentosAvaliados> EquipamentosAvaliados { get; set; }
         public virtual DbSet<Estados> Estados { get; set; }
+        public virtual DbSet<Example> Example { get; set; }
         public virtual DbSet<fa_CausaEspecifica> fa_CausaEspecifica { get; set; }
         public virtual DbSet<fa_CausaGenerica> fa_CausaGenerica { get; set; }
         public virtual DbSet<fa_ContramedidaEspecifica> fa_ContramedidaEspecifica { get; set; }
@@ -73,9 +83,14 @@ namespace Dominio
         public virtual DbSet<GrupoTipoAvaliacaoMonitoramentos> GrupoTipoAvaliacaoMonitoramentos { get; set; }
         public virtual DbSet<GrupoTipoAvaliacoes> GrupoTipoAvaliacoes { get; set; }
         public virtual DbSet<Horarios> Horarios { get; set; }
+        public virtual DbSet<Level01> Level01 { get; set; }
+        public virtual DbSet<Level02> Level02 { get; set; }
+        public virtual DbSet<Level03> Level03 { get; set; }
         public virtual DbSet<LogAlteracoes> LogAlteracoes { get; set; }
+        public virtual DbSet<LogJson> LogJson { get; set; }
         public virtual DbSet<LogOperacaoPA> LogOperacaoPA { get; set; }
         public virtual DbSet<LogSgq> LogSgq { get; set; }
+        public virtual DbSet<LogSgqGlobal> LogSgqGlobal { get; set; }
         public virtual DbSet<Metas> Metas { get; set; }
         public virtual DbSet<MonitoramentoEquipamentos> MonitoramentoEquipamentos { get; set; }
         public virtual DbSet<Monitoramentos> Monitoramentos { get; set; }
@@ -83,7 +98,6 @@ namespace Dominio
         public virtual DbSet<MultiplaEscolha> MultiplaEscolha { get; set; }
         public virtual DbSet<Niveis> Niveis { get; set; }
         public virtual DbSet<NiveisUsuarios> NiveisUsuarios { get; set; }
-        public virtual DbSet<NQA> NQA { get; set; }
         public virtual DbSet<Observacoes> Observacoes { get; set; }
         public virtual DbSet<ObservacoesPadroes> ObservacoesPadroes { get; set; }
         public virtual DbSet<Operacoes> Operacoes { get; set; }
@@ -105,71 +119,6 @@ namespace Dominio
         public virtual DbSet<PadraoMonitoramentos> PadraoMonitoramentos { get; set; }
         public virtual DbSet<PadraoTolerancias> PadraoTolerancias { get; set; }
         public virtual DbSet<Padroes> Padroes { get; set; }
-        public virtual DbSet<PenalidadeReincidencia> PenalidadeReincidencia { get; set; }
-        public virtual DbSet<Perfil> Perfil { get; set; }
-        public virtual DbSet<PlanoDeAcaoQuemQuandoComo> PlanoDeAcaoQuemQuandoComo { get; set; }
-        public virtual DbSet<Pontos> Pontos { get; set; }
-        public virtual DbSet<Produto> Produto { get; set; }
-        public virtual DbSet<ProdutoInNatura> ProdutoInNatura { get; set; }
-        public virtual DbSet<Produtos> Produtos { get; set; }
-        public virtual DbSet<ProdutosAvaliados> ProdutosAvaliados { get; set; }
-        public virtual DbSet<Projeto> Projeto { get; set; }
-        public virtual DbSet<Regionais> Regionais { get; set; }
-        public virtual DbSet<Resultados> Resultados { get; set; }
-        public virtual DbSet<ResultadosData> ResultadosData { get; set; }
-        public virtual DbSet<ResultadosPCC> ResultadosPCC { get; set; }
-        public virtual DbSet<Sugestoes> Sugestoes { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
-        public virtual DbSet<TarefaAmostras> TarefaAmostras { get; set; }
-        public virtual DbSet<TarefaAvaliacoes> TarefaAvaliacoes { get; set; }
-        public virtual DbSet<TarefaCategorias> TarefaCategorias { get; set; }
-        public virtual DbSet<TarefaMonitoramentos> TarefaMonitoramentos { get; set; }
-        public virtual DbSet<TarefaPA> TarefaPA { get; set; }
-        public virtual DbSet<Tarefas> Tarefas { get; set; }
-        public virtual DbSet<Terceiro> Terceiro { get; set; }
-        public virtual DbSet<TipificacaoReal> TipificacaoReal { get; set; }
-        public virtual DbSet<TipoAvaliacoes> TipoAvaliacoes { get; set; }
-        public virtual DbSet<Unidades> Unidades { get; set; }
-        public virtual DbSet<UnidadesMedidas> UnidadesMedidas { get; set; }
-        public virtual DbSet<Usuario> Usuario { get; set; }
-        public virtual DbSet<UsuarioPerfilEmpresa> UsuarioPerfilEmpresa { get; set; }
-        public virtual DbSet<Usuarios> Usuarios { get; set; }
-        public virtual DbSet<UsuarioUnidades> UsuarioUnidades { get; set; }
-        public virtual DbSet<VerificacaoContagem> VerificacaoContagem { get; set; }
-        public virtual DbSet<VerificacaoTipificacao> VerificacaoTipificacao { get; set; }
-        public virtual DbSet<VerificacaoTipificacaoComparacao> VerificacaoTipificacaoComparacao { get; set; }
-        public virtual DbSet<VerificacaoTipificacaoResultados> VerificacaoTipificacaoResultados { get; set; }
-        public virtual DbSet<VerificacaoTipificacaoTarefaIntegracao> VerificacaoTipificacaoTarefaIntegracao { get; set; }
-        public virtual DbSet<VerificacaoTipificacaoValidacao> VerificacaoTipificacaoValidacao { get; set; }
-        public virtual DbSet<VinculoCampoCabecalho> VinculoCampoCabecalho { get; set; }
-        public virtual DbSet<VinculoCampoTarefa> VinculoCampoTarefa { get; set; }
-        public virtual DbSet<VinculoParticipanteMultiplaEscolha> VinculoParticipanteMultiplaEscolha { get; set; }
-        public virtual DbSet<VinculoParticipanteProjeto> VinculoParticipanteProjeto { get; set; }
-        public virtual DbSet<VolumeAbate> VolumeAbate { get; set; }
-        public virtual DbSet<VolumeProducao> VolumeProducao { get; set; }
-        public virtual DbSet<Z_Sistema> Z_Sistema { get; set; }
-        public virtual DbSet<ControleMetaTolerancia> ControleMetaTolerancia { get; set; }
-        public virtual DbSet<MacTablet> MacTablet { get; set; }
-        public virtual DbSet<Resultados_BKP_OCT> Resultados_BKP_OCT { get; set; }
-        public virtual DbSet<ScorecardConsolidadoDia> ScorecardConsolidadoDia { get; set; }
-        public virtual DbSet<Tipificacao> Tipificacao { get; set; }
-        public virtual DbSet<BkpCollection> BkpCollection { get; set; }
-        public virtual DbSet<CepDesossa> CepDesossa { get; set; }
-        public virtual DbSet<CepRecortes> CepRecortes { get; set; }
-        public virtual DbSet<CollectionHtml> CollectionHtml { get; set; }
-        public virtual DbSet<CollectionJson> CollectionJson { get; set; }
-        public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
-        public virtual DbSet<CollectionLevel03> CollectionLevel03 { get; set; }
-        public virtual DbSet<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
-        public virtual DbSet<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
-        public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
-        public virtual DbSet<Department> Department { get; set; }
-        public virtual DbSet<Example> Example { get; set; }
-        public virtual DbSet<Level01> Level01 { get; set; }
-        public virtual DbSet<Level02> Level02 { get; set; }
-        public virtual DbSet<Level03> Level03 { get; set; }
-        public virtual DbSet<LogJson> LogJson { get; set; }
-        public virtual DbSet<LogSgqGlobal> LogSgqGlobal { get; set; }
         public virtual DbSet<ParCluster> ParCluster { get; set; }
         public virtual DbSet<ParClusterGroup> ParClusterGroup { get; set; }
         public virtual DbSet<ParCompany> ParCompany { get; set; }
@@ -208,17 +157,61 @@ namespace Dominio
         public virtual DbSet<ParStructure> ParStructure { get; set; }
         public virtual DbSet<ParStructureGroup> ParStructureGroup { get; set; }
         public virtual DbSet<Pcc1b> Pcc1b { get; set; }
+        public virtual DbSet<PenalidadeReincidencia> PenalidadeReincidencia { get; set; }
+        public virtual DbSet<Perfil> Perfil { get; set; }
         public virtual DbSet<Period> Period { get; set; }
+        public virtual DbSet<PlanoDeAcaoQuemQuandoComo> PlanoDeAcaoQuemQuandoComo { get; set; }
+        public virtual DbSet<Pontos> Pontos { get; set; }
+        public virtual DbSet<Produto> Produto { get; set; }
+        public virtual DbSet<ProdutoInNatura> ProdutoInNatura { get; set; }
+        public virtual DbSet<Produtos> Produtos { get; set; }
+        public virtual DbSet<ProdutosAvaliados> ProdutosAvaliados { get; set; }
+        public virtual DbSet<Projeto> Projeto { get; set; }
+        public virtual DbSet<Regionais> Regionais { get; set; }
+        public virtual DbSet<Resultados> Resultados { get; set; }
+        public virtual DbSet<ResultadosData> ResultadosData { get; set; }
+        public virtual DbSet<ResultadosPCC> ResultadosPCC { get; set; }
         public virtual DbSet<Shift> Shift { get; set; }
+        public virtual DbSet<Sugestoes> Sugestoes { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<TarefaAmostras> TarefaAmostras { get; set; }
+        public virtual DbSet<TarefaAvaliacoes> TarefaAvaliacoes { get; set; }
+        public virtual DbSet<TarefaCategorias> TarefaCategorias { get; set; }
+        public virtual DbSet<TarefaMonitoramentos> TarefaMonitoramentos { get; set; }
+        public virtual DbSet<TarefaPA> TarefaPA { get; set; }
+        public virtual DbSet<Tarefas> Tarefas { get; set; }
+        public virtual DbSet<Terceiro> Terceiro { get; set; }
+        public virtual DbSet<TipificacaoReal> TipificacaoReal { get; set; }
+        public virtual DbSet<TipoAvaliacoes> TipoAvaliacoes { get; set; }
+        public virtual DbSet<Unidades> Unidades { get; set; }
+        public virtual DbSet<UnidadesMedidas> UnidadesMedidas { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<UnitUser> UnitUser { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
+        public virtual DbSet<Usuario> Usuario { get; set; }
+        public virtual DbSet<UsuarioPerfilEmpresa> UsuarioPerfilEmpresa { get; set; }
+        public virtual DbSet<Usuarios> Usuarios { get; set; }
+        public virtual DbSet<UsuarioUnidades> UsuarioUnidades { get; set; }
         public virtual DbSet<VacuoGRD> VacuoGRD { get; set; }
-        public virtual DbSet<DelDados> DelDados { get; set; }
-        public virtual DbSet<Reports_CCA_Audit> Reports_CCA_Audit { get; set; }
-        public virtual DbSet<Reports_CFF_Audit> Reports_CFF_Audit { get; set; }
-        public virtual DbSet<Reports_HTP_Audit> Reports_HTP_Audit { get; set; }
-        public virtual DbSet<VWCFFResults> VWCFFResults { get; set; }
+        public virtual DbSet<VerificacaoContagem> VerificacaoContagem { get; set; }
+        public virtual DbSet<VerificacaoTipificacao> VerificacaoTipificacao { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoComparacao> VerificacaoTipificacaoComparacao { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoResultados> VerificacaoTipificacaoResultados { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoTarefaIntegracao> VerificacaoTipificacaoTarefaIntegracao { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoValidacao> VerificacaoTipificacaoValidacao { get; set; }
+        public virtual DbSet<VinculoCampoCabecalho> VinculoCampoCabecalho { get; set; }
+        public virtual DbSet<VinculoCampoTarefa> VinculoCampoTarefa { get; set; }
+        public virtual DbSet<VinculoParticipanteMultiplaEscolha> VinculoParticipanteMultiplaEscolha { get; set; }
+        public virtual DbSet<VinculoParticipanteProjeto> VinculoParticipanteProjeto { get; set; }
+        public virtual DbSet<VolumeAbate> VolumeAbate { get; set; }
+        public virtual DbSet<VolumeProducao> VolumeProducao { get; set; }
+        public virtual DbSet<Z_Sistema> Z_Sistema { get; set; }
+        public virtual DbSet<ControleMetaTolerancia> ControleMetaTolerancia { get; set; }
+        public virtual DbSet<MacTablet> MacTablet { get; set; }
+        public virtual DbSet<Resultados_BKP_OCT> Resultados_BKP_OCT { get; set; }
+        public virtual DbSet<ScorecardConsolidadoDia> ScorecardConsolidadoDia { get; set; }
+        public virtual DbSet<Tipificacao> Tipificacao { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoJBS> VerificacaoTipificacaoJBS { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

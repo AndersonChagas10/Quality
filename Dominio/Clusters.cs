@@ -18,7 +18,6 @@ namespace Dominio
         public Clusters()
         {
             this.Pontos = new HashSet<Pontos>();
-            this.Unidades = new HashSet<Unidades>();
         }
     
         public int Id { get; set; }
@@ -31,7 +30,5 @@ namespace Dominio
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Pontos> Pontos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Unidades> Unidades { get; set; }
     }
 }

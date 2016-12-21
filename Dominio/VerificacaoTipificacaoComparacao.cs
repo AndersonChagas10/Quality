@@ -20,9 +20,10 @@ namespace Dominio
         public string Identificador { get; set; }
         public int NumCaracteristica { get; set; }
         public System.DateTime DataHora { get; set; }
+        public Nullable<bool> Conforme { get; set; }
+        public bool JBS { get; set; }
         public Nullable<int> valorSGQ { get; set; }
         public Nullable<int> valorJBS { get; set; }
         public Nullable<int> nCdEmpresa { get; set; }
-        public Nullable<bool> Conforme { get; set; }
     }
 }
