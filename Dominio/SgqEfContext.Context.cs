@@ -31,6 +31,7 @@ namespace Dominio
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AreasParticipantes> AreasParticipantes { get; set; }
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
         public virtual DbSet<CaracteristicaTipificacao> CaracteristicaTipificacao { get; set; }
         public virtual DbSet<CaracteristicaTipificacaoSequencial> CaracteristicaTipificacaoSequencial { get; set; }

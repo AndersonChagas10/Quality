@@ -274,7 +274,7 @@ namespace Dominio.Services
                             {
                                 Name = existenteNoDbAntigo.cSigla.ToLower(),
                                 FullName = existenteNoDbAntigo.cNmUsuario,
-                                Email = existenteNoDbAntigo.cEMail,
+                                //Email = existenteNoDbAntigo.cEMail,
                                 Password = Guard.Criptografar3DES(userDto.Password),
                             };
                         }

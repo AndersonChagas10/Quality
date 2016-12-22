@@ -368,7 +368,7 @@ namespace SgqSystem.Services
             }
 
             string calculado = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\">                                                                                                  " +
-                                 "    <input type=\"text\" class=\"form-control text-center levelValue\">     " +
+                                 "    <input type=\"text\" value=\"\" class=\"form-control text-center levelValue\">     " +
                                  "</div>                                                                                                                                                                      ";
             return calculado;
         }

@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="SgqDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AreasParticipantes">
+          <Key>
+            <PropertyRef Name="cNmCaracteristica" />
+          </Key>
+          <Property Name="nCdCaracteristica" Type="decimal" Precision="12" Scale="0" Nullable="false" />
+          <Property Name="cNmCaracteristica" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cNrCaracteristica" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="cSgCaracteristica" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="cIdentificador" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
         <EntityType Name="BkpCollection">
           <Key>
             <PropertyRef Name="Id" />
@@ -946,7 +956,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParLevel2XHeaderField' does not have 
           <Property Name="PunishmentValue" Type="decimal" Precision="10" Scale="5" />
           <Property Name="WeiEvaluation" Type="decimal" Precision="10" Scale="5" />
           <Property Name="Evaluation" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="WeiDefects" Type="decimal" Precision="10" Scale="5" />
+          <Property Name="WeiDefects" Type="decimal" Precision="30" Scale="8" />
           <Property Name="CT4Eva3" Type="decimal" Precision="10" Scale="5" />
           <Property Name="Sampling" Type="decimal" Precision="10" Scale="5" />
         </EntityType>
@@ -2317,6 +2327,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="SgqDbModelStoreContainer">
+          <EntitySet Name="AreasParticipantes" EntityType="Self.AreasParticipantes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BkpCollection" EntityType="Self.BkpCollection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CaracteristicaTipificacao" EntityType="Self.CaracteristicaTipificacao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CaracteristicaTipificacaoSequencial" EntityType="Self.CaracteristicaTipificacaoSequencial" Schema="dbo" store:Type="Tables" />
@@ -2848,6 +2859,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
     <edmx:ConceptualModels>
       <Schema Namespace="SgqDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SgqDbDevEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AreasParticipantes" EntityType="SgqDbModel.AreasParticipantes" />
           <EntitySet Name="BkpCollection" EntityType="SgqDbModel.BkpCollection" />
           <EntitySet Name="CaracteristicaTipificacao" EntityType="SgqDbModel.CaracteristicaTipificacao" />
           <EntitySet Name="CaracteristicaTipificacaoSequencial" EntityType="SgqDbModel.CaracteristicaTipificacaoSequencial" />
@@ -3312,6 +3324,16 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
             <End Role="UnitUser" EntitySet="UnitUser" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="AreasParticipantes">
+          <Key>
+            <PropertyRef Name="cNmCaracteristica" />
+          </Key>
+          <Property Name="nCdCaracteristica" Type="Decimal" Nullable="false" Precision="12" Scale="0" />
+          <Property Name="cNmCaracteristica" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cNrCaracteristica" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cSgCaracteristica" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="cIdentificador" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="BkpCollection">
           <Key>
             <PropertyRef Name="Id" />
@@ -4346,7 +4368,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <Property Name="PunishmentValue" Type="Decimal" Precision="10" Scale="5" />
           <Property Name="WeiEvaluation" Type="Decimal" Precision="10" Scale="5" />
           <Property Name="Evaluation" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="WeiDefects" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="WeiDefects" Type="Decimal" Precision="30" Scale="8" />
           <Property Name="CT4Eva3" Type="Decimal" Precision="10" Scale="5" />
           <Property Name="Sampling" Type="Decimal" Precision="10" Scale="5" />
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_Result_Level3_CollectionLevel2" FromRole="Result_Level3" ToRole="CollectionLevel2" />
@@ -5807,6 +5829,17 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SgqDbModelStoreContainer" CdmEntityContainer="SgqDbDevEntities">
+          <EntitySetMapping Name="AreasParticipantes">
+            <EntityTypeMapping TypeName="SgqDbModel.AreasParticipantes">
+              <MappingFragment StoreEntitySet="AreasParticipantes">
+                <ScalarProperty Name="cIdentificador" ColumnName="cIdentificador" />
+                <ScalarProperty Name="cSgCaracteristica" ColumnName="cSgCaracteristica" />
+                <ScalarProperty Name="cNrCaracteristica" ColumnName="cNrCaracteristica" />
+                <ScalarProperty Name="cNmCaracteristica" ColumnName="cNmCaracteristica" />
+                <ScalarProperty Name="nCdCaracteristica" ColumnName="nCdCaracteristica" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="BkpCollection">
             <EntityTypeMapping TypeName="SgqDbModel.BkpCollection">
               <MappingFragment StoreEntitySet="BkpCollection">

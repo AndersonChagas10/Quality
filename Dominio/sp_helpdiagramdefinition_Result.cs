@@ -10,11 +10,10 @@
 namespace Dominio
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Estados
+    public partial class sp_helpdiagramdefinition_Result
     {
-        public int Id { get; set; }
-        public string Nome { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }
