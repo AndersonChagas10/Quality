@@ -26,7 +26,7 @@ namespace SgqSystem.Controllers.Api
 
     [AllowAnonymous]
     [RoutePrefix("api/VerificacaoTipificacao")]
-    public class VerificacaoTipificacaoController : Controller
+    public class VerificacaoTipificacaoController : BaseController
     {
 
         public string connectionString(Unidades unidades, string url = null)

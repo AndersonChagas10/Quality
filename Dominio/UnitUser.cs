@@ -17,7 +17,6 @@ namespace Dominio
         public int Id { get; set; }
         public int UserSgqId { get; set; }
         public int UnitId { get; set; }
-        public string Role { get; set; }
     
         public virtual Unit Unit { get; set; }
         public virtual UserSgq UserSgq { get; set; }

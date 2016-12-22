@@ -12,13 +12,15 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class Level02
+    public partial class ParLevel2ControlCompany
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Alias { get; set; }
+        public Nullable<int> ParCompany_Id { get; set; }
+        public Nullable<int> ParLevel1_Id { get; set; }
+        public Nullable<int> ParLevel2_Id { get; set; }
+        public Nullable<System.DateTime> InitDate { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool Active { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     }
 }

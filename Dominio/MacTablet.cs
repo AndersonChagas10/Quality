@@ -12,13 +12,10 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class Level02
+    public partial class MacTablet
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Alias { get; set; }
-        public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool Active { get; set; }
+        public string ChaveResultado { get; set; }
+        public string MAC { get; set; }
+        public string IP { get; set; }
     }
 }

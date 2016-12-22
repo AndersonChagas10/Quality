@@ -12,13 +12,17 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class Level02
+    public partial class LogSgq
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Alias { get; set; }
-        public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool Active { get; set; }
+        public System.DateTime addDate { get; set; }
+        public string Level { get; set; }
+        public string Call_Site { get; set; }
+        public string Exception_Type { get; set; }
+        public string Exception_Message { get; set; }
+        public string Stack_Trace { get; set; }
+        public string Additional_Info { get; set; }
+        public string Email { get; set; }
+        public string Second_Log_Path { get; set; }
     }
 }

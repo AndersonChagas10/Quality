@@ -97,7 +97,6 @@ namespace Dominio
         public virtual DbSet<Period> Period { get; set; }
         public virtual DbSet<Result_Level3> Result_Level3 { get; set; }
         public virtual DbSet<Shift> Shift { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<UnitUser> UnitUser { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
@@ -112,6 +111,7 @@ namespace Dominio
         public virtual DbSet<Deviation> Deviation { get; set; }
         public virtual DbSet<ParLevel1VariableProduction> ParLevel1VariableProduction { get; set; }
         public virtual DbSet<ParLevel1VariableProductionXLevel1> ParLevel1VariableProductionXLevel1 { get; set; }
+        public virtual DbSet<ParLevel2ControlCompany> ParLevel2ControlCompany { get; set; }
         public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
         public virtual DbSet<ResultLevel2HeaderField> ResultLevel2HeaderField { get; set; }
         public virtual DbSet<VerificacaoTipificacaoJBS> VerificacaoTipificacaoJBS { get; set; }
