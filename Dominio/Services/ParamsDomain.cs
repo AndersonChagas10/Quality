@@ -212,7 +212,7 @@ namespace Dominio.Services
             var parlevel1 = _baseRepoParLevel1.GetById(idParLevel1);
             var parlevel1Dto = Mapper.Map<ParLevel1DTO>(parlevel1);
             parlevel1Dto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parlevel1.ParCounterXLocal.OrderByDescending(r => r.IsActive));/*Contadores*/
-            parlevel1Dto.listParGoalLevel1 = Mapper.Map<List<ParGoalDTO>>(parlevel1.ParGoal.OrderByDescending(r => r.Active));/*Meta*/
+            parlevel1Dto.listParGoalLevel1 = Mapper.Map<List<ParGoalDTO>>(parlevel1.ParGoal.OrderByDescending(r => r.IsActive));/*Meta*/
             parlevel1Dto.listLevel1XClusterDto = Mapper.Map<List<ParLevel1XClusterDTO>>(parlevel1.ParLevel1XCluster.OrderByDescending(r => r.IsActive));/*Clusters*/
             parlevel1Dto.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(parlevel1.ParLevel3Level2Level1);/*Level 2 e 3 vinculados*/
             parlevel1Dto.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parlevel1.ParRelapse.OrderByDescending(r => r.IsActive));/*Reincidencia*/
@@ -377,7 +377,7 @@ namespace Dominio.Services
             var level3 = Mapper.Map<ParLevel3DTO>(parlevel3);//Level3
             level3.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parlevel3.ParRelapse.OrderByDescending(r => r.IsActive));/*Reincidencia*/
             level3.listGroupsLevel2 = Mapper.Map<List<ParLevel3GroupDTO>>(_baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList());//DDL
-            level3.listLevel3Level2 = Mapper.Map<List<ParLevel3Level2DTO>>(parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == level3.Id).OrderByDescending(r => r.Active));
+            level3.listLevel3Level2 = Mapper.Map<List<ParLevel3Level2DTO>>(parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == level3.Id).OrderByDescending(r => r.IsActive));
 
             if (level3.listLevel3Level2.Count() > 0)/*Id do grupo selecionado no vinculo Level 3 com level 2*/
                 level3.hasVinculo = true;
@@ -532,7 +532,7 @@ namespace Dominio.Services
             {
                 objLelvel2Level3ToSave.Weight = 1;
             }
-            objLelvel2Level3ToSave.Active = true;
+            objLelvel2Level3ToSave.IsActive = true;
             _baseRepoParLevel3Level2.AddOrUpdate(objLelvel2Level3ToSave);
             ParLevel3Level2DTO objtReturn = Mapper.Map<ParLevel3Level2DTO>(objLelvel2Level3ToSave);
             return objtReturn;

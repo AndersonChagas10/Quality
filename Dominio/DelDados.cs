@@ -12,10 +12,8 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class MacTablet
+    public partial class DelDados
     {
-        public string ChaveResultado { get; set; }
-        public string MAC { get; set; }
-        public string IP { get; set; }
+        public int TESTE { get; set; }
     }
 }
