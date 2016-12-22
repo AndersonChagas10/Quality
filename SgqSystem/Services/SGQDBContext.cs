@@ -625,7 +625,7 @@ namespace SGQDBContext
     }
     public partial class CaracteristicaTipificacao
     {
-        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
 
         public int nCdCaracteristica { get; set; }
         public String cNmCaracteristica { get; set; }

@@ -2463,7 +2463,8 @@ namespace SgqSystem.Services
                                                     classe: "row",
                                                     outerhtml: level2 +
                                                                counters +
-                                                               buttons
+                                                               buttons +
+                                                               html.div(classe:"level2Debug")
                                                     );
 
                 //Gera monitoramento do level3
