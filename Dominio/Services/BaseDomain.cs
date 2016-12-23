@@ -65,6 +65,27 @@ namespace Dominio.Services
             return Mapper.Map<Y>(result);
         }
 
+        public Y AddOrUpdate(Y obj)
+        {
+            try
+            {
+                var saveObj = Mapper.Map<T>(obj);
+                if (saveObj.GetType().GetProperty("Id") != null)
+                {
+                    _repositoryBase.AddOrUpdate(saveObj);
+                    return Mapper.Map<Y>(saveObj);
+                }
+                else
+                {
+                    throw new ExceptionHelper("Object must extend entity base.");
+                }
+            }
+            catch (ExceptionHelper ex)
+            {
+                throw new ExceptionHelper("Erro ao inserir o registro.", ex);
+            }
+        }
+
         #region Metodos não liberados para front
 
         //public void Remove(T obj)
@@ -122,29 +143,7 @@ namespace Dominio.Services
         //    }
         //}
 
-        //public GenericReturn<T> AddOrUpdate(T obj)
-        //{
-        //    try
-        //    {
-        //        if (obj.GetType().GetProperty("Id") != null)
-        //        {
-        //            _repositoryBase.AddOrUpdate(obj);
-        //            var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
-        //            if (id > 0)
-        //                return new GenericReturn<T>(AlteradoOk);
-        //            else
-        //                return new GenericReturn<T>(inseridoOk);
-        //        }
-        //        else
-        //        {
-        //            throw new ExceptionHelper("Object must extend entity base.");
-        //        }
-        //    }
-        //    catch (ExceptionHelper ex)
-        //    {
-        //        throw new ExceptionHelper("Erro ao inserir o registro.", ex);
-        //    }
-        //}
+
 
         //public GenericReturn<T> Update(T obj)
         //{

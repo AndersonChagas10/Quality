@@ -1,8 +1,8 @@
 ﻿using DTO.BaseEntity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Security.AccessControl;
 using System.Web.Mvc;
 
 namespace DTO.DTO.Params
@@ -18,6 +18,8 @@ namespace DTO.DTO.Params
         //[Display(Name = "select_the_frequency", ResourceType = typeof(Resource))]
         [Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar a frequencia.")]
         public int ParFrequency_Id { get; set; }
+
+       
 
         //[Display(Name = "level1_name", ResourceType = typeof(Resource))]
         //[Required(ErrorMessage = "O Nome deverá ter no mínimo 3 e máximo 10 caracteres.")]
@@ -72,6 +74,10 @@ namespace DTO.DTO.Params
 
         //[Display(Name = "?IsActive ", ResourceType = typeof(Resource))]
         public bool IsActive { get; set; } = true;
+
+        public Nullable<int> Level2NaoCorporativosNumber { get; set; }
+        public List<int> listLevel2Corporativos { get; set; }
+        public List<ParLevel2ControlCompanyDTO> listLevel2CorporativosObj { get; set; }
 
         public ParFrequencyDTO parFrequencyDto { get; set; }
         public ParConsolidationTypeDTO parConsolidationTypeDto { get; set; }
@@ -128,5 +134,16 @@ namespace DTO.DTO.Params
         }
 
         #endregion
+
+        public ParLevel2ControlCompanyDTO createParLevel2ControlCompany(int? level2Id, int? companyId = null, int? level1Id = null)
+        {
+            var parLevel2ControlCompany = new ParLevel2ControlCompanyDTO();
+            parLevel2ControlCompany.ParCompany_Id = null;
+            parLevel2ControlCompany.ParLevel1_Id = null;
+            parLevel2ControlCompany.ParLevel2_Id = level2Id;
+            parLevel2ControlCompany.InitDate = DateTime.Now;
+            parLevel2ControlCompany.IsActive = true;
+            return parLevel2ControlCompany;
+        }
     }
 }

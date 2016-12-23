@@ -136,24 +136,6 @@
           <Property Name="Cabecalho" Type="bit" />
           <Property Name="IdGrupoCabecalho" Type="int" />
         </EntityType>
-        <EntityType Name="CaracteristicaTipificacao">
-          <Key>
-            <PropertyRef Name="nCdCaracteristica" />
-          </Key>
-          <Property Name="nCdCaracteristica" Type="decimal" Precision="10" Scale="0" Nullable="false" />
-          <Property Name="cNmCaracteristica" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="cNrCaracteristica" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="cSgCaracteristica" Type="varchar" MaxLength="3" Nullable="false" />
-          <Property Name="cIdentificador" Type="varchar" MaxLength="30" Nullable="false" />
-        </EntityType>
-        <EntityType Name="CaracteristicaTipificacaoSequencial">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Sequencial" Type="int" Nullable="false" />
-          <Property Name="nCdCaracteristica_Id" Type="decimal" Precision="10" Scale="0" />
-        </EntityType>
         <EntityType Name="CategoriaProdutos">
           <Key>
             <PropertyRef Name="Id" />
@@ -322,6 +304,15 @@ warning 6002: The table/view 'SGQ_Global.dbo.ControleMetaTolerancia' does not ha
           <Property Name="UsuarioAlteracao" Type="int" />
           <Property Name="DataAlteracao" Type="datetime" />
         </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime" />
+          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="DesvioNiveis">
           <Key>
             <PropertyRef Name="Id" />
@@ -408,6 +399,17 @@ warning 6002: The table/view 'SGQ_Global.dbo.ControleMetaTolerancia' does not ha
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nome" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Example">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SelectedElement" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="fa_CausaEspecifica">
           <Key>
@@ -1741,139 +1743,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <Property Name="VersaoAPP" Type="varchar" MaxLength="100" />
           <Property Name="Atualizacao" Type="datetime" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.DelDados' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="DelDados">
-          <Key>
-            <PropertyRef Name="TESTE" />
-          </Key>
-          <Property Name="TESTE" Type="int" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.Reports_CCA_Audit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="Reports_CCA_Audit">
-          <Key>
-            <PropertyRef Name="Audit Period" />
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit/Reaudit" />
-            <PropertyRef Name="No of Def" />
-            <PropertyRef Name="Cattle Type" />
-            <PropertyRef Name="Chain Speed" />
-            <PropertyRef Name="Lot #" />
-            <PropertyRef Name="Mud Score" />
-          </Key>
-          <Property Name="Plant Number" Type="int" />
-          <Property Name="Audit Area" Type="varchar(max)" />
-          <Property Name="Set Start Date" Type="date" />
-          <Property Name="Set Start Time" Type="varchar" MaxLength="5" />
-          <Property Name="Audit Period" Type="int" Nullable="false" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="Audit/Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Specks" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Dressing" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Single Hairs" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Clusters" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Hide" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Defects" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="No of Def" Type="varchar" MaxLength="3" Nullable="false" />
-          <Property Name="Cattle Type" Type="varchar" MaxLength="5" Nullable="false" />
-          <Property Name="Chain Speed" Type="decimal" Precision="20" Scale="5" Nullable="false" />
-          <Property Name="Lot #" Type="decimal" Precision="20" Scale="5" Nullable="false" />
-          <Property Name="Mud Score" Type="decimal" Precision="20" Scale="5" Nullable="false" />
-          <Property Name="Auditor Name Global" Type="nvarchar(max)" />
-          <Property Name="Set End Date" Type="date" />
-          <Property Name="Set End Time" Type="varchar" MaxLength="5" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.Reports_CFF_Audit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="Reports_CFF_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect Counter" />
-          </Key>
-          <Property Name="Plant Number" Type="int" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="Period" Type="int" Nullable="false" />
-          <Property Name="Set" Type="int" />
-          <Property Name="Start Date" Type="datetime2" Precision="7" />
-          <Property Name="Side" Type="int" Nullable="false" />
-          <Property Name="Audit Area" Type="varchar(max)" />
-          <Property Name="Set Start Date" Type="date" />
-          <Property Name="Set Start Time" Type="varchar" MaxLength="5" />
-          <Property Name="Set End Date" Type="date" />
-          <Property Name="Set End Time" Type="varchar" MaxLength="5" />
-          <Property Name="Auditor" Type="nvarchar(max)" />
-          <Property Name="Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Defects" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Fold/Flap" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Defect Counter" Type="int" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.Reports_HTP_Audit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="Reports_HTP_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit/ReAudit" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Baised/Unbiased" />
-            <PropertyRef Name="Starting Phase" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="Plant Number" Type="int" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="Start Date" Type="datetime2" Precision="7" />
-          <Property Name="Start Time" Type="varchar" MaxLength="10" />
-          <Property Name="Job Id" Type="varchar(max)" />
-          <Property Name="Auditor" Type="nvarchar(max)" />
-          <Property Name="Audit/ReAudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Period" Type="int" Nullable="false" />
-          <Property Name="Baised/Unbiased" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Job Date" Type="date" />
-          <Property Name="Job Time" Type="varchar" MaxLength="10" />
-          <Property Name="Starting Phase" Type="int" Nullable="false" />
-          <Property Name="Core Practice HTP Deviation" Type="varchar" MaxLength="3" />
-          <Property Name="Other Deviaton" Type="varchar" MaxLength="3" />
-          <Property Name="Ending Phase" Type="int" />
-          <Property Name="Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="End Date" Type="date" />
-          <Property Name="End Time" Type="varchar" MaxLength="10" />
-          <Property Name="ID" Type="int" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="VWCFFResults">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect Counter" />
-          </Key>
-          <Property Name="Plant Number" Type="int" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="Period" Type="int" Nullable="false" />
-          <Property Name="Set" Type="int" />
-          <Property Name="Start Date" Type="datetime2" Precision="7" />
-          <Property Name="Side" Type="int" Nullable="false" />
-          <Property Name="Audit Area" Type="varchar(max)" />
-          <Property Name="Set Start Date" Type="date" />
-          <Property Name="Set Start Time" Type="varchar" MaxLength="5" />
-          <Property Name="Set End Date" Type="date" />
-          <Property Name="Set End Time" Type="varchar" MaxLength="5" />
-          <Property Name="Auditor" Type="nvarchar(max)" />
-          <Property Name="Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Defects" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Fold/Flap" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Defect Counter" Type="int" Nullable="false" />
-        </EntityType>
         <Association Name="FK_AcoesCorretivas_Operacoes">
           <End Role="Operacoes" Type="Self.Operacoes" Multiplicity="1" />
           <End Role="AcoesCorretivas" Type="Self.AcoesCorretivas" Multiplicity="*" />
@@ -2003,18 +1872,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
             </Principal>
             <Dependent Role="Campo">
               <PropertyRef Name="IdProjeto" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao">
-          <End Role="CaracteristicaTipificacao" Type="Self.CaracteristicaTipificacao" Multiplicity="0..1" />
-          <End Role="CaracteristicaTipificacaoSequencial" Type="Self.CaracteristicaTipificacaoSequencial" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CaracteristicaTipificacao">
-              <PropertyRef Name="nCdCaracteristica" />
-            </Principal>
-            <Dependent Role="CaracteristicaTipificacaoSequencial">
-              <PropertyRef Name="nCdCaracteristica_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3385,8 +3242,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="BkpCollection" EntityType="Self.BkpCollection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cabecalho" EntityType="Self.Cabecalho" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Campo" EntityType="Self.Campo" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CaracteristicaTipificacao" EntityType="Self.CaracteristicaTipificacao" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CaracteristicaTipificacaoSequencial" EntityType="Self.CaracteristicaTipificacaoSequencial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CategoriaProdutos" EntityType="Self.CategoriaProdutos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categorias" EntityType="Self.Categorias" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CausaEspecifica" EntityType="Self.CausaEspecifica" Schema="dbo" store:Type="Tables" />
@@ -3402,6 +3257,7 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="DepartamentoOperacoes" EntityType="Self.DepartamentoOperacoes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DepartamentoProdutos" EntityType="Self.DepartamentoProdutos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Departamentos" EntityType="Self.Departamentos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DesvioNiveis" EntityType="Self.DesvioNiveis" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Desvios" EntityType="Self.Desvios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Empresa" EntityType="Self.Empresa" Schema="dbo" store:Type="Tables" />
@@ -3409,6 +3265,7 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="Equipamentos" EntityType="Self.Equipamentos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EquipamentosAvaliados" EntityType="Self.EquipamentosAvaliados" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Estados" EntityType="Self.Estados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Example" EntityType="Self.Example" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="fa_CausaEspecifica" EntityType="Self.fa_CausaEspecifica" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="fa_CausaGenerica" EntityType="Self.fa_CausaGenerica" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="fa_ContramedidaEspecifica" EntityType="Self.fa_ContramedidaEspecifica" Schema="dbo" store:Type="Tables" />
@@ -3595,103 +3452,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
     [VerificacaoTipificacaoJBS].[nCdCaracteristicaTipificacao] AS [nCdCaracteristicaTipificacao]
     FROM [dbo].[VerificacaoTipificacaoJBS] AS [VerificacaoTipificacaoJBS]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="DelDados" EntityType="Self.DelDados" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [DelDados].[TESTE] AS [TESTE]
-    FROM [dbo].[DelDados] AS [DelDados]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Reports_CCA_Audit" EntityType="Self.Reports_CCA_Audit" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Reports_CCA_Audit].[Plant Number] AS [Plant Number], 
-    [Reports_CCA_Audit].[Audit Area] AS [Audit Area], 
-    [Reports_CCA_Audit].[Set Start Date] AS [Set Start Date], 
-    [Reports_CCA_Audit].[Set Start Time] AS [Set Start Time], 
-    [Reports_CCA_Audit].[Audit Period] AS [Audit Period], 
-    [Reports_CCA_Audit].[Shift] AS [Shift], 
-    [Reports_CCA_Audit].[Audit/Reaudit] AS [Audit/Reaudit], 
-    [Reports_CCA_Audit].[Specks] AS [Specks], 
-    [Reports_CCA_Audit].[Dressing] AS [Dressing], 
-    [Reports_CCA_Audit].[Single Hairs] AS [Single Hairs], 
-    [Reports_CCA_Audit].[Clusters] AS [Clusters], 
-    [Reports_CCA_Audit].[Hide] AS [Hide], 
-    [Reports_CCA_Audit].[Defects] AS [Defects], 
-    [Reports_CCA_Audit].[No of Def] AS [No of Def], 
-    [Reports_CCA_Audit].[Cattle Type] AS [Cattle Type], 
-    [Reports_CCA_Audit].[Chain Speed] AS [Chain Speed], 
-    [Reports_CCA_Audit].[Lot #] AS [Lot #], 
-    [Reports_CCA_Audit].[Mud Score] AS [Mud Score], 
-    [Reports_CCA_Audit].[Auditor Name Global] AS [Auditor Name Global], 
-    [Reports_CCA_Audit].[Set End Date] AS [Set End Date], 
-    [Reports_CCA_Audit].[Set End Time] AS [Set End Time]
-    FROM [dbo].[Reports_CCA_Audit] AS [Reports_CCA_Audit]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Reports_CFF_Audit" EntityType="Self.Reports_CFF_Audit" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Reports_CFF_Audit].[Plant Number] AS [Plant Number], 
-    [Reports_CFF_Audit].[Shift] AS [Shift], 
-    [Reports_CFF_Audit].[Period] AS [Period], 
-    [Reports_CFF_Audit].[Set] AS [Set], 
-    [Reports_CFF_Audit].[Start Date] AS [Start Date], 
-    [Reports_CFF_Audit].[Side] AS [Side], 
-    [Reports_CFF_Audit].[Audit Area] AS [Audit Area], 
-    [Reports_CFF_Audit].[Set Start Date] AS [Set Start Date], 
-    [Reports_CFF_Audit].[Set Start Time] AS [Set Start Time], 
-    [Reports_CFF_Audit].[Set End Date] AS [Set End Date], 
-    [Reports_CFF_Audit].[Set End Time] AS [Set End Time], 
-    [Reports_CFF_Audit].[Auditor] AS [Auditor], 
-    [Reports_CFF_Audit].[Reaudit] AS [Reaudit], 
-    [Reports_CFF_Audit].[Defects] AS [Defects], 
-    [Reports_CFF_Audit].[Cut] AS [Cut], 
-    [Reports_CFF_Audit].[Fold/Flap] AS [Fold/Flap], 
-    [Reports_CFF_Audit].[Puncture] AS [Puncture], 
-    [Reports_CFF_Audit].[Defect Counter] AS [Defect Counter]
-    FROM [dbo].[Reports_CFF_Audit] AS [Reports_CFF_Audit]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Reports_HTP_Audit" EntityType="Self.Reports_HTP_Audit" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Reports_HTP_Audit].[Plant Number] AS [Plant Number], 
-    [Reports_HTP_Audit].[Shift] AS [Shift], 
-    [Reports_HTP_Audit].[Start Date] AS [Start Date], 
-    [Reports_HTP_Audit].[Start Time] AS [Start Time], 
-    [Reports_HTP_Audit].[Job Id] AS [Job Id], 
-    [Reports_HTP_Audit].[Auditor] AS [Auditor], 
-    [Reports_HTP_Audit].[Audit/ReAudit] AS [Audit/ReAudit], 
-    [Reports_HTP_Audit].[Period] AS [Period], 
-    [Reports_HTP_Audit].[Baised/Unbiased] AS [Baised/Unbiased], 
-    [Reports_HTP_Audit].[Job Date] AS [Job Date], 
-    [Reports_HTP_Audit].[Job Time] AS [Job Time], 
-    [Reports_HTP_Audit].[Starting Phase] AS [Starting Phase], 
-    [Reports_HTP_Audit].[Core Practice HTP Deviation] AS [Core Practice HTP Deviation], 
-    [Reports_HTP_Audit].[Other Deviaton] AS [Other Deviaton], 
-    [Reports_HTP_Audit].[Ending Phase] AS [Ending Phase], 
-    [Reports_HTP_Audit].[Reaudit] AS [Reaudit], 
-    [Reports_HTP_Audit].[End Date] AS [End Date], 
-    [Reports_HTP_Audit].[End Time] AS [End Time], 
-    [Reports_HTP_Audit].[ID] AS [ID]
-    FROM [dbo].[Reports_HTP_Audit] AS [Reports_HTP_Audit]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="VWCFFResults" EntityType="Self.VWCFFResults" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [VWCFFResults].[Plant Number] AS [Plant Number], 
-    [VWCFFResults].[Shift] AS [Shift], 
-    [VWCFFResults].[Period] AS [Period], 
-    [VWCFFResults].[Set] AS [Set], 
-    [VWCFFResults].[Start Date] AS [Start Date], 
-    [VWCFFResults].[Side] AS [Side], 
-    [VWCFFResults].[Audit Area] AS [Audit Area], 
-    [VWCFFResults].[Set Start Date] AS [Set Start Date], 
-    [VWCFFResults].[Set Start Time] AS [Set Start Time], 
-    [VWCFFResults].[Set End Date] AS [Set End Date], 
-    [VWCFFResults].[Set End Time] AS [Set End Time], 
-    [VWCFFResults].[Auditor] AS [Auditor], 
-    [VWCFFResults].[Reaudit] AS [Reaudit], 
-    [VWCFFResults].[Defects] AS [Defects], 
-    [VWCFFResults].[Cut] AS [Cut], 
-    [VWCFFResults].[Fold/Flap] AS [Fold/Flap], 
-    [VWCFFResults].[Puncture] AS [Puncture], 
-    [VWCFFResults].[Defect Counter] AS [Defect Counter]
-    FROM [dbo].[VWCFFResults] AS [VWCFFResults]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_AcoesCorretivas_Operacoes" Association="Self.FK_AcoesCorretivas_Operacoes">
             <End Role="Operacoes" EntitySet="Operacoes" />
             <End Role="AcoesCorretivas" EntitySet="AcoesCorretivas" />
@@ -3735,10 +3495,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <AssociationSet Name="FK_Campo_Projeto" Association="Self.FK_Campo_Projeto">
             <End Role="Projeto" EntitySet="Projeto" />
             <End Role="Campo" EntitySet="Campo" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao" Association="Self.FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao">
-            <End Role="CaracteristicaTipificacao" EntitySet="CaracteristicaTipificacao" />
-            <End Role="CaracteristicaTipificacaoSequencial" EntitySet="CaracteristicaTipificacaoSequencial" />
           </AssociationSet>
           <AssociationSet Name="FK_CategoriaProdutos_Categorias" Association="Self.FK_CategoriaProdutos_Categorias">
             <End Role="Categorias" EntitySet="Categorias" />
@@ -4212,11 +3968,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
-          <EntitySet Name="DelDados" EntityType="SGQ_BrasilModel.DelDados" />
-          <EntitySet Name="Reports_CCA_Audit" EntityType="SGQ_BrasilModel.Reports_CCA_Audit" />
-          <EntitySet Name="Reports_CFF_Audit" EntityType="SGQ_BrasilModel.Reports_CFF_Audit" />
-          <EntitySet Name="Reports_HTP_Audit" EntityType="SGQ_BrasilModel.Reports_HTP_Audit" />
-          <EntitySet Name="VWCFFResults" EntityType="SGQ_BrasilModel.VWCFFResults" />
           <EntitySet Name="Acoes" EntityType="SGQ_BrasilModel.Acoes" />
           <EntitySet Name="AcoesCorretivas" EntityType="SGQ_BrasilModel.AcoesCorretivas" />
           <EntitySet Name="AcoesPreventivas" EntityType="SGQ_BrasilModel.AcoesPreventivas" />
@@ -4226,8 +3977,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="BkpCollection" EntityType="SGQ_BrasilModel.BkpCollection" />
           <EntitySet Name="Cabecalho" EntityType="SGQ_BrasilModel.Cabecalho" />
           <EntitySet Name="Campo" EntityType="SGQ_BrasilModel.Campo" />
-          <EntitySet Name="CaracteristicaTipificacao" EntityType="SGQ_BrasilModel.CaracteristicaTipificacao" />
-          <EntitySet Name="CaracteristicaTipificacaoSequencial" EntityType="SGQ_BrasilModel.CaracteristicaTipificacaoSequencial" />
           <EntitySet Name="CategoriaProdutos" EntityType="SGQ_BrasilModel.CategoriaProdutos" />
           <EntitySet Name="Categorias" EntityType="SGQ_BrasilModel.Categorias" />
           <EntitySet Name="CausaEspecifica" EntityType="SGQ_BrasilModel.CausaEspecifica" />
@@ -4243,6 +3992,7 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="DepartamentoOperacoes" EntityType="SGQ_BrasilModel.DepartamentoOperacoes" />
           <EntitySet Name="DepartamentoProdutos" EntityType="SGQ_BrasilModel.DepartamentoProdutos" />
           <EntitySet Name="Departamentos" EntityType="SGQ_BrasilModel.Departamentos" />
+          <EntitySet Name="Department" EntityType="SGQ_BrasilModel.Department" />
           <EntitySet Name="DesvioNiveis" EntityType="SGQ_BrasilModel.DesvioNiveis" />
           <EntitySet Name="Desvios" EntityType="SGQ_BrasilModel.Desvios" />
           <EntitySet Name="Empresa" EntityType="SGQ_BrasilModel.Empresa" />
@@ -4250,6 +4000,7 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="Equipamentos" EntityType="SGQ_BrasilModel.Equipamentos" />
           <EntitySet Name="EquipamentosAvaliados" EntityType="SGQ_BrasilModel.EquipamentosAvaliados" />
           <EntitySet Name="Estados" EntityType="SGQ_BrasilModel.Estados" />
+          <EntitySet Name="Example" EntityType="SGQ_BrasilModel.Example" />
           <EntitySet Name="fa_CausaEspecifica" EntityType="SGQ_BrasilModel.fa_CausaEspecifica" />
           <EntitySet Name="fa_CausaGenerica" EntityType="SGQ_BrasilModel.fa_CausaGenerica" />
           <EntitySet Name="fa_ContramedidaEspecifica" EntityType="SGQ_BrasilModel.fa_ContramedidaEspecifica" />
@@ -4407,10 +4158,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <AssociationSet Name="FK_VinculoCampoTarefa_Campo" Association="SGQ_BrasilModel.FK_VinculoCampoTarefa_Campo">
             <End Role="Campo" EntitySet="Campo" />
             <End Role="VinculoCampoTarefa" EntitySet="VinculoCampoTarefa" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao" Association="SGQ_BrasilModel.FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao">
-            <End Role="CaracteristicaTipificacao" EntitySet="CaracteristicaTipificacao" />
-            <End Role="CaracteristicaTipificacaoSequencial" EntitySet="CaracteristicaTipificacaoSequencial" />
           </AssociationSet>
           <AssociationSet Name="FK_CategoriaProdutos_Categorias" Association="SGQ_BrasilModel.FK_CategoriaProdutos_Categorias">
             <End Role="Categorias" EntitySet="Categorias" />
@@ -4840,129 +4587,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
-        <EntityType Name="DelDados">
-          <Key>
-            <PropertyRef Name="TESTE" />
-          </Key>
-          <Property Name="TESTE" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Reports_CCA_Audit">
-          <Key>
-            <PropertyRef Name="Audit_Period" />
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit_Reaudit" />
-            <PropertyRef Name="No_of_Def" />
-            <PropertyRef Name="Cattle_Type" />
-            <PropertyRef Name="Chain_Speed" />
-            <PropertyRef Name="Lot__" />
-            <PropertyRef Name="Mud_Score" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Audit_Period" Type="Int32" Nullable="false" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Specks" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Dressing" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Single_Hairs" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Clusters" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Hide" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="No_of_Def" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Cattle_Type" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Chain_Speed" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Lot__" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Mud_Score" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Auditor_Name_Global" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Reports_CFF_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect_Counter" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Set" Type="Int32" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Side" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Fold_Flap" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Defect_Counter" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Reports_HTP_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit_ReAudit" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Baised_Unbiased" />
-            <PropertyRef Name="Starting_Phase" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Start_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Job_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Audit_ReAudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Baised_Unbiased" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Job_Date" Type="DateTime" Precision="0" />
-          <Property Name="Job_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Starting_Phase" Type="Int32" Nullable="false" />
-          <Property Name="Core_Practice_HTP_Deviation" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Other_Deviaton" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Ending_Phase" Type="Int32" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="End_Date" Type="DateTime" Precision="0" />
-          <Property Name="End_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="ID" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="VWCFFResults">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect_Counter" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Set" Type="Int32" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Side" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Fold_Flap" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Defect_Counter" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="Acoes">
           <Key>
             <PropertyRef Name="Id" />
@@ -5109,26 +4733,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <NavigationProperty Name="MultiplaEscolha" Relationship="SGQ_BrasilModel.FK_MultiplaEscolha_Campo" FromRole="Campo" ToRole="MultiplaEscolha" />
           <NavigationProperty Name="VinculoCampoCabecalho" Relationship="SGQ_BrasilModel.FK_VinculoCampoCabecalho_Campo" FromRole="Campo" ToRole="VinculoCampoCabecalho" />
           <NavigationProperty Name="VinculoCampoTarefa" Relationship="SGQ_BrasilModel.FK_VinculoCampoTarefa_Campo" FromRole="Campo" ToRole="VinculoCampoTarefa" />
-        </EntityType>
-        <EntityType Name="CaracteristicaTipificacao">
-          <Key>
-            <PropertyRef Name="nCdCaracteristica" />
-          </Key>
-          <Property Name="nCdCaracteristica" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
-          <Property Name="cNmCaracteristica" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="cNrCaracteristica" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="cSgCaracteristica" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="cIdentificador" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CaracteristicaTipificacaoSequencial" Relationship="SGQ_BrasilModel.FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao" FromRole="CaracteristicaTipificacao" ToRole="CaracteristicaTipificacaoSequencial" />
-        </EntityType>
-        <EntityType Name="CaracteristicaTipificacaoSequencial">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Sequencial" Type="Int32" Nullable="false" />
-          <Property Name="nCdCaracteristica_Id" Type="Decimal" Precision="10" Scale="0" />
-          <NavigationProperty Name="CaracteristicaTipificacao" Relationship="SGQ_BrasilModel.FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao" FromRole="CaracteristicaTipificacaoSequencial" ToRole="CaracteristicaTipificacao" />
         </EntityType>
         <EntityType Name="CategoriaProdutos">
           <Key>
@@ -5300,6 +4904,15 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <NavigationProperty Name="Tarefas" Relationship="SGQ_BrasilModel.FK_Tarefas_Departamentos" FromRole="Departamentos" ToRole="Tarefas" />
           <NavigationProperty Name="VolumeProducao" Relationship="SGQ_BrasilModel.FK_VolumeProducao_Departamentos" FromRole="Departamentos" ToRole="VolumeProducao" />
         </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="DesvioNiveis">
           <Key>
             <PropertyRef Name="Id" />
@@ -5387,6 +5000,17 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nome" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Example">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SelectedElement" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="fa_CausaEspecifica">
           <Key>
@@ -7123,18 +6747,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao">
-          <End Type="SGQ_BrasilModel.CaracteristicaTipificacao" Role="CaracteristicaTipificacao" Multiplicity="0..1" />
-          <End Type="SGQ_BrasilModel.CaracteristicaTipificacaoSequencial" Role="CaracteristicaTipificacaoSequencial" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CaracteristicaTipificacao">
-              <PropertyRef Name="nCdCaracteristica" />
-            </Principal>
-            <Dependent Role="CaracteristicaTipificacaoSequencial">
-              <PropertyRef Name="nCdCaracteristica_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CategoriaProdutos_Categorias">
           <End Type="SGQ_BrasilModel.Categorias" Role="Categorias" Multiplicity="1" />
           <End Type="SGQ_BrasilModel.CategoriaProdutos" Role="CategoriaProdutos" Multiplicity="*" />
@@ -8431,113 +8043,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="SGQ_BrasilModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SGQ_BrasilModel.Store.sp_upgraddiagrams" />
-          <EntitySetMapping Name="DelDados">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.DelDados">
-              <MappingFragment StoreEntitySet="DelDados">
-                <ScalarProperty Name="TESTE" ColumnName="TESTE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports_CCA_Audit">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Reports_CCA_Audit">
-              <MappingFragment StoreEntitySet="Reports_CCA_Audit">
-                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
-                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
-                <ScalarProperty Name="Auditor_Name_Global" ColumnName="Auditor Name Global" />
-                <ScalarProperty Name="Mud_Score" ColumnName="Mud Score" />
-                <ScalarProperty Name="Lot__" ColumnName="Lot #" />
-                <ScalarProperty Name="Chain_Speed" ColumnName="Chain Speed" />
-                <ScalarProperty Name="Cattle_Type" ColumnName="Cattle Type" />
-                <ScalarProperty Name="No_of_Def" ColumnName="No of Def" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="Hide" ColumnName="Hide" />
-                <ScalarProperty Name="Clusters" ColumnName="Clusters" />
-                <ScalarProperty Name="Single_Hairs" ColumnName="Single Hairs" />
-                <ScalarProperty Name="Dressing" ColumnName="Dressing" />
-                <ScalarProperty Name="Specks" ColumnName="Specks" />
-                <ScalarProperty Name="Audit_Reaudit" ColumnName="Audit/Reaudit" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Audit_Period" ColumnName="Audit Period" />
-                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
-                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
-                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports_CFF_Audit">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Reports_CFF_Audit">
-              <MappingFragment StoreEntitySet="Reports_CFF_Audit">
-                <ScalarProperty Name="Defect_Counter" ColumnName="Defect Counter" />
-                <ScalarProperty Name="Puncture" ColumnName="Puncture" />
-                <ScalarProperty Name="Fold_Flap" ColumnName="Fold/Flap" />
-                <ScalarProperty Name="Cut" ColumnName="Cut" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
-                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
-                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
-                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
-                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
-                <ScalarProperty Name="Side" ColumnName="Side" />
-                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
-                <ScalarProperty Name="Set" ColumnName="Set" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports_HTP_Audit">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Reports_HTP_Audit">
-              <MappingFragment StoreEntitySet="Reports_HTP_Audit">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="End_Time" ColumnName="End Time" />
-                <ScalarProperty Name="End_Date" ColumnName="End Date" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="Ending_Phase" ColumnName="Ending Phase" />
-                <ScalarProperty Name="Other_Deviaton" ColumnName="Other Deviaton" />
-                <ScalarProperty Name="Core_Practice_HTP_Deviation" ColumnName="Core Practice HTP Deviation" />
-                <ScalarProperty Name="Starting_Phase" ColumnName="Starting Phase" />
-                <ScalarProperty Name="Job_Time" ColumnName="Job Time" />
-                <ScalarProperty Name="Job_Date" ColumnName="Job Date" />
-                <ScalarProperty Name="Baised_Unbiased" ColumnName="Baised/Unbiased" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Audit_ReAudit" ColumnName="Audit/ReAudit" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Job_Id" ColumnName="Job Id" />
-                <ScalarProperty Name="Start_Time" ColumnName="Start Time" />
-                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VWCFFResults">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.VWCFFResults">
-              <MappingFragment StoreEntitySet="VWCFFResults">
-                <ScalarProperty Name="Defect_Counter" ColumnName="Defect Counter" />
-                <ScalarProperty Name="Puncture" ColumnName="Puncture" />
-                <ScalarProperty Name="Fold_Flap" ColumnName="Fold/Flap" />
-                <ScalarProperty Name="Cut" ColumnName="Cut" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
-                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
-                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
-                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
-                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
-                <ScalarProperty Name="Side" ColumnName="Side" />
-                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
-                <ScalarProperty Name="Set" ColumnName="Set" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Acoes">
             <EntityTypeMapping TypeName="SGQ_BrasilModel.Acoes">
               <MappingFragment StoreEntitySet="Acoes">
@@ -8674,26 +8179,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
                 <ScalarProperty Name="Agrupador" ColumnName="Agrupador" />
                 <ScalarProperty Name="Tipo" ColumnName="Tipo" />
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CaracteristicaTipificacao">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.CaracteristicaTipificacao">
-              <MappingFragment StoreEntitySet="CaracteristicaTipificacao">
-                <ScalarProperty Name="cIdentificador" ColumnName="cIdentificador" />
-                <ScalarProperty Name="cSgCaracteristica" ColumnName="cSgCaracteristica" />
-                <ScalarProperty Name="cNrCaracteristica" ColumnName="cNrCaracteristica" />
-                <ScalarProperty Name="cNmCaracteristica" ColumnName="cNmCaracteristica" />
-                <ScalarProperty Name="nCdCaracteristica" ColumnName="nCdCaracteristica" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CaracteristicaTipificacaoSequencial">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.CaracteristicaTipificacaoSequencial">
-              <MappingFragment StoreEntitySet="CaracteristicaTipificacaoSequencial">
-                <ScalarProperty Name="nCdCaracteristica_Id" ColumnName="nCdCaracteristica_Id" />
-                <ScalarProperty Name="Sequencial" ColumnName="Sequencial" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -8863,6 +8348,16 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Department">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="DesvioNiveis">
             <EntityTypeMapping TypeName="SGQ_BrasilModel.DesvioNiveis">
               <MappingFragment StoreEntitySet="DesvioNiveis">
@@ -8953,6 +8448,18 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
             <EntityTypeMapping TypeName="SGQ_BrasilModel.Estados">
               <MappingFragment StoreEntitySet="Estados">
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Example">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.Example">
+              <MappingFragment StoreEntitySet="Example">
+                <ScalarProperty Name="SelectedElement" ColumnName="SelectedElement" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

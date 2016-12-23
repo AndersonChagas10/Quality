@@ -27,25 +27,26 @@ namespace Dominio.ADO
                 {
                     connection.ConnectionString = connectionString.ConnectionString;
                 }
+                connection.Open();
             }
             catch (SqlException ex)
             {
-                closeConnection(ref connection);
+                closeConnection();
                 throw ex;
             }
             catch (Exception ex)
             {
-                closeConnection(ref connection);
+                closeConnection();
                 throw ex;
             }
         }
 
-        public List<T> executeQuery<T>(string query)
+        public List<T> ExecuteQuery<T>(string query)
         {
             try
             {
                 var listReturn = new List<T>();
-                connection.Open();
+                
                 SqlCommand command = new SqlCommand(query, connection);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
@@ -72,25 +73,15 @@ namespace Dominio.ADO
         }
 
         [SecuritySafeCritical]
-        protected void closeConnection(ref SqlConnection cn)
-        {
-            if (((cn != null)))
-            {
-                cn.Close();
-                cn.Dispose();
-            }
-        }
-
-        [SecuritySafeCritical]
         protected void closeConnection()
         {
-            if (connection != null)
+            if (((connection != null)))
             {
                 connection.Close();
                 connection.Dispose();
             }
         }
-
+     
         public void Dispose()
         {
             closeConnection();

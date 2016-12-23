@@ -323,9 +323,9 @@ namespace SgqSystem.Controllers.Api
                                             string comparacaoToString = ArrayComparacao[i];
 
                                             var resultIdTarefa = (from x in db.VerificacaoTipificacaoTarefaIntegracao
-                                                                  join y in db.CaracteristicaTipificacao
-                                                                  on x.CaracteristicaTipificacaoId equals y.nCdCaracteristica
-                                                                  where y.cIdentificador.Equals(comparacaoToString)
+                                                                  //join y in db.CaracteristicaTipificacao
+                                                                  //on x.CaracteristicaTipificacaoId equals y.nCdCaracteristica
+                                                                  //where y.cIdentificador.Equals(comparacaoToString)
                                                                   select x).FirstOrDefault().TarefaId;
 
                                             bool conforme = verificacaoTipificaoComparacao(unidades.Codigo.ToString(), data, sequencial, iBanda.ToString(), unidades, empresaId, departamentoId, tarefaId, conexao, varComparacao);

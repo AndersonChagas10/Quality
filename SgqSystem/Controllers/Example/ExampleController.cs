@@ -16,10 +16,10 @@ namespace SgqSystem.Controllers
         {
             using (var db = new FactoryADO(@"SERVERGRT\MSSQLSERVER2014", "SgqDbDev", "1qazmko0", "sa"))
             {
-               var results = db.executeQuery<UserSgq>("Select * from UserSgq");
+               var results = db.ExecuteQuery<UserSgq>("Select * from UserSgq");
             }
 
-                ContextExampleViewModel pvm = new ContextExampleViewModel();
+            ContextExampleViewModel pvm = new ContextExampleViewModel();
             return View(pvm);
         }
 

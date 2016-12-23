@@ -162,8 +162,7 @@ namespace Dominio.Services
                 Usuario usuarioSgqBr;
                 try
                 {
-
-                    usuarioSgqBr = db.Usuario.FirstOrDefault(r => r.cSigla.ToLower() == userDto.Name.ToLower());
+                    usuarioSgqBr = db.Usuario.AsNoTracking().FirstOrDefault(r => r.cSigla.ToLower() == userDto.Name.ToLower());
                 }
                 catch (Exception e)
                 {

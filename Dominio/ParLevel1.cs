@@ -28,6 +28,7 @@ namespace Dominio
             this.ParLevel2Level1 = new HashSet<ParLevel2Level1>();
             this.ParLevel1XCluster = new HashSet<ParLevel1XCluster>();
             this.ParLevel1XHeaderField = new HashSet<ParLevel1XHeaderField>();
+            this.ParLevel2ControlCompany = new HashSet<ParLevel2ControlCompany>();
             this.ParLevel3Level2Level1 = new HashSet<ParLevel3Level2Level1>();
             this.ParNotConformityRuleXLevel = new HashSet<ParNotConformityRuleXLevel>();
             this.ParRelapse = new HashSet<ParRelapse>();
@@ -54,6 +55,7 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
+        public Nullable<int> Level2Number { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
@@ -79,6 +81,8 @@ namespace Dominio
         public virtual ICollection<ParLevel1XCluster> ParLevel1XCluster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParLevel2ControlCompany> ParLevel2ControlCompany { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3Level2Level1> ParLevel3Level2Level1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

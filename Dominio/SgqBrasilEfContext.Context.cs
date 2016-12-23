@@ -27,11 +27,6 @@ namespace Dominio
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<DelDados> DelDados { get; set; }
-        public virtual DbSet<Reports_CCA_Audit> Reports_CCA_Audit { get; set; }
-        public virtual DbSet<Reports_CFF_Audit> Reports_CFF_Audit { get; set; }
-        public virtual DbSet<Reports_HTP_Audit> Reports_HTP_Audit { get; set; }
-        public virtual DbSet<VWCFFResults> VWCFFResults { get; set; }
         public virtual DbSet<Acoes> Acoes { get; set; }
         public virtual DbSet<AcoesCorretivas> AcoesCorretivas { get; set; }
         public virtual DbSet<AcoesPreventivas> AcoesPreventivas { get; set; }
@@ -41,8 +36,6 @@ namespace Dominio
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
         public virtual DbSet<Cabecalho> Cabecalho { get; set; }
         public virtual DbSet<Campo> Campo { get; set; }
-        public virtual DbSet<CaracteristicaTipificacao> CaracteristicaTipificacao { get; set; }
-        public virtual DbSet<CaracteristicaTipificacaoSequencial> CaracteristicaTipificacaoSequencial { get; set; }
         public virtual DbSet<CategoriaProdutos> CategoriaProdutos { get; set; }
         public virtual DbSet<Categorias> Categorias { get; set; }
         public virtual DbSet<CausaEspecifica> CausaEspecifica { get; set; }
@@ -58,6 +51,7 @@ namespace Dominio
         public virtual DbSet<DepartamentoOperacoes> DepartamentoOperacoes { get; set; }
         public virtual DbSet<DepartamentoProdutos> DepartamentoProdutos { get; set; }
         public virtual DbSet<Departamentos> Departamentos { get; set; }
+        public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<DesvioNiveis> DesvioNiveis { get; set; }
         public virtual DbSet<Desvios> Desvios { get; set; }
         public virtual DbSet<Empresa> Empresa { get; set; }
@@ -65,6 +59,7 @@ namespace Dominio
         public virtual DbSet<Equipamentos> Equipamentos { get; set; }
         public virtual DbSet<EquipamentosAvaliados> EquipamentosAvaliados { get; set; }
         public virtual DbSet<Estados> Estados { get; set; }
+        public virtual DbSet<Example> Example { get; set; }
         public virtual DbSet<fa_CausaEspecifica> fa_CausaEspecifica { get; set; }
         public virtual DbSet<fa_CausaGenerica> fa_CausaGenerica { get; set; }
         public virtual DbSet<fa_ContramedidaEspecifica> fa_ContramedidaEspecifica { get; set; }

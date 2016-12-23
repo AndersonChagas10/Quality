@@ -17,7 +17,5 @@ namespace Dominio
         public int Id { get; set; }
         public int TarefaId { get; set; }
         public int CaracteristicaTipificacaoId { get; set; }
-    
-        public virtual Monitoramentos Monitoramentos { get; set; }
     }
 }

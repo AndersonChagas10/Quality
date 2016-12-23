@@ -33,8 +33,6 @@ namespace Dominio
     
         public virtual DbSet<AreasParticipantes> AreasParticipantes { get; set; }
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
-        public virtual DbSet<CaracteristicaTipificacao> CaracteristicaTipificacao { get; set; }
-        public virtual DbSet<CaracteristicaTipificacaoSequencial> CaracteristicaTipificacaoSequencial { get; set; }
         public virtual DbSet<CollectionHtml> CollectionHtml { get; set; }
         public virtual DbSet<CollectionJson> CollectionJson { get; set; }
         public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
@@ -75,6 +73,7 @@ namespace Dominio
         public virtual DbSet<ParLevel1XCluster> ParLevel1XCluster { get; set; }
         public virtual DbSet<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
         public virtual DbSet<ParLevel2> ParLevel2 { get; set; }
+        public virtual DbSet<ParLevel2ControlCompany> ParLevel2ControlCompany { get; set; }
         public virtual DbSet<ParLevel2Level1> ParLevel2Level1 { get; set; }
         public virtual DbSet<ParLevel3> ParLevel3 { get; set; }
         public virtual DbSet<ParLevel3BoolFalse> ParLevel3BoolFalse { get; set; }
