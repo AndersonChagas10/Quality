@@ -12,12 +12,17 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class VerificacaoTipificacaoTarefaIntegracao
+    public partial class LogSgq
     {
         public int Id { get; set; }
-        public int TarefaId { get; set; }
-        public int CaracteristicaTipificacaoId { get; set; }
-    
-        public virtual Monitoramentos Monitoramentos { get; set; }
+        public System.DateTime addDate { get; set; }
+        public string Level { get; set; }
+        public string Call_Site { get; set; }
+        public string Exception_Type { get; set; }
+        public string Exception_Message { get; set; }
+        public string Stack_Trace { get; set; }
+        public string Additional_Info { get; set; }
+        public string Email { get; set; }
+        public string Second_Log_Path { get; set; }
     }
 }

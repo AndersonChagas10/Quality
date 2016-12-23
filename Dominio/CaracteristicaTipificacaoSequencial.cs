@@ -10,13 +10,14 @@
 namespace Dominio
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class sp_helpdiagrams_Result
+    public partial class CaracteristicaTipificacaoSequencial
     {
-        public string Database { get; set; }
-        public string Name { get; set; }
-        public int ID { get; set; }
-        public string Owner { get; set; }
-        public int OwnerID { get; set; }
+        public int Id { get; set; }
+        public int Sequencial { get; set; }
+        public Nullable<decimal> nCdCaracteristica_Id { get; set; }
+    
+        public virtual CaracteristicaTipificacao CaracteristicaTipificacao { get; set; }
     }
 }

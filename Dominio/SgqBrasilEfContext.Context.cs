@@ -36,6 +36,8 @@ namespace Dominio
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
         public virtual DbSet<Cabecalho> Cabecalho { get; set; }
         public virtual DbSet<Campo> Campo { get; set; }
+        public virtual DbSet<CaracteristicaTipificacao> CaracteristicaTipificacao { get; set; }
+        public virtual DbSet<CaracteristicaTipificacaoSequencial> CaracteristicaTipificacaoSequencial { get; set; }
         public virtual DbSet<CategoriaProdutos> CategoriaProdutos { get; set; }
         public virtual DbSet<Categorias> Categorias { get; set; }
         public virtual DbSet<CausaEspecifica> CausaEspecifica { get; set; }
@@ -51,7 +53,6 @@ namespace Dominio
         public virtual DbSet<DepartamentoOperacoes> DepartamentoOperacoes { get; set; }
         public virtual DbSet<DepartamentoProdutos> DepartamentoProdutos { get; set; }
         public virtual DbSet<Departamentos> Departamentos { get; set; }
-        public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<DesvioNiveis> DesvioNiveis { get; set; }
         public virtual DbSet<Desvios> Desvios { get; set; }
         public virtual DbSet<Empresa> Empresa { get; set; }
@@ -75,6 +76,8 @@ namespace Dominio
         public virtual DbSet<GrupoTipoAvaliacoes> GrupoTipoAvaliacoes { get; set; }
         public virtual DbSet<Horarios> Horarios { get; set; }
         public virtual DbSet<LogAlteracoes> LogAlteracoes { get; set; }
+        public virtual DbSet<LogOperacaoPA> LogOperacaoPA { get; set; }
+        public virtual DbSet<LogSgq> LogSgq { get; set; }
         public virtual DbSet<Metas> Metas { get; set; }
         public virtual DbSet<MonitoramentoEquipamentos> MonitoramentoEquipamentos { get; set; }
         public virtual DbSet<Monitoramentos> Monitoramentos { get; set; }
@@ -106,7 +109,6 @@ namespace Dominio
         public virtual DbSet<Pcc1b> Pcc1b { get; set; }
         public virtual DbSet<PenalidadeReincidencia> PenalidadeReincidencia { get; set; }
         public virtual DbSet<Perfil> Perfil { get; set; }
-        public virtual DbSet<Period> Period { get; set; }
         public virtual DbSet<PlanoDeAcaoQuemQuandoComo> PlanoDeAcaoQuemQuandoComo { get; set; }
         public virtual DbSet<Pontos> Pontos { get; set; }
         public virtual DbSet<Produto> Produto { get; set; }
@@ -118,8 +120,8 @@ namespace Dominio
         public virtual DbSet<Resultados> Resultados { get; set; }
         public virtual DbSet<ResultadosData> ResultadosData { get; set; }
         public virtual DbSet<ResultadosPCC> ResultadosPCC { get; set; }
-        public virtual DbSet<Shift> Shift { get; set; }
         public virtual DbSet<Sugestoes> Sugestoes { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TarefaAmostras> TarefaAmostras { get; set; }
         public virtual DbSet<TarefaAvaliacoes> TarefaAvaliacoes { get; set; }
         public virtual DbSet<TarefaCategorias> TarefaCategorias { get; set; }
@@ -210,7 +212,7 @@ namespace Dominio
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
         }
     
-        public virtual ObjectResult<sp_helpdiagramdefinition_Result> sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        public virtual int sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
         {
             var diagramnameParameter = diagramname != null ?
                 new ObjectParameter("diagramname", diagramname) :
@@ -220,10 +222,10 @@ namespace Dominio
                 new ObjectParameter("owner_id", owner_id) :
                 new ObjectParameter("owner_id", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagramdefinition_Result>("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
         }
     
-        public virtual ObjectResult<sp_helpdiagrams_Result> sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        public virtual int sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
         {
             var diagramnameParameter = diagramname != null ?
                 new ObjectParameter("diagramname", diagramname) :
@@ -233,7 +235,7 @@ namespace Dominio
                 new ObjectParameter("owner_id", owner_id) :
                 new ObjectParameter("owner_id", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagrams_Result>("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
         }
     
         public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)

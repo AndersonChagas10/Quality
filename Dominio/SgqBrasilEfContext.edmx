@@ -136,6 +136,24 @@
           <Property Name="Cabecalho" Type="bit" />
           <Property Name="IdGrupoCabecalho" Type="int" />
         </EntityType>
+        <EntityType Name="CaracteristicaTipificacao">
+          <Key>
+            <PropertyRef Name="nCdCaracteristica" />
+          </Key>
+          <Property Name="nCdCaracteristica" Type="decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="cNmCaracteristica" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cNrCaracteristica" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="cSgCaracteristica" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="cIdentificador" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CaracteristicaTipificacaoSequencial">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Sequencial" Type="int" Nullable="false" />
+          <Property Name="nCdCaracteristica_Id" Type="decimal" Precision="10" Scale="0" />
+        </EntityType>
         <EntityType Name="CategoriaProdutos">
           <Key>
             <PropertyRef Name="Id" />
@@ -252,7 +270,7 @@
           <Property Name="CausaGenerica" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.ControleMetaTolerancia' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'SGQ_Brasil.dbo.ControleMetaTolerancia' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ControleMetaTolerancia">
           <Key>
             <PropertyRef Name="UnidadeId" />
@@ -303,15 +321,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.ControleMetaTolerancia' does not ha
           <Property Name="DataInsercao" Type="datetime" Nullable="false" />
           <Property Name="UsuarioAlteracao" Type="int" />
           <Property Name="DataAlteracao" Type="datetime" />
-        </EntityType>
-        <EntityType Name="Department">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AddDate" Type="datetime" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime" />
-          <Property Name="Name" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="DesvioNiveis">
           <Key>
@@ -579,6 +588,38 @@ warning 6002: The table/view 'SGQ_Global.dbo.ControleMetaTolerancia' does not ha
           <Property Name="Valor" Type="nvarchar(max)" />
           <Property Name="UsuarioAlteracao" Type="int" Nullable="false" />
           <Property Name="DataAlteracao" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LogOperacaoPA">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MensagemOperacao" Type="varchar(max)" Nullable="false" />
+          <Property Name="Linha" Type="int" />
+          <Property Name="NomeUsuario" Type="varchar(max)" />
+          <Property Name="DataOcorrencia" Type="datetime2" Precision="7" />
+          <Property Name="TipoRegistro" Type="int" />
+          <Property Name="TextoExcecao" Type="varchar(max)" />
+          <Property Name="TextoPilhaExcecao" Type="nvarchar(max)" />
+          <Property Name="DescricaoLanIp" Type="varchar(max)" />
+          <Property Name="DescricaoInternetIp" Type="varchar(max)" />
+          <Property Name="NomeMetodo" Type="varchar(max)" />
+          <Property Name="UrlTela" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="LogSgq">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="addDate" Type="datetime" Nullable="false" />
+          <Property Name="Level" Type="varchar(max)" />
+          <Property Name="Call_Site" Type="varchar(max)" />
+          <Property Name="Exception_Type" Type="varchar(max)" />
+          <Property Name="Exception_Message" Type="varchar(max)" />
+          <Property Name="Stack_Trace" Type="varchar(max)" />
+          <Property Name="Additional_Info" Type="varchar(max)" />
+          <Property Name="Email" Type="varchar(max)" />
+          <Property Name="Second_Log_Path" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Metas">
           <Key>
@@ -981,15 +1022,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.ControleMetaTolerancia' does not ha
           <Property Name="nCdPerfil" Type="decimal" Precision="10" Scale="0" Nullable="false" />
           <Property Name="cNmPerfil" Type="varchar" MaxLength="100" />
         </EntityType>
-        <EntityType Name="Period">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-        </EntityType>
         <EntityType Name="PlanoDeAcaoQuemQuandoComo">
           <Key>
             <PropertyRef Name="Id" />
@@ -1128,7 +1160,7 @@ warning 6002: The table/view 'SGQ_Global.dbo.ControleMetaTolerancia' does not ha
           <Property Name="Reincidente" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.Resultados_BKP_OCT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'SGQ_Brasil.dbo.Resultados_BKP_OCT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Resultados_BKP_OCT">
           <Key>
             <PropertyRef Name="Id" />
@@ -1268,7 +1300,7 @@ warning 6002: The table/view 'SGQ_Global.dbo.Resultados_BKP_OCT' does not have a
           <Property Name="VersaoAPP" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.ScorecardConsolidadoDia' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'SGQ_Brasil.dbo.ScorecardConsolidadoDia' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ScorecardConsolidadoDia">
           <Key>
             <PropertyRef Name="Unidade" />
@@ -1283,15 +1315,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.ScorecardConsolidadoDia' does not h
           <Property Name="Meta" Type="decimal" Precision="5" Scale="2" />
           <Property Name="Pontos" Type="decimal" Precision="5" Scale="2" />
         </EntityType>
-        <EntityType Name="Shift">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterTime" Type="datetime2" Precision="7" Nullable="false" />
-        </EntityType>
         <EntityType Name="Sugestoes">
           <Key>
             <PropertyRef Name="Id" />
@@ -1304,6 +1327,16 @@ warning 6002: The table/view 'SGQ_Global.dbo.ScorecardConsolidadoDia' does not h
           <Property Name="DataInsercao" Type="datetime" Nullable="false" />
           <Property Name="UsuarioAlteracao" Type="int" />
           <Property Name="DataAlteracao" Type="datetime" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="TarefaAmostras">
           <Key>
@@ -1406,7 +1439,7 @@ warning 6002: The table/view 'SGQ_Global.dbo.ScorecardConsolidadoDia' does not h
           <Property Name="cNmTerceiro" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.Tipificacao' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'SGQ_Brasil.dbo.Tipificacao' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Tipificacao">
           <Key>
             <PropertyRef Name="Data" />
@@ -1599,7 +1632,7 @@ warning 6002: The table/view 'SGQ_Global.dbo.Tipificacao' does not have a primar
           <Property Name="nCdEmpresa" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'SGQ_Brasil.dbo.VerificacaoTipificacaoJBS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="VerificacaoTipificacaoJBS">
           <Key>
             <PropertyRef Name="nCdEmpresa" />
@@ -1872,6 +1905,18 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
             </Principal>
             <Dependent Role="Campo">
               <PropertyRef Name="IdProjeto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao">
+          <End Role="CaracteristicaTipificacao" Type="Self.CaracteristicaTipificacao" Multiplicity="0..1" />
+          <End Role="CaracteristicaTipificacaoSequencial" Type="Self.CaracteristicaTipificacaoSequencial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CaracteristicaTipificacao">
+              <PropertyRef Name="nCdCaracteristica" />
+            </Principal>
+            <Dependent Role="CaracteristicaTipificacaoSequencial">
+              <PropertyRef Name="nCdCaracteristica_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3242,6 +3287,8 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <EntitySet Name="BkpCollection" EntityType="Self.BkpCollection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cabecalho" EntityType="Self.Cabecalho" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Campo" EntityType="Self.Campo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CaracteristicaTipificacao" EntityType="Self.CaracteristicaTipificacao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CaracteristicaTipificacaoSequencial" EntityType="Self.CaracteristicaTipificacaoSequencial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CategoriaProdutos" EntityType="Self.CategoriaProdutos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categorias" EntityType="Self.Categorias" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CausaEspecifica" EntityType="Self.CausaEspecifica" Schema="dbo" store:Type="Tables" />
@@ -3257,7 +3304,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <EntitySet Name="DepartamentoOperacoes" EntityType="Self.DepartamentoOperacoes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DepartamentoProdutos" EntityType="Self.DepartamentoProdutos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Departamentos" EntityType="Self.Departamentos" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DesvioNiveis" EntityType="Self.DesvioNiveis" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Desvios" EntityType="Self.Desvios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Empresa" EntityType="Self.Empresa" Schema="dbo" store:Type="Tables" />
@@ -3281,6 +3327,8 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <EntitySet Name="GrupoTipoAvaliacoes" EntityType="Self.GrupoTipoAvaliacoes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Horarios" EntityType="Self.Horarios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogAlteracoes" EntityType="Self.LogAlteracoes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogOperacaoPA" EntityType="Self.LogOperacaoPA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogSgq" EntityType="Self.LogSgq" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Metas" EntityType="Self.Metas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MonitoramentoEquipamentos" EntityType="Self.MonitoramentoEquipamentos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Monitoramentos" EntityType="Self.Monitoramentos" Schema="dbo" store:Type="Tables" />
@@ -3312,7 +3360,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <EntitySet Name="Pcc1b" EntityType="Self.Pcc1b" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PenalidadeReincidencia" EntityType="Self.PenalidadeReincidencia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Perfil" EntityType="Self.Perfil" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Period" EntityType="Self.Period" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PlanoDeAcaoQuemQuandoComo" EntityType="Self.PlanoDeAcaoQuemQuandoComo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pontos" EntityType="Self.Pontos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Produto" EntityType="Self.Produto" Schema="dbo" store:Type="Tables" />
@@ -3324,8 +3371,8 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <EntitySet Name="Resultados" EntityType="Self.Resultados" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ResultadosData" EntityType="Self.ResultadosData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ResultadosPCC" EntityType="Self.ResultadosPCC" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sugestoes" EntityType="Self.Sugestoes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarefaAmostras" EntityType="Self.TarefaAmostras" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarefaAvaliacoes" EntityType="Self.TarefaAvaliacoes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarefaCategorias" EntityType="Self.TarefaCategorias" Schema="dbo" store:Type="Tables" />
@@ -3495,6 +3542,10 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <AssociationSet Name="FK_Campo_Projeto" Association="Self.FK_Campo_Projeto">
             <End Role="Projeto" EntitySet="Projeto" />
             <End Role="Campo" EntitySet="Campo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao" Association="Self.FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao">
+            <End Role="CaracteristicaTipificacao" EntitySet="CaracteristicaTipificacao" />
+            <End Role="CaracteristicaTipificacaoSequencial" EntitySet="CaracteristicaTipificacaoSequencial" />
           </AssociationSet>
           <AssociationSet Name="FK_CategoriaProdutos_Categorias" Association="Self.FK_CategoriaProdutos_Categorias">
             <End Role="Categorias" EntitySet="Categorias" />
@@ -3954,11 +4005,11 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(SGQ_BrasilModel.sp_helpdiagramdefinition_Result)">
+          <FunctionImport Name="sp_helpdiagramdefinition">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(SGQ_BrasilModel.sp_helpdiagrams_Result)">
+          <FunctionImport Name="sp_helpdiagrams">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -3977,6 +4028,8 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <EntitySet Name="BkpCollection" EntityType="SGQ_BrasilModel.BkpCollection" />
           <EntitySet Name="Cabecalho" EntityType="SGQ_BrasilModel.Cabecalho" />
           <EntitySet Name="Campo" EntityType="SGQ_BrasilModel.Campo" />
+          <EntitySet Name="CaracteristicaTipificacao" EntityType="SGQ_BrasilModel.CaracteristicaTipificacao" />
+          <EntitySet Name="CaracteristicaTipificacaoSequencial" EntityType="SGQ_BrasilModel.CaracteristicaTipificacaoSequencial" />
           <EntitySet Name="CategoriaProdutos" EntityType="SGQ_BrasilModel.CategoriaProdutos" />
           <EntitySet Name="Categorias" EntityType="SGQ_BrasilModel.Categorias" />
           <EntitySet Name="CausaEspecifica" EntityType="SGQ_BrasilModel.CausaEspecifica" />
@@ -3992,7 +4045,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <EntitySet Name="DepartamentoOperacoes" EntityType="SGQ_BrasilModel.DepartamentoOperacoes" />
           <EntitySet Name="DepartamentoProdutos" EntityType="SGQ_BrasilModel.DepartamentoProdutos" />
           <EntitySet Name="Departamentos" EntityType="SGQ_BrasilModel.Departamentos" />
-          <EntitySet Name="Department" EntityType="SGQ_BrasilModel.Department" />
           <EntitySet Name="DesvioNiveis" EntityType="SGQ_BrasilModel.DesvioNiveis" />
           <EntitySet Name="Desvios" EntityType="SGQ_BrasilModel.Desvios" />
           <EntitySet Name="Empresa" EntityType="SGQ_BrasilModel.Empresa" />
@@ -4016,6 +4068,8 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <EntitySet Name="GrupoTipoAvaliacoes" EntityType="SGQ_BrasilModel.GrupoTipoAvaliacoes" />
           <EntitySet Name="Horarios" EntityType="SGQ_BrasilModel.Horarios" />
           <EntitySet Name="LogAlteracoes" EntityType="SGQ_BrasilModel.LogAlteracoes" />
+          <EntitySet Name="LogOperacaoPA" EntityType="SGQ_BrasilModel.LogOperacaoPA" />
+          <EntitySet Name="LogSgq" EntityType="SGQ_BrasilModel.LogSgq" />
           <EntitySet Name="Metas" EntityType="SGQ_BrasilModel.Metas" />
           <EntitySet Name="MonitoramentoEquipamentos" EntityType="SGQ_BrasilModel.MonitoramentoEquipamentos" />
           <EntitySet Name="Monitoramentos" EntityType="SGQ_BrasilModel.Monitoramentos" />
@@ -4047,7 +4101,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <EntitySet Name="Pcc1b" EntityType="SGQ_BrasilModel.Pcc1b" />
           <EntitySet Name="PenalidadeReincidencia" EntityType="SGQ_BrasilModel.PenalidadeReincidencia" />
           <EntitySet Name="Perfil" EntityType="SGQ_BrasilModel.Perfil" />
-          <EntitySet Name="Period" EntityType="SGQ_BrasilModel.Period" />
           <EntitySet Name="PlanoDeAcaoQuemQuandoComo" EntityType="SGQ_BrasilModel.PlanoDeAcaoQuemQuandoComo" />
           <EntitySet Name="Pontos" EntityType="SGQ_BrasilModel.Pontos" />
           <EntitySet Name="Produto" EntityType="SGQ_BrasilModel.Produto" />
@@ -4059,8 +4112,8 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <EntitySet Name="Resultados" EntityType="SGQ_BrasilModel.Resultados" />
           <EntitySet Name="ResultadosData" EntityType="SGQ_BrasilModel.ResultadosData" />
           <EntitySet Name="ResultadosPCC" EntityType="SGQ_BrasilModel.ResultadosPCC" />
-          <EntitySet Name="Shift" EntityType="SGQ_BrasilModel.Shift" />
           <EntitySet Name="Sugestoes" EntityType="SGQ_BrasilModel.Sugestoes" />
+          <EntitySet Name="sysdiagrams" EntityType="SGQ_BrasilModel.sysdiagrams" />
           <EntitySet Name="TarefaAmostras" EntityType="SGQ_BrasilModel.TarefaAmostras" />
           <EntitySet Name="TarefaAvaliacoes" EntityType="SGQ_BrasilModel.TarefaAvaliacoes" />
           <EntitySet Name="TarefaCategorias" EntityType="SGQ_BrasilModel.TarefaCategorias" />
@@ -4158,6 +4211,10 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <AssociationSet Name="FK_VinculoCampoTarefa_Campo" Association="SGQ_BrasilModel.FK_VinculoCampoTarefa_Campo">
             <End Role="Campo" EntitySet="Campo" />
             <End Role="VinculoCampoTarefa" EntitySet="VinculoCampoTarefa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao" Association="SGQ_BrasilModel.FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao">
+            <End Role="CaracteristicaTipificacao" EntitySet="CaracteristicaTipificacao" />
+            <End Role="CaracteristicaTipificacaoSequencial" EntitySet="CaracteristicaTipificacaoSequencial" />
           </AssociationSet>
           <AssociationSet Name="FK_CategoriaProdutos_Categorias" Association="SGQ_BrasilModel.FK_CategoriaProdutos_Categorias">
             <End Role="Categorias" EntitySet="Categorias" />
@@ -4576,17 +4633,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
             <End Role="VinculoParticipanteProjeto" EntitySet="VinculoParticipanteProjeto" />
           </AssociationSet>
           </EntityContainer>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
         <EntityType Name="Acoes">
           <Key>
             <PropertyRef Name="Id" />
@@ -4733,6 +4779,26 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <NavigationProperty Name="MultiplaEscolha" Relationship="SGQ_BrasilModel.FK_MultiplaEscolha_Campo" FromRole="Campo" ToRole="MultiplaEscolha" />
           <NavigationProperty Name="VinculoCampoCabecalho" Relationship="SGQ_BrasilModel.FK_VinculoCampoCabecalho_Campo" FromRole="Campo" ToRole="VinculoCampoCabecalho" />
           <NavigationProperty Name="VinculoCampoTarefa" Relationship="SGQ_BrasilModel.FK_VinculoCampoTarefa_Campo" FromRole="Campo" ToRole="VinculoCampoTarefa" />
+        </EntityType>
+        <EntityType Name="CaracteristicaTipificacao">
+          <Key>
+            <PropertyRef Name="nCdCaracteristica" />
+          </Key>
+          <Property Name="nCdCaracteristica" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+          <Property Name="cNmCaracteristica" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cNrCaracteristica" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cSgCaracteristica" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="cIdentificador" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CaracteristicaTipificacaoSequencial" Relationship="SGQ_BrasilModel.FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao" FromRole="CaracteristicaTipificacao" ToRole="CaracteristicaTipificacaoSequencial" />
+        </EntityType>
+        <EntityType Name="CaracteristicaTipificacaoSequencial">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Sequencial" Type="Int32" Nullable="false" />
+          <Property Name="nCdCaracteristica_Id" Type="Decimal" Precision="10" Scale="0" />
+          <NavigationProperty Name="CaracteristicaTipificacao" Relationship="SGQ_BrasilModel.FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao" FromRole="CaracteristicaTipificacaoSequencial" ToRole="CaracteristicaTipificacao" />
         </EntityType>
         <EntityType Name="CategoriaProdutos">
           <Key>
@@ -4903,15 +4969,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <NavigationProperty Name="TarefaAvaliacoes" Relationship="SGQ_BrasilModel.FK_TarefaAvaliacoes_Departamentos" FromRole="Departamentos" ToRole="TarefaAvaliacoes" />
           <NavigationProperty Name="Tarefas" Relationship="SGQ_BrasilModel.FK_Tarefas_Departamentos" FromRole="Departamentos" ToRole="Tarefas" />
           <NavigationProperty Name="VolumeProducao" Relationship="SGQ_BrasilModel.FK_VolumeProducao_Departamentos" FromRole="Departamentos" ToRole="VolumeProducao" />
-        </EntityType>
-        <EntityType Name="Department">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="DesvioNiveis">
           <Key>
@@ -5202,6 +5259,38 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <Property Name="Valor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UsuarioAlteracao" Type="Int32" Nullable="false" />
           <Property Name="DataAlteracao" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="LogOperacaoPA">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MensagemOperacao" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Linha" Type="Int32" />
+          <Property Name="NomeUsuario" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DataOcorrencia" Type="DateTime" Precision="7" />
+          <Property Name="TipoRegistro" Type="Int32" />
+          <Property Name="TextoExcecao" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TextoPilhaExcecao" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DescricaoLanIp" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DescricaoInternetIp" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="NomeMetodo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="UrlTela" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="LogSgq">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="addDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Level" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Call_Site" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Exception_Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Exception_Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Stack_Trace" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Additional_Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Second_Log_Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Metas">
           <Key>
@@ -5691,15 +5780,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <Property Name="nCdPerfil" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
           <Property Name="cNmPerfil" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="Period">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-        </EntityType>
         <EntityType Name="PlanoDeAcaoQuemQuandoComo">
           <Key>
             <PropertyRef Name="Id" />
@@ -5915,15 +5995,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <Property Name="Identificador" Type="String" Nullable="false" MaxLength="450" FixedLength="false" Unicode="true" />
           <Property Name="VersaoAPP" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="Shift">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterTime" Type="DateTime" Nullable="false" Precision="7" />
-        </EntityType>
         <EntityType Name="Sugestoes">
           <Key>
             <PropertyRef Name="Id" />
@@ -5936,6 +6007,16 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <Property Name="DataInsercao" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UsuarioAlteracao" Type="Int32" />
           <Property Name="DataAlteracao" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="TarefaAmostras">
           <Key>
@@ -6744,6 +6825,18 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
             </Principal>
             <Dependent Role="VinculoCampoTarefa">
               <PropertyRef Name="IdCampo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao">
+          <End Type="SGQ_BrasilModel.CaracteristicaTipificacao" Role="CaracteristicaTipificacao" Multiplicity="0..1" />
+          <End Type="SGQ_BrasilModel.CaracteristicaTipificacaoSequencial" Role="CaracteristicaTipificacaoSequencial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CaracteristicaTipificacao">
+              <PropertyRef Name="nCdCaracteristica" />
+            </Principal>
+            <Dependent Role="CaracteristicaTipificacaoSequencial">
+              <PropertyRef Name="nCdCaracteristica_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8023,23 +8116,8 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="SGQ_BrasilModel.Store.sp_creatediagram" />
           <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="SGQ_BrasilModel.Store.sp_dropdiagram" />
           <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="SGQ_BrasilModel.Store.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SGQ_BrasilModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="SGQ_BrasilModel.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SGQ_BrasilModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="SGQ_BrasilModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SGQ_BrasilModel.Store.sp_upgraddiagrams" />
@@ -8179,6 +8257,26 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
                 <ScalarProperty Name="Agrupador" ColumnName="Agrupador" />
                 <ScalarProperty Name="Tipo" ColumnName="Tipo" />
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CaracteristicaTipificacao">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.CaracteristicaTipificacao">
+              <MappingFragment StoreEntitySet="CaracteristicaTipificacao">
+                <ScalarProperty Name="cIdentificador" ColumnName="cIdentificador" />
+                <ScalarProperty Name="cSgCaracteristica" ColumnName="cSgCaracteristica" />
+                <ScalarProperty Name="cNrCaracteristica" ColumnName="cNrCaracteristica" />
+                <ScalarProperty Name="cNmCaracteristica" ColumnName="cNmCaracteristica" />
+                <ScalarProperty Name="nCdCaracteristica" ColumnName="nCdCaracteristica" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CaracteristicaTipificacaoSequencial">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.CaracteristicaTipificacaoSequencial">
+              <MappingFragment StoreEntitySet="CaracteristicaTipificacaoSequencial">
+                <ScalarProperty Name="nCdCaracteristica_Id" ColumnName="nCdCaracteristica_Id" />
+                <ScalarProperty Name="Sequencial" ColumnName="Sequencial" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -8344,16 +8442,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
                 <ScalarProperty Name="UsuarioInsercao" ColumnName="UsuarioInsercao" />
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
                 <ScalarProperty Name="Identificador" ColumnName="Identificador" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Department">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Department">
-              <MappingFragment StoreEntitySet="Department">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -8644,6 +8732,40 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
                 <ScalarProperty Name="Campo" ColumnName="Campo" />
                 <ScalarProperty Name="Registro" ColumnName="Registro" />
                 <ScalarProperty Name="Tabela" ColumnName="Tabela" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogOperacaoPA">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.LogOperacaoPA">
+              <MappingFragment StoreEntitySet="LogOperacaoPA">
+                <ScalarProperty Name="UrlTela" ColumnName="UrlTela" />
+                <ScalarProperty Name="NomeMetodo" ColumnName="NomeMetodo" />
+                <ScalarProperty Name="DescricaoInternetIp" ColumnName="DescricaoInternetIp" />
+                <ScalarProperty Name="DescricaoLanIp" ColumnName="DescricaoLanIp" />
+                <ScalarProperty Name="TextoPilhaExcecao" ColumnName="TextoPilhaExcecao" />
+                <ScalarProperty Name="TextoExcecao" ColumnName="TextoExcecao" />
+                <ScalarProperty Name="TipoRegistro" ColumnName="TipoRegistro" />
+                <ScalarProperty Name="DataOcorrencia" ColumnName="DataOcorrencia" />
+                <ScalarProperty Name="NomeUsuario" ColumnName="NomeUsuario" />
+                <ScalarProperty Name="Linha" ColumnName="Linha" />
+                <ScalarProperty Name="MensagemOperacao" ColumnName="MensagemOperacao" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogSgq">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.LogSgq">
+              <MappingFragment StoreEntitySet="LogSgq">
+                <ScalarProperty Name="Second_Log_Path" ColumnName="Second_Log_Path" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Additional_Info" ColumnName="Additional_Info" />
+                <ScalarProperty Name="Stack_Trace" ColumnName="Stack_Trace" />
+                <ScalarProperty Name="Exception_Message" ColumnName="Exception_Message" />
+                <ScalarProperty Name="Exception_Type" ColumnName="Exception_Type" />
+                <ScalarProperty Name="Call_Site" ColumnName="Call_Site" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="addDate" ColumnName="addDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -9080,16 +9202,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Period">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Period">
-              <MappingFragment StoreEntitySet="Period">
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PlanoDeAcaoQuemQuandoComo">
             <EntityTypeMapping TypeName="SGQ_BrasilModel.PlanoDeAcaoQuemQuandoComo">
               <MappingFragment StoreEntitySet="PlanoDeAcaoQuemQuandoComo">
@@ -9301,16 +9413,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Shift">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Shift">
-              <MappingFragment StoreEntitySet="Shift">
-                <ScalarProperty Name="AlterTime" ColumnName="AlterTime" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Sugestoes">
             <EntityTypeMapping TypeName="SGQ_BrasilModel.Sugestoes">
               <MappingFragment StoreEntitySet="Sugestoes">
@@ -9322,6 +9424,17 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
                 <ScalarProperty Name="Acao" ColumnName="Acao" />
                 <ScalarProperty Name="Chave" ColumnName="Chave" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

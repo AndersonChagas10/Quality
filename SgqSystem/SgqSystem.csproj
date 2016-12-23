@@ -316,7 +316,6 @@
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Api\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Api\PCC1BController.cs" />
-    <Compile Include="Controllers\Api\VerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\GestaoController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
