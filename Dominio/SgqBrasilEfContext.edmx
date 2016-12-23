@@ -270,7 +270,7 @@
           <Property Name="CausaGenerica" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.ControleMetaTolerancia' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'SGQ_Brasil.dbo.ControleMetaTolerancia' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ControleMetaTolerancia">
           <Key>
             <PropertyRef Name="UnidadeId" />
@@ -321,15 +321,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.ControleMetaTolerancia' does not ha
           <Property Name="DataInsercao" Type="datetime" Nullable="false" />
           <Property Name="UsuarioAlteracao" Type="int" />
           <Property Name="DataAlteracao" Type="datetime" />
-        </EntityType>
-        <EntityType Name="Department">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AddDate" Type="datetime" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime" />
-          <Property Name="Name" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="DesvioNiveis">
           <Key>
@@ -586,39 +577,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.ControleMetaTolerancia' does not ha
           <Property Name="UsuarioAlteracao" Type="int" />
           <Property Name="DataAlteracao" Type="datetime" />
         </EntityType>
-        <EntityType Name="Level01">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar(max)" Nullable="false" />
-          <Property Name="Alias" Type="varchar" MaxLength="25" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Level02">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar(max)" Nullable="false" />
-          <Property Name="Alias" Type="varchar" MaxLength="25" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Level03">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar(max)" Nullable="false" />
-          <Property Name="Alias" Type="varchar" MaxLength="25" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="LogAlteracoes">
           <Key>
             <PropertyRef Name="Id" />
@@ -630,18 +588,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.ControleMetaTolerancia' does not ha
           <Property Name="Valor" Type="nvarchar(max)" />
           <Property Name="UsuarioAlteracao" Type="int" Nullable="false" />
           <Property Name="DataAlteracao" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="LogJson">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="result" Type="text" Nullable="false" />
-          <Property Name="log" Type="text" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Device_Id" Type="nvarchar(max)" />
-          <Property Name="AppVersion" Type="nvarchar(max)" />
-          <Property Name="callback" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="LogOperacaoPA">
           <Key>
@@ -674,34 +620,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.ControleMetaTolerancia' does not ha
           <Property Name="Additional_Info" Type="varchar(max)" />
           <Property Name="Email" Type="varchar(max)" />
           <Property Name="Second_Log_Path" Type="varchar(max)" />
-        </EntityType>
-        <EntityType Name="LogSgqGlobal">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="addDate" Type="datetime" />
-          <Property Name="Level" Type="varchar(max)" />
-          <Property Name="Call_Site" Type="varchar(max)" />
-          <Property Name="Exception_Type" Type="varchar(max)" />
-          <Property Name="Exception_Message" Type="varchar(max)" />
-          <Property Name="Stack_Trace" Type="varchar(max)" />
-          <Property Name="Additional_Info" Type="varchar(max)" />
-          <Property Name="Object" Type="varchar(max)" />
-          <Property Name="email" Type="varchar(max)" />
-          <Property Name="Second_Log_Path" Type="varchar(max)" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.MacTablet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="MacTablet">
-          <Key>
-            <PropertyRef Name="ChaveResultado" />
-            <PropertyRef Name="MAC" />
-            <PropertyRef Name="IP" />
-          </Key>
-          <Property Name="ChaveResultado" Type="text" Nullable="false" />
-          <Property Name="MAC" Type="varchar" MaxLength="12" Nullable="false" />
-          <Property Name="IP" Type="varchar" MaxLength="14" Nullable="false" />
         </EntityType>
         <EntityType Name="Metas">
           <Key>
@@ -1061,154 +979,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.MacTablet' does not have a primary 
           <Property Name="UsuarioAlteracao" Type="int" />
           <Property Name="DataAlteracao" Type="datetime" />
         </EntityType>
-        <EntityType Name="ParCluster">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParClusterGroup_Id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ParClusterParent_Id" Type="int" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ParClusterGroup">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ParClusterGroupParent_Id" Type="int" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ParCompany">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
-          <Property Name="Initials" Type="nvarchar" MaxLength="50" />
-          <Property Name="SIF" Type="int" />
-          <Property Name="CompanyNumber" Type="int" />
-          <Property Name="IPServer" Type="nvarchar" MaxLength="155" />
-          <Property Name="DBServer" Type="nvarchar" MaxLength="155" />
-          <Property Name="IntegrationId" Type="decimal" Precision="18" Scale="0" />
-        </EntityType>
-        <EntityType Name="ParCompanyCluster">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParCompany_Id" Type="int" Nullable="false" />
-          <Property Name="ParCluster_Id" Type="int" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ParCompanyXStructure">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParStructure_Id" Type="int" Nullable="false" />
-          <Property Name="ParCompany_Id" Type="int" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ParConsolidationType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ParDepartment">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ParFrequency">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ParLevel1">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParConsolidationType_Id" Type="int" Nullable="false" />
-          <Property Name="ParFrequency_Id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="HasSaveLevel2" Type="bit" Nullable="false" />
-          <Property Name="HasNoApplicableLevel2" Type="bit" Nullable="false" />
-          <Property Name="HasGroupLevel2" Type="bit" Nullable="false" />
-          <Property Name="HasAlert" Type="bit" Nullable="false" />
-          <Property Name="IsSpecific" Type="bit" />
-          <Property Name="IsSpecificHeaderField" Type="bit" Nullable="false" />
-          <Property Name="IsSpecificNumberEvaluetion" Type="bit" Nullable="false" />
-          <Property Name="IsSpecificNumberSample" Type="bit" Nullable="false" />
-          <Property Name="IsSpecificLevel3" Type="bit" Nullable="false" />
-          <Property Name="IsSpecificGoal" Type="bit" />
-          <Property Name="IsRuleConformity" Type="bit" Nullable="false" />
-          <Property Name="IsFixedEvaluetionNumber" Type="bit" Nullable="false" />
-          <Property Name="IsLimitedEvaluetionNumber" Type="bit" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ParStructure">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParStructureGroup_Id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ParStructureParent_Id" Type="int" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ParStructureGroup">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ParStructureGroupParent_Id" Type="int" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="Pcc1b">
           <Key>
             <PropertyRef Name="Id" />
@@ -1251,15 +1021,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.MacTablet' does not have a primary 
           </Key>
           <Property Name="nCdPerfil" Type="decimal" Precision="10" Scale="0" Nullable="false" />
           <Property Name="cNmPerfil" Type="varchar" MaxLength="100" />
-        </EntityType>
-        <EntityType Name="Period">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="PlanoDeAcaoQuemQuandoComo">
           <Key>
@@ -1399,7 +1160,7 @@ warning 6002: The table/view 'SGQ_Global.dbo.MacTablet' does not have a primary 
           <Property Name="Reincidente" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.Resultados_BKP_OCT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'SGQ_Brasil.dbo.Resultados_BKP_OCT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Resultados_BKP_OCT">
           <Key>
             <PropertyRef Name="Id" />
@@ -1539,7 +1300,7 @@ warning 6002: The table/view 'SGQ_Global.dbo.Resultados_BKP_OCT' does not have a
           <Property Name="VersaoAPP" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.ScorecardConsolidadoDia' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'SGQ_Brasil.dbo.ScorecardConsolidadoDia' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ScorecardConsolidadoDia">
           <Key>
             <PropertyRef Name="Unidade" />
@@ -1553,15 +1314,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.ScorecardConsolidadoDia' does not h
           <Property Name="TotalForaPadrao" Type="decimal" Precision="10" Scale="2" />
           <Property Name="Meta" Type="decimal" Precision="5" Scale="2" />
           <Property Name="Pontos" Type="decimal" Precision="5" Scale="2" />
-        </EntityType>
-        <EntityType Name="Shift">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterTime" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="Sugestoes">
           <Key>
@@ -1687,7 +1439,7 @@ warning 6002: The table/view 'SGQ_Global.dbo.ScorecardConsolidadoDia' does not h
           <Property Name="cNmTerceiro" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.Tipificacao' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'SGQ_Brasil.dbo.Tipificacao' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Tipificacao">
           <Key>
             <PropertyRef Name="Data" />
@@ -1766,39 +1518,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.Tipificacao' does not have a primar
           <Property Name="DataInsercao" Type="datetime" Nullable="false" />
           <Property Name="UsuarioAlteracao" Type="int" />
           <Property Name="DataAlteracao" Type="datetime" />
-        </EntityType>
-        <EntityType Name="Unit">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="AddDate" Type="datetime" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime" />
-          <Property Name="Number" Type="int" />
-          <Property Name="Code" Type="nvarchar(max)" />
-          <Property Name="Ip" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="UnitUser">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserSgqId" Type="int" Nullable="false" />
-          <Property Name="UnitId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserSgq">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="AcessDate" Type="datetime" />
-          <Property Name="AddDate" Type="datetime" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime" />
-          <Property Name="Role" Type="nvarchar(max)" />
-          <Property Name="FullName" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
@@ -1913,7 +1632,7 @@ warning 6002: The table/view 'SGQ_Global.dbo.Tipificacao' does not have a primar
           <Property Name="nCdEmpresa" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'SGQ_Brasil.dbo.VerificacaoTipificacaoJBS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="VerificacaoTipificacaoJBS">
           <Key>
             <PropertyRef Name="nCdEmpresa" />
@@ -2057,187 +1776,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VerificacaoTipificacaoJBS' does not
           <Property Name="VersaoAPP" Type="varchar" MaxLength="100" />
           <Property Name="Atualizacao" Type="datetime" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.DelDados' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="DelDados">
-          <Key>
-            <PropertyRef Name="TESTE" />
-          </Key>
-          <Property Name="TESTE" Type="int" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.Reports_CCA_Audit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="Reports_CCA_Audit">
-          <Key>
-            <PropertyRef Name="Audit Period" />
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit/Reaudit" />
-            <PropertyRef Name="No of Def" />
-            <PropertyRef Name="Cattle Type" />
-            <PropertyRef Name="Chain Speed" />
-            <PropertyRef Name="Lot #" />
-            <PropertyRef Name="Mud Score" />
-          </Key>
-          <Property Name="Plant Number" Type="int" />
-          <Property Name="Audit Area" Type="varchar(max)" />
-          <Property Name="Set Start Date" Type="date" />
-          <Property Name="Set Start Time" Type="varchar" MaxLength="5" />
-          <Property Name="Audit Period" Type="int" Nullable="false" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="Audit/Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Specks" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Dressing" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Single Hairs" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Clusters" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Hide" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Defects" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="No of Def" Type="varchar" MaxLength="3" Nullable="false" />
-          <Property Name="Cattle Type" Type="varchar" MaxLength="5" Nullable="false" />
-          <Property Name="Chain Speed" Type="decimal" Precision="20" Scale="5" Nullable="false" />
-          <Property Name="Lot #" Type="decimal" Precision="20" Scale="5" Nullable="false" />
-          <Property Name="Mud Score" Type="decimal" Precision="20" Scale="5" Nullable="false" />
-          <Property Name="Auditor Name Global" Type="nvarchar(max)" />
-          <Property Name="Set End Date" Type="date" />
-          <Property Name="Set End Time" Type="varchar" MaxLength="5" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.Reports_CFF_Audit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="Reports_CFF_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect Counter" />
-          </Key>
-          <Property Name="Plant Number" Type="int" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="Period" Type="int" Nullable="false" />
-          <Property Name="Set" Type="int" />
-          <Property Name="Start Date" Type="datetime2" Precision="7" />
-          <Property Name="Side" Type="int" Nullable="false" />
-          <Property Name="Audit Area" Type="varchar(max)" />
-          <Property Name="Set Start Date" Type="date" />
-          <Property Name="Set Start Time" Type="varchar" MaxLength="5" />
-          <Property Name="Set End Date" Type="date" />
-          <Property Name="Set End Time" Type="varchar" MaxLength="5" />
-          <Property Name="Auditor" Type="nvarchar(max)" />
-          <Property Name="Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Defects" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Fold/Flap" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Defect Counter" Type="int" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.Reports_HTP_Audit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="Reports_HTP_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit/ReAudit" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Baised/Unbiased" />
-            <PropertyRef Name="Starting Phase" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="Plant Number" Type="int" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="Start Date" Type="datetime2" Precision="7" />
-          <Property Name="Start Time" Type="varchar" MaxLength="10" />
-          <Property Name="Job Id" Type="varchar(max)" />
-          <Property Name="Auditor" Type="nvarchar(max)" />
-          <Property Name="Audit/ReAudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Period" Type="int" Nullable="false" />
-          <Property Name="Baised/Unbiased" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Job Date" Type="date" />
-          <Property Name="Job Time" Type="varchar" MaxLength="10" />
-          <Property Name="Starting Phase" Type="int" Nullable="false" />
-          <Property Name="Core Practice HTP Deviation" Type="varchar" MaxLength="3" />
-          <Property Name="Other Deviaton" Type="varchar" MaxLength="3" />
-          <Property Name="Ending Phase" Type="int" />
-          <Property Name="Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="End Date" Type="date" />
-          <Property Name="End Time" Type="varchar" MaxLength="10" />
-          <Property Name="ID" Type="int" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="VWCFFResults">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect Counter" />
-          </Key>
-          <Property Name="Plant Number" Type="int" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="Period" Type="int" Nullable="false" />
-          <Property Name="Set" Type="int" />
-          <Property Name="Start Date" Type="datetime2" Precision="7" />
-          <Property Name="Side" Type="int" Nullable="false" />
-          <Property Name="Audit Area" Type="varchar(max)" />
-          <Property Name="Set Start Date" Type="date" />
-          <Property Name="Set Start Time" Type="varchar" MaxLength="5" />
-          <Property Name="Set End Date" Type="date" />
-          <Property Name="Set End Time" Type="varchar" MaxLength="5" />
-          <Property Name="Auditor" Type="nvarchar(max)" />
-          <Property Name="Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Defects" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Fold/Flap" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Defect Counter" Type="int" Nullable="false" />
-        </EntityType>
-        <Association Name="FK__Pcc1b__ParCompan__6AA5C795">
-          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
-          <End Role="Pcc1b" Type="Self.Pcc1b" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Pcc1b">
-              <PropertyRef Name="ParCompany_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Pcc1b__ParLevel1__6B99EBCE">
-          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
-          <End Role="Pcc1b" Type="Self.Pcc1b" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Pcc1b">
-              <PropertyRef Name="ParLevel1_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__VacuoGRD__ParCom__6E765879">
-          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
-          <End Role="VacuoGRD" Type="Self.VacuoGRD" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="VacuoGRD">
-              <PropertyRef Name="ParCompany_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__VacuoGRD__ParLev__6F6A7CB2">
-          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
-          <End Role="VacuoGRD" Type="Self.VacuoGRD" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="VacuoGRD">
-              <PropertyRef Name="ParLevel1_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AcoesCorretivas_Operacoes">
           <End Role="Operacoes" Type="Self.Operacoes" Multiplicity="1" />
           <End Role="AcoesCorretivas" Type="Self.AcoesCorretivas" Multiplicity="*" />
@@ -3168,102 +2706,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ParCluster_ParClusterGroup">
-          <End Role="ParClusterGroup" Type="Self.ParClusterGroup" Multiplicity="1" />
-          <End Role="ParCluster" Type="Self.ParCluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParClusterGroup">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCluster">
-              <PropertyRef Name="ParClusterGroup_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCompanyCluster_ParCluster">
-          <End Role="ParCluster" Type="Self.ParCluster" Multiplicity="1" />
-          <End Role="ParCompanyCluster" Type="Self.ParCompanyCluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCluster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCompanyCluster">
-              <PropertyRef Name="ParCluster_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCompanyCluster_ParCompany">
-          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="1" />
-          <End Role="ParCompanyCluster" Type="Self.ParCompanyCluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCompanyCluster">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCompanyXStructure_ParCompany">
-          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="1" />
-          <End Role="ParCompanyXStructure" Type="Self.ParCompanyXStructure" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCompanyXStructure">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCompanyXStructure_ParStructure">
-          <End Role="ParStructure" Type="Self.ParStructure" Multiplicity="1" />
-          <End Role="ParCompanyXStructure" Type="Self.ParCompanyXStructure" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParStructure">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCompanyXStructure">
-              <PropertyRef Name="ParStructure_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1_ParConsolidationType">
-          <End Role="ParConsolidationType" Type="Self.ParConsolidationType" Multiplicity="1" />
-          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParConsolidationType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1">
-              <PropertyRef Name="ParConsolidationType_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1_ParFrequency">
-          <End Role="ParFrequency" Type="Self.ParFrequency" Multiplicity="1" />
-          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParFrequency">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1">
-              <PropertyRef Name="ParFrequency_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParStructure_ParStructureGroup">
-          <End Role="ParStructureGroup" Type="Self.ParStructureGroup" Multiplicity="1" />
-          <End Role="ParStructure" Type="Self.ParStructure" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParStructureGroup">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParStructure">
-              <PropertyRef Name="ParStructureGroup_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PlanoDeAcaoQuemQuandoComo_Usuarios">
           <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
           <End Role="PlanoDeAcaoQuemQuandoComo" Type="Self.PlanoDeAcaoQuemQuandoComo" Multiplicity="*" />
@@ -3537,30 +2979,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
             </Principal>
             <Dependent Role="TipificacaoReal">
               <PropertyRef Name="Unidade" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UnitUser_Unit">
-          <End Role="Unit" Type="Self.Unit" Multiplicity="1" />
-          <End Role="UnitUser" Type="Self.UnitUser" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Unit">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UnitUser">
-              <PropertyRef Name="UnitId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UnitUser_UserSgq">
-          <End Role="UserSgq" Type="Self.UserSgq" Multiplicity="1" />
-          <End Role="UnitUser" Type="Self.UnitUser" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UnitUser">
-              <PropertyRef Name="UserSgqId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3886,7 +3304,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="DepartamentoOperacoes" EntityType="Self.DepartamentoOperacoes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DepartamentoProdutos" EntityType="Self.DepartamentoProdutos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Departamentos" EntityType="Self.Departamentos" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DesvioNiveis" EntityType="Self.DesvioNiveis" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Desvios" EntityType="Self.Desvios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Empresa" EntityType="Self.Empresa" Schema="dbo" store:Type="Tables" />
@@ -3909,14 +3326,9 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="GrupoTipoAvaliacaoMonitoramentos" EntityType="Self.GrupoTipoAvaliacaoMonitoramentos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GrupoTipoAvaliacoes" EntityType="Self.GrupoTipoAvaliacoes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Horarios" EntityType="Self.Horarios" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Level01" EntityType="Self.Level01" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Level02" EntityType="Self.Level02" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Level03" EntityType="Self.Level03" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogAlteracoes" EntityType="Self.LogAlteracoes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="LogJson" EntityType="Self.LogJson" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogOperacaoPA" EntityType="Self.LogOperacaoPA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogSgq" EntityType="Self.LogSgq" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="LogSgqGlobal" EntityType="Self.LogSgqGlobal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Metas" EntityType="Self.Metas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MonitoramentoEquipamentos" EntityType="Self.MonitoramentoEquipamentos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Monitoramentos" EntityType="Self.Monitoramentos" Schema="dbo" store:Type="Tables" />
@@ -3945,21 +3357,9 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="PadraoMonitoramentos" EntityType="Self.PadraoMonitoramentos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PadraoTolerancias" EntityType="Self.PadraoTolerancias" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Padroes" EntityType="Self.Padroes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParCluster" EntityType="Self.ParCluster" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParClusterGroup" EntityType="Self.ParClusterGroup" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParCompany" EntityType="Self.ParCompany" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParCompanyCluster" EntityType="Self.ParCompanyCluster" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParCompanyXStructure" EntityType="Self.ParCompanyXStructure" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParConsolidationType" EntityType="Self.ParConsolidationType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParDepartment" EntityType="Self.ParDepartment" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParFrequency" EntityType="Self.ParFrequency" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParLevel1" EntityType="Self.ParLevel1" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParStructure" EntityType="Self.ParStructure" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParStructureGroup" EntityType="Self.ParStructureGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pcc1b" EntityType="Self.Pcc1b" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PenalidadeReincidencia" EntityType="Self.PenalidadeReincidencia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Perfil" EntityType="Self.Perfil" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Period" EntityType="Self.Period" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PlanoDeAcaoQuemQuandoComo" EntityType="Self.PlanoDeAcaoQuemQuandoComo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pontos" EntityType="Self.Pontos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Produto" EntityType="Self.Produto" Schema="dbo" store:Type="Tables" />
@@ -3971,7 +3371,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="Resultados" EntityType="Self.Resultados" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ResultadosData" EntityType="Self.ResultadosData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ResultadosPCC" EntityType="Self.ResultadosPCC" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sugestoes" EntityType="Self.Sugestoes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarefaAmostras" EntityType="Self.TarefaAmostras" Schema="dbo" store:Type="Tables" />
@@ -3985,9 +3384,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="TipoAvaliacoes" EntityType="Self.TipoAvaliacoes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unidades" EntityType="Self.Unidades" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UnidadesMedidas" EntityType="Self.UnidadesMedidas" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UnitUser" EntityType="Self.UnitUser" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserSgq" EntityType="Self.UserSgq" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsuarioPerfilEmpresa" EntityType="Self.UsuarioPerfilEmpresa" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
@@ -4016,13 +3412,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
     [ControleMetaTolerancia].[UltimoNumeroNC] AS [UltimoNumeroNC], 
     [ControleMetaTolerancia].[TotalNC] AS [TotalNC]
     FROM [dbo].[ControleMetaTolerancia] AS [ControleMetaTolerancia]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="MacTablet" EntityType="Self.MacTablet" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [MacTablet].[ChaveResultado] AS [ChaveResultado], 
-    [MacTablet].[MAC] AS [MAC], 
-    [MacTablet].[IP] AS [IP]
-    FROM [dbo].[MacTablet] AS [MacTablet]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Resultados_BKP_OCT" EntityType="Self.Resultados_BKP_OCT" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -4110,119 +3499,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
     [VerificacaoTipificacaoJBS].[nCdCaracteristicaTipificacao] AS [nCdCaracteristicaTipificacao]
     FROM [dbo].[VerificacaoTipificacaoJBS] AS [VerificacaoTipificacaoJBS]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="DelDados" EntityType="Self.DelDados" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [DelDados].[TESTE] AS [TESTE]
-    FROM [dbo].[DelDados] AS [DelDados]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Reports_CCA_Audit" EntityType="Self.Reports_CCA_Audit" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Reports_CCA_Audit].[Plant Number] AS [Plant Number], 
-    [Reports_CCA_Audit].[Audit Area] AS [Audit Area], 
-    [Reports_CCA_Audit].[Set Start Date] AS [Set Start Date], 
-    [Reports_CCA_Audit].[Set Start Time] AS [Set Start Time], 
-    [Reports_CCA_Audit].[Audit Period] AS [Audit Period], 
-    [Reports_CCA_Audit].[Shift] AS [Shift], 
-    [Reports_CCA_Audit].[Audit/Reaudit] AS [Audit/Reaudit], 
-    [Reports_CCA_Audit].[Specks] AS [Specks], 
-    [Reports_CCA_Audit].[Dressing] AS [Dressing], 
-    [Reports_CCA_Audit].[Single Hairs] AS [Single Hairs], 
-    [Reports_CCA_Audit].[Clusters] AS [Clusters], 
-    [Reports_CCA_Audit].[Hide] AS [Hide], 
-    [Reports_CCA_Audit].[Defects] AS [Defects], 
-    [Reports_CCA_Audit].[No of Def] AS [No of Def], 
-    [Reports_CCA_Audit].[Cattle Type] AS [Cattle Type], 
-    [Reports_CCA_Audit].[Chain Speed] AS [Chain Speed], 
-    [Reports_CCA_Audit].[Lot #] AS [Lot #], 
-    [Reports_CCA_Audit].[Mud Score] AS [Mud Score], 
-    [Reports_CCA_Audit].[Auditor Name Global] AS [Auditor Name Global], 
-    [Reports_CCA_Audit].[Set End Date] AS [Set End Date], 
-    [Reports_CCA_Audit].[Set End Time] AS [Set End Time]
-    FROM [dbo].[Reports_CCA_Audit] AS [Reports_CCA_Audit]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Reports_CFF_Audit" EntityType="Self.Reports_CFF_Audit" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Reports_CFF_Audit].[Plant Number] AS [Plant Number], 
-    [Reports_CFF_Audit].[Shift] AS [Shift], 
-    [Reports_CFF_Audit].[Period] AS [Period], 
-    [Reports_CFF_Audit].[Set] AS [Set], 
-    [Reports_CFF_Audit].[Start Date] AS [Start Date], 
-    [Reports_CFF_Audit].[Side] AS [Side], 
-    [Reports_CFF_Audit].[Audit Area] AS [Audit Area], 
-    [Reports_CFF_Audit].[Set Start Date] AS [Set Start Date], 
-    [Reports_CFF_Audit].[Set Start Time] AS [Set Start Time], 
-    [Reports_CFF_Audit].[Set End Date] AS [Set End Date], 
-    [Reports_CFF_Audit].[Set End Time] AS [Set End Time], 
-    [Reports_CFF_Audit].[Auditor] AS [Auditor], 
-    [Reports_CFF_Audit].[Reaudit] AS [Reaudit], 
-    [Reports_CFF_Audit].[Defects] AS [Defects], 
-    [Reports_CFF_Audit].[Cut] AS [Cut], 
-    [Reports_CFF_Audit].[Fold/Flap] AS [Fold/Flap], 
-    [Reports_CFF_Audit].[Puncture] AS [Puncture], 
-    [Reports_CFF_Audit].[Defect Counter] AS [Defect Counter]
-    FROM [dbo].[Reports_CFF_Audit] AS [Reports_CFF_Audit]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Reports_HTP_Audit" EntityType="Self.Reports_HTP_Audit" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Reports_HTP_Audit].[Plant Number] AS [Plant Number], 
-    [Reports_HTP_Audit].[Shift] AS [Shift], 
-    [Reports_HTP_Audit].[Start Date] AS [Start Date], 
-    [Reports_HTP_Audit].[Start Time] AS [Start Time], 
-    [Reports_HTP_Audit].[Job Id] AS [Job Id], 
-    [Reports_HTP_Audit].[Auditor] AS [Auditor], 
-    [Reports_HTP_Audit].[Audit/ReAudit] AS [Audit/ReAudit], 
-    [Reports_HTP_Audit].[Period] AS [Period], 
-    [Reports_HTP_Audit].[Baised/Unbiased] AS [Baised/Unbiased], 
-    [Reports_HTP_Audit].[Job Date] AS [Job Date], 
-    [Reports_HTP_Audit].[Job Time] AS [Job Time], 
-    [Reports_HTP_Audit].[Starting Phase] AS [Starting Phase], 
-    [Reports_HTP_Audit].[Core Practice HTP Deviation] AS [Core Practice HTP Deviation], 
-    [Reports_HTP_Audit].[Other Deviaton] AS [Other Deviaton], 
-    [Reports_HTP_Audit].[Ending Phase] AS [Ending Phase], 
-    [Reports_HTP_Audit].[Reaudit] AS [Reaudit], 
-    [Reports_HTP_Audit].[End Date] AS [End Date], 
-    [Reports_HTP_Audit].[End Time] AS [End Time], 
-    [Reports_HTP_Audit].[ID] AS [ID]
-    FROM [dbo].[Reports_HTP_Audit] AS [Reports_HTP_Audit]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="VWCFFResults" EntityType="Self.VWCFFResults" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [VWCFFResults].[Plant Number] AS [Plant Number], 
-    [VWCFFResults].[Shift] AS [Shift], 
-    [VWCFFResults].[Period] AS [Period], 
-    [VWCFFResults].[Set] AS [Set], 
-    [VWCFFResults].[Start Date] AS [Start Date], 
-    [VWCFFResults].[Side] AS [Side], 
-    [VWCFFResults].[Audit Area] AS [Audit Area], 
-    [VWCFFResults].[Set Start Date] AS [Set Start Date], 
-    [VWCFFResults].[Set Start Time] AS [Set Start Time], 
-    [VWCFFResults].[Set End Date] AS [Set End Date], 
-    [VWCFFResults].[Set End Time] AS [Set End Time], 
-    [VWCFFResults].[Auditor] AS [Auditor], 
-    [VWCFFResults].[Reaudit] AS [Reaudit], 
-    [VWCFFResults].[Defects] AS [Defects], 
-    [VWCFFResults].[Cut] AS [Cut], 
-    [VWCFFResults].[Fold/Flap] AS [Fold/Flap], 
-    [VWCFFResults].[Puncture] AS [Puncture], 
-    [VWCFFResults].[Defect Counter] AS [Defect Counter]
-    FROM [dbo].[VWCFFResults] AS [VWCFFResults]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK__Pcc1b__ParCompan__6AA5C795" Association="Self.FK__Pcc1b__ParCompan__6AA5C795">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="Pcc1b" EntitySet="Pcc1b" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Pcc1b__ParLevel1__6B99EBCE" Association="Self.FK__Pcc1b__ParLevel1__6B99EBCE">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="Pcc1b" EntitySet="Pcc1b" />
-          </AssociationSet>
-          <AssociationSet Name="FK__VacuoGRD__ParCom__6E765879" Association="Self.FK__VacuoGRD__ParCom__6E765879">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="VacuoGRD" EntitySet="VacuoGRD" />
-          </AssociationSet>
-          <AssociationSet Name="FK__VacuoGRD__ParLev__6F6A7CB2" Association="Self.FK__VacuoGRD__ParLev__6F6A7CB2">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="VacuoGRD" EntitySet="VacuoGRD" />
-          </AssociationSet>
           <AssociationSet Name="FK_AcoesCorretivas_Operacoes" Association="Self.FK_AcoesCorretivas_Operacoes">
             <End Role="Operacoes" EntitySet="Operacoes" />
             <End Role="AcoesCorretivas" EntitySet="AcoesCorretivas" />
@@ -4527,38 +3803,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
             <End Role="Padroes" EntitySet="Padroes" />
             <End Role="PadraoTolerancias" EntitySet="PadraoTolerancias" />
           </AssociationSet>
-          <AssociationSet Name="FK_ParCluster_ParClusterGroup" Association="Self.FK_ParCluster_ParClusterGroup">
-            <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
-            <End Role="ParCluster" EntitySet="ParCluster" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParCompanyCluster_ParCluster" Association="Self.FK_ParCompanyCluster_ParCluster">
-            <End Role="ParCluster" EntitySet="ParCluster" />
-            <End Role="ParCompanyCluster" EntitySet="ParCompanyCluster" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParCompanyCluster_ParCompany" Association="Self.FK_ParCompanyCluster_ParCompany">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParCompanyCluster" EntitySet="ParCompanyCluster" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParCompanyXStructure_ParCompany" Association="Self.FK_ParCompanyXStructure_ParCompany">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParCompanyXStructure" EntitySet="ParCompanyXStructure" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParCompanyXStructure_ParStructure" Association="Self.FK_ParCompanyXStructure_ParStructure">
-            <End Role="ParStructure" EntitySet="ParStructure" />
-            <End Role="ParCompanyXStructure" EntitySet="ParCompanyXStructure" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1_ParConsolidationType" Association="Self.FK_ParLevel1_ParConsolidationType">
-            <End Role="ParConsolidationType" EntitySet="ParConsolidationType" />
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1_ParFrequency" Association="Self.FK_ParLevel1_ParFrequency">
-            <End Role="ParFrequency" EntitySet="ParFrequency" />
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParStructure_ParStructureGroup" Association="Self.FK_ParStructure_ParStructureGroup">
-            <End Role="ParStructureGroup" EntitySet="ParStructureGroup" />
-            <End Role="ParStructure" EntitySet="ParStructure" />
-          </AssociationSet>
           <AssociationSet Name="FK_PlanoDeAcaoQuemQuandoComo_Usuarios" Association="Self.FK_PlanoDeAcaoQuemQuandoComo_Usuarios">
             <End Role="Usuarios" EntitySet="Usuarios" />
             <End Role="PlanoDeAcaoQuemQuandoComo" EntitySet="PlanoDeAcaoQuemQuandoComo" />
@@ -4650,14 +3894,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <AssociationSet Name="FK_TipificacaoReal_Unidades" Association="Self.FK_TipificacaoReal_Unidades">
             <End Role="Unidades" EntitySet="Unidades" />
             <End Role="TipificacaoReal" EntitySet="TipificacaoReal" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UnitUser_Unit" Association="Self.FK_UnitUser_Unit">
-            <End Role="Unit" EntitySet="Unit" />
-            <End Role="UnitUser" EntitySet="UnitUser" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UnitUser_UserSgq" Association="Self.FK_UnitUser_UserSgq">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="UnitUser" EntitySet="UnitUser" />
           </AssociationSet>
           <AssociationSet Name="FK_Usuarios_Regionais" Association="Self.FK_Usuarios_Regionais">
             <End Role="Regionais" EntitySet="Regionais" />
@@ -4769,11 +4005,11 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(SGQ_BrasilModel.sp_helpdiagramdefinition_Result)">
+          <FunctionImport Name="sp_helpdiagramdefinition">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(SGQ_BrasilModel.sp_helpdiagrams_Result)">
+          <FunctionImport Name="sp_helpdiagrams">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -4809,7 +4045,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="DepartamentoOperacoes" EntityType="SGQ_BrasilModel.DepartamentoOperacoes" />
           <EntitySet Name="DepartamentoProdutos" EntityType="SGQ_BrasilModel.DepartamentoProdutos" />
           <EntitySet Name="Departamentos" EntityType="SGQ_BrasilModel.Departamentos" />
-          <EntitySet Name="Department" EntityType="SGQ_BrasilModel.Department" />
           <EntitySet Name="DesvioNiveis" EntityType="SGQ_BrasilModel.DesvioNiveis" />
           <EntitySet Name="Desvios" EntityType="SGQ_BrasilModel.Desvios" />
           <EntitySet Name="Empresa" EntityType="SGQ_BrasilModel.Empresa" />
@@ -4832,14 +4067,9 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="GrupoTipoAvaliacaoMonitoramentos" EntityType="SGQ_BrasilModel.GrupoTipoAvaliacaoMonitoramentos" />
           <EntitySet Name="GrupoTipoAvaliacoes" EntityType="SGQ_BrasilModel.GrupoTipoAvaliacoes" />
           <EntitySet Name="Horarios" EntityType="SGQ_BrasilModel.Horarios" />
-          <EntitySet Name="Level01" EntityType="SGQ_BrasilModel.Level01" />
-          <EntitySet Name="Level02" EntityType="SGQ_BrasilModel.Level02" />
-          <EntitySet Name="Level03" EntityType="SGQ_BrasilModel.Level03" />
           <EntitySet Name="LogAlteracoes" EntityType="SGQ_BrasilModel.LogAlteracoes" />
-          <EntitySet Name="LogJson" EntityType="SGQ_BrasilModel.LogJson" />
           <EntitySet Name="LogOperacaoPA" EntityType="SGQ_BrasilModel.LogOperacaoPA" />
           <EntitySet Name="LogSgq" EntityType="SGQ_BrasilModel.LogSgq" />
-          <EntitySet Name="LogSgqGlobal" EntityType="SGQ_BrasilModel.LogSgqGlobal" />
           <EntitySet Name="Metas" EntityType="SGQ_BrasilModel.Metas" />
           <EntitySet Name="MonitoramentoEquipamentos" EntityType="SGQ_BrasilModel.MonitoramentoEquipamentos" />
           <EntitySet Name="Monitoramentos" EntityType="SGQ_BrasilModel.Monitoramentos" />
@@ -4868,21 +4098,9 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="PadraoMonitoramentos" EntityType="SGQ_BrasilModel.PadraoMonitoramentos" />
           <EntitySet Name="PadraoTolerancias" EntityType="SGQ_BrasilModel.PadraoTolerancias" />
           <EntitySet Name="Padroes" EntityType="SGQ_BrasilModel.Padroes" />
-          <EntitySet Name="ParCluster" EntityType="SGQ_BrasilModel.ParCluster" />
-          <EntitySet Name="ParClusterGroup" EntityType="SGQ_BrasilModel.ParClusterGroup" />
-          <EntitySet Name="ParCompany" EntityType="SGQ_BrasilModel.ParCompany" />
-          <EntitySet Name="ParCompanyCluster" EntityType="SGQ_BrasilModel.ParCompanyCluster" />
-          <EntitySet Name="ParCompanyXStructure" EntityType="SGQ_BrasilModel.ParCompanyXStructure" />
-          <EntitySet Name="ParConsolidationType" EntityType="SGQ_BrasilModel.ParConsolidationType" />
-          <EntitySet Name="ParDepartment" EntityType="SGQ_BrasilModel.ParDepartment" />
-          <EntitySet Name="ParFrequency" EntityType="SGQ_BrasilModel.ParFrequency" />
-          <EntitySet Name="ParLevel1" EntityType="SGQ_BrasilModel.ParLevel1" />
-          <EntitySet Name="ParStructure" EntityType="SGQ_BrasilModel.ParStructure" />
-          <EntitySet Name="ParStructureGroup" EntityType="SGQ_BrasilModel.ParStructureGroup" />
           <EntitySet Name="Pcc1b" EntityType="SGQ_BrasilModel.Pcc1b" />
           <EntitySet Name="PenalidadeReincidencia" EntityType="SGQ_BrasilModel.PenalidadeReincidencia" />
           <EntitySet Name="Perfil" EntityType="SGQ_BrasilModel.Perfil" />
-          <EntitySet Name="Period" EntityType="SGQ_BrasilModel.Period" />
           <EntitySet Name="PlanoDeAcaoQuemQuandoComo" EntityType="SGQ_BrasilModel.PlanoDeAcaoQuemQuandoComo" />
           <EntitySet Name="Pontos" EntityType="SGQ_BrasilModel.Pontos" />
           <EntitySet Name="Produto" EntityType="SGQ_BrasilModel.Produto" />
@@ -4894,7 +4112,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="Resultados" EntityType="SGQ_BrasilModel.Resultados" />
           <EntitySet Name="ResultadosData" EntityType="SGQ_BrasilModel.ResultadosData" />
           <EntitySet Name="ResultadosPCC" EntityType="SGQ_BrasilModel.ResultadosPCC" />
-          <EntitySet Name="Shift" EntityType="SGQ_BrasilModel.Shift" />
           <EntitySet Name="Sugestoes" EntityType="SGQ_BrasilModel.Sugestoes" />
           <EntitySet Name="sysdiagrams" EntityType="SGQ_BrasilModel.sysdiagrams" />
           <EntitySet Name="TarefaAmostras" EntityType="SGQ_BrasilModel.TarefaAmostras" />
@@ -4908,9 +4125,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="TipoAvaliacoes" EntityType="SGQ_BrasilModel.TipoAvaliacoes" />
           <EntitySet Name="Unidades" EntityType="SGQ_BrasilModel.Unidades" />
           <EntitySet Name="UnidadesMedidas" EntityType="SGQ_BrasilModel.UnidadesMedidas" />
-          <EntitySet Name="Unit" EntityType="SGQ_BrasilModel.Unit" />
-          <EntitySet Name="UnitUser" EntityType="SGQ_BrasilModel.UnitUser" />
-          <EntitySet Name="UserSgq" EntityType="SGQ_BrasilModel.UserSgq" />
           <EntitySet Name="Usuario" EntityType="SGQ_BrasilModel.Usuario" />
           <EntitySet Name="UsuarioPerfilEmpresa" EntityType="SGQ_BrasilModel.UsuarioPerfilEmpresa" />
           <EntitySet Name="Usuarios" EntityType="SGQ_BrasilModel.Usuarios" />
@@ -4930,16 +4144,10 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <EntitySet Name="VolumeProducao" EntityType="SGQ_BrasilModel.VolumeProducao" />
           <EntitySet Name="Z_Sistema" EntityType="SGQ_BrasilModel.Z_Sistema" />
           <EntitySet Name="ControleMetaTolerancia" EntityType="SGQ_BrasilModel.ControleMetaTolerancia" />
-          <EntitySet Name="MacTablet" EntityType="SGQ_BrasilModel.MacTablet" />
           <EntitySet Name="Resultados_BKP_OCT" EntityType="SGQ_BrasilModel.Resultados_BKP_OCT" />
           <EntitySet Name="ScorecardConsolidadoDia" EntityType="SGQ_BrasilModel.ScorecardConsolidadoDia" />
           <EntitySet Name="Tipificacao" EntityType="SGQ_BrasilModel.Tipificacao" />
           <EntitySet Name="VerificacaoTipificacaoJBS" EntityType="SGQ_BrasilModel.VerificacaoTipificacaoJBS" />
-          <EntitySet Name="DelDados" EntityType="SGQ_BrasilModel.DelDados" />
-          <EntitySet Name="Reports_CCA_Audit" EntityType="SGQ_BrasilModel.Reports_CCA_Audit" />
-          <EntitySet Name="Reports_CFF_Audit" EntityType="SGQ_BrasilModel.Reports_CFF_Audit" />
-          <EntitySet Name="Reports_HTP_Audit" EntityType="SGQ_BrasilModel.Reports_HTP_Audit" />
-          <EntitySet Name="VWCFFResults" EntityType="SGQ_BrasilModel.VWCFFResults" />
           <AssociationSet Name="FK_AcoesCorretivas_Operacoes" Association="SGQ_BrasilModel.FK_AcoesCorretivas_Operacoes">
             <End Role="Operacoes" EntitySet="Operacoes" />
             <End Role="AcoesCorretivas" EntitySet="AcoesCorretivas" />
@@ -5328,54 +4536,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
             <End Role="Padroes" EntitySet="Padroes" />
             <End Role="PadraoTolerancias" EntitySet="PadraoTolerancias" />
           </AssociationSet>
-          <AssociationSet Name="FK_ParCluster_ParClusterGroup" Association="SGQ_BrasilModel.FK_ParCluster_ParClusterGroup">
-            <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
-            <End Role="ParCluster" EntitySet="ParCluster" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParCompanyCluster_ParCluster" Association="SGQ_BrasilModel.FK_ParCompanyCluster_ParCluster">
-            <End Role="ParCluster" EntitySet="ParCluster" />
-            <End Role="ParCompanyCluster" EntitySet="ParCompanyCluster" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Pcc1b__ParCompan__6AA5C795" Association="SGQ_BrasilModel.FK__Pcc1b__ParCompan__6AA5C795">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="Pcc1b" EntitySet="Pcc1b" />
-          </AssociationSet>
-          <AssociationSet Name="FK__VacuoGRD__ParCom__6E765879" Association="SGQ_BrasilModel.FK__VacuoGRD__ParCom__6E765879">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="VacuoGRD" EntitySet="VacuoGRD" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParCompanyCluster_ParCompany" Association="SGQ_BrasilModel.FK_ParCompanyCluster_ParCompany">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParCompanyCluster" EntitySet="ParCompanyCluster" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParCompanyXStructure_ParCompany" Association="SGQ_BrasilModel.FK_ParCompanyXStructure_ParCompany">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ParCompanyXStructure" EntitySet="ParCompanyXStructure" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParCompanyXStructure_ParStructure" Association="SGQ_BrasilModel.FK_ParCompanyXStructure_ParStructure">
-            <End Role="ParStructure" EntitySet="ParStructure" />
-            <End Role="ParCompanyXStructure" EntitySet="ParCompanyXStructure" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1_ParConsolidationType" Association="SGQ_BrasilModel.FK_ParLevel1_ParConsolidationType">
-            <End Role="ParConsolidationType" EntitySet="ParConsolidationType" />
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1_ParFrequency" Association="SGQ_BrasilModel.FK_ParLevel1_ParFrequency">
-            <End Role="ParFrequency" EntitySet="ParFrequency" />
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Pcc1b__ParLevel1__6B99EBCE" Association="SGQ_BrasilModel.FK__Pcc1b__ParLevel1__6B99EBCE">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="Pcc1b" EntitySet="Pcc1b" />
-          </AssociationSet>
-          <AssociationSet Name="FK__VacuoGRD__ParLev__6F6A7CB2" Association="SGQ_BrasilModel.FK__VacuoGRD__ParLev__6F6A7CB2">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="VacuoGRD" EntitySet="VacuoGRD" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParStructure_ParStructureGroup" Association="SGQ_BrasilModel.FK_ParStructure_ParStructureGroup">
-            <End Role="ParStructureGroup" EntitySet="ParStructureGroup" />
-            <End Role="ParStructure" EntitySet="ParStructure" />
-          </AssociationSet>
           <AssociationSet Name="FK_PlanoDeAcaoQuemQuandoComo_Usuarios" Association="SGQ_BrasilModel.FK_PlanoDeAcaoQuemQuandoComo_Usuarios">
             <End Role="Usuarios" EntitySet="Usuarios" />
             <End Role="PlanoDeAcaoQuemQuandoComo" EntitySet="PlanoDeAcaoQuemQuandoComo" />
@@ -5452,14 +4612,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
             <End Role="Unidades" EntitySet="Unidades" />
             <End Role="VolumeProducao" EntitySet="VolumeProducao" />
           </AssociationSet>
-          <AssociationSet Name="FK_UnitUser_Unit" Association="SGQ_BrasilModel.FK_UnitUser_Unit">
-            <End Role="Unit" EntitySet="Unit" />
-            <End Role="UnitUser" EntitySet="UnitUser" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UnitUser_UserSgq" Association="SGQ_BrasilModel.FK_UnitUser_UserSgq">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="UnitUser" EntitySet="UnitUser" />
-          </AssociationSet>
           <AssociationSet Name="FK_UsuarioUnidades_Usuarios" Association="SGQ_BrasilModel.FK_UsuarioUnidades_Usuarios">
             <End Role="Usuarios" EntitySet="Usuarios" />
             <End Role="UsuarioUnidades" EntitySet="UsuarioUnidades" />
@@ -5481,17 +4633,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
             <End Role="VinculoParticipanteProjeto" EntitySet="VinculoParticipanteProjeto" />
           </AssociationSet>
           </EntityContainer>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
         <EntityType Name="Acoes">
           <Key>
             <PropertyRef Name="Id" />
@@ -5829,15 +4970,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <NavigationProperty Name="Tarefas" Relationship="SGQ_BrasilModel.FK_Tarefas_Departamentos" FromRole="Departamentos" ToRole="Tarefas" />
           <NavigationProperty Name="VolumeProducao" Relationship="SGQ_BrasilModel.FK_VolumeProducao_Departamentos" FromRole="Departamentos" ToRole="VolumeProducao" />
         </EntityType>
-        <EntityType Name="Department">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="DesvioNiveis">
           <Key>
             <PropertyRef Name="Id" />
@@ -6116,39 +5248,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <NavigationProperty Name="Operacoes" Relationship="SGQ_BrasilModel.FK_Horarios_Operacoes" FromRole="Horarios" ToRole="Operacoes" />
           <NavigationProperty Name="Unidades" Relationship="SGQ_BrasilModel.FK_Horarios_Unidades" FromRole="Horarios" ToRole="Unidades" />
         </EntityType>
-        <EntityType Name="Level01">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Alias" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Level02">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Alias" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Level03">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Alias" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="LogAlteracoes">
           <Key>
             <PropertyRef Name="Id" />
@@ -6160,18 +5259,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <Property Name="Valor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UsuarioAlteracao" Type="Int32" Nullable="false" />
           <Property Name="DataAlteracao" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <EntityType Name="LogJson">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="result" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="log" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Device_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AppVersion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="callback" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LogOperacaoPA">
           <Key>
@@ -6203,22 +5290,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <Property Name="Stack_Trace" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Additional_Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Second_Log_Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="LogSgqGlobal">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="addDate" Type="DateTime" Precision="3" />
-          <Property Name="Level" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Call_Site" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Exception_Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Exception_Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Stack_Trace" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Additional_Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Object" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Second_Log_Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Metas">
@@ -6666,174 +5737,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <NavigationProperty Name="PadraoTolerancias" Relationship="SGQ_BrasilModel.FK_PadraoTolerancias_PadroesNivel1" FromRole="Padroes" ToRole="PadraoTolerancias" />
           <NavigationProperty Name="PadraoTolerancias1" Relationship="SGQ_BrasilModel.FK_PadraoTolerancias_PadroesNivel3" FromRole="Padroes" ToRole="PadraoTolerancias" />
         </EntityType>
-        <EntityType Name="ParCluster">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParClusterGroup_Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ParClusterParent_Id" Type="Int32" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParClusterGroup" Relationship="SGQ_BrasilModel.FK_ParCluster_ParClusterGroup" FromRole="ParCluster" ToRole="ParClusterGroup" />
-          <NavigationProperty Name="ParCompanyCluster" Relationship="SGQ_BrasilModel.FK_ParCompanyCluster_ParCluster" FromRole="ParCluster" ToRole="ParCompanyCluster" />
-        </EntityType>
-        <EntityType Name="ParClusterGroup">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ParClusterGroupParent_Id" Type="Int32" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParCluster" Relationship="SGQ_BrasilModel.FK_ParCluster_ParClusterGroup" FromRole="ParClusterGroup" ToRole="ParCluster" />
-        </EntityType>
-        <EntityType Name="ParCompany">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="Initials" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SIF" Type="Int32" />
-          <Property Name="CompanyNumber" Type="Int32" />
-          <Property Name="IPServer" Type="String" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="DBServer" Type="String" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="IntegrationId" Type="Decimal" Precision="18" Scale="0" />
-          <NavigationProperty Name="Pcc1b" Relationship="SGQ_BrasilModel.FK__Pcc1b__ParCompan__6AA5C795" FromRole="ParCompany" ToRole="Pcc1b" />
-          <NavigationProperty Name="VacuoGRD" Relationship="SGQ_BrasilModel.FK__VacuoGRD__ParCom__6E765879" FromRole="ParCompany" ToRole="VacuoGRD" />
-          <NavigationProperty Name="ParCompanyCluster" Relationship="SGQ_BrasilModel.FK_ParCompanyCluster_ParCompany" FromRole="ParCompany" ToRole="ParCompanyCluster" />
-          <NavigationProperty Name="ParCompanyXStructure" Relationship="SGQ_BrasilModel.FK_ParCompanyXStructure_ParCompany" FromRole="ParCompany" ToRole="ParCompanyXStructure" />
-        </EntityType>
-        <EntityType Name="ParCompanyCluster">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParCluster_Id" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParCluster" Relationship="SGQ_BrasilModel.FK_ParCompanyCluster_ParCluster" FromRole="ParCompanyCluster" ToRole="ParCluster" />
-          <NavigationProperty Name="ParCompany" Relationship="SGQ_BrasilModel.FK_ParCompanyCluster_ParCompany" FromRole="ParCompanyCluster" ToRole="ParCompany" />
-        </EntityType>
-        <EntityType Name="ParCompanyXStructure">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParStructure_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParCompany" Relationship="SGQ_BrasilModel.FK_ParCompanyXStructure_ParCompany" FromRole="ParCompanyXStructure" ToRole="ParCompany" />
-          <NavigationProperty Name="ParStructure" Relationship="SGQ_BrasilModel.FK_ParCompanyXStructure_ParStructure" FromRole="ParCompanyXStructure" ToRole="ParStructure" />
-        </EntityType>
-        <EntityType Name="ParConsolidationType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParLevel1" Relationship="SGQ_BrasilModel.FK_ParLevel1_ParConsolidationType" FromRole="ParConsolidationType" ToRole="ParLevel1" />
-        </EntityType>
-        <EntityType Name="ParDepartment">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ParFrequency">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParLevel1" Relationship="SGQ_BrasilModel.FK_ParLevel1_ParFrequency" FromRole="ParFrequency" ToRole="ParLevel1" />
-        </EntityType>
-        <EntityType Name="ParLevel1">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParConsolidationType_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParFrequency_Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="HasSaveLevel2" Type="Boolean" Nullable="false" />
-          <Property Name="HasNoApplicableLevel2" Type="Boolean" Nullable="false" />
-          <Property Name="HasGroupLevel2" Type="Boolean" Nullable="false" />
-          <Property Name="HasAlert" Type="Boolean" Nullable="false" />
-          <Property Name="IsSpecific" Type="Boolean" />
-          <Property Name="IsSpecificHeaderField" Type="Boolean" Nullable="false" />
-          <Property Name="IsSpecificNumberEvaluetion" Type="Boolean" Nullable="false" />
-          <Property Name="IsSpecificNumberSample" Type="Boolean" Nullable="false" />
-          <Property Name="IsSpecificLevel3" Type="Boolean" Nullable="false" />
-          <Property Name="IsSpecificGoal" Type="Boolean" />
-          <Property Name="IsRuleConformity" Type="Boolean" Nullable="false" />
-          <Property Name="IsFixedEvaluetionNumber" Type="Boolean" Nullable="false" />
-          <Property Name="IsLimitedEvaluetionNumber" Type="Boolean" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParConsolidationType" Relationship="SGQ_BrasilModel.FK_ParLevel1_ParConsolidationType" FromRole="ParLevel1" ToRole="ParConsolidationType" />
-          <NavigationProperty Name="ParFrequency" Relationship="SGQ_BrasilModel.FK_ParLevel1_ParFrequency" FromRole="ParLevel1" ToRole="ParFrequency" />
-          <NavigationProperty Name="Pcc1b" Relationship="SGQ_BrasilModel.FK__Pcc1b__ParLevel1__6B99EBCE" FromRole="ParLevel1" ToRole="Pcc1b" />
-          <NavigationProperty Name="VacuoGRD" Relationship="SGQ_BrasilModel.FK__VacuoGRD__ParLev__6F6A7CB2" FromRole="ParLevel1" ToRole="VacuoGRD" />
-        </EntityType>
-        <EntityType Name="ParStructure">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParStructureGroup_Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ParStructureParent_Id" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParCompanyXStructure" Relationship="SGQ_BrasilModel.FK_ParCompanyXStructure_ParStructure" FromRole="ParStructure" ToRole="ParCompanyXStructure" />
-          <NavigationProperty Name="ParStructureGroup" Relationship="SGQ_BrasilModel.FK_ParStructure_ParStructureGroup" FromRole="ParStructure" ToRole="ParStructureGroup" />
-        </EntityType>
-        <EntityType Name="ParStructureGroup">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ParStructureGroupParent_Id" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParStructure" Relationship="SGQ_BrasilModel.FK_ParStructure_ParStructureGroup" FromRole="ParStructureGroup" ToRole="ParStructure" />
-        </EntityType>
         <EntityType Name="Pcc1b">
           <Key>
             <PropertyRef Name="Id" />
@@ -6856,8 +5759,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="ParCompany_id" Type="Int32" />
           <Property Name="ParLevel1_id" Type="Int32" />
-          <NavigationProperty Name="ParCompany" Relationship="SGQ_BrasilModel.FK__Pcc1b__ParCompan__6AA5C795" FromRole="Pcc1b" ToRole="ParCompany" />
-          <NavigationProperty Name="ParLevel1" Relationship="SGQ_BrasilModel.FK__Pcc1b__ParLevel1__6B99EBCE" FromRole="Pcc1b" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="PenalidadeReincidencia">
           <Key>
@@ -6878,15 +5779,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           </Key>
           <Property Name="nCdPerfil" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
           <Property Name="cNmPerfil" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Period">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="PlanoDeAcaoQuemQuandoComo">
           <Key>
@@ -7102,15 +5994,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <Property Name="Data" Type="DateTime" Precision="0" />
           <Property Name="Identificador" Type="String" Nullable="false" MaxLength="450" FixedLength="false" Unicode="true" />
           <Property Name="VersaoAPP" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="Shift">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterTime" Type="DateTime" Nullable="false" Precision="7" />
         </EntityType>
         <EntityType Name="Sugestoes">
           <Key>
@@ -7342,43 +6225,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <NavigationProperty Name="PadraoMonitoramentos" Relationship="SGQ_BrasilModel.FK_PadraoMonitoramentos_UnidadeMedidaLegenda" FromRole="UnidadesMedidas" ToRole="PadraoMonitoramentos" />
           <NavigationProperty Name="PadraoMonitoramentos1" Relationship="SGQ_BrasilModel.FK_PadraoMonitoramentos_UnidadesMedidas" FromRole="UnidadesMedidas" ToRole="PadraoMonitoramentos" />
         </EntityType>
-        <EntityType Name="Unit">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="Number" Type="Int32" />
-          <Property Name="Code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Ip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="UnitUser" Relationship="SGQ_BrasilModel.FK_UnitUser_Unit" FromRole="Unit" ToRole="UnitUser" />
-        </EntityType>
-        <EntityType Name="UnitUser">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserSgqId" Type="Int32" Nullable="false" />
-          <Property Name="UnitId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Unit" Relationship="SGQ_BrasilModel.FK_UnitUser_Unit" FromRole="UnitUser" ToRole="Unit" />
-          <NavigationProperty Name="UserSgq" Relationship="SGQ_BrasilModel.FK_UnitUser_UserSgq" FromRole="UnitUser" ToRole="UserSgq" />
-        </EntityType>
-        <EntityType Name="UserSgq">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AcessDate" Type="DateTime" Precision="3" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="FullName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="UnitUser" Relationship="SGQ_BrasilModel.FK_UnitUser_UserSgq" FromRole="UserSgq" ToRole="UnitUser" />
-        </EntityType>
         <EntityType Name="Usuario">
           <Key>
             <PropertyRef Name="nCdUsuario" />
@@ -7468,8 +6314,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="ParCompany_id" Type="Int32" />
           <Property Name="ParLevel1_id" Type="Int32" />
-          <NavigationProperty Name="ParCompany" Relationship="SGQ_BrasilModel.FK__VacuoGRD__ParCom__6E765879" FromRole="VacuoGRD" ToRole="ParCompany" />
-          <NavigationProperty Name="ParLevel1" Relationship="SGQ_BrasilModel.FK__VacuoGRD__ParLev__6F6A7CB2" FromRole="VacuoGRD" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="VerificacaoContagem">
           <Key>
@@ -7666,16 +6510,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <Property Name="UltimoNumeroNC" Type="Decimal" Precision="11" Scale="8" />
           <Property Name="TotalNC" Type="Decimal" Precision="11" Scale="8" />
         </EntityType>
-        <EntityType Name="MacTablet">
-          <Key>
-            <PropertyRef Name="ChaveResultado" />
-            <PropertyRef Name="MAC" />
-            <PropertyRef Name="IP" />
-          </Key>
-          <Property Name="ChaveResultado" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="MAC" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
-          <Property Name="IP" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="Resultados_BKP_OCT">
           <Key>
             <PropertyRef Name="Id" />
@@ -7801,129 +6635,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <Property Name="iBanda" Type="Int32" Nullable="false" />
           <Property Name="cIdentificadorTipificacao" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="nCdCaracteristicaTipificacao" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="DelDados">
-          <Key>
-            <PropertyRef Name="TESTE" />
-          </Key>
-          <Property Name="TESTE" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Reports_CCA_Audit">
-          <Key>
-            <PropertyRef Name="Audit_Period" />
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit_Reaudit" />
-            <PropertyRef Name="No_of_Def" />
-            <PropertyRef Name="Cattle_Type" />
-            <PropertyRef Name="Chain_Speed" />
-            <PropertyRef Name="Lot__" />
-            <PropertyRef Name="Mud_Score" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Audit_Period" Type="Int32" Nullable="false" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Specks" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Dressing" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Single_Hairs" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Clusters" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Hide" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="No_of_Def" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Cattle_Type" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Chain_Speed" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Lot__" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Mud_Score" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Auditor_Name_Global" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Reports_CFF_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect_Counter" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Set" Type="Int32" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Side" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Fold_Flap" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Defect_Counter" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Reports_HTP_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit_ReAudit" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Baised_Unbiased" />
-            <PropertyRef Name="Starting_Phase" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Start_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Job_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Audit_ReAudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Baised_Unbiased" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Job_Date" Type="DateTime" Precision="0" />
-          <Property Name="Job_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Starting_Phase" Type="Int32" Nullable="false" />
-          <Property Name="Core_Practice_HTP_Deviation" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Other_Deviaton" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Ending_Phase" Type="Int32" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="End_Date" Type="DateTime" Precision="0" />
-          <Property Name="End_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="ID" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="VWCFFResults">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect_Counter" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Set" Type="Int32" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Side" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Fold_Flap" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Defect_Counter" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_AcoesCorretivas_Operacoes">
           <End Type="SGQ_BrasilModel.Operacoes" Role="Operacoes" Multiplicity="1" />
@@ -9107,150 +7818,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ParCluster_ParClusterGroup">
-          <End Type="SGQ_BrasilModel.ParClusterGroup" Role="ParClusterGroup" Multiplicity="1" />
-          <End Type="SGQ_BrasilModel.ParCluster" Role="ParCluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParClusterGroup">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCluster">
-              <PropertyRef Name="ParClusterGroup_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCompanyCluster_ParCluster">
-          <End Type="SGQ_BrasilModel.ParCluster" Role="ParCluster" Multiplicity="1" />
-          <End Type="SGQ_BrasilModel.ParCompanyCluster" Role="ParCompanyCluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCluster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCompanyCluster">
-              <PropertyRef Name="ParCluster_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Pcc1b__ParCompan__6AA5C795">
-          <End Type="SGQ_BrasilModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
-          <End Type="SGQ_BrasilModel.Pcc1b" Role="Pcc1b" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Pcc1b">
-              <PropertyRef Name="ParCompany_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__VacuoGRD__ParCom__6E765879">
-          <End Type="SGQ_BrasilModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
-          <End Type="SGQ_BrasilModel.VacuoGRD" Role="VacuoGRD" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="VacuoGRD">
-              <PropertyRef Name="ParCompany_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCompanyCluster_ParCompany">
-          <End Type="SGQ_BrasilModel.ParCompany" Role="ParCompany" Multiplicity="1" />
-          <End Type="SGQ_BrasilModel.ParCompanyCluster" Role="ParCompanyCluster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCompanyCluster">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCompanyXStructure_ParCompany">
-          <End Type="SGQ_BrasilModel.ParCompany" Role="ParCompany" Multiplicity="1" />
-          <End Type="SGQ_BrasilModel.ParCompanyXStructure" Role="ParCompanyXStructure" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCompanyXStructure">
-              <PropertyRef Name="ParCompany_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCompanyXStructure_ParStructure">
-          <End Type="SGQ_BrasilModel.ParStructure" Role="ParStructure" Multiplicity="1" />
-          <End Type="SGQ_BrasilModel.ParCompanyXStructure" Role="ParCompanyXStructure" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParStructure">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCompanyXStructure">
-              <PropertyRef Name="ParStructure_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1_ParConsolidationType">
-          <End Type="SGQ_BrasilModel.ParConsolidationType" Role="ParConsolidationType" Multiplicity="1" />
-          <End Type="SGQ_BrasilModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParConsolidationType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1">
-              <PropertyRef Name="ParConsolidationType_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1_ParFrequency">
-          <End Type="SGQ_BrasilModel.ParFrequency" Role="ParFrequency" Multiplicity="1" />
-          <End Type="SGQ_BrasilModel.ParLevel1" Role="ParLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParFrequency">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1">
-              <PropertyRef Name="ParFrequency_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Pcc1b__ParLevel1__6B99EBCE">
-          <End Type="SGQ_BrasilModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
-          <End Type="SGQ_BrasilModel.Pcc1b" Role="Pcc1b" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Pcc1b">
-              <PropertyRef Name="ParLevel1_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__VacuoGRD__ParLev__6F6A7CB2">
-          <End Type="SGQ_BrasilModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
-          <End Type="SGQ_BrasilModel.VacuoGRD" Role="VacuoGRD" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="VacuoGRD">
-              <PropertyRef Name="ParLevel1_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParStructure_ParStructureGroup">
-          <End Type="SGQ_BrasilModel.ParStructureGroup" Role="ParStructureGroup" Multiplicity="1" />
-          <End Type="SGQ_BrasilModel.ParStructure" Role="ParStructure" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParStructureGroup">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParStructure">
-              <PropertyRef Name="ParStructureGroup_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PlanoDeAcaoQuemQuandoComo_Usuarios">
           <End Type="SGQ_BrasilModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
           <End Type="SGQ_BrasilModel.PlanoDeAcaoQuemQuandoComo" Role="PlanoDeAcaoQuemQuandoComo" Multiplicity="*" />
@@ -9479,30 +8046,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UnitUser_Unit">
-          <End Type="SGQ_BrasilModel.Unit" Role="Unit" Multiplicity="1" />
-          <End Type="SGQ_BrasilModel.UnitUser" Role="UnitUser" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Unit">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UnitUser">
-              <PropertyRef Name="UnitId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UnitUser_UserSgq">
-          <End Type="SGQ_BrasilModel.UserSgq" Role="UserSgq" Multiplicity="1" />
-          <End Type="SGQ_BrasilModel.UnitUser" Role="UnitUser" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UnitUser">
-              <PropertyRef Name="UserSgqId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UsuarioUnidades_Usuarios">
           <End Type="SGQ_BrasilModel.Usuarios" Role="Usuarios" Multiplicity="1" />
           <End Type="SGQ_BrasilModel.UsuarioUnidades" Role="UsuarioUnidades" Multiplicity="*" />
@@ -9573,23 +8116,8 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
           <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="SGQ_BrasilModel.Store.sp_creatediagram" />
           <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="SGQ_BrasilModel.Store.sp_dropdiagram" />
           <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="SGQ_BrasilModel.Store.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SGQ_BrasilModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="SGQ_BrasilModel.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SGQ_BrasilModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="SGQ_BrasilModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SGQ_BrasilModel.Store.sp_upgraddiagrams" />
@@ -9918,16 +8446,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Department">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Department">
-              <MappingFragment StoreEntitySet="Department">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DesvioNiveis">
             <EntityTypeMapping TypeName="SGQ_BrasilModel.DesvioNiveis">
               <MappingFragment StoreEntitySet="DesvioNiveis">
@@ -10205,42 +8723,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Level01">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Level01">
-              <MappingFragment StoreEntitySet="Level01">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Alias" ColumnName="Alias" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Level02">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Level02">
-              <MappingFragment StoreEntitySet="Level02">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Alias" ColumnName="Alias" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Level03">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Level03">
-              <MappingFragment StoreEntitySet="Level03">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Alias" ColumnName="Alias" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="LogAlteracoes">
             <EntityTypeMapping TypeName="SGQ_BrasilModel.LogAlteracoes">
               <MappingFragment StoreEntitySet="LogAlteracoes">
@@ -10250,19 +8732,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
                 <ScalarProperty Name="Campo" ColumnName="Campo" />
                 <ScalarProperty Name="Registro" ColumnName="Registro" />
                 <ScalarProperty Name="Tabela" ColumnName="Tabela" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LogJson">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.LogJson">
-              <MappingFragment StoreEntitySet="LogJson">
-                <ScalarProperty Name="callback" ColumnName="callback" />
-                <ScalarProperty Name="AppVersion" ColumnName="AppVersion" />
-                <ScalarProperty Name="Device_Id" ColumnName="Device_Id" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="log" ColumnName="log" />
-                <ScalarProperty Name="result" ColumnName="result" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -10290,23 +8759,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
               <MappingFragment StoreEntitySet="LogSgq">
                 <ScalarProperty Name="Second_Log_Path" ColumnName="Second_Log_Path" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Additional_Info" ColumnName="Additional_Info" />
-                <ScalarProperty Name="Stack_Trace" ColumnName="Stack_Trace" />
-                <ScalarProperty Name="Exception_Message" ColumnName="Exception_Message" />
-                <ScalarProperty Name="Exception_Type" ColumnName="Exception_Type" />
-                <ScalarProperty Name="Call_Site" ColumnName="Call_Site" />
-                <ScalarProperty Name="Level" ColumnName="Level" />
-                <ScalarProperty Name="addDate" ColumnName="addDate" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LogSgqGlobal">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.LogSgqGlobal">
-              <MappingFragment StoreEntitySet="LogSgqGlobal">
-                <ScalarProperty Name="Second_Log_Path" ColumnName="Second_Log_Path" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="Object" ColumnName="Object" />
                 <ScalarProperty Name="Additional_Info" ColumnName="Additional_Info" />
                 <ScalarProperty Name="Stack_Trace" ColumnName="Stack_Trace" />
                 <ScalarProperty Name="Exception_Message" ColumnName="Exception_Message" />
@@ -10704,165 +9156,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ParCluster">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.ParCluster">
-              <MappingFragment StoreEntitySet="ParCluster">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ParClusterParent_Id" ColumnName="ParClusterParent_Id" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ParClusterGroup_Id" ColumnName="ParClusterGroup_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParClusterGroup">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.ParClusterGroup">
-              <MappingFragment StoreEntitySet="ParClusterGroup">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ParClusterGroupParent_Id" ColumnName="ParClusterGroupParent_Id" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParCompany">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.ParCompany">
-              <MappingFragment StoreEntitySet="ParCompany">
-                <ScalarProperty Name="IntegrationId" ColumnName="IntegrationId" />
-                <ScalarProperty Name="DBServer" ColumnName="DBServer" />
-                <ScalarProperty Name="IPServer" ColumnName="IPServer" />
-                <ScalarProperty Name="CompanyNumber" ColumnName="CompanyNumber" />
-                <ScalarProperty Name="SIF" ColumnName="SIF" />
-                <ScalarProperty Name="Initials" ColumnName="Initials" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParCompanyCluster">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.ParCompanyCluster">
-              <MappingFragment StoreEntitySet="ParCompanyCluster">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ParCluster_Id" ColumnName="ParCluster_Id" />
-                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParCompanyXStructure">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.ParCompanyXStructure">
-              <MappingFragment StoreEntitySet="ParCompanyXStructure">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
-                <ScalarProperty Name="ParStructure_Id" ColumnName="ParStructure_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParConsolidationType">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.ParConsolidationType">
-              <MappingFragment StoreEntitySet="ParConsolidationType">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParDepartment">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.ParDepartment">
-              <MappingFragment StoreEntitySet="ParDepartment">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParFrequency">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.ParFrequency">
-              <MappingFragment StoreEntitySet="ParFrequency">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParLevel1">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.ParLevel1">
-              <MappingFragment StoreEntitySet="ParLevel1">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="IsLimitedEvaluetionNumber" ColumnName="IsLimitedEvaluetionNumber" />
-                <ScalarProperty Name="IsFixedEvaluetionNumber" ColumnName="IsFixedEvaluetionNumber" />
-                <ScalarProperty Name="IsRuleConformity" ColumnName="IsRuleConformity" />
-                <ScalarProperty Name="IsSpecificGoal" ColumnName="IsSpecificGoal" />
-                <ScalarProperty Name="IsSpecificLevel3" ColumnName="IsSpecificLevel3" />
-                <ScalarProperty Name="IsSpecificNumberSample" ColumnName="IsSpecificNumberSample" />
-                <ScalarProperty Name="IsSpecificNumberEvaluetion" ColumnName="IsSpecificNumberEvaluetion" />
-                <ScalarProperty Name="IsSpecificHeaderField" ColumnName="IsSpecificHeaderField" />
-                <ScalarProperty Name="IsSpecific" ColumnName="IsSpecific" />
-                <ScalarProperty Name="HasAlert" ColumnName="HasAlert" />
-                <ScalarProperty Name="HasGroupLevel2" ColumnName="HasGroupLevel2" />
-                <ScalarProperty Name="HasNoApplicableLevel2" ColumnName="HasNoApplicableLevel2" />
-                <ScalarProperty Name="HasSaveLevel2" ColumnName="HasSaveLevel2" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ParFrequency_Id" ColumnName="ParFrequency_Id" />
-                <ScalarProperty Name="ParConsolidationType_Id" ColumnName="ParConsolidationType_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParStructure">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.ParStructure">
-              <MappingFragment StoreEntitySet="ParStructure">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ParStructureParent_Id" ColumnName="ParStructureParent_Id" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ParStructureGroup_Id" ColumnName="ParStructureGroup_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParStructureGroup">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.ParStructureGroup">
-              <MappingFragment StoreEntitySet="ParStructureGroup">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ParStructureGroupParent_Id" ColumnName="ParStructureGroupParent_Id" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Pcc1b">
             <EntityTypeMapping TypeName="SGQ_BrasilModel.Pcc1b">
               <MappingFragment StoreEntitySet="Pcc1b">
@@ -10906,16 +9199,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
               <MappingFragment StoreEntitySet="Perfil">
                 <ScalarProperty Name="cNmPerfil" ColumnName="cNmPerfil" />
                 <ScalarProperty Name="nCdPerfil" ColumnName="nCdPerfil" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Period">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Period">
-              <MappingFragment StoreEntitySet="Period">
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -11130,16 +9413,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Shift">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Shift">
-              <MappingFragment StoreEntitySet="Shift">
-                <ScalarProperty Name="AlterTime" ColumnName="AlterTime" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Sugestoes">
             <EntityTypeMapping TypeName="SGQ_BrasilModel.Sugestoes">
               <MappingFragment StoreEntitySet="Sugestoes">
@@ -11331,42 +9604,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
                 <ScalarProperty Name="UsuarioInsercao" ColumnName="UsuarioInsercao" />
                 <ScalarProperty Name="Descricao" ColumnName="Descricao" />
                 <ScalarProperty Name="Sigla" ColumnName="Sigla" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Unit">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Unit">
-              <MappingFragment StoreEntitySet="Unit">
-                <ScalarProperty Name="Ip" ColumnName="Ip" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UnitUser">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.UnitUser">
-              <MappingFragment StoreEntitySet="UnitUser">
-                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
-                <ScalarProperty Name="UserSgqId" ColumnName="UserSgqId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserSgq">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.UserSgq">
-              <MappingFragment StoreEntitySet="UserSgq">
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="AcessDate" ColumnName="AcessDate" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -11638,15 +9875,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="MacTablet">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.MacTablet">
-              <MappingFragment StoreEntitySet="MacTablet">
-                <ScalarProperty Name="IP" ColumnName="IP" />
-                <ScalarProperty Name="MAC" ColumnName="MAC" />
-                <ScalarProperty Name="ChaveResultado" ColumnName="ChaveResultado" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Resultados_BKP_OCT">
             <EntityTypeMapping TypeName="SGQ_BrasilModel.Resultados_BKP_OCT">
               <MappingFragment StoreEntitySet="Resultados_BKP_OCT">
@@ -11738,113 +9966,6 @@ warning 6002: The table/view 'SGQ_Global.dbo.VWCFFResults' does not have a prima
                 <ScalarProperty Name="iSequencial" ColumnName="iSequencial" />
                 <ScalarProperty Name="dMovimento" ColumnName="dMovimento" />
                 <ScalarProperty Name="nCdEmpresa" ColumnName="nCdEmpresa" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DelDados">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.DelDados">
-              <MappingFragment StoreEntitySet="DelDados">
-                <ScalarProperty Name="TESTE" ColumnName="TESTE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports_CCA_Audit">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Reports_CCA_Audit">
-              <MappingFragment StoreEntitySet="Reports_CCA_Audit">
-                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
-                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
-                <ScalarProperty Name="Auditor_Name_Global" ColumnName="Auditor Name Global" />
-                <ScalarProperty Name="Mud_Score" ColumnName="Mud Score" />
-                <ScalarProperty Name="Lot__" ColumnName="Lot #" />
-                <ScalarProperty Name="Chain_Speed" ColumnName="Chain Speed" />
-                <ScalarProperty Name="Cattle_Type" ColumnName="Cattle Type" />
-                <ScalarProperty Name="No_of_Def" ColumnName="No of Def" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="Hide" ColumnName="Hide" />
-                <ScalarProperty Name="Clusters" ColumnName="Clusters" />
-                <ScalarProperty Name="Single_Hairs" ColumnName="Single Hairs" />
-                <ScalarProperty Name="Dressing" ColumnName="Dressing" />
-                <ScalarProperty Name="Specks" ColumnName="Specks" />
-                <ScalarProperty Name="Audit_Reaudit" ColumnName="Audit/Reaudit" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Audit_Period" ColumnName="Audit Period" />
-                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
-                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
-                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports_CFF_Audit">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Reports_CFF_Audit">
-              <MappingFragment StoreEntitySet="Reports_CFF_Audit">
-                <ScalarProperty Name="Defect_Counter" ColumnName="Defect Counter" />
-                <ScalarProperty Name="Puncture" ColumnName="Puncture" />
-                <ScalarProperty Name="Fold_Flap" ColumnName="Fold/Flap" />
-                <ScalarProperty Name="Cut" ColumnName="Cut" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
-                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
-                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
-                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
-                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
-                <ScalarProperty Name="Side" ColumnName="Side" />
-                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
-                <ScalarProperty Name="Set" ColumnName="Set" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports_HTP_Audit">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.Reports_HTP_Audit">
-              <MappingFragment StoreEntitySet="Reports_HTP_Audit">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="End_Time" ColumnName="End Time" />
-                <ScalarProperty Name="End_Date" ColumnName="End Date" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="Ending_Phase" ColumnName="Ending Phase" />
-                <ScalarProperty Name="Other_Deviaton" ColumnName="Other Deviaton" />
-                <ScalarProperty Name="Core_Practice_HTP_Deviation" ColumnName="Core Practice HTP Deviation" />
-                <ScalarProperty Name="Starting_Phase" ColumnName="Starting Phase" />
-                <ScalarProperty Name="Job_Time" ColumnName="Job Time" />
-                <ScalarProperty Name="Job_Date" ColumnName="Job Date" />
-                <ScalarProperty Name="Baised_Unbiased" ColumnName="Baised/Unbiased" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Audit_ReAudit" ColumnName="Audit/ReAudit" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Job_Id" ColumnName="Job Id" />
-                <ScalarProperty Name="Start_Time" ColumnName="Start Time" />
-                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VWCFFResults">
-            <EntityTypeMapping TypeName="SGQ_BrasilModel.VWCFFResults">
-              <MappingFragment StoreEntitySet="VWCFFResults">
-                <ScalarProperty Name="Defect_Counter" ColumnName="Defect Counter" />
-                <ScalarProperty Name="Puncture" ColumnName="Puncture" />
-                <ScalarProperty Name="Fold_Flap" ColumnName="Fold/Flap" />
-                <ScalarProperty Name="Cut" ColumnName="Cut" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
-                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
-                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
-                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
-                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
-                <ScalarProperty Name="Side" ColumnName="Side" />
-                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
-                <ScalarProperty Name="Set" ColumnName="Set" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

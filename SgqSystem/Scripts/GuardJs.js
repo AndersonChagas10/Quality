@@ -62,6 +62,15 @@ Inputmask.extendAliases({
     }
 });
 
+function loadSelect2() {
+    $.fn.select2.defaults.set("theme", "classic");
+    $('.select2').css("max-height", "400px");
+    //$('.select2').select2({ matcher: modelMatcher });
+    $('.select2-container .select2-selection--single').css('height', '34px');
+    $('.select2-container--classic .select2-selection--single .select2-selection__rendered').css('line-height', '34px');
+    $('.select2-container--classic .select2-selection--single .select2-selection__arrow').css('height', '32px');
+}
+
 GuardJs = {
 
     mascaraNumericaPositiva : function(e){

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SgqSystem.Mappers.ParamsBrasil;
 
 namespace SgqSystem.Mappers
 {
@@ -83,6 +84,11 @@ namespace SgqSystem.Mappers
                  Exemplo para configuração do Auto Mapper.
                  */
                 x.AddProfile<ExampleMapperProfile>();
+
+
+                /*ParamsBrasil*/
+
+                x.AddProfile<ParLevel2ControlCompanyMapperProfile>();
             });
 
         }

@@ -5,16 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="SgqDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="AreasParticipantes">
-          <Key>
-            <PropertyRef Name="cNmCaracteristica" />
-          </Key>
-          <Property Name="nCdCaracteristica" Type="decimal" Precision="12" Scale="0" Nullable="false" />
-          <Property Name="cNmCaracteristica" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="cNrCaracteristica" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="cSgCaracteristica" Type="varchar" MaxLength="3" Nullable="false" />
-          <Property Name="cIdentificador" Type="varchar" MaxLength="30" Nullable="false" />
-        </EntityType>
         <EntityType Name="BkpCollection">
           <Key>
             <PropertyRef Name="Id" />
@@ -28,24 +18,6 @@
           <Property Name="Html" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Error" Type="nvarchar(max)" />
           <Property Name="Json" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="CaracteristicaTipificacao">
-          <Key>
-            <PropertyRef Name="nCdCaracteristica" />
-          </Key>
-          <Property Name="nCdCaracteristica" Type="decimal" Precision="10" Scale="0" Nullable="false" />
-          <Property Name="cNmCaracteristica" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="cNrCaracteristica" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="cSgCaracteristica" Type="varchar" MaxLength="3" Nullable="false" />
-          <Property Name="cIdentificador" Type="varchar" MaxLength="30" Nullable="false" />
-        </EntityType>
-        <EntityType Name="CaracteristicaTipificacaoSequencial">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Sequencial" Type="int" Nullable="false" />
-          <Property Name="nCdCaracteristica_Id" Type="decimal" Precision="10" Scale="0" />
         </EntityType>
         <EntityType Name="CollectionHtml">
           <Key>
@@ -335,6 +307,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="LogAlteracoes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tabela" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Registro" Type="int" Nullable="false" />
+          <Property Name="Campo" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Valor" Type="nvarchar(max)" />
+          <Property Name="UsuarioAlteracao" Type="int" Nullable="false" />
+          <Property Name="DataAlteracao" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="LogJson">
           <Key>
             <PropertyRef Name="Id" />
@@ -346,6 +330,21 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="Device_Id" Type="nvarchar(max)" />
           <Property Name="AppVersion" Type="nvarchar(max)" />
           <Property Name="callback" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="LogSgq">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="addDate" Type="datetime" Nullable="false" />
+          <Property Name="Level" Type="varchar(max)" />
+          <Property Name="Call_Site" Type="varchar(max)" />
+          <Property Name="Exception_Type" Type="varchar(max)" />
+          <Property Name="Exception_Message" Type="varchar(max)" />
+          <Property Name="Stack_Trace" Type="varchar(max)" />
+          <Property Name="Additional_Info" Type="varchar(max)" />
+          <Property Name="Email" Type="varchar(max)" />
+          <Property Name="Second_Log_Path" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="LogSgqGlobal">
           <Key>
@@ -672,12 +671,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParLevel1VariableProductionXLevel1' d
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SgqDbDev.dbo.ParLevel2ControlCompany' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ParLevel2ControlCompany">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="AddDate" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParCompany_Id" Type="int" />
@@ -1006,6 +1002,16 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterTime" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="Unit">
           <Key>
             <PropertyRef Name="Id" />
@@ -1042,70 +1048,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="Email" Type="nvarchar(max)" />
           <Property Name="Phone" Type="nvarchar(max)" />
           <Property Name="ParCompany_Id" Type="int" />
-        </EntityType>
-        <EntityType Name="VerificacaoTipificacao">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Sequencial" Type="int" Nullable="false" />
-          <Property Name="Banda" Type="tinyint" Nullable="false" />
-          <Property Name="DataHora" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UnidadeId" Type="int" Nullable="false" />
-          <Property Name="Chave" Type="nvarchar(max)" />
-          <Property Name="Status" Type="bit" />
-        </EntityType>
-        <EntityType Name="VerificacaoTipificacaoComparacao">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Sequencial" Type="int" Nullable="false" />
-          <Property Name="Banda" Type="int" Nullable="false" />
-          <Property Name="Identificador" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="NumCaracteristica" Type="int" Nullable="false" />
-          <Property Name="DataHora" Type="datetime" Nullable="false" />
-          <Property Name="valorSGQ" Type="int" />
-          <Property Name="valorJBS" Type="int" />
-          <Property Name="nCdEmpresa" Type="int" />
-          <Property Name="Conforme" Type="bit" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="VerificacaoTipificacaoJBS">
-          <Key>
-            <PropertyRef Name="nCdEmpresa" />
-            <PropertyRef Name="iSequencial" />
-            <PropertyRef Name="iSequencialTipificacao" />
-            <PropertyRef Name="iBanda" />
-            <PropertyRef Name="cIdentificadorTipificacao" />
-            <PropertyRef Name="nCdCaracteristicaTipificacao" />
-          </Key>
-          <Property Name="nCdEmpresa" Type="int" Nullable="false" />
-          <Property Name="dMovimento" Type="datetime" />
-          <Property Name="iSequencial" Type="int" Nullable="false" />
-          <Property Name="iSequencialTipificacao" Type="int" Nullable="false" />
-          <Property Name="iBanda" Type="int" Nullable="false" />
-          <Property Name="cIdentificadorTipificacao" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="nCdCaracteristicaTipificacao" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="VerificacaoTipificacaoResultados">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TarefaId" Type="int" Nullable="false" />
-          <Property Name="CaracteristicaTipificacaoId" Type="int" />
-          <Property Name="Chave" Type="nvarchar(max)" />
-          <Property Name="AreasParticipantesId" Type="int" />
-        </EntityType>
-        <EntityType Name="VerificacaoTipificacaoTarefaIntegracao">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TarefaId" Type="int" Nullable="false" />
-          <Property Name="CaracteristicaTipificacaoId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="VolumeCepDesossa">
           <Key>
@@ -1286,18 +1228,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
             </Principal>
             <Dependent Role="VolumeVacuoGRD">
               <PropertyRef Name="ParLevel1_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao">
-          <End Role="CaracteristicaTipificacao" Type="Self.CaracteristicaTipificacao" Multiplicity="0..1" />
-          <End Role="CaracteristicaTipificacaoSequencial" Type="Self.CaracteristicaTipificacaoSequencial" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CaracteristicaTipificacao">
-              <PropertyRef Name="nCdCaracteristica" />
-            </Principal>
-            <Dependent Role="CaracteristicaTipificacaoSequencial">
-              <PropertyRef Name="nCdCaracteristica_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1973,6 +1903,42 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParLevel2ControlCompany_ParCompany">
+          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
+          <End Role="ParLevel2ControlCompany" Type="Self.ParLevel2ControlCompany" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2ControlCompany">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel2ControlCompany_ParLevel1">
+          <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
+          <End Role="ParLevel2ControlCompany" Type="Self.ParLevel2ControlCompany" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2ControlCompany">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel2ControlCompany_ParLevel2">
+          <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="0..1" />
+          <End Role="ParLevel2ControlCompany" Type="Self.ParLevel2ControlCompany" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2ControlCompany">
+              <PropertyRef Name="ParLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParLevel3Group_ParLevel2">
           <End Role="ParLevel2" Type="Self.ParLevel2" Multiplicity="1" />
           <End Role="ParLevel3Group" Type="Self.ParLevel3Group" Multiplicity="*" />
@@ -2334,10 +2300,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="SgqDbModelStoreContainer">
-          <EntitySet Name="AreasParticipantes" EntityType="Self.AreasParticipantes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BkpCollection" EntityType="Self.BkpCollection" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CaracteristicaTipificacao" EntityType="Self.CaracteristicaTipificacao" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CaracteristicaTipificacaoSequencial" EntityType="Self.CaracteristicaTipificacaoSequencial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionHtml" EntityType="Self.CollectionHtml" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionJson" EntityType="Self.CollectionJson" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionLevel02" EntityType="Self.CollectionLevel02" Schema="dbo" store:Type="Tables" />
@@ -2354,7 +2317,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <EntitySet Name="Level01" EntityType="Self.Level01" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level02" EntityType="Self.Level02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level03" EntityType="Self.Level03" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogAlteracoes" EntityType="Self.LogAlteracoes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogJson" EntityType="Self.LogJson" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogSgq" EntityType="Self.LogSgq" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogSgqGlobal" EntityType="Self.LogSgqGlobal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NQA" EntityType="Self.NQA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCluster" EntityType="Self.ParCluster" Schema="dbo" store:Type="Tables" />
@@ -2378,6 +2343,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <EntitySet Name="ParLevel1XCluster" EntityType="Self.ParLevel1XCluster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel1XHeaderField" EntityType="Self.ParLevel1XHeaderField" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2" EntityType="Self.ParLevel2" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParLevel2ControlCompany" EntityType="Self.ParLevel2ControlCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2Level1" EntityType="Self.ParLevel2Level1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3" EntityType="Self.ParLevel3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolFalse" EntityType="Self.ParLevel3BoolFalse" Schema="dbo" store:Type="Tables" />
@@ -2400,13 +2366,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <EntitySet Name="Period" EntityType="Self.Period" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Result_Level3" EntityType="Self.Result_Level3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UnitUser" EntityType="Self.UnitUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSgq" EntityType="Self.UserSgq" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="VerificacaoTipificacao" EntityType="Self.VerificacaoTipificacao" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="VerificacaoTipificacaoComparacao" EntityType="Self.VerificacaoTipificacaoComparacao" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="VerificacaoTipificacaoResultados" EntityType="Self.VerificacaoTipificacaoResultados" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="VerificacaoTipificacaoTarefaIntegracao" EntityType="Self.VerificacaoTipificacaoTarefaIntegracao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumeCepDesossa" EntityType="Self.VolumeCepDesossa" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumeCepRecortes" EntityType="Self.VolumeCepRecortes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumePcc1b" EntityType="Self.VolumePcc1b" Schema="dbo" store:Type="Tables" />
@@ -2444,18 +2407,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
     [ParLevel1VariableProductionXLevel1].[AlterDate] AS [AlterDate]
     FROM [dbo].[ParLevel1VariableProductionXLevel1] AS [ParLevel1VariableProductionXLevel1]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="ParLevel2ControlCompany" EntityType="Self.ParLevel2ControlCompany" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ParLevel2ControlCompany].[Id] AS [Id], 
-    [ParLevel2ControlCompany].[ParCompany_Id] AS [ParCompany_Id], 
-    [ParLevel2ControlCompany].[ParLevel1_Id] AS [ParLevel1_Id], 
-    [ParLevel2ControlCompany].[ParLevel2_Id] AS [ParLevel2_Id], 
-    [ParLevel2ControlCompany].[InitDate] AS [InitDate], 
-    [ParLevel2ControlCompany].[AddDate] AS [AddDate], 
-    [ParLevel2ControlCompany].[AlterDate] AS [AlterDate], 
-    [ParLevel2ControlCompany].[IsActive] AS [IsActive]
-    FROM [dbo].[ParLevel2ControlCompany] AS [ParLevel2ControlCompany]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="ParLevel2XHeaderField" EntityType="Self.ParLevel2XHeaderField" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ParLevel2XHeaderField].[Id] AS [Id], 
@@ -2479,17 +2430,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
     [ResultLevel2HeaderField].[AlterDate] AS [AlterDate], 
     [ResultLevel2HeaderField].[IsActive] AS [IsActive]
     FROM [dbo].[ResultLevel2HeaderField] AS [ResultLevel2HeaderField]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="VerificacaoTipificacaoJBS" EntityType="Self.VerificacaoTipificacaoJBS" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [VerificacaoTipificacaoJBS].[nCdEmpresa] AS [nCdEmpresa], 
-    [VerificacaoTipificacaoJBS].[dMovimento] AS [dMovimento], 
-    [VerificacaoTipificacaoJBS].[iSequencial] AS [iSequencial], 
-    [VerificacaoTipificacaoJBS].[iSequencialTipificacao] AS [iSequencialTipificacao], 
-    [VerificacaoTipificacaoJBS].[iBanda] AS [iBanda], 
-    [VerificacaoTipificacaoJBS].[cIdentificadorTipificacao] AS [cIdentificadorTipificacao], 
-    [VerificacaoTipificacaoJBS].[nCdCaracteristicaTipificacao] AS [nCdCaracteristicaTipificacao]
-    FROM [dbo].[VerificacaoTipificacaoJBS] AS [VerificacaoTipificacaoJBS]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK__CepDesoss__ParCo__17D860BF" Association="Self.FK__CepDesoss__ParCo__17D860BF">
             <End Role="ParCompany" EntitySet="ParCompany" />
@@ -2522,10 +2462,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <AssociationSet Name="FK__VacuoGRD__ParLev__112B6330" Association="Self.FK__VacuoGRD__ParLev__112B6330">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="VolumeVacuoGRD" EntitySet="VolumeVacuoGRD" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao" Association="Self.FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao">
-            <End Role="CaracteristicaTipificacao" EntitySet="CaracteristicaTipificacao" />
-            <End Role="CaracteristicaTipificacaoSequencial" EntitySet="CaracteristicaTipificacaoSequencial" />
           </AssociationSet>
           <AssociationSet Name="FK_CollectionLevel02_ConsolidationLevel02" Association="Self.FK_CollectionLevel02_ConsolidationLevel02">
             <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
@@ -2751,6 +2687,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
             <End Role="ParFrequency" EntitySet="ParFrequency" />
             <End Role="ParLevel2" EntitySet="ParLevel2" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParLevel2ControlCompany_ParCompany" Association="Self.FK_ParLevel2ControlCompany_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParLevel2ControlCompany" EntitySet="ParLevel2ControlCompany" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel2ControlCompany_ParLevel1" Association="Self.FK_ParLevel2ControlCompany_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel2ControlCompany" EntitySet="ParLevel2ControlCompany" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel2ControlCompany_ParLevel2" Association="Self.FK_ParLevel2ControlCompany_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ParLevel2ControlCompany" EntitySet="ParLevel2ControlCompany" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParLevel3Group_ParLevel2" Association="Self.FK_ParLevel3Group_ParLevel2">
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParLevel3Group" EntitySet="ParLevel3Group" />
@@ -2877,10 +2825,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
     <edmx:ConceptualModels>
       <Schema Namespace="SgqDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SgqDbDevEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="AreasParticipantes" EntityType="SgqDbModel.AreasParticipantes" />
           <EntitySet Name="BkpCollection" EntityType="SgqDbModel.BkpCollection" />
-          <EntitySet Name="CaracteristicaTipificacao" EntityType="SgqDbModel.CaracteristicaTipificacao" />
-          <EntitySet Name="CaracteristicaTipificacaoSequencial" EntityType="SgqDbModel.CaracteristicaTipificacaoSequencial" />
           <EntitySet Name="CollectionHtml" EntityType="SgqDbModel.CollectionHtml" />
           <EntitySet Name="CollectionJson" EntityType="SgqDbModel.CollectionJson" />
           <EntitySet Name="CollectionLevel02" EntityType="SgqDbModel.CollectionLevel02" />
@@ -2897,7 +2842,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <EntitySet Name="Level01" EntityType="SgqDbModel.Level01" />
           <EntitySet Name="Level02" EntityType="SgqDbModel.Level02" />
           <EntitySet Name="Level03" EntityType="SgqDbModel.Level03" />
+          <EntitySet Name="LogAlteracoes" EntityType="SgqDbModel.LogAlteracoes" />
           <EntitySet Name="LogJson" EntityType="SgqDbModel.LogJson" />
+          <EntitySet Name="LogSgq" EntityType="SgqDbModel.LogSgq" />
           <EntitySet Name="LogSgqGlobal" EntityType="SgqDbModel.LogSgqGlobal" />
           <EntitySet Name="NQA" EntityType="SgqDbModel.NQA" />
           <EntitySet Name="ParCluster" EntityType="SgqDbModel.ParCluster" />
@@ -2921,6 +2868,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <EntitySet Name="ParLevel1XCluster" EntityType="SgqDbModel.ParLevel1XCluster" />
           <EntitySet Name="ParLevel1XHeaderField" EntityType="SgqDbModel.ParLevel1XHeaderField" />
           <EntitySet Name="ParLevel2" EntityType="SgqDbModel.ParLevel2" />
+          <EntitySet Name="ParLevel2ControlCompany" EntityType="SgqDbModel.ParLevel2ControlCompany" />
           <EntitySet Name="ParLevel2Level1" EntityType="SgqDbModel.ParLevel2Level1" />
           <EntitySet Name="ParLevel3" EntityType="SgqDbModel.ParLevel3" />
           <EntitySet Name="ParLevel3BoolFalse" EntityType="SgqDbModel.ParLevel3BoolFalse" />
@@ -2943,13 +2891,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <EntitySet Name="Period" EntityType="SgqDbModel.Period" />
           <EntitySet Name="Result_Level3" EntityType="SgqDbModel.Result_Level3" />
           <EntitySet Name="Shift" EntityType="SgqDbModel.Shift" />
+          <EntitySet Name="sysdiagrams" EntityType="SgqDbModel.sysdiagrams" />
           <EntitySet Name="Unit" EntityType="SgqDbModel.Unit" />
           <EntitySet Name="UnitUser" EntityType="SgqDbModel.UnitUser" />
           <EntitySet Name="UserSgq" EntityType="SgqDbModel.UserSgq" />
-          <EntitySet Name="VerificacaoTipificacao" EntityType="SgqDbModel.VerificacaoTipificacao" />
-          <EntitySet Name="VerificacaoTipificacaoComparacao" EntityType="SgqDbModel.VerificacaoTipificacaoComparacao" />
-          <EntitySet Name="VerificacaoTipificacaoResultados" EntityType="SgqDbModel.VerificacaoTipificacaoResultados" />
-          <EntitySet Name="VerificacaoTipificacaoTarefaIntegracao" EntityType="SgqDbModel.VerificacaoTipificacaoTarefaIntegracao" />
           <EntitySet Name="VolumeCepDesossa" EntityType="SgqDbModel.VolumeCepDesossa" />
           <EntitySet Name="VolumeCepRecortes" EntityType="SgqDbModel.VolumeCepRecortes" />
           <EntitySet Name="VolumePcc1b" EntityType="SgqDbModel.VolumePcc1b" />
@@ -2957,14 +2902,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <EntitySet Name="Deviation" EntityType="SgqDbModel.Deviation" />
           <EntitySet Name="ParLevel1VariableProduction" EntityType="SgqDbModel.ParLevel1VariableProduction" />
           <EntitySet Name="ParLevel1VariableProductionXLevel1" EntityType="SgqDbModel.ParLevel1VariableProductionXLevel1" />
-          <EntitySet Name="ParLevel2ControlCompany" EntityType="SgqDbModel.ParLevel2ControlCompany" />
           <EntitySet Name="ParLevel2XHeaderField" EntityType="SgqDbModel.ParLevel2XHeaderField" />
           <EntitySet Name="ResultLevel2HeaderField" EntityType="SgqDbModel.ResultLevel2HeaderField" />
-          <EntitySet Name="VerificacaoTipificacaoJBS" EntityType="SgqDbModel.VerificacaoTipificacaoJBS" />
-          <AssociationSet Name="FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao" Association="SgqDbModel.FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao">
-            <End Role="CaracteristicaTipificacao" EntitySet="CaracteristicaTipificacao" />
-            <End Role="CaracteristicaTipificacaoSequencial" EntitySet="CaracteristicaTipificacaoSequencial" />
-          </AssociationSet>
           <AssociationSet Name="FK_CollectionLevel02_ConsolidationLevel02" Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02">
             <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
             <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
@@ -3125,6 +3064,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="ParGoal" EntitySet="ParGoal" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParLevel2ControlCompany_ParCompany" Association="SgqDbModel.FK_ParLevel2ControlCompany_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ParLevel2ControlCompany" EntitySet="ParLevel2ControlCompany" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParLevel3Level2_ParCompany" Association="SgqDbModel.FK_ParLevel3Level2_ParCompany">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
@@ -3245,6 +3188,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ParLevel1XHeaderField" EntitySet="ParLevel1XHeaderField" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParLevel2ControlCompany_ParLevel1" Association="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel2ControlCompany" EntitySet="ParLevel2ControlCompany" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParLevel3Level2Level1_ParLevel1" Association="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ParLevel3Level2Level1" EntitySet="ParLevel3Level2Level1" />
@@ -3260,6 +3207,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <AssociationSet Name="FK_Level2Level1_ParLevel2" Association="SgqDbModel.FK_Level2Level1_ParLevel2">
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParLevel2Level1" EntitySet="ParLevel2Level1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel2ControlCompany_ParLevel2" Association="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ParLevel2ControlCompany" EntitySet="ParLevel2ControlCompany" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel3Group_ParLevel2" Association="SgqDbModel.FK_ParLevel3Group_ParLevel2">
             <End Role="ParLevel2" EntitySet="ParLevel2" />
@@ -3342,16 +3293,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
             <End Role="UnitUser" EntitySet="UnitUser" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="AreasParticipantes">
-          <Key>
-            <PropertyRef Name="cNmCaracteristica" />
-          </Key>
-          <Property Name="nCdCaracteristica" Type="Decimal" Nullable="false" Precision="12" Scale="0" />
-          <Property Name="cNmCaracteristica" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="cNrCaracteristica" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="cSgCaracteristica" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="cIdentificador" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="BkpCollection">
           <Key>
             <PropertyRef Name="Id" />
@@ -3365,26 +3306,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <Property Name="Html" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Error" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Json" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="CaracteristicaTipificacao">
-          <Key>
-            <PropertyRef Name="nCdCaracteristica" />
-          </Key>
-          <Property Name="nCdCaracteristica" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
-          <Property Name="cNmCaracteristica" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="cNrCaracteristica" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="cSgCaracteristica" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="cIdentificador" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CaracteristicaTipificacaoSequencial" Relationship="SgqDbModel.FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao" FromRole="CaracteristicaTipificacao" ToRole="CaracteristicaTipificacaoSequencial" />
-        </EntityType>
-        <EntityType Name="CaracteristicaTipificacaoSequencial">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Sequencial" Type="Int32" Nullable="false" />
-          <Property Name="nCdCaracteristica_Id" Type="Decimal" Precision="10" Scale="0" />
-          <NavigationProperty Name="CaracteristicaTipificacao" Relationship="SgqDbModel.FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao" FromRole="CaracteristicaTipificacaoSequencial" ToRole="CaracteristicaTipificacao" />
         </EntityType>
         <EntityType Name="CollectionHtml">
           <Key>
@@ -3689,6 +3610,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CollectionLevel03" Relationship="SgqDbModel.FK_CollectionLevel03_Level03" FromRole="Level03" ToRole="CollectionLevel03" />
         </EntityType>
+        <EntityType Name="LogAlteracoes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tabela" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Registro" Type="Int32" Nullable="false" />
+          <Property Name="Campo" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Valor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UsuarioAlteracao" Type="Int32" Nullable="false" />
+          <Property Name="DataAlteracao" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
         <EntityType Name="LogJson">
           <Key>
             <PropertyRef Name="Id" />
@@ -3700,6 +3633,21 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <Property Name="Device_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AppVersion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="callback" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LogSgq">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="addDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Level" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Call_Site" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Exception_Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Exception_Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Stack_Trace" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Additional_Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Second_Log_Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="LogSgqGlobal">
           <Key>
@@ -3786,6 +3734,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <NavigationProperty Name="ParCompanyXUserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany" FromRole="ParCompany" ToRole="ParCompanyXUserSgq" />
           <NavigationProperty Name="ParEvaluation" Relationship="SgqDbModel.FK_ParEvaluation_ParCompany" FromRole="ParCompany" ToRole="ParEvaluation" />
           <NavigationProperty Name="ParGoal" Relationship="SgqDbModel.FK_ParGoal_ParCompany" FromRole="ParCompany" ToRole="ParGoal" />
+          <NavigationProperty Name="ParLevel2ControlCompany" Relationship="SgqDbModel.FK_ParLevel2ControlCompany_ParCompany" FromRole="ParCompany" ToRole="ParLevel2ControlCompany" />
           <NavigationProperty Name="ParLevel3Level2" Relationship="SgqDbModel.FK_ParLevel3Level2_ParCompany" FromRole="ParCompany" ToRole="ParLevel3Level2" />
           <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParCompany" FromRole="ParCompany" ToRole="ParLevel3Value" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" FromRole="ParCompany" ToRole="ParNotConformityRuleXLevel" />
@@ -4015,6 +3964,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <NavigationProperty Name="ParLevel2Level1" Relationship="SgqDbModel.FK_Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel2Level1" />
           <NavigationProperty Name="ParLevel1XCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XCluster" />
           <NavigationProperty Name="ParLevel1XHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XHeaderField" />
+          <NavigationProperty Name="ParLevel2ControlCompany" Relationship="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel2ControlCompany" />
           <NavigationProperty Name="ParLevel3Level2Level1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel3Level2Level1" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" FromRole="ParLevel1" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel1" FromRole="ParLevel1" ToRole="ParRelapse" />
@@ -4070,11 +4020,28 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <NavigationProperty Name="ParEvaluation" Relationship="SgqDbModel.FK_ParEvaluation_ParLevel2" FromRole="ParLevel2" ToRole="ParEvaluation" />
           <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParLevel2_ParFrequency" FromRole="ParLevel2" ToRole="ParFrequency" />
           <NavigationProperty Name="ParLevel2Level1" Relationship="SgqDbModel.FK_Level2Level1_ParLevel2" FromRole="ParLevel2" ToRole="ParLevel2Level1" />
+          <NavigationProperty Name="ParLevel2ControlCompany" Relationship="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel2" FromRole="ParLevel2" ToRole="ParLevel2ControlCompany" />
           <NavigationProperty Name="ParLevel3Group" Relationship="SgqDbModel.FK_ParLevel3Group_ParLevel2" FromRole="ParLevel2" ToRole="ParLevel3Group" />
           <NavigationProperty Name="ParLevel3Level2" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel2" FromRole="ParLevel2" ToRole="ParLevel3Level2" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel2" FromRole="ParLevel2" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel2" FromRole="ParLevel2" ToRole="ParRelapse" />
           <NavigationProperty Name="ParSample" Relationship="SgqDbModel.FK_ParSample_ParLevel2" FromRole="ParLevel2" ToRole="ParSample" />
+        </EntityType>
+        <EntityType Name="ParLevel2ControlCompany">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParCompany_Id" Type="Int32" />
+          <Property Name="ParLevel1_Id" Type="Int32" />
+          <Property Name="ParLevel2_Id" Type="Int32" />
+          <Property Name="InitDate" Type="DateTime" Precision="7" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParLevel2ControlCompany_ParCompany" FromRole="ParLevel2ControlCompany" ToRole="ParCompany" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel1" FromRole="ParLevel2ControlCompany" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel2" FromRole="ParLevel2ControlCompany" ToRole="ParLevel2" />
         </EntityType>
         <EntityType Name="ParLevel2Level1">
           <Key>
@@ -4402,6 +4369,16 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterTime" Type="DateTime" Nullable="false" Precision="7" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="Unit">
           <Key>
             <PropertyRef Name="Id" />
@@ -4450,51 +4427,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <NavigationProperty Name="CorrectiveAction2" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq2" FromRole="UserSgq" ToRole="CorrectiveAction" />
           <NavigationProperty Name="ParCompanyXUserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq" FromRole="UserSgq" ToRole="ParCompanyXUserSgq" />
           <NavigationProperty Name="UnitUser" Relationship="SgqDbModel.FK_UnitUser_UserSgq" FromRole="UserSgq" ToRole="UnitUser" />
-        </EntityType>
-        <EntityType Name="VerificacaoTipificacao">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Sequencial" Type="Int32" Nullable="false" />
-          <Property Name="Banda" Type="Byte" Nullable="false" />
-          <Property Name="DataHora" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UnidadeId" Type="Int32" Nullable="false" />
-          <Property Name="Chave" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="VerificacaoTipificacaoComparacao">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Sequencial" Type="Int32" Nullable="false" />
-          <Property Name="Banda" Type="Int32" Nullable="false" />
-          <Property Name="Identificador" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="NumCaracteristica" Type="Int32" Nullable="false" />
-          <Property Name="DataHora" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="valorSGQ" Type="Int32" />
-          <Property Name="valorJBS" Type="Int32" />
-          <Property Name="nCdEmpresa" Type="Int32" />
-          <Property Name="Conforme" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="VerificacaoTipificacaoResultados">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TarefaId" Type="Int32" Nullable="false" />
-          <Property Name="CaracteristicaTipificacaoId" Type="Int32" />
-          <Property Name="Chave" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AreasParticipantesId" Type="Int32" />
-        </EntityType>
-        <EntityType Name="VerificacaoTipificacaoTarefaIntegracao">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TarefaId" Type="Int32" Nullable="false" />
-          <Property Name="CaracteristicaTipificacaoId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="VolumeCepDesossa">
           <Key>
@@ -4640,20 +4572,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="ParLevel2ControlCompany">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="AddDate" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParCompany_Id" Type="Int32" />
-          <Property Name="ParLevel1_Id" Type="Int32" />
-          <Property Name="ParLevel2_Id" Type="Int32" />
-          <Property Name="InitDate" Type="DateTime" Precision="7" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" />
-        </EntityType>
         <EntityType Name="ParLevel2XHeaderField">
           <Key>
             <PropertyRef Name="Id" />
@@ -4689,35 +4607,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="VerificacaoTipificacaoJBS">
-          <Key>
-            <PropertyRef Name="nCdEmpresa" />
-            <PropertyRef Name="iSequencial" />
-            <PropertyRef Name="iSequencialTipificacao" />
-            <PropertyRef Name="iBanda" />
-            <PropertyRef Name="cIdentificadorTipificacao" />
-            <PropertyRef Name="nCdCaracteristicaTipificacao" />
-          </Key>
-          <Property Name="nCdEmpresa" Type="Int32" Nullable="false" />
-          <Property Name="dMovimento" Type="DateTime" Precision="3" />
-          <Property Name="iSequencial" Type="Int32" Nullable="false" />
-          <Property Name="iSequencialTipificacao" Type="Int32" Nullable="false" />
-          <Property Name="iBanda" Type="Int32" Nullable="false" />
-          <Property Name="cIdentificadorTipificacao" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="nCdCaracteristicaTipificacao" Type="Int32" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_CaracteristicaTipificacaoSequencial_CaracteristicaTipificacao">
-          <End Type="SgqDbModel.CaracteristicaTipificacao" Role="CaracteristicaTipificacao" Multiplicity="0..1" />
-          <End Type="SgqDbModel.CaracteristicaTipificacaoSequencial" Role="CaracteristicaTipificacaoSequencial" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CaracteristicaTipificacao">
-              <PropertyRef Name="nCdCaracteristica" />
-            </Principal>
-            <Dependent Role="CaracteristicaTipificacaoSequencial">
-              <PropertyRef Name="nCdCaracteristica_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CollectionLevel02_ConsolidationLevel02">
           <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="1" />
           <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
@@ -5198,6 +5087,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParLevel2ControlCompany_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParLevel2ControlCompany" Role="ParLevel2ControlCompany" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2ControlCompany">
+              <PropertyRef Name="ParCompany_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParLevel3Level2_ParCompany">
           <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="0..1" />
           <End Type="SgqDbModel.ParLevel3Level2" Role="ParLevel3Level2" Multiplicity="*" />
@@ -5558,6 +5459,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParLevel2ControlCompany_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParLevel2ControlCompany" Role="ParLevel2ControlCompany" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2ControlCompany">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParLevel3Level2Level1_ParLevel1">
           <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
           <End Type="SgqDbModel.ParLevel3Level2Level1" Role="ParLevel3Level2Level1" Multiplicity="*" />
@@ -5602,6 +5515,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ParLevel2Level1">
+              <PropertyRef Name="ParLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel2ControlCompany_ParLevel2">
+          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParLevel2ControlCompany" Role="ParLevel2ControlCompany" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel2ControlCompany">
               <PropertyRef Name="ParLevel2_Id" />
             </Dependent>
           </ReferentialConstraint>
@@ -5852,17 +5777,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SgqDbModelStoreContainer" CdmEntityContainer="SgqDbDevEntities">
-          <EntitySetMapping Name="AreasParticipantes">
-            <EntityTypeMapping TypeName="SgqDbModel.AreasParticipantes">
-              <MappingFragment StoreEntitySet="AreasParticipantes">
-                <ScalarProperty Name="cIdentificador" ColumnName="cIdentificador" />
-                <ScalarProperty Name="cSgCaracteristica" ColumnName="cSgCaracteristica" />
-                <ScalarProperty Name="cNrCaracteristica" ColumnName="cNrCaracteristica" />
-                <ScalarProperty Name="cNmCaracteristica" ColumnName="cNmCaracteristica" />
-                <ScalarProperty Name="nCdCaracteristica" ColumnName="nCdCaracteristica" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BkpCollection">
             <EntityTypeMapping TypeName="SgqDbModel.BkpCollection">
               <MappingFragment StoreEntitySet="BkpCollection">
@@ -5874,26 +5788,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="User_Id" ColumnName="User_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CaracteristicaTipificacao">
-            <EntityTypeMapping TypeName="SgqDbModel.CaracteristicaTipificacao">
-              <MappingFragment StoreEntitySet="CaracteristicaTipificacao">
-                <ScalarProperty Name="cIdentificador" ColumnName="cIdentificador" />
-                <ScalarProperty Name="cSgCaracteristica" ColumnName="cSgCaracteristica" />
-                <ScalarProperty Name="cNrCaracteristica" ColumnName="cNrCaracteristica" />
-                <ScalarProperty Name="cNmCaracteristica" ColumnName="cNmCaracteristica" />
-                <ScalarProperty Name="nCdCaracteristica" ColumnName="nCdCaracteristica" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CaracteristicaTipificacaoSequencial">
-            <EntityTypeMapping TypeName="SgqDbModel.CaracteristicaTipificacaoSequencial">
-              <MappingFragment StoreEntitySet="CaracteristicaTipificacaoSequencial">
-                <ScalarProperty Name="nCdCaracteristica_Id" ColumnName="nCdCaracteristica_Id" />
-                <ScalarProperty Name="Sequencial" ColumnName="Sequencial" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -6175,6 +6069,19 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="LogAlteracoes">
+            <EntityTypeMapping TypeName="SgqDbModel.LogAlteracoes">
+              <MappingFragment StoreEntitySet="LogAlteracoes">
+                <ScalarProperty Name="DataAlteracao" ColumnName="DataAlteracao" />
+                <ScalarProperty Name="UsuarioAlteracao" ColumnName="UsuarioAlteracao" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="Campo" ColumnName="Campo" />
+                <ScalarProperty Name="Registro" ColumnName="Registro" />
+                <ScalarProperty Name="Tabela" ColumnName="Tabela" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="LogJson">
             <EntityTypeMapping TypeName="SgqDbModel.LogJson">
               <MappingFragment StoreEntitySet="LogJson">
@@ -6184,6 +6091,22 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="log" ColumnName="log" />
                 <ScalarProperty Name="result" ColumnName="result" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogSgq">
+            <EntityTypeMapping TypeName="SgqDbModel.LogSgq">
+              <MappingFragment StoreEntitySet="LogSgq">
+                <ScalarProperty Name="Second_Log_Path" ColumnName="Second_Log_Path" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Additional_Info" ColumnName="Additional_Info" />
+                <ScalarProperty Name="Stack_Trace" ColumnName="Stack_Trace" />
+                <ScalarProperty Name="Exception_Message" ColumnName="Exception_Message" />
+                <ScalarProperty Name="Exception_Type" ColumnName="Exception_Type" />
+                <ScalarProperty Name="Call_Site" ColumnName="Call_Site" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="addDate" ColumnName="addDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -6507,6 +6430,20 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ParLevel2ControlCompany">
+            <EntityTypeMapping TypeName="SgqDbModel.ParLevel2ControlCompany">
+              <MappingFragment StoreEntitySet="ParLevel2ControlCompany">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="InitDate" ColumnName="InitDate" />
+                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ParLevel2Level1">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel2Level1">
               <MappingFragment StoreEntitySet="ParLevel2Level1">
@@ -6808,6 +6745,17 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SgqDbModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Unit">
             <EntityTypeMapping TypeName="SgqDbModel.Unit">
               <MappingFragment StoreEntitySet="Unit">
@@ -6844,55 +6792,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
                 <ScalarProperty Name="AcessDate" ColumnName="AcessDate" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VerificacaoTipificacao">
-            <EntityTypeMapping TypeName="SgqDbModel.VerificacaoTipificacao">
-              <MappingFragment StoreEntitySet="VerificacaoTipificacao">
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Chave" ColumnName="Chave" />
-                <ScalarProperty Name="UnidadeId" ColumnName="UnidadeId" />
-                <ScalarProperty Name="DataHora" ColumnName="DataHora" />
-                <ScalarProperty Name="Banda" ColumnName="Banda" />
-                <ScalarProperty Name="Sequencial" ColumnName="Sequencial" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VerificacaoTipificacaoComparacao">
-            <EntityTypeMapping TypeName="SgqDbModel.VerificacaoTipificacaoComparacao">
-              <MappingFragment StoreEntitySet="VerificacaoTipificacaoComparacao">
-                <ScalarProperty Name="Conforme" ColumnName="Conforme" />
-                <ScalarProperty Name="nCdEmpresa" ColumnName="nCdEmpresa" />
-                <ScalarProperty Name="valorJBS" ColumnName="valorJBS" />
-                <ScalarProperty Name="valorSGQ" ColumnName="valorSGQ" />
-                <ScalarProperty Name="DataHora" ColumnName="DataHora" />
-                <ScalarProperty Name="NumCaracteristica" ColumnName="NumCaracteristica" />
-                <ScalarProperty Name="Identificador" ColumnName="Identificador" />
-                <ScalarProperty Name="Banda" ColumnName="Banda" />
-                <ScalarProperty Name="Sequencial" ColumnName="Sequencial" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VerificacaoTipificacaoResultados">
-            <EntityTypeMapping TypeName="SgqDbModel.VerificacaoTipificacaoResultados">
-              <MappingFragment StoreEntitySet="VerificacaoTipificacaoResultados">
-                <ScalarProperty Name="AreasParticipantesId" ColumnName="AreasParticipantesId" />
-                <ScalarProperty Name="Chave" ColumnName="Chave" />
-                <ScalarProperty Name="CaracteristicaTipificacaoId" ColumnName="CaracteristicaTipificacaoId" />
-                <ScalarProperty Name="TarefaId" ColumnName="TarefaId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VerificacaoTipificacaoTarefaIntegracao">
-            <EntityTypeMapping TypeName="SgqDbModel.VerificacaoTipificacaoTarefaIntegracao">
-              <MappingFragment StoreEntitySet="VerificacaoTipificacaoTarefaIntegracao">
-                <ScalarProperty Name="CaracteristicaTipificacaoId" ColumnName="CaracteristicaTipificacaoId" />
-                <ScalarProperty Name="TarefaId" ColumnName="TarefaId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -7026,20 +6925,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ParLevel2ControlCompany">
-            <EntityTypeMapping TypeName="SgqDbModel.ParLevel2ControlCompany">
-              <MappingFragment StoreEntitySet="ParLevel2ControlCompany">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="InitDate" ColumnName="InitDate" />
-                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
-                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
-                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ParLevel2XHeaderField">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel2XHeaderField">
               <MappingFragment StoreEntitySet="ParLevel2XHeaderField">
@@ -7065,19 +6950,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VerificacaoTipificacaoJBS' does not h
                 <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
                 <ScalarProperty Name="CollectionLevel2_Id" ColumnName="CollectionLevel2_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VerificacaoTipificacaoJBS">
-            <EntityTypeMapping TypeName="SgqDbModel.VerificacaoTipificacaoJBS">
-              <MappingFragment StoreEntitySet="VerificacaoTipificacaoJBS">
-                <ScalarProperty Name="nCdCaracteristicaTipificacao" ColumnName="nCdCaracteristicaTipificacao" />
-                <ScalarProperty Name="cIdentificadorTipificacao" ColumnName="cIdentificadorTipificacao" />
-                <ScalarProperty Name="iBanda" ColumnName="iBanda" />
-                <ScalarProperty Name="iSequencialTipificacao" ColumnName="iSequencialTipificacao" />
-                <ScalarProperty Name="iSequencial" ColumnName="iSequencial" />
-                <ScalarProperty Name="dMovimento" ColumnName="dMovimento" />
-                <ScalarProperty Name="nCdEmpresa" ColumnName="nCdEmpresa" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

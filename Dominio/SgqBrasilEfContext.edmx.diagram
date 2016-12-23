@@ -4,164 +4,136 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5d52c881ac784cc086c0eb875e74969c" Name="Diagram1" ZoomLevel="64">
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Acoes" Width="1.5" PointX="11.75" PointY="9.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.AcoesCorretivas" Width="1.5" PointX="9" PointY="29" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.AcoesPreventivas" Width="1.5" PointX="19.75" PointY="20.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.AcompanhamentoTarefa" Width="1.5" PointX="18.75" PointY="60.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Alertas" Width="1.5" PointX="3" PointY="52.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.AreasParticipantes" Width="1.5" PointX="14.75" PointY="16.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.BkpCollection" Width="1.5" PointX="0.75" PointY="22.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Cabecalho" Width="1.5" PointX="11.25" PointY="74.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Campo" Width="1.5" PointX="9.75" PointY="107.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.CaracteristicaTipificacao" Width="1.5" PointX="19.75" PointY="11.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.CaracteristicaTipificacaoSequencial" Width="1.5" PointX="22" PointY="11.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.CategoriaProdutos" Width="1.5" PointX="12" PointY="20" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Categorias" Width="1.5" PointX="6.75" PointY="6.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.CausaEspecifica" Width="1.5" PointX="14.75" PointY="20.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.CausaGenerica" Width="1.5" PointX="0.75" PointY="19.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Classificacao" Width="1.5" PointX="13.75" PointY="10.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ClassificacaoProduto" Width="1.5" PointX="16.75" PointY="2.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ClusterDepartamentos" Width="1.5" PointX="14.75" PointY="23.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Clusters" Width="1.5" PointX="6.75" PointY="2.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ConfiguracaoEmail" Width="1.5" PointX="16.75" PointY="23.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ConfiguracaoEmailPA" Width="1.5" PointX="21.75" PointY="20.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ContramedidaEspecifica" Width="1.5" PointX="0.75" PointY="16.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ContramedidaGenerica" Width="1.5" PointX="8.75" PointY="5.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.DepartamentoOperacoes" Width="1.5" PointX="15" PointY="31.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.DepartamentoProdutos" Width="1.5" PointX="11.75" PointY="25.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Departamentos" Width="1.5" PointX="4.5" PointY="26.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Department" Width="1.5" PointX="22.75" PointY="14.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.DesvioNiveis" Width="1.5" PointX="21.75" PointY="24.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Desvios" Width="1.5" PointX="23.75" PointY="17.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Empresa" Width="1.5" PointX="18.75" PointY="25.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Empresas" Width="1.5" PointX="23.75" PointY="22.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Equipamentos" Width="1.5" PointX="3" PointY="106.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.EquipamentosAvaliados" Width="1.5" PointX="23.75" PointY="25.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Estados" Width="1.5" PointX="24.75" PointY="2.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Example" Width="1.5" PointX="0.75" PointY="26.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_CausaEspecifica" Width="1.5" PointX="17" PointY="20.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_CausaGenerica" Width="1.5" PointX="3" PointY="19.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_ContramedidaEspecifica" Width="1.5" PointX="3" PointY="16.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_ContramedidaGenerica" Width="1.5" PointX="11" PointY="5.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_GrupoCausa" Width="1.5" PointX="11" PointY="2.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_PlanoDeAcaoQuemQuandoComo" Width="1.5" PointX="13.5" PointY="56.25" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.FamiliaProdutos" Width="1.5" PointX="6" PointY="48.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.FormularioTratamentoAnomalia" Width="1.5" PointX="24.75" PointY="10.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoCabecalho" Width="1.5" PointX="7.5" PointY="115.125" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoCausa" Width="1.5" PointX="8.75" PointY="2.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoProjeto" Width="1.5" PointX="3" PointY="102.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoTipoAvaliacaoMonitoramentos" Width="1.5" PointX="12" PointY="60" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoTipoAvaliacoes" Width="1.5" PointX="9.75" PointY="78.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Horarios" Width="1.5" PointX="9" PointY="54.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Level01" Width="1.5" PointX="24.75" PointY="14.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Level02" Width="1.5" PointX="13.75" PointY="26.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Level03" Width="1.5" PointX="25.75" PointY="17.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.LogAlteracoes" Width="1.5" PointX="15.75" PointY="27.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.LogJson" Width="1.5" PointX="25.75" PointY="20.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.LogOperacaoPA" Width="1.5" PointX="25.75" PointY="24.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.LogSgq" Width="1.5" PointX="26.75" PointY="2.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.LogSgqGlobal" Width="1.5" PointX="26.75" PointY="10.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Metas" Width="1.5" PointX="9" PointY="37.25" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.MonitoramentoEquipamentos" Width="1.5" PointX="9" PointY="58.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Monitoramentos" Width="1.5" PointX="6.75" PointY="58.125" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.MonitoramentosConcorrentes" Width="1.5" PointX="9" PointY="41.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.MultiplaEscolha" Width="1.5" PointX="12" PointY="108.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Niveis" Width="1.5" PointX="12" PointY="45" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.NiveisUsuarios" Width="1.5" PointX="14.25" PointY="48.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Observacoes" Width="1.5" PointX="17.75" PointY="28.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ObservacoesPadroes" Width="1.5" PointX="12" PointY="29.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Operacoes" Width="1.5" PointX="6.75" PointY="32" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_acompanhamento_tarefa" Width="1.5" PointX="9.75" PointY="12.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_campo" Width="1.5" PointX="7.5" PointY="16.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_configuracao_email" Width="1.5" PointX="26.75" PointY="14.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_empresa" Width="1.5" PointX="0.75" PointY="10.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_grupo_projeto" Width="1.5" PointX="3" PointY="12.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_log_operacao" Width="1.5" PointX="19.75" PointY="28.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_multipla_escolha" Width="1.5" PointX="9.75" PointY="17.125" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_participante" Width="1.5" PointX="3" PointY="8" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_projeto" Width="1.5" PointX="5.25" PointY="11.125" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_tarefa" Width="1.5" PointX="7.5" PointY="12.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_vinculo_campo_tarefa" Width="1.5" PointX="12" PointY="15.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_vinculo_participante_multipla_escolha" Width="1.5" PointX="12" PointY="13" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_vinculo_participante_projeto" Width="1.5" PointX="7.5" PointY="10" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Pacotes" Width="1.5" PointX="9.75" PointY="21.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.PacotesOperacoes" Width="1.5" PointX="12" PointY="35.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.PadraoMonitoramentos" Width="1.5" PointX="3" PointY="57.25" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.PadraoTolerancias" Width="1.5" PointX="9" PointY="62.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Padroes" Width="1.5" PointX="0.75" PointY="59.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ParCluster" Width="1.5" PointX="20" PointY="16.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ParClusterGroup" Width="1.5" PointX="17.75" PointY="16.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ParCompany" Width="1.5" PointX="20" PointY="0.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ParCompanyCluster" Width="1.5" PointX="22.25" PointY="1.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ParCompanyXStructure" Width="1.5" PointX="25.25" PointY="6.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ParConsolidationType" Width="1.5" PointX="14.75" PointY="6.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ParDepartment" Width="1.5" PointX="0.75" PointY="29.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ParFrequency" Width="1.5" PointX="14.75" PointY="2.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ParLevel1" Width="1.5" PointX="17" PointY="4.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ParStructure" Width="1.5" PointX="17" PointY="12.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ParStructureGroup" Width="1.5" PointX="14.75" PointY="12.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Pcc1b" Width="1.5" PointX="22.25" PointY="5.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.PenalidadeReincidencia" Width="1.5" PointX="27.75" PointY="6.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Perfil" Width="1.5" PointX="27.75" PointY="17.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Period" Width="1.5" PointX="27.75" PointY="20.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.PlanoDeAcaoQuemQuandoComo" Width="1.5" PointX="11.25" PointY="56.125" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Pontos" Width="1.5" PointX="9" PointY="33.125" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Produto" Width="1.5" PointX="27.75" PointY="23.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ProdutoInNatura" Width="1.5" PointX="21.75" PointY="29.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Produtos" Width="1.5" PointX="4.5" PointY="23.125" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ProdutosAvaliados" Width="1.5" PointX="23.75" PointY="29.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Projeto" Width="1.5" PointX="5.25" PointY="102.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Regionais" Width="1.5" PointX="6.75" PointY="63.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Resultados" Width="1.5" PointX="27.75" PointY="26.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ResultadosData" Width="1.5" PointX="28.75" PointY="2.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ResultadosPCC" Width="1.5" PointX="29.75" PointY="5.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Shift" Width="1.5" PointX="2.75" PointY="31.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Sugestoes" Width="1.5" PointX="29.75" PointY="17.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.sysdiagrams" Width="1.5" PointX="29.75" PointY="21.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaAmostras" Width="1.5" PointX="3" PointY="48.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaAvaliacoes" Width="1.5" PointX="12" PointY="48.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaCategorias" Width="1.5" PointX="9" PointY="25.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaMonitoramentos" Width="1.5" PointX="6" PointY="43.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaPA" Width="1.5" PointX="16.5" PointY="74.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Tarefas" Width="1.5" PointX="6.75" PointY="23.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Terceiro" Width="1.5" PointX="29.75" PointY="24.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.TipificacaoReal" Width="1.5" PointX="6" PointY="53.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.TipoAvaliacoes" Width="1.5" PointX="7.5" PointY="79" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Unidades" Width="1.5" PointX="0.75" PointY="46.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.UnidadesMedidas" Width="1.5" PointX="0.75" PointY="56.125" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Unit" Width="1.5" PointX="0.75" PointY="2.625" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.UnitUser" Width="1.5" PointX="3" PointY="2.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.UserSgq" Width="1.5" PointX="0.75" PointY="6.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Usuario" Width="1.5" PointX="29.75" PointY="27.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.UsuarioPerfilEmpresa" Width="1.5" PointX="29.75" PointY="30.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Usuarios" Width="1.5" PointX="9" PointY="46.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.UsuarioUnidades" Width="1.5" PointX="14.25" PointY="44.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VacuoGRD" Width="1.5" PointX="19.25" PointY="5.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoContagem" Width="1.5" PointX="30.75" PointY="2.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacao" Width="1.5" PointX="3" PointY="77.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoComparacao" Width="1.5" PointX="17.75" PointY="32.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoResultados" Width="1.5" PointX="19.75" PointY="32.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoTarefaIntegracao" Width="1.5" PointX="9" PointY="68.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoValidacao" Width="1.5" PointX="31.75" PointY="5.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoCampoCabecalho" Width="1.5" PointX="14.25" PointY="80.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoCampoTarefa" Width="1.5" PointX="19.75" PointY="79.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoParticipanteMultiplaEscolha" Width="1.5" PointX="17.25" PointY="79.5" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoParticipanteProjeto" Width="1.5" PointX="14.25" PointY="75.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VolumeAbate" Width="1.5" PointX="31.75" PointY="9.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VolumeProducao" Width="1.5" PointX="3" PointY="40.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Z_Sistema" Width="1.5" PointX="31.75" PointY="12.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ControleMetaTolerancia" Width="1.5" PointX="31.75" PointY="16.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.MacTablet" Width="1.5" PointX="31.75" PointY="20.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Resultados_BKP_OCT" Width="1.5" PointX="31.75" PointY="23.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.ScorecardConsolidadoDia" Width="1.5" PointX="21.75" PointY="33.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Tipificacao" Width="1.5" PointX="23.75" PointY="33.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoJBS" Width="1.5" PointX="0.75" PointY="34.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.DelDados" Width="1.5" PointX="6.75" PointY="21.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Reports_CCA_Audit" Width="1.5" PointX="2.75" PointY="34.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Reports_CFF_Audit" Width="1.5" PointX="29.75" PointY="34.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Reports_HTP_Audit" Width="1.5" PointX="31.75" PointY="34.375" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VWCFFResults" Width="1.5" PointX="33.75" PointY="2.375" />
+      <Diagram DiagramId="5d52c881ac784cc086c0eb875e74969c" Name="Diagram1" ZoomLevel="60">
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Acoes" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.AcoesCorretivas" Width="1.5" PointX="9" PointY="33.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.AcoesPreventivas" Width="1.5" PointX="2.75" PointY="14.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.AcompanhamentoTarefa" Width="1.5" PointX="18.75" PointY="59.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Alertas" Width="1.5" PointX="12" PointY="46.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.AreasParticipantes" Width="1.5" PointX="4.75" PointY="14.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.BkpCollection" Width="1.5" PointX="14.75" PointY="9.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Cabecalho" Width="1.5" PointX="11.25" PointY="73.25" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Campo" Width="1.5" PointX="9.75" PointY="106" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CaracteristicaTipificacao" Width="1.5" PointX="11.75" PointY="6.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CaracteristicaTipificacaoSequencial" Width="1.5" PointX="14" PointY="7.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CategoriaProdutos" Width="1.5" PointX="12" PointY="30.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Categorias" Width="1.5" PointX="9.75" PointY="29.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CausaEspecifica" Width="1.5" PointX="10.75" PointY="4.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.CausaGenerica" Width="1.5" PointX="10.75" PointY="1" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Classificacao" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ClassificacaoProduto" Width="1.5" PointX="2.75" PointY="3.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ClusterDepartamentos" Width="1.5" PointX="14.75" PointY="13.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Clusters" Width="1.5" PointX="3.75" PointY="27.25" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ConfiguracaoEmail" Width="1.5" PointX="15.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ConfiguracaoEmailPA" Width="1.5" PointX="16.75" PointY="4.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ContramedidaEspecifica" Width="1.5" PointX="5.75" PointY="5.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ContramedidaGenerica" Width="1.5" PointX="5.75" PointY="1.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.DepartamentoOperacoes" Width="1.5" PointX="14" PointY="42.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.DepartamentoProdutos" Width="1.5" PointX="15" PointY="39.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Departamentos" Width="1.5" PointX="3.75" PointY="60" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.DesvioNiveis" Width="1.5" PointX="16.75" PointY="8.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Desvios" Width="1.5" PointX="16.75" PointY="12.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Empresa" Width="1.5" PointX="17.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Empresas" Width="1.5" PointX="4.75" PointY="17.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Equipamentos" Width="1.5" PointX="3" PointY="105" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.EquipamentosAvaliados" Width="1.5" PointX="14.75" PointY="17.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Estados" Width="1.5" PointX="16.75" PointY="17.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Example" Width="1.5" PointX="18.75" PointY="3.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_CausaEspecifica" Width="1.5" PointX="13" PointY="3.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_CausaGenerica" Width="1.5" PointX="13" PointY="0.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_ContramedidaEspecifica" Width="1.5" PointX="8" PointY="4.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_ContramedidaGenerica" Width="1.5" PointX="8" PointY="0.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_GrupoCausa" Width="1.5" PointX="3" PointY="0.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.fa_PlanoDeAcaoQuemQuandoComo" Width="1.5" PointX="13.5" PointY="54.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.FamiliaProdutos" Width="1.5" PointX="3" PointY="46.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.FormularioTratamentoAnomalia" Width="1.5" PointX="18.75" PointY="6.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoCabecalho" Width="1.5" PointX="7.5" PointY="113.5" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoCausa" Width="1.5" PointX="0.75" PointY="1.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoProjeto" Width="1.5" PointX="3" PointY="101.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoTipoAvaliacaoMonitoramentos" Width="1.5" PointX="9" PointY="59" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.GrupoTipoAvaliacoes" Width="1.5" PointX="6.75" PointY="70.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Horarios" Width="1.5" PointX="3" PointY="56.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.LogAlteracoes" Width="1.5" PointX="18.75" PointY="10.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.LogOperacaoPA" Width="1.5" PointX="11.75" PointY="18.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.LogSgq" Width="1.5" PointX="18.75" PointY="14.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Metas" Width="1.5" PointX="6" PointY="66.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.MonitoramentoEquipamentos" Width="1.5" PointX="3" PointY="64.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Monitoramentos" Width="1.5" PointX="0.75" PointY="53.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.MonitoramentosConcorrentes" Width="1.5" PointX="6" PointY="51.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.MultiplaEscolha" Width="1.5" PointX="12" PointY="106.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Niveis" Width="1.5" PointX="9" PointY="37.375" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.NiveisUsuarios" Width="1.5" PointX="11.25" PointY="43.25" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Observacoes" Width="1.5" PointX="18.75" PointY="18.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ObservacoesPadroes" Width="1.5" PointX="12" PointY="38.5" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Operacoes" Width="1.5" PointX="3.75" PointY="30.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_acompanhamento_tarefa" Width="1.5" PointX="9.75" PointY="8" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_campo" Width="1.5" PointX="7.5" PointY="15.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_configuracao_email" Width="1.5" PointX="19.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_empresa" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_grupo_projeto" Width="1.5" PointX="3" PointY="10.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_log_operacao" Width="1.5" PointX="0.75" PointY="19.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_multipla_escolha" Width="1.5" PointX="9.75" PointY="15.5" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_participante" Width="1.5" PointX="3" PointY="6.375" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_projeto" Width="1.5" PointX="5.25" PointY="9.5" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_tarefa" Width="1.5" PointX="7.5" PointY="8" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_vinculo_campo_tarefa" Width="1.5" PointX="12" PointY="14.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_vinculo_participante_multipla_escolha" Width="1.5" PointX="12" PointY="11.375" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.pa_vinculo_participante_projeto" Width="1.5" PointX="7.5" PointY="11.375" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Pacotes" Width="1.5" PointX="3.75" PointY="23.375" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.PacotesOperacoes" Width="1.5" PointX="6" PointY="34.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.PadraoMonitoramentos" Width="1.5" PointX="9" PointY="53.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.PadraoTolerancias" Width="1.5" PointX="12" PointY="58.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Padroes" Width="1.5" PointX="6.75" PointY="59.5" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Pcc1b" Width="1.5" PointX="6.75" PointY="19.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.PenalidadeReincidencia" Width="1.5" PointX="8.75" PointY="19.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Perfil" Width="1.5" PointX="2.75" PointY="20.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.PlanoDeAcaoQuemQuandoComo" Width="1.5" PointX="11.25" PointY="54.5" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Pontos" Width="1.5" PointX="6" PointY="30" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Produto" Width="1.5" PointX="20.75" PointY="3.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ProdutoInNatura" Width="1.5" PointX="20.75" PointY="6.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Produtos" Width="1.5" PointX="1.5" PointY="33.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ProdutosAvaliados" Width="1.5" PointX="20.75" PointY="9.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Projeto" Width="1.5" PointX="5.25" PointY="100.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Regionais" Width="1.5" PointX="6.75" PointY="56.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Resultados" Width="1.5" PointX="20.75" PointY="13.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ResultadosData" Width="1.5" PointX="21.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ResultadosPCC" Width="1.5" PointX="14.75" PointY="21.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Sugestoes" Width="1.5" PointX="22.75" PointY="3.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.sysdiagrams" Width="1.5" PointX="22.75" PointY="7.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaAmostras" Width="1.5" PointX="3" PointY="52.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaAvaliacoes" Width="1.5" PointX="6" PointY="46.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaCategorias" Width="1.5" PointX="12" PointY="34.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaMonitoramentos" Width="1.5" PointX="3" PointY="41.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TarefaPA" Width="1.5" PointX="16.5" PointY="73" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Tarefas" Width="1.5" PointX="0.75" PointY="37.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Terceiro" Width="1.5" PointX="22.75" PointY="10.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TipificacaoReal" Width="1.5" PointX="9" PointY="41.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.TipoAvaliacoes" Width="1.5" PointX="4.5" PointY="71" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Unidades" Width="1.5" PointX="0.75" PointY="45.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.UnidadesMedidas" Width="1.5" PointX="6.75" PointY="63.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Usuario" Width="1.5" PointX="22.75" PointY="13.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.UsuarioPerfilEmpresa" Width="1.5" PointX="22.75" PointY="16.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Usuarios" Width="1.5" PointX="9" PointY="45.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.UsuarioUnidades" Width="1.5" PointX="14.25" PointY="47.25" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VacuoGRD" Width="1.5" PointX="16.75" PointY="22.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoContagem" Width="1.5" PointX="22.75" PointY="19.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacao" Width="1.5" PointX="3" PointY="97.625" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoComparacao" Width="1.5" PointX="22.75" PointY="22.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoResultados" Width="1.5" PointX="23.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoTarefaIntegracao" Width="1.5" PointX="3" PointY="68.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoValidacao" Width="1.5" PointX="0.75" PointY="23.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoCampoCabecalho" Width="1.5" PointX="14.25" PointY="79.125" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoCampoTarefa" Width="1.5" PointX="19.75" PointY="77.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoParticipanteMultiplaEscolha" Width="1.5" PointX="17.25" PointY="77.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoParticipanteProjeto" Width="1.5" PointX="14.25" PointY="73.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VolumeAbate" Width="1.5" PointX="8.75" PointY="23.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VolumeProducao" Width="1.5" PointX="6" PointY="38.25" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Z_Sistema" Width="1.5" PointX="10.75" PointY="23.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ControleMetaTolerancia" Width="1.5" PointX="24.75" PointY="3.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Resultados_BKP_OCT" Width="1.5" PointX="24.75" PointY="7.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.ScorecardConsolidadoDia" Width="1.5" PointX="24.75" PointY="18.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Tipificacao" Width="1.5" PointX="24.75" PointY="22.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoJBS" Width="1.5" PointX="5.75" PointY="25.75" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_AcoesCorretivas_Operacoes" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_AcoesCorretivas_Tarefas" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_AcompanhamentoTarefa_Participante" />
@@ -259,18 +231,6 @@
         <AssociationConnector Association="SGQ_BrasilModel.FK_PadraoMonitoramentos_UnidadesMedidas" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_PadraoTolerancias_PadroesNivel1" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_PadraoTolerancias_PadroesNivel3" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCluster_ParClusterGroup" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCompanyCluster_ParCluster" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK__Pcc1b__ParCompan__6AA5C795" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK__VacuoGRD__ParCom__6E765879" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCompanyCluster_ParCompany" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCompanyXStructure_ParCompany" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK_ParCompanyXStructure_ParStructure" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel1_ParConsolidationType" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK_ParLevel1_ParFrequency" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK__Pcc1b__ParLevel1__6B99EBCE" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK__VacuoGRD__ParLev__6F6A7CB2" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK_ParStructure_ParStructureGroup" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_PlanoDeAcaoQuemQuandoComo_Usuarios" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_Tarefas_Produtos" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_Tarefa_Projeto" />
@@ -290,8 +250,6 @@
         <AssociationConnector Association="SGQ_BrasilModel.FK_UsuarioUnidades_Unidades" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_VerificacaoTipificacao_Unidades" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_VolumeProducao_Unidades" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK_UnitUser_Unit" />
-        <AssociationConnector Association="SGQ_BrasilModel.FK_UnitUser_UserSgq" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_UsuarioUnidades_Usuarios" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoCabecalho_Participante" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoTarefa_Participante" />

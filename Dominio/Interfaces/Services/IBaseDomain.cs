@@ -22,7 +22,7 @@ namespace Dominio.Interfaces.Services
 
         Y FirstNoLazyLoad();
 
-        //T AddOrUpdate(T obj);
+        Y AddOrUpdate(Y obj);
 
 
     }

@@ -1,0 +1,8 @@
+﻿@Html.DropDownList("level2", new SelectList(ViewBag.ParLevel2, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%", @multiple = "multiple" })
+
+<script>
+    $(document).ready(function () {
+        loadSelect2();
+        $('#level2').select2({ allowClear: true, placeholder: "" })
+    });
+</script>
