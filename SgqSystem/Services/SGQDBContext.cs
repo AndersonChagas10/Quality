@@ -218,25 +218,43 @@ namespace SGQDBContext
 
             SqlConnection db = new SqlConnection(conexao);
             string queryCompany = null;
-            if (ParCompany_Id > 0)
+            var parEvaluate = db.Query<ParLevel2Evaluate>('');
+
+            if (ParLevel1.Id == 2)
             {
-                queryCompany = " AND PE.ParCompany_Id = '" + ParCompany_Id + "'";
+                string sql = "SELECT 67 AS Id, 'NC Desossa - Alcatra', 50 AS Evaluate";
+                parEvaluate = db.Query<ParLevel2Evaluate>(sql);
+                
+
+            }
+            else
+            {
+
+                if (ParCompany_Id > 0)
+                {
+                    queryCompany = " AND PE.ParCompany_Id = '" + ParCompany_Id + "'";
+                }
+
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PE.Number AS Evaluate                " +
+                             "FROM                                                                        " +
+                             "ParLevel3Level2 P32                                                         " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                                       " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
+                             "INNER JOIN ParLevel2 PL2                                                    " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
+                             "INNER JOIN ParEvaluation PE                                                 " +
+                             "ON PE.ParLevel2_Id = PL2.Id                                                 " +
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             queryCompany +
+                             "GROUP BY PL2.Id, PL2.Name, PE.Number                                        ";
+
+                sql = "SELECT 67 AS Id, 'NC Desossa - Alcatra', 50 AS Evaluate";
+
+                parEvaluate = db.Query<ParLevel2Evaluate>(sql);
+
+
             }
 
-            string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PE.Number AS Evaluate                " +
-                         "FROM                                                                        " +
-                         "ParLevel3Level2 P32                                                         " +
-                         "INNER JOIN ParLevel3Level2Level1 P321                                       " +
-                         "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
-                         "INNER JOIN ParLevel2 PL2                                                    " +
-                         "ON PL2.Id = P32.ParLevel2_Id                                                " +
-                         "INNER JOIN ParEvaluation PE                                                 " +
-                         "ON PE.ParLevel2_Id = PL2.Id                                                 " +
-                         "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
-                         queryCompany +
-                         "GROUP BY PL2.Id, PL2.Name, PE.Number                                        ";
-
-            var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
 
             return parEvaluate;
         }
