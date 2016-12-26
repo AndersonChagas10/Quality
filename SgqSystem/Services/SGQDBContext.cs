@@ -74,95 +74,93 @@ namespace SGQDBContext
 
             string sql = "";
 
-            sql += "	SELECT									                                                                                                    					";
-            sql += "	(Nivel3) as nivel3                                                                                                                                                 ";
-            sql += "	,(Nivel3 / 3) * 2 as nivel2				                                                                                                    										";
-            sql += "	,(Nivel3 / 3) as nivel1					                                                                                                    									";
-            sql += "	FROM									                                                                                                    					";
-            sql += "											                                                                                                    				";
-            sql += "	(										                                                                                                    				";
-            sql += "											                                                                                                    				";
-            sql += "		SELECT								                                                                                                    					";
-            sql += "											                                                                                                    				";
-            sql += "		 [Unidade]							                                                                                                    						";
-            sql += "		,[Cód. do Indicador]				                                                                                                    									";
-            sql += "		,[Indicador]						                                                                                                    							";
-            sql += "		,[Tipo de Consolidação]				                                                                                                    									";
-            sql += "		,CASE 								                                                                                                    					";
-            sql += "			WHEN [Tipo de Consolidação] = 1 THEN SUM([Número de Avaliações] * [Número de Amostras] * [Peso da Tarefa])												";
-            sql += "			WHEN [Tipo de Consolidação] = 3 THEN SUM([Número de Avaliações] * [Número de Amostras])												                    ";
-            sql += "			WHEN [Tipo de Consolidação] = 2 THEN SUM([Número de Avaliações] * [Número de Amostras] * [Peso da Tarefa])												";
-            sql += "		 END AS [Volume total de alerta]													                                                                        ";
-            sql += "		 ,[Meta do indicador]													                                                                                    ";
-            sql += "		 ,CASE 											                                                                                                            ";
-            sql += "			WHEN [Tipo de Consolidação] = 1 THEN SUM([Número de Avaliações] * [Número de Amostras] * [Peso da Tarefa]) * ([Meta do indicador]/100)												";
-            sql += "			WHEN [Tipo de Consolidação] = 3 THEN SUM([Número de Avaliações] * [Número de Amostras]) * ([Meta do indicador]/100)												";
-            sql += "			WHEN [Tipo de Consolidação] = 2 THEN SUM([Número de Avaliações] * [Número de Amostras] * [Peso da Tarefa]) * ([Meta do indicador]/100)												";
-            sql += "		 END AS Nivel3							                                                                                                    						";
-            sql += "												                                                                                                    			";
-            sql += "		FROM 									                                                                                                    				";
-            sql += "												                                                                                                    			";
-            sql += "		(										                                                                                                    			";
-            sql += "												                                                                                                    			";
-            sql += "		SELECT									                                                                                                    				";
-            sql += "												                                                                                                    			";
-            sql += "			 NULL                            AS [Unidade]							                                                        					";
-            sql += "			,L1.Id                           AS [Cód. do Indicador]					                                                        							";
-            sql += "			,L1.Name                         AS [Indicador]							                                                        					";
-            sql += "			,L1.ParConsolidationType_Id      AS [Tipo de Consolidação]				                                                        								";
-            sql += "			,L1.IsSpecific                   AS [Indicador contém valores específicos por unidades?]											    	";
-            sql += "			,L1.IsSpecificNumberEvaluetion   AS [Indicador permite que monitoramentos tenham Numero de Avaliações diferentes?]												";
-            sql += "			,L1.IsSpecificNumberSample       AS [Indicador permite que monitoramentos tenham Numero de Amostras diferentes?]												";
-            sql += "			,L1.IsSpecificLevel3             AS [Indicador permite que unidades tenham tarefas diferentes?]												";
-            sql += "			,L1.IsSpecificGoal               AS [Indicador permite que unidades tenham metas diferentes?]												";
-            sql += "			,L1.IsRuleConformity             AS [Tipo de Não conformidade. (Menor ou maior que a meta)]												    ";
-            sql += "			,L2.Id                           AS [Cód. do Monitoramento]			                                                        									";
-            sql += "			,L2.Name                         AS [Monitoramento]					                                                        							";
-            sql += "			,L2.ParFrequency_Id              AS [Frequencia do Monitoramento]	                                                        											";
-            sql += "			,AV.Number                       AS [Número de Avaliações]			                                                        									";
-            sql += "			,AM.Number                       AS [Número de Amostras]			                                                        									";
-            sql += "			,L3.Id							 AS [Cód. da Tarefa]				                                                                            	";
-            sql += "			,L3.Name                         AS [Tarefa]						                                                        						";
-            sql += "			,P32.Weight                      AS [Peso da Tarefa]				                                                        								";
-            sql += "			,Meta.PercentValue               AS [Meta do indicador]				                                                        								";
-            sql += "															                                                                                            ";
+            sql += "	SELECT									                                                                                                    			";
+            sql += "	(Nivel3) as nivel3                                                                                                                                      ";
+            sql += "	,(Nivel3 / 3) * 2 as nivel2				                                                                                                    			";
+            sql += "	,(Nivel3 / 3) as nivel1					                                                                                                    			";
+            sql += "	FROM									                                                                                                    			";
+            sql += "											                                                                                                    			";
+            sql += "	(										                                                                                                    			";
+            sql += "											                                                                                                    			";
+            sql += "		SELECT								                                                                                                    			";
+            sql += "											                                                                                                    			";
+            sql += "		 [Unidade]							                                                                                                    			";
+            sql += "		,[Cód. do Indicador]				                                                                                                    			";
+            sql += "		,[Indicador]						                                                                                                    			";
+            sql += "		,[Tipo de Consolidação]				                                                                                                    			";
+            sql += "		,CASE 								                                                                                                    			";
+            sql += "			WHEN [Tipo de Consolidação] = 1 THEN SUM([Número de Avaliações] * [Número de Amostras] * [Peso da Tarefa])										";
+            sql += "			WHEN [Tipo de Consolidação] = 3 THEN SUM([Número de Avaliações] * [Número de Amostras])												            ";
+            sql += "			WHEN [Tipo de Consolidação] = 2 THEN SUM([Número de Avaliações] * [Número de Amostras] * [Peso da Tarefa])										";
+            sql += "		 END AS [Volume total de alerta]													                                                                ";
+            sql += "		 ,[Meta do indicador]													                                                                            ";
+            sql += "		 ,CASE 											                                                                                                    ";
+            sql += "			WHEN [Tipo de Consolidação] = 1 THEN SUM([Número de Avaliações] * [Número de Amostras] * [Peso da Tarefa]) * ([Meta do indicador]/100)			";
+            sql += "			WHEN [Tipo de Consolidação] = 3 THEN SUM([Número de Avaliações] * [Número de Amostras]) * ([Meta do indicador]/100)								";
+            sql += "			WHEN [Tipo de Consolidação] = 2 THEN SUM([Número de Avaliações] * [Número de Amostras] * [Peso da Tarefa]) * ([Meta do indicador]/100)			";
+            sql += "		 END AS Nivel3							                                                                                                    		";
+            sql += "												                                                                                                    		";
+            sql += "		FROM 									                                                                                                    		";
+            sql += "												                                                                                                    		";
+            sql += "		(										                                                                                                    		";
+            sql += "												                                                                                                    		";
+            sql += "		SELECT									                                                                                                    		";
+            sql += "												                                                                                                    		";
+            sql += "			 NULL                            AS [Unidade]							                                                        				";
+            sql += "			,L1.Id                           AS [Cód. do Indicador]					                                                        				";
+            sql += "			,L1.Name                         AS [Indicador]							                                                        				";
+            sql += "			,L1.ParConsolidationType_Id      AS [Tipo de Consolidação]				                                                        				";
+            sql += "			,L1.IsSpecific                   AS [Indicador contém valores específicos por unidades?]											    	    ";
+            sql += "			,L1.IsSpecificNumberEvaluetion   AS [Indicador permite que monitoramentos tenham Numero de Avaliações diferentes?]								";
+            sql += "			,L1.IsSpecificNumberSample       AS [Indicador permite que monitoramentos tenham Numero de Amostras diferentes?]								";
+            sql += "			,L1.IsSpecificLevel3             AS [Indicador permite que unidades tenham tarefas diferentes?]												    ";           sql += "			,L1.IsSpecificGoal               AS [Indicador permite que unidades tenham metas diferentes?]												";
+            sql += "			,L1.IsRuleConformity             AS [Tipo de Não conformidade. (Menor ou maior que a meta)]												        ";
+            sql += "			,L2.Id                           AS [Cód. do Monitoramento]			                                                        					";
+            sql += "			,L2.Name                         AS [Monitoramento]					                                                        					";
+            sql += "			,L2.ParFrequency_Id              AS [Frequencia do Monitoramento]	                                                        					";
+            sql += "			,AV.Number                       AS [Número de Avaliações]			                                                        					";
+            sql += "			,AM.Number                       AS [Número de Amostras]			                                                        					";
+            sql += "			,L3.Id							 AS [Cód. da Tarefa]				                                                                            ";
+            sql += "			,L3.Name                         AS [Tarefa]						                                                        					";
+            sql += "			,P32.Weight                      AS [Peso da Tarefa]				                                                        					";
+            sql += "			,Meta.PercentValue               AS [Meta do indicador]				                                                        					";
             sql += "		FROM       ParLevel3Level2Level1 P321						                                                                                    			                                                        				";
-            sql += "		INNER JOIN ParLevel3Level2 P32								                                                                                    			                                                        		";
-            sql += "				ON P32.Id = P321.ParLevel3Level2_Id					                                                                                    						";
-            sql += "		INNER JOIN ParLevel3 L3										                                                                                    			";
-            sql += "				ON L3.Id = P32.ParLevel3_Id							                                                                                    				";
-            sql += "		INNER JOIN ParLevel2 L2										                                                                                    			";
-            sql += "				ON L2.Id = P32.ParLevel2_Id							                                                                                    				";
-            sql += "		INNER JOIN ParEvaluation AV									                                                                                    				";
-            sql += "				ON AV.ParLevel2_Id = L2.Id							                                                                                    				";
-            sql += "		INNER JOIN ParSample AM										                                                                                    			";
-            sql += "				ON AM.ParLevel2_Id = L2.Id							                                                                                    				";
-            sql += "		INNER JOIN ParLevel1 L1										                                                                                                                           			";
-            sql += "				ON L1.Id = P321.ParLevel1_Id						                                                                                                                           					";
-            sql += "		INNER JOIN ParGoal Meta										                                                                                                                           			";
-            sql += "				ON Meta.ParLevel1_Id = L1.Id						                                                                                                                           					";
-            sql += "														                                                                                                                   	";
-            sql += "			 WHERE 1=1											                                                                                                       	";
-            sql += "			   AND P321.ParLevel1_Id  = '" + ParLevel1_Id + "' 		                                                                                       										";
-            sql += "			   AND P32.ParCompany_Id  IS NULL						                                                                                       						";
-            sql += "			   AND AV.ParCompany_Id   IS NULL						                                                                                       						";
-            sql += "			   AND AM.ParCompany_Id   IS NULL						                                                                                       						";
-            sql += "			   AND Meta.ParCompany_Id IS NULL						                                                                                       						";
-            sql += "			   AND P321.Active        = 1							                                                                                       					";
-            sql += "			   AND P32.IsActive       = 1							                                                                                       					";
-            sql += "			   AND L3.IsActive        = 1							                                                                                       					";
-            sql += "			   AND L2.IsActive        = 1							                                                                                       					";
-            sql += "			   AND L1.IsActive        = 1							                                                                                       					";
-            sql += "			   AND AV.IsActive        = 1							                                                                                       					";
-            sql += "			   AND AM.IsActive        = 1							                                                                                       					";
-            sql += "			   AND Meta.IsActive      = 1							                                                                                       					";
-            sql += "												                                                                                                                                   			";
-            sql += "		) V										                                                                                                                       			";
-            sql += "												                                                                                                                       			";
-            sql += "		GROUP BY [Unidade], [Cód. do Indicador], [Indicador], [Tipo de Consolidação], [Meta do indicador]		                                        											";
-            sql += "									                                                                                                                                       						";
-            sql += "	) META_POR_INDICADOR			                                                                                                                                       											";
-
+            sql += "		INNER JOIN ParLevel3Level2 P32								                                                                                  		";
+            sql += "				ON P32.Id = P321.ParLevel3Level2_Id					                                                                   						";
+            sql += "		INNER JOIN ParLevel3 L3										                                                                               			";
+            sql += "				ON L3.Id = P32.ParLevel3_Id							                                                                           				";
+            sql += "		INNER JOIN ParLevel2 L2										                                                                               			";
+            sql += "				ON L2.Id = P32.ParLevel2_Id							                                                                           				";
+            sql += "		INNER JOIN ParEvaluation AV									                                                                           				";
+            sql += "				ON AV.ParLevel2_Id = L2.Id							                                                                           				";
+            sql += "		INNER JOIN ParSample AM										                                                                               			";
+            sql += "				ON AM.ParLevel2_Id = L2.Id							                                                                           				";
+            sql += "		INNER JOIN ParLevel1 L1										                                                                               			";
+            sql += "				ON L1.Id = P321.ParLevel1_Id						                                                                       					";
+            sql += "		INNER JOIN ParGoal Meta										                                                                               			";
+            sql += "				ON Meta.ParLevel1_Id = L1.Id						                                                          	                            ";
+            sql += "														                                                                                         	        ";
+            sql += "			 WHERE 1=1											                                                                             	            ";
+            sql += "			   AND P321.ParLevel1_Id  = '" + ParLevel1_Id + "' 		                                                             							";
+            sql += "			   AND P32.ParCompany_Id  IS NULL						                                                             						    ";
+            sql += "			   AND AV.ParCompany_Id   IS NULL						                                                             						    ";
+            sql += "			   AND AM.ParCompany_Id   IS NULL						                                                            						    ";
+            sql += "			   AND Meta.ParCompany_Id IS NULL						                                                            						    ";
+            sql += "			   AND P321.Active        = 1							                                                            					        ";
+            sql += "			   AND P32.IsActive       = 1							                                                            					        ";
+            sql += "			   AND L3.IsActive        = 1							                                                            					        ";
+            sql += "			   AND L2.IsActive        = 1							                                                            					        ";
+            sql += "			   AND L1.IsActive        = 1							                                                            					        ";
+            sql += "			   AND AV.IsActive        = 1							                                                            					        ";
+            sql += "			   AND AM.IsActive        = 1							                                                            					        ";
+            sql += "			   AND Meta.IsActive      = 1							                                                            					        ";
+            sql += "												                                                                                                 			";
+            sql += "		) V										                                                                                            			    ";
+            sql += "												                                                                                            			    ";
+            sql += "		GROUP BY [Unidade], [Cód. do Indicador], [Indicador], [Tipo de Consolidação], [Meta do indicador]		                    						";
+            sql += "									                                                                                    			            			";
+            sql += "	) META_POR_INDICADOR			                                                                                    						    		";
+                                                                                                                                                                       
 
             var parLevel2List = db.Query<ParLevel1Alertas>(sql).FirstOrDefault();
 
@@ -194,7 +192,7 @@ namespace SGQDBContext
                          "INNER JOIN ParLevel2 PL2                                     " +
                          "ON PL2.Id = P32.ParLevel2_Id                                 " +
                          "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'             " +
-                         " AND PL2.IsActive = 1                                        " +          
+                         " AND PL2.IsActive = 1                                        " +
                          "GROUP BY PL2.Id, PL2.Name                                    ";
 
             var parLevel2List = db.Query<ParLevel2>(sql);
@@ -209,7 +207,7 @@ namespace SGQDBContext
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
         public int Id { get; set; }
-        public string Name {get;set;}
+        public string Name { get; set; }
         public int Evaluate { get; set; }
         //public int? ParCompany_Id { get; set; }
 
@@ -218,27 +216,126 @@ namespace SGQDBContext
 
             SqlConnection db = new SqlConnection(conexao);
             string queryCompany = null;
-            if(ParCompany_Id > 0)
+          
+
+            if (ParLevel1.Id == 2 && ParCompany_Id != null)
             {
-                queryCompany = " AND PE.ParCompany_Id = '" + ParCompany_Id + "'";
+
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
+                             "(SELECT Avaliacoes FROM VolumeCepDesossa WHERE Data = (SELECT MAX(DATA) FROM VolumeCepDesossa WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Evaluate " +
+                             "FROM                                                                        " +
+                             "ParLevel3Level2 P32                                                         " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                                       " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
+                             "INNER JOIN ParLevel2 PL2                                                    " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
+                           
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "GROUP BY PL2.Id, PL2.Name                                                   ";
+
+                var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
+
+
+                return parEvaluate;
+
+
+            }
+            else if (ParLevel1.Id == 22 && ParCompany_Id != null)
+            {
+
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
+                             "(SELECT Avaliacoes FROM VolumeVacuoGRD WHERE Data = (SELECT MAX(DATA) FROM VolumeVacuoGRD WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Evaluate " +
+                             "FROM                                                                        " +
+                             "ParLevel3Level2 P32                                                         " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                                       " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
+                             "INNER JOIN ParLevel2 PL2                                                    " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
+
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "GROUP BY PL2.Id, PL2.Name                                                   ";
+
+                var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
+
+
+                return parEvaluate;
+
+                
+            }
+            else if (ParLevel1.Id == 23 && ParCompany_Id != null)
+            {
+
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
+                             "(SELECT Avaliacoes FROM VolumeCepRecortes WHERE Data = (SELECT MAX(DATA) FROM VolumeCepRecortes WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Evaluate " +
+                             "FROM                                                                        " +
+                             "ParLevel3Level2 P32                                                         " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                                       " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
+                             "INNER JOIN ParLevel2 PL2                                                    " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
+
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "GROUP BY PL2.Id, PL2.Name                                                   ";
+
+                var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
+
+
+                return parEvaluate;
+
+                
+            }
+            else if (ParLevel1.Id == 3 && ParCompany_Id != null)
+            {
+
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
+                             "(SELECT Avaliacoes FROM VolumePcc1b WHERE Data = (SELECT MAX(DATA) FROM VolumePcc1b WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Evaluate " +
+                             "FROM                                                                        " +
+                             "ParLevel3Level2 P32                                                         " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                                       " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
+                             "INNER JOIN ParLevel2 PL2                                                    " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
+
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "GROUP BY PL2.Id, PL2.Name                                                   ";
+
+                var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
+
+
+                return parEvaluate;
+
+
+            }
+            else
+            {
+
+                if (ParCompany_Id > 0)
+                {
+                    queryCompany = " AND PE.ParCompany_Id = '" + ParCompany_Id + "'";
+                }
+
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PE.Number AS Evaluate                " +
+                             "FROM                                                                        " +
+                             "ParLevel3Level2 P32                                                         " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                                       " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
+                             "INNER JOIN ParLevel2 PL2                                                    " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
+                             "INNER JOIN ParEvaluation PE                                                 " +
+                             "ON PE.ParLevel2_Id = PL2.Id                                                 " +
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             queryCompany +
+                             "GROUP BY PL2.Id, PL2.Name, PE.Number                                        ";
+
+                sql = "SELECT 67 AS Id, 'NC Desossa - Alcatra', 50 AS Evaluate";
+
+                var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
+                return parEvaluate;
+
             }
 
-            string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PE.Number AS Evaluate                " +
-                         "FROM                                                                        " +
-                         "ParLevel3Level2 P32                                                         " +
-                         "INNER JOIN ParLevel3Level2Level1 P321                                       " +
-                         "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
-                         "INNER JOIN ParLevel2 PL2                                                    " +
-                         "ON PL2.Id = P32.ParLevel2_Id                                                " +
-                         "INNER JOIN ParEvaluation PE                                                 " +
-                         "ON PE.ParLevel2_Id = PL2.Id                                                 " +
-                         "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id  +"'                            " + 
-                         queryCompany                                                                   +
-                         "GROUP BY PL2.Id, PL2.Name, PE.Number                                        ";
 
-            var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
-
-            return parEvaluate;
+            
         }
 
 
@@ -258,26 +355,119 @@ namespace SGQDBContext
 
             SqlConnection db = new SqlConnection(conexao);
             string queryCompany = null;
-            if (ParCompany_Id > 0)
+
+            if (ParLevel1.Id == 2 && ParCompany_Id != null)
             {
-                queryCompany = " AND PS.ParCompany_Id = '" + ParCompany_Id + "'";
+
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
+                             "(SELECT Amostras FROM VolumeCepDesossa WHERE Data = (SELECT MAX(DATA) FROM VolumeCepDesossa WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Sample " +
+                             "FROM                                                                        " +
+                             "ParLevel3Level2 P32                                                         " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                                       " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
+                             "INNER JOIN ParLevel2 PL2                                                    " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
+
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "GROUP BY PL2.Id, PL2.Name                                                   ";
+
+                var parSample = db.Query<ParLevel2Sample>(sql);
+
+
+                return parSample;
+
+
             }
+            else if (ParLevel1.Id == 22 && ParCompany_Id != null)
+            {
 
-            string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PS.Number AS Sample FROM  " +
-                         "ParLevel3Level2 P32                                              " +
-                         "INNER JOIN ParLevel3Level2Level1 P321                            " +
-                         "ON P321.ParLevel3Level2_Id = P32.Id                              " +
-                         "INNER JOIN ParLevel2 PL2                                         " +
-                         "ON PL2.Id = P32.ParLevel2_Id                                     " +
-                         "INNER JOIN ParSample PS                                          " +
-                         "ON PS.ParLevel2_Id = PL2.Id                                      " +
-                         "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                 " +
-                         queryCompany                                                        +
-                         "GROUP BY PL2.Id, PL2.Name, PS.Number, PS.ParCompany_Id           ";
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
+                             "(SELECT Amostras FROM VolumeVacuoGRD WHERE Data = (SELECT MAX(DATA) FROM VolumeVacuoGRD WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Sample " +
+                             "FROM                                                                        " +
+                             "ParLevel3Level2 P32                                                         " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                                       " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
+                             "INNER JOIN ParLevel2 PL2                                                    " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
 
-            var parSample = db.Query<ParLevel2Sample>(sql);
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "GROUP BY PL2.Id, PL2.Name                                                   ";
 
-            return parSample;
+                var parSample = db.Query<ParLevel2Sample>(sql);
+
+
+                return parSample;
+
+
+            }
+            else if (ParLevel1.Id == 23 && ParCompany_Id != null)
+            {
+
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
+                             "(SELECT Amostras FROM VolumeCepRecortes WHERE Data = (SELECT MAX(DATA) FROM VolumeCepRecortes WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Sample " +
+                             "FROM                                                                        " +
+                             "ParLevel3Level2 P32                                                         " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                                       " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
+                             "INNER JOIN ParLevel2 PL2                                                    " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
+
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "GROUP BY PL2.Id, PL2.Name                                                   ";
+
+                var parSample = db.Query<ParLevel2Sample>(sql);
+
+
+                return parSample;
+
+
+            }
+            else if (ParLevel1.Id == 3 && ParCompany_Id != null)
+            {
+
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
+                             "(SELECT Amostras FROM VolumePcc1b WHERE Data = (SELECT MAX(DATA) FROM VolumePcc1b WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Sample " +
+                             "FROM                                                                        " +
+                             "ParLevel3Level2 P32                                                         " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                                       " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                                         " +
+                             "INNER JOIN ParLevel2 PL2                                                    " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                                " +
+
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             "GROUP BY PL2.Id, PL2.Name                                                   ";
+
+                var parSample = db.Query<ParLevel2Sample>(sql);
+
+
+                return parSample;
+
+
+            }
+            else
+            {
+
+                if (ParCompany_Id > 0)
+                {
+                    queryCompany = " AND PS.ParCompany_Id = '" + ParCompany_Id + "'";
+                }
+
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PS.Number AS Sample FROM  " +
+                             "ParLevel3Level2 P32                                              " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                            " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                              " +
+                             "INNER JOIN ParLevel2 PL2                                         " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                     " +
+                             "INNER JOIN ParSample PS                                          " +
+                             "ON PS.ParLevel2_Id = PL2.Id                                      " +
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                 " +
+                             queryCompany +
+                             "GROUP BY PL2.Id, PL2.Name, PS.Number, PS.ParCompany_Id           ";
+
+                var parSample = db.Query<ParLevel2Sample>(sql);
+
+                return parSample;
+            }
         }
 
 
@@ -339,12 +529,12 @@ namespace SGQDBContext
                          "        ON L2.Id = L32.ParLevel2_Id                                                                                                                                                                                                                                                                                                                         " +
                          "                                                                                                                                                                                                                                                                                                                                                            " +
                          "WHERE  L3.IsActive = 1 AND L32.IsActive = 1                                                                                                                                                                                                                                                                                                                                                    " +
-                         " AND L2.Id = '" +  ParLevel2_Id + "'                                                                                                                                                                                                                                                                                                                             ";
+                         " AND L2.Id = '" + ParLevel2_Id + "'                                                                                                                                                                                                                                                                                                                             ";
 
             var parLevel3List = db.Query<ParLevel3>(sql);
 
             return parLevel3List;
-        }                                                                                                                                                                                                                                                                                                                                                                          
+        }
     }
     public partial class Level2Result
     {
@@ -352,7 +542,7 @@ namespace SGQDBContext
         public int ParLevel2_Id { get; set; }
         public int Unit_Id { get; set; }
         public int Shift { get; set; }
-        public int Period { get; set; }        
+        public int Period { get; set; }
         public DateTime CollectionDate { get; set; }
 
         public int EvaluateLast { get; set; }
@@ -406,7 +596,7 @@ namespace SGQDBContext
                         "   , Shift                                                        " +
                         "   , Period                                                       " +
                         "   , CollectionDate                                               ";
-           
+
             var Level2ResultList = db.Query<Level2Result>(sql);
 
             return Level2ResultList;
@@ -424,18 +614,18 @@ namespace SGQDBContext
         public IEnumerable<ParLevelHeader> getHeaderByLevel1(int ParLevel1_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
-            
+
             string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PT.Id AS ParFieldType_Id FROM ParLevel2XHeaderField PL  " +
                          "LEFT JOIN ParHeaderField PH ON PH.Id = PL.ParHeaderField_Id                                                              " +
                          "LEFT JOIN ParLevelDefiniton PD ON PH.ParLevelDefinition_Id = PD.Id                                                       " +
                          "LEFT JOIN ParFieldType PT ON PH.ParFieldType_Id = PT.Id                                                                  " +
                          "WHERE                                                                                                                    " +
                          "PD.Id = 1 AND                                                                                                            " +
-                         "PL.ParLevel1_Id = "+ ParLevel1_Id + " AND                                                                                " +
+                         "PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                " +
                          "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                  " +
                          "GROUP BY PH.Id, PH.Name, PT.Id;                                                                                          ";
 
-            
+
 
             var parLevel3List = db.Query<ParLevelHeader>(sql);
 
@@ -474,7 +664,7 @@ namespace SGQDBContext
 
 
             string sql = "SELECT Id, Name, PunishmentValue FROM ParMultipleValues                       " +
-                         "WHERE ParHeaderField_Id = '"+ ParHeaderField_Id + "' and IsActive = 1;        ";
+                         "WHERE ParHeaderField_Id = '" + ParHeaderField_Id + "' and IsActive = 1;        ";
 
             var multipleValues = db.Query<ParFieldType>(sql);
 
@@ -494,8 +684,8 @@ namespace SGQDBContext
 
             string sql = "select P.Id, P.Name from ParLevel1VariableProductionXLevel1 PL left join " +
                          "ParLevel1VariableProduction P on P.Id = PL.ParLevel1VariableProduction_Id " +
-                         " where PL.ParLevel1_Id = "+ ParLevel1_Id + "; ";
-            
+                         " where PL.ParLevel1_Id = " + ParLevel1_Id + "; ";
+
             var list = db.Query<ParLevel1VariableProduction>(sql);
 
             return list;
@@ -540,7 +730,7 @@ namespace SGQDBContext
                          "UserSgq U                                                                                                           " +
                          "INNER JOIN ParCompany C ON U.ParCompany_Id = C.Id                                                                   " +
                          "INNER JOIN ParCompanyXUserSgq PxU ON U.Id = PxU.UserSgq_Id                                                          " +
-                         "WHERE U.Name = '" + userLogin + "' AND PxU.ParCompany_Id = C.Id                                                     ";                                                                                                                                               
+                         "WHERE U.Name = '" + userLogin + "' AND PxU.ParCompany_Id = C.Id                                                     ";
 
             var user = db.Query<UserSGQ>(sql).FirstOrDefault();
 
@@ -553,7 +743,7 @@ namespace SGQDBContext
         public string UserSGQ_Name { get; set; }
         public string UserSGQ_Login { get; set; }
         public string UserSGQ_Pass { get; set; }
-       
+
         public string Role { get; set; }
         public int ParCompany_Id { get; set; }
 
@@ -636,7 +826,7 @@ namespace SGQDBContext
             SqlConnection db = new SqlConnection(conexao);
 
             string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
-                         " from CaracteristicaTipificacao CP where LEN(CP.cNrCaracteristica) >= 5 and SUBSTRING(CP.cNrCaracteristica, 1, 3) = '" + id+"';";
+                         " from CaracteristicaTipificacao CP where LEN(CP.cNrCaracteristica) >= 5 and SUBSTRING(CP.cNrCaracteristica, 1, 3) = '" + id + "';";
 
             var list = db.Query<CaracteristicaTipificacao>(sql);
 
@@ -699,5 +889,96 @@ namespace SGQDBContext
 
             return list;
         }
+    }
+
+    public partial class ConsolidationLevel2
+    {
+
+        public int Id { get; set; }
+        public int ConsolidationLevel1_Id { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public DateTime ConsolidationDate { get; set; }
+        public decimal WeiEvaluation { get; set; }
+        public decimal EvaluateTotal { get; set; }
+        public decimal DefectsTotal { get; set; }
+
+        public decimal WeiDefects { get; set; }
+        public int TotalLevel3Evaluation { get; set; }
+        public int TotalLevel3WithDefects { get; set; }
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+
+        public ConsolidationLevel2 getbYConsolidationLevel1(int ConsolidationLevel1_Id, int ParLevel2_Id)
+        {
+
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "SELECT Id, ConsolidationLevel1_Id, ParLevel2_Id, ConsolidationDate, WeiEvaluation, EvaluateTotal, DefectsTotal, WeiDefects, TotalLevel3Evaluation, TotalLevel3WithDefects FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' AND ParLevel2_Id= '" + ParLevel2_Id + "'";
+
+            var consolidationLevel2 = db.Query<ConsolidationLevel2>(sql).LastOrDefault();
+
+            return consolidationLevel2;
+        }
+
+    }
+
+    public partial class CollectionLevel2Consolidation
+    {
+        public int ConsolidationLevel2_Id { get; set; }
+
+        public int ParLevel2_Id { get; set; }
+
+
+        public decimal WeiEvaluationTotal { get; set; }
+       // public decimal EvaluateTotal { get; set; }
+        public decimal DefectsTotal { get; set; }
+        public decimal WeiDefectsTotal { get; set; }
+        public int TotalLevel3Evaluation { get; set; }
+        public int TotalLevel3WithDefects { get; set; }
+
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public CollectionLevel2Consolidation getConsolidation(int ConsolidationLevel2_Id, int ParLevel2_Id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "SELECT ConsolidationLevel2_Id, ParLevel2_Id, SUM(WeiEvaluation) AS [WeiEvaluationTotal], SUM(Defects) AS [DefectsTotal], SUM(WeiDefects) AS[WeiDefectsTotal], SUM(TotalLevel3WithDefects) AS [TotalLevel3WithDefects], SUM(TotalLevel3Evaluation) AS [TotalLevel3Evaluation] " +
+                         "FROM CollectionLevel2 WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND ParLevel2_Id = " + ParLevel2_Id + " " +
+                         "group by ConsolidationLevel2_Id, ParLevel2_Id";
+
+            var consolidationLevel2 = db.Query<CollectionLevel2Consolidation>(sql).FirstOrDefault();
+
+            return consolidationLevel2;
+        }
+
+    }
+    public partial class ConsolidationLevel1XConsolidationLevel2
+    {
+        //public int ParLevel1_Id { get; set; }
+
+        public int EvaluationTotal { get; set; }
+
+        public decimal DefectsTotal { get; set; }
+
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public ConsolidationLevel1XConsolidationLevel2 getConsolidation(int ConsolidationLevel1_Id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            //string sql = "SELECT CL1.ParLevel1_Id, COUNT(CL2.EvaluateTotal) AS EvaluationTotal, SUM(CL2.DefectsTotal) AS DefectsTotal FROM ConsolidationLevel2 CL2 " +
+            //             "INNER JOIN ConsolidationLevel1 CL1 ON CL2.ConsolidationLevel1_Id = CL1.Id " +
+            //             "WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + " " +
+            //             "GROUP BY CL2.ConsolidationLevel1_Id, CL1.ParLevel1_Id";
+
+
+            string sql = "select SUM(EvaluateTotal) AS EvaluationTotal, SUM(DefectsTotal) AS DefectsTotal from ConsolidationLevel2 where ConsolidationLevel1_Id=" + ConsolidationLevel1_Id + "";
+
+            var consolidationLevel1 = db.Query<ConsolidationLevel1XConsolidationLevel2>(sql).FirstOrDefault();
+
+            return consolidationLevel1;
+        }
+
+      
     }
 }
