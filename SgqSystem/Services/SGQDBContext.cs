@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using Dapper;
 using System;
 using System.Linq;
+using Dominio;
 
 namespace SGQDBContext
 {
@@ -181,23 +182,69 @@ namespace SGQDBContext
         {
 
         }
-        public IEnumerable<ParLevel2> getLevel2ByIdLevel1(int ParLevel1_Id)
+        public IEnumerable<ParLevel2> getLevel2ByIdLevel1(int ParLevel1_Id, int ParCompany_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name                        " +
+            bool parLevel1Familia = false;
+
+            using (var dbEf = new SgqDbDevEntities()) {
+          
+                var L2EQuery = from L1 in dbEf.ParLevel1
+                               where L1.Id == ParLevel1_Id
+                               select L1;
+
+                var result = L2EQuery.FirstOrDefault();
+
+                if (result != null)
+                {
+                    parLevel1Familia = result.IsFixedEvaluetionNumber;
+                }
+
+            }
+
+        /****CONTROLE DE FAMÍLIA DE PRODUTOS*****/
+
+            if(parLevel1Familia == true)
+            {
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name                                                             " +
+                             "FROM ParLevel3Level2 P32                                                                          " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                                                             " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                                                               " +
+                             "INNER JOIN ParLevel2 PL2                                                                          " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                                                      " +
+                             "INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL Left Join (SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany group by ParCompany_Id) F1 on f1.data = PL.initDate and (F1.UNIDADE = PL.ParCompany_id or F1.UNIDADE is null))  Familia                                                        " +
+                             "ON Familia.ParLevel2_Id = PL2.Id                                                                  " +
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'                                                  " +
+                             "AND PL2.IsActive = 1                                                                              " +
+                             "AND (Familia.ParCompany_Id = '" + ParCompany_Id + "'  or Familia.ParCompany_Id IS NULL)           " +
+                             "GROUP BY PL2.Id, PL2.Name                                                                         ";
+
+                var parLevel2List = db.Query<ParLevel2>(sql);
+
+                return parLevel2List;
+
+            } 
+            else
+            {
+
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name                        " +
                          "FROM ParLevel3Level2 P32                                     " +
                          "INNER JOIN ParLevel3Level2Level1 P321                        " +
                          "ON P321.ParLevel3Level2_Id = P32.Id                          " +
                          "INNER JOIN ParLevel2 PL2                                     " +
                          "ON PL2.Id = P32.ParLevel2_Id                                 " +
                          "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'             " +
-                         " AND PL2.IsActive = 1                                        " +
+                         "AND PL2.IsActive = 1                                         " +
                          "GROUP BY PL2.Id, PL2.Name                                    ";
 
-            var parLevel2List = db.Query<ParLevel2>(sql);
+                var parLevel2List = db.Query<ParLevel2>(sql);
 
-            return parLevel2List;
+                return parLevel2List;
+
+            }
+
+            
 
 
         }
