@@ -311,6 +311,7 @@
     <Compile Include="Controllers\GestaoController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
+    <Compile Include="Controllers\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
     <Compile Include="Controllers\GlobalConfigController.cs" />
@@ -1256,6 +1257,7 @@
     <Folder Include="DataCollect\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
+    <Folder Include="Views\RelatoriosSgq\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>
