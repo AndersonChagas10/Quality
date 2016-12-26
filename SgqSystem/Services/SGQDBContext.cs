@@ -850,7 +850,7 @@ namespace SGQDBContext
             SqlConnection db = new SqlConnection(conexao);
 
             string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
-                         " from AreasParticipantes CP where cNrCaracteristica == "+ ncdcaracteristica;
+                         " from CaracteristicaTipificacao CP where cNrCaracteristica = " + ncdcaracteristica;
 
             var list = db.Query<CaracteristicaTipificacao>(sql);
 

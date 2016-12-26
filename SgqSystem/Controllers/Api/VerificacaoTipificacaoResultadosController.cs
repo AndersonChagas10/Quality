@@ -25,8 +25,8 @@ namespace SgqSystem.Controllers.Api
         {
             using (var db = new SGQ_GlobalEntities())
             {
-                db.Database.ExecuteSqlCommand("INSERT INTO VerificacaoTipificacaoResultados(TarefaId, CaracteristicaTipificacaoId, Chave, AreasParticipantesId) values (" +
-                    vtr.TarefaId + ", " + vtr.CaracteristicaTipificacaoId + ", " + vtr.Chave + ", " + vtr.AreasParticipantesId + ");");
+                //cdb.Database.ExecuteSqlCommand("INSERT INTO VerificacaoTipificacaoResultados(TarefaId, CaracteristicaTipificacaoId, Chave, AreasParticipantesId) VALUES ('" + vtr.TarefaId + "', " + vtr.CaracteristicaTipificacaoId + ", '" + vtr.Chave + "', " + vtr.AreasParticipantesId + ");");
+                db.Database.ExecuteSqlCommand("INSERT INTO VerificacaoTipificacaoResultados(TarefaId, CaracteristicaTipificacaoId, Chave) VALUES ('" + vtr.TarefaId + "', " + vtr.CaracteristicaTipificacaoId + ", '" + vtr.Chave + "');");
             }
         }
     }
