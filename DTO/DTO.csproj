@@ -119,6 +119,7 @@
     <Compile Include="DTO\Params\ParLevelDefinitonDTO.cs" />
     <Compile Include="DTO\Params\ParStructureDTO.cs" />
     <Compile Include="DTO\Params\ParStructureGroupDTO.cs" />
+    <Compile Include="DTO\ParCompanyXUserSgqDTO.cs" />
     <Compile Include="DTO\PeriodDTO.cs" />
     <Compile Include="DTO\ExampleDTO.cs" />
     <Compile Include="DTO\Params\ParClusterDTO.cs" />

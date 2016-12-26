@@ -12,6 +12,7 @@ namespace SgqSystem.Mappers
             {
                 x.AddProfile<CorrectiveActionMapperProfile>();
                 x.AddProfile<UserMapperProfile>();
+                x.AddProfile<ParCompanyXUserSgqMapperProfile>();
                 x.AddProfile<ConsolidationLevel01MapperProfile>();
                 x.AddProfile<ConsolidationLevel02MapperProfile>();
                 x.AddProfile<CollectionLevel02MapperProfile>();

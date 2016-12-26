@@ -19,8 +19,6 @@ namespace DTO.DTO.Params
         [Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar a frequencia.")]
         public int ParFrequency_Id { get; set; }
 
-       
-
         //[Display(Name = "level1_name", ResourceType = typeof(Resource))]
         //[Required(ErrorMessage = "O Nome deverá ter no mínimo 3 e máximo 10 caracteres.")]
         [MinLength(3, ErrorMessage = "O tamanho mínimo do Nome são 3 caracteres.")]
@@ -75,8 +73,6 @@ namespace DTO.DTO.Params
         //[Display(Name = "?IsActive ", ResourceType = typeof(Resource))]
         public bool IsActive { get; set; } = true;
 
-        public Nullable<int> Level2NaoCorporativosNumber { get; set; }
-        public List<int> listLevel2Corporativos { get; set; }
         public List<ParLevel2ControlCompanyDTO> listLevel2CorporativosObj { get; set; }
 
         public ParFrequencyDTO parFrequencyDto { get; set; }
@@ -88,7 +84,7 @@ namespace DTO.DTO.Params
         #region Props utilizadas para alteração
 
         public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }
-        public List<int> removerParHeaderField { get; set; }
+        
         public List<ParCounterXLocalDTO> contadoresIncluidos { get; set; }
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
 
@@ -135,15 +131,15 @@ namespace DTO.DTO.Params
 
         #endregion
 
-        public ParLevel2ControlCompanyDTO createParLevel2ControlCompany(int? level2Id, int? companyId = null, int? level1Id = null)
-        {
-            var parLevel2ControlCompany = new ParLevel2ControlCompanyDTO();
-            parLevel2ControlCompany.ParCompany_Id = null;
-            parLevel2ControlCompany.ParLevel1_Id = null;
-            parLevel2ControlCompany.ParLevel2_Id = level2Id;
-            parLevel2ControlCompany.InitDate = DateTime.Now;
-            parLevel2ControlCompany.IsActive = true;
-            return parLevel2ControlCompany;
-        }
+        #region Control Company 
+
+        public List<int> removerParHeaderField { get; set; }
+        public List<int> listLevel2Corporativos { get; set; }
+        public List<int> level2PorCompany { get; set; }
+        public Nullable<int> level2Number { get; set; }
+        public Nullable<int> CompanyControl_Id { get; set; }
+        
+        #endregion
+
     }
 }

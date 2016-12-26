@@ -16,7 +16,7 @@ namespace SgqSystem.Controllers
         {
             using (var db = new FactoryADO(@"SERVERGRT\MSSQLSERVER2014", "SgqDbDev", "1qazmko0", "sa"))
             {
-               var results = db.ExecuteQuery<UserSgq>("Select * from UserSgq");
+               var results = db.SearchQuery<UserSgq>("Select * from UserSgq");
             }
 
             ContextExampleViewModel pvm = new ContextExampleViewModel();

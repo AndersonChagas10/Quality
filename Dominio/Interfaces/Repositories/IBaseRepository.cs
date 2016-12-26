@@ -49,5 +49,7 @@ namespace Dominio.Interfaces.Repositories
         void Dispose();
 
         void Dettach(T obj);
+
+        int ExecuteSql(string v);
     }
 }

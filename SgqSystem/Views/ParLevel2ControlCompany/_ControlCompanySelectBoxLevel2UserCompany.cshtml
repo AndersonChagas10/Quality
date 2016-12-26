@@ -1,8 +1,37 @@
-﻿@Html.DropDownList("level2UserCompany", new SelectList(ViewBag.level2UserCompany, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%", @multiple = "multiple" })
+﻿@using SgqSystem.Helpers
+@{
+    var leve2Number = 0;
+    if (ViewBag.level2Number != null)
+    {
+        leve2Number = ViewBag.level2Number;
+    }
+}
+
+<tr class="row">
+    <td>
+        @Html.Label("Monitoramentos da Empresa:")
+    </td>
+    <td>
+        @Html.DropDownList("level2SelecionadoPorCompany", new SelectList(ViewBag.level2DisponivelParaEmpresa, "Id", "Name"), new { @class = "form-control select2", style = "width: 100%", @multiple = "multiple" })
+    </td>
+</tr>
 
 <script>
+
+    var level2SelectedCoorp = @Html.Raw(Json.Encode(ViewBag.level2ComporativoIds));
+    var level2SelecionadosParaEmpresaIds = @Html.Raw(Json.Encode(ViewBag.level2SelecionadosParaEmpresaIds));
+
     $(document).ready(function () {
         loadSelect2();
-        $('#level2UserCompany').select2({ allowClear: true, placeholder: "" })
+        var max = @Html.Raw(Json.Encode(leve2Number));
+
+        $('#level2SelecionadoPorCompany').select2({ allowClear: true, placeholder: "Selecione..." , maximumSelectionLength: max })
+
+        if(level2SelecionadosParaEmpresaIds  != null)
+            $('#level2SelecionadoPorCompany').val(level2SelecionadosParaEmpresaIds).change();
+
+        //$('#level2UserCompany').attr("disabled", true);
+        //$('#level2UserCompany').attr("disabled", true);
+        //$('#level2UserCompany').attr("disabled", true);
     });
 </script>
