@@ -221,7 +221,24 @@
     });
 
     $('#AmostraPorDia, #QtdadeFamiliaProduto').on('input', function () {
-        $('#Amostras').val($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val());
+        $('#Amostras').val(Math.ceil($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()));
+    });
+
+    $('#HorasTrabalhadasPorDia, #QtdadeMediaKgRecProdDia').on('input', function () {
+        $('#QtdadeMediaKgRecProdHora').val(Math.ceil($('#QtdadeMediaKgRecProdDia').val() / $('#HorasTrabalhadasPorDia').val()));
+    });
+
+    $('#QtdadeMediaKgRecProdHora, #NBR').on('input', function () {
+        $('#TotalKgAvaliaHoraProd').val(Math.ceil($('#QtdadeMediaKgRecProdHora').val() * $('#NBR').val()));
+    });
+
+    $('#QtadeTrabEsteiraRecortes, #TotalKgAvaliaHoraProd').on('input', function () {
+        $('#TotalAvaliaColaborEsteirHoraProd').val(Math.ceil($('#TotalKgAvaliaHoraProd').val() / $('#QtadeTrabEsteiraRecortes').val()));
+    });
+
+    $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('input', function () {
+        $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+        $('#Amostras').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
     });
 
     $('#Data').daterangepicker({
@@ -231,8 +248,30 @@
 
     $(document).ready(function () {
 
-        $('#Avaliacoes').val($('#HorasTrabalhadasPorDia').val());
-        $('#Amostras').val($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val());
+        $('#HorasTrabalhadasPorDia').on('input', function () {
+            $('#Avaliacoes').val($(this).val());
+        });
+
+        $('#AmostraPorDia, #QtdadeFamiliaProduto').on('input', function () {
+            $('#Amostras').val(Math.ceil($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()));
+        });
+
+        $('#HorasTrabalhadasPorDia, #QtdadeMediaKgRecProdDia').on('input', function () {
+            $('#QtdadeMediaKgRecProdHora').val(Math.ceil($('#QtdadeMediaKgRecProdDia').val() / $('#HorasTrabalhadasPorDia').val()));
+        });
+
+        $('#QtdadeMediaKgRecProdHora, #NBR').on('input', function () {
+            $('#TotalKgAvaliaHoraProd').val(Math.ceil($('#QtdadeMediaKgRecProdHora').val() * $('#NBR').val()));
+        });
+
+        $('#QtadeTrabEsteiraRecortes, #TotalKgAvaliaHoraProd').on('input', function () {
+            $('#TotalAvaliaColaborEsteirHoraProd').val(Math.ceil($('#TotalKgAvaliaHoraProd').val() / $('#QtadeTrabEsteiraRecortes').val()));
+        });
+
+        $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('input', function () {
+            $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+            $('#Amostras').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+        });
 
     });
 

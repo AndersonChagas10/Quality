@@ -2001,13 +2001,16 @@ namespace SgqSystem.Services
         #endregion
         #region App
         [WebMethod]
-        public string getAPP()
+        public string getAPP(int ParCompany_Id)
         {
+
+            //int ParCompany_Id = 1;
+
             var html = new Html();
 
             string login = GetLoginAPP();
 
-            string APPMain = getAPPMain();
+            string APPMain = getAPPMain(ParCompany_Id); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
@@ -2056,7 +2059,7 @@ namespace SgqSystem.Services
             return sample;
         }
 
-        public string getAPPMain()
+        public string getAPPMain(int ParCompany_IdOut)
         {
             var html = new Html();
 
@@ -2065,7 +2068,7 @@ namespace SgqSystem.Services
             string container = html.div(
 
                                          outerhtml: breadCrumb +
-                                                    GetLevel01(ParCompany_Id: 1,
+                                                    GetLevel01(ParCompany_Id: ParCompany_IdOut,                     /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
                                                                dataCollect: DateTime.Now)
 
                                         , classe: "container");
@@ -3167,7 +3170,7 @@ namespace SgqSystem.Services
             {
                 classInput = " interval";
                 labels = html.div(
-                                           outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                           outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
                                            classe: "font10",
                                            style: "font-size: 11px; margin-top:7px;"
                                        );
