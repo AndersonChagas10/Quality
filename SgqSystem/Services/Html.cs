@@ -380,7 +380,8 @@ namespace SgqSystem.Services
             return link(
                            id: id,
                            classe: "level2" + classe,
-                           tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\"",
+                          // tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\"",
+                           tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" weievaluation=\"0\" evaluatetotal=\"0\" defectstotal=\"0\" weidefects=\"0\" totallevel3evaluation=\"0\" totallevel3withdefects=\"0\"",
                            outerhtml: span(outerhtml: label, classe: "levelName")
                        );
         }
