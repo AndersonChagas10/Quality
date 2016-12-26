@@ -6,18 +6,21 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using SgqSystem.Controllers;
+using SgqSystem.Handlres;
 
 namespace SgqSystem.Controllers.Api
 {
+
+    [HandleApi()]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/NQA")]
 
     public class NQAController : ApiController
     {
 
-        [HttpPost]
-        [Route("getNQA")]
-        public int getNQA(int nivel, int tamanhoLote)
+        [HttpGet]
+        [Route("getNQA/{nivel}/{tamanhoLote}")]
+        public int getNQA(string nivel, string tamanhoLote)
         {
             return CepRecortesController.getNQA(1, 1);
         }
