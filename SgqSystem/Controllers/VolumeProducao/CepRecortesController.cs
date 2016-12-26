@@ -3,16 +3,37 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Dominio;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
+using System;
 
 namespace SgqSystem.Controllers
 {
     public class CepRecortesController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
+        private IObjectContextAdapter ctx;
 
-        public static int getNQA(int nivel, int tamanhoLote)
+        public int getNQA(string nivel, string tamanhoLote)
         {
-            return 10;
+
+            int amostra = 0;
+
+            int loteInt = Int32.Parse(tamanhoLote);
+            var L2EQuery = from nqa in db.NQA
+                           where nqa.NivelGeralInspecao.ToString() == nivel
+                           where loteInt >= nqa.TamanhoLoteMin
+                           where loteInt <= nqa.TamanhoLoteMax
+                           select nqa;
+
+            var result = L2EQuery.FirstOrDefault();
+
+            if (result != null)
+            {
+                amostra = result.Amostra;
+            }
+
+            return amostra ;
         }
 
         // GET: CepRecortes
