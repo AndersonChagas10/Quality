@@ -274,7 +274,7 @@ namespace SgqSystem.Services
                 string defects = result[37];
                 string totallevel3withdefects = result[38];
                 string totalLevel2Evaluation = result[39];
-
+                //string alertaAtual = result[40];
 
                 //Gera o Cabeçalho do Level02
                 string level02HeaderJSon = result[13];
@@ -296,6 +296,7 @@ namespace SgqSystem.Services
                 level02HeaderJSon += ";" + defects;
                 level02HeaderJSon += ";" + totallevel3withdefects;
                 level02HeaderJSon += ";" + totalLevel2Evaluation;
+                //level02HeaderJSon += ";" + alertaAtual;
 
                 //Verifica o Resultado do Level03
                 string level03ResultJson = result[22];
@@ -583,6 +584,7 @@ namespace SgqSystem.Services
                                 string defects = arrayHeader[16];
                                 string totallevel3withdefects = arrayHeader[17];
                                 string totalLevel3evaluation = arrayHeader[18];
+                                string alertaAtual = arrayHeader[19]; 
 
                                 int CollectionLevel2Id = InsertCollectionLevel2(ConsolidationLevel2, level01, level02, unitId, AuditorId, shift, period, Phase, Reaudit, reauditNumber, level02CollectionDate,
                                                                                 StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit,

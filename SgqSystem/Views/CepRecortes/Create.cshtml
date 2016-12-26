@@ -127,9 +127,16 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.NBR, "NBR - Nível Geral de Inspeção Escolhido", htmlAttributes: new { @class = "control -label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.NBR, new { htmlAttributes = new { @class = "form-control" } })
+                                                <select id="NBR" name="NBR" class="form-control valid">
+                                                    <option value="-1">Selecione...</option>
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>                                           
+                                                </select>
+                                               
+                                                @*@Html.EditorFor(model => model.NBR, new { htmlAttributes = new { @class = "form-control" } })*@
                                                 @Html.ValidationMessageFor(model => model.NBR, "", new { @class = "text-danger" })
-                                                <input type="button" value="Teste" class="btn btn-default" onclick="alert()" />
+
                                             </div>
                                         </div>
 
@@ -232,8 +239,15 @@
     });
 
     $('#QtdadeMediaKgRecProdHora, #NBR').on('input', function () {
-        $('#TotalKgAvaliaHoraProd').val(Math.ceil($('#QtdadeMediaKgRecProdHora').val() * $('#NBR').val()));
-        $('#TotalKgAvaliaHoraProdHidden').val(Math.ceil($('#QtdadeMediaKgRecProdHora').val() * $('#NBR').val()));
+
+        $.get("../api/NQA/getNQA/" + $('#NBR').val() + "/" + $('#QtdadeMediaKgRecProdHora').val() + "", function (r) {
+            console.log(r);
+
+            $('#TotalKgAvaliaHoraProd').val(r);
+            $('#TotalKgAvaliaHoraProdHidden').val(r);
+
+        });
+
     });
 
     $('#QtadeTrabEsteiraRecortes, #TotalKgAvaliaHoraProd').on('input', function () {
@@ -248,7 +262,10 @@
         $('#amostraHidden').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
     });
 
-    
+    $('#btnTeste').click(function (e) {
+        
+
+    });
 
      
 

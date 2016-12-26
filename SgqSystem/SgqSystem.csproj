@@ -303,6 +303,7 @@
     <Compile Include="Controllers\Api\LanguageController.cs" />
     <Compile Include="Controllers\Api\Login\LoginController.cs" />
     <Compile Include="Controllers\Api\NewSync\NewSyncController.cs" />
+    <Compile Include="Controllers\Api\NQAController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Api\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Api\PCC1BController.cs" />
