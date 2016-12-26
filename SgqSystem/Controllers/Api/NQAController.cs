@@ -22,7 +22,8 @@ namespace SgqSystem.Controllers.Api
         [Route("getNQA/{nivel}/{tamanhoLote}")]
         public int getNQA(string nivel, string tamanhoLote)
         {
-            return CepRecortesController.getNQA(1, 1);
+            var obj = new CepRecortesController();
+            return obj.getNQA(nivel, tamanhoLote);
         }
 
     }
