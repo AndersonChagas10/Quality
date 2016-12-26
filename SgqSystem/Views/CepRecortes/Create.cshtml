@@ -129,7 +129,7 @@
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.NBR, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.NBR, "", new { @class = "text-danger" })
-                                                <input type="button" value="Teste" class="btn btn-default" onclick="alert()" />
+                                                <input type="button" value="Teste" class="btn btn-default" onclick="alert()" id="btnTeste"/>
                                             </div>
                                         </div>
 
@@ -216,6 +216,26 @@
     <!-- END CONTENT BODY -->
 </div>
 <script>
+
+    $('#btnTeste').click(function (e) {
+
+        $.ajax({
+            type: 'POST'
+            , url: 'api/NQA/getNQA'
+            , contentType: 'application/json; charset=utf-8'
+            , dataType: 'json'
+            , data: '{nivel: 1, tamanhoLote: 1}'
+            , async: true
+            , error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //createLog(XMLHttpRequest.responseText);
+                console.log(XMLHttpRequest.responseText);
+            }
+            , success: function(){
+                alert("teste ok");
+            }
+        });
+
+    });
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
