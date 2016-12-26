@@ -1,66 +1,140 @@
-﻿@{
+﻿@using SgqSystem.Helpers
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    //Layout = null;
     var urlSend = Url.Action("Save", "api/ParLevel2ControlCompany"); //URL relativa
     var urlChangeLevel2 = Url.Action("ChangeLevel2", "ParLevel2ControlCompany"); //URL relativa
     var urlChangeLevel2UserCompany = Url.Action("ChangeLevel2UserCompany", "ParLevel2ControlCompany"); //URL relativa
 }
 
-<h2>Index</h2>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title tabbable-line">
+                <div class="caption">
+                    <i class="icon-share font-dark"></i>
+                    <span class="caption-subject font-dark bold uppercase">Familias</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="setup_tab">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                @*<button class="btn btn-primary btn-block" id="btnNewLevel1">FAMILIAS</button>*@
+                            </div>
+                            <div class="col-xs-9">
 
-@if (true)
-{
-    @Html.DropDownList("level1", new SelectList(ViewBag.ParLevel1, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })
-    
-    <div id="selectLevel2">
-        @Html.Partial("_ControlCompanySelectBoxLevel2")
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <table class="table-erp" id="tblFamilia">
+                                            <tbody>
+                                              
+                                                   
+                                                    
+                                                        <tr class="row">
+                                                            <td>@Html.Label("Empresa:")</td>
+                                                            <td>@Html.DropDownList("company", new SelectList(ViewBag.company, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
+                                                        </tr>
+
+                                                        <tr class="row">
+                                                            <td>@Html.Label("Indicador:")</td>
+                                                            <td>@Html.DropDownList("level1", new SelectList(ViewBag.ParLevel1, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
+                                                        </tr>
+                                                
+                                                        @Html.Partial("_ControlCompanySelectBoxLevel2")
+                                                   
+                                                        @Html.Partial("_ControlCompanySelectBoxLevel2UserCompany")
+                                            </tbody>
+                                        </table>
+                                        <button class='btn btn-primary btn-sm' type='button' id='send' onclick='send();'>Enviar</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    @Html.Label("Numero de level 2 nao corporativo:")
-    @Html.TextBox("level2Number")
-    <button id="send" onclick="send()">Enviar</button>
-}
-
-@if (true)
+</div>
+@if (HttpContext.Current.Request.Cookies["webControlCookie"].Values["roles"].ToString().ToLower().Contains("admin"))
 {
-    @Html.DropDownList("level1UserCompany", new SelectList(ViewBag.ParLevel1, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })
-    <div id="selectLevel2UserCompany">
-        @Html.Partial("_ControlCompanySelectBoxLevel2UserCompany")
-    </div>
+    <script>
+        function selectLevel2() {
+            var id = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;
+            $.post(urlChangeLevel2, { "id": id }, function (r) {
+                $('#level2Number').val('');
+                $('#tblFamilia > tbody > tr')[2].remove();
+                $('#tblFamilia > tbody > tr')[2].remove();
+                $($('#tblFamilia > tbody > tr')[2]).prev().after(r)
+            });
+        }
+        $(document).ready(function () {
+            $('#company').parents('tr').hide();
+            $('#level2SelecionadoPorCompany').parents('tr').hide();
+        });
+    </script>
 }
-
+else
+{
+    <script>
+       
+        function selectLevel2() {
+            var id = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;
+            var idComp = $('#company :selected').val() > 0 ? $('#company :selected').val() : 0;
+            $.post(urlChangeLevel2UserCompany, { "id": id, "companyId": idComp }, function (r) {
+                $('#tblFamilia > tbody > tr')[4].remove();
+                $('#tblFamilia > tbody').append(r);
+                var id2 = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;
+                $.post(urlChangeLevel2, { "id": id2 }, function (r) {
+                    $('#level2Number').val('');
+                    $('#tblFamilia > tbody > tr')[2].remove();
+                    $('#tblFamilia > tbody > tr')[2].remove();
+                    $($('#tblFamilia > tbody > tr')[2]).prev().after(r)
+                    $('#level2').attr('disabled', true);
+                    $('#level2Number').attr('disabled', true);
+                });
+            });
+        }
+        $(document).ready(function () {
+            $('#level2').parents('tr').hide();
+            $('#level2Number').parents('tr').hide();
+            //$('#level2Number').attr("disabled", true);
+        });
+    </script>
+}
 
 <script>
 
+    var formOriginal = $('#tblFamilia > tbody').clone();
     var urlSend = '@Html.Raw(@urlSend)';
     var urlChangeLevel2 = '@Html.Raw(@urlChangeLevel2)';
     var urlChangeLevel2UserCompany = '@Html.Raw(@urlChangeLevel2UserCompany)';
-
-    function selectLevel2() {
-        $.post(urlChangeLevel2, { "id": $('#level1 :selected').val() }, function (r) {
-            $('#level2Number').val('');
-            $('#selectLevel2').empty().append(r);
-        });
-    }
-
-    function selectLevel2UserCompany() {
-        $.post(urlChangeLevel2UserCompany, { "id": $('#level1UserCompany :selected').val() }, function (r) {
-            $('#selectLevel2UserCompany').empty().append(r);
-        });
-    }
-
+   
     function send() {
         var data = {};
         data["listLevel2Corporativos"] = $('#level2').val();
-        data["Level2NaoCorporativosNumber"] = $('#level2Number').val();
+        data["Id"] = $('#level1 :selected').val();
+        data["level2Number"] = $('#level2Number').val();
+        data["level2PorCompany"] = $('#level2SelecionadoPorCompany').val();
+        data["CompanyControl_Id"] = $('#company :selected').val();
+        if (data["Id"] == undefined)
+            data["Id"] = $("#company :selected").val();
+        
         $.post(urlSend, data, function (r) { });
     }
 
     $(document).ready(function () {
         loadSelect2();
         $('#level1').on('change', selectLevel2)
-        $('#level1UserCompany').on('change', selectLevel2UserCompany)
+        $('#company').on('change', function () { 
+            if ($('#level1').val() > 0) {
+                selectLevel2();
+            }
+        });
         $('#level1').select2()
         $('#level2').select2({ allowClear: true, placeholder: "" })
     })

@@ -71,7 +71,7 @@ namespace SgqSystem
                       "~/Content/bootstrap-theme.min.css.map"));
 
             bundles.Add(new StyleBundle("~/Content/select2css").Include(
-                   "~/Content/select2.min.css"));
+                   "~/Content/css/select2.min.css"));
 
 
             bundles.Add(new StyleBundle("~/Content/Tables").Include(

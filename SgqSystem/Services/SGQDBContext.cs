@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using Dapper;
 using System;
 using System.Linq;
+using Dominio;
 
 namespace SGQDBContext
 {
@@ -181,23 +182,69 @@ namespace SGQDBContext
         {
 
         }
-        public IEnumerable<ParLevel2> getLevel2ByIdLevel1(int ParLevel1_Id)
+        public IEnumerable<ParLevel2> getLevel2ByIdLevel1(int ParLevel1_Id, int ParCompany_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name                        " +
+            bool parLevel1Familia = false;
+
+            using (var dbEf = new SgqDbDevEntities()) {
+          
+                var L2EQuery = from L1 in dbEf.ParLevel1
+                               where L1.Id == ParLevel1_Id
+                               select L1;
+
+                var result = L2EQuery.FirstOrDefault();
+
+                if (result != null)
+                {
+                    parLevel1Familia = result.IsFixedEvaluetionNumber;
+                }
+
+            }
+
+        /****CONTROLE DE FAMÍLIA DE PRODUTOS*****/
+
+            if(parLevel1Familia == true)
+            {
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name                                                             " +
+                             "FROM ParLevel3Level2 P32                                                                          " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                                                             " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                                                               " +
+                             "INNER JOIN ParLevel2 PL2                                                                          " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                                                      " +
+                             "INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL Left Join (SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany group by ParCompany_Id) F1 on f1.data = PL.initDate and (F1.UNIDADE = PL.ParCompany_id or F1.UNIDADE is null))  Familia                                                        " +
+                             "ON Familia.ParLevel2_Id = PL2.Id                                                                  " +
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'                                                  " +
+                             "AND PL2.IsActive = 1                                                                              " +
+                             "AND (Familia.ParCompany_Id = '" + ParCompany_Id + "'  or Familia.ParCompany_Id IS NULL)           " +
+                             "GROUP BY PL2.Id, PL2.Name                                                                         ";
+
+                var parLevel2List = db.Query<ParLevel2>(sql);
+
+                return parLevel2List;
+
+            } 
+            else
+            {
+
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name                        " +
                          "FROM ParLevel3Level2 P32                                     " +
                          "INNER JOIN ParLevel3Level2Level1 P321                        " +
                          "ON P321.ParLevel3Level2_Id = P32.Id                          " +
                          "INNER JOIN ParLevel2 PL2                                     " +
                          "ON PL2.Id = P32.ParLevel2_Id                                 " +
                          "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'             " +
-                         " AND PL2.IsActive = 1                                        " +
+                         "AND PL2.IsActive = 1                                         " +
                          "GROUP BY PL2.Id, PL2.Name                                    ";
 
-            var parLevel2List = db.Query<ParLevel2>(sql);
+                var parLevel2List = db.Query<ParLevel2>(sql);
 
-            return parLevel2List;
+                return parLevel2List;
+
+            }
+
+            
 
 
         }
@@ -544,9 +591,9 @@ namespace SGQDBContext
         public int Shift { get; set; }
         public int Period { get; set; }
         public DateTime CollectionDate { get; set; }
-
         public int EvaluateLast { get; set; }
         public int SampleLast { get; set; }
+        public int ConsolidationLevel2_Id { get; set; }
 
         public IEnumerable<Level2Result> getList(string UnidadeId)
         {
@@ -562,6 +609,7 @@ namespace SGQDBContext
                         "    , CollectionDate                                              " +
                         "    ,max(EvaluationNumber) as EvaluateLast                        " +
                         "    ,max(Sample) as SampleLast                                    " +
+                        "    ,max(ConsolidationLevel2_Id)AS ConsolidationLevel2_Id         " +
                         "   FROM                                                           " +
                         "   (                                                              " +
                         "    SELECT                                                        " +
@@ -574,6 +622,7 @@ namespace SGQDBContext
                         "    , convert(date, CollectionDate) as CollectionDate             " +
                         "    , EvaluationNumber                                            " +
                         "    , max(Sample) as Sample                                       " +
+                        "    , max(ConsolidationLevel2_Id)AS ConsolidationLevel2_Id        " +
                         "                                                                  " +
                         "    FROM CollectionLevel2                                         " +
                         "                                                                  " +
@@ -587,6 +636,7 @@ namespace SGQDBContext
                         "    , Period                                                      " +
                         "    , convert(date, CollectionDate)                               " +
                         "    , EvaluationNumber                                            " +
+                        "    , ConsolidationLevel2_Id                                      " +
                         "   ) ultimas_amostras                                             " +
                         "                                                                  " +
                         "   group by                                                       " +
@@ -595,7 +645,8 @@ namespace SGQDBContext
                         "   , UnitId                                                       " +
                         "   , Shift                                                        " +
                         "   , Period                                                       " +
-                        "   , CollectionDate                                               ";
+                        "   , CollectionDate                                               " +
+                        "   ,ConsolidationLevel2_Id                                        ";
 
             var Level2ResultList = db.Query<Level2Result>(sql);
 
@@ -603,6 +654,49 @@ namespace SGQDBContext
 
         }
     }
+    public partial class ConsolidationResultL1L2
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public int AlertLevelL1 { get; set; }
+        public decimal WeiEvaluationL1 { get; set; }
+        public decimal EvaluateTotalL1 { get; set; }
+        public decimal DefectsTotalL1 { get; set; }
+        public decimal WeiDefectsL1 { get; set; }
+        public decimal TotalLevel3EvaluationL1 { get; set; }
+        public decimal TotalLevel3WithDefectsL1 { get; set; }
+        public int LastEvaluationAlertL1 { get; set; }
+
+
+        public int AlertLevelL2 { get; set; }
+
+        public decimal WeiEvaluationL2 { get; set; }
+        public decimal DefectsL2 { get; set; }
+        public decimal WeiDefectsL2 { get; set; }
+        public int TotalLevel3WithDefectsL2 { get; set; }
+        public int TotalLevel3EvaluationL2 { get; set; }
+
+
+
+        public ConsolidationResultL1L2 getConsolidation(int ParLevel2_Id, int ParCompany_Id)
+        {
+
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "SELECT " +
+                         "CDL1.AtualAlert AS AlertLevelL1, CDL1.WeiEvaluation AS WeiEvaluationL1, CDL1.EvaluateTotal AS EvaluateTotalL1, CDL1.DefectsTotal AS DefectsTotalL1, CDL1.WeiDefects AS WeiDefectsL1, CDL1.TotalLevel3Evaluation AS TotalLevel3EvaluationL1, CDL1.TotalLevel3WithDefects AS TotalLevel3WithDefectsL1, CDL1.LastEvaluationAlert AS LastEvaluationAlertL1, " +
+                         "CDL2.AlertLevel AS AlertLevelL2, CDL2.WeiEvaluation AS WeiEvaluationL2, CDL2.DefectsTotal AS DefectsL2, CDL2.WeiDefects AS WeiDefectsL2, CDL2.TotalLevel3WithDefects AS TotalLevel3WithDefectsL2, CDL2.TotalLevel3Evaluation AS TotalLevel3EvaluationL2 " +
+                         "FROM ConsolidationLevel2 AS CDL2 " +
+                         "INNER JOIN " +
+                         "ConsolidationLevel1 AS CDL1 ON CDL2.ConsolidationLevel1_Id = CDL1.Id " +
+                         "WHERE(CDL2.ParLevel2_Id = " + ParLevel2_Id + ") AND (CDL1.UnitId = " + ParCompany_Id + ")";
+
+            var consolidation = db.Query<ConsolidationResultL1L2>(sql).FirstOrDefault();
+
+            return consolidation;
+        }
+    }
+
     public partial class ParLevelHeader
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -936,13 +1030,15 @@ namespace SGQDBContext
         public int TotalLevel3Evaluation { get; set; }
         public int TotalLevel3WithDefects { get; set; }
 
+        public int LastEvaluationAlert { get; set; }
+
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
         public CollectionLevel2Consolidation getConsolidation(int ConsolidationLevel2_Id, int ParLevel2_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT ConsolidationLevel2_Id, ParLevel2_Id, SUM(WeiEvaluation) AS [WeiEvaluationTotal], SUM(Defects) AS [DefectsTotal], SUM(WeiDefects) AS[WeiDefectsTotal], SUM(TotalLevel3WithDefects) AS [TotalLevel3WithDefects], SUM(TotalLevel3Evaluation) AS [TotalLevel3Evaluation] " +
+            string sql = "SELECT ConsolidationLevel2_Id, ParLevel2_Id, SUM(WeiEvaluation) AS [WeiEvaluationTotal], SUM(Defects) AS [DefectsTotal], SUM(WeiDefects) AS[WeiDefectsTotal], SUM(TotalLevel3WithDefects) AS [TotalLevel3WithDefects], SUM(TotalLevel3Evaluation) AS [TotalLevel3Evaluation], MAX(LastEvaluationAlert) AS LastEvaluationAlert " +
                          "FROM CollectionLevel2 WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND ParLevel2_Id = " + ParLevel2_Id + " " +
                          "group by ConsolidationLevel2_Id, ParLevel2_Id";
 
@@ -956,9 +1052,14 @@ namespace SGQDBContext
     {
         //public int ParLevel1_Id { get; set; }
 
-        public int EvaluationTotal { get; set; }
 
-        public decimal DefectsTotal { get; set; }
+        public decimal WeiEvaluation{get;set;} //OK
+        public decimal EvaluateTotal { get; set; } //OK
+        public decimal DefectsTotal { get; set; } 
+        public decimal WeiDefects { get; set; }
+        public decimal TotalLevel3Evaluation { get; set; }
+        public decimal TotalLevel3WithDefects { get; set; }
+        public int LastEvaluationAlert { get; set; }
 
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
@@ -972,7 +1073,7 @@ namespace SGQDBContext
             //             "GROUP BY CL2.ConsolidationLevel1_Id, CL1.ParLevel1_Id";
 
 
-            string sql = "select SUM(EvaluateTotal) AS EvaluationTotal, SUM(DefectsTotal) AS DefectsTotal from ConsolidationLevel2 where ConsolidationLevel1_Id=" + ConsolidationLevel1_Id + "";
+            string sql = "select  SUM(WeiEvaluation) AS WeiEvaluation, SUM(EvaluateTotal) AS EvaluateTotal, SUM(DefectsTotal) AS DefectsTotal, SUM(WeiDefects) AS WeiDefects,  SUM(TotalLevel3Evaluation) AS TotalLevel3Evaluation, SUM(TotalLevel3WithDefects) AS TotalLevel3WithDefects, MAX(LastEvaluationAlert) AS LastEvaluationAlert FROM ConsolidationLevel2 where ConsolidationLevel1_Id=" + ConsolidationLevel1_Id + "";
 
             var consolidationLevel1 = db.Query<ConsolidationLevel1XConsolidationLevel2>(sql).FirstOrDefault();
 

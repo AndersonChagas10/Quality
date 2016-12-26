@@ -1,8 +1,37 @@
-﻿@Html.DropDownList("level2", new SelectList(ViewBag.ParLevel2, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%", @multiple = "multiple" })
+﻿@{
+    var leve2Number = 0;
+    if (ViewBag.level2Number != null)
+    {
+        leve2Number = ViewBag.level2Number;
+    }
+
+}
+
+<tr class="row">
+    <td>
+        @Html.Label("Monitoramentos Corporativos Ativos:")
+    </td>
+    <td>
+        @Html.DropDownList("level2", new SelectList(ViewBag.ParLevel2Todos, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%", @multiple = "multiple" })
+    </td>
+</tr>
+
+<tr class="row">
+    <td>
+        @Html.Label("Numero de monitoramentos não corporativos:")
+    </td>
+    <td>
+        @Html.TextBox("level2Number", leve2Number)
+    </td>
+</tr>
+
 
 <script>
+    var level2Selected = @Html.Raw(Json.Encode(ViewBag.ParLevel2Ids));
     $(document).ready(function () {
         loadSelect2();
         $('#level2').select2({ allowClear: true, placeholder: "" })
+        if(level2Selected != null)
+            $('#level2').val(level2Selected).change();
     });
 </script>

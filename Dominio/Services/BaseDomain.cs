@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Dominio.Interfaces.Repositories;
 using AutoMapper;
+using System.Linq;
 
 namespace Dominio.Services
 {
@@ -70,6 +71,10 @@ namespace Dominio.Services
             try
             {
                 var saveObj = Mapper.Map<T>(obj);
+                //foreach (var prop in saveObj.GetType().GetProperties().Where(p => p.GetMethod.IsVirtual))
+                //{
+                //    saveObj.GetType().GetProperty(prop.Name).SetValue(saveObj, null);
+                //}
                 if (saveObj.GetType().GetProperty("Id") != null)
                 {
                     _repositoryBase.AddOrUpdate(saveObj);
@@ -84,6 +89,11 @@ namespace Dominio.Services
             {
                 throw new ExceptionHelper("Erro ao inserir o registro.", ex);
             }
+        }
+
+        public int ExecuteSql(string v)
+        {
+            return _repositoryBase.ExecuteSql(v);
         }
 
         #region Metodos não liberados para front

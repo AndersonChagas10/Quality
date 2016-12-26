@@ -313,6 +313,7 @@
     <Compile Include="Controllers\GestaoController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
+    <Compile Include="Controllers\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
     <Compile Include="Controllers\GlobalConfigController.cs" />
@@ -401,6 +402,7 @@
     <Compile Include="Mappers\Audit\Level02MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParStructureGroupMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
+    <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
     <Compile Include="Mappers\ShiftMapperProfile.cs" />
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMapperProfile.cs" />
@@ -1257,6 +1259,7 @@
     <Folder Include="DataCollect\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
+    <Folder Include="Views\RelatoriosSgq\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,8 @@ namespace DTO.DTO
 {
     public class UserDTO : EntityBase
     {
+        public virtual List<ParCompanyXUserSgqDTO> ParCompanyXUserSgq { get; set; }
+
         //[Required]
         [StringLength(150)]
         [Display(Name = "Username: ")]

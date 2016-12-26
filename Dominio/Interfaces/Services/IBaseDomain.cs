@@ -24,6 +24,6 @@ namespace Dominio.Interfaces.Services
 
         Y AddOrUpdate(Y obj);
 
-
+        int ExecuteSql(string v);
     }
 }

@@ -290,6 +290,11 @@ namespace Data.Repositories
          
         }
 
+        public int ExecuteSql(string v)
+        {
+           return db.Database.ExecuteSqlCommand(v);
+        }
+
         //public T ExecutaSql<T>(string sqlQuery, string sqlSelectLast)
         //{
         //    db.Database.ExecuteSqlCommand(sqlQuery);

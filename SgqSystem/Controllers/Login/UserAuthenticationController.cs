@@ -3,6 +3,7 @@ using DTO.Helpers;
 using Helper;
 using SgqSystem.ViewModels;
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -60,6 +61,12 @@ namespace SgqSystem.Controllers.Api
                 myCookie.Values.Add("roles", isAuthorized.Retorno.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
             else
                 myCookie.Values.Add("roles", "");
+
+            if (isAuthorized.Retorno.ParCompanyXUserSgq != null)
+                if (isAuthorized.Retorno.ParCompanyXUserSgq.Any(r => r.Role != null))
+                    myCookie.Values.Add("rolesCompany", string.Join(",", isAuthorized.Retorno.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
+            else
+                myCookie.Values.Add("rolesCompany", "");
 
             //set cookie expiry date-time. Made it to last for next 12 hours.
             myCookie.Expires = DateTime.Now.AddMinutes(30);

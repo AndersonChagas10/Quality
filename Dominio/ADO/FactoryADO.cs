@@ -13,6 +13,13 @@ namespace Dominio.ADO
         private SqlConnectionStringBuilder connectionString;
         public SqlCommand command;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataSource"></param>
+        /// <param name="catalog"></param>
+        /// <param name="password"></param>
+        /// <param name="user"></param>
         public FactoryADO(string dataSource, string catalog, string password, string user)
         {
             connectionString = new SqlConnectionStringBuilder();
@@ -41,7 +48,32 @@ namespace Dominio.ADO
             }
         }
 
-        public List<T> ExecuteQuery<T>(string query)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connectionStringDoWebConfig"></param>
+        public FactoryADO(string connectionStringDoWebConfig)
+        {
+
+            try
+            {
+                connection = new SqlConnection("DbContextSgqEUA");
+           
+                connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                closeConnection();
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                closeConnection();
+                throw ex;
+            }
+        }
+
+        public List<T> SearchQuery<T>(string query)
         {
             try
             {
@@ -67,9 +99,24 @@ namespace Dominio.ADO
             }
             catch (Exception e)
             {
+                closeConnection();
                 throw e;
             }
 
+        }
+
+        public int ExecuteSql(string query)
+        {
+            try
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                return command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                closeConnection();
+                throw e;
+            }
         }
 
         [SecuritySafeCritical]

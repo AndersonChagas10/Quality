@@ -5,6 +5,7 @@
         public int Id { get; set; }
         public int UserSgqId { get; set; }
         public int UnitId { get; set; }
+        public int? Role { get; set; }
 
         public UnitDTO Unit { get; set; }
     }
