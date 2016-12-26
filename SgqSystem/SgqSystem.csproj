@@ -262,16 +262,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_GlobalResources\Resource.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Resource.pt-br.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.pt-br.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -313,6 +303,7 @@
     <Compile Include="Controllers\Api\LanguageController.cs" />
     <Compile Include="Controllers\Api\Login\LoginController.cs" />
     <Compile Include="Controllers\Api\NewSync\NewSyncController.cs" />
+    <Compile Include="Controllers\Api\NQAController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Api\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Api\PCC1BController.cs" />
@@ -1293,18 +1284,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_GlobalResources\Resource.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource1.designer.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_GlobalResources\Resource.pt-br.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource.pt-br.designer.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

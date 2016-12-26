@@ -120,14 +120,23 @@
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.QtdadeMediaKgRecProdHora,  new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
                                                 @Html.ValidationMessageFor(model => model.QtdadeMediaKgRecProdHora, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.QtdadeMediaKgRecProdHora, htmlAttributes: new { @id = "QtdadeMediaKgRecProdHoraHidden" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.NBR, "NBR - Nível Geral de Inspeção Escolhido", htmlAttributes: new { @class = "control -label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.NBR, new { htmlAttributes = new { @class = "form-control" } })
+                                                <select id="NBR" name="NBR" class="form-control valid">
+                                                    <option value="-1">Selecione...</option>
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>                                           
+                                                </select>
+                                               
+                                                @*@Html.EditorFor(model => model.NBR, new { htmlAttributes = new { @class = "form-control" } })*@
                                                 @Html.ValidationMessageFor(model => model.NBR, "", new { @class = "text-danger" })
+
                                             </div>
                                         </div>
 
@@ -136,6 +145,7 @@
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.TotalKgAvaliaHoraProd, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
                                                 @Html.ValidationMessageFor(model => model.TotalKgAvaliaHoraProd, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.TotalKgAvaliaHoraProd, htmlAttributes: new { @id = "TotalKgAvaliaHoraProdHidden" })
                                             </div>
                                         </div>
 
@@ -168,6 +178,7 @@
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.TotalAmostraAvaliaColabEsteiraHoraProd, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
                                                 @Html.ValidationMessageFor(model => model.TotalAmostraAvaliaColabEsteiraHoraProd, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.TotalAmostraAvaliaColabEsteiraHoraProd, htmlAttributes: new { @id = "TotalAmostraAvaliaColabEsteiraHoraProdHidden" })
                                             </div>
                                         </div>
 
@@ -178,6 +189,7 @@
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Avaliacoes, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
                                                 @Html.ValidationMessageFor(model => model.Avaliacoes, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.Avaliacoes, htmlAttributes: new { @id = "avaliacaoHidden" })
                                             </div>
                                         </div>
 
@@ -186,6 +198,7 @@
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Amostras, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
                                                 @Html.ValidationMessageFor(model => model.Amostras, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.Amostras, htmlAttributes: new { @id = "amostraHidden" })
                                             </div>
                                         </div>
 
@@ -217,11 +230,44 @@
 
     $('#HorasTrabalhadasPorDia').on('input', function () {
         $('#Avaliacoes').val($(this).val());
+        $('#avaliacaoHidden').val($(this).val());
     });
 
-    $('#AmostraPorDia, #QtdadeFamiliaProduto').on('input', function () {
-        $('#Amostras').val($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val());
+    $('#HorasTrabalhadasPorDia, #QtdadeMediaKgRecProdDia').on('input', function () {
+        $('#QtdadeMediaKgRecProdHora').val(Math.ceil($('#QtdadeMediaKgRecProdDia').val() / $('#HorasTrabalhadasPorDia').val()));
+        $('#QtdadeMediaKgRecProdHoraHidden').val(Math.ceil($('#QtdadeMediaKgRecProdDia').val() / $('#HorasTrabalhadasPorDia').val()));
     });
+
+    $('#QtdadeMediaKgRecProdHora, #NBR').on('input', function () {
+
+        $.get("../api/NQA/getNQA/" + $('#NBR').val() + "/" + $('#QtdadeMediaKgRecProdHora').val() + "", function (r) {
+            console.log(r);
+
+            $('#TotalKgAvaliaHoraProd').val(r);
+            $('#TotalKgAvaliaHoraProdHidden').val(r);
+
+        });
+
+    });
+
+    $('#QtadeTrabEsteiraRecortes, #TotalKgAvaliaHoraProd').on('input', function () {
+        $('#TotalAvaliaColaborEsteirHoraProd').val(Math.ceil($('#TotalKgAvaliaHoraProd').val() / $('#QtadeTrabEsteiraRecortes').val()));
+        $('#TotalAvaliaColaborEsteirHoraProdHidden').val(Math.ceil($('#TotalKgAvaliaHoraProd').val() / $('#QtadeTrabEsteiraRecortes').val()));
+    });
+
+    $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('input', function () {
+        $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+        $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+        $('#Amostras').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+        $('#amostraHidden').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+    });
+
+    $('#btnTeste').click(function (e) {
+        
+
+    });
+
+     
 
     $('#Data').daterangepicker({
         singleDatePicker: true,
