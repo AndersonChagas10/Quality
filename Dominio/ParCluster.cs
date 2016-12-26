@@ -18,6 +18,7 @@ namespace Dominio
         public ParCluster()
         {
             this.ParCompanyCluster = new HashSet<ParCompanyCluster>();
+            this.ParLevel1XCluster = new HashSet<ParLevel1XCluster>();
         }
     
         public int Id { get; set; }
@@ -32,5 +33,7 @@ namespace Dominio
         public virtual ParClusterGroup ParClusterGroup { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParCompanyCluster> ParCompanyCluster { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParLevel1XCluster> ParLevel1XCluster { get; set; }
     }
 }

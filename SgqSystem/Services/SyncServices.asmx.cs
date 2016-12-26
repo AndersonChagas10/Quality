@@ -2584,7 +2584,8 @@ namespace SgqSystem.Services
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
             //Inicaliza CaracteristicaTipificacao
             var CaracteristicaTipificacaoDB = new SGQDBContext.CaracteristicaTipificacao();
-
+            //Inicaliza VerificacaoTipificacaoTarefaIntegracao
+            var VerificacaoTipificacaoTarefaIntegracaoDB = new SGQDBContext.VerificacaoTipificacaoTarefaIntegracao();
 
             //Pega uma lista de parleve3
             //pode colocar par level3 por unidades, como nos eua
@@ -2716,7 +2717,7 @@ namespace SgqSystem.Services
                                                  " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
                                                  carac.cSgCaracteristica + "</div>"; ;
                             }
-                            labels += html.div(outerhtml: listOperHtml, classe: "row items", name: "Falha Op.", tags: "listtype = multiple");
+                            labels += html.div(outerhtml: listOperHtml, classe: "row items", name: "Falha Op.", tags: "listtype = multiple, caracteristicatipificacaosid = 400, tarefaid=1193");
                             break;
                         case "Verificação Tipificação - Gordura":
                             var listGordura = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(203);
@@ -2728,7 +2729,7 @@ namespace SgqSystem.Services
                                                     " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
                                                     carac.cSgCaracteristica + "</div>"; ;
                             }
-                            labels += html.div(outerhtml: listGorduraHtml, classe: "row items", name: "Gordura", tags: "listtype = single");
+                            labels += html.div(outerhtml: listGorduraHtml, classe: "row items", name: "Gordura", tags: "listtype = single, caracteristicatipificacaosid = 400, tarefaid=1193");
                             break;
                         case "Verificação Tipificação - Contusão":
                             var listContusao = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(205);
@@ -2740,7 +2741,7 @@ namespace SgqSystem.Services
                                                     " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
                                                     carac.cSgCaracteristica + "</div>"; ;
                             }
-                            labels += html.div(outerhtml: listContusaoHtml, classe: "row items", name: "Contusão", tags: "listtype = multiple");
+                            labels += html.div(outerhtml: listContusaoHtml, classe: "row items", name: "Contusão", tags: "listtype = multiple, caracteristicatipificacaosid = 400, tarefaid=1193");
                             break;
                         case "Verificação Tipificação - Idade":
                             var listIdade = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(201);
@@ -2752,7 +2753,7 @@ namespace SgqSystem.Services
                                                     " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
                                                     carac.cSgCaracteristica + "</div>"; ;
                             }
-                            labels += html.div(outerhtml: listIdadeHtml, classe: "row items", name: "Maturidade", tags: "listtype = single");
+                            labels += html.div(outerhtml: listIdadeHtml, classe: "row items", name: "Maturidade", tags: "listtype = single, caracteristicatipificacaosid = 400, tarefaid=1193");
                             break;
                         case "Verificação Tipificação - Sexo":
                             var listSexo = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(207);
@@ -2764,7 +2765,7 @@ namespace SgqSystem.Services
                                                 " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
                                                 carac.cSgCaracteristica + "</div>"; ;
                             }
-                            labels += html.div(outerhtml: listSexoHtml, classe: "row items", name: "Sexo", tags: "listtype = single");
+                            labels += html.div(outerhtml: listSexoHtml, classe: "row items", name: "Sexo", tags: "listtype = single, caracteristicatipificacaosid = 400, tarefaid=1193");
                             break;
                     }
 
@@ -2803,7 +2804,7 @@ namespace SgqSystem.Services
                 var areasParticipantes = html.listgroupItem(
                                                 id: "0209",
                                                 classe: "level3 row VF",
-                                                tags: "listtype = multiple",
+                                                tags: "listtype = multiple, caracteristicatipificacaosid = 400, tarefaid=1193",
                                                 outerhtml: html.link(
                                                                 outerhtml: html.span(outerhtml: "Areas Participantes", classe: "levelName"),
                                                                 classe: "col-xs-12 col-sm-12 col-md-12"
@@ -2879,7 +2880,7 @@ namespace SgqSystem.Services
                 if (!string.IsNullOrEmpty(parLevel3Group))
                 {
                     parLevel3Group = html.div(
-                                               classe: "level3Group",
+                                               classe: "level3Group VF",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
                                                    outerhtml: painellevel3 +

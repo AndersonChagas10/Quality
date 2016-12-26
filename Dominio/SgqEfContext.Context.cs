@@ -107,7 +107,6 @@ namespace Dominio
         public virtual DbSet<Deviation> Deviation { get; set; }
         public virtual DbSet<ParLevel1VariableProduction> ParLevel1VariableProduction { get; set; }
         public virtual DbSet<ParLevel1VariableProductionXLevel1> ParLevel1VariableProductionXLevel1 { get; set; }
-        public virtual DbSet<ParLevel2ControlCompany> ParLevel2ControlCompany { get; set; }
         public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
         public virtual DbSet<ResultLevel2HeaderField> ResultLevel2HeaderField { get; set; }
     }

@@ -136,6 +136,9 @@
     <Compile Include="CorrectiveAction.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DelDados.cs">
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="DepartamentoOperacoes.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
@@ -522,6 +525,15 @@
     <Compile Include="Regionais.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Reports_CCA_Audit.cs">
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Reports_CFF_Audit.cs">
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Reports_HTP_Audit.cs">
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Resultados.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
@@ -590,7 +602,7 @@
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="sysdiagrams.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TarefaAmostras.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
@@ -702,6 +714,9 @@
     </Compile>
     <Compile Include="VolumeVacuoGRD.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VWCFFResults.cs">
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Z_Sistema.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
