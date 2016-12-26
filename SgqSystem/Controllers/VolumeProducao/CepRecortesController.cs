@@ -10,6 +10,11 @@ namespace SgqSystem.Controllers
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
+        public static int getNQA(int nivel, int tamanhoLote)
+        {
+            return 10;
+        }
+
         // GET: CepRecortes
         public ActionResult Index()
         {
@@ -128,5 +133,8 @@ namespace SgqSystem.Controllers
             }
             base.Dispose(disposing);
         }
+
+
+
     }
 }
