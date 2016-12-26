@@ -2015,7 +2015,9 @@ namespace SgqSystem.Services
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
                               "<div class=\"Deviations\"></div>" +
-                              "<div class=\"Users hide\"></div>";
+                              "<div class=\"Users hide\"></div>" +
+                              "<div class=\"VerificacaoTipificacao hide\"></div>" +
+                              "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
             return login +
                    APPMain +
@@ -2801,8 +2803,6 @@ namespace SgqSystem.Services
 
                 foreach (var parLevel3 in parlevel3List)
                 {
-
-                    string classInput = null;
                     string tags = null;
                     string labels = null;
 
@@ -2929,7 +2929,7 @@ namespace SgqSystem.Services
                                                                 classe: "col-xs-12 col-sm-12 col-md-12"
                                                                 ) +
                                                            html.div(
-                                                                outerhtml: html.div(outerhtml: items, classe: "items row caracteristicatipificacaoid=" + CtIdAP + " tarefaid=" + TIdAP, name: "Areas Participantes", tags: "listtype = multiple"),
+                                                                outerhtml: html.div(outerhtml: items, classe: "items row", name: "Areas Participantes", tags: "listtype = multiple caracteristicatipificacaoid=" + CtIdAP + " tarefaid=" + TIdAP),
                                                                 classe: "col-xs-12 col-sm-12 col-md-12"
                                                                 )
                                             );

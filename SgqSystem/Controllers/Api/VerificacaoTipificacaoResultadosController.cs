@@ -25,9 +25,32 @@ namespace SgqSystem.Controllers.Api
         {
             using (var db = new SGQ_GlobalEntities())
             {
-                //cdb.Database.ExecuteSqlCommand("INSERT INTO VerificacaoTipificacaoResultados(TarefaId, CaracteristicaTipificacaoId, Chave, AreasParticipantesId) VALUES ('" + vtr.TarefaId + "', " + vtr.CaracteristicaTipificacaoId + ", '" + vtr.Chave + "', " + vtr.AreasParticipantesId + ");");
-                db.Database.ExecuteSqlCommand("INSERT INTO VerificacaoTipificacaoResultados(TarefaId, CaracteristicaTipificacaoId, Chave) VALUES ('" + vtr.TarefaId + "', " + vtr.CaracteristicaTipificacaoId + ", '" + vtr.Chave + "');");
+                string ctid = vtr.CaracteristicaTipificacaoId == null ? "NULL" : "'" + vtr.CaracteristicaTipificacaoId + "'";
+                string apid = vtr.AreasParticipantesId == null ? "NULL" : "'" + vtr.AreasParticipantesId + "'";
+                
+                string sql = "INSERT INTO VerificacaoTipificacaoResultados (TarefaId, CaracteristicaTipificacaoId, Chave, AreasParticipantesId) VALUES " +
+                                                                          "('"+ vtr.TarefaId + "', " + ctid + ", '" + vtr.Chave + "', "+ apid + ")";
+
+                db.Database.ExecuteSqlCommand(sql);
             }
         }
     }
+
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [RoutePrefix("api/VT")]
+    public class VTController : ApiController
+    {
+        [HttpPost]
+        [Route("Save")]
+        public void Save(VerificacaoTipificacao vt)
+        {
+            using (var db = new SGQ_GlobalEntities())
+            {
+                db.Database.ExecuteSqlCommand("INSERT INTO VerificacaoTipificacao(Sequencial, Banda, DataHora, UnidadeId, Chave, Status) "+
+                    " VALUES ('" + vt.Sequencial + "', '" + vt.Banda + "', '" + vt.DataHora+"', '" + vt.UnidadeId + "', '" + vt.Chave + "', '" + vt.Status + "');");
+            }
+        }
+    }
+
+
 }
