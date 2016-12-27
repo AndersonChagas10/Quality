@@ -2,10 +2,10 @@
 @{
     ViewBag.Title = "Data Collection Reports";
     var url = Url.Action("Index", "Home");
-    var urlTabelaRelatorio = Url.Action("GetEntryByDate", "api/Scorecard");
+    var urlScorecard = Url.Action("GetScorecard", "api/Scorecard");
+    var urlScorecardMock = Url.Action("GetScorecardMock", "api/Scorecard");
 }
 
-@*@Styles.Render("~/Content/Tables")*@
 <link href="@Url.Content("~/Content/DataTables/css/jquery.dataTables.min.css")" rel="stylesheet" />
 <link href="@Url.Content("~/Content/DataTables/css/buttons.dataTables.min.css")" rel="stylesheet" />
 <link href="@Url.Content("~/Content/DataTables/css/responsive.dataTables.min.css")" rel="stylesheet" />
@@ -26,7 +26,7 @@
 
     <script type="text/javascript">
 
-    var url1 = '@Html.Raw(@urlTabelaRelatorio)';
+    var url1 = '@Html.Raw(@urlScorecardMock)';
     var $btn = $('#btnSend');
     $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -45,7 +45,7 @@
             try {
                 var retornoArray = [];
                 var arrayItarator = r.Retorno;
-                GerarTabela(r.Retorno.ConsolidationLevel01);
+                GerarTabela(r);
             } catch (e) {
                 console.log(e);
             } finally {
@@ -57,20 +57,36 @@
     function GerarTabela(retornoArray) {
 
         var table = $('#results').empty().DataTable({
+            language: {
+                
+                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                    "sZeroRecords": "Nenhum registro correspondente ao criterio encontrado",
+                    "sInfoEmtpy": "Exibindo 0 a 0 de 0 registros",
+                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                    "sInfoFiltered": "",
+                    "sSearch": "Procurar",
+                    "oPaginate": {
+                        "sFirst": "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext": "Próximo",
+                        "sLast": "Último"
+                    }
+            },
             data: retornoArray,
-            columns: [{ title: "Cluster", mData: "Unit" },
-                { title: "Regional", mData: "Departamento" },
-                { title: "Empresa", mData: "Auditor" },
-                { title: "Tipo Indicador", mData: "Level01" },
-                { title: "Indicador", mData: "Level02name" },
-                { title: "AV", mData: "avaliado" },
-                { title: "NC/C", mData: "Phase" },
-                { title: "Critério", mData: "Shift" },
-                { title: "Pontos", mData: "Sample" },
-                { title: "Meta %", mData: "AddDate" },
-                { title: "Real %", mData: "NotEvaluatedIs" },
-                { title: "Pontos Ating.", mData: "Level03Name" },
-                { title: "Scorecard", mData: "ConformedIs" },
+            columns: [{ title: "Cluster", mData: "ClusterName" },
+                { title: "Regional", mData: "RegionalName" },
+                { title: "Empresa", mData: "ParCompanyName" },
+                { title: "Tipo Indicador", mData: "TipoIndicadorName" },
+                { title: "Indicador", mData: "Level1Name" },
+                { title: "AV", mData: "AV" },
+                { title: "NC/C", mData: "NC" },
+                { title: "Critério", mData: "CriterioName" },
+                { title: "Pontos", mData: "Pontos" },
+                { title: "Meta %", mData: "Meta" },
+                { title: "Real %", mData: "Real" },
+                { title: "Pontos Ating.", mData: "PontosAtingidos" },
+                { title: "Scorecard", mData: "Scorecard" },
             ],
             "columnDefs": [
                 { "className": "dt-center", "targets": "_all" }
@@ -91,10 +107,36 @@
                     }
                 }, 100);
             },
+            createdRow: function (row, data, index) {
+               
+                if (data["Scorecard"] > 99 || (data["CriterioName"] == 'Maior' && (data["AV"] == 0 && data["NC"] == 0))) {
+                    // green
+                    $('td', row).eq(12).css("background-color", '#33FF33');
+                } else if (data["Scorecard"] < 70) {
+                    // red
+                    $('td', row).eq(12).css("background-color", '#FF6666');
+                }
+                else if (data["Scorecard"] < 99) {
+                    $('td', row).eq(12).css("background-color", 'yellow');
+                }
+
+            },
         });
 
         new $.fn.dataTable.Buttons(table, {
             buttons: [
+                 {
+                     extend: 'colvisGroup',
+                     text: 'Sintético',
+
+                     show: [3, 4, 5, 6, 9, 10, 12],
+                     hide: [0, 1, 2, 7, 8, 11]
+                 },
+                {
+                    extend: 'colvisGroup',
+                    text: 'Analítico',
+                    show: ':hidden'
+                },
                 {
                     extend: 'print',
                     customize: function (win) {
@@ -120,20 +162,10 @@
                 },
                 //'excel',
                 'pdf',
-                'colvis',
+                //'colvis',
                 //, 'print'
-                //{
-                //    text: 'Extra 1',
-                //    action: function (e, dt, node, conf) {
-                //        console.log('Button 1 clicked on');
-                //    }
-                //},
-                //{
-                //    text: 'Extra 2',
-                //    action: function (e, dt, node, conf) {
-                //        console.log('Button 2 clicked on');
-                //    }
-                //}
+               
+                
             ]
         });
 

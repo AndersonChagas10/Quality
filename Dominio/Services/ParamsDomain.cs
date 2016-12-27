@@ -339,13 +339,30 @@ namespace Dominio.Services
                 if (paramsDto.parLevel3Dto.listLevel3Level2.Count() > 0)
                     paramsDto.parLevel3Dto.listLevel3Level2.ForEach(r => r.preparaParaInsertEmBanco());
 
-            List<ParLevel3Level2> parLevel3Level2pontos = Mapper.Map<List<ParLevel3Level2>>(paramsDto.parLevel3Dto.listLevel3Level2);
+            List<ParLevel3Level2> parLevel3Level2peso = Mapper.Map<List<ParLevel3Level2>>(paramsDto.parLevel3Dto.listLevel3Level2);
+
+            /*Verifica se existe vinculos com L3 a L1*/
+            List<ParLevel3Level2Level1> parLevel3Level2Level1Novo;
+            var existeLevel3VinculadoComLevel1 = _baseRepoParLevel3Level2Level1.GetAll().Where(r => parLevel3Level2peso.Any(c => c.Id == r.Id));
+
+            if (existeLevel3VinculadoComLevel1 != null)
+                if (existeLevel3VinculadoComLevel1.Count() < parLevel3Level2peso.Count())
+                {
+                    parLevel3Level2Level1Novo = new List<ParLevel3Level2Level1>();
+                    foreach (var Level3Level2Novos in parLevel3Level2peso.Where(r=> !parLevel3Level2Level1Novo.Any(c=> c.ParLevel3Level2_Id == r.Id)))
+                    {
+                        parLevel3Level2Level1Novo.Add(new ParLevel3Level2Level1() {
+
+                        });
+                    }
+                }
+
 
             #endregion
 
             try
             {
-                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2pontos);
+                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2peso);
             }
             catch (DbUpdateException e)
             {
@@ -533,6 +550,9 @@ namespace Dominio.Services
             objLelvel2Level3ToSave.IsActive = true;
             _baseRepoParLevel3Level2.AddOrUpdate(objLelvel2Level3ToSave);
             ParLevel3Level2DTO objtReturn = Mapper.Map<ParLevel3Level2DTO>(objLelvel2Level3ToSave);
+
+            
+
             return objtReturn;
         }
 
