@@ -781,7 +781,7 @@ namespace SgqSystem.Services
                 LastEvaluationAlert = CollectionLevel2Consolidation.LastEvaluationAlert.ToString();
             }
 
-            string sql = "UPDATE ConsolidationLevel2 SET AlertLevel=" + AlertLevel + ", WeiEvaluation=" + CollectionLevel2Consolidation.WeiEvaluationTotal +  ", EvaluateTotal=" + CollectionLevel2Consolidation.TotalLevel3Evaluation + ", DefectsTotal=" + CollectionLevel2Consolidation.DefectsTotal + ", WeiDefects="  + CollectionLevel2Consolidation.WeiDefectsTotal + ", TotalLevel3Evaluation=" + CollectionLevel2Consolidation.TotalLevel3Evaluation + ", TotalLevel3WithDefects=" +  CollectionLevel2Consolidation.TotalLevel3WithDefects + ", LastEvaluationAlert='" + LastEvaluationAlert  +"' WHERE ID='" + ConsolidationLevel2_Id + "'";
+            string sql = "UPDATE ConsolidationLevel2 SET AlertLevel=" + AlertLevel.ToString().Replace(",",".") + ", WeiEvaluation=" + CollectionLevel2Consolidation.WeiEvaluationTotal.ToString().Replace(",", ".") +  ", EvaluateTotal=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", DefectsTotal=" + CollectionLevel2Consolidation.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects="  + CollectionLevel2Consolidation.WeiDefectsTotal.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" +  CollectionLevel2Consolidation.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "' WHERE ID='" + ConsolidationLevel2_Id.ToString().Replace(",", ".") + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -822,7 +822,7 @@ namespace SgqSystem.Services
                 LastEvaluationAlert = CL1XCL2.LastEvaluationAlert.ToString();
             }
 
-            string sql = "UPDATE ConsolidationLevel1 SET AtualAlert=" + AlertLevel + ", Evaluation=" + CL1XCL2.EvaluateTotal + ", WeiEvaluation=" + CL1XCL2.WeiEvaluation + ", EvaluateTotal=" + CL1XCL2.EvaluateTotal + ", DefectsTotal=" + CL1XCL2.DefectsTotal + ", WeiDefects=" + CL1XCL2.WeiDefects + ", TotalLevel3Evaluation=" + CL1XCL2.TotalLevel3Evaluation + ", TotalLevel3WithDefects=" + CL1XCL2.TotalLevel3WithDefects + ", LastEvaluationAlert='" + LastEvaluationAlert + "' WHERE ID='" + ConsolidationLevel1_Id + "'";
+            string sql = "UPDATE ConsolidationLevel1 SET AtualAlert=" + AlertLevel.ToString().Replace(",",".") + ", Evaluation=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", WeiEvaluation=" + CL1XCL2.WeiEvaluation.ToString().Replace(",", ".") + ", EvaluateTotal=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", DefectsTotal=" + CL1XCL2.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CL1XCL2.WeiDefects.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CL1XCL2.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CL1XCL2.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "' WHERE ID='" + ConsolidationLevel1_Id.ToString().Replace(",", ".") + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
