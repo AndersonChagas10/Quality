@@ -5,61 +5,119 @@
     var urlSend = Url.Action("Save", "api/ParLevel2ControlCompany"); //URL relativa
     var urlChangeLevel2 = Url.Action("ChangeLevel2", "ParLevel2ControlCompany"); //URL relativa
     var urlChangeLevel2UserCompany = Url.Action("ChangeLevel2UserCompany", "ParLevel2ControlCompany"); //URL relativa
+
 }
 
-<div class="row">
-    <div class="col-xs-12">
-        <div class="portlet light bordered">
-            <div class="portlet-title tabbable-line">
-                <div class="caption">
-                    <i class="icon-share font-dark"></i>
-                    <span class="caption-subject font-dark bold uppercase">Familias</span>
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 650px;">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE TITLE-->
+        <h1 class="page-title">
+            @Resources.Resource.customization
+        </h1>
+        <!-- END PAGE TITLE-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="#">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.customization</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
                 </div>
             </div>
-            <div class="portlet-body">
-                <div class="tab-content">
-                    <div class="tab-pane active" id="setup_tab">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                @*<button class="btn btn-primary btn-block" id="btnNewLevel1">FAMILIAS</button>*@
-                            </div>
-                            <div class="col-xs-9">
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        
 
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">Familias</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
                                 <div class="row">
-                                    <div class="col-lg-12">
-                                        <table class="table-erp" id="tblFamilia">
-                                            <tbody>
-                                              
-                                                   
-                                                    
-                                                        <tr class="row">
-                                                            <td>@Html.Label("Empresa:")</td>
-                                                            <td>@Html.DropDownList("company", new SelectList(ViewBag.company, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
-                                                        </tr>
-
-                                                        <tr class="row">
-                                                            <td>@Html.Label("Indicador:")</td>
-                                                            <td>@Html.DropDownList("level1", new SelectList(ViewBag.ParLevel1, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
-                                                        </tr>
-                                                
-                                                        @Html.Partial("_ControlCompanySelectBoxLevel2")
-                                                   
-                                                        @Html.Partial("_ControlCompanySelectBoxLevel2UserCompany")
-                                            </tbody>
-                                        </table>
-                                        <button class='btn btn-primary btn-sm' type='button' id='send' onclick='send();'>Enviar</button>
+                                    <div class="col-xs-3">
+                                        @*<button class="btn btn-primary btn-block" id="btnNewLevel1">FAMILIAS</button>*@
                                     </div>
-                                </div>
+                                    <div class="col-xs-9">
 
+                                        <div class="row">
+                                            <div class="col-lg-12">
+
+                                                <style>
+                                                    .colTabelaFamilia {
+                                                        padding: 10px;
+                                                    }
+
+                                                    .rowTabelaFamilia {
+                                                        padding: 10px;
+                                                    }
+                                                </style>
+
+                                                <table id="tblFamilia">
+                                                    <tbody>
+
+                                                        <tr class="rowTabelaFamilia">
+                                                            <td class="colTabelaFamilia">@Html.Label("Empresa:")</td>
+                                                            <td class="colTabelaFamilia" align="center">@Html.DropDownList("company", new SelectList(ViewBag.company, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
+                                                        </tr>
+
+                                                        <tr class="rowTabelaFamilia">
+                                                            <td class="colTabelaFamilia">@Html.Label("Indicador:")</td>
+                                                            <td class="colTabelaFamilia" align="center">@Html.DropDownList("level1", new SelectList(ViewBag.ParLevel1, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
+                                                        </tr>
+
+                                                        @Html.Partial("_ControlCompanySelectBoxLevel2")
+
+                                                        @Html.Partial("_ControlCompanySelectBoxLevel2UserCompany")
+
+                                                        <tr class="rowTabelaFamilia">
+                                                            <td class="colTabelaFamilia"></td>
+                                                            <td class="colTabelaFamilia" align="center">
+                                                                <button class='btn btn-primary btn-sm' type='button' id='send' onclick='send();'>Gravar as famílias escolhidas</button>
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                </div>
                             </div>
-                            <hr />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+  
     </div>
+<!-- END CONTENT BODY -->
 </div>
+
+
 @if (HttpContext.Current.Request.Cookies["webControlCookie"].Values["roles"].ToString().ToLower().Contains("admin"))
 {
     <script>
@@ -81,7 +139,7 @@
 else
 {
     <script>
-       
+
         function selectLevel2() {
             var id = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;
             var idComp = $('#company :selected').val() > 0 ? $('#company :selected').val() : 0;
@@ -109,11 +167,16 @@ else
 
 <script>
 
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+
+    navbarSelect("navbar1");
+
     var formOriginal = $('#tblFamilia > tbody').clone();
     var urlSend = '@Html.Raw(@urlSend)';
     var urlChangeLevel2 = '@Html.Raw(@urlChangeLevel2)';
     var urlChangeLevel2UserCompany = '@Html.Raw(@urlChangeLevel2UserCompany)';
-   
+
     function send() {
         var data = {};
         data["listLevel2Corporativos"] = $('#level2').val();
@@ -123,20 +186,23 @@ else
         data["CompanyControl_Id"] = $('#company :selected').val();
         if (data["Id"] == undefined)
             data["Id"] = $("#company :selected").val();
-        
+
         $.post(urlSend, data, function (r) { });
     }
 
     $(document).ready(function () {
         loadSelect2();
         $('#level1').on('change', selectLevel2)
-        $('#company').on('change', function () { 
+        $('#company').on('change', function () {
             if ($('#level1').val() > 0) {
                 selectLevel2();
             }
         });
         $('#level1').select2()
         $('#level2').select2({ allowClear: true, placeholder: "" })
+
+        $('body > div > div.page-header.navbar.navbar-fixed-top > div > div.page-logo > div').click();
+
     })
 
     $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {

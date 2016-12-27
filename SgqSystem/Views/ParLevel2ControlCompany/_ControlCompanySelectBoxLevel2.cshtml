@@ -7,20 +7,20 @@
 
 }
 
-<tr class="row">
-    <td>
+<tr class="rowTabelaFamilia">
+    <td class="colTabelaFamilia">
         @Html.Label("Monitoramentos Corporativos Ativos:")
     </td>
-    <td>
+    <td class="colTabelaFamilia" align="center">
         @Html.DropDownList("level2", new SelectList(ViewBag.ParLevel2Todos, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%", @multiple = "multiple" })
     </td>
 </tr>
 
-<tr class="row">
-    <td>
+<tr class="rowTabelaFamilia">
+    <td class="colTabelaFamilia">
         @Html.Label("Numero de monitoramentos não corporativos:")
     </td>
-    <td>
+    <td class="colTabelaFamilia" align="center">
         @Html.TextBox("level2Number", leve2Number)
     </td>
 </tr>
