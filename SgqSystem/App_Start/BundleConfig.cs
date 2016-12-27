@@ -54,10 +54,12 @@ namespace SgqSystem
                         "~/Scripts/theme/js/app.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/select2js").Include(
-                     "~/Scripts/select2.min.js"));
+                     "~/Scripts/select2.min.js"
+                     ,"~/Scripts/i18n/pt-BR.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/DatePikerContent").Include(
-                    "~/Scripts/moment.min.js",
+                    //"~/Scripts/moment.min.js",
+                    "~/Scripts/moment-with-locales.min.js",
                     "~/Scripts/inputmask/jquery.inputmask.bundle.js",
                     "~/Scripts/daterangepicker.js",
                     "~/Scripts/DatePikerReady.js"));
@@ -75,9 +77,9 @@ namespace SgqSystem
 
 
             bundles.Add(new StyleBundle("~/Content/Tables").Include(
-                    //"~/Content/datatables.min.css",
                     "~/Content/DataTables/css/jquery.dataTables.min.css",
-                    "~/Content/DataTables/css/buttons.dataTables.min.css"
+                    "~/Content/DataTables/css/buttons.dataTables.min.css",
+                    "~/Content/DataTables/css/responsive.dataTables.min.css"
                 ));
 
             bundles.Add(new StyleBundle("~/Content/Theme").Include(
