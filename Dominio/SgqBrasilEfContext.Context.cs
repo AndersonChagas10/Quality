@@ -156,6 +156,11 @@ namespace Dominio
         public virtual DbSet<ScorecardConsolidadoDia> ScorecardConsolidadoDia { get; set; }
         public virtual DbSet<Tipificacao> Tipificacao { get; set; }
         public virtual DbSet<VerificacaoTipificacaoJBS> VerificacaoTipificacaoJBS { get; set; }
+        public virtual DbSet<DelDados> DelDados { get; set; }
+        public virtual DbSet<Reports_CCA_Audit> Reports_CCA_Audit { get; set; }
+        public virtual DbSet<Reports_CFF_Audit> Reports_CFF_Audit { get; set; }
+        public virtual DbSet<Reports_HTP_Audit> Reports_HTP_Audit { get; set; }
+        public virtual DbSet<VWCFFResults> VWCFFResults { get; set; }
     
         public virtual ObjectResult<GetOperacoes_Result> GetOperacoes()
         {

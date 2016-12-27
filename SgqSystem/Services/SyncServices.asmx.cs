@@ -781,7 +781,7 @@ namespace SgqSystem.Services
                 LastEvaluationAlert = CollectionLevel2Consolidation.LastEvaluationAlert.ToString();
             }
 
-            string sql = "UPDATE ConsolidationLevel2 SET AlertLevel=" + AlertLevel + ", WeiEvaluation=" + CollectionLevel2Consolidation.WeiEvaluationTotal +  ", EvaluateTotal=" + CollectionLevel2Consolidation.TotalLevel3Evaluation + ", DefectsTotal=" + CollectionLevel2Consolidation.DefectsTotal + ", WeiDefects="  + CollectionLevel2Consolidation.WeiDefectsTotal + ", TotalLevel3Evaluation=" + CollectionLevel2Consolidation.TotalLevel3Evaluation + ", TotalLevel3WithDefects=" +  CollectionLevel2Consolidation.TotalLevel3WithDefects + ", LastEvaluationAlert='" + LastEvaluationAlert  +"' WHERE ID='" + ConsolidationLevel2_Id + "'";
+            string sql = "UPDATE ConsolidationLevel2 SET AlertLevel=" + AlertLevel.ToString().Replace(",",".") + ", WeiEvaluation=" + CollectionLevel2Consolidation.WeiEvaluationTotal.ToString().Replace(",", ".") +  ", EvaluateTotal=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", DefectsTotal=" + CollectionLevel2Consolidation.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects="  + CollectionLevel2Consolidation.WeiDefectsTotal.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" +  CollectionLevel2Consolidation.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "' WHERE ID='" + ConsolidationLevel2_Id.ToString().Replace(",", ".") + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -822,7 +822,7 @@ namespace SgqSystem.Services
                 LastEvaluationAlert = CL1XCL2.LastEvaluationAlert.ToString();
             }
 
-            string sql = "UPDATE ConsolidationLevel1 SET AtualAlert=" + AlertLevel + ", Evaluation=" + CL1XCL2.EvaluateTotal + ", WeiEvaluation=" + CL1XCL2.WeiEvaluation + ", EvaluateTotal=" + CL1XCL2.EvaluateTotal + ", DefectsTotal=" + CL1XCL2.DefectsTotal + ", WeiDefects=" + CL1XCL2.WeiDefects + ", TotalLevel3Evaluation=" + CL1XCL2.TotalLevel3Evaluation + ", TotalLevel3WithDefects=" + CL1XCL2.TotalLevel3WithDefects + ", LastEvaluationAlert='" + LastEvaluationAlert + "' WHERE ID='" + ConsolidationLevel1_Id + "'";
+            string sql = "UPDATE ConsolidationLevel1 SET AtualAlert=" + AlertLevel.ToString().Replace(",",".") + ", Evaluation=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", WeiEvaluation=" + CL1XCL2.WeiEvaluation.ToString().Replace(",", ".") + ", EvaluateTotal=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", DefectsTotal=" + CL1XCL2.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CL1XCL2.WeiDefects.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CL1XCL2.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CL1XCL2.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "' WHERE ID='" + ConsolidationLevel1_Id.ToString().Replace(",", ".") + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -2050,7 +2050,9 @@ namespace SgqSystem.Services
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
                               "<div class=\"Deviations\"></div>" +
-                              "<div class=\"Users hide\"></div>";
+                              "<div class=\"Users hide\"></div>" +
+                              "<div class=\"VerificacaoTipificacao hide\"></div>" +
+                              "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
             return login +
                    APPMain +
@@ -2726,7 +2728,8 @@ namespace SgqSystem.Services
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
             //Inicaliza CaracteristicaTipificacao
             var CaracteristicaTipificacaoDB = new SGQDBContext.CaracteristicaTipificacao();
-
+            //Inicaliza VerificacaoTipificacaoTarefaIntegracao
+            var VerificacaoTipificacaoTarefaIntegracaoDB = new SGQDBContext.VerificacaoTipificacaoTarefaIntegracao();
 
             //Pega uma lista de parleve3
             //pode colocar par level3 por unidades, como nos eua
@@ -2835,8 +2838,6 @@ namespace SgqSystem.Services
 
                 foreach (var parLevel3 in parlevel3List)
                 {
-
-                    string classInput = null;
                     string tags = null;
                     string labels = null;
 
@@ -2858,7 +2859,9 @@ namespace SgqSystem.Services
                                                  " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
                                                  carac.cSgCaracteristica + "</div>"; ;
                             }
-                            labels += html.div(outerhtml: listOperHtml, classe: "row items", name: "Falha Op.", tags: "listtype = multiple");
+                            var CtIdOpe = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(206).First().nCdCaracteristica;
+                            var TIdOpe = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdOpe).First().TarefaId;
+                            labels += html.div(outerhtml: listOperHtml, classe: "row items", name: "Falha Op.", tags: "listtype = multiple caracteristicatipificacaoid="+ CtIdOpe + " tarefaid="+ TIdOpe);
                             break;
                         case "Verificação Tipificação - Gordura":
                             var listGordura = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(203);
@@ -2870,7 +2873,9 @@ namespace SgqSystem.Services
                                                     " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
                                                     carac.cSgCaracteristica + "</div>"; ;
                             }
-                            labels += html.div(outerhtml: listGorduraHtml, classe: "row items", name: "Gordura", tags: "listtype = single");
+                            var CtIdGor = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(203).First().nCdCaracteristica;
+                            var TIdGor = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdGor).First().TarefaId;
+                            labels += html.div(outerhtml: listGorduraHtml, classe: "row items", name: "Gordura", tags: "listtype = single caracteristicatipificacaoid=" + CtIdGor + " tarefaid=" + TIdGor);
                             break;
                         case "Verificação Tipificação - Contusão":
                             var listContusao = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(205);
@@ -2882,7 +2887,9 @@ namespace SgqSystem.Services
                                                     " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
                                                     carac.cSgCaracteristica + "</div>"; ;
                             }
-                            labels += html.div(outerhtml: listContusaoHtml, classe: "row items", name: "Contusão", tags: "listtype = multiple");
+                            var CtIdCon = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(205).First().nCdCaracteristica;
+                            var TIdCon = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdCon).First().TarefaId;
+                            labels += html.div(outerhtml: listContusaoHtml, classe: "row items", name: "Contusão", tags: "listtype = multiple caracteristicatipificacaoid="+ CtIdCon + " tarefaid="+ TIdCon);
                             break;
                         case "Verificação Tipificação - Idade":
                             var listIdade = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(201);
@@ -2894,7 +2901,9 @@ namespace SgqSystem.Services
                                                     " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
                                                     carac.cSgCaracteristica + "</div>"; ;
                             }
-                            labels += html.div(outerhtml: listIdadeHtml, classe: "row items", name: "Maturidade", tags: "listtype = single");
+                            var CtIdIdade = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(201).First().nCdCaracteristica;
+                            var TIdIdade = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdIdade).First().TarefaId;
+                            labels += html.div(outerhtml: listIdadeHtml, classe: "row items", name: "Maturidade", tags: "listtype = single caracteristicatipificacaoid="+ CtIdIdade + " tarefaid="+ TIdIdade);
                             break;
                         case "Verificação Tipificação - Sexo":
                             var listSexo = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(207);
@@ -2906,7 +2915,9 @@ namespace SgqSystem.Services
                                                 " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
                                                 carac.cSgCaracteristica + "</div>"; ;
                             }
-                            labels += html.div(outerhtml: listSexoHtml, classe: "row items", name: "Sexo", tags: "listtype = single");
+                            var CtIdSexo = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(207).First().nCdCaracteristica;
+                            var TIdSexo = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdSexo).First().TarefaId;
+                            labels += html.div(outerhtml: listSexoHtml, classe: "row items", name: "Sexo", tags: "listtype = single caracteristicatipificacaoid="+ CtIdSexo + " tarefaid="+ TIdSexo);
                             break;
                     }
 
@@ -2937,21 +2948,23 @@ namespace SgqSystem.Services
 
                 foreach (var area in listAreasParticipantes)
                 {
-                    items += "<div class='col-xs-2 hide' cNmCaracteristica='" + area.cNmCaracteristica + "' cIdentificador='" + area.cIdentificador + "' " +
+                    items += "<div class='col-xs-3 hide' cNmCaracteristica='" + area.cNmCaracteristica + "' cIdentificador='" + area.cIdentificador + "' " +
                             " cNrCaracteristica='" + area.cNrCaracteristica + "' cSgCaracteristica='" + area.cSgCaracteristica + "'>" +
                             area.cNmCaracteristica + "</div>";
                 }
 
+                var CtIdAP = CaracteristicaTipificacaoDB.getAreasParticipantesUnico().First().nCdCaracteristica;
+                var TIdAP = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdAP).First().TarefaId;
                 var areasParticipantes = html.listgroupItem(
-                                                id: "0209",
+                                                id: "400",
                                                 classe: "level3 row VF",
-                                                tags: "listtype = multiple",
+                                                tags: "listtype=multiple",
                                                 outerhtml: html.link(
                                                                 outerhtml: html.span(outerhtml: "Areas Participantes", classe: "levelName"),
                                                                 classe: "col-xs-12 col-sm-12 col-md-12"
                                                                 ) +
                                                            html.div(
-                                                                outerhtml: html.div(outerhtml: items, classe: "items row", name: "Areas Participantes", tags: "listtype = multiple"),
+                                                                outerhtml: html.div(outerhtml: items, classe: "items row", name: "Areas Participantes", tags: "listtype = multiple caracteristicatipificacaoid=" + CtIdAP + " tarefaid=" + TIdAP),
                                                                 classe: "col-xs-12 col-sm-12 col-md-12"
                                                                 )
                                             );
@@ -3021,7 +3034,7 @@ namespace SgqSystem.Services
                 if (!string.IsNullOrEmpty(parLevel3Group))
                 {
                     parLevel3Group = html.div(
-                                               classe: "level3Group",
+                                               classe: "level3Group VF",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
                                                    outerhtml: painellevel3 +

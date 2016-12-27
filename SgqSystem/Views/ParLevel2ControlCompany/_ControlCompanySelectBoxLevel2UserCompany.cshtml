@@ -7,11 +7,11 @@
     }
 }
 
-<tr class="row">
-    <td>
+<tr class="rowTabelaFamilia">
+    <td class="colTabelaFamilia">
         @Html.Label("Monitoramentos da Empresa:")
     </td>
-    <td>
+    <td class="colTabelaFamilia" align="center">
         @Html.DropDownList("level2SelecionadoPorCompany", new SelectList(ViewBag.level2DisponivelParaEmpresa, "Id", "Name"), new { @class = "form-control select2", style = "width: 100%", @multiple = "multiple" })
     </td>
 </tr>
