@@ -3142,8 +3142,26 @@ namespace SgqSystem.Services
                                     style: "padding-right: 4px !important; padding-left: 4px !important;",
                                     classe: "col-xs-6");
 
+                string avaliacoeshtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+                string amostrashtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+
+                string avaliacoes = html.div(
+                                    outerhtml: avaliacoeshtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2 hide");
+                string amostras = html.div(
+                                    outerhtml: amostrashtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2 hide");
+
                 string painellevel3 = html.listgroupItem(
-                                                            outerhtml: totalnc + ncdianteiro + nctraseiro + niveis+ painelLevel3HeaderListHtml,
+                                                            outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis+ painelLevel3HeaderListHtml,
 
                                                classe: "painel painelLevel03 row");
 
