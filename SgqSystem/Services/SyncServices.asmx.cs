@@ -3110,8 +3110,67 @@ namespace SgqSystem.Services
                                                 style: "padding-right: 4px !important; padding-left: 4px !important;"
                                                 );
 
+                //Avaliações e amostas para painel
+                string totalnchtml = html.div(
+                                    outerhtml: "<label class=\"font-small text-center\" style=\"display:inherit\">Total NC</label><label class='text-center' style=\"display:inherit; font-size: 20px;\">" + html.span(classe: "totalnc") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+
+                string ncdianteirohtml = html.div(
+                                    outerhtml: "<label class=\"font-small text-center\" style=\"display:inherit\">NC Dianteiro</label><label class='text-center' style=\"display:inherit; font-size: 20px;\">" + html.span(classe: "ncdianteiro") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+
+                string nctraseirohtml = html.div(
+                                    outerhtml: "<label class=\"font-small text-center\" style=\"display:inherit\">NC Traseiro</label><label class='text-center' style=\"display:inherit; font-size: 20px;\">" + html.span(classe: "nctraseiro") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+
+                string niveishtml = html.div(
+                                    outerhtml: "<label class=\"font-small text-center\" style=\"display:inherit\">Níveis</label><label class='text-center' style=\"display:inherit; font-size: 20px;\">" + html.span(classe: "nivel1") + " / " + html.span(classe: "nivel2") + " / " + html.span(classe: "nivel3") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+
+                string totalnc = html.div(
+                                    outerhtml: totalnchtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-2");
+
+                string ncdianteiro = html.div(
+                                    outerhtml: ncdianteirohtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-2");
+
+                string nctraseiro = html.div(
+                                    outerhtml: nctraseirohtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-2");
+
+                string niveis = html.div(
+                                    outerhtml: niveishtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6");
+
+                string avaliacoeshtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+                string amostrashtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
+
+                string avaliacoes = html.div(
+                                    outerhtml: avaliacoeshtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2 hide");
+                string amostras = html.div(
+                                    outerhtml: amostrashtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2 hide");
+
                 string painellevel3 = html.listgroupItem(
-                                                            outerhtml: painelLevel3HeaderListHtml,
+                                                            outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis+ painelLevel3HeaderListHtml,
 
                                                classe: "painel painelLevel03 row");
 
@@ -3119,7 +3178,7 @@ namespace SgqSystem.Services
                 if (!string.IsNullOrEmpty(parLevel3Group))
                 {
                     parLevel3Group = html.div(
-                                               classe: "level3Group",
+                                               classe: "level3Group PCC1B",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
                                                outerhtml: painellevel3 +
