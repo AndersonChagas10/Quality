@@ -1,0 +1,156 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "Data Collection Reports";
+    var url = Url.Action("Index", "Home");
+    var urlTabelaRelatorio = Url.Action("GetEntryByDate", "api/Scorecard");
+}
+
+@*@Styles.Render("~/Content/Tables")*@
+<link href="@Url.Content("~/Content/DataTables/css/jquery.dataTables.min.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/DataTables/css/buttons.dataTables.min.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/DataTables/css/responsive.dataTables.min.css")" rel="stylesheet" />
+
+<div class="page-content" style="min-height: 600px;">
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+    <div id="formBodyContent">
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+        <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+    </div>
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/Scripts/GuardJs.js")
+    @Scripts.Render("~/bundles/ScriptTables")
+
+    <script type="text/javascript">
+
+    var url1 = '@Html.Raw(@urlTabelaRelatorio)';
+    var $btn = $('#btnSend');
+    $('#simpleCallendar').hide().attr('disabled', true);
+
+    $(document).ready(function () {
+        $("#btnSend").click(function (e) {
+            Send();
+        });
+    });
+
+    function Send() {
+        $btn.button('loading');
+        $('#results').empty();
+        ValidaDadosParaEnvio();
+        //AJAX
+        $.post(url1, enviar, function (r) {
+            try {
+                var retornoArray = [];
+                var arrayItarator = r.Retorno;
+                GerarTabela(r.Retorno.ConsolidationLevel01);
+            } catch (e) {
+                console.log(e);
+            } finally {
+                $btn.button('reset');
+                //Hotfix: table não alinha resultados de centro no meio da tr....
+            }
+        })
+    };
+    function GerarTabela(retornoArray) {
+
+        var table = $('#results').empty().DataTable({
+            data: retornoArray,
+            columns: [{ title: "Cluster", mData: "Unit" },
+                { title: "Regional", mData: "Departamento" },
+                { title: "Empresa", mData: "Auditor" },
+                { title: "Tipo Indicador", mData: "Level01" },
+                { title: "Indicador", mData: "Level02name" },
+                { title: "AV", mData: "avaliado" },
+                { title: "NC/C", mData: "Phase" },
+                { title: "Critério", mData: "Shift" },
+                { title: "Pontos", mData: "Sample" },
+                { title: "Meta %", mData: "AddDate" },
+                { title: "Real %", mData: "NotEvaluatedIs" },
+                { title: "Pontos Ating.", mData: "Level03Name" },
+                { title: "Scorecard", mData: "ConformedIs" },
+            ],
+            "columnDefs": [
+                { "className": "dt-center", "targets": "_all" }
+            ],
+            scrollX: true,
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+            pageLength: 10,
+            loadingRecords: true,
+            destroy: true,
+            info: true,
+            responsive: true,
+            initComplete: function () {
+                $('#loading').hide();
+                setTimeout(function (e) {
+                    var oTable = $('#results').dataTable();
+                    if (oTable.length > 0) {
+                        oTable.fnAdjustColumnSizing();
+                    }
+                }, 100);
+            },
+        });
+
+        new $.fn.dataTable.Buttons(table, {
+            buttons: [
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        //$(win.document.body)
+                        //    .css( 'font-size', '10pt' )
+                        //    .prepend(
+                        //        '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+                        //    );
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    },
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                //'excel',
+                'pdf',
+                'colvis',
+                //, 'print'
+                //{
+                //    text: 'Extra 1',
+                //    action: function (e, dt, node, conf) {
+                //        console.log('Button 1 clicked on');
+                //    }
+                //},
+                //{
+                //    text: 'Extra 2',
+                //    action: function (e, dt, node, conf) {
+                //        console.log('Button 2 clicked on');
+                //    }
+                //}
+            ]
+        });
+
+        table.buttons(0, null).container().prependTo(
+            table.table().container()
+        );
+
+    }
+    function ValidaDadosParaEnvio() {
+        GuardJs.resetForValidation();
+        GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+        if (!GuardJs.isValid)
+            return;
+        GuardJs.esconderMensagem();
+    }
+    formControl.ShowAllFielsAndFullCallendar();
+
+    </script>
+
+}

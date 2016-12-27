@@ -1012,7 +1012,13 @@
         $.get(vinculoL1L2 + '/' + idLevel1 + '/' + idLevel2 + '/' + idLevel3, function (obj, responseText, xhr) {
             if (obj != null) {
                 console.log(obj);
-                openMessageModal("Feito!", "Monitoramento e Tarefa vinculados ao Indicador com sucesso! #" + obj.Id);
+
+                var ids = $.map(obj, function(val,index) {                    
+                    var str = val.Id;
+                    return str;
+                }).join(", ");  
+
+                openMessageModal("Feito!", "Monitoramento e Tarefa vinculados ao Indicador com sucesso! #" +  ids);
                 //alert("Vinculado L3 com L2 ID: " + obj.Id);
                 UpdateSelect2Level2(idLevel1);
             }

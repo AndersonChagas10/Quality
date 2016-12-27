@@ -3246,37 +3246,22 @@ warning 6002: The table/view 'SGQ_Brasil.dbo.VerificacaoTipificacaoJBS' does not
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
-        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        <Function Name="GetOperacoes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetScoreCardConsolidado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DataInicio" Type="varchar" Mode="In" />
+          <Parameter Name="DataFim" Type="varchar" Mode="In" />
+          <Parameter Name="UnidadeId" Type="int" Mode="In" />
         </Function>
-        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        <Function Name="sp_ChartTarefasNC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UnidadeId" Type="int" Mode="In" />
+          <Parameter Name="Unidade" Type="nvarchar" Mode="In" />
+          <Parameter Name="DepartamentoId" Type="int" Mode="In" />
+          <Parameter Name="Departamento" Type="nvarchar" Mode="In" />
+          <Parameter Name="OperacaoId" Type="int" Mode="In" />
+          <Parameter Name="Operacao" Type="nvarchar" Mode="In" />
+          <Parameter Name="DataInicio" Type="nvarchar" Mode="In" />
+          <Parameter Name="DataFim" Type="nvarchar" Mode="In" />
         </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="SGQ_BrasilModelStoreContainer">
           <EntitySet Name="Acoes" EntityType="Self.Acoes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AcoesCorretivas" EntityType="Self.AcoesCorretivas" Schema="dbo" store:Type="Tables" />
@@ -3989,36 +3974,6 @@ warning 6002: The table/view 'SGQ_Brasil.dbo.VerificacaoTipificacaoJBS' does not
     <edmx:ConceptualModels>
       <Schema Namespace="SGQ_BrasilModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SGQ_GlobalEntities" annotation:LazyLoadingEnabled="true">
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
           <EntitySet Name="Acoes" EntityType="SGQ_BrasilModel.Acoes" />
           <EntitySet Name="AcoesCorretivas" EntityType="SGQ_BrasilModel.AcoesCorretivas" />
           <EntitySet Name="AcoesPreventivas" EntityType="SGQ_BrasilModel.AcoesPreventivas" />
@@ -4632,6 +4587,22 @@ warning 6002: The table/view 'SGQ_Brasil.dbo.VerificacaoTipificacaoJBS' does not
             <End Role="Usuarios" EntitySet="Usuarios" />
             <End Role="VinculoParticipanteProjeto" EntitySet="VinculoParticipanteProjeto" />
           </AssociationSet>
+          <FunctionImport Name="GetOperacoes" ReturnType="Collection(SGQ_BrasilModel.GetOperacoes_Result)" />
+          <FunctionImport Name="sp_ChartTarefasNC" ReturnType="Collection(SGQ_BrasilModel.sp_ChartTarefasNC_Result)">
+            <Parameter Name="UnidadeId" Mode="In" Type="Int32" />
+            <Parameter Name="Unidade" Mode="In" Type="String" />
+            <Parameter Name="DepartamentoId" Mode="In" Type="Int32" />
+            <Parameter Name="Departamento" Mode="In" Type="String" />
+            <Parameter Name="OperacaoId" Mode="In" Type="Int32" />
+            <Parameter Name="Operacao" Mode="In" Type="String" />
+            <Parameter Name="DataInicio" Mode="In" Type="String" />
+            <Parameter Name="DataFim" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetScoreCardConsolidado" ReturnType="Collection(SGQ_BrasilModel.GetScoreCardConsolidado_Result)">
+            <Parameter Name="DataInicio" Mode="In" Type="String" />
+            <Parameter Name="DataFim" Mode="In" Type="String" />
+            <Parameter Name="UnidadeId" Mode="In" Type="Int32" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="Acoes">
           <Key>
@@ -8106,21 +8077,70 @@ warning 6002: The table/view 'SGQ_Brasil.dbo.VerificacaoTipificacaoJBS' does not
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="GetOperacoes_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Nome" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="UsuarioInsercao" Nullable="false" />
+          <Property Type="DateTime" Name="DataInsercao" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="UsuarioAlteracao" Nullable="true" />
+          <Property Type="DateTime" Name="DataAlteracao" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Nivel" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Frequencia" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="Vigencia" Nullable="true" />
+          <Property Type="Boolean" Name="ControleVP" Nullable="true" />
+          <Property Type="Boolean" Name="ADCAMPOVAZIO" Nullable="true" />
+          <Property Type="Boolean" Name="AvaliarEquipamentos" Nullable="true" />
+          <Property Type="Boolean" Name="AvaliarCamaras" Nullable="true" />
+          <Property Type="Boolean" Name="Especifico" Nullable="true" />
+          <Property Type="Boolean" Name="ExibirPColeta" Nullable="true" />
+          <Property Type="Boolean" Name="PadraoPerc" Nullable="true" />
+          <Property Type="Boolean" Name="ControleFP" Nullable="true" />
+          <Property Type="Boolean" Name="AvaliarSequencial" Nullable="true" />
+          <Property Type="String" Name="Criterio" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="FrequenciaAlerta" Nullable="true" MaxLength="20" />
+          <Property Type="Boolean" Name="ExibirData" Nullable="true" />
+          <Property Type="Boolean" Name="EmitirAlerta" Nullable="true" />
+          <Property Type="Boolean" Name="ControlarAvaliacoes" Nullable="true" />
+          <Property Type="Boolean" Name="AlterarAmostra" Nullable="true" />
+          <Property Type="Boolean" Name="IncluirTarefa" Nullable="true" />
+          <Property Type="Boolean" Name="IncluirAvaliacao" Nullable="true" />
+          <Property Type="Boolean" Name="AlertaAgruparAvaliacoes" Nullable="true" />
+          <Property Type="Int32" Name="QteFamiliaUnidade" Nullable="true" />
+          <Property Type="Int32" Name="QteFamiliaCorporativa" Nullable="true" />
+          <Property Type="Boolean" Name="ExibirTarefasAcumuladas" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_ChartTarefasNC_Result">
+          <Property Type="Int32" Name="TarefaId" Nullable="false" />
+          <Property Type="String" Name="Tarefa" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="NC" Nullable="true" />
+          <Property Type="Int32" Name="QtdAvaliacao" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetScoreCardConsolidado_Result">
+          <Property Type="String" Name="Nivel" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Nome" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="OperacaoId" Nullable="false" />
+          <Property Type="Decimal" Name="TotalAvaliado" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Double" Name="TotalForaPadrao" Nullable="true" />
+          <Property Type="String" Name="Criterio" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="Peso" Nullable="true" Precision="5" Scale="2" />
+          <Property Type="Decimal" Name="Meta" Nullable="false" Precision="5" Scale="2" />
+          <Property Type="String" Name="Cluster" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="Regionalid" Nullable="true" />
+          <Property Type="String" Name="Regional" Nullable="true" />
+          <Property Type="Int32" Name="Empresaid" Nullable="false" />
+          <Property Type="String" Name="Empresa" Nullable="true" MaxLength="5" />
+          <Property Type="Int32" Name="Ano" Nullable="true" />
+          <Property Type="String" Name="Mes" Nullable="true" MaxLength="6" />
+          <Property Type="Decimal" Name="Real" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="Double" Name="Scorecard" Nullable="true" />
+          <Property Type="Double" Name="Pontos" Nullable="true" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SGQ_BrasilModelStoreContainer" CdmEntityContainer="SGQ_GlobalEntities">
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="SGQ_BrasilModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="SGQ_BrasilModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="SGQ_BrasilModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="SGQ_BrasilModel.Store.sp_helpdiagramdefinition">
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="SGQ_BrasilModel.Store.sp_helpdiagrams">
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="SGQ_BrasilModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SGQ_BrasilModel.Store.sp_upgraddiagrams" />
           <EntitySetMapping Name="Acoes">
             <EntityTypeMapping TypeName="SGQ_BrasilModel.Acoes">
               <MappingFragment StoreEntitySet="Acoes">
@@ -9969,6 +9989,76 @@ warning 6002: The table/view 'SGQ_Brasil.dbo.VerificacaoTipificacaoJBS' does not
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetOperacoes" FunctionName="SGQ_BrasilModel.Store.GetOperacoes">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SGQ_BrasilModel.GetOperacoes_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="UsuarioInsercao" ColumnName="UsuarioInsercao" />
+                <ScalarProperty Name="DataInsercao" ColumnName="DataInsercao" />
+                <ScalarProperty Name="UsuarioAlteracao" ColumnName="UsuarioAlteracao" />
+                <ScalarProperty Name="DataAlteracao" ColumnName="DataAlteracao" />
+                <ScalarProperty Name="Nivel" ColumnName="Nivel" />
+                <ScalarProperty Name="Frequencia" ColumnName="Frequencia" />
+                <ScalarProperty Name="Vigencia" ColumnName="Vigencia" />
+                <ScalarProperty Name="ControleVP" ColumnName="ControleVP" />
+                <ScalarProperty Name="ADCAMPOVAZIO" ColumnName="ADCAMPOVAZIO" />
+                <ScalarProperty Name="AvaliarEquipamentos" ColumnName="AvaliarEquipamentos" />
+                <ScalarProperty Name="AvaliarCamaras" ColumnName="AvaliarCamaras" />
+                <ScalarProperty Name="Especifico" ColumnName="Especifico" />
+                <ScalarProperty Name="ExibirPColeta" ColumnName="ExibirPColeta" />
+                <ScalarProperty Name="PadraoPerc" ColumnName="PadraoPerc" />
+                <ScalarProperty Name="ControleFP" ColumnName="ControleFP" />
+                <ScalarProperty Name="AvaliarSequencial" ColumnName="AvaliarSequencial" />
+                <ScalarProperty Name="Criterio" ColumnName="Criterio" />
+                <ScalarProperty Name="FrequenciaAlerta" ColumnName="FrequenciaAlerta" />
+                <ScalarProperty Name="ExibirData" ColumnName="ExibirData" />
+                <ScalarProperty Name="EmitirAlerta" ColumnName="EmitirAlerta" />
+                <ScalarProperty Name="ControlarAvaliacoes" ColumnName="ControlarAvaliacoes" />
+                <ScalarProperty Name="AlterarAmostra" ColumnName="AlterarAmostra" />
+                <ScalarProperty Name="IncluirTarefa" ColumnName="IncluirTarefa" />
+                <ScalarProperty Name="IncluirAvaliacao" ColumnName="IncluirAvaliacao" />
+                <ScalarProperty Name="AlertaAgruparAvaliacoes" ColumnName="AlertaAgruparAvaliacoes" />
+                <ScalarProperty Name="QteFamiliaUnidade" ColumnName="QteFamiliaUnidade" />
+                <ScalarProperty Name="QteFamiliaCorporativa" ColumnName="QteFamiliaCorporativa" />
+                <ScalarProperty Name="ExibirTarefasAcumuladas" ColumnName="ExibirTarefasAcumuladas" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ChartTarefasNC" FunctionName="SGQ_BrasilModel.Store.sp_ChartTarefasNC">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SGQ_BrasilModel.sp_ChartTarefasNC_Result">
+                <ScalarProperty Name="TarefaId" ColumnName="TarefaId" />
+                <ScalarProperty Name="Tarefa" ColumnName="Tarefa" />
+                <ScalarProperty Name="NC" ColumnName="NC" />
+                <ScalarProperty Name="QtdAvaliacao" ColumnName="QtdAvaliacao" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetScoreCardConsolidado" FunctionName="SGQ_BrasilModel.Store.GetScoreCardConsolidado">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SGQ_BrasilModel.GetScoreCardConsolidado_Result">
+                <ScalarProperty Name="Nivel" ColumnName="Nivel" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="OperacaoId" ColumnName="OperacaoId" />
+                <ScalarProperty Name="TotalAvaliado" ColumnName="TotalAvaliado" />
+                <ScalarProperty Name="TotalForaPadrao" ColumnName="TotalForaPadrao" />
+                <ScalarProperty Name="Criterio" ColumnName="Criterio" />
+                <ScalarProperty Name="Peso" ColumnName="Peso" />
+                <ScalarProperty Name="Meta" ColumnName="Meta" />
+                <ScalarProperty Name="Cluster" ColumnName="Cluster" />
+                <ScalarProperty Name="Regionalid" ColumnName="Regionalid" />
+                <ScalarProperty Name="Regional" ColumnName="Regional" />
+                <ScalarProperty Name="Empresaid" ColumnName="Empresaid" />
+                <ScalarProperty Name="Empresa" ColumnName="Empresa" />
+                <ScalarProperty Name="Ano" ColumnName="Ano" />
+                <ScalarProperty Name="Mes" ColumnName="Mes" />
+                <ScalarProperty Name="Real" ColumnName="Real" />
+                <ScalarProperty Name="Scorecard" ColumnName="Scorecard" />
+                <ScalarProperty Name="Pontos" ColumnName="Pontos" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

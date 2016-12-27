@@ -3,6 +3,7 @@ using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
+using System.Collections.Generic;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.Params
@@ -92,7 +93,7 @@ namespace SgqSystem.Controllers.Api.Params
 
         [HttpGet]
         [Route("AddVinculoL1L2/{idLevel1}/{idLevel2}/{idLevel3}")]
-        public ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2,int idLevel3)
+        public List<ParLevel3Level2Level1DTO> AddVinculoL1L2(int idLevel1, int idLevel2,int idLevel3)
         {
             return _paramdDomain.AddVinculoL1L2(idLevel1, idLevel2, idLevel3);
             //return paramsViewModel;

@@ -307,6 +307,7 @@
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Api\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Api\PCC1BController.cs" />
+    <Compile Include="Controllers\Api\ScorecardController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\GestaoController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
@@ -1246,6 +1247,7 @@
     <Content Include="Views\ParLevel2ControlCompany\_ControlCompanySelectBoxLevel2.cshtml" />
     <Content Include="Views\Shared\_ModalLoader.cshtml" />
     <Content Include="Views\ParLevel2ControlCompany\_ControlCompanySelectBoxLevel2UserCompany.cshtml" />
+    <Content Include="Views\RelatoriosSgq\Scorecard.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1257,7 +1259,6 @@
     <Folder Include="DataCollect\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
-    <Folder Include="Views\RelatoriosSgq\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>

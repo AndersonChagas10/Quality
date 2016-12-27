@@ -511,8 +511,6 @@ namespace Dominio.Services
             ParLevel3Level2 objLelvel2Level3ToSave;
             var level2 = _baseRepoParLevel2.GetById(idLevel2);
 
-            //if (peso <= 0)
-            //    peso = 1;
             objLelvel2Level3ToSave = new ParLevel3Level2()
             {
                 ParLevel2_Id = idLevel2,
@@ -525,7 +523,7 @@ namespace Dominio.Services
             if (existente != null)
             {
                 objLelvel2Level3ToSave = existente;
-                objLelvel2Level3ToSave.Weight = peso;
+                objLelvel2Level3ToSave.Weight = existente.Weight;/*Mantem o PESO*/
                 objLelvel2Level3ToSave.ParLevel3Group_Id = groupLevel2 == 0 ? null : groupLevel2;
             }
             else
@@ -538,47 +536,53 @@ namespace Dominio.Services
             return objtReturn;
         }
 
-        public ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2, int idLevel3)
+        public List<ParLevel3Level2Level1DTO> AddVinculoL1L2(int idLevel1, int idLevel2, int idLevel3)
         {
             var allLevel1Level2 = _baseRepoParLevel3Level2.GetAll();
             /*Verifica se existe vinculo no level2 e level 3 selecionado na tela*/
-            var existsL3L2 = allLevel1Level2.FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
-            if (existsL3L2 == null)
+            var listExistsL3L2 = allLevel1Level2.Where(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
+            if (listExistsL3L2 == null)
+                if(listExistsL3L2.Count() <= 0)
                 throw new ExceptionHelper("É necessário vincular o level3 ao level 2 antes de realizar esta operação.");
 
+            var listObjToSave = new List<ParLevel3Level2Level1DTO>();
             /*Se o vinculo level2 e level3 Cria objeto do Level3Level2Level1*/
-            var objToSave = new ParLevel3Level2Level1();
-            objToSave.ParLevel1_Id = idLevel1;
-            objToSave.ParLevel3Level2_Id = existsL3L2.Id;
-
-            /*Verifica se o vinculo ja existe, se já existe, ele ALTERA colocando o ID no objeto NOVO*/
-            var existsLevel3Level2Level1 = _baseRepoParLevel3Level2Level1.GetAll().FirstOrDefault(r => r.ParLevel3Level2_Id == existsL3L2.Id);
-            if (existsLevel3Level2Level1 != null)
+            foreach (var existsL3L2 in listExistsL3L2)
             {
-                existsLevel3Level2Level1.ParLevel1_Id = objToSave.ParLevel1_Id;
-                existsLevel3Level2Level1.ParLevel3Level2_Id = objToSave.ParLevel3Level2_Id;
-                existsLevel3Level2Level1.Active = objToSave.Active;
-                _baseRepoParLevel3Level2Level1.AddOrUpdate(existsLevel3Level2Level1);/*Salva Vinculo Level3Level2Level1*/
-                objToSave = existsLevel3Level2Level1;
+                var objToSave = new ParLevel3Level2Level1();
+                objToSave.ParLevel1_Id = idLevel1;
+                objToSave.ParLevel3Level2_Id = existsL3L2.Id;
+
+                /*Verifica se o vinculo ja existe, se já existe, ele ALTERA colocando o ID no objeto NOVO*/
+                var existsLevel3Level2Level1 = _baseRepoParLevel3Level2Level1.GetAll().FirstOrDefault(r => r.ParLevel3Level2_Id == existsL3L2.Id);
+                if (existsLevel3Level2Level1 != null)
+                {
+                    existsLevel3Level2Level1.ParLevel1_Id = objToSave.ParLevel1_Id;
+                    existsLevel3Level2Level1.ParLevel3Level2_Id = objToSave.ParLevel3Level2_Id;
+                    existsLevel3Level2Level1.Active = objToSave.Active;
+                    _baseRepoParLevel3Level2Level1.AddOrUpdate(existsLevel3Level2Level1);/*Salva Vinculo Level3Level2Level1*/
+                    objToSave = existsLevel3Level2Level1;
+                }
+                else
+                {
+                    _baseRepoParLevel3Level2Level1.AddOrUpdate(objToSave);/*Salva Vinculo Level3Level2Level1*/
+                }
+
+                /*Objeto ParLEvel2Level1 que é salvo caso não exista vinculo com key level1 e level2 já registrados na tabela ParLevel2Level1*/
+                var level2level1 = new ParLevel2Level1();
+                level2level1.IsActive = true;
+                level2level1.ParCompany_Id = null;
+                level2level1.ParLevel1_Id = objToSave.ParLevel1_Id;
+                level2level1.ParLevel2_Id = objToSave.ParLevel3Level2.ParLevel2_Id;
+
+                var existeParLevel2Level1 = _baseRepoParLevel2Level1.GetAll().FirstOrDefault(r => r.ParLevel1_Id == level2level1.ParLevel1_Id && r.ParLevel2_Id == level2level1.ParLevel2_Id);
+                if (existeParLevel2Level1 == null)
+                    _baseRepoParLevel2Level1.AddOrUpdate(level2level1);
+
+                listObjToSave.Add(Mapper.Map<ParLevel3Level2Level1DTO>(objToSave));
             }
-            else
-            {
-                _baseRepoParLevel3Level2Level1.AddOrUpdate(objToSave);/*Salva Vinculo Level3Level2Level1*/
-            }
 
-
-            /*Objeto ParLEvel2Level1 que é salvo caso não exista vinculo com key level1 e level2 já registrados na tabela ParLevel2Level1*/
-            var level2level1 = new ParLevel2Level1();
-            level2level1.IsActive = true;
-            level2level1.ParCompany_Id = null;
-            level2level1.ParLevel1_Id = objToSave.ParLevel1_Id;
-            level2level1.ParLevel2_Id = objToSave.ParLevel3Level2.ParLevel2_Id;
-
-            var existeParLevel2Level1 = _baseRepoParLevel2Level1.GetAll().FirstOrDefault(r => r.ParLevel1_Id == level2level1.ParLevel1_Id && r.ParLevel2_Id == level2level1.ParLevel2_Id);
-            if (existeParLevel2Level1 == null)
-                _baseRepoParLevel2Level1.AddOrUpdate(level2level1);
-
-            return Mapper.Map<ParLevel3Level2Level1DTO>(objToSave);
+            return listObjToSave;
 
         }
 
