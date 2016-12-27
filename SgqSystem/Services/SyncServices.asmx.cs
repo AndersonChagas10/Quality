@@ -275,6 +275,8 @@ namespace SgqSystem.Services
                 string totallevel3withdefects = result[38];
                 string totalLevel2Evaluation = result[39];
                 string avaliacaoultimoalerta = result[40];
+                string evaluatedresult = result[41];
+                string defectsresult = result[42];
                 //string alertaAtual = result[40];
 
                 //Gera o Cabeçalho do Level02
@@ -298,6 +300,8 @@ namespace SgqSystem.Services
                 level02HeaderJSon += ";" + totallevel3withdefects;
                 level02HeaderJSon += ";" + totalLevel2Evaluation;
                 level02HeaderJSon += ";" + avaliacaoultimoalerta;
+                level02HeaderJSon += ";" + evaluatedresult;
+                level02HeaderJSon += ";" + defectsresult;
                 //level02HeaderJSon += ";" + alertaAtual;
 
                 //Verifica o Resultado do Level03
@@ -589,12 +593,16 @@ namespace SgqSystem.Services
 
                                 string avaliacaoultimoalerta = arrayHeader[19];
                                 avaliacaoultimoalerta = DefaultValueReturn(avaliacaoultimoalerta, "0");
+
+
+                                string evaluatedresult = arrayHeader[20];
+                                string defectsresult = arrayHeader[21];
                                 //string alertaAtual = arrayHeader[19]; 
 
                                 int CollectionLevel2Id = InsertCollectionLevel2(ConsolidationLevel2, level01, level02, unitId, AuditorId, shift, period, Phase, Reaudit, reauditNumber, level02CollectionDate,
                                                                                 StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit,
                                                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
-                                                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta);
+                                                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, evaluatedresult, defectsresult);
 
                                 if (CollectionLevel2Id == 0)
                                 {
@@ -781,7 +789,7 @@ namespace SgqSystem.Services
                 LastEvaluationAlert = CollectionLevel2Consolidation.LastEvaluationAlert.ToString();
             }
 
-            string sql = "UPDATE ConsolidationLevel2 SET AlertLevel=" + AlertLevel.ToString().Replace(",",".") + ", WeiEvaluation=" + CollectionLevel2Consolidation.WeiEvaluationTotal.ToString().Replace(",", ".") +  ", EvaluateTotal=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", DefectsTotal=" + CollectionLevel2Consolidation.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects="  + CollectionLevel2Consolidation.WeiDefectsTotal.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" +  CollectionLevel2Consolidation.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "' WHERE ID='" + ConsolidationLevel2_Id.ToString().Replace(",", ".") + "'";
+            string sql = "UPDATE ConsolidationLevel2 SET AlertLevel=" + AlertLevel.ToString().Replace(",",".") + ", WeiEvaluation=" + CollectionLevel2Consolidation.WeiEvaluationTotal.ToString().Replace(",", ".") +  ", EvaluateTotal=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", DefectsTotal=" + CollectionLevel2Consolidation.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects="  + CollectionLevel2Consolidation.WeiDefectsTotal.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" +  CollectionLevel2Consolidation.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "', EvaluatedResult='" + CollectionLevel2Consolidation.EvaluatedResult +  "', DefectsResult='" + CollectionLevel2Consolidation.DefectsResult + "' WHERE ID='" + ConsolidationLevel2_Id.ToString().Replace(",", ".") + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -822,7 +830,7 @@ namespace SgqSystem.Services
                 LastEvaluationAlert = CL1XCL2.LastEvaluationAlert.ToString();
             }
 
-            string sql = "UPDATE ConsolidationLevel1 SET AtualAlert=" + AlertLevel.ToString().Replace(",",".") + ", Evaluation=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", WeiEvaluation=" + CL1XCL2.WeiEvaluation.ToString().Replace(",", ".") + ", EvaluateTotal=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", DefectsTotal=" + CL1XCL2.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CL1XCL2.WeiDefects.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CL1XCL2.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CL1XCL2.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "' WHERE ID='" + ConsolidationLevel1_Id.ToString().Replace(",", ".") + "'";
+            string sql = "UPDATE ConsolidationLevel1 SET AtualAlert=" + AlertLevel.ToString().Replace(",",".") + ", Evaluation=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", WeiEvaluation=" + CL1XCL2.WeiEvaluation.ToString().Replace(",", ".") + ", EvaluateTotal=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", DefectsTotal=" + CL1XCL2.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CL1XCL2.WeiDefects.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CL1XCL2.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CL1XCL2.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "', EvaluatedResult='" + CL1XCL2.EvaluatedResult.ToString().Replace(",", ",") + "', DefectsResult='" + CL1XCL2.DefectsResult.ToString().Replace(",", ".") + "' WHERE ID='" + ConsolidationLevel1_Id.ToString().Replace(",", ".") + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -1130,7 +1138,8 @@ namespace SgqSystem.Services
         public int InsertCollectionLevel2(SGQDBContext.ConsolidationLevel2 ConsolidationLevel2, string Level01Id, string Level02Id, string UnitId, string AuditorId, string Shift, string Period, string Phase, string Reaudit, string ReauditNumber, string CollectionDate,
                                            string StartPhase, string Evaluation, string Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
                                            string Duplicated, string haveReaudit, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel,
-                                           string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation, string avaliacaoultimoalerta)
+                                           string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation, 
+                                           string avaliacaoultimoalerta, string evaluatedresult, string defectsresult)
         {
 
             //Verificamos a data da phase
@@ -1153,9 +1162,9 @@ namespace SgqSystem.Services
 
             if (id == "0")
             {
-                sql = "INSERT INTO CollectionLevel2 ([ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert]) " +
+                sql = "INSERT INTO CollectionLevel2 ([ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[EvaluatedResult],[DefectsResult]) " +
                 "VALUES " +
-                "('" + ConsolidationLevel2.Id + "','" + Level01Id + "','" + Level02Id + "','" + UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + Reaudit + "','" + ReauditNumber + "', CAST(N'" + CollectionDate + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" +WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "') ";
+                "('" + ConsolidationLevel2.Id + "','" + Level01Id + "','" + Level02Id + "','" + UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + Reaudit + "','" + ReauditNumber + "', CAST(N'" + CollectionDate + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" +WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "') ";
 
                 sql += " SELECT @@IDENTITY AS 'Identity' ";
             }
@@ -1626,7 +1635,7 @@ namespace SgqSystem.Services
                 var ConsolidationResultL1L2DB = new SGQDBContext.ConsolidationResultL1L2();
                 var consolidationResultL1L2 = ConsolidationResultL1L2DB.getConsolidation(Level2Result.ParLevel2_Id, Level2Result.Unit_Id);
 
-                Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\" DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\"></div>";
+                Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\"></div>";
             }
 
             return Results;
