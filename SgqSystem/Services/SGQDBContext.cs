@@ -938,6 +938,51 @@ namespace SGQDBContext
 
             return list;
         }
+
+        public IEnumerable<CaracteristicaTipificacao> getCaracteristicasTipificacaoUnico(int ncdcaracteristica)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
+                         " from CaracteristicaTipificacao CP where cNrCaracteristica = " + ncdcaracteristica;
+
+            var list = db.Query<CaracteristicaTipificacao>(sql);
+
+            return list;
+        }
+
+        public IEnumerable<CaracteristicaTipificacao> getAreasParticipantesUnico()
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
+                         " from AreasParticipantes CP where cNrCaracteristica = 0209;";
+
+            var list = db.Query<CaracteristicaTipificacao>(sql);
+
+            return list;
+        }
+
+
+    }
+    public partial class VerificacaoTipificacaoTarefaIntegracao
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+
+        public int Id { get; set; }
+        public int TarefaId { get; set; }
+        public int CaracteristicaTipificacaoId { get; set; }
+
+        public IEnumerable<VerificacaoTipificacaoTarefaIntegracao> getTarefa(int caracteristicatipificacaoid)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select Id, TarefaId, CaracteristicaTipificacaoId from VerificacaoTipificacaoTarefaIntegracao where CaracteristicaTipificacaoId = " + caracteristicatipificacaoid;
+
+            var list = db.Query<VerificacaoTipificacaoTarefaIntegracao>(sql);
+
+            return list;
+        }
     }
 
     public partial class ConsolidationLevel2
