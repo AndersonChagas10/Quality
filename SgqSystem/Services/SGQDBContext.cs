@@ -190,17 +190,27 @@ namespace SGQDBContext
 
             using (var dbEf = new SgqDbDevEntities()) {
           
-                var L2EQuery = from L1 in dbEf.ParLevel1
-                               where L1.Id == ParLevel1_Id
-                               select L1;
+                //var L2EQuery = from L1 in dbEf.ParLevel1
+                //               where L1.Id == ParLevel1_Id
+                //               select L1;
 
-                var result = L2EQuery.FirstOrDefault();
+                //var result = L2EQuery.FirstOrDefault();
+
+                //if (result != null)
+                //{
+                //    parLevel1Familia = result.IsFixedEvaluetionNumber;
+                //}
+
+                var result = (from L1 in dbEf.ParLevel1
+                              where L1.Id == ParLevel1_Id
+                              select L1).FirstOrDefault();
+
+                //var result = L2EQuery.FirstOrDefault();
 
                 if (result != null)
                 {
                     parLevel1Familia = result.IsFixedEvaluetionNumber;
                 }
-
             }
 
         /****CONTROLE DE FAMÍLIA DE PRODUTOS*****/
