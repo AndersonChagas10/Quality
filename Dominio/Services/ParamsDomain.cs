@@ -340,29 +340,18 @@ namespace Dominio.Services
                     paramsDto.parLevel3Dto.listLevel3Level2.ForEach(r => r.preparaParaInsertEmBanco());
 
             List<ParLevel3Level2> parLevel3Level2peso = Mapper.Map<List<ParLevel3Level2>>(paramsDto.parLevel3Dto.listLevel3Level2);
-
-            /*Verifica se existe vinculos com L3 a L1*/
-            List<ParLevel3Level2Level1> parLevel3Level2Level1Novo;
-            var existeLevel3VinculadoComLevel1 = _baseRepoParLevel3Level2Level1.GetAll().Where(r => parLevel3Level2peso.Any(c => c.Id == r.Id));
-
-            if (existeLevel3VinculadoComLevel1 != null)
-                if (existeLevel3VinculadoComLevel1.Count() < parLevel3Level2peso.Count())
-                {
-                    parLevel3Level2Level1Novo = new List<ParLevel3Level2Level1>();
-                    foreach (var Level3Level2Novos in parLevel3Level2peso.Where(r=> !parLevel3Level2Level1Novo.Any(c=> c.ParLevel3Level2_Id == r.Id)))
-                    {
-                        parLevel3Level2Level1Novo.Add(new ParLevel3Level2Level1() {
-
-                        });
-                    }
-                }
-
+            var existeLevel3VinculadoComLevel1 = _baseRepoParLevel3Level2Level1.GetAll();/*Verifica se existe vinculos com L3 a L1*/
 
             #endregion
 
             try
             {
                 _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2peso);
+
+                foreach (var l32 in parLevel3Level2peso)
+                    if (existeLevel3VinculadoComLevel1.FirstOrDefault(r => r.ParLevel3Level2_Id == l32.Id) == null)
+                        AddVinculoL1L2(existeLevel3VinculadoComLevel1.FirstOrDefault(r=> parLevel3Level2peso.Any(c=>c.Id == r.ParLevel3Level2_Id)).ParLevel1_Id, parLevel3Level2peso.FirstOrDefault().ParLevel2_Id, saveParamLevel3.Id);
+
             }
             catch (DbUpdateException e)
             {

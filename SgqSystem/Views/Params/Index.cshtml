@@ -531,16 +531,24 @@
                 $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
 
                     //closeLoader();
-
+                    $btn.button('reset');
                     if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
                         indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
                         openMessageModal("Alerta", statusmessage);
                     }
-                    $btn.button('reset');
+
                 }).fail(function (e, h, x) {
                     //closeLoader();
-                    $btn.button('reset');
-                    openMessageModal("Alerta", e.responseJSON.Message);
+                    try {
+                        closeLoader();
+                        $btn.button('reset');
+                        openMessageModal("Alerta", e.responseJSON.Message);
+                    } catch (e) {
+                        closeLoader();
+                        $btn.button('reset');
+                        openMessageModal("Alerta", "Não foi possivel concluir a ação.");
+                        console.log(e);
+                    }
                 });
             }
 
@@ -690,8 +698,16 @@
                         openMessageModal("Alerta", statusmessage);
                     }
                 }).fail(function (e, h, x) {
-                    //closeLoader();
-                    openMessageModal("Alerta", e.responseJSON.Message);
+                    try {
+                        closeLoader();
+                        $btn.button('reset');
+                        openMessageModal("Alerta", e.responseJSON.Message);
+                    } catch (e) {
+                        $btn.button('reset');
+                        closeLoader();
+                        openMessageModal("Alerta", "Não foi possivel concluir a ação.");
+                        console.log(e);
+                    }
                 });
             }
 
@@ -870,9 +886,16 @@
                     initialFormLevel3 = $($('form')[2]).clone();
 
                 }).fail(function (e, h, x) {
-                    //closeLoader();
-                    $btn.button('loading');
-                    openMessageModal("Alerta", e.responseJSON.Message);
+                    try {
+                        $btn.button('reset');
+                        openMessageModal("Alerta", e.responseJSON.Message);
+                        closeLoader();
+                    } catch (e) {
+                        $btn.button('reset');
+                        closeLoader();
+                        openMessageModal("Alerta", "Não foi possivel concluir a ação.");
+                        console.log(e);
+                    }
                 });
 
             }
