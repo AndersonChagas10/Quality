@@ -133,6 +133,7 @@
     <Compile Include="DTO\Params\ParLevel1XHeaderFieldDTO.cs" />
     <Compile Include="DTO\Params\ParMultipleValuesDTO.cs" />
     <Compile Include="DTO\Params\ParFrequencyDTO.cs" />
+    <Compile Include="ResultSet\ScorecardResultSet.cs" />
     <Compile Include="TableResults\TableResultsForDataTable.cs" />
     <Compile Include="DTO\ShiftDTO.cs" />
     <Compile Include="DTO\SyncDTO.cs" />

@@ -33,7 +33,6 @@
         <EntityTypeShape EntityType="SgqDbModel.ParCompanyCluster" Width="1.5" PointX="22.25" PointY="46" />
         <EntityTypeShape EntityType="SgqDbModel.ParCompanyXStructure" Width="1.5" PointX="17.25" PointY="31" />
         <EntityTypeShape EntityType="SgqDbModel.ParCompanyXUserSgq" Width="1.5" PointX="22.25" PointY="43.125" />
-        <EntityTypeShape EntityType="SgqDbModel.ParConfSGQ" Width="1.5" PointX="8.75" PointY="4.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParConsolidationType" Width="1.5" PointX="3.75" PointY="33.125" />
         <EntityTypeShape EntityType="SgqDbModel.ParCounter" Width="1.5" PointX="12" PointY="22.25" />
         <EntityTypeShape EntityType="SgqDbModel.ParCounterXLocal" Width="1.5" PointX="14.25" PointY="36.5" />

@@ -785,6 +785,7 @@ namespace SGQDBContext
             return list;
         }
     }
+
     public partial class ParConfSGQ
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -804,6 +805,7 @@ namespace SGQDBContext
 
         }
     }
+
     public partial class UserSGQ
     {
         public int Id { get; set; }
