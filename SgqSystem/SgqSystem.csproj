@@ -302,6 +302,7 @@
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
     <Compile Include="Controllers\Api\Login\LoginController.cs" />
+    <Compile Include="Controllers\Api\ManutencaoController.cs" />
     <Compile Include="Controllers\Api\NewSync\NewSyncController.cs" />
     <Compile Include="Controllers\Api\NQAController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
@@ -312,6 +313,7 @@
     <Compile Include="Controllers\Api\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\GestaoController.cs" />
+    <Compile Include="Controllers\ManutencaoController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\RelatoriosSgqController.cs" />
@@ -1251,6 +1253,7 @@
     <Content Include="Views\Shared\_ModalLoader.cshtml" />
     <Content Include="Views\ParLevel2ControlCompany\_ControlCompanySelectBoxLevel2UserCompany.cshtml" />
     <Content Include="Views\RelatoriosSgq\Scorecard.cshtml" />
+    <Content Include="Views\Manutencao\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

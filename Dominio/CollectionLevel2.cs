@@ -50,6 +50,14 @@ namespace Dominio
         public Nullable<int> AlertLevel { get; set; }
         public Nullable<int> Sequential { get; set; }
         public Nullable<int> Side { get; set; }
+        public Nullable<decimal> WeiEvaluation { get; set; }
+        public Nullable<decimal> Defects { get; set; }
+        public Nullable<decimal> WeiDefects { get; set; }
+        public Nullable<int> TotalLevel3WithDefects { get; set; }
+        public Nullable<int> TotalLevel3Evaluation { get; set; }
+        public Nullable<int> LastEvaluationAlert { get; set; }
+        public Nullable<int> EvaluatedResult { get; set; }
+        public Nullable<int> DefectsResult { get; set; }
     
         public virtual ConsolidationLevel2 ConsolidationLevel2 { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }
