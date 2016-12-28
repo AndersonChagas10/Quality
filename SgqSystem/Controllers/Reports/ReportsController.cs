@@ -47,13 +47,13 @@ namespace SgqSystem.Controllers
             _relatorioColetaDomain = relatorioColetaDomain;
 
             form = new FormularioParaRelatorioViewModel();
-            form.SetLevel01SelectList(_level01.GetAll());
-            form.Setlevel02SelectList(_level02.GetAll());
-            form.SetLevel03SelectList(_level03.GetAll());
-            form.SetUserSelectList(_user.GetAll());
+            form.SetLevel01SelectList(_level01.GetAllNoLazyLoad());
+            form.Setlevel02SelectList(_level02.GetAllNoLazyLoad());
+            form.SetLevel03SelectList(_level03.GetAllNoLazyLoad());
+            form.SetUserSelectList(_user.GetAllNoLazyLoad());
             form.SetShiftSelectList(/*_shift.GetAll()*/);
-            form.SetPeriodSelectList(_period.GetAll());
-            form.SetUnitsSelectList(_unit.GetAll());
+            form.SetPeriodSelectList(_period.GetAllNoLazyLoad());
+            form.SetUnitsSelectList(_unit.GetAllNoLazyLoad());
             form.SetUserSelectList(_user.GetAllNoLazyLoad());
             //form.SetUserSelectList(_userDomain.GetAllUserValidationAd(new UserDTO()).Retorno);
         }

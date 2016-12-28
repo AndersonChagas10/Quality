@@ -19,7 +19,7 @@ namespace SgqSystem.Controllers.Api
         public List<ScorecardResultSet> GetScorecardMock([FromBody] FormularioParaRelatorioViewModel form)
         {
             //CriaMock();
-            var query = new ScorecardResultSet().SelectScorecard(form._dataInicio, form._dataFim);
+            var query = new ScorecardResultSet().SelectScorecard(form._dataInicio, form._dataFim, form.unitId);
             using (var db = new SgqDbDevEntities())
             {
                _list = db.Database.SqlQuery<ScorecardResultSet>(query).ToList();

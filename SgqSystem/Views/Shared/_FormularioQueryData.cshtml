@@ -201,7 +201,7 @@
 
         <li>
             <div class="" id="simpleCallendar" style="display:none">
-                <span class="redLabel">Date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
+                <span class="redLabel">@Resources.Resource.date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
                 <div class="has-feedback">
                     <input type="text" class="form-control" name="datefilter" style="width:210px" />
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
@@ -211,7 +211,7 @@
 
         <li>
             <div class="" id="complexCallendar" style="display:none">
-                <span class="redLabel">Date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
+                <span class="redLabel">@Resources.Resource.date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
                 <div id="reportrange" class="" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 210px">
                     <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                     <span></span> <b class="caret"></b>
@@ -221,34 +221,34 @@
 
         <li>
             <div id="showUnit" style="display:none">
-                <span class="redLabel">Unit</span>
-                @Html.DropDownList("unitId", Model.UnitsSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                <span class="redLabel">@Resources.Resource.unit</span>
+                @Html.DropDownList("unitId", Model.UnitsSelectList, @Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
         <li>
             <div id="showShift" style="display:none">
-                <span class="redLabel">Shift</span>
+                <span class="redLabel">@Resources.Resource.shift</span>
                 @Html.DropDownList("shift", Model.ShiftSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
         <li>
             <div id="showPeriod" style="display:none">
-                <span class="redLabel">Period</span>
+                <span class="redLabel">@Resources.Resource.period</span>
                 @Html.DropDownList("period", Model.PeriodSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
         <li>
             <div id="showUsers" style="display:none">
-                <span class="redLabel">Auditor</span>
+                <span class="redLabel">@Resources.Resource.auditor</span>
                 @Html.DropDownList("auditorId", Model.UserSelectList, "All", htmlAttributes: new { @class = "form-control required", @style = "width:210px" })
             </div>
         </li>
 
         <li>
-            <button type="button" class="btn margin-top btn-primary" id="btnSend" onclick="">Send</button>
+            <button type="button" class="btn margin-top btn-primary" id="btnSend" onclick="">@Resources.Resource.send</button>
         </li>
 
     </ul>

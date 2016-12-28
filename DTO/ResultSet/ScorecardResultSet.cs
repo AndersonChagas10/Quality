@@ -29,7 +29,7 @@ public class ScorecardResultSet
     public decimal? PontosAtingidos { get; set; }
     public decimal? Scorecard { get; set; }
 
-    public string SelectScorecard(DateTime dtInicio, DateTime dtFim)
+    public string SelectScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId)
     {
 
         return "SELECT " +
