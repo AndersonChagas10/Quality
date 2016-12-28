@@ -1,6 +1,7 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO;
+using DTO.DTO.Params;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Web.Mvc;
@@ -22,7 +23,7 @@ namespace SgqSystem.Controllers
         private readonly IBaseDomain<Level03, Level03DTO> _level03;
         private readonly IBaseDomain<Shift, ShiftDTO> _shift;
         private readonly IBaseDomain<Period, PeriodDTO> _period;
-        private readonly IBaseDomain<Unit, UnitDTO> _unit;
+        private readonly IBaseDomain<ParCompany, ParCompanyDTO> _unit;
 
         public ReportsController(IRelatorioColetaDomain relatorioColetaDomain
             , IUserDomain userDomain
@@ -32,7 +33,7 @@ namespace SgqSystem.Controllers
             , IBaseDomain<Level03, Level03DTO> level03
             , IBaseDomain<Shift, ShiftDTO> shift
             , IBaseDomain<Period, PeriodDTO> period
-            , IBaseDomain<Unit, UnitDTO> unit
+            , IBaseDomain<ParCompany, ParCompanyDTO> unit
             )
         {
             _unit = unit;
@@ -46,14 +47,15 @@ namespace SgqSystem.Controllers
             _relatorioColetaDomain = relatorioColetaDomain;
 
             form = new FormularioParaRelatorioViewModel();
-            form.SetLevel01SelectList(_level01.GetAll());
-            form.Setlevel02SelectList(_level02.GetAll());
-            form.SetLevel03SelectList(_level03.GetAll());
-            form.SetUserSelectList(_user.GetAll());
+            form.SetLevel01SelectList(_level01.GetAllNoLazyLoad());
+            form.Setlevel02SelectList(_level02.GetAllNoLazyLoad());
+            form.SetLevel03SelectList(_level03.GetAllNoLazyLoad());
+            form.SetUserSelectList(_user.GetAllNoLazyLoad());
             form.SetShiftSelectList(/*_shift.GetAll()*/);
-            form.SetPeriodSelectList(_period.GetAll());
-            form.SetUnitsSelectList(_unit.GetAll());
-            form.SetUserSelectList(_userDomain.GetAllUserValidationAd(new UserDTO()).Retorno);
+            form.SetPeriodSelectList(_period.GetAllNoLazyLoad());
+            form.SetUnitsSelectList(_unit.GetAllNoLazyLoad());
+            form.SetUserSelectList(_user.GetAllNoLazyLoad());
+            //form.SetUserSelectList(_userDomain.GetAllUserValidationAd(new UserDTO()).Retorno);
         }
 
         #endregion

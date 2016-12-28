@@ -1,11 +1,11 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 
 
-<link href="~/admin-lte/css/AdminLTE.min.css" rel="stylesheet" />
-<link href="~/Content/daterangepicker-bs3.css" rel="stylesheet" />
+@*<link href="~/admin-lte/css/AdminLTE.min.css" rel="stylesheet" />
+    <link href="~/Content/daterangepicker-bs3.css" rel="stylesheet" />*@
 <script src="~/admin-lte/js/app.min.js"></script>
-<script src="~/Scripts/moment.min.js"></script>
-<script src="~/Scripts/daterangepicker.js"></script>
+@*<script src="~/Scripts/moment.min.js"></script>*@
+@*<script src="~/Scripts/daterangepicker.js"></script>*@
 
 <style>
 
@@ -61,8 +61,13 @@
     .wrapper.toggled .page-content-wrapper {
         position: absolute;
         margin-right: -300px;
+        
     }
 
+   .page-content-wrapper {
+        float: none!important;
+        width: 100%;
+    }
     /* Sidebar Styles */
 
     .sidebar-nav {
@@ -181,6 +186,11 @@
             margin-right: 0;
         }
     }
+
+    .input-mini{
+        width: 100%!important;
+    }
+
 </style>
 
 
@@ -196,7 +206,7 @@
 
         <li>
             <div class="" id="simpleCallendar" style="display:none">
-                <span class="redLabel">Date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
+                <span class="redLabel">@Resources.Resource.date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
                 <div class="has-feedback">
                     <input type="text" class="form-control" name="datefilter" style="width:210px" />
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
@@ -205,8 +215,8 @@
         </li>
 
         <li>
-            <div class="" id="complexCallendar">
-                <span class="redLabel">Date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
+            <div class="" id="complexCallendar" style="display:none">
+                <span class="redLabel">@Resources.Resource.date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
                 <div id="reportrange" class="" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 210px">
                     <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                     <span></span> <b class="caret"></b>
@@ -215,35 +225,35 @@
         </li>
 
         <li>
-            <div id="showUnit">
-                <span class="redLabel">Unit</span>
-                @Html.DropDownList("unitId", Model.UnitsSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+            <div id="showUnit" style="display:none">
+                <span class="redLabel">@Resources.Resource.unit</span>
+                @Html.DropDownList("unitId", Model.UnitsSelectList, @Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
         <li>
-            <div id="showShift">
-                <span class="redLabel">Shift</span>
+            <div id="showShift" style="display:none">
+                <span class="redLabel">@Resources.Resource.shift</span>
                 @Html.DropDownList("shift", Model.ShiftSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
         <li>
-            <div id="showPeriod">
-                <span class="redLabel">Period</span>
+            <div id="showPeriod" style="display:none">
+                <span class="redLabel">@Resources.Resource.period</span>
                 @Html.DropDownList("period", Model.PeriodSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
         <li>
-            <div id="showUsers">
-                <span class="redLabel">Auditor</span>
+            <div id="showUsers" style="display:none">
+                <span class="redLabel">@Resources.Resource.auditor</span>
                 @Html.DropDownList("auditorId", Model.UserSelectList, "All", htmlAttributes: new { @class = "form-control required", @style = "width:210px" })
             </div>
         </li>
 
         <li>
-            <button type="button" class="btn margin-top btn-primary" id="btnSend" onclick="">Send</button>
+            <button type="button" class="btn margin-top btn-primary" id="btnSend" onclick="">@Resources.Resource.send</button>
         </li>
 
     </ul>
@@ -269,7 +279,11 @@
 <!-- Menu Toggle Script -->
 
 <script>
-    moment.locale('pt')
+
+   
+
+    var stringConfigDateUSA = 'MM/DD/YYYY';
+    var stringConfigDateBr = 'DD/MM/YYYY';
     var enviar = {};
     var start = moment();
     var end = moment();
@@ -302,19 +316,20 @@
             autoApply: true,
             showDropdowns: true,
             startDate: start,
-            opens: "left",
             endDate: end,
+            //opens: "left",
+            //"locale": localCultureRangePicker,
             locale: {
                 cancelLabel: 'Clear'
             }
         }, function (start, end, label) {
-            console.log("New date range selected: ' + start.format('MM/DD/YYYY') + ' to ' + end.format('MM/DD/YYYY') + ' (predefined range: ' + label + ')");
-            enviar['startDate'] = start.format('MM/DD/YYYY');
-            enviar['endDate'] = end.format('MM/DD/YYYY');
+            //console.log("New date range selected: ' + start.format('MM/DD/YYYY') + ' to ' + end.format('MM/DD/YYYY') + ' (predefined range: ' + label + ')");
+            enviar['startDate'] = start.format(stringConfigDateBr);
+            enviar['endDate'] = end.format(stringConfigDateBr);
         });
 
         $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
-            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+            $(this).val(picker.startDate.format(stringConfigDateBr) + ' - ' + picker.endDate.format(stringConfigDateBr));
         });
 
         $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
@@ -329,32 +344,28 @@
         var end = moment();
 
         function cb(start, end) {
-            $('#reportrange span').html(start.format('MM/DD/YYYY') + ' - ' + end.format('MM/DD/YYYY'));
-            enviar['startDate'] = start.format('MM/DD/YYYY');
-            enviar['endDate'] = end.format('MM/DD/YYYY');
+            $('#reportrange span').html(start.format(stringConfigDateBr) + ' - ' + end.format(stringConfigDateBr));
+            enviar['startDate'] = start.format(stringConfigDateBr);
+            enviar['endDate'] = end.format(stringConfigDateBr);
         }
 
         $('#reportrange').daterangepicker({
             startDate: start,
             endDate: end,
-            opens: "left",
+            //opens: "left",
+            //locale: localCultureRangePicker,
+            //autoApply: false,
             alwaysShowCalendars: true,
             showDropdowns: true,
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            }
+            ranges: rangesBR,
+            linkedCalendars: false
         }, cb);
 
         cb(start, end);
         //End config datepickerrange full
 
-        enviar['startDate'] = moment().format('MM/DD/YYYY');
-        enviar['endDate'] = moment().format('MM/DD/YYYY');
+        enviar['startDate'] = moment().format(stringConfigDateBr);
+        enviar['endDate'] = moment().format(stringConfigDateBr);
     });
 
     $(document).ready(function () {

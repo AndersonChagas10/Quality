@@ -1,6 +1,6 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
-    ViewBag.Title = "Data Collection Reports";
+    ViewBag.Title = "Scorecard";
     var url = Url.Action("Index", "Home");
     var urlScorecard = Url.Action("GetScorecard", "api/Scorecard");
     var urlScorecardMock = Url.Action("GetScorecardMock", "api/Scorecard");
@@ -34,7 +34,12 @@
     function Send() {
         $btn.button('loading');
         $('#results').empty();
-        ValidaDadosParaEnvio();
+
+        if (!ValidaDadosParaEnvio()) {
+            $btn.button('reset');
+            return;
+        }
+
         //AJAX
         $.post(url1, enviar, function (r) {
             try {
@@ -47,7 +52,16 @@
                 $btn.button('reset');
                 //Hotfix: table não alinha resultados de centro no meio da tr....
             }
-        })
+        }).fail(function (e, h, x) {
+            //closeLoader();
+            $btn.button('reset');
+            if (e.status == 0) {
+                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+            } else {
+                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+            }
+            //openMessageModal("Alerta", e.responseJSON.Message);
+        });
     };
     function GerarTabela(retornoArray) {
 
@@ -154,12 +168,23 @@
     function ValidaDadosParaEnvio() {
         GuardJs.resetForValidation();
         GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+        /*Especifico*/
+        if (!($('#unitId :selected').val() > 0))
+        {
+            GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
+            return false;
+        }
         if (!GuardJs.isValid)
-            return;
+            return !GuardJs.isValid;
         GuardJs.esconderMensagem();
-    }
-    formControl.ShowAllFielsAndFullCallendar();
 
+        return true;
+    }
+
+    $(document).ready(function () {
+        formControl.showFullCallendar();
+        formControl.showUnit();
+    });
 </script>
 
 }

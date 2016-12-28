@@ -1,5 +1,7 @@
-﻿using SgqSystem.ViewModels;
+﻿using Dominio;
+using SgqSystem.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -9,26 +11,27 @@ namespace SgqSystem.Controllers.Api
     [RoutePrefix("api/Scorecard")]
     public class ScorecardController : ApiController
     {
-        public List<MockScorecard> _mock;
+        private List<ScorecardResultSet> _mock { get; set; }
+        private List<ScorecardResultSet> _list { get; set; }
 
         [HttpPost]
         [Route("GetScorecardMock")]
-        public List<MockScorecard> GetScorecardMock([FromBody] FormularioParaRelatorioViewModel form)
+        public List<ScorecardResultSet> GetScorecardMock([FromBody] FormularioParaRelatorioViewModel form)
         {
-            CriaMock();
-            return _mock;
-        }
+            //CriaMock();
+            var query = new ScorecardResultSet().SelectScorecard(form._dataInicio, form._dataFim, form.unitId);
+            using (var db = new SgqDbDevEntities())
+            {
+               _list = db.Database.SqlQuery<ScorecardResultSet>(query).ToList();
+            }
 
-        //public void GetScorecardMock()
-        //{
-        //    CriaMock();
-        //    return _mock;
-        //}
+            return _list;
+        }
 
         private void CriaMock()
         {
-            _mock = new List<MockScorecard>();
-            _mock.Add(new MockScorecard()
+            _mock = new List<ScorecardResultSet>();
+            _mock.Add(new ScorecardResultSet()
             {
                 Cluster = 1,
                 ClusterName = "Cluster 1",
@@ -51,7 +54,7 @@ namespace SgqSystem.Controllers.Api
                 Scorecard = 80
             });
 
-            _mock.Add(new MockScorecard()
+            _mock.Add(new ScorecardResultSet()
             {
                 Cluster = 2,
                 ClusterName = "Cluster 2",
@@ -74,7 +77,7 @@ namespace SgqSystem.Controllers.Api
                 Scorecard = 100
             });
 
-            _mock.Add(new MockScorecard()
+            _mock.Add(new ScorecardResultSet()
             {
                 Cluster = 3,
                 ClusterName = "Cluster 3",
@@ -100,33 +103,6 @@ namespace SgqSystem.Controllers.Api
 
     }
 
-    public class MockScorecard
-    {
-        public int Cluster { get; set; }
-        public string ClusterName { get; set; }
+    
 
-        public int Regional { get; set; }
-        public string RegionalName { get; set; }
-
-        public int ParCompanyId { get; set; }
-        public string ParCompanyName { get; set; }
-
-        public int TipoIndicador { get; set; }
-        public string TipoIndicadorName { get; set; }
-
-        public int Level1Id { get; set; }
-        public string Level1Name { get; set; }
-
-        public int Criterio { get; set; }
-        public string CriterioName { get; set; }
-
-        public decimal AV { get; set; }
-        public decimal NC { get; set; }
-
-        public decimal Pontos { get; set; }
-        public decimal Meta { get; set; }
-        public decimal Real { get; set; }
-        public decimal PontosAtingidos { get; set; }
-        public decimal Scorecard { get; set; }
-    }
 }
