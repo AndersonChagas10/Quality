@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Gestão";
+    var urlScorecard = Url.Action("Scorecard", "RelatoriosSgq");
 }
 
 <style>
@@ -319,7 +320,7 @@
                             <li><a href="#">Reunião Diária</a></li>
                             <li><a href="#">Não Conformidades</a></li>
                             <li><a href="#">Cartas CEP</a></li>
-                            <li><a href="#">Scorecard</a></li>
+                            <li><a href="@urlScorecard">Scorecard</a></li>
                             <li><a href="#">Evolutivo dos indicadores</a></li>
                         </ul>
                     </div>

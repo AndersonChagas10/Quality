@@ -1,6 +1,7 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO;
+using DTO.DTO.Params;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace SgqSystem.Controllers
         private readonly IBaseDomain<Level03, Level03DTO> _level03;
         private readonly IBaseDomain<Shift, ShiftDTO> _shift;
         private readonly IBaseDomain<Period, PeriodDTO> _period;
-        private readonly IBaseDomain<Unit, UnitDTO> _unit;
+        private readonly IBaseDomain<ParCompany, ParCompanyDTO> _unit;
 
         public RelatoriosSgqController(IRelatorioColetaDomain relatorioColetaDomain
             , IUserDomain userDomain
@@ -34,7 +35,7 @@ namespace SgqSystem.Controllers
             , IBaseDomain<Level03, Level03DTO> level03
             , IBaseDomain<Shift, ShiftDTO> shift
             , IBaseDomain<Period, PeriodDTO> period
-            , IBaseDomain<Unit, UnitDTO> unit
+            , IBaseDomain<ParCompany, ParCompanyDTO> unit
             )
         {
             _unit = unit;
@@ -55,7 +56,7 @@ namespace SgqSystem.Controllers
             form.SetShiftSelectList(/*_shift.GetAll()*/);
             form.SetPeriodSelectList(_period.GetAllNoLazyLoad());
             form.SetUnitsSelectList(_unit.GetAllNoLazyLoad());
-            form.SetUserSelectList(_userDomain.GetAllUserValidationAd(new UserDTO()).Retorno);
+            form.SetUserSelectList(_user.GetAllNoLazyLoad());
         }
 
         #endregion

@@ -676,6 +676,14 @@ namespace SGQDBContext
         public int TotalLevel3WithDefectsL2 { get; set; }
         public int TotalLevel3EvaluationL2 { get; set; }
 
+        public int EvaluatedResultL1 { get; set; }
+        public int DefectsResultL1 { get; set; }
+
+        public int EvaluateTotalL2 { get; set; }
+        public int DefectsTotalL2 { get; set; }
+
+        public int EvaluatedResultL2 { get; set; }
+        public int DefectsResultL2 { get; set; }
 
 
         public ConsolidationResultL1L2 getConsolidation(int ParLevel2_Id, int ParCompany_Id)
@@ -684,8 +692,8 @@ namespace SGQDBContext
             SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT " +
-                         "CDL1.AtualAlert AS AlertLevelL1, CDL1.WeiEvaluation AS WeiEvaluationL1, CDL1.EvaluateTotal AS EvaluateTotalL1, CDL1.DefectsTotal AS DefectsTotalL1, CDL1.WeiDefects AS WeiDefectsL1, CDL1.TotalLevel3Evaluation AS TotalLevel3EvaluationL1, CDL1.TotalLevel3WithDefects AS TotalLevel3WithDefectsL1, CDL1.LastEvaluationAlert AS LastEvaluationAlertL1, " +
-                         "CDL2.AlertLevel AS AlertLevelL2, CDL2.WeiEvaluation AS WeiEvaluationL2, CDL2.DefectsTotal AS DefectsL2, CDL2.WeiDefects AS WeiDefectsL2, CDL2.TotalLevel3WithDefects AS TotalLevel3WithDefectsL2, CDL2.TotalLevel3Evaluation AS TotalLevel3EvaluationL2 " +
+                         "CDL1.AtualAlert AS AlertLevelL1, CDL1.WeiEvaluation AS WeiEvaluationL1, CDL1.EvaluateTotal AS EvaluateTotalL1, CDL1.DefectsTotal AS DefectsTotalL1, CDL1.WeiDefects AS WeiDefectsL1, CDL1.TotalLevel3Evaluation AS TotalLevel3EvaluationL1, CDL1.TotalLevel3WithDefects AS TotalLevel3WithDefectsL1, CDL1.LastEvaluationAlert AS LastEvaluationAlertL1, CDL1.EvaluatedResult AS EvaluatedResultL1, CDL1.DefectsResult AS DefectsResultL1, " +
+                         "CDL2.AlertLevel AS AlertLevelL2, CDL2.WeiEvaluation AS WeiEvaluationL2, CDL2.DefectsTotal AS DefectsL2, CDL2.WeiDefects AS WeiDefectsL2, CDL2.TotalLevel3WithDefects AS TotalLevel3WithDefectsL2, CDL2.TotalLevel3Evaluation AS TotalLevel3EvaluationL2, CDL2.EvaluateTotal AS EvaluateTotalL2, CDL2.DefectsTotal AS DefectsTotalL2, CDL2.EvaluatedResult AS EvaluatedResultL2, CDL2.DefectsResult AS DefectsResultL2 " +
                          "FROM ConsolidationLevel2 AS CDL2 " +
                          "INNER JOIN " +
                          "ConsolidationLevel1 AS CDL1 ON CDL2.ConsolidationLevel1_Id = CDL1.Id " +
@@ -785,6 +793,7 @@ namespace SGQDBContext
             return list;
         }
     }
+
     public partial class ParConfSGQ
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -804,6 +813,7 @@ namespace SGQDBContext
 
         }
     }
+
     public partial class UserSGQ
     {
         public int Id { get; set; }
@@ -1029,8 +1039,9 @@ namespace SGQDBContext
         public decimal WeiDefectsTotal { get; set; }
         public int TotalLevel3Evaluation { get; set; }
         public int TotalLevel3WithDefects { get; set; }
-
         public int LastEvaluationAlert { get; set; }
+        public int EvaluatedResult { get; set; }
+        public int DefectsResult { get; set; }
 
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
@@ -1038,7 +1049,7 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT ConsolidationLevel2_Id, ParLevel2_Id, SUM(WeiEvaluation) AS [WeiEvaluationTotal], SUM(Defects) AS [DefectsTotal], SUM(WeiDefects) AS[WeiDefectsTotal], SUM(TotalLevel3WithDefects) AS [TotalLevel3WithDefects], SUM(TotalLevel3Evaluation) AS [TotalLevel3Evaluation], MAX(LastEvaluationAlert) AS LastEvaluationAlert " +
+            string sql = "SELECT ConsolidationLevel2_Id, ParLevel2_Id, SUM(WeiEvaluation) AS [WeiEvaluationTotal], SUM(Defects) AS [DefectsTotal], SUM(WeiDefects) AS[WeiDefectsTotal], SUM(TotalLevel3WithDefects) AS [TotalLevel3WithDefects], SUM(TotalLevel3Evaluation) AS [TotalLevel3Evaluation], MAX(LastEvaluationAlert) AS LastEvaluationAlert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult " +
                          "FROM CollectionLevel2 WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND ParLevel2_Id = " + ParLevel2_Id + " " +
                          "group by ConsolidationLevel2_Id, ParLevel2_Id";
 
@@ -1061,6 +1072,10 @@ namespace SGQDBContext
         public decimal TotalLevel3WithDefects { get; set; }
         public int LastEvaluationAlert { get; set; }
 
+        public int EvaluatedResult { get; set; }
+        public int DefectsResult { get; set; }
+
+
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
         public ConsolidationLevel1XConsolidationLevel2 getConsolidation(int ConsolidationLevel1_Id)
@@ -1073,7 +1088,7 @@ namespace SGQDBContext
             //             "GROUP BY CL2.ConsolidationLevel1_Id, CL1.ParLevel1_Id";
 
 
-            string sql = "select  SUM(WeiEvaluation) AS WeiEvaluation, SUM(EvaluateTotal) AS EvaluateTotal, SUM(DefectsTotal) AS DefectsTotal, SUM(WeiDefects) AS WeiDefects,  SUM(TotalLevel3Evaluation) AS TotalLevel3Evaluation, SUM(TotalLevel3WithDefects) AS TotalLevel3WithDefects, MAX(LastEvaluationAlert) AS LastEvaluationAlert FROM ConsolidationLevel2 where ConsolidationLevel1_Id=" + ConsolidationLevel1_Id + "";
+            string sql = "select  SUM(WeiEvaluation) AS WeiEvaluation, SUM(EvaluateTotal) AS EvaluateTotal, SUM(DefectsTotal) AS DefectsTotal, SUM(WeiDefects) AS WeiDefects,  SUM(TotalLevel3Evaluation) AS TotalLevel3Evaluation, SUM(TotalLevel3WithDefects) AS TotalLevel3WithDefects, MAX(LastEvaluationAlert) AS LastEvaluationAlert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult FROM ConsolidationLevel2 where ConsolidationLevel1_Id=" + ConsolidationLevel1_Id + "";
 
             var consolidationLevel1 = db.Query<ConsolidationLevel1XConsolidationLevel2>(sql).FirstOrDefault();
 

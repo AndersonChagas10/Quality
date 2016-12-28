@@ -1,5 +1,6 @@
 ﻿using DTO;
 using DTO.DTO;
+using DTO.DTO.Params;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -45,7 +46,7 @@ namespace SgqSystem.ViewModels
         }
 
         public IEnumerable<SelectListItem> UnitsSelectList { get; set; }
-        internal void SetUnitsSelectList(IEnumerable<UnitDTO> enumerable)
+        internal void SetUnitsSelectList(IEnumerable<ParCompanyDTO> enumerable)
         {
             UnitsSelectList = CriaSelectList(enumerable);
 

@@ -1,14 +1,10 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
-    ViewBag.Title = "Data Collection Reports";
+    ViewBag.Title = "Scorecard";
     var url = Url.Action("Index", "Home");
     var urlScorecard = Url.Action("GetScorecard", "api/Scorecard");
     var urlScorecardMock = Url.Action("GetScorecardMock", "api/Scorecard");
 }
-
-<link href="@Url.Content("~/Content/DataTables/css/jquery.dataTables.min.css")" rel="stylesheet" />
-<link href="@Url.Content("~/Content/DataTables/css/buttons.dataTables.min.css")" rel="stylesheet" />
-<link href="@Url.Content("~/Content/DataTables/css/responsive.dataTables.min.css")" rel="stylesheet" />
 
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
@@ -21,10 +17,9 @@
 
 @section Scripts {
 
-    @Scripts.Render("~/Scripts/GuardJs.js")
-    @Scripts.Render("~/bundles/ScriptTables")
+   
+<script type="text/javascript">
 
-    <script type="text/javascript">
 
     var url1 = '@Html.Raw(@urlScorecardMock)';
     var $btn = $('#btnSend');
@@ -39,7 +34,12 @@
     function Send() {
         $btn.button('loading');
         $('#results').empty();
-        ValidaDadosParaEnvio();
+
+        if (!ValidaDadosParaEnvio()) {
+            $btn.button('reset');
+            return;
+        }
+
         //AJAX
         $.post(url1, enviar, function (r) {
             try {
@@ -52,27 +52,20 @@
                 $btn.button('reset');
                 //Hotfix: table não alinha resultados de centro no meio da tr....
             }
-        })
+        }).fail(function (e, h, x) {
+            //closeLoader();
+            $btn.button('reset');
+            if (e.status == 0) {
+                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+            } else {
+                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+            }
+            //openMessageModal("Alerta", e.responseJSON.Message);
+        });
     };
     function GerarTabela(retornoArray) {
 
         var table = $('#results').empty().DataTable({
-            language: {
-                
-                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
-                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
-                    "sZeroRecords": "Nenhum registro correspondente ao criterio encontrado",
-                    "sInfoEmtpy": "Exibindo 0 a 0 de 0 registros",
-                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
-                    "sInfoFiltered": "",
-                    "sSearch": "Procurar",
-                    "oPaginate": {
-                        "sFirst": "Primeiro",
-                        "sPrevious": "Anterior",
-                        "sNext": "Próximo",
-                        "sLast": "Último"
-                    }
-            },
             data: retornoArray,
             columns: [{ title: "Cluster", mData: "ClusterName" },
                 { title: "Regional", mData: "RegionalName" },
@@ -88,9 +81,7 @@
                 { title: "Pontos Ating.", mData: "PontosAtingidos" },
                 { title: "Scorecard", mData: "Scorecard" },
             ],
-            "columnDefs": [
-                { "className": "dt-center", "targets": "_all" }
-            ],
+
             scrollX: true,
             lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
             pageLength: 10,
@@ -108,7 +99,7 @@
                 }, 100);
             },
             createdRow: function (row, data, index) {
-               
+
                 if (data["Scorecard"] > 99 || (data["CriterioName"] == 'Maior' && (data["AV"] == 0 && data["NC"] == 0))) {
                     // green
                     $('td', row).eq(12).css("background-color", '#33FF33');
@@ -164,8 +155,8 @@
                 'pdf',
                 //'colvis',
                 //, 'print'
-               
-                
+
+
             ]
         });
 
@@ -177,12 +168,23 @@
     function ValidaDadosParaEnvio() {
         GuardJs.resetForValidation();
         GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+        /*Especifico*/
+        if (!($('#unitId :selected').val() > 0))
+        {
+            GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
+            return false;
+        }
         if (!GuardJs.isValid)
-            return;
+            return !GuardJs.isValid;
         GuardJs.esconderMensagem();
-    }
-    formControl.ShowAllFielsAndFullCallendar();
 
-    </script>
+        return true;
+    }
+
+    $(document).ready(function () {
+        formControl.showFullCallendar();
+        formControl.showUnit();
+    });
+</script>
 
 }

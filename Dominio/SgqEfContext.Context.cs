@@ -61,7 +61,6 @@ namespace Dominio
         public virtual DbSet<ParCompanyCluster> ParCompanyCluster { get; set; }
         public virtual DbSet<ParCompanyXStructure> ParCompanyXStructure { get; set; }
         public virtual DbSet<ParCompanyXUserSgq> ParCompanyXUserSgq { get; set; }
-        public virtual DbSet<ParConfSGQ> ParConfSGQ { get; set; }
         public virtual DbSet<ParConsolidationType> ParConsolidationType { get; set; }
         public virtual DbSet<ParCounter> ParCounter { get; set; }
         public virtual DbSet<ParCounterXLocal> ParCounterXLocal { get; set; }

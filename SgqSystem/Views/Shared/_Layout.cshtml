@@ -1,5 +1,4 @@
-﻿
-@{
+﻿    @{
 //var urlSend = Url.Action("Save", "api/ParLevel2ControlCompany"); //URL relativa
 //var urlChangeLevel2 = Url.Action("ChangeLevel2", "ParLevel2ControlCompany"); //URL relativa
 //var urlChangeLevel2UserCompany = Url.Action("ChangeLevel2UserCompany", "ParLevel2ControlCompany"); //URL relativa
@@ -18,8 +17,9 @@
     @Styles.Render("~/Content/select2css")
     @Styles.Render("~/Content/DatePikerContentCss")
     @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/Tables")
 
-    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    @*<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />*@
     <link href="~/Scripts/theme/css/components.min.css" rel="stylesheet" />
     <link href="~/Scripts/theme/css/darkblue.min.css" rel="stylesheet" />
     <link href="~/Scripts/theme/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -48,6 +48,8 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
+    
+
     <div class="page-wrapper">
 
         @Html.Partial("~/Views/Shared/_Navbar.cshtml")
@@ -68,6 +70,95 @@
     @RenderSection("scripts", required: false)
 
     <script>
+
+        /*Muda select2 para PADRÂO BR*/
+        $.fn.select2.defaults.set("language", "pt-BR");
+
+        /*Muda select2 para PADRÂO EUA*/
+        //$.fn.select2.defaults.set("language", "en");
+
+        /*DataTable Padrão BR*/
+        $(document).ready(function () {
+            $.extend(true, $.fn.dataTable.defaults,
+            {
+                "columnDefs": [
+                    { "className": "dt-center", "targets": "_all" }
+                ],
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+                "oLanguage": {
+
+                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                    "sZeroRecords": "Nenhum registro correspondente ao criterio encontrado",
+                    "sInfoEmtpy": "Exibindo 0 a 0 de 0 registros",
+                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                    "sInfoFiltered": "",
+                    "sSearch": "Procurar",
+                    "oPaginate": {
+                        "sFirst": "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext": "Próximo",
+                        "sLast": "Último"
+                    }
+                }
+            });
+        });
+
+        /*Configura date range picker para PT-BR*/
+        $.fn.daterangepicker('locale', {
+            "format": "DD/MM/YYYY",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "de",
+            "toLabel": "até",
+            "customRangeLabel": "Customizado",
+            "weekLabel": "W",
+            "daysOfWeek": [
+                "Dom",
+                "Seg",
+                "Ter",
+                "Qua",
+                "Qui",
+                "Sex",
+                "Sab"
+            ],
+            "monthNames": [
+                "Janeiro",
+                "Fevereiro",
+                "Março",
+                "Abril",
+                "Maio",
+                "Junho",
+                "Julho",
+                "Agosto",
+                "Setembro",
+                "Outubro",
+                "Novembro",
+                "Dezembro"
+            ],
+            //"firstDay": 0
+        });
+        var rangesEUA = {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+
+        var rangesBR = {
+            'Hoje': [moment(), moment()],
+            'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+            'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+            'Este mês': [moment().startOf('month'), moment().endOf('month')],
+            'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+        //$.fn.daterangepicker('ranges', rangesBR);
+
+        moment.locale("Pt-Br");
 
         var monthNames = [
             '@Resources.Resource.january',

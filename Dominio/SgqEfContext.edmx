@@ -477,14 +477,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="ParCompany_Id" Type="int" Nullable="false" />
           <Property Name="Role" Type="nvarchar(max)" />
         </EntityType>
-        <EntityType Name="ParConfSGQ">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="HaveUnitLogin" Type="bit" />
-          <Property Name="HaveShitLogin" Type="bit" />
-        </EntityType>
         <EntityType Name="ParConsolidationType">
           <Key>
             <PropertyRef Name="Id" />
@@ -2542,7 +2534,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="ParCompanyCluster" EntityType="Self.ParCompanyCluster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCompanyXStructure" EntityType="Self.ParCompanyXStructure" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCompanyXUserSgq" EntityType="Self.ParCompanyXUserSgq" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParConfSGQ" EntityType="Self.ParConfSGQ" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParConsolidationType" EntityType="Self.ParConsolidationType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCounter" EntityType="Self.ParCounter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCounterXLocal" EntityType="Self.ParCounterXLocal" Schema="dbo" store:Type="Tables" />
@@ -3164,7 +3155,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="ParCompanyCluster" EntityType="SgqDbModel.ParCompanyCluster" />
           <EntitySet Name="ParCompanyXStructure" EntityType="SgqDbModel.ParCompanyXStructure" />
           <EntitySet Name="ParCompanyXUserSgq" EntityType="SgqDbModel.ParCompanyXUserSgq" />
-          <EntitySet Name="ParConfSGQ" EntityType="SgqDbModel.ParConfSGQ" />
           <EntitySet Name="ParConsolidationType" EntityType="SgqDbModel.ParConsolidationType" />
           <EntitySet Name="ParCounter" EntityType="SgqDbModel.ParCounter" />
           <EntitySet Name="ParCounterXLocal" EntityType="SgqDbModel.ParCounterXLocal" />
@@ -4149,14 +4139,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany" FromRole="ParCompanyXUserSgq" ToRole="ParCompany" />
           <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq" FromRole="ParCompanyXUserSgq" ToRole="UserSgq" />
-        </EntityType>
-        <EntityType Name="ParConfSGQ">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="HaveUnitLogin" Type="Boolean" />
-          <Property Name="HaveShitLogin" Type="Boolean" />
         </EntityType>
         <EntityType Name="ParConsolidationType">
           <Key>
@@ -6753,15 +6735,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
                 <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
                 <ScalarProperty Name="UserSgq_Id" ColumnName="UserSgq_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParConfSGQ">
-            <EntityTypeMapping TypeName="SgqDbModel.ParConfSGQ">
-              <MappingFragment StoreEntitySet="ParConfSGQ">
-                <ScalarProperty Name="HaveShitLogin" ColumnName="HaveShitLogin" />
-                <ScalarProperty Name="HaveUnitLogin" ColumnName="HaveUnitLogin" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
