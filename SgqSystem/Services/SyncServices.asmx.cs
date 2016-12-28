@@ -2060,6 +2060,7 @@ namespace SgqSystem.Services
                               "<div class=\"ResultsConsolidation hide\"></div>" +
                               "<div class=\"Deviations\"></div>" +
                               "<div class=\"Users hide\"></div>" +
+                              "<div class=\"ResultPCC1B hide\"></div>" +
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
@@ -2138,6 +2139,8 @@ namespace SgqSystem.Services
 
             string modalVF = "<div class=\"modalVF panel panel-primary\" style=\"display:none;\"></div>";
 
+            string modalPCC1B = "<div class=\"modalPCC1B panel panel-primary\" style=\"display:none;\"></div>";
+
             string messageConfirm = "<div class=\"messageConfirm padding20\" style=\"display:none\">                                                                                                " +
                                         "    <h1 class=\"head\">Titulo</h1>                                                                                                                             " +
                                         "    <div class=\"body font16\"> <div class=\"txtMessage\"></div>                                                                                               " +
@@ -2164,6 +2167,7 @@ namespace SgqSystem.Services
                            correctiveAction() +
                            viewModal +
                            modalVF +
+                           modalPCC1B+
                            message +
                            messageConfirm;
         }
@@ -2192,6 +2196,7 @@ namespace SgqSystem.Services
                            "         <a href= \"#\" id=\"btnLog\" class=\"list-group-item\">Visualizar Log</a>                                               " +
                            "         <a href= \"#\" id=\"btnCollectDB\" class=\"list-group-item\">Visualizar banco de dados</a>                                    " +
                            "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">Limpar banco de dados</a>                                " +
+                           "         <a href=\"#\" id=\"btnMostrarContadores\" class=\"list-group-item\">Mostrar contadores</a>                                " +
                            "         <span id=\"version\" class=\"list-group-item\">Versão: <span class=\"number\"></span></span>                     " +
                            "         <span id=\"ambiente\" class=\"list-group-item\"><span class=\"base\"></span></span>                               " +
                            "     </div>                                                                                                                " +
@@ -3127,7 +3132,7 @@ namespace SgqSystem.Services
                                     classe: "form-group");
 
                 string niveishtml = html.div(
-                                    outerhtml: "<label class=\"font-small text-center\" style=\"display:inherit\">Níveis</label><label class='text-center' style=\"display:inherit; font-size: 20px;\">" + html.span(classe: "nivel1") + " / " + html.span(classe: "nivel2") + " / " + html.span(classe: "nivel3") + "</label>",
+                                    outerhtml: "<label class=\"font-small text-center\" style=\"display:inherit\">Níveis</label><label class='text-center' style=\"display:inherit; font-size: 20px;\">" + html.span(classe: "nivel1") + "  -  " + html.span(classe: "nivel2") + "  -  " + html.span(classe: "nivel3") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
