@@ -158,8 +158,11 @@
             return;
         GuardJs.esconderMensagem();
     }
-    formControl.ShowAllFielsAndFullCallendar();
 
+    $(document).ready(function () {
+        formControl.showFullCallendar();
+        formControl.showUnit();
+    });
 </script>
 
 }

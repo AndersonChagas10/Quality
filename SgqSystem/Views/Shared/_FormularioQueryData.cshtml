@@ -210,7 +210,7 @@
         </li>
 
         <li>
-            <div class="" id="complexCallendar">
+            <div class="" id="complexCallendar" style="display:none">
                 <span class="redLabel">Date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
                 <div id="reportrange" class="" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 210px">
                     <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
@@ -220,28 +220,28 @@
         </li>
 
         <li>
-            <div id="showUnit">
+            <div id="showUnit" style="display:none">
                 <span class="redLabel">Unit</span>
                 @Html.DropDownList("unitId", Model.UnitsSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
         <li>
-            <div id="showShift">
+            <div id="showShift" style="display:none">
                 <span class="redLabel">Shift</span>
                 @Html.DropDownList("shift", Model.ShiftSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
         <li>
-            <div id="showPeriod">
+            <div id="showPeriod" style="display:none">
                 <span class="redLabel">Period</span>
                 @Html.DropDownList("period", Model.PeriodSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
         <li>
-            <div id="showUsers">
+            <div id="showUsers" style="display:none">
                 <span class="redLabel">Auditor</span>
                 @Html.DropDownList("auditorId", Model.UserSelectList, "All", htmlAttributes: new { @class = "form-control required", @style = "width:210px" })
             </div>
@@ -311,8 +311,8 @@
             autoApply: true,
             showDropdowns: true,
             startDate: start,
-            //opens: "left",
             endDate: end,
+            //opens: "left",
             //"locale": localCultureRangePicker,
             locale: {
                 cancelLabel: 'Clear'
@@ -348,10 +348,10 @@
             startDate: start,
             endDate: end,
             //opens: "left",
-            alwaysShowCalendars: true,
-            showDropdowns: true,
             //locale: localCultureRangePicker,
             //autoApply: false,
+            alwaysShowCalendars: true,
+            showDropdowns: true,
             ranges: rangesBR,
             linkedCalendars: false
         }, cb);
