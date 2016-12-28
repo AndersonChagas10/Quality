@@ -327,6 +327,14 @@
                                     $(function () {
                                         MountFirstChart();
                                         firstTable("teste");
+
+                                        var dados = [];
+
+                                        $.post('api/manutencao/getTabela1', function (r) {
+                                            dados = r;
+                                        })
+
+                                        console.log(dados);
                                
                                     });
 

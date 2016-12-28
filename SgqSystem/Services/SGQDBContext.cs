@@ -384,7 +384,7 @@ namespace SGQDBContext
                              queryCompany +
                              "GROUP BY PL2.Id, PL2.Name, PE.Number                                        ";
 
-                sql = "SELECT 67 AS Id, 'NC Desossa - Alcatra', 50 AS Evaluate";
+                //sql = "SELECT 67 AS Id, 'NC Desossa - Alcatra', 50 AS Evaluate"; //QUE PORRA É ESSA?? KKKK
 
                 var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
                 return parEvaluate;
