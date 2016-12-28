@@ -49,7 +49,106 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-    
+    <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                        </div>
+                        <div class="col-xs-11" id="modalLoaderMessage">Message </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade modalConfirm" id="modalConfirm" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.confirm_the_action</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12" id="modalConfirmMessage">Message </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modalConfirmNo" type="button" class="btn btn-default">@Resources.Resource.no</button>
+                    <button id="modalConfirmYes" type="button" class="btn btn-primary">@Resources.Resource.yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay" style="display:none"></div>
+
+    <div id="messageModal" class="message padding20" style="display:none">
+        <h1 class="head">Titulo</h1>
+        <div class="body font16">Mensagem</div>
+        <div class="foot">
+            <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button>
+        </div>
+    </div>
+
+    <!--Loaders e messages-->
+    <script>
+
+        $modalLoader = $('#modalLoader').clone();
+        $modalConfirm = $('#modalConfirm').clone();
+
+        var loaderMessages = [];
+
+        var openLoader = function (message) {
+            if (loaderMessages.length == 0) {
+                $('.modalLoader').remove();
+                $('body').append($modalLoader);
+                $('#modalLoader').modal({ backdrop: false });
+                $('#modalLoaderMessage').text(message);
+                loaderMessages.push(message);
+            } else {
+                loaderMessages.push(message);
+            }
+        }
+
+        var closeLoader = function () {
+            loaderMessages.splice(0, 1);
+            if (loaderMessages.length == 0) {
+                $('.modalLoader').remove();
+            }
+        }
+
+        var openConfirm = function (message, callbackYes, callbackNo) {
+            $('.modalConfirm').remove();
+            $('body').append($modalConfirm);
+            $('#modalConfirm').modal({ backdrop: false });
+            $('#modalConfirmMessage').text(message);
+
+            if (callbackYes) {
+                $('#modalConfirmYes').click(function () {
+                    callbackYes();
+                });
+            }
+
+            if (callbackNo) {
+                $('#modalConfirmNo').click(function () {
+                    callbackNo();
+                });
+            }
+        }
+
+        var closeConfirm = function () {
+            $('.modalConfirm').remove();
+        }
+
+    </script>
 
     <div class="page-wrapper">
 
@@ -67,7 +166,7 @@
     <footer class="wrapper">
         <p class="page-content-wrapper">&copy; @DateTime.Now.Year - @Resources.Resource.jbs_and_grt_aplication </p>
     </footer>
-
+    
     @RenderSection("scripts", required: false)
 
     <script>
@@ -197,5 +296,8 @@
 
         watcher();
     </script>
+
+    
+
 </body>
 </html>
