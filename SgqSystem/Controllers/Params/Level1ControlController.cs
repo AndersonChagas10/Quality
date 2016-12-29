@@ -1,11 +1,15 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
+using Helper;
+using SgqSystem.Secirity;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Params
 {
+    [HandleController()]
+    [CustomAuthorize]
     public class Level1ControlController : Controller
     {
 
