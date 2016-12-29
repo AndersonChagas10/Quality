@@ -327,6 +327,17 @@
                                     $(function () {
                                         MountFirstChart();
                                         firstTable("teste");
+
+                                        var dados = [];
+
+                                        $.post('../api/manutencao/getTabela1', function (r) {
+                                            //console.log(r);
+                                            dados = r;
+
+                                            console.log(dados);
+                                        })
+
+                                        
                                
                                     });
 
@@ -549,7 +560,7 @@
 
                                         tabela += "</div>";
 
-                                        console.log(tabela);
+                                        //console.log(tabela);
 
 
 
@@ -601,7 +612,7 @@
                                     //montar subtitulo
                                     function MountSubTitleLineTable(tamanho) {
                                         var tr = "<tr><td class=\"left\">Pacote</td>";
-                                        console.log(tamanho);
+                                        //console.log(tamanho);
                                         for (var i = 0; i < tamanho; i++) {
                                             tr = tr + "<td class=\"left\">Despesa <br>Orçada</td><td>Despesa <br>Real</td><td>Desvio <br>%</td><td>Desvio <br>$</td>";
                                         };
@@ -613,7 +624,7 @@
                                     //monta tabela com dados dinamicos
                                     function MountTitleColumnTable(tituloLine, dataTable) {
                                         sizeArray = tituloLine.length;
-                                        console.log(tituloLine);
+                                        //console.log(tituloLine);
                                         var x = 0;
                                         var tr = "<tr>";
                                         function logArrayElements(element, index, array) {
