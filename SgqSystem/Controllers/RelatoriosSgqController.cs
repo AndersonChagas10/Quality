@@ -9,6 +9,7 @@ namespace SgqSystem.Controllers
 {
     public class RelatoriosSgqController : BaseController
     {
+
         #region Constructor
 
         private FormularioParaRelatorioViewModel form;

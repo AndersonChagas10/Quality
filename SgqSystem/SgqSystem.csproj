@@ -1267,6 +1267,7 @@
     <Folder Include="DataCollect\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
+    <Folder Include="Views\RelatorioController\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>
