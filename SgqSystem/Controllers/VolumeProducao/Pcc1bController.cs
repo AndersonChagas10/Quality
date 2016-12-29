@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Dominio;
+using DTO.Helpers;
 
 namespace SgqSystem.Controllers
 {
@@ -47,6 +48,18 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,VolumeAnimais,Quartos,Meta,ToleranciaDia,Nivel11,Nivel12,Nivel13,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumePcc1b pcc1b)
         {
+            if (pcc1b.Data == null)
+                ModelState.AddModelError("Data", Guard.MesangemModelError("Data", false));
+
+            if (pcc1b.ParCompany_id == null)
+                ModelState.AddModelError("ParCompany_id", Guard.MesangemModelError("Unidade", false));
+
+            if (pcc1b.ParLevel1_id == null)
+                ModelState.AddModelError("ParLevel1_id", Guard.MesangemModelError("Indicador", false));
+
+            if (pcc1b.VolumeAnimais == null)
+                ModelState.AddModelError("VolumeAnimais", Guard.MesangemModelError("Número de animais", false));
+
             if (ModelState.IsValid)
             {
                 db.VolumePcc1b.Add(pcc1b);

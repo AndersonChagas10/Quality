@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using SgqSystem.Secirity;
 using System.Globalization;
 using System.Threading;
 using System.Web;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
+   
     public class BaseController : Controller
     {
 

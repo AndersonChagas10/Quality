@@ -97,6 +97,8 @@
           <Property Name="HaveReaudit" Type="bit" />
           <Property Name="HavePhase" Type="bit" />
           <Property Name="Completed" Type="bit" />
+          <Property Name="EvaluatedResult" Type="int" />
+          <Property Name="DefectsResult" Type="int" />
         </EntityType>
         <EntityType Name="CollectionLevel03">
           <Key>
@@ -263,6 +265,14 @@
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="Name" Type="varchar(max)" Nullable="false" />
         </EntityType>
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="deptid" />
+          </Key>
+          <Property Name="deptid" Type="int" Nullable="false" />
+          <Property Name="deptname" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="deptmgrid" Type="int" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Deviation">
@@ -290,6 +300,15 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="sendMail" Type="bit" />
         </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="empid" />
+          </Key>
+          <Property Name="empid" Type="int" Nullable="false" />
+          <Property Name="mgrid" Type="int" />
+          <Property Name="empname" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="salary" Type="money" Nullable="false" />
+        </EntityType>
         <EntityType Name="Example">
           <Key>
             <PropertyRef Name="Id" />
@@ -301,6 +320,52 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SelectedElement" Type="int" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'SgqDbDev.dbo.JBS_BaseManutencaoPura' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="JBS_BaseManutencaoPura">
+          <Property Name="TipoInformacao" Type="varchar" MaxLength="500" />
+          <Property Name="MesAno" Type="varchar" MaxLength="500" />
+          <Property Name="EmpresaCodigo" Type="varchar" MaxLength="500" />
+          <Property Name="EmpresaSigla" Type="varchar" MaxLength="500" />
+          <Property Name="EmpresaRegional" Type="varchar" MaxLength="500" />
+          <Property Name="EmpresaRegionalGrupo" Type="varchar" MaxLength="500" />
+          <Property Name="EmpresaCluster" Type="varchar" MaxLength="500" />
+          <Property Name="CentroDeCusto" Type="varchar" MaxLength="500" />
+          <Property Name="Pacote" Type="varchar" MaxLength="500" />
+          <Property Name="ContaContabilCodigo" Type="varchar" MaxLength="500" />
+          <Property Name="ContaContabil" Type="varchar" MaxLength="500" />
+          <Property Name="DespesaOrcada" Type="varchar" MaxLength="500" />
+          <Property Name="DespesaRealizada" Type="varchar" MaxLength="500" />
+          <Property Name="ConsumoOrcado" Type="varchar" MaxLength="500" />
+          <Property Name="ConsumoRealizado" Type="varchar" MaxLength="500" />
+          <Property Name="TipoConsumo" Type="varchar" MaxLength="500" />
+          <Property Name="ProducaoOrcada" Type="varchar" MaxLength="500" />
+          <Property Name="ProducaoRealizada" Type="varchar" MaxLength="500" />
+          <Property Name="TipoProducao" Type="varchar" MaxLength="500" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'SgqDbDev.dbo.JBS_BaseManutencaoTrat' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="JBS_BaseManutencaoTrat">
+          <Property Name="TipoInformacao" Type="varchar" MaxLength="500" />
+          <Property Name="MesAno" Type="date" />
+          <Property Name="EmpresaCodigo" Type="int" />
+          <Property Name="EmpresaSigla" Type="varchar" MaxLength="3" />
+          <Property Name="EmpresaRegional" Type="varchar" MaxLength="40" />
+          <Property Name="EmpresaRegionalGrupo" Type="varchar" MaxLength="20" />
+          <Property Name="EmpresaCluster" Type="varchar" MaxLength="40" />
+          <Property Name="CentroDeCusto" Type="varchar" MaxLength="100" />
+          <Property Name="Pacote" Type="varchar" MaxLength="50" />
+          <Property Name="ContaContabilCodigo" Type="varchar" MaxLength="20" />
+          <Property Name="ContaContabil" Type="varchar" MaxLength="100" />
+          <Property Name="DespesaOrcada" Type="float" />
+          <Property Name="DespesaRealizada" Type="float" />
+          <Property Name="ConsumoOrcado" Type="float" />
+          <Property Name="ConsumoRealizado" Type="float" />
+          <Property Name="TipoConsumo" Type="varchar" MaxLength="100" />
+          <Property Name="ProducaoOrcada" Type="float" />
+          <Property Name="ProducaoRealizada" Type="float" />
+          <Property Name="TipoProducao" Type="varchar" MaxLength="100" />
+        </EntityType>-->
         <EntityType Name="Level01">
           <Key>
             <PropertyRef Name="Id" />
@@ -389,6 +454,29 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="email" Type="varchar(max)" />
           <Property Name="Second_Log_Path" Type="varchar(max)" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'SgqDbDev.dbo.Manutencao' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Manutencao">
+          <Property Name="TipoInformacao" Type="varchar" MaxLength="500" />
+          <Property Name="MesAno" Type="date" />
+          <Property Name="EmpresaCodigo" Type="int" />
+          <Property Name="EmpresaSigla" Type="varchar" MaxLength="3" />
+          <Property Name="EmpresaRegional" Type="varchar" MaxLength="40" />
+          <Property Name="EmpresaRegionalGrupo" Type="varchar" MaxLength="20" />
+          <Property Name="EmpresaCluster" Type="varchar" MaxLength="40" />
+          <Property Name="CentroDeCusto" Type="varchar" MaxLength="100" />
+          <Property Name="Pacote" Type="varchar" MaxLength="50" />
+          <Property Name="ContaContabilCodigo" Type="varchar" MaxLength="20" />
+          <Property Name="ContaContabil" Type="varchar" MaxLength="100" />
+          <Property Name="DespesaOrcada" Type="float" />
+          <Property Name="DespesaRealizada" Type="float" />
+          <Property Name="ConsumoOrcado" Type="float" />
+          <Property Name="ConsumoRealizado" Type="float" />
+          <Property Name="TipoConsumo" Type="varchar" MaxLength="100" />
+          <Property Name="ProducaoOrcada" Type="float" />
+          <Property Name="ProducaoRealizada" Type="float" />
+          <Property Name="TipoProducao" Type="varchar" MaxLength="100" />
+        </EntityType>-->
         <EntityType Name="NQA">
           <Key>
             <PropertyRef Name="Id" />
@@ -476,6 +564,14 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="UserSgq_Id" Type="int" Nullable="false" />
           <Property Name="ParCompany_Id" Type="int" Nullable="false" />
           <Property Name="Role" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ParConfSGQ">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HaveUnitLogin" Type="bit" />
+          <Property Name="HaveShitLogin" Type="bit" />
         </EntityType>
         <EntityType Name="ParConsolidationType">
           <Key>
@@ -969,6 +1065,16 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParLevel2XHeaderField' does not have 
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'SgqDbDev.dbo.pvt' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="pvt">
+          <Property Name="VendorID" Type="int" />
+          <Property Name="Emp1" Type="int" />
+          <Property Name="Emp2" Type="int" />
+          <Property Name="Emp3" Type="int" />
+          <Property Name="Emp4" Type="int" />
+          <Property Name="Emp5" Type="int" />
+        </EntityType>-->
         <EntityType Name="Result_Level3">
           <Key>
             <PropertyRef Name="Id" />
@@ -1163,29 +1269,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.DelDados' does not have a primary key
           <Property Name="TESTE" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'SgqDbDev.dbo.ManutencaoV' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="ManutencaoV">
-          <Property Name="TipoInformacao" Type="varchar" MaxLength="500" />
-          <Property Name="MesAno" Type="date" />
-          <Property Name="EmpresaCodigo" Type="int" />
-          <Property Name="EmpresaSigla" Type="varchar" MaxLength="3" />
-          <Property Name="EmpresaRegional" Type="varchar" MaxLength="40" />
-          <Property Name="EmpresaRegionalGrupo" Type="varchar" MaxLength="20" />
-          <Property Name="EmpresaCluster" Type="varchar" MaxLength="40" />
-          <Property Name="CentroDeCusto" Type="varchar" MaxLength="100" />
-          <Property Name="Pacote" Type="varchar" MaxLength="50" />
-          <Property Name="ContaContabilCodigo" Type="varchar" MaxLength="20" />
-          <Property Name="ContaContabil" Type="varchar" MaxLength="100" />
-          <Property Name="DespesaOrcada" Type="float" />
-          <Property Name="DespesaRealizada" Type="float" />
-          <Property Name="ConsumoOrcado" Type="float" />
-          <Property Name="ConsumoRealizado" Type="float" />
-          <Property Name="TipoConsumo" Type="varchar" MaxLength="100" />
-          <Property Name="ProducaoOrcada" Type="float" />
-          <Property Name="ProducaoRealizada" Type="float" />
-          <Property Name="TipoProducao" Type="varchar" MaxLength="100" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'SgqDbDev.dbo.Reports_CCA_Audit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Reports_CCA_Audit">
           <Key>
@@ -1355,6 +1438,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Principal>
             <Dependent Role="VolumeCepRecortes">
               <PropertyRef Name="ParLevel1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Departmen__deptm__434CCEA9">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Departments" Type="Self.Departments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="empid" />
+            </Principal>
+            <Dependent Role="Departments">
+              <PropertyRef Name="deptmgrid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2475,6 +2570,19 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           </ReferentialConstraint>
         </Association>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="fn_getsubtree" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="empid" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="empid" Type="int" Nullable="false" />
+                <Property Name="empname" Type="varchar" MaxLength="25" Nullable="false" />
+                <Property Name="mgrid" Type="int" />
+                <Property Name="lvl" Type="int" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
@@ -2519,6 +2627,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="ConsolidationLevel2" EntityType="Self.ConsolidationLevel2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CorrectiveAction" EntityType="Self.CorrectiveAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Example" EntityType="Self.Example" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level01" EntityType="Self.Level01" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level02" EntityType="Self.Level02" Schema="dbo" store:Type="Tables" />
@@ -2534,6 +2644,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="ParCompanyCluster" EntityType="Self.ParCompanyCluster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCompanyXStructure" EntityType="Self.ParCompanyXStructure" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCompanyXUserSgq" EntityType="Self.ParCompanyXUserSgq" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParConfSGQ" EntityType="Self.ParConfSGQ" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParConsolidationType" EntityType="Self.ParConsolidationType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCounter" EntityType="Self.ParCounter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCounterXLocal" EntityType="Self.ParCounterXLocal" Schema="dbo" store:Type="Tables" />
@@ -2748,6 +2859,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <AssociationSet Name="FK__CepRecort__ParLe__14FBF414" Association="Self.FK__CepRecort__ParLe__14FBF414">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="VolumeCepRecortes" EntitySet="VolumeCepRecortes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Departmen__deptm__434CCEA9" Association="Self.FK__Departmen__deptm__434CCEA9">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Departments" EntitySet="Departments" />
           </AssociationSet>
           <AssociationSet Name="FK__Pcc1b__ParCompan__1BA8F1A3" Association="Self.FK__Pcc1b__ParCompan__1BA8F1A3">
             <End Role="ParCompany" EntitySet="ParCompany" />
@@ -3127,6 +3242,42 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
     <edmx:ConceptualModels>
       <Schema Namespace="SgqDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SgqDbDevEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="SgqDbModel.sysdiagrams" />
+          <EntitySet Name="DelDados" EntityType="SgqDbModel.DelDados" />
+          <EntitySet Name="Reports_CCA_Audit" EntityType="SgqDbModel.Reports_CCA_Audit" />
+          <EntitySet Name="Reports_CFF_Audit" EntityType="SgqDbModel.Reports_CFF_Audit" />
+          <EntitySet Name="Reports_HTP_Audit" EntityType="SgqDbModel.Reports_HTP_Audit" />
+          <EntitySet Name="VWCFFResults" EntityType="SgqDbModel.VWCFFResults" />
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(SgqDbModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(SgqDbModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
           <EntitySet Name="BkpCollection" EntityType="SgqDbModel.BkpCollection" />
           <EntitySet Name="CollectionHtml" EntityType="SgqDbModel.CollectionHtml" />
           <EntitySet Name="CollectionJson" EntityType="SgqDbModel.CollectionJson" />
@@ -3140,6 +3291,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="ConsolidationLevel2" EntityType="SgqDbModel.ConsolidationLevel2" />
           <EntitySet Name="CorrectiveAction" EntityType="SgqDbModel.CorrectiveAction" />
           <EntitySet Name="Department" EntityType="SgqDbModel.Department" />
+          <EntitySet Name="Departments" EntityType="SgqDbModel.Departments" />
+          <EntitySet Name="Employees" EntityType="SgqDbModel.Employees" />
           <EntitySet Name="Example" EntityType="SgqDbModel.Example" />
           <EntitySet Name="Level01" EntityType="SgqDbModel.Level01" />
           <EntitySet Name="Level02" EntityType="SgqDbModel.Level02" />
@@ -3155,6 +3308,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="ParCompanyCluster" EntityType="SgqDbModel.ParCompanyCluster" />
           <EntitySet Name="ParCompanyXStructure" EntityType="SgqDbModel.ParCompanyXStructure" />
           <EntitySet Name="ParCompanyXUserSgq" EntityType="SgqDbModel.ParCompanyXUserSgq" />
+          <EntitySet Name="ParConfSGQ" EntityType="SgqDbModel.ParConfSGQ" />
           <EntitySet Name="ParConsolidationType" EntityType="SgqDbModel.ParConsolidationType" />
           <EntitySet Name="ParCounter" EntityType="SgqDbModel.ParCounter" />
           <EntitySet Name="ParCounterXLocal" EntityType="SgqDbModel.ParCounterXLocal" />
@@ -3192,7 +3346,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="Period" EntityType="SgqDbModel.Period" />
           <EntitySet Name="Result_Level3" EntityType="SgqDbModel.Result_Level3" />
           <EntitySet Name="Shift" EntityType="SgqDbModel.Shift" />
-          <EntitySet Name="sysdiagrams" EntityType="SgqDbModel.sysdiagrams" />
           <EntitySet Name="Unit" EntityType="SgqDbModel.Unit" />
           <EntitySet Name="UnitUser" EntityType="SgqDbModel.UnitUser" />
           <EntitySet Name="UserSgq" EntityType="SgqDbModel.UserSgq" />
@@ -3205,11 +3358,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="ParLevel1VariableProductionXLevel1" EntityType="SgqDbModel.ParLevel1VariableProductionXLevel1" />
           <EntitySet Name="ParLevel2XHeaderField" EntityType="SgqDbModel.ParLevel2XHeaderField" />
           <EntitySet Name="ResultLevel2HeaderField" EntityType="SgqDbModel.ResultLevel2HeaderField" />
-          <EntitySet Name="DelDados" EntityType="SgqDbModel.DelDados" />
-          <EntitySet Name="Reports_CCA_Audit" EntityType="SgqDbModel.Reports_CCA_Audit" />
-          <EntitySet Name="Reports_CFF_Audit" EntityType="SgqDbModel.Reports_CFF_Audit" />
-          <EntitySet Name="Reports_HTP_Audit" EntityType="SgqDbModel.Reports_HTP_Audit" />
-          <EntitySet Name="VWCFFResults" EntityType="SgqDbModel.VWCFFResults" />
           <AssociationSet Name="FK_CollectionLevel02_ConsolidationLevel02" Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02">
             <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
             <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
@@ -3321,6 +3469,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <AssociationSet Name="FK_CorrectiveAction_UserSgq2" Association="SgqDbModel.FK_CorrectiveAction_UserSgq2">
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Departmen__deptm__434CCEA9" Association="SgqDbModel.FK__Departmen__deptm__434CCEA9">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Departments" EntitySet="Departments" />
           </AssociationSet>
           <AssociationSet Name="FK_ParCluster_ParClusterGroup" Association="SgqDbModel.FK_ParCluster_ParClusterGroup">
             <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
@@ -3598,37 +3750,154 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="UnitUser" EntitySet="UnitUser" />
           </AssociationSet>
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
+          <FunctionImport Name="fn_getsubtree" IsComposable="true" ReturnType="Collection(SgqDbModel.fn_getsubtree_Result)">
+            <Parameter Name="empid" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(SgqDbModel.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(SgqDbModel.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="DelDados">
+          <Key>
+            <PropertyRef Name="TESTE" />
+          </Key>
+          <Property Name="TESTE" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reports_CCA_Audit">
+          <Key>
+            <PropertyRef Name="Audit_Period" />
+            <PropertyRef Name="Shift" />
+            <PropertyRef Name="Audit_Reaudit" />
+            <PropertyRef Name="No_of_Def" />
+            <PropertyRef Name="Cattle_Type" />
+            <PropertyRef Name="Chain_Speed" />
+            <PropertyRef Name="Lot__" />
+            <PropertyRef Name="Mud_Score" />
+          </Key>
+          <Property Name="Plant_Number" Type="Int32" />
+          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
+          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Audit_Period" Type="Int32" Nullable="false" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="Audit_Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Specks" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="Dressing" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="Single_Hairs" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="Clusters" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="Hide" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
+          <Property Name="No_of_Def" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="Cattle_Type" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Chain_Speed" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
+          <Property Name="Lot__" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
+          <Property Name="Mud_Score" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
+          <Property Name="Auditor_Name_Global" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
+          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Reports_CFF_Audit">
+          <Key>
+            <PropertyRef Name="Shift" />
+            <PropertyRef Name="Period" />
+            <PropertyRef Name="Side" />
+            <PropertyRef Name="Reaudit" />
+            <PropertyRef Name="Defect_Counter" />
+          </Key>
+          <Property Name="Plant_Number" Type="Int32" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="Period" Type="Int32" Nullable="false" />
+          <Property Name="Set" Type="Int32" />
+          <Property Name="Start_Date" Type="DateTime" Precision="7" />
+          <Property Name="Side" Type="Int32" Nullable="false" />
+          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
+          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
+          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
+          <Property Name="Cut" Type="Decimal" Precision="38" Scale="5" />
+          <Property Name="Fold_Flap" Type="Decimal" Precision="38" Scale="5" />
+          <Property Name="Puncture" Type="Decimal" Precision="38" Scale="5" />
+          <Property Name="Defect_Counter" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reports_HTP_Audit">
+          <Key>
+            <PropertyRef Name="Shift" />
+            <PropertyRef Name="Audit_ReAudit" />
+            <PropertyRef Name="Period" />
+            <PropertyRef Name="Baised_Unbiased" />
+            <PropertyRef Name="Starting_Phase" />
+            <PropertyRef Name="Reaudit" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Plant_Number" Type="Int32" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="Start_Date" Type="DateTime" Precision="7" />
+          <Property Name="Start_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Job_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Audit_ReAudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Period" Type="Int32" Nullable="false" />
+          <Property Name="Baised_Unbiased" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Job_Date" Type="DateTime" Precision="0" />
+          <Property Name="Job_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Starting_Phase" Type="Int32" Nullable="false" />
+          <Property Name="Core_Practice_HTP_Deviation" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="Other_Deviaton" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="Ending_Phase" Type="Int32" />
+          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="End_Date" Type="DateTime" Precision="0" />
+          <Property Name="End_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VWCFFResults">
+          <Key>
+            <PropertyRef Name="Shift" />
+            <PropertyRef Name="Period" />
+            <PropertyRef Name="Side" />
+            <PropertyRef Name="Reaudit" />
+            <PropertyRef Name="Defect_Counter" />
+          </Key>
+          <Property Name="Plant_Number" Type="Int32" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="Period" Type="Int32" Nullable="false" />
+          <Property Name="Set" Type="Int32" />
+          <Property Name="Start_Date" Type="DateTime" Precision="7" />
+          <Property Name="Side" Type="Int32" Nullable="false" />
+          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
+          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
+          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
+          <Property Name="Cut" Type="Decimal" Precision="38" Scale="5" />
+          <Property Name="Fold_Flap" Type="Decimal" Precision="38" Scale="5" />
+          <Property Name="Puncture" Type="Decimal" Precision="38" Scale="5" />
+          <Property Name="Defect_Counter" Type="Int32" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
         <EntityType Name="BkpCollection">
           <Key>
             <PropertyRef Name="Id" />
@@ -3721,6 +3990,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="HaveReaudit" Type="Boolean" />
           <Property Name="HavePhase" Type="Boolean" />
           <Property Name="Completed" Type="Boolean" />
+          <Property Name="EvaluatedResult" Type="Int32" />
+          <Property Name="DefectsResult" Type="Int32" />
           <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="CollectionLevel02" ToRole="ConsolidationLevel02" />
           <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_CollectionLevel02_Level01" FromRole="CollectionLevel02" ToRole="Level01" />
           <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_CollectionLevel02_Level02" FromRole="CollectionLevel02" ToRole="Level02" />
@@ -3923,6 +4194,25 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Department" FromRole="Department" ToRole="ConsolidationLevel01" />
           <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Department" FromRole="Department" ToRole="ConsolidationLevel1" />
+        </EntityType>
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="deptid" />
+          </Key>
+          <Property Name="deptid" Type="Int32" Nullable="false" />
+          <Property Name="deptname" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="deptmgrid" Type="Int32" />
+          <NavigationProperty Name="Employees" Relationship="SgqDbModel.FK__Departmen__deptm__434CCEA9" FromRole="Departments" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="empid" />
+          </Key>
+          <Property Name="empid" Type="Int32" Nullable="false" />
+          <Property Name="mgrid" Type="Int32" />
+          <Property Name="empname" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="salary" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <NavigationProperty Name="Departments" Relationship="SgqDbModel.FK__Departmen__deptm__434CCEA9" FromRole="Employees" ToRole="Departments" />
         </EntityType>
         <EntityType Name="Example">
           <Key>
@@ -4139,6 +4429,14 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany" FromRole="ParCompanyXUserSgq" ToRole="ParCompany" />
           <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq" FromRole="ParCompanyXUserSgq" ToRole="UserSgq" />
+        </EntityType>
+        <EntityType Name="ParConfSGQ">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HaveUnitLogin" Type="Boolean" />
+          <Property Name="HaveShitLogin" Type="Boolean" />
         </EntityType>
         <EntityType Name="ParConsolidationType">
           <Key>
@@ -4724,16 +5022,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterTime" Type="DateTime" Nullable="false" Precision="7" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="Unit">
           <Key>
             <PropertyRef Name="Id" />
@@ -4961,129 +5249,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="DelDados">
-          <Key>
-            <PropertyRef Name="TESTE" />
-          </Key>
-          <Property Name="TESTE" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Reports_CCA_Audit">
-          <Key>
-            <PropertyRef Name="Audit_Period" />
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit_Reaudit" />
-            <PropertyRef Name="No_of_Def" />
-            <PropertyRef Name="Cattle_Type" />
-            <PropertyRef Name="Chain_Speed" />
-            <PropertyRef Name="Lot__" />
-            <PropertyRef Name="Mud_Score" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Audit_Period" Type="Int32" Nullable="false" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Specks" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Dressing" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Single_Hairs" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Clusters" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Hide" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="No_of_Def" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Cattle_Type" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Chain_Speed" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Lot__" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Mud_Score" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Auditor_Name_Global" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Reports_CFF_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect_Counter" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Set" Type="Int32" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Side" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Fold_Flap" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Defect_Counter" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Reports_HTP_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit_ReAudit" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Baised_Unbiased" />
-            <PropertyRef Name="Starting_Phase" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Start_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Job_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Audit_ReAudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Baised_Unbiased" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Job_Date" Type="DateTime" Precision="0" />
-          <Property Name="Job_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Starting_Phase" Type="Int32" Nullable="false" />
-          <Property Name="Core_Practice_HTP_Deviation" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Other_Deviaton" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Ending_Phase" Type="Int32" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="End_Date" Type="DateTime" Precision="0" />
-          <Property Name="End_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="ID" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="VWCFFResults">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect_Counter" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Set" Type="Int32" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Side" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Fold_Flap" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Defect_Counter" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_CollectionLevel02_ConsolidationLevel02">
           <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="1" />
@@ -5418,6 +5583,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Principal>
             <Dependent Role="CorrectiveAction">
               <PropertyRef Name="SlaughterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Departmen__deptm__434CCEA9">
+          <End Type="SgqDbModel.Employees" Role="Employees" Multiplicity="0..1" />
+          <End Type="SgqDbModel.Departments" Role="Departments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="empid" />
+            </Principal>
+            <Dependent Role="Departments">
+              <PropertyRef Name="deptmgrid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6249,16 +6426,11 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        <ComplexType Name="fn_getsubtree_Result">
+          <Property Type="Int32" Name="empid" Nullable="false" />
+          <Property Type="String" Name="empname" Nullable="false" MaxLength="25" />
+          <Property Type="Int32" Name="mgrid" Nullable="true" />
+          <Property Type="Int32" Name="lvl" Nullable="false" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -6266,6 +6438,148 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SgqDbModelStoreContainer" CdmEntityContainer="SgqDbDevEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SgqDbModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DelDados">
+            <EntityTypeMapping TypeName="SgqDbModel.DelDados">
+              <MappingFragment StoreEntitySet="DelDados">
+                <ScalarProperty Name="TESTE" ColumnName="TESTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports_CCA_Audit">
+            <EntityTypeMapping TypeName="SgqDbModel.Reports_CCA_Audit">
+              <MappingFragment StoreEntitySet="Reports_CCA_Audit">
+                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
+                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
+                <ScalarProperty Name="Auditor_Name_Global" ColumnName="Auditor Name Global" />
+                <ScalarProperty Name="Mud_Score" ColumnName="Mud Score" />
+                <ScalarProperty Name="Lot__" ColumnName="Lot #" />
+                <ScalarProperty Name="Chain_Speed" ColumnName="Chain Speed" />
+                <ScalarProperty Name="Cattle_Type" ColumnName="Cattle Type" />
+                <ScalarProperty Name="No_of_Def" ColumnName="No of Def" />
+                <ScalarProperty Name="Defects" ColumnName="Defects" />
+                <ScalarProperty Name="Hide" ColumnName="Hide" />
+                <ScalarProperty Name="Clusters" ColumnName="Clusters" />
+                <ScalarProperty Name="Single_Hairs" ColumnName="Single Hairs" />
+                <ScalarProperty Name="Dressing" ColumnName="Dressing" />
+                <ScalarProperty Name="Specks" ColumnName="Specks" />
+                <ScalarProperty Name="Audit_Reaudit" ColumnName="Audit/Reaudit" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="Audit_Period" ColumnName="Audit Period" />
+                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
+                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
+                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
+                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports_CFF_Audit">
+            <EntityTypeMapping TypeName="SgqDbModel.Reports_CFF_Audit">
+              <MappingFragment StoreEntitySet="Reports_CFF_Audit">
+                <ScalarProperty Name="Defect_Counter" ColumnName="Defect Counter" />
+                <ScalarProperty Name="Puncture" ColumnName="Puncture" />
+                <ScalarProperty Name="Fold_Flap" ColumnName="Fold/Flap" />
+                <ScalarProperty Name="Cut" ColumnName="Cut" />
+                <ScalarProperty Name="Defects" ColumnName="Defects" />
+                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
+                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
+                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
+                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
+                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
+                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
+                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
+                <ScalarProperty Name="Side" ColumnName="Side" />
+                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
+                <ScalarProperty Name="Set" ColumnName="Set" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports_HTP_Audit">
+            <EntityTypeMapping TypeName="SgqDbModel.Reports_HTP_Audit">
+              <MappingFragment StoreEntitySet="Reports_HTP_Audit">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="End_Time" ColumnName="End Time" />
+                <ScalarProperty Name="End_Date" ColumnName="End Date" />
+                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
+                <ScalarProperty Name="Ending_Phase" ColumnName="Ending Phase" />
+                <ScalarProperty Name="Other_Deviaton" ColumnName="Other Deviaton" />
+                <ScalarProperty Name="Core_Practice_HTP_Deviation" ColumnName="Core Practice HTP Deviation" />
+                <ScalarProperty Name="Starting_Phase" ColumnName="Starting Phase" />
+                <ScalarProperty Name="Job_Time" ColumnName="Job Time" />
+                <ScalarProperty Name="Job_Date" ColumnName="Job Date" />
+                <ScalarProperty Name="Baised_Unbiased" ColumnName="Baised/Unbiased" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Audit_ReAudit" ColumnName="Audit/ReAudit" />
+                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
+                <ScalarProperty Name="Job_Id" ColumnName="Job Id" />
+                <ScalarProperty Name="Start_Time" ColumnName="Start Time" />
+                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VWCFFResults">
+            <EntityTypeMapping TypeName="SgqDbModel.VWCFFResults">
+              <MappingFragment StoreEntitySet="VWCFFResults">
+                <ScalarProperty Name="Defect_Counter" ColumnName="Defect Counter" />
+                <ScalarProperty Name="Puncture" ColumnName="Puncture" />
+                <ScalarProperty Name="Fold_Flap" ColumnName="Fold/Flap" />
+                <ScalarProperty Name="Cut" ColumnName="Cut" />
+                <ScalarProperty Name="Defects" ColumnName="Defects" />
+                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
+                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
+                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
+                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
+                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
+                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
+                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
+                <ScalarProperty Name="Side" ColumnName="Side" />
+                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
+                <ScalarProperty Name="Set" ColumnName="Set" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="SgqDbModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="SgqDbModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="SgqDbModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="SgqDbModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SgqDbModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="SgqDbModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SgqDbModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="SgqDbModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SgqDbModel.Store.sp_upgraddiagrams" />
           <EntitySetMapping Name="BkpCollection">
             <EntityTypeMapping TypeName="SgqDbModel.BkpCollection">
               <MappingFragment StoreEntitySet="BkpCollection">
@@ -6331,6 +6645,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySetMapping Name="CollectionLevel02">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel02">
               <MappingFragment StoreEntitySet="CollectionLevel02">
+                <ScalarProperty Name="DefectsResult" ColumnName="DefectsResult" />
+                <ScalarProperty Name="EvaluatedResult" ColumnName="EvaluatedResult" />
                 <ScalarProperty Name="Completed" ColumnName="Completed" />
                 <ScalarProperty Name="HavePhase" ColumnName="HavePhase" />
                 <ScalarProperty Name="HaveReaudit" ColumnName="HaveReaudit" />
@@ -6537,6 +6853,25 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="SgqDbModel.Departments">
+              <MappingFragment StoreEntitySet="Departments">
+                <ScalarProperty Name="deptmgrid" ColumnName="deptmgrid" />
+                <ScalarProperty Name="deptname" ColumnName="deptname" />
+                <ScalarProperty Name="deptid" ColumnName="deptid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="SgqDbModel.Employees">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="salary" ColumnName="salary" />
+                <ScalarProperty Name="empname" ColumnName="empname" />
+                <ScalarProperty Name="mgrid" ColumnName="mgrid" />
+                <ScalarProperty Name="empid" ColumnName="empid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Example">
             <EntityTypeMapping TypeName="SgqDbModel.Example">
               <MappingFragment StoreEntitySet="Example">
@@ -6735,6 +7070,15 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
                 <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
                 <ScalarProperty Name="UserSgq_Id" ColumnName="UserSgq_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParConfSGQ">
+            <EntityTypeMapping TypeName="SgqDbModel.ParConfSGQ">
+              <MappingFragment StoreEntitySet="ParConfSGQ">
+                <ScalarProperty Name="HaveShitLogin" ColumnName="HaveShitLogin" />
+                <ScalarProperty Name="HaveUnitLogin" ColumnName="HaveUnitLogin" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -7252,17 +7596,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="SgqDbModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Unit">
             <EntityTypeMapping TypeName="SgqDbModel.Unit">
               <MappingFragment StoreEntitySet="Unit">
@@ -7460,137 +7793,16 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DelDados">
-            <EntityTypeMapping TypeName="SgqDbModel.DelDados">
-              <MappingFragment StoreEntitySet="DelDados">
-                <ScalarProperty Name="TESTE" ColumnName="TESTE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports_CCA_Audit">
-            <EntityTypeMapping TypeName="SgqDbModel.Reports_CCA_Audit">
-              <MappingFragment StoreEntitySet="Reports_CCA_Audit">
-                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
-                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
-                <ScalarProperty Name="Auditor_Name_Global" ColumnName="Auditor Name Global" />
-                <ScalarProperty Name="Mud_Score" ColumnName="Mud Score" />
-                <ScalarProperty Name="Lot__" ColumnName="Lot #" />
-                <ScalarProperty Name="Chain_Speed" ColumnName="Chain Speed" />
-                <ScalarProperty Name="Cattle_Type" ColumnName="Cattle Type" />
-                <ScalarProperty Name="No_of_Def" ColumnName="No of Def" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="Hide" ColumnName="Hide" />
-                <ScalarProperty Name="Clusters" ColumnName="Clusters" />
-                <ScalarProperty Name="Single_Hairs" ColumnName="Single Hairs" />
-                <ScalarProperty Name="Dressing" ColumnName="Dressing" />
-                <ScalarProperty Name="Specks" ColumnName="Specks" />
-                <ScalarProperty Name="Audit_Reaudit" ColumnName="Audit/Reaudit" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Audit_Period" ColumnName="Audit Period" />
-                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
-                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
-                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports_CFF_Audit">
-            <EntityTypeMapping TypeName="SgqDbModel.Reports_CFF_Audit">
-              <MappingFragment StoreEntitySet="Reports_CFF_Audit">
-                <ScalarProperty Name="Defect_Counter" ColumnName="Defect Counter" />
-                <ScalarProperty Name="Puncture" ColumnName="Puncture" />
-                <ScalarProperty Name="Fold_Flap" ColumnName="Fold/Flap" />
-                <ScalarProperty Name="Cut" ColumnName="Cut" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
-                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
-                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
-                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
-                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
-                <ScalarProperty Name="Side" ColumnName="Side" />
-                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
-                <ScalarProperty Name="Set" ColumnName="Set" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports_HTP_Audit">
-            <EntityTypeMapping TypeName="SgqDbModel.Reports_HTP_Audit">
-              <MappingFragment StoreEntitySet="Reports_HTP_Audit">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="End_Time" ColumnName="End Time" />
-                <ScalarProperty Name="End_Date" ColumnName="End Date" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="Ending_Phase" ColumnName="Ending Phase" />
-                <ScalarProperty Name="Other_Deviaton" ColumnName="Other Deviaton" />
-                <ScalarProperty Name="Core_Practice_HTP_Deviation" ColumnName="Core Practice HTP Deviation" />
-                <ScalarProperty Name="Starting_Phase" ColumnName="Starting Phase" />
-                <ScalarProperty Name="Job_Time" ColumnName="Job Time" />
-                <ScalarProperty Name="Job_Date" ColumnName="Job Date" />
-                <ScalarProperty Name="Baised_Unbiased" ColumnName="Baised/Unbiased" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Audit_ReAudit" ColumnName="Audit/ReAudit" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Job_Id" ColumnName="Job Id" />
-                <ScalarProperty Name="Start_Time" ColumnName="Start Time" />
-                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VWCFFResults">
-            <EntityTypeMapping TypeName="SgqDbModel.VWCFFResults">
-              <MappingFragment StoreEntitySet="VWCFFResults">
-                <ScalarProperty Name="Defect_Counter" ColumnName="Defect Counter" />
-                <ScalarProperty Name="Puncture" ColumnName="Puncture" />
-                <ScalarProperty Name="Fold_Flap" ColumnName="Fold/Flap" />
-                <ScalarProperty Name="Cut" ColumnName="Cut" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
-                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
-                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
-                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
-                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
-                <ScalarProperty Name="Side" ColumnName="Side" />
-                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
-                <ScalarProperty Name="Set" ColumnName="Set" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="SgqDbModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="SgqDbModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="SgqDbModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="SgqDbModel.Store.sp_helpdiagramdefinition">
+          <FunctionImportMapping FunctionImportName="fn_getsubtree" FunctionName="SgqDbModel.Store.fn_getsubtree">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SgqDbModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
+              <ComplexTypeMapping TypeName="SgqDbModel.fn_getsubtree_Result">
+                <ScalarProperty Name="empid" ColumnName="empid" />
+                <ScalarProperty Name="empname" ColumnName="empname" />
+                <ScalarProperty Name="mgrid" ColumnName="mgrid" />
+                <ScalarProperty Name="lvl" ColumnName="lvl" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="SgqDbModel.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SgqDbModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="SgqDbModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SgqDbModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

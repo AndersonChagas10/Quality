@@ -1,8 +1,8 @@
-﻿    @{
+﻿@{
 //var urlSend = Url.Action("Save", "api/ParLevel2ControlCompany"); //URL relativa
 //var urlChangeLevel2 = Url.Action("ChangeLevel2", "ParLevel2ControlCompany"); //URL relativa
 //var urlChangeLevel2UserCompany = Url.Action("ChangeLevel2UserCompany", "ParLevel2ControlCompany"); //URL relativa
-//var userRolesCompany = 
+//var userRolesCompany =
 }
 
 <!DOCTYPE html>
@@ -49,7 +49,7 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-    
+
 
     <div class="page-wrapper">
 
@@ -79,33 +79,33 @@
         //$.fn.select2.defaults.set("language", "en");
 
         /*DataTable Padrão BR*/
-        $(document).ready(function () {
-            $.extend(true, $.fn.dataTable.defaults,
-            {
-                "columnDefs": [
-                    { "className": "dt-center", "targets": "_all" }
-                ],
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
-                "oLanguage": {
+        $.extend(true, $.fn.dataTable.defaults,
+           {
+               "columnDefs": [
+                   { "className": "dt-center", "targets": "_all" }
+               ],
+               "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+               "oLanguage": {
 
-                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
-                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
-                    "sZeroRecords": "Nenhum registro correspondente ao criterio encontrado",
-                    "sInfoEmtpy": "Exibindo 0 a 0 de 0 registros",
-                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
-                    "sInfoFiltered": "",
-                    "sSearch": "Procurar",
-                    "oPaginate": {
-                        "sFirst": "Primeiro",
-                        "sPrevious": "Anterior",
-                        "sNext": "Próximo",
-                        "sLast": "Último"
-                    }
-                }
-            });
-        });
+                   "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                   "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                   "sZeroRecords": "Nenhum registro correspondente ao criterio encontrado",
+                   "sInfoEmtpy": "Exibindo 0 a 0 de 0 registros",
+                   "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                   "sInfoFiltered": "",
+                   "sSearch": "Procurar",
+                   "oPaginate": {
+                       "sFirst": "Primeiro",
+                       "sPrevious": "Anterior",
+                       "sNext": "Próximo",
+                       "sLast": "Último"
+                   }
+               }
+           });
+
 
         /*Configura date range picker para PT-BR*/
+        moment.locale("Pt-Br");
         $.fn.daterangepicker('locale', {
             "format": "DD/MM/YYYY",
             "separator": " - ",
@@ -140,6 +140,7 @@
             ],
             //"firstDay": 0
         });
+
         var rangesEUA = {
             'Today': [moment(), moment()],
             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -157,9 +158,8 @@
             'Este mês': [moment().startOf('month'), moment().endOf('month')],
             'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
-        //$.fn.daterangepicker('ranges', rangesBR);
 
-        moment.locale("Pt-Br");
+        //$.fn.daterangepicker('ranges', rangesBR);
 
         var monthNames = [
             '@Resources.Resource.january',
@@ -196,6 +196,11 @@
         }
 
         watcher();
+
+        $(document).ready(function () {
+            //var settngs = $.data($('form')[0], 'validator').settings;
+            //settngs.ignore = ".ignore";
+        });
     </script>
 </body>
 </html>

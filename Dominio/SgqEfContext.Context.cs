@@ -33,6 +33,12 @@ namespace Dominio
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<DelDados> DelDados { get; set; }
+        public virtual DbSet<Reports_CCA_Audit> Reports_CCA_Audit { get; set; }
+        public virtual DbSet<Reports_CFF_Audit> Reports_CFF_Audit { get; set; }
+        public virtual DbSet<Reports_HTP_Audit> Reports_HTP_Audit { get; set; }
+        public virtual DbSet<VWCFFResults> VWCFFResults { get; set; }
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
         public virtual DbSet<CollectionHtml> CollectionHtml { get; set; }
         public virtual DbSet<CollectionJson> CollectionJson { get; set; }
@@ -46,6 +52,8 @@ namespace Dominio
         public virtual DbSet<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
         public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
         public virtual DbSet<Department> Department { get; set; }
+        public virtual DbSet<Departments> Departments { get; set; }
+        public virtual DbSet<Employees> Employees { get; set; }
         public virtual DbSet<Example> Example { get; set; }
         public virtual DbSet<Level01> Level01 { get; set; }
         public virtual DbSet<Level02> Level02 { get; set; }
@@ -61,6 +69,7 @@ namespace Dominio
         public virtual DbSet<ParCompanyCluster> ParCompanyCluster { get; set; }
         public virtual DbSet<ParCompanyXStructure> ParCompanyXStructure { get; set; }
         public virtual DbSet<ParCompanyXUserSgq> ParCompanyXUserSgq { get; set; }
+        public virtual DbSet<ParConfSGQ> ParConfSGQ { get; set; }
         public virtual DbSet<ParConsolidationType> ParConsolidationType { get; set; }
         public virtual DbSet<ParCounter> ParCounter { get; set; }
         public virtual DbSet<ParCounterXLocal> ParCounterXLocal { get; set; }
@@ -98,7 +107,6 @@ namespace Dominio
         public virtual DbSet<Period> Period { get; set; }
         public virtual DbSet<Result_Level3> Result_Level3 { get; set; }
         public virtual DbSet<Shift> Shift { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<UnitUser> UnitUser { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
@@ -111,11 +119,6 @@ namespace Dominio
         public virtual DbSet<ParLevel1VariableProductionXLevel1> ParLevel1VariableProductionXLevel1 { get; set; }
         public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
         public virtual DbSet<ResultLevel2HeaderField> ResultLevel2HeaderField { get; set; }
-        public virtual DbSet<DelDados> DelDados { get; set; }
-        public virtual DbSet<Reports_CCA_Audit> Reports_CCA_Audit { get; set; }
-        public virtual DbSet<Reports_CFF_Audit> Reports_CFF_Audit { get; set; }
-        public virtual DbSet<Reports_HTP_Audit> Reports_HTP_Audit { get; set; }
-        public virtual DbSet<VWCFFResults> VWCFFResults { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
@@ -218,6 +221,16 @@ namespace Dominio
         public virtual int sp_upgraddiagrams()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+        }
+    
+        [DbFunction("SgqDbDevEntities", "fn_getsubtree")]
+        public virtual IQueryable<fn_getsubtree_Result> fn_getsubtree(Nullable<int> empid)
+        {
+            var empidParameter = empid.HasValue ?
+                new ObjectParameter("empid", empid) :
+                new ObjectParameter("empid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fn_getsubtree_Result>("[SgqDbDevEntities].[fn_getsubtree](@empid)", empidParameter);
         }
     }
 }
