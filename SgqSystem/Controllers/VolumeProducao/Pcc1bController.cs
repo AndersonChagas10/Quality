@@ -4,9 +4,11 @@ using System.Net;
 using System.Web.Mvc;
 using Dominio;
 using DTO.Helpers;
+using SgqSystem.Secirity;
 
 namespace SgqSystem.Controllers
 {
+    [CustomAuthorize]
     public class Pcc1bController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();

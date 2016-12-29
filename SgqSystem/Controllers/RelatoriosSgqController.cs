@@ -2,11 +2,13 @@
 using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.DTO.Params;
+using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
+    [CustomAuthorize]
     public class RelatoriosSgqController : BaseController
     {
 
