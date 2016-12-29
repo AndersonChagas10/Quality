@@ -206,10 +206,10 @@ public class ScorecardResultSet
             "\n  ON L1C.ParCriticalLevel_Id = CRL.Id                                                                                                                                         " +
             "\n  LEFT JOIN ParGoal G                                                                                                                                                         " +
             "\n  ON (G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id                                                                                           " +
-            "\n  WHERE (ConsolidationDate BETWEEN '20161227 00:00' AND '20161228 00:00')                                                                                                     " +
-            "\n  AND(C.Id = 1)                                                                                                                                                               " +
-            "\n                                                                                                                                                                             " +
-            "\n                                                                                                                                                                             " +
+            "\n  WHERE (ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59')                                              " +
+            "\n  AND(C.Id = " + unidadeId + " )                                                                                                                                              " +
+            "\n                                                                                                                                                                              " +
+            "\n                                                                                                                                                                              " +
             "\n  UNION ALL                                                                                                                                                                   " +
             "\n                                                                                                                                                                              " +
             "\n                                                                                                                                                                              " +
@@ -265,7 +265,8 @@ public class ScorecardResultSet
             "\n  LEFT JOIN ParGoal G                                                                                                                                                         " +
             "\n  ON (G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id                                                                                           " +
             "\n  WHERE C.Id = " + unidadeId + "                                                                                                                                              " +
-            "\n  AND L1.Id NOT IN (SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC WHERE CCC.UnitId = 1 AND CCC.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 00:00')        ";
+            "\n  AND L1.Id NOT IN (SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC WHERE CCC.UnitId = 1                                                                                 " +
+            "\n  AND CCC.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59')                                             ";
     }
 
 }
