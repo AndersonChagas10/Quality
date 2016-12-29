@@ -604,6 +604,8 @@ namespace SGQDBContext
         public int EvaluateLast { get; set; }
         public int SampleLast { get; set; }
         public int ConsolidationLevel2_Id { get; set; }
+        //public int Sequential { get; set; }
+        //public int Side { get; set; }
 
         public IEnumerable<Level2Result> getList(string UnidadeId)
         {
@@ -638,7 +640,7 @@ namespace SGQDBContext
                         "                                                                  " +
                         "    where UnitId = '" + UnidadeId + "'                            " +
                         "                                                                  " +
-                        "    group by                                                      " +
+                        "    group by                                                        " +
                         "    ParLevel1_Id                                                  " +
                         "    , ParLevel2_Id                                                " +
                         "    , UnitId                                                      " +

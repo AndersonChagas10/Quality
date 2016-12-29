@@ -266,8 +266,6 @@ namespace SgqSystem.Services
                 string CollectionLevel02Id = result[30];
                 string correctiveActionCompleted = result[31];
                 string completeReaudit = result[32];
-                string sequential = null;
-                string side = null;
 
                 string weievaluation = result[35];
                 string weidefects = result[36];
@@ -277,6 +275,8 @@ namespace SgqSystem.Services
                 string avaliacaoultimoalerta = result[40];
                 string evaluatedresult = result[41];
                 string defectsresult = result[42];
+                string sequential = result[43];
+                string side = result[44];
                 //string alertaAtual = result[40];
 
                 //Gera o Cabeçalho do Level02
@@ -302,6 +302,9 @@ namespace SgqSystem.Services
                 level02HeaderJSon += ";" + avaliacaoultimoalerta;
                 level02HeaderJSon += ";" + evaluatedresult;
                 level02HeaderJSon += ";" + defectsresult;
+                level02HeaderJSon += ";" + sequential;
+                level02HeaderJSon += ";" + side;
+
                 //level02HeaderJSon += ";" + alertaAtual;
 
                 //Verifica o Resultado do Level03
@@ -582,8 +585,8 @@ namespace SgqSystem.Services
 
                                 string AlertLevel = arrayHeader[11];
                                 AlertLevel = DefaultValueReturn(AlertLevel, "0");
-                                string sequential = arrayHeader[12];
-                                string side = arrayHeader[13];
+                                //string sequential = arrayHeader[12];
+                                //string side = arrayHeader[13];
 
                                 string weievaluation = arrayHeader[14];
                                 string weidefects = arrayHeader[15];
@@ -597,6 +600,11 @@ namespace SgqSystem.Services
 
                                 string evaluatedresult = arrayHeader[20];
                                 string defectsresult = arrayHeader[21];
+                                string sequential = arrayHeader[22];
+                                sequential = DefaultValueReturn(sequential, "0");
+                                string side = arrayHeader[23];
+                                side = DefaultValueReturn(side, "0");
+
                                 //string alertaAtual = arrayHeader[19]; 
 
                                 int CollectionLevel2Id = InsertCollectionLevel2(ConsolidationLevel2, level01, level02, unitId, AuditorId, shift, period, Phase, Reaudit, reauditNumber, level02CollectionDate,
@@ -2060,7 +2068,6 @@ namespace SgqSystem.Services
                               "<div class=\"ResultsConsolidation hide\"></div>" +
                               "<div class=\"Deviations\"></div>" +
                               "<div class=\"Users hide\"></div>" +
-                              "<div class=\"ResultPCC1B hide\"></div>" +
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 

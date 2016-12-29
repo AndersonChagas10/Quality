@@ -798,6 +798,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Properties\PublishProfiles\BuildSqgMaster.pubxml" />
     <None Include="Properties\PublishProfiles\DeployInterno.pubxml" />
     <None Include="Properties\PublishProfiles\DeployInternoDebug.pubxml" />
     <None Include="Properties\PublishProfiles\DeploySgqInterno.pubxml" />
