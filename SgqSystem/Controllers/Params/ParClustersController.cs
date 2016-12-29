@@ -3,9 +3,13 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Dominio;
+using SgqSystem.Secirity;
+using Helper;
 
 namespace SgqSystem.Controllers
 {
+    [HandleController()]
+    [CustomAuthorize]
     public class ParClustersController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();

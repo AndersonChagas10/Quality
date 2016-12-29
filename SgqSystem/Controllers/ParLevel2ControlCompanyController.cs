@@ -1,12 +1,14 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
+using SgqSystem.Secirity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
+    [CustomAuthorize]
     public class ParLevel2ControlCompanyController : BaseController
     {
         private IBaseDomain<ParLevel3Level2Level1, ParLevel3Level2Level1DTO> _baseParLevel3Level2Level1;

@@ -10,7 +10,6 @@ namespace SgqSystem.Controllers
    
     public class BaseController : Controller
     {
-
         public BaseController()
         {
             //GlobalConfig.linkDataCollect = "http://192.168.25.200/AppColeta/";

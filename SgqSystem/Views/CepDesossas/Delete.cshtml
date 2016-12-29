@@ -2,8 +2,12 @@
 
 @{
     ViewBag.Title = "CEP Dessosa - Volume";
+    var data = "";
+    if (Model.Data.HasValue)
+    {
+        data = Model.Data.Value.ToString("dd/MM/yyyy");
+    }
 }
-
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
@@ -46,35 +50,20 @@
                             <div class="tab-pane active" id="setup_tab">
 
                                 <h4>
-                                    
-                                
                                 Deseja excluir o 
-                                
                                 volume de produção de <b>@Html.DisplayFor(model => model.ParLevel1.Name)</b> 
-                                do dia <b><div id="dataLabel" style="display:inline;"></div></b>
-                                
+                                do dia <b><div style="display:inline;">@data</div></b>
                                 da unidade  de <b>@Html.DisplayFor(model => model.ParCompany.Name)?</b>
-
-                                    <script>
-                                        var str = "@Html.DisplayFor(model => model.Data)";
-                                        var res = str.substring(0, 10);
-
-                                        $('#dataLabel').html(res);
-
-                                    </script>
-
                                 </h4>
                                 <br />
                                 <div>
-                                    
-
                                     @using (Html.BeginForm())
                                     {
                                         @Html.AntiForgeryToken()
 
                                         <div class="form-actions no-color">
                                             <input type="submit" value="Sim, pode excluir" class="btn btn-default" /> |
-                                            @Html.ActionLink("Voltar para Volume de CEP Desossa", "Index")
+                                            @Html.ActionLink("Voltar", "Index")
                                         </div>
                                     }
                                 </div>
