@@ -51,8 +51,8 @@ public class ScorecardResultSet
         "\n , Pontos " +
         "\n , Meta " +
         "\n ,ROUND(Real, 2) as Real " +
-        "\n ,CASE WHEN Scorecard < 70 THEN 0 ELSE Scorecard/ 100 * Pontos  END AS PontosAtingidos " +
-        "\n ,CASE WHEN Scorecard > 100 THEN 100 ELSE Scorecard END AS Scorecard " +
+        "\n ,ROUND(CASE WHEN Scorecard < 70 THEN 0 ELSE (CASE WHEN Scorecard > 100 THEN 100 ELSE Scorecard END /100 ) * Pontos  END , 2) AS PontosAtingidos " +
+        "\n ,CASE WHEN Scorecard > 100 THEN 100 ELSE ROUND(Scorecard,2) END AS Scorecard " +
 
         "\n FROM " +
         "\n ( " +
@@ -77,7 +77,7 @@ public class ScorecardResultSet
             "\n , Meta " +
             "\n , ROUND(Real, 2) as Real " +
             "\n , NULL AS PontosAtingidos " +
-            "\n , CASE WHEN TipoIndicador = 0 THEN Meta / Real WHEN TipoIndicador = 1 THEN Real / Meta END AS Scorecard " +
+            "\n , CASE WHEN TipoIndicador = 1 THEN CASE WHEN Real = 0 THEN 100 ELSE Meta / Real * 100 END WHEN TipoIndicador = 2 THEN Real / Meta * 100 END AS Scorecard " +
 
 
             "\n FROM " +
