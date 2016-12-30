@@ -9,7 +9,7 @@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 40%;">
+    <div class="page-content" style="min-height: " + tamanhoCorpo + ";">
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE BAR -->
         <div class="page-bar">
@@ -351,6 +351,12 @@
 
                                         $(div).empty();
 
+                                        var tamanhoCol1 = '250px';
+                                        var tamanhoCorpo = '40%';
+                                        var tamanhoColTotal = '280px';
+                                        var tamanhoCelulaNumerica = '70px';
+                                        var alturaCelula = '50px';
+
                                         var tabela = "";
 
                                         tabela += "<style>";
@@ -366,7 +372,7 @@
                                         tabela += "fixarColuna .contentHead {display:block; width:98.5%; padding:0; margin:0; overflow: hidden; height:35px;}";
                                         tabela += "#fixarColuna .content div {display:inline; float: left; position: relative; border: none; width:100%;}";
                                         tabela += "#fixarColuna .contentHead div {display:inline; float: left; position: relative; border: none; width:100%;}";
-                                        tabela += "#fixarColuna .content .contentHead .larguraP19 {width:250px;; overflow-x: hidden;}";
+                                        tabela += "#fixarColuna .content .contentHead .larguraP19 {width:" + tamanhoCol1 + ";; overflow-x: hidden;}";
 
                                         tabela += "#fixBody" + id + "::-webkit-scrollbar-track {";
                                         tabela += "    background-color: #F4F4F4;";
@@ -410,20 +416,20 @@
 
                                         tabela += "<div id=\"fixarColuna\" style=\"font-size:small;\">";
                                         tabela += "<div class=\"contentHead\">";
-                                        tabela += "<div class=\"larguraP19\" style=\"width:250px;; overflow-x: hidden;\">";
+                                        tabela += "<div class=\"larguraP19\" style=\"width:" + tamanhoCol1 + ";; overflow-x: hidden;\">";
                                         tabela += "<table cellspacing=\"0\" cellpadding=\"0\">";
                                         tabela += "<thead>";
                                         tabela += "<tr>";
                                         tabela += "<td width=\"240px\" rowspan=\"" + colunaFixa1[0][1] + "\">" + colunaFixa1[0][0] + "</td>";
                                         tabela += "</tr>";
                                         tabela += "<tr>";
-                                        tabela += "<td width=\"250px;\" rowspan=\"" + colunaFixa1[1][1] + "\">" + colunaFixa1[1][0] + "</td>";
+                                        tabela += "<td width=\"" + tamanhoCol1 + ";\" rowspan=\"" + colunaFixa1[1][1] + "\">" + colunaFixa1[1][0] + "</td>";
                                         tabela += "</tr>";
                                         tabela += "</thead>";
                                         tabela += "</table>";
                                         tabela += "</div>";
 
-                                        tabela += "<div id=\"colHead" + id + "\" style=\"width:40%; overflow-x: hidden;\">";
+                                        tabela += "<div id=\"colHead" + id + "\" style=\"width:" + tamanhoCorpo + "; overflow-x: hidden;\">";
                                         tabela += "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\">";
                                         tabela += "<thead>";
                                         tabela += "<tr>";
@@ -433,14 +439,14 @@
                                             if (i % 2 == 0) {
                                                 color = '#eee';
                                             }
-                                            tabela += "<td align=\"center\" style=\"min-width:70px; background-color: " + color + ";\" colspan=\"" + titulosColunasCorpo[0][i][1] + "\"><b>" + titulosColunasCorpo[0][i][0] + "</b></td>";
+                                            tabela += "<td align=\"center\" style=\"min-width:" + tamanhoCelulaNumerica + "; background-color: " + color + ";\" colspan=\"" + titulosColunasCorpo[0][i][1] + "\"><b>" + titulosColunasCorpo[0][i][0] + "</b></td>";
                                         }
 
                                         tabela += "</tr>";
                                         tabela += "<tr>";
 
                                         for (var i = 0; i < titulosColunasCorpo[1].length; i++) {
-                                            tabela += "<td align=\"center\" style=\"min-width:70px;\" colspan=\"" + titulosColunasCorpo[1][i][1] + "\"><b>" + titulosColunasCorpo[1][i][0] + "</b></td>";
+                                            tabela += "<td align=\"center\" style=\"min-width:" + tamanhoCelulaNumerica + ";\" colspan=\"" + titulosColunasCorpo[1][i][1] + "\"><b>" + titulosColunasCorpo[1][i][0] + "</b></td>";
                                         }
 
                                         tabela += "</tr>";
@@ -449,7 +455,7 @@
                                         tabela += "</div>";
 
                                         //right
-                                        tabela += "<div  id=\"headTotal" + id + "\" class=\"larguraP19\" style=\"width:280px;; overflow-x: hidden;\">";
+                                        tabela += "<div  id=\"headTotal" + id + "\" class=\"larguraP19\" style=\"width:" + tamanhoColTotal + ";; overflow-x: hidden;\">";
                                         tabela += "<table cellspacing=\"0\" cellpadding=\"0\">";
                                         tabela += "<thead>";
 
@@ -460,7 +466,7 @@
                                             if (i % 2 == 0) {
                                                 color = 'red';
                                             }
-                                            tabela += "<td align=\"center\" style=\"min-width:70px; background-color: " + color + ";\" colspan=\"" + titleTotal[0][i][1] + "\">" + titleTotal[0][i][0] + "</td>";
+                                            tabela += "<td align=\"center\" style=\"min-width:" + tamanhoCelulaNumerica + "; background-color: " + color + ";\" colspan=\"" + titleTotal[0][i][1] + "\">" + titleTotal[0][i][0] + "</td>";
                                         }
 
                                         tabela += "</tr>";
@@ -470,7 +476,7 @@
 
                                         for (var i = 0; i < titleTotal[1].length; i++) {
                                             
-                                            tabela += "<td align=\"center\" style=\"min-width:70px;\" colspan=\"" + titleTotal[1][i][1] + "\">" + titleTotal[1][i][0] + "</td>";
+                                            tabela += "<td align=\"center\" style=\"min-width:" + tamanhoCelulaNumerica + ";\" colspan=\"" + titleTotal[1][i][1] + "\">" + titleTotal[1][i][0] + "</td>";
                                         }
 
                                         tabela += "</tr>";
@@ -481,24 +487,24 @@
 
                                         tabela += "</div>";
                                         tabela += "<div class=\"content\">";
-                                        tabela += "<div class=\"larguraP19\" style=\"width:250px;;overflow-y:hidden;overflow-x:scroll;height:" + altura + ";\" id=\"colUie" + id + "\" >";
+                                        tabela += "<div class=\"larguraP19\" style=\"width:" + tamanhoCol1 + ";;overflow-y:hidden;overflow-x:scroll;height:" + altura + ";\" id=\"colUie" + id + "\" >";
                                         tabela += "<table cellspacing=\"0\" cellpadding=\"0\" >";
 
                                         for (var i = 0; i < valoresColuna1.length; i++) {
-                                            tabela += "<tr><td>" + valoresColuna1[i][0] + "</td></tr>";
+                                            tabela += "<tr><td style=\"height: " + alturaCelula + ";\">" + valoresColuna1[i][0] + "</td></tr>";
                                         }
 
 
                                         tabela += "</table>";
                                         tabela += "</div>";
-                                        tabela += "<div id=\"fixBody" + id + "\" style=\"width:40%;overflow: scroll;height:" + altura + ";z-index:2;\">";
+                                        tabela += "<div id=\"fixBody" + id + "\" style=\"width:" + tamanhoCorpo + ";overflow: scroll;height:" + altura + ";z-index:2;\">";
                                         tabela += "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\">";
 
 
                                         for (var i = 0; i < dadosPrincipais.length; i++) {
                                             tabela += "<tr>";
                                             for (var j = 0; j < dadosPrincipais[i].length; j++) {
-                                                tabela += "<td align=\"center\" style=\"min-width:70px; padding:0px; height: 30px;\">" + (dadosPrincipais[i][j][3] == '%' ? "<div style=\"width:70px;height: 30px; position:static;background-color: " + dadosPrincipais[i][j][2] + "; opacity: 0.6;\"></div> <div style=\"margin-left: -70px; width:70px; height: 30px; position:absolute; line-height: 30px;\"><i><b>" + dadosPrincipais[i][j][0] + '%</b><i></div>' : float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000))) + "</td>";
+                                                tabela += "<td align=\"center\" style=\"min-width:" + tamanhoCelulaNumerica + "; padding:0px; height: " + alturaCelula + ";\">" + (dadosPrincipais[i][j][3] == '%' ? "<div style=\"width:" + tamanhoCelulaNumerica + ";height: " + alturaCelula + "; position:static;background-color: " + dadosPrincipais[i][j][2] + "; opacity: 0.4;\"></div> <div style=\"margin-left: -" + tamanhoCelulaNumerica + "; width:" + tamanhoCelulaNumerica + "; height: " + alturaCelula + "; position:absolute; line-height: " + alturaCelula + ";\"><i><b>" + dadosPrincipais[i][j][0] + '%</b><i></div>' : float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000))) + "</td>";
                                             }
                                             tabela += "</tr>";
                                         }
@@ -507,14 +513,14 @@
                                         tabela += "</div>";
 
                                         //right
-                                        tabela += "<div class=\"larguraP19\" style=\"width:280px;;overflow-y:hidden;overflow-x:scroll;height:" + altura + ";\" id=\"colUieFim" + id + "\" >";
+                                        tabela += "<div class=\"larguraP19\" style=\"width:" + tamanhoColTotal + ";;overflow-y:hidden;overflow-x:scroll;height:" + altura + ";\" id=\"colUieFim" + id + "\" >";
                                         tabela += "<table cellspacing=\"0\" cellpadding=\"0\" >";
 
 
                                         for (var i = 0; i < columnsTotal.length; i++) {
                                             tabela += "<tr>";
                                             for (var j = 0; j < columnsTotal[i].length; j++) {
-                                                tabela += "<td align=\"center\" style=\"min-width:70px; background-color: " + columnsTotal[i][j][2] + "\">" + (columnsTotal[i][j][3] == '%' ? '<gf><i>' + columnsTotal[i][j][0] + '%<i></gf>' : float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000))) + "</td>";
+                                                tabela += "<td align=\"center\" style=\"height: " + alturaCelula + "; min-width:" + tamanhoCelulaNumerica + "; background-color: " + columnsTotal[i][j][2] + "\">" + (columnsTotal[i][j][3] == '%' ? '<gf><i>' + columnsTotal[i][j][0] + '%<i></gf>' : float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000))) + "</td>";
                                             }
                                             tabela += "</tr>";
                                         }
@@ -526,23 +532,23 @@
 
                                         //footer
                                         tabela += "<div class=\"contentHead\">";
-                                        tabela += "<div class=\"larguraP19\" style=\"width:250px;; overflow-x: hidden;\">";
+                                        tabela += "<div class=\"larguraP19\" style=\"width:" + tamanhoCol1 + ";; overflow-x: hidden;\">";
                                         tabela += "<table cellspacing=\"0\" cellpadding=\"0\">";
                                         tabela += "<thead>";
                                         tabela += "<tr>";
-                                        tabela += "<td width=\"250px;\" rowspan=\"" + footerColumn1[0][1] + "\">" + footerColumn1[0][0] + "</td>";
+                                        tabela += "<td width=\"" + tamanhoCol1 + ";\" rowspan=\"" + footerColumn1[0][1] + "\">" + footerColumn1[0][0] + "</td>";
                                         tabela += "</tr>";
                                         tabela += "</thead>";
                                         tabela += "</table>";
                                         tabela += "</div>";
 
-                                        tabela += "<div id=\"footerBody" + id + "\" style=\"width:40%; overflow-x: hidden;\">";
+                                        tabela += "<div id=\"footerBody" + id + "\" style=\"width:" + tamanhoCorpo + "; overflow-x: hidden;\">";
                                         tabela += "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\">";
                                         tabela += "<thead>";
                                         tabela += "<tr>";
 
                                         for (var i = 0; i < footerColumnsBody[0].length; i++) {
-                                            tabela += "<td align=\"center\" style=\"min-width:70px; background-color: " + footerColumnsBody[0][i][2] + "\" colspan=\"" + footerColumnsBody[0][i][1] + "\">" + (footerColumnsBody[0][i][3] == '%' ? '<gf><i>' + footerColumnsBody[0][i][0] + '%<i></gf>' : float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000))) + "</td>";
+                                            tabela += "<td align=\"center\" style=\"min-width:" + tamanhoCelulaNumerica + "; background-color: " + footerColumnsBody[0][i][2] + "\" colspan=\"" + footerColumnsBody[0][i][1] + "\">" + (footerColumnsBody[0][i][3] == '%' ? '<gf><i>' + footerColumnsBody[0][i][0] + '%<i></gf>' : float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000))) + "</td>";
                                         }
 
                                         tabela += "</tr>";
@@ -552,13 +558,13 @@
                                         tabela += "</div>";
 
                                         //right
-                                        tabela += "<div id=\"footerTotal" + id + "\" class=\"larguraP19\" style=\"width:280px;; overflow-x: hidden;\">";
+                                        tabela += "<div id=\"footerTotal" + id + "\" class=\"larguraP19\" style=\"width:" + tamanhoColTotal + ";; overflow-x: hidden;\">";
                                         tabela += "<table cellspacing=\"0\" cellpadding=\"0\">";
                                         tabela += "<thead>";
                                         tabela += "<tr>";
 
                                         for (var i = 0; i < footerTotal[0].length; i++) {
-                                            tabela += "<td align=\"center\" style=\"min-width:70px; background-color: " + footerTotal[0][i][2] + "\" colspan=\"" + footerTotal[0][i][1] + "\">" + (footerTotal[0][i][3] == '%' ? '<gf>' + footerTotal[0][i][0] + '%<i></gf>' : float2moeda(Math.ceil(footerTotal[0][i][0] / 1000))) + "</td>";
+                                            tabela += "<td align=\"center\" style=\"min-width:" + tamanhoCelulaNumerica + "; background-color: " + footerTotal[0][i][2] + "\" colspan=\"" + footerTotal[0][i][1] + "\">" + (footerTotal[0][i][3] == '%' ? '<gf>' + footerTotal[0][i][0] + '%<i></gf>' : float2moeda(Math.ceil(footerTotal[0][i][0] / 1000))) + "</td>";
                                         }
 
                                         tabela += "</tr>";
@@ -726,7 +732,7 @@
                                                 },
 
                                                 series: [{
-                                                    name: 'Despesa Orçada',
+                                                    name: 'Orçada',
                                                     data: x1,
 
                                                     point: {
@@ -735,7 +741,7 @@
                                                         }
                                                     }
                                                 }, {
-                                                    name: 'Despesa Real',
+                                                    name: 'Real',
                                                     data: x2,
                                                     //zones: [{
                                                     //    value: 60,
@@ -839,9 +845,9 @@
                                                 a.push(4);
                                                 x1.push(a);
                                             });
-                                            var x2 = [['Despesa Orçada', 1], ['Despesa Orçada', 1], ['Desvio %', 1], ['Desvio $', 1]];
-                                            var aux1 = ['Despesa Orçada', 1];
-                                            var aux2 = ['Despesa Real', 1];
+                                            var x2 = [['Orçada', 1], ['Real', 1], ['Desvio %', 1], ['Desvio $', 1]];
+                                            var aux1 = ['Orçada', 1];
+                                            var aux2 = ['Real', 1];
                                             var aux3 = ['Desvio %', 1];
                                             var aux4 = ['Desvio $', 1];
                                             lista[0].ListaRegionais.forEach(function (entry) {
@@ -972,15 +978,15 @@
                                         ////parametro
                                         ////var titleColumnsBody = [];
                                         ////titleColumnsBody[0] = [['Reg 1 - GO/MG/BA',4], ['Reg 1 - MS/SP',4], ['Reg 2 - MT I/AC/RO',4], ['Reg 2 - MT II/TO/MA/PA',4]];
-                                        ////titleColumnsBody[1] = [['Despesa Orçada', 1], ['Despesa Real', 1], ['Desvio %', 1], ['Desvio $', 1], ['Despesa Orçada', 1], ['Despesa Real', 1], ['Desvio %', 1], ['Desvio $', 1], ['Despesa Orçada', 1], ['Despesa Real', 1], ['Desvio %', 1], ['Desvio $', 1], ['Despesa Orçada', 1], ['Despesa Real', 1], ['Desvio %', 1], ['Desvio $', 1], ['Despesa Orçada', 1], ['Despesa Real', 1], ['Desvio %', 1], ['Desvio $', 1]];
+                                        ////titleColumnsBody[1] = [['Orçada', 1], ['Real', 1], ['Desvio %', 1], ['Desvio $', 1], ['Orçada', 1], ['Real', 1], ['Desvio %', 1], ['Desvio $', 1], ['Orçada', 1], ['Real', 1], ['Desvio %', 1], ['Desvio $', 1], ['Orçada', 1], ['Real', 1], ['Desvio %', 1], ['Desvio $', 1], ['Orçada', 1], ['Real', 1], ['Desvio %', 1], ['Desvio $', 1]];
 
                                         var footerColumnsBody = [];
                                         footerColumnsBody[0] = [[71869051, 0, , 0], [59395621, 0, , 0], [-17, 0, '#00FF00', '%'], [-12473430, 0, , 0], [109268410, 0, , 0], [99672114, 0, , 0], [-9, 0, '#FFCC00', '%'], [-9596296, 0, , 0], [92744407, 0, , 0], [90458420, 0, , 0], [-2, 0, '#FF1100', '%'], [-2285987, 0, , 0], [102898593, 0, , 0], [98912173, 0, , 0], [-4, 0, '#FF3300', '%'], [-3986420, 0, , 0]];
 
                                         //var titleColumnTotal = [];
                                         //titleColumnTotal[0] = ['Total', 4];
-                                        //titleColumnTotal[1] = ['Despesa Orçada', 1];
-                                        //titleColumnTotal[1] = ['Despesa Real', 1];
+                                        //titleColumnTotal[1] = ['Orçada', 1];
+                                        //titleColumnTotal[1] = ['Real', 1];
                                         //titleColumnTotal[1] = ['Desvio %', 1];
                                         //titleColumnTotal[1] = ['Desvio $', 1];
 
@@ -1014,7 +1020,7 @@
 
                                         titleLine = ['Reg 1 - GO/MG/BA'];
 
-                                        montaTabela('1', '#firstTableTeste', '85px', titleColumn1, titleColumnsBody, column1, dataColumn, footerColumn1, footerColumnsBody, footerTotal, titleTotal, columnsTotal);
+                                        montaTabela('1', '#firstTableTeste', '115px', titleColumn1, titleColumnsBody, column1, dataColumn, footerColumn1, footerColumnsBody, footerTotal, titleTotal, columnsTotal);
                                         });
                                     }
 
@@ -1070,8 +1076,8 @@
 
                                         var titleColumnTotal = [];
                                         titleColumnTotal[0] = ['Total', 4];
-                                        titleColumnTotal[1] = ['Despesa Orçada', 1];
-                                        titleColumnTotal[1] = ['Despesa Real', 1];
+                                        titleColumnTotal[1] = ['Orçada', 1];
+                                        titleColumnTotal[1] = ['Real', 1];
                                         titleColumnTotal[1] = ['Δ %', 1];
                                         titleColumnTotal[1] = ['Δ $', 1];
 
@@ -1185,11 +1191,17 @@
                                                 },
                                                 chart: {
                                                     type: 'column',
-                                                    backgroundColor: null
+                                                    backgroundColor: null,
+                                                    zoomType: 'x', zoomType: 'y'
                                                 },
                                                 title: {
-                                                    text: 'Impacto dos Fatores de Δ'
+                                                    text: 'Impacto dos Fatores de Desvio (%)'
                                                 },
+                                                subtitle: {
+                                                    text: document.ontouchstart === undefined ?
+                                                            'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                                                }
+                                                ,
                                                 xAxis: {
                                                     categories: name
                                                 },
@@ -1214,7 +1226,7 @@
                                                 },
                                                 tooltip: {
                                                     headerFormat: '<b>{point.x}</b><br/>',
-                                                    pointFormat: '{series.name}: {point.y}<br/>Destacar a fórmula de cálculo!'
+                                                    pointFormat: '{series.name}: {point.y}%<br/>Destacar a fórmula de cálculo!'
                                                 },
                                                 plotOptions: {
                                                     column: {
@@ -1233,15 +1245,24 @@
                                                             click: function () { MountThirdChart(this.category); MountFourthChart(this.category) }
                                                         }
                                                     }
+                                                    , tooltip: {
+                                                        headerFormat: '<b>{point.x}</b><br/>',
+                                                        pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Δ% = Despesa Real / Despesa Orçada -1'
+                                                    }
+                                                }
 
 
-                                                }, {
+                                                , {
                                                     name: 'KW/BOI',
                                                     data: x2,
                                                     point: {
                                                         events: {
                                                             click: function () { MountThirdChart(this.category); MountFourthChart(this.category) }
                                                         }
+                                                    }
+                                                    , tooltip: {
+                                                        headerFormat: '<b>{point.x}</b><br/>',
+                                                        pointFormat: '{series.name}: <i>{point.y}%<i/><br/> KWs por Boi = Qtde de KWs Consumidos / Qtde de Bois'
                                                     }
                                                 }, {
                                                     name: 'Bois/Proc',
@@ -1251,6 +1272,10 @@
                                                             click: function () { MountThirdChart(this.category) }
                                                         }
                                                     }
+                                                    , tooltip: {
+                                                        headerFormat: '<b>{point.x}</b><br/>',
+                                                        pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Δ% = Qtde de Bois Real / Qtde de Bois Orçada -1'
+                                                    }
                                                 }, {
                                                     name: 'Preço KW',
                                                     data: x3,
@@ -1258,6 +1283,10 @@
                                                         events: {
                                                             click: function () { MountThirdChart(this.category) }
                                                         }
+                                                    }
+                                                    , tooltip: {
+                                                        headerFormat: '<b>{point.x}</b><br/>',
+                                                        pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Preço do KW = Despesa de KW / Qtde de KWs Consumidos'
                                                     }
                                                 }]
                                             });
@@ -1293,7 +1322,8 @@
                                                 },
                                                 chart: {
 
-                                                    backgroundColor: null
+                                                    backgroundColor: null,
+                                                    zoomType: 'x', zoomType: 'y'
                                                 },
                                                 xAxis: {
                                                     categories: name
@@ -1303,6 +1333,11 @@
                                                     title: {
                                                         text: 'R$ em milhares'
                                                     },
+                                                    subtitle: {
+                                                        text: document.ontouchstart === undefined ?
+                                                                'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                                                    }
+                                                    ,
                                                     stackLabels: {
                                                         enabled: true,
                                                         style: {
@@ -1332,7 +1367,7 @@
                                                     }
                                                 }, {
                                                     type: 'column',
-                                                    name: 'Δ R$',
+                                                    name: 'Desvio R$',
                                                     data: x3,
                                                     point: {
                                                         events: {
@@ -1341,7 +1376,7 @@
                                                     }
                                                 }, {
                                                     type: 'spline',
-                                                    name: 'Δ R$ Acumulado',
+                                                    name: 'Desvio R$ Acumulado',
                                                     data: line,
                                                     marker: {
                                                         lineWidth: 2,
@@ -1377,11 +1412,17 @@
                                                 },
                                                 chart: {
                                                     type: 'column',
-                                                    backgroundColor: null
+                                                    backgroundColor: null,
+                                                    zoomType: 'x', zoomType: 'y'
                                                 },
                                                 title: {
-                                                    text: 'DMT - Evolução do impacto dos fatores de Δ (Real vs Orçado)'
+                                                    text: 'DMT - Evolução do impacto dos fatores de desvio (Real vs Orçado)'
                                                 },
+                                                subtitle: {
+                                                    text: document.ontouchstart === undefined ?
+                                                            'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                                                }
+                                                ,
                                                 xAxis: {
                                                     categories: name
                                                 },
