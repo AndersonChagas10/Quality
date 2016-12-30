@@ -350,9 +350,6 @@
     <Compile Include="ParCompanyXUserSgq.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ParConfSGQ.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="ParConsolidationType.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
