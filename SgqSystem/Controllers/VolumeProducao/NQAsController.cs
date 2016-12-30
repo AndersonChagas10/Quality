@@ -3,9 +3,11 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Dominio;
+using SgqSystem.Secirity;
 
 namespace SgqSystem.Controllers
 {
+    [CustomAuthorize]
     public class NQAsController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();

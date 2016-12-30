@@ -798,6 +798,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Properties\PublishProfiles\BuildSqgMaster.pubxml" />
     <None Include="Properties\PublishProfiles\DeployInterno.pubxml" />
     <None Include="Properties\PublishProfiles\DeployInternoDebug.pubxml" />
     <None Include="Properties\PublishProfiles\DeploySgqInterno.pubxml" />
@@ -1267,6 +1268,7 @@
     <Folder Include="DataCollect\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
+    <Folder Include="Views\RelatorioController\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>

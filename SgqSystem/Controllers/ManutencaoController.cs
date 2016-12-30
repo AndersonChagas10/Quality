@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using SgqSystem.Secirity;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
-    public class ManutencaoController : Controller
+    [CustomAuthorize]
+    public class ManutencaoController : BaseController
     {
         // GET: Manutencao
         public ActionResult Index()

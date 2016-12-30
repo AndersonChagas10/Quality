@@ -60,23 +60,15 @@ namespace SgqSystem.Controllers
 
         #endregion
 
-        #region DataCollectionReport
-
         public ActionResult DataCollectionReport()
         {
             return View(form);
         }
 
-        #endregion
-
-        #region CorrectiveActionReport
-
         public ActionResult CorrectiveActionReport()
         {
             return View(form);
         }
-
-        #endregion
 
     }
 }

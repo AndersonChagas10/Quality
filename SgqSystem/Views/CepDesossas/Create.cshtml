@@ -68,14 +68,15 @@
                                             </div>
                                         </div>*@
                                             
-
+                                        @{ Html.EnableClientValidation(false); }
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2 ignore" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Data, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.Data, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
+                                        @{ Html.EnableClientValidation(true); }
                                         
                                         @*<div class="form-group">
                                             @Html.LabelFor(model => model.Departamento, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -105,7 +106,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.HorasTrabalhadasPorDia, "Horas trabalhadas por dia", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.HorasTrabalhadasPorDia, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.TextBoxFor(model => model.HorasTrabalhadasPorDia, new { @class = "form-control" } )
                                                 @Html.ValidationMessageFor(model => model.HorasTrabalhadasPorDia, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -130,7 +131,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.QtdadeFamiliaProduto, "Número de famílias cadastradas", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.QtdadeFamiliaProduto, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.TextBoxFor(model => model.QtdadeFamiliaProduto, new {  @class = "form-control" } )
                                                 @Html.ValidationMessageFor(model => model.QtdadeFamiliaProduto, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -150,7 +151,7 @@
                                             @Html.LabelFor(model => model.Amostras, "Amostras", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Amostras, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
-                                                @Html.ValidationMessageFor(model => model.Amostras, "", new { @class = "text-danger" })
+                                                @*@Html.ValidationMessageFor(model => model.Amostras, "", new { @class = "text-danger" })*@
                                                 @Html.HiddenFor(model => model.Amostras, htmlAttributes: new {@id = "amostraHidden" })
                                             </div>
                                         </div>
@@ -177,6 +178,38 @@
 </div>
 <script>
 
+    function IsValid() {
+
+        if ($('#Data').val().length > 0) {
+            
+            return false;
+        }
+        if ($('#ParCompany_id :selected').val() > 0) {
+
+            return false;
+        }
+        if ($('#ParLevel1_id :selected').val() > 0) {
+
+            return false;
+        }
+        if ($('#HorasTrabalhadasPorDia').val().length > 0) {
+
+            return false;
+        }
+        if ($('#AmostraPorDia :selected').val() > 0) {
+
+            return false;
+        }
+        if ($('#QtdadeFamiliaProduto').val().length > 0) {
+
+            return false;
+        }
+
+    }
+
+    $('#QtdadeFamiliaProduto').inputmask("integer");
+    $('#HorasTrabalhadasPorDia').inputmask("integer");
+
     //$('input[name="birthdate"]').daterangepicker({
     //    singleDatePicker: true,
     //    showDropdowns: true
@@ -200,13 +233,16 @@
         $('#amostraHidden').val(Math.ceil($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()));
     });
 
-    $('#Data').daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: true
-    });
 
     $(document).ready(function () {
 
+        $('#Data').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            'locale': {
+                "format": "DD/MM/YYYY",
+            }
+        })
         $('#Avaliacoes').val($('#HorasTrabalhadasPorDia').val());
         $('#Amostras').val(Math.ceil($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()));
 

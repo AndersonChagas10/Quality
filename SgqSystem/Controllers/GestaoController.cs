@@ -1,7 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using SgqSystem.Secirity;
+using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
+    [CustomAuthorize]
     public class GestaoController : Controller
     {
         // GET: Gestao
