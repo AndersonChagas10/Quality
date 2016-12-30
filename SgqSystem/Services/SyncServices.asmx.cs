@@ -2512,22 +2512,15 @@ namespace SgqSystem.Services
                 //Colocar função de gerar cabeçalhos por selectbox
                 //Monta os cabecalhos
                 #region Cabecalhos e Contadores
-                string headerCounter = html.div(
-                                               outerhtml: null,
-                                               classe: "col-xs-2"
-                                             ) +
-                                     html.div(
-                                               outerhtml: null,
-                                               classe: "col-xs-2"
-                                             ) +
+                string headerCounter = 
                                      html.div(
                                                outerhtml: "<b>Av.</b>",
-                                               classe: "col-xs-4",
+                                               classe: "col-xs-6",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
                                                outerhtml: "<b>Am.</b>",
-                                               classe: "col-xs-4",
+                                               classe: "col-xs-6",
                                                style: "text-align:center"
                                              ); ;
 
@@ -2539,22 +2532,15 @@ namespace SgqSystem.Services
 
 
                 string classXSLevel2 = " col-xs-5";
-                string counters = html.div(
-                                                outerhtml: null,
-                                                classe: "col-xs-2"
-                                              ) +
-                                      html.div(
-                                                outerhtml: null,
-                                                classe: "col-xs-2"
-                                              ) +
+                string counters = 
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
-                                                classe: "col-xs-4",
+                                                classe: "col-xs-6",
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal"),
-                                                classe: "col-xs-4",
+                                                classe: "col-xs-6",
                                                 style: "text-align:center"
                                               );
 
