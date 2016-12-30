@@ -12,6 +12,7 @@ namespace SGQDBContext
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
         public int Id { get; set; }
+        public int hashKey { get; set; }
         public string Name { get; set; }
         public int ParCriticalLevel_Id { get; set; }
         public string ParCriticalLevel_Name { get; set; }
@@ -30,7 +31,7 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
             string sql = " SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
-                         " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific                                                                          " +
+                         " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey                                                                         " +
                          " FROM ParLevel1 P1                                                                                                          " +
                          " INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
                          " ON P321.ParLevel1_Id = P1.Id                                                                                               " +
@@ -275,7 +276,7 @@ namespace SGQDBContext
             string queryCompany = null;
           
 
-            if (ParLevel1.Id == 2 && ParCompany_Id != null)
+            if (ParLevel1.hashKey == 2 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
@@ -297,7 +298,7 @@ namespace SGQDBContext
 
 
             }
-            else if (ParLevel1.Id == 22 && ParCompany_Id != null)
+            else if (ParLevel1.hashKey == 3 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
@@ -319,7 +320,7 @@ namespace SGQDBContext
 
                 
             }
-            else if (ParLevel1.Id == 23 && ParCompany_Id != null)
+            else if (ParLevel1.hashKey == 4 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
@@ -341,7 +342,7 @@ namespace SGQDBContext
 
                 
             }
-            else if (ParLevel1.Id == 3 && ParCompany_Id != null)
+            else if (ParLevel1.hashKey == 1 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
@@ -384,7 +385,7 @@ namespace SGQDBContext
                              queryCompany +
                              "GROUP BY PL2.Id, PL2.Name, PE.Number                                        ";
 
-                //sql = "SELECT 67 AS Id, 'NC Desossa - Alcatra', 50 AS Evaluate"; //QUE PORRA É ESSA?? KKKK
+               // sql = "SELECT 67 AS Id, 'NC Desossa - Alcatra', 50 AS Evaluate";
 
                 var parEvaluate = db.Query<ParLevel2Evaluate>(sql);
                 return parEvaluate;
@@ -593,8 +594,11 @@ namespace SGQDBContext
             return parLevel3List;
         }
     }
+
     public partial class Level2Result
     {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
         public int ParLevel1_Id { get; set; }
         public int ParLevel2_Id { get; set; }
         public int Unit_Id { get; set; }
@@ -604,65 +608,96 @@ namespace SGQDBContext
         public int EvaluateLast { get; set; }
         public int SampleLast { get; set; }
         public int ConsolidationLevel2_Id { get; set; }
+        //public int Sequential { get; set; }
+        //public int Side { get; set; }
 
-        public IEnumerable<Level2Result> getList(string UnidadeId)
+        public IEnumerable<Level2Result> getList(int ParLevel1_Id, int ParCompany_Id, string dataInicio, string dataFim)
         {
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
             SqlConnection db = new SqlConnection(conexao);
-            string sql = "SELECT                                                           " +
-                        "   ParLevel1_Id                                                   " +
-                        "    , ParLevel2_Id                                                " +
-                        "    , UnitId      AS Unit_Id                                      " +
-                        "    , Shift                                                       " +
-                        "    , Period                                                      " +
-                        "    , CollectionDate                                              " +
-                        "    ,max(EvaluationNumber) as EvaluateLast                        " +
-                        "    ,max(Sample) as SampleLast                                    " +
-                        "    ,max(ConsolidationLevel2_Id)AS ConsolidationLevel2_Id         " +
-                        "   FROM                                                           " +
-                        "   (                                                              " +
-                        "    SELECT                                                        " +
-                        "                                                                  " +
-                        "    ParLevel1_Id                                                  " +
-                        "    , ParLevel2_Id                                                " +
-                        "    , UnitId                                                      " +
-                        "    , Shift                                                       " +
-                        "    , Period                                                      " +
-                        "    , convert(date, CollectionDate) as CollectionDate             " +
-                        "    , EvaluationNumber                                            " +
-                        "    , max(Sample) as Sample                                       " +
-                        "    , max(ConsolidationLevel2_Id)AS ConsolidationLevel2_Id        " +
-                        "                                                                  " +
-                        "    FROM CollectionLevel2                                         " +
-                        "                                                                  " +
-                        "    where UnitId = '" + UnidadeId + "'                            " +
-                        "                                                                  " +
-                        "    group by                                                      " +
-                        "    ParLevel1_Id                                                  " +
-                        "    , ParLevel2_Id                                                " +
-                        "    , UnitId                                                      " +
-                        "    , Shift                                                       " +
-                        "    , Period                                                      " +
-                        "    , convert(date, CollectionDate)                               " +
-                        "    , EvaluationNumber                                            " +
-                        "    , ConsolidationLevel2_Id                                      " +
-                        "   ) ultimas_amostras                                             " +
-                        "                                                                  " +
-                        "   group by                                                       " +
-                        "   ParLevel1_Id                                                   " +
-                        "   , ParLevel2_Id                                                 " +
-                        "   , UnitId                                                       " +
-                        "   , Shift                                                        " +
-                        "   , Period                                                       " +
-                        "   , CollectionDate                                               " +
-                        "   ,ConsolidationLevel2_Id                                        ";
+
+            string sql = "SELECT ParLevel1_Id, ParLevel2_Id, UnitId AS Unit_Id, Shift, Period, CollectionDate, MAX(EvaluationNumber) AS EvaluateLast, MAX(Sample) AS SampleLast, MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id " +
+                         "FROM(SELECT CL2.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, Shift, Period, CONVERT(date, CollectionDate) AS CollectionDate, EvaluationNumber, MAX(Sample) AS Sample, MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id " +
+                         "FROM CollectionLevel2 CL2 " +
+                         "INNER JOIN ConsolidationLevel2 CDL2 ON CL2.ConsolidationLevel2_Id = CDL2.ID " +
+                         "INNER JOIN ConsolidationLevel1 CDL1 ON CDL2.ConsolidationLevel1_Id = CDL1.Id " +
+                         "WHERE(CDL1.ParLevel1_Id = '" + ParLevel1_Id + "' AND CDL1.UnitId = '" + ParCompany_Id + "' AND CDL1.ConsolidationDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59') " +
+                         "GROUP BY CL2.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, Shift, Period, CONVERT(date, CollectionDate), EvaluationNumber, ConsolidationLevel2_Id) AS ultimas_amostras " +
+                         "GROUP BY ParLevel1_Id, ParLevel2_Id, UnitId, Shift, Period, CollectionDate, ConsolidationLevel2_Id ";
+
+            //string sql = "SELECT                                                           " +
+            //            "   ParLevel1_Id                                                   " +
+            //            "    , ParLevel2_Id                                                " +
+            //            "    , UnitId      AS Unit_Id                                      " +
+            //            "    , Shift                                                       " +
+            //            "    , Period                                                      " +
+            //            "    , CollectionDate                                              " +
+            //            "    ,max(EvaluationNumber) as EvaluateLast                        " +
+            //            "    ,max(Sample) as SampleLast                                    " +
+            //            "    ,max(ConsolidationLevel2_Id)AS ConsolidationLevel2_Id         " +
+            //            "   FROM                                                           " +
+            //            "   (                                                              " +
+            //            "    SELECT                                                        " +
+            //            "                                                                  " +
+            //            "    ParLevel1_Id                                                  " +
+            //            "    , ParLevel2_Id                                                " +
+            //            "    , UnitId                                                      " +
+            //            "    , Shift                                                       " +
+            //            "    , Period                                                      " +
+            //            "    , convert(date, CollectionDate) as CollectionDate             " +
+            //            "    , EvaluationNumber                                            " +
+            //            "    , max(Sample) as Sample                                       " +
+            //            "    , max(ConsolidationLevel2_Id)AS ConsolidationLevel2_Id        " +
+            //            "                                                                  " +
+            //            "    FROM CollectionLevel2                                         " +
+            //            "                                                                  " +
+            //            "    where UnitId = '" + UnidadeId + "'                            " +
+            //            "                                                                  " +
+            //            "    group by                                                      " +
+            //            "    ParLevel1_Id                                                  " +
+            //            "    , ParLevel2_Id                                                " +
+            //            "    , UnitId                                                      " +
+            //            "    , Shift                                                       " +
+            //            "    , Period                                                      " +
+            //            "    , convert(date, CollectionDate)                               " +
+            //            "    , EvaluationNumber                                            " +
+            //            "    , ConsolidationLevel2_Id                                      " +
+            //            "   ) ultimas_amostras                                             " +
+            //            "                                                                  " +
+            //            "   group by                                                       " +
+            //            "   ParLevel1_Id                                                   " +
+            //            "   , ParLevel2_Id                                                 " +
+            //            "   , UnitId                                                       " +
+            //            "   , Shift                                                        " +
+            //            "   , Period                                                       " +
+            //            "   , CollectionDate                                               " +
+            //            "   ,ConsolidationLevel2_Id                                        ";
 
             var Level2ResultList = db.Query<Level2Result>(sql);
 
             return Level2ResultList;
 
         }
+    }
+    public partial class ParLevel1ConsolidationXParFrequency
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public int ParLevel1_Id { get; set; }
+        public int ParFrequency_Id { get; set; }
+
+        public IEnumerable<ParLevel1ConsolidationXParFrequency> getList(int ParCompany_Id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "SELECT CDL1.ParLevel1_Id, PL1.ParFrequency_Id FROM ConsolidationLevel1 CDL1 " +
+                         "INNER JOIN ParLevel1 PL1 ON CDL1.ParLevel1_Id = PL1.Id WHERE CDL1.UnitId = '" + ParCompany_Id + "' GROUP BY CDL1.ParLevel1_Id, PL1.ParFrequency_Id";
+
+            var consolidation = db.Query<ParLevel1ConsolidationXParFrequency>(sql);
+
+            return consolidation;
+        }
+
     }
     public partial class ConsolidationResultL1L2
     {
@@ -1107,4 +1142,4 @@ namespace SGQDBContext
 
       
     }
-}
+  }
