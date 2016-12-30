@@ -29,7 +29,7 @@ namespace SgqSystem.Controllers
             _baseParLevel2ControlCompany = baseParLevel2ControlCompany;
             _baseLevel1 = baseLevel1;
             _baseLevel2 = baseLevel2;
-            ViewBag.ParLevel1 = _baseLevel1.GetAll().Where(r => r.Id == 21 || r.Id == 2);
+            ViewBag.ParLevel1 = _baseLevel1.GetAll().Where(r => r.IsFixedEvaluetionNumber == true);
             ViewBag.ParLevel2Todos = new List<ParLevel2DTO>();
             ViewBag.level2Number = 0;
 

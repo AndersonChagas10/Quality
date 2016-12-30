@@ -50,17 +50,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,VolumeAnimais,Quartos,Meta,ToleranciaDia,Nivel11,Nivel12,Nivel13,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumePcc1b pcc1b)
         {
-            if (pcc1b.Data == null)
-                ModelState.AddModelError("Data", Guard.MesangemModelError("Data", false));
-
-            if (pcc1b.ParCompany_id == null)
-                ModelState.AddModelError("ParCompany_id", Guard.MesangemModelError("Unidade", false));
-
-            if (pcc1b.ParLevel1_id == null)
-                ModelState.AddModelError("ParLevel1_id", Guard.MesangemModelError("Indicador", false));
-
-            if (pcc1b.VolumeAnimais == null)
-                ModelState.AddModelError("VolumeAnimais", Guard.MesangemModelError("Número de animais", false));
+            ValidaPcc1B(pcc1b);
 
             if (ModelState.IsValid)
             {
@@ -98,6 +88,8 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,VolumeAnimais,Quartos,Meta,ToleranciaDia,Nivel11,Nivel12,Nivel13,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumePcc1b pcc1b)
         {
+            ValidaPcc1B(pcc1b);
+
             if (ModelState.IsValid)
             {
                 db.Entry(pcc1b).State = EntityState.Modified;
@@ -107,6 +99,21 @@ namespace SgqSystem.Controllers
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", pcc1b.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", pcc1b.ParLevel1_id);
             return View(pcc1b);
+        }
+
+        private void ValidaPcc1B(VolumePcc1b pcc1b)
+        {
+            if (pcc1b.Data == null)
+                ModelState.AddModelError("Data", Guard.MesangemModelError("Data", false));
+
+            if (pcc1b.ParCompany_id == null)
+                ModelState.AddModelError("ParCompany_id", Guard.MesangemModelError("Unidade", false));
+
+            if (pcc1b.ParLevel1_id == null)
+                ModelState.AddModelError("ParLevel1_id", Guard.MesangemModelError("Indicador", false));
+
+            if (pcc1b.VolumeAnimais == null)
+                ModelState.AddModelError("VolumeAnimais", Guard.MesangemModelError("Número de animais", false));
         }
 
         // GET: Pcc1b/Delete/5

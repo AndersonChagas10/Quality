@@ -74,7 +74,26 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,QtdadeMediaKgRecProdDia,QtdadeMediaKgRecProdHora,NBR,TotalKgAvaliaHoraProd,QtadeTrabEsteiraRecortes,TotalAvaliaColaborEsteirHoraProd,TamanhoAmostra,TotalAmostraAvaliaColabEsteiraHoraProd,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepRecortes cepRecortes)
         {
+            if (cepRecortes.Id > 0)
+                Edit(cepRecortes);
 
+            ValidaCepRecortes(cepRecortes);
+
+            if (ModelState.IsValid)
+            {
+                cepRecortes.AddDate = DateTime.Now;
+                db.VolumeCepRecortes.Add(cepRecortes);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
+            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepRecortes.ParLevel1_id);
+            return View(cepRecortes);
+        }
+
+        private void ValidaCepRecortes(VolumeCepRecortes cepRecortes)
+        {
             if (cepRecortes.Data == null)
                 ModelState.AddModelError("Data", "O campo Data precisa ser preenchido.");
 
@@ -101,18 +120,6 @@ namespace SgqSystem.Controllers
 
             if (cepRecortes.TamanhoAmostra == null)
                 ModelState.AddModelError("TamanhoAmostra", "O campo \"Tamanho de Cada Amostra\" precisa ser preenchido.");
-
-            if (ModelState.IsValid)
-            {
-                cepRecortes.AddDate = DateTime.Now;
-                db.VolumeCepRecortes.Add(cepRecortes);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
-            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepRecortes.ParLevel1_id);
-            return View(cepRecortes);
         }
 
         // GET: CepRecortes/Edit/5
@@ -129,16 +136,17 @@ namespace SgqSystem.Controllers
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 23), "Id", "Name", cepRecortes.ParLevel1_id);
-            return View(cepRecortes);
+            return View("Create", cepRecortes);
         }
 
         // POST: CepRecortes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,QtdadeMediaKgRecProdDia,QtdadeMediaKgRecProdHora,NBR,TotalKgAvaliaHoraProd,QtadeTrabEsteiraRecortes,TotalAvaliaColaborEsteirHoraProd,TamanhoAmostra,TotalAmostraAvaliaColabEsteiraHoraProd,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepRecortes cepRecortes)
+        public ActionResult Edit(VolumeCepRecortes cepRecortes)
         {
+            ValidaCepRecortes(cepRecortes);
+
             if (ModelState.IsValid)
             {
                 db.Entry(cepRecortes).State = EntityState.Modified;
@@ -147,7 +155,7 @@ namespace SgqSystem.Controllers
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepRecortes.ParLevel1_id);
-            return View(cepRecortes);
+            return View("Create", cepRecortes);
         }
 
         // GET: CepRecortes/Delete/5
