@@ -98,17 +98,17 @@ public class ScorecardResultSet
                 "\n , L1.Name AS Level1Name " +
                 "\n , CRL.Id AS Criterio " +
                 "\n , CRL.Name AS CriterioName " +
-                "\n , CASE WHEN CT.Id = 1 THEN CL1.WeiEvaluation WHEN CT.Id = 3 THEN CL1.EvaluatedResult END AS AV " +
-                "\n , CASE WHEN CT.Id = 1 THEN CL1.WeiDefects WHEN CT.Id = 3 THEN CL1.DefectsResult END      AS NC " +
+                "\n , CASE WHEN CT.Id = 1 THEN SUM(CL1.WeiEvaluation) WHEN CT.Id = 3 THEN SUM(CL1.EvaluatedResult) END AS AV " +
+                "\n , CASE WHEN CT.Id = 1 THEN SUM(CL1.WeiDefects) WHEN CT.Id = 3 THEN SUM(CL1.DefectsResult) END      AS NC " +
                 "\n , L1C.Points AS Pontos " +
                 "\n , G.PercentValue AS Meta " +
                 "\n , CASE " +
 
-                   "\n  WHEN CT.Id = 1 THEN CL1.WeiDefects / CL1.WeiEvaluation " +
+                   "\n  WHEN CT.Id = 1 THEN SUM(CL1.WeiDefects) / SUM(CL1.WeiEvaluation) " +
 
                    "\n  WHEN CT.Id = 3 THEN " +
 
-                    "\n CASE WHEN CL1.EvaluatedResult = 0 THEN 0 ELSE(CAST(CL1.DefectsResult AS DECIMAL) / CAST(CL1.EvaluatedResult AS DECIMAL)) END " +
+                    "\n CASE WHEN SUM(CL1.EvaluatedResult) = 0 THEN 0 ELSE (CAST(SUM(CL1.DefectsResult) AS DECIMAL) / CAST(SUM(CL1.EvaluatedResult) AS DECIMAL)) END " +
 
                 "\n  END * 100 AS Real " +
 
@@ -163,6 +163,37 @@ public class ScorecardResultSet
                 "\n WHERE(ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59') " +
 
                 "\n AND(C.Id = " + unidadeId + ") " +
+
+                "\n GROUP BY " +
+
+                "\n  CL.Id " +
+
+                "\n ,CL.Name " +
+
+                "\n ,S.Id " +
+
+                "\n ,S.Name " +
+
+                "\n ,CL1.UnitId " +
+
+                "\n ,C.Name " +
+
+                "\n ,L1.IsRuleConformity " +
+
+                "\n ,L1.Id " +
+
+                "\n ,L1.Name " +
+
+                "\n ,CRL.Id " +
+
+                "\n ,CRL.Name " +
+
+                "\n ,L1C.Points " +
+
+                "\n ,G.PercentValue " +
+
+                "\n ,CT.Id " +
+
             "\n ) AS Score " +
         "\n ) Real " +
 
