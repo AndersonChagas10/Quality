@@ -3489,7 +3489,7 @@ namespace SgqSystem.Services
             string head = html.div(classe: "head");
 
             //Verifica as configurações iniciais da tela
-            var ParConfSGQDB = new SGQDBContext.ParConfSGQ();
+            var ParConfSGQDB = new SGQDBContext.ParConfSGQContext();
             var configuracoes = ParConfSGQDB.get();
 
 

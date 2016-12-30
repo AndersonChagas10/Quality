@@ -183,7 +183,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Save" class="btn btn-default" />
+                                                <input type="submit" value="Save" onclick="HabilitaFields()" class="btn btn-default" />
                                             </div>
                                         </div>
                                     </div>
@@ -204,6 +204,12 @@
 </div>
 <script>
 
+    function HabilitaFields() {
+        $('#Quartos').attr('disabled', false);
+        $('#Avaliacoes').attr('disabled', false);
+        $('#Amostras').attr('disabled', false);
+    }
+
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar6");
@@ -217,7 +223,7 @@
     });
 
     $(document).ready(function () {
-        $('#VolumeAnimais').inputmask("integer");
+        $('#VolumeAnimais').inputmask("integer", { rightAlign: false });
         $('#Data').daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,

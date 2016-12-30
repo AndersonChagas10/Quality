@@ -434,6 +434,8 @@
                 ReincidenciaL1.incluiNoObjetoParaSubmit(dados);
                 ClusterL1.incluiNoObjetoParaSubmit(dados);
                 MetaL1.incluiNoObjetoParaSubmit(dados);
+                dados["paramsDto.parLevel1Dto.IsRuleConformity"] = $('#paramsDto_parLevel1Dto_IsRuleConformity').is(':checked');
+                dados["paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion"] = $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber').is(':checked');
                 //openLoader();
 
                 $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
