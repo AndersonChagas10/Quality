@@ -1,0 +1,407 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "RelatorioDiario";
+    var url = Url.Action("Index", "Home");
+    var urlScorecard = Url.Action("GetScorecard", "api/Scorecard");
+    var urlScorecardMock = Url.Action("GetScorecardMock", "api/Scorecard");
+}
+
+<div class="page-content" style="min-height: 600px;">
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+    <div id="formBodyContent">
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+        <div id="load"></div>
+        <div id="plotPrincipal"></div>
+        <div class="panel panel-info" id="PanelFull" style="display:none">
+            <div class="panel-heading"></div>
+            <div class="panel-body" id="g1">
+            </div>
+            *O Peso atribuído as Tarefas influenciam no resultado gráfico.
+        </div>
+        @*<table id="results" class="display" cellspacing="0" style="width:100%"></table>*@
+    </div>
+</div>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+
+
+        var url1 = '@Html.Raw(@urlScorecardMock)';
+        var $btn = $('#btnSend');
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $(document).ready(function () {
+            $("#btnSend").click(function (e) {
+                Send();
+            });
+        });
+
+        function Send() {
+            $btn.button('loading');
+            $('#results').empty();
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            $('#plotPrincipal').empty();
+            //Auxiliares.loading("load", "btnCarregaGraficoDiario");
+
+            //Preenche dados para o FTA.
+            FTA._unidadeId = $('#Unidade').val(),
+            FTA._dataInicio = $('#dataInicio').val(),
+            FTA._dataFim = FTA._dataInicio,
+
+            //AJAX
+            $.post(url1, enviar, function (r) {
+                try {
+                    var retornoArray = [];
+                    var arrayItarator = r.Retorno;
+                    $('#menu-toggle').click();
+                    CriaGraficos(r);
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    $btn.button('reset');
+                    //Hotfix: table não alinha resultados de centro no meio da tr....
+                }
+            }).fail(function (e, h, x) {
+                //closeLoader();
+                $btn.button('reset');
+                if (e.status == 0) {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+                //openMessageModal("Alerta", e.responseJSON.Message);
+            });
+        };
+
+        function CriaGraficos(retornoArray) {
+
+            GraficoInicialLeTodosLevel1();
+
+
+        }
+
+        function myfunction() {
+            //Cria GRafico
+            $('#' + idDiv).empty().highcharts({
+                credits: Chart.Credits(),
+                title: Chart.Titulo(titulo),
+                xAxis: Chart.Xaxis(valoresX),
+                tooltip: Chart.ToolTip(true, true),
+                legend: Chart.Legend(),
+                yAxis: Chart.yAxisPadrao(),
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y',
+                    height: '350'
+                },
+                zones: [{
+                    value: 69,
+                    color: '#FF6666'
+                }, {
+                    value: 80,
+                    color: 'Yellow'
+                }, {
+                    color: '#98FB98'
+                }],
+                series: [
+                    Chart.ProcNc(valoresY.Percentual),
+                    Chart.Meta(valoresY.meta, true),
+                    //, Chart.SimpleSerie(valoresY.meta, "% Meta", Chart.CorMeta(), true, 0, ' %')
+                    Chart.SimpleSerie(valoresY.NC, "Total NC", Chart.CorTotalNc(), false, 1),
+                    Chart.SimpleSerie(valoresY.TotalAvaliado, "Total Av", Chart.CorTotalAv(), false, 1)
+                ],
+            });
+
+
+
+        }
+
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            /*Especifico*/
+            if (!($('#unitId :selected').val() > 0)) {
+                GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
+                return false;
+            }
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
+        $(document).ready(function () {
+            formControl.showFullCallendar();
+            formControl.showUnit();
+        });
+
+        var Chart = {
+            CorTotalNc: function () { return '#F7BCB0' },
+            CorTotalAv: function () { return '#ccc' },
+            CorTotalPareto: function () { return '#900000' },
+            CorMeta: function () { return '#67D184' },
+            CorTotalProcNc: function () { return '#FF6347' },
+            Legend: function () {
+                return {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    borderWidth: 0
+                };
+            },
+            ToolTip: function (isShared, isCrosshairs) {
+                return {
+                    //valueDecimals: 2,
+                    shared: isShared,
+                    crosshairs: isCrosshairs
+                }
+            },
+            Titulo: function (data) {
+                return {
+                    text: data,
+                    x: -20 //center
+                };
+            },
+            Credits: function () {
+                return {
+                    enabled: false
+                }
+            },
+            Zones: function () {
+                return {
+                    enabled: false
+                }
+            },
+            Chart: function (tipo, zoon) {
+                return {
+                    type: tipo,
+                    zoomType: zoon
+                }
+            },
+            yAxisPadrao: function (inverso, pareto, totalNC) {
+                if (inverso == undefined) {
+                    return [{ // Primary yAxis
+                        allowDecimals: false,
+                        min: 0,
+                        max: 100,
+                        //tickInterval: 20,
+                        labels: {
+                            format: '{value} %',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                        title: {
+                            text: (pareto == undefined || pareto == false) ? '% NC' : 'Gráfico de Pareto',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                    }, { // Secondary yAxis
+                        allowDecimals: false,
+                        gridLineWidth: 0,
+                        title: {
+                            text: (totalNC == undefined || totalNC == false) ? 'Numero Amostras' : 'Total NC',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                        opposite: true,
+                    }]
+                } else {
+                    return [{ // Primary yAxis
+                        gridLineWidth: 0,
+                        title: {
+                            text: (totalNC == undefined || totalNC == false) ? 'Numero Amostras' : 'Total NC',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+
+                    }, { // Secondary yAxis
+                        min: 0,
+                        max: 100,
+                        //tickInterval: 20,
+                        labels: {
+                            format: '{value} %',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                        title: {
+                            text: (pareto == undefined || pareto == false) ? '% NC' : 'Gráfico de Pareto',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                        opposite: true
+                    }]
+                }
+            },
+            Xaxis: function (dados) {
+                return [{
+                    categories: dados
+                }];
+            },
+
+            //Series
+            SimpleSerie: function (data, name, color, isVisible, axy, toolTip, hasAlign, hasEventPoint, dadosFunc) {
+                return {
+                    name: name,
+                    data: data,
+                    color: color,
+                    yAxis: axy || 0,
+                    visible: isVisible == undefined ? false : isVisible,
+                    dataLabels: Chart.DataLabelPadrao(undefined, hasAlign),
+                    //    {
+                    //    format: '{y:.2f}',
+                    //    enabled: true,
+                    //    //rotation: -45,
+                    //    //x: -5,
+                    //    color: 'black', // color
+                    //    align: hasAlign == undefined ? 'center' : hasAlign,
+                    //    style: {
+                    //        fontSize: '10px',
+                    //    }
+                    //},
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: toolTip == undefined ? '' : toolTip,
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!hasEventPoint)
+                                    FTA.onFormAnomaliaClickedNC(dadosFunc[0], dadosFunc[1], dadosFunc[2]);
+                            }
+                        }
+                    }
+                }
+            },
+
+            //Series com %
+            curvaPareto: function (dados) {
+                return {
+                    type: 'line',
+                    yAxis: 1,
+                    name: 'Gráfico de Pareto',
+                    color: "Red",
+                    data: dados,
+                    yAxis: 1,
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    },
+                    zones: [{
+                        value: 80,
+                        color: 'Red'
+                    }, {
+                        color: 'Black'
+                    }],
+                }
+            },
+            ProcNc: function (data, func, nome, id, funcParaAcumuladas) {
+                //$.each(data, function(a, b){
+                //    data[a] = parseFloat(b.toFixed(2));
+                //});
+                return {
+                    name: '% NC',
+                    color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
+                    data: data,
+                    yAxis: 0,
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    },
+                    //pointPadding: 0.4,
+                    //pointPlacement: -0.2,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!func)
+                                    func(nome[this.x], id[this.x]);
+                                if (!!funcParaAcumuladas && id[this.x] != '0')
+                                    funcParaAcumuladas(this.category, id[this.x]);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' % (NC * Peso)'
+                    }
+                };
+
+            },
+            Meta: function (data, isVisible, func, nome, id, funcParaAcumuladas) {
+
+                return {
+                    visible: !!isVisible,
+                    name: '% Meta',
+                    data: data,
+                    color: Chart.CorMeta(),//'rgba(81,207,64,1)',
+                    //pointPadding: 0.4,
+                    //pointPlacement: 0.4,
+                    yAxis: 0,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+
+                            click: function () {
+                                if (!!func)
+                                    func(nome[this.x], id[this.x]);
+                                if (!!funcParaAcumuladas && id[this.x] != '0')
+                                    funcParaAcumuladas(this.category, id[this.x]);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    }
+                };
+
+            },
+
+            DataLabelPadrao: function (affix, hasAlign) {
+
+                return {
+                    format: !!affix ? '{y:.2f} ' + affix : '{y:.2f}',
+                    enabled: true,
+                    rotation: 270,
+                    x: 2,
+                    y: -25,
+                    align: 'center',//!!hasAlign ? 'center' : hasAlign,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'Arial'
+                    }
+                };
+            },
+        };
+    </script>
+
+}

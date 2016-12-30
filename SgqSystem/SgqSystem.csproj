@@ -1256,6 +1256,7 @@
     <Content Include="Views\ParLevel2ControlCompany\_ControlCompanySelectBoxLevel2UserCompany.cshtml" />
     <Content Include="Views\RelatoriosSgq\Scorecard.cshtml" />
     <Content Include="Views\Manutencao\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioDiario.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

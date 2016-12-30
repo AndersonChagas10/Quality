@@ -1,6 +1,13 @@
 ﻿@model Dominio.VolumeCepRecortes
 
 @{
+    var adicaoEdicao = "Cadastro";
+    var ValorNbr = 0;
+    if (Model != null)
+    {
+        ValorNbr = Model.NBR?? 0;
+        adicaoEdicao = "Edição";
+    }
     ViewBag.Title = "CEP Recortes - Volume";
 }
 
@@ -19,7 +26,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>Cadastro</span>
+                    <span>@adicaoEdicao</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -52,21 +59,21 @@
                                     <div class="form-horizontal">
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         @*<div class="form-group">
-                                            @Html.LabelFor(model => model.Indicador, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Indicador, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.Indicador, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>*@
+                                                @Html.LabelFor(model => model.Indicador, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.EditorFor(model => model.Indicador, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.Indicador, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>*@
 
                                         @*<div class="form-group">
-                                            @Html.LabelFor(model => model.Unidade, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Unidade, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.Unidade, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>*@
-
+                                                @Html.LabelFor(model => model.Unidade, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.EditorFor(model => model.Unidade, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.Unidade, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>*@
+                                        @Html.HiddenFor(r => Model.Id)
                                         @{ Html.EnableClientValidation(false); }
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -94,17 +101,17 @@
                                         </div>
 
                                         @*<div class="form-group">
-                                            @Html.LabelFor(model => model.Departamento, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Departamento, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.Departamento, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>*@
+                                                @Html.LabelFor(model => model.Departamento, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.EditorFor(model => model.Departamento, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.Departamento, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>*@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.HorasTrabalhadasPorDia, "Horas trabalhadas por dia", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBoxFor(model => model.HorasTrabalhadasPorDia,  new { @class = "form-control" } )
+                                                @Html.TextBoxFor(model => model.HorasTrabalhadasPorDia, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.HorasTrabalhadasPorDia, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -112,7 +119,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.QtdadeMediaKgRecProdDia, "Quantidade Média em KG de Recortes Produzidos Diáriamente", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBoxFor(model => model.QtdadeMediaKgRecProdDia, new { @class = "form-control" } )
+                                                @Html.TextBoxFor(model => model.QtdadeMediaKgRecProdDia, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.QtdadeMediaKgRecProdDia, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -120,7 +127,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.QtdadeMediaKgRecProdHora, "Quantidade Média em KG de Recortes Produzidos Por Hora", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.QtdadeMediaKgRecProdHora,  new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
+                                                @Html.EditorFor(model => model.QtdadeMediaKgRecProdHora, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
                                                 @Html.ValidationMessageFor(model => model.QtdadeMediaKgRecProdHora, "", new { @class = "text-danger" })
                                                 @Html.HiddenFor(model => model.QtdadeMediaKgRecProdHora, htmlAttributes: new { @id = "QtdadeMediaKgRecProdHoraHidden" })
                                             </div>
@@ -133,9 +140,9 @@
                                                     <option value="-1">Selecione...</option>
                                                     <option>1</option>
                                                     <option>2</option>
-                                                    <option>3</option>                                           
+                                                    <option>3</option>
                                                 </select>
-                                               
+
                                                 @*@Html.EditorFor(model => model.NBR, new { htmlAttributes = new { @class = "form-control" } })*@
                                                 @Html.ValidationMessageFor(model => model.NBR, "", new { @class = "text-danger" })
 
@@ -154,15 +161,15 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.QtadeTrabEsteiraRecortes, "Quantidade de Colaboradores Ou Esteiras de Recortes", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBoxFor(model => model.QtadeTrabEsteiraRecortes,  new { @class = "form-control" } )
+                                                @Html.TextBoxFor(model => model.QtadeTrabEsteiraRecortes, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.QtadeTrabEsteiraRecortes, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.TotalAvaliaColaborEsteirHoraProd, "Total em KG Para Avaliação Por Colaborador/Esteira, Por Hora de Produção",  htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.TotalAvaliaColaborEsteirHoraProd, "Total em KG Para Avaliação Por Colaborador/Esteira, Por Hora de Produção", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBoxFor(model => model.TotalAvaliaColaborEsteirHoraProd,  new { @class = "form-control" } )
+                                                @Html.TextBoxFor(model => model.TotalAvaliaColaborEsteirHoraProd, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.TotalAvaliaColaborEsteirHoraProd, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -170,7 +177,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.TamanhoAmostra, "Tamanho de Cada Amostra (3KG; 4KG ou 5KG)", htmlAttributes: new { @class = "control -label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBoxFor(model => model.TamanhoAmostra, new { @class = "form-control" } )
+                                                @Html.TextBoxFor(model => model.TamanhoAmostra, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.TamanhoAmostra, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -184,7 +191,7 @@
                                             </div>
                                         </div>
 
-                                        
+
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Avaliacoes, "Avaliações", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -211,9 +218,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                }
+                                            }
 
-                             
+
                             </div>
 
                         </div>
@@ -226,7 +233,7 @@
 </div>
 <script>
 
-   
+
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar6");
@@ -266,11 +273,11 @@
     });
 
     $('#btnTeste').click(function (e) {
-        
+
 
     });
 
-     
+
 
     //$('#Data').daterangepicker({
     //    singleDatePicker: true,
@@ -279,12 +286,12 @@
 
     $(document).ready(function () {
 
-        $('#HorasTrabalhadasPorDia').inputmask("integer");
-        $('#QtdadeMediaKgRecProdDia').inputmask("integer");
-        $('#QtadeTrabEsteiraRecortes').inputmask("integer");
-        $('#TotalAvaliaColaborEsteirHoraProd').inputmask("integer");
-        $('#EditorFor').inputmask("integer");
-        $('#TamanhoAmostra').inputmask("integer");
+        $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false });
+        $('#QtdadeMediaKgRecProdDia').inputmask("integer", { rightAlign: false });
+        $('#QtadeTrabEsteiraRecortes').inputmask("integer", { rightAlign: false });
+        $('#TotalAvaliaColaborEsteirHoraProd').inputmask("integer", { rightAlign: false });
+        $('#EditorFor').inputmask("integer", { rightAlign: false });
+        $('#TamanhoAmostra').inputmask("integer", { rightAlign: false });
 
         $('#Data').daterangepicker({
             singleDatePicker: true,
@@ -292,9 +299,18 @@
             'locale': {
                 "format": "DD/MM/YYYY",
             }
-        })
+        });
+
         $('#Avaliacoes').val($('#HorasTrabalhadasPorDia').val());
         $('#Amostras').val($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val());
+        $('#TamanhoAmostra').trigger('input');
+        $('#TamanhoAmostra').trigger('input');
+
+        try {
+            $('#NBR').val(@Html.Raw(Json.Encode(ValorNbr))).change();
+        } catch (e) {
+
+        }
 
     });
 

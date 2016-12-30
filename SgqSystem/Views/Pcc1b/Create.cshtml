@@ -203,7 +203,7 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar6");
 
-    $('#MetaFake, #VolumeAnimais').on('input', function () {
+    $('#VolumeAnimais').on('input', function () {
         $('#avaliacaoHidden').val($('#Avaliacoes').val());
         $('#Quartos').val($('#VolumeAnimais').val() * 4);
         $('#QuartosHidden').val($('#VolumeAnimais').val() * 4);
@@ -221,7 +221,7 @@
     
     $(document).ready(function () {
 
-        $('#VolumeAnimais').inputmask("integer");
+        $('#VolumeAnimais').inputmask("integer", { rightAlign: false });
 
         $('#Data').daterangepicker({
             singleDatePicker: true,

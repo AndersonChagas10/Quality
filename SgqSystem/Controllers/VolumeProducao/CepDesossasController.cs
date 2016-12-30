@@ -50,6 +50,22 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepDesossa cepDesossa)
         {
+            ValidaCepDesossa(cepDesossa);
+
+            if (ModelState.IsValid)
+            {
+                db.VolumeCepDesossa.Add(cepDesossa);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
+            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepDesossa.ParLevel1_id);
+            return View(cepDesossa);
+        }
+
+        private void ValidaCepDesossa(VolumeCepDesossa cepDesossa)
+        {
             if (cepDesossa.Data == null)
                 ModelState.AddModelError("Data", Guard.MesangemModelError("Data", true));
 
@@ -67,17 +83,6 @@ namespace SgqSystem.Controllers
 
             if (cepDesossa.QtdadeFamiliaProduto == null)
                 ModelState.AddModelError("QtdadeFamiliaProduto", "O campo \"Número de famílias cadastradas\" precisa ser preenchido.");
-
-            if (ModelState.IsValid)
-            {
-                db.VolumeCepDesossa.Add(cepDesossa);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
-            ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepDesossa.ParLevel1_id);
-            return View(cepDesossa);
         }
 
         // GET: CepDesossas/Edit/5
@@ -104,6 +109,8 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepDesossa cepDesossa)
         {
+            ValidaCepDesossa(cepDesossa);
+
             if (ModelState.IsValid)
             {
                 db.Entry(cepDesossa).State = EntityState.Modified;
