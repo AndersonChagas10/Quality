@@ -414,7 +414,7 @@ namespace SGQDBContext
             SqlConnection db = new SqlConnection(conexao);
             string queryCompany = null;
 
-            if (ParLevel1.Id == 2 && ParCompany_Id != null)
+            if (ParLevel1.hashKey == 2 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
@@ -436,7 +436,7 @@ namespace SGQDBContext
 
 
             }
-            else if (ParLevel1.Id == 22 && ParCompany_Id != null)
+            else if (ParLevel1.hashKey == 3 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
@@ -458,7 +458,7 @@ namespace SGQDBContext
 
 
             }
-            else if (ParLevel1.Id == 23 && ParCompany_Id != null)
+            else if (ParLevel1.Id == 4 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
@@ -480,7 +480,7 @@ namespace SGQDBContext
 
 
             }
-            else if (ParLevel1.Id == 3 && ParCompany_Id != null)
+            else if (ParLevel1.Id == 1 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
