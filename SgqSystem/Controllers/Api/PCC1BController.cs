@@ -1,4 +1,5 @@
-﻿using SgqSystem.Handlres;
+﻿using Dominio;
+using SgqSystem.Handlres;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -10,29 +11,35 @@ using System.Web.Http;
 namespace SgqSystem.Controllers.Api
 {
 
-    public partial class PCC1B
+    public partial class TestePCC1B
     {
-        public int Sequencial;
-        public int Banda;
+        public int Sequential { get; set; }
+        public int Side { get; set; }
 
-        public PCC1B(int sequencial, int banda)
-        {
-            Sequencial = sequencial;
-            Banda = banda;
-        }
     };
 
     [HandleApi()]
     [RoutePrefix("api/PCC1B")]
     public class PCC1BController : ApiController
     {
+        private List<TestePCC1B> _list { get; set; }
+
         [HttpPost]
         [Route("Next")]
-        public PCC1B Save()
+        public List<TestePCC1B> Save(Object dataAtual)
         {
-            var pcc1b = new PCC1B(1, 2);
 
-            return pcc1b;
+            using (var db = new SGQ_GlobalEntities())
+            {
+
+                string query = "SELECT Max(Sequential) AS Sequencial, Max(Side) AS Side from CollectionLevel2 " +
+                    "WHERE ParLevel1_Id=3 and ParLevel2_Id in (66,67) AND UnitId=1 AND CollectionDate ";
+                    //"BETWEEN '"+ dataAtual.ToString("yyyyMMdd") + " 00:00:00' AND '"+ dataAtual.ToString("yyyyMMdd") + " 23:59:59'";
+
+                _list = db.Database.SqlQuery<TestePCC1B>(query).ToList();
+            }
+            
+            return _list;
         }
     }
 }
