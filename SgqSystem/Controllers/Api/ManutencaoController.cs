@@ -18,46 +18,64 @@ namespace SgqSystem.Controllers.Api
     {
         [HttpPost]
         [Route("getTabela1")]
-        public List<ManutencaoClasse> getSelectTabela1()
+        public List<Pacote> getSelectTabela1()
         {
-
-            var lista = new List<ManutencaoClasse>();
+            var lista = new List<Pacote>();
 
             using (var db = new SgqDbDevEntities())
             {
-                var sql = "SELECT EmpresaRegional ,Pacote ,SUM(DespesaOrcada) AS DespesaOrcada, SUM(DespesaRealizada)AS DespesaRealizada FROM Manutencao ";
-                sql += " WHERE MesAno BETWEEN '20150101' AND '20180101' AND TipoInformacao = 'CustoFixo' ";
-                sql += " GROUP BY EmpresaRegional, Pacote";
+                var sql = "select distinct(Pacote) as Name from Manutencao WHERE MesAno BETWEEN '20150101' AND '20180101'AND TipoInformacao = 'CustoFixo' order by Pacote";
 
-                lista = db.Database.SqlQuery<ManutencaoClasse>(sql).ToList();
+                lista = db.Database.SqlQuery<Pacote>(sql).ToList();
+
+                foreach (var item in lista)
+                {
+                    sql = " select EmpresaRegional as Regional, ROUND(SUM(DespesaOrcada), 0) AS Orçada,  ROUND(SUM(DespesaRealizada), 0) AS Realizada,";
+                    sql += "CASE WHEN SUM(DespesaOrcada) = 0 THEN 0 ELSE ROUND((SUM(DespesaRealizada) / SUM(DespesaOrcada) - 1) * 100, 0) END AS DesvioPorc,";
+                    sql += "ROUND(SUM(DespesaRealizada) - SUM(DespesaOrcada), 0) AS DesvioReal";
+                    sql += " from Manutencao ";
+                    sql += "WHERE MesAno BETWEEN '20150101' AND '20180101' AND TipoInformacao = 'CustoFixo' and Pacote in ( '" + item.Name + "')  group by EmpresaRegional  order by EmpresaRegional asc; ";
+
+                    item.ListaRegionais = db.Database.SqlQuery<Reg>(sql).ToList();
+
+                    sql = " select Pacote as Pacote, ROUND(SUM(DespesaOrcada), 0) AS Orçada,  ROUND(SUM(DespesaRealizada), 0) AS Realizada,";
+                    sql += "CASE WHEN SUM(DespesaOrcada) = 0 THEN 0 ELSE ROUND((SUM(DespesaRealizada) / SUM(DespesaOrcada) - 1) * 100, 0) END AS DesvioPorc,";
+                    sql += "ROUND(SUM(DespesaRealizada) - SUM(DespesaOrcada), 0) AS DesvioReal";
+                    sql += " from Manutencao ";
+                    sql += "WHERE MesAno BETWEEN '20150101' AND '20180101' AND TipoInformacao = 'CustoFixo' and Pacote in ( '" + item.Name + "')  group by Pacote  order by Pacote asc; ";
+                    item.total = db.Database.SqlQuery<TotalPacote>(sql).FirstOrDefault();
+
+                }
+
             }
 
             return lista;
         }
     }
 
-    public class ManutencaoClasse
+    public class Pacote
     {
-        public string TipoInformacao { get; set; }
-        public DateTime MesAno { get; set; }
-        public int? EmpresaCodigo { get; set; }
-        public string EmpresaSigla { get; set; }
-        public string EmpresaRegional { get; set; }
-        public string EmpresaRegionalGrupo { get; set; }
-        public string EmpresaCluster { get; set; }
-        public string CentroDeCusto { get; set; }
+        public string Name { get; set; }
+        public List<Reg> ListaRegionais { get; set; }
+        public TotalPacote total { get; set; }
+    }
+
+    public class Reg
+    {
+        public string Regional { get; set; }
+        public double? Orçada { get; set; }
+        public double? Realizada { get; set; }
+        public double? DesvioPorc { get; set; }
+        public double? DesvioReal { get; set; }
+    }
+
+    public class TotalPacote
+    {
         public string Pacote { get; set; }
-        public string ContaContabilCodigo { get; set; }
-        public string ContaContabil { get; set; }
-        public double? DespesaOrcada { get; set; }
-        public double? DespesaRealizada { get; set; }
-        public double? ConsumoOrcado { get; set; }
-        public double? ConsumoRealizado { get; set; }
-        public string TipoConsumo { get; set; }
-        public double? ProducaoOrcada { get; set; }
-        public double? ProducaoRealizada { get; set; }
-        public string TipoProducao { get; set; }
-        public int? Id { get; set; }
+        public double? Orçada { get; set; }
+        public double? Realizada { get; set; }
+        public double? DesvioPorc { get; set; }
+        public double? DesvioReal { get; set; }
     }
 
 

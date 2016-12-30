@@ -569,7 +569,7 @@
 
                                         tabela += "</div>";
 
-                                        console.log(tabela);
+                                        //console.log(tabela);
 
 
 
@@ -621,7 +621,7 @@
                                     //montar subtitulo
                                     function MountSubTitleLineTable(tamanho) {
                                         var tr = "<tr><td class=\"left\">Pacote</td>";
-                                        //console.log(tamanho);
+                                        ////console.log(tamanho);
                                         for (var i = 0; i < tamanho; i++) {
                                             tr = tr + "<td class=\"left\">Despesa <br>Orçada</td><td>Despesa <br>Real</td><td>Δ <br>%</td><td>Δ <br>$</td>";
                                         };
@@ -816,14 +816,142 @@
 
                                     function firstTable(name) {
 
-			$('#firstTable .table').remove('table');
-                                        //teste primeira tabela -> mocação dados
-                                        var titleColumn = [];
-                                        var titleLine = ['Reg 1 - GO/MG/BA' , 'Reg 1 - MS/SP', 'Reg 2 - MT I/AC/RO', 'Reg 2 - MT II/TO/MA/PA'];
+                                        $('#firstTable .table').remove('table');
+                                        var tabela1;
+                                        $.post('../api/Manutencao/getTabela1', function (lista) {
 
-                                        var titleColumn1 = [];
-                                        titleColumn1[0] = ['&nbsp;',1];
-                                        titleColumn1[1] = ['Pacotes', 1];
+                                            var titleColumn1 = [];
+                                            titleColumn1[0] = ['&nbsp;', 1];
+                                            titleColumn1[1] = ['Pacotes', 1];
+
+                                            var titleColumn = [];
+                                            var titleLine = [];
+                                            lista[0].ListaRegionais.forEach(function (entry) {
+												
+                                                titleLine.push(entry.Regional);
+                                                });
+                                            
+
+                                            var x1 = [];
+                                            lista[0].ListaRegionais.forEach(function (entry) {
+                                                a = [];
+                                                a.push(entry.Regional);
+                                                a.push(4);
+                                                x1.push(a);
+                                            });
+                                            var x2 = [['Despesa Orçada', 1], ['Despesa Orçada', 1], ['Desvio %', 1], ['Desvio $', 1]];
+                                            var aux1 = ['Despesa Orçada', 1];
+                                            var aux2 = ['Despesa Real', 1];
+                                            var aux3 = ['Desvio %', 1];
+                                            var aux4 = ['Desvio $', 1];
+                                            lista[0].ListaRegionais.forEach(function (entry) {
+                                                x2.push(aux1);
+                                                x2.push(aux2);
+                                                x2.push(aux3);
+                                                x2.push(aux4);
+                                            });
+                                            var titleColumnsBody = [];
+                                            titleColumnsBody[0] = x1;
+                                            titleColumnsBody[1] = x2;
+
+                                            var column1 = [];
+                                            // column1.push(['TotalGeral', 0, 0, 0]);
+
+                                            lista.forEach(function (entry) {
+                                                var a = [];
+                                                a.push(entry.Name);
+                                                a.push(0);
+                                                a.push(0);
+                                                a.push(0);
+                                                column1.push(a);
+                                            });
+
+                                            var dataColumn = [];
+                                            lista.forEach(function (entry) {
+                                                var line = [];
+                                                entry.ListaRegionais.forEach(function (valor) {
+                                                    var orcada = [];
+                                                    var real = [];
+                                                    var desvioP = [];
+                                                    var desvioR = [];
+                                                    //console.log(valor);
+                                                    orcada.push(valor.Orçada);
+                                                    orcada.push(0);
+                                                    orcada.push(0);
+                                                    orcada.push(0);
+                                                    real.push(valor.Realizada);
+                                                    real.push(0);
+                                                    real.push(0);
+                                                    real.push(0);
+                                                    desvioP.push(valor.DesvioPorc);
+                                                    desvioP.push(0);
+                                                    desvioP.push(0);
+                                                    desvioP.push('%');
+                                                    desvioR.push(valor.DesvioReal);
+                                                    desvioR.push(0);
+                                                    desvioR.push(0);
+                                                    desvioR.push(0);
+                                                    line.push(orcada);
+                                                    line.push(real);
+                                                    line.push(desvioP);
+                                                    line.push(desvioR);
+
+                                                });
+                                                dataColumn.push(line);
+                                            });
+
+
+                                            
+                                            var columnsTotal = [];
+                                            lista.forEach(function (entry) {
+                                                var orcada = 0;
+                                                var real = 0;
+                                                var desvioP = 0;
+                                                var desvioR = 0;
+                                                var line = [];
+                                                entry.ListaRegionais.forEach(function (valor) {
+
+                                                    //console.log(valor);
+                                                    orcada += valor.Orçada;
+                                                    real += valor.Realizada;
+                                                    desvioP += valor.DesvioPorc;
+                                                    desvioR += valor.DesvioReal;
+
+
+                                                });
+                                                line.push(orcada);
+                                                line.push(0);
+                                                line.push(0);
+                                                line.push(0);
+                                                line.push(real);
+                                                line.push(0);
+                                                line.push(0);
+                                                line.push(0);
+                                                line.push(desvioP);
+                                                line.push(0);
+                                                line.push(0);
+                                                line.push('%');
+                                                line.push(desvioR);
+                                                line.push(0);
+                                                line.push(0);
+                                                line.push(0);
+                                                //console.log(line);
+                                                columnsTotal.push(line);
+
+                                            });
+
+                                        //    console.log(lista);
+                                        //    tabela1 = lista;
+                                        
+                                        //console.log(tabela1 );
+                                        ////teste primeira tabela -> mocação dados
+                                        ////var titleColumn = [];
+                                        ////var titleLine = ['Reg 1 - GO/MG/BA' , 'Reg 1 - MS/SP', 'Reg 2 - MT I/AC/RO', 'Reg 2 - MT II/TO/MA/PA'];
+
+                                        ////parametro
+                                        //var titleColumn1 = [];
+                                        //titleColumn1[0] = ['&nbsp;', 1];
+                                        //titleColumn1[1] = ['Pacotes', 1];
 
                                         var titleTotal = [];
                                         titleTotal[0] = [['Total', 4]];
@@ -833,38 +961,39 @@
                                         footerColumn1[0] = ['Total:', 1];
 
 
-                                        //resultado dos totais
+                                        ////resultado dos totais
                                         var footerTotal = [];
-                                        footerTotal[0] = [[376780460, 0, , 0], [348438328, 0, , 0], [-8, 0, '#99FF00', '%'], [-28342133, 0, , 0]];
+                                        footerTotal[0] = [[376780460, 0, 0, 0], [348438328, 0, 0, 0], [-8, 0, 0, '%'], [-28342133, 0, 0, 0]];
+                     
+                                        ////titulos dos pacotes
+                                        ////var column1 = [];
+                                        ////column1 = [['TotalGeral', 0, 0, 0], ['MANUTENÇÃO INDUSTRIAL/ PREDIAL', 0, 0, 0], ['UTILIDADES', 0, 0, 0]];
 
-                                        //titulos dos pacotes
-                                        var column1 = [];
-                                        column1 = [['TotalGeral', 0, 0, 0], ['MANUTENÇÃO INDUSTRIAL/ PREDIAL', 0, 0, 0], ['UTILIDADES', 0, 0, 0]];
-
-                                        var titleColumnsBody = [];
-                                        titleColumnsBody[0] = [['Reg 1 - GO/MG/BA',4], ['Reg 1 - MS/SP',4], ['Reg 2 - MT I/AC/RO',4], ['Reg 2 - MT II/TO/MA/PA',4]];
-                                        titleColumnsBody[1] = [['Orçada', 1], ['Real', 1], ['Δ %', 1], ['Δ $', 1], ['Orçada', 1], ['Real', 1], ['Δ %', 1], ['Δ $', 1],['Orçada', 1], ['Real', 1], ['Δ %', 1], ['Δ $', 1],['Orçada', 1], ['Real', 1], ['Δ %', 1], ['Δ $', 1]];
+                                        ////parametro
+                                        ////var titleColumnsBody = [];
+                                        ////titleColumnsBody[0] = [['Reg 1 - GO/MG/BA',4], ['Reg 1 - MS/SP',4], ['Reg 2 - MT I/AC/RO',4], ['Reg 2 - MT II/TO/MA/PA',4]];
+                                        ////titleColumnsBody[1] = [['Despesa Orçada', 1], ['Despesa Real', 1], ['Desvio %', 1], ['Desvio $', 1], ['Despesa Orçada', 1], ['Despesa Real', 1], ['Desvio %', 1], ['Desvio $', 1], ['Despesa Orçada', 1], ['Despesa Real', 1], ['Desvio %', 1], ['Desvio $', 1], ['Despesa Orçada', 1], ['Despesa Real', 1], ['Desvio %', 1], ['Desvio $', 1], ['Despesa Orçada', 1], ['Despesa Real', 1], ['Desvio %', 1], ['Desvio $', 1]];
 
                                         var footerColumnsBody = [];
                                         footerColumnsBody[0] = [[71869051, 0, , 0], [59395621, 0, , 0], [-17, 0, '#00FF00', '%'], [-12473430, 0, , 0], [109268410, 0, , 0], [99672114, 0, , 0], [-9, 0, '#FFCC00', '%'], [-9596296, 0, , 0], [92744407, 0, , 0], [90458420, 0, , 0], [-2, 0, '#FF1100', '%'], [-2285987, 0, , 0], [102898593, 0, , 0], [98912173, 0, , 0], [-4, 0, '#FF3300', '%'], [-3986420, 0, , 0]];
 
-                                        var titleColumnTotal = [];
-                                        titleColumnTotal[0] = ['Total', 4];
-                                        titleColumnTotal[1] = ['Orçada', 1];
-                                        titleColumnTotal[1] = ['Real', 1];
-                                        titleColumnTotal[1] = ['Δ %', 1];
-                                        titleColumnTotal[1] = ['Δ $', 1];
+                                        //var titleColumnTotal = [];
+                                        //titleColumnTotal[0] = ['Total', 4];
+                                        //titleColumnTotal[1] = ['Despesa Orçada', 1];
+                                        //titleColumnTotal[1] = ['Despesa Real', 1];
+                                        //titleColumnTotal[1] = ['Desvio %', 1];
+                                        //titleColumnTotal[1] = ['Desvio $', 1];
 
-                                        var columnsTotal = [];
-                                        //columnsTotal[0] = [[376780460, 0, , 0], [348438328, 0, , 0], [-8, 0, '#99FF00', '%'], [-28342133, 0, , 0]];
-                                        columnsTotal[0] = [[81411578, 0, , 0], [80171873, 0, , 0], [-2, 0, '#FF1100', '%'], [-1239705, 0, , 0]];
-                                        columnsTotal[1] = [[295368883, 0, , 0], [268266455, 0, , 0], [-9, 0, '#00FF00', '%'], [-27102428, 0, , 0]];
+                                        //var columnsTotal = [];
+                                        //columnsTotal[0] = [[376780460, 0, 0, 0], [348438328, 0, 0, 0], [-8, 0, 'red', '%'], [-28342133, 0, 0, 0]];
+                                        //columnsTotal[1] = [[81411578, 0, 0, 0], [80171873, 0, 0, 0], [-2, 0, 'green', '%'], [-1239705, 0, 0, 0]];
+                                        //columnsTotal[2] = [[295368883, 0, 0, 0], [268266455, 0, 0, 0], [-9, 0, 'red', '%'], [-27102428, 0, 0, 0]];
 
-                                        var dataColumn = [];
+                                        //var dataColumn = [];
 
-                                        dataColumn[0] = [[71869051, 0, , 0], [59395621, 0, , 0], [-17, 0, '#00FF00', '%'], [-12473430, 0, , 0], [109268410, 0, , 0], [99672114, 0, , 0], [-9, 0, '#FFCC00', '%'], [-9596296, 0, , 0], [92744407, 0, , 0], [90458420, 0, , 0], [-2, 0, '#FF1100', '%'], [-2285987, 0, , 0], [102898593, 0, , 0], [98912173, 0, , 0], [-4, 0, '#FF3300', '%'], [-3986420, 0, , 0]];
-                                        dataColumn[1] = [[17586193, 0, , 0], [17060457, 0, , 0], [-3, 0, '#00FF00', '%'], [-525735, 0, , 0], [24024849, 0, , 0], [23920098, 0, , 0], [0, 0, '#FF1100', '%'], [-104751, 0, , 0], [19286402, 0, , 0], [18952766, 0, , 0], [-2, 0, '#FFEE00', '%'], [-333636, 0, , 0], [20514134, 0, , 0], [20238552, 0, , 0], [-1, 0, '#FF9900', '%'], [-275583, 0, , 0]];
-                                        dataColumn[2] = [[54282858, 0, , 0], [42335164, 0, , 0], [-22, 0, '#00FF00', '%'], [-11947695, 0, , 0], [85243561, 0, , 0], [75752016, 0, , 0], [-11, 0, '#FFCC00', '%'], [-9491545, 0, , 0], [73458005, 0, , 0], [71505654, 0, , 0], [-3, 0, '#FF1100', '%'], [-1952351, 0, , 0], [82384458, 0, , 0], [78673621, 0, , 0], [-5, 0, '#FF3300', '%'], [-3710837, 0, , 0]];
+                                        //dataColumn[0] = [[71869051, 0, 0, 0], [59395621, 0, 0, 0], [-17, 0, 'red', '%'], [-12473430, 0, 0, 0], [109268410, 0, 0, 0], [99672114, 0, 0, 0], [-9, 0, 'yellow', '%'], [-9596296, 0, 0, 0], [92744407, 0, 0, 0], [90458420, 0, 0, 0], [-2, 0, 'green', '%'], [-2285987, 0, 0, 0], [102898593, 0, 0, 0], [98912173, 0, 0, 0], [-4, 0, 'yellow', '%'], [-3986420, 0, 0, 0]];
+                                        //dataColumn[1] = [[17586193, 0, 0, 0], [17060457, 0, 0, 0], [-3, 0, 0, '%'], [-525735, 0, 0, 0], [24024849, 0, 0, 0], [23920098, 0, 0, 0], [0, 0, 0, '%'], [-104751, 0, 0, 0], [19286402, 0, 0, 0], [18952766, 0, 0, 0], [-2, 0, 0, '%'], [-333636, 0, 0, 0], [20514134, 0, 0, 0], [20238552, 0, 0, 0], [-1, 0, 0, '%'], [-275583, 0, 0, 0]];
+                                        //dataColumn[2] = [[54282858, 0, 0, 0], [42335164, 0, 0, 0], [-22, 0, 0, '%'], [-11947695, 0, 0, 0], [85243561, 0, 0, 0], [75752016, 0, 0, 0], [-11, 0, 0, '%'], [-9491545, 0, 0, 0], [73458005, 0, 0, 0], [71505654, 0, 0, 0], [-3, 0, 0, '%'], [-1952351, 0, 0, 0], [82384458, 0, 0, 0], [78673621, 0, 0, 0], [-5, 0, 0, '%'], [-3710837, 0, 0, 0]];
 
 
                                         // Feito --------------------------------------------------------------------
@@ -886,12 +1015,13 @@
                                         titleLine = ['Reg 1 - GO/MG/BA'];
 
                                         montaTabela('1', '#firstTableTeste', '85px', titleColumn1, titleColumnsBody, column1, dataColumn, footerColumn1, footerColumnsBody, footerTotal, titleTotal, columnsTotal);
-
+                                        });
                                     }
 
                                     function secoundTable(name) {
 
                                         $('#secoundTable .table').remove('table');
+
                                         //teste primeira tabela -> mocação dados
                                         var titleColumn = [];
                                         var titleLine = ['CAL', 'GYN', 'ITA', 'ITB', 'ITR', 'MZL', 'SEN'];
