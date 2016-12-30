@@ -839,20 +839,20 @@ namespace SGQDBContext
         }
     }
 
-    public partial class ParConfSGQ
+    public partial class ParConfSGQContext
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
         public int Id { get; set; }
         public bool HaveUnitLogin { get; set; }
         public bool HaveShitLogin { get; set; }
-        public ParConfSGQ get()
+        public ParConfSGQContext get()
         {
             SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT Id, HaveUnitLogin, HaveShitLogin FROM ParConfSGQ";
 
-            var conf = db.Query<ParConfSGQ>(sql).FirstOrDefault();
+            var conf = db.Query<ParConfSGQContext>(sql).FirstOrDefault();
 
             return conf;
 
