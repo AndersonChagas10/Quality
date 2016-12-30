@@ -3,9 +3,7 @@
     ViewBag.Title = "RelatorioDiario";
     var url = Url.Action("Index", "Home");
     var urlGrafico1 = Url.Action("Grafico1", "api/RelDiario");
-    var urlGraficoLevel1 = Url.Action("GraficoLevel1", "api/RelDiario");
-    var urlGraficoLevel2 = Url.Action("GraficoLevel2", "api/RelDiario");
-    var urlGraficoLevel3 = Url.Action("GraficoLevel3", "api/RelDiario");
+    var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/RelDiario");
 }
 
 <style>
@@ -44,7 +42,7 @@
 
 
         var url1 = '@Html.Raw(@urlGrafico1)';
-        var urlGraficoLevel1 = '@Html.Raw(@urlGraficoLevel1)';
+        var urlGetPanelResultSet = '@Html.Raw(@urlGetPanelResultSet)';
         var $btn = $('#btnSend');
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -77,21 +75,40 @@
                     var retornoArray = [];
                     var arrayItarator = r.Retorno;
                     $('#menu-toggle').click();
-                    CriaGraficos(r);
+                    GraficoInicialLeTodosLevel1(r);
 
                     r.forEach(function (o, c) {
 
                         var divClonada = $('#PanelFull').clone();
-                        divClonada.attr('id', divClonada.attr('id') + c).show();
-                        divClonada.find('.panel-body').attr('id', divClonada.find('.panel-body').attr('id') + c);
+                        divClonada.attr('id', divClonada.attr('id') + o.Id).show();
+                        divClonada.find('.panel-body').attr('id', divClonada.find('.panel-body').attr('id') + o.Id);
                         var idDivTendencia = divClonada.find('.panel-body').attr('id');
                         $('#plotPrincipal').append(divClonada);
-                        var div = DivManager.criaDiv(idDivTendencia, c, "temperatura");
-                        //Cria o Panel, Clona o mesmo e troca os IDs
-
-                        //Grafico Tendencia.
+                        var div = DivManager.criaDiv(idDivTendencia, o.Id, "temperatura");
                         divClonada.find('.panel-heading').html(o.Level1Name); // Insere Titulo no Panel
-                        //RelDiario.Tendencia(result, div, a);//Processa e cria grafico
+
+                        var enviarClone = enviar;
+
+                        enviarClone.level01Id = o.Id
+
+                        $.post(urlGetPanelResultSet, enviarClone, function (listResults) {
+
+                            //GraficoTendencia(listResults["Tendencia"], div, o);//Processa e cria grafico
+
+                            var divMonitoramento = DivManager.criaDiv(idDivTendencia, o.Id, "monitoramento");
+                            GraficoMonitoramentos(listResults["listResultSetLevel2"], divMonitoramento, "NC por Monitoramento: " + o.Level1Name);//Processa e cria grafico
+
+                            //listResults["listResultSetLevel3"].forEach(function (oo, cc) {
+                            //var divTarefaIndicador = DivManager.criaDiv(idDivTendencia, c, "tarefaIndicador");
+                                //GraficoTarefaIndicador(listResults["ResultsLevel3PorTarefa"], divTarefaIndicador, c, o);//Processa e cria grafico
+                            //});
+
+                            listResults["listResultSetLevel3"].forEach(function (oo, cc) {
+                                var divTarefas = DivManager.criaDiv(divMonitoramento, oo.Id, "monitoramento");
+                                GraficoTarefa(listResults["listResultSetLevel3"], divTarefas, 'Titulo Level3', o.Id);//Processa e cria grafico
+                            });
+                        })
+
 
                     });
 
@@ -113,13 +130,6 @@
                 //openMessageModal("Alerta", e.responseJSON.Message);
             });
         };
-
-        function CriaGraficos(retornoArray) {
-
-            GraficoInicialLeTodosLevel1(retornoArray);
-
-
-        }
 
         function MapeiaValorParaHC(array, prop) {
             var arrayRetorno = $.map(array, function (o, c) {
@@ -165,60 +175,6 @@
                     Chart.SimpleSerie(nc, "Total NC", Chart.CorTotalNc(), false, 1),
                     Chart.SimpleSerie(totalAvaliado, "Total Av", Chart.CorTotalAv(), false, 1)
                 ],
-            });
-
-        }
-
-        function GafricoLevel1(idLEvel1) {
-
-            $.post("", function (data) {
-
-                var valoresX = MapeiaValorParaHC(data, "Name")
-                var NC = MapeiaValorParaHC(data, "Nc")
-                var TotalAvaliado = MapeiaValorParaHC(data, "Av")
-
-                Auxiliares.loading(idDiv);
-
-                //Organiza dados do grafico
-                var pareto = []
-                //Pareto
-                var totalNC = 0;
-                var totalNC = NC.reduce(function (a, b) { return a + b; }, 0);
-                var porcentagemAcumuladaNC = 0;
-                NC.forEach(function (a) {
-                    porcentagemAcumuladaNC += a / totalNC * 100;
-                    pareto.push(Math.round(porcentagemAcumuladaNC, 0));
-                });
-                //Fim PAreto
-                ////////////////////////////////////////////
-
-                //Cria Grafico
-                $('#' + idDiv).empty().highcharts({
-                    credits: Chart.Credits(),
-                    title: Chart.Titulo(titulo),
-                    xAxis: Chart.Xaxis(valoresX),
-                    tooltip: Chart.ToolTip(true, true),
-                    legend: Chart.Legend(),
-                    yAxis: Chart.yAxisPadrao(true, true, true),
-                    chart: {
-                        type: 'column',
-                        zoomType: 'x, y'
-                    },
-                    zones: [{
-                        value: 69,
-                        color: '#FF6666'
-                    }, {
-                        value: 80,
-                        color: 'Yellow'
-                    }, {
-                        color: '#98FB98'
-                    }],
-                    series: [
-                          Chart.SimpleSerie(NC, "Total NC", Chart.CorTotalNc(), true)
-                        , Chart.SimpleSerie(TotalAvaliado, 'Total Av', Chart.CorTotalAv(), true)
-                        , Chart.curvaPareto(pareto)
-                    ],
-                });
             });
 
         }
@@ -489,6 +445,116 @@
             });
         }
 
+        function GraficoMonitoramentos(data, idDiv, titulo) {
+
+            var valoresX = MapeiaValorParaHC(data, "Name")
+            var NC = MapeiaValorParaHC(data, "NC")
+            var TotalAvaliado = MapeiaValorParaHC(data, "Av")
+
+            //Auxiliares.loading(idDiv);
+
+            //Organiza dados do grafico
+            var pareto = []
+            //Pareto
+            var totalNC = 0;
+            var totalNC = NC.reduce(function (a, b) { return a + b; }, 0);
+            var porcentagemAcumuladaNC = 0;
+            NC.forEach(function (a) {
+                porcentagemAcumuladaNC += a / totalNC * 100;
+                pareto.push(Math.round(porcentagemAcumuladaNC, 0));
+            });
+            //Fim PAreto
+            ////////////////////////////////////////////
+
+            //Cria Grafico
+            $('#' + idDiv).empty().highcharts({
+                credits: Chart.Credits(),
+                title: Chart.Titulo(titulo),
+                xAxis: Chart.Xaxis(valoresX),
+                tooltip: Chart.ToolTip(true, true),
+                legend: Chart.Legend(),
+                yAxis: Chart.yAxisPadrao(true, true, true),
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y'
+                },
+                zones: [{
+                    value: 69,
+                    color: '#FF6666'
+                }, {
+                    value: 80,
+                    color: 'Yellow'
+                }, {
+                    color: '#98FB98'
+                }],
+                series: [
+                      Chart.SimpleSerie(NC, "Total NC", Chart.CorTotalNc(), true)
+                    , Chart.SimpleSerie(TotalAvaliado, 'Total Av', Chart.CorTotalAv(), true)
+                    , Chart.curvaPareto(pareto)
+                ],
+            });
+        }
+
+        function GraficoTarefa (data, idDiv, titulo, index) {
+
+            //Auxiliares.loading(idDiv);
+
+            //Organiza dados do grafico
+            var dados = DadoEspecificos.Tarefa(data);
+            ////////////////////////////////////////////
+
+            $('#' + idDiv).empty().highcharts({
+                credits: Chart.Credits(),
+                title: Chart.Titulo(titulo),
+                xAxis: Chart.Xaxis(dados.x),
+                tooltip: Chart.ToolTip(true, true),
+                legend: Chart.Legend(),
+                yAxis: Chart.yAxisPadrao(true, true, true),
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y',
+                    plotBackgroundColor: '#FFFFFF',
+                    //plotShadow: true
+                    shadow: true
+                },
+                series: [
+                  Chart.SimpleSerie(dados.y.NC, "Total NC", Chart.CorTotalNc(), true, 0, undefined, undefined, true, [dados.idOperacao, dados.idMonitoramento, dados.idTarefa]),
+                  Chart.curvaPareto(dados.y.pareto)
+                ],
+            });
+            //$('#' + idDiv).find("img").remove();
+        }
+
+        var DadoEspecificos = {
+
+            Tarefa: function (data) {
+                //Organiza dados do grafico
+                var obj = data;
+                var valoresX = MapeiaValorParaHC(data, "Name");
+                var idOp = MapeiaValorParaHC(data, "Level1_Id");
+                var idMon = MapeiaValorParaHC(data, "Level2_Id");
+                var idTar = MapeiaValorParaHC(data, "Level3_Id");
+                //valoresY("Meta", "Proncetagem")
+                var valoresY = {
+                    //NC: obj.NC[0],
+                    NC: MapeiaValorParaHC(data, "NC"),
+                    pareto: []
+                };
+                //Pareto
+                var totalNC = 0;
+                var totalNC = valoresY.NC.reduce(function (a, b) { return a + b; }, 0);
+                var porcentagemAcumuladaNC = 0;
+                valoresY.NC.forEach(function (a, b) {
+                    porcentagemAcumuladaNC += a / totalNC * 100;
+                    valoresY.pareto.push(Math.round(porcentagemAcumuladaNC, 0));
+                });
+                //Fim PAreto
+                ////////////////////////////////////////////
+                return { x: valoresX, y: valoresY, idOperacao: idOp, idMonitoramento: idMon, idTarefa: idTar }
+
+            }
+
+        };
 
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();
