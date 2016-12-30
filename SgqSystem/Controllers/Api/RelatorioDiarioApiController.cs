@@ -13,6 +13,7 @@ namespace SgqSystem.Controllers.Api
     {
         private List<RelDiarioGrafico1Result> _mock { get; set; }
         private List<RelDiarioGrafico1Result> _listGrafico1Level1 { get; set; }
+        private List<RelDiarioLevel1Result> _mockLevel1 { get; set; }
 
         [HttpPost]
         [Route("Grafico1")]
@@ -26,6 +27,20 @@ namespace SgqSystem.Controllers.Api
             //}
 
             return _mock;
+        }
+
+        [HttpPost]
+        [Route("GraficoLevel1")]
+        public List<RelDiarioLevel1Result> GraficoLevel1([FromBody] FormularioParaRelatorioViewModel form)
+        {
+            CriaMockLevel1();
+            //var query = "";
+            //using (var db = new SgqDbDevEntities())
+            //{
+            //    _listGrafico1Level1 = db.Database.SqlQuery<RelDiarioGrafico1Result>(query).ToList();
+            //}
+
+            return _mockLevel1;
         }
 
         private void CriaMockGrafico1Level1()
@@ -65,6 +80,36 @@ namespace SgqSystem.Controllers.Api
             });
            
         }
+
+        private void CriaMockLevel1()
+        {
+            _mockLevel1 = new List<RelDiarioLevel1Result>();
+            _mockLevel1.Add(new RelDiarioLevel1Result()
+            {
+                Name = "Level1 teste 1",
+                NC = 13.74M,
+                Av = 12.34M
+            });
+            _mockLevel1.Add(new RelDiarioLevel1Result()
+            {
+                Name = "Level1 teste 2",
+                NC = 8M,
+                Av = 12M
+            });
+            _mockLevel1.Add(new RelDiarioLevel1Result()
+            {
+                Name = "Level1 teste 3",
+                NC = 13M,
+                Av = 12M
+            });
+            _mockLevel1.Add(new RelDiarioLevel1Result()
+            {
+                Name = "Level1 teste 4",
+                NC = 103.74M,
+                Av = 210.34M
+            });
+
+        }
     }
 
     public class RelDiarioGrafico1Result
@@ -79,4 +124,16 @@ namespace SgqSystem.Controllers.Api
         public decimal TotalAv { get; set; }
         public decimal TotalNC { get; set; }
     }
+
+    public class RelDiarioLevel1Result
+    {
+        public RelDiarioLevel1Result()
+        {
+        }
+
+        public string Name { get; set; }
+        public decimal Av { get; set; }
+        public decimal NC { get; set; }
+    }
+
 }

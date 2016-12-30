@@ -3,6 +3,9 @@
     ViewBag.Title = "RelatorioDiario";
     var url = Url.Action("Index", "Home");
     var urlGrafico1 = Url.Action("Grafico1", "api/RelDiario");
+    var urlGraficoLevel1 = Url.Action("GraficoLevel1", "api/RelDiario");
+    var urlGraficoLevel2 = Url.Action("GraficoLevel2", "api/RelDiario");
+    var urlGraficoLevel3 = Url.Action("GraficoLevel3", "api/RelDiario");
 }
 
 <style>
@@ -41,6 +44,7 @@
 
 
         var url1 = '@Html.Raw(@urlGrafico1)';
+        var urlGraficoLevel1 = '@Html.Raw(@urlGraficoLevel1)';
         var $btn = $('#btnSend');
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -74,12 +78,30 @@
                     var arrayItarator = r.Retorno;
                     $('#menu-toggle').click();
                     CriaGraficos(r);
+
+                    r.forEach(function (o, c) {
+
+                        var divClonada = $('#PanelFull').clone();
+                        divClonada.attr('id', divClonada.attr('id') + c).show();
+                        divClonada.find('.panel-body').attr('id', divClonada.find('.panel-body').attr('id') + c);
+                        var idDivTendencia = divClonada.find('.panel-body').attr('id');
+                        $('#plotPrincipal').append(divClonada);
+                        var div = DivManager.criaDiv(idDivTendencia, c, "temperatura");
+                        //Cria o Panel, Clona o mesmo e troca os IDs
+
+                        //Grafico Tendencia.
+                        divClonada.find('.panel-heading').html(o.Level1Name); // Insere Titulo no Panel
+                        //RelDiario.Tendencia(result, div, a);//Processa e cria grafico
+
+                    });
+
                 } catch (e) {
                     console.log(e);
                 } finally {
                     $btn.button('reset');
                     //Hotfix: table não alinha resultados de centro no meio da tr....
                 }
+
             }).fail(function (e, h, x) {
                 //closeLoader();
                 $btn.button('reset');
@@ -147,15 +169,57 @@
 
         }
 
-        function GraficoInicialLeTodosLevel1(data) {
+        function GafricoLevel1(idLEvel1) {
 
-            var valoresX = MapeiaValorParaHC(data, "Level1Name")
-            var meta = MapeiaValorParaHC(data, "Meta")
-            var nc = MapeiaValorParaHC(data, "TotalNC")
-            var percentual = MapeiaValorParaHC(data, "NCProc")
-            var totalAvaliado = MapeiaValorParaHC(data, "TotalAv")
+            $.post("", function (data) {
 
-           
+                var valoresX = MapeiaValorParaHC(data, "Name")
+                var NC = MapeiaValorParaHC(data, "Nc")
+                var TotalAvaliado = MapeiaValorParaHC(data, "Av")
+
+                Auxiliares.loading(idDiv);
+
+                //Organiza dados do grafico
+                var pareto = []
+                //Pareto
+                var totalNC = 0;
+                var totalNC = NC.reduce(function (a, b) { return a + b; }, 0);
+                var porcentagemAcumuladaNC = 0;
+                NC.forEach(function (a) {
+                    porcentagemAcumuladaNC += a / totalNC * 100;
+                    pareto.push(Math.round(porcentagemAcumuladaNC, 0));
+                });
+                //Fim PAreto
+                ////////////////////////////////////////////
+
+                //Cria Grafico
+                $('#' + idDiv).empty().highcharts({
+                    credits: Chart.Credits(),
+                    title: Chart.Titulo(titulo),
+                    xAxis: Chart.Xaxis(valoresX),
+                    tooltip: Chart.ToolTip(true, true),
+                    legend: Chart.Legend(),
+                    yAxis: Chart.yAxisPadrao(true, true, true),
+                    chart: {
+                        type: 'column',
+                        zoomType: 'x, y'
+                    },
+                    zones: [{
+                        value: 69,
+                        color: '#FF6666'
+                    }, {
+                        value: 80,
+                        color: 'Yellow'
+                    }, {
+                        color: '#98FB98'
+                    }],
+                    series: [
+                          Chart.SimpleSerie(NC, "Total NC", Chart.CorTotalNc(), true)
+                        , Chart.SimpleSerie(TotalAvaliado, 'Total Av', Chart.CorTotalAv(), true)
+                        , Chart.curvaPareto(pareto)
+                    ],
+                });
+            });
 
         }
 
