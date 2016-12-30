@@ -203,43 +203,25 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar6");
 
-    $('#MetaFake, #VolumeAnimais').on('input', function () {
+    $('#VolumeAnimais').on('input', function () {
         $('#avaliacaoHidden').val($('#Avaliacoes').val());
         $('#Quartos').val($('#VolumeAnimais').val() * 4);
         $('#QuartosHidden').val($('#VolumeAnimais').val() * 4);
         $('#Amostras').val($('#VolumeAnimais').val() * 4);
         $('#amostraHidden').val($('#VolumeAnimais').val() * 4);
-
-        var calc = ($('#Quartos').val() * (Number(($('#MetaFake').val().substring(0, 6).replace(',', '.'))) / 100));
-        $('#ToleranciaDia').val(calc ? calc : 0);
-        $('#Nivel11').val(calc / 3 ? calc / 3 : 0);
-        $('#Nivel12').val(calc / 3 * 2 ? calc / 3 * 2 : 0);
-        $('#Nivel13').val(calc ? calc : 0);
-
-        $('#Meta').val(Number(($('#MetaFake').val().substring(0, 6))));
     });
     
     $(document).ready(function () {
-
         $('#VolumeAnimais').inputmask("integer");
-
         $('#Data').daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
             'locale': {
                 "format": "DD/MM/YYYY",
             }
-        })
-
-        if ('@Resources.Resource.resource_id' == "en_us")
-            $('#MetaFake').inputmask({ mask: "999.99%" });
-        else
-            $('#MetaFake').inputmask({ mask: "999,99%" });
-
-
+        });
         $('#Avaliacoes').val(1);
         $('#avalicaohidden').val(1);
-        $('#MetaFake').val($('#Meta').val()/100);
     });
 
 </script>
