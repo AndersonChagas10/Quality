@@ -1241,10 +1241,12 @@
         }
     }
 
+    var modelLevel1 = @Html.Raw(Json.Encode(Model));
     $(document).ready(function () {
 
 
-        $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').attr('checked', 'checked');
+       
+
         defaults();
         loadSelect2();
         $('#paramsDto_parLevel1Dto_IsRuleConformity[value="false"]').trigger('click');
@@ -1277,6 +1279,16 @@
         setTimeout(function(){
             reloadPopovers();
         }, 3000);
+
+        $('input[name="paramsDto.parLevel1Dto.IsRuleConformity"]:first').prop("checked", true);
+        if(!modelLevel1.paramsDto.parLevel1Dto.IsRuleConformity){
+            $('input[name="paramsDto.parLevel1Dto.IsRuleConformity"]').not(':checked').prop("checked", true);
+        }
+
+        $('input[name="paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion"]:first').prop("checked", true);
+        if(!modelLevel1.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion){
+            $('input[name="paramsDto.parLevel1Dto.IsFixedEvaluetionNumber"]').not(':checked').prop("checked", true);
+        }
     });
     
 </script>
