@@ -2,7 +2,7 @@
 //var urlSend = Url.Action("Save", "api/ParLevel2ControlCompany"); //URL relativa
 //var urlChangeLevel2 = Url.Action("ChangeLevel2", "ParLevel2ControlCompany"); //URL relativa
 //var urlChangeLevel2UserCompany = Url.Action("ChangeLevel2UserCompany", "ParLevel2ControlCompany"); //URL relativa
-//var userRolesCompany = 
+//var userRolesCompany =
 }
 
 <!DOCTYPE html>
@@ -44,11 +44,111 @@
     @Scripts.Render("~/bundles/DatePikerContent")
     @Scripts.Render("~/bundles/Guard")
     @Scripts.Render("~/bundles/mask")
+    @Scripts.Render("~/bundles/hc")
 
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-    
+    <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                        </div>
+                        <div class="col-xs-11" id="modalLoaderMessage">Message </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade modalConfirm" id="modalConfirm" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.confirm_the_action</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12" id="modalConfirmMessage">Message </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modalConfirmNo" type="button" class="btn btn-default">@Resources.Resource.no</button>
+                    <button id="modalConfirmYes" type="button" class="btn btn-primary">@Resources.Resource.yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay" style="display:none"></div>
+
+    <div id="messageModal" class="message padding20" style="display:none">
+        <h1 class="head">Titulo</h1>
+        <div class="body font16">Mensagem</div>
+        <div class="foot">
+            <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button>
+        </div>
+    </div>
+
+    <!--Loaders e messages-->
+    <script>
+
+        $modalLoader = $('#modalLoader').clone();
+        $modalConfirm = $('#modalConfirm').clone();
+
+        var loaderMessages = [];
+
+        var openLoader = function (message) {
+            if (loaderMessages.length == 0) {
+                $('.modalLoader').remove();
+                $('body').append($modalLoader);
+                $('#modalLoader').modal({ backdrop: false });
+                $('#modalLoaderMessage').text(message);
+                loaderMessages.push(message);
+            } else {
+                loaderMessages.push(message);
+            }
+        }
+
+        var closeLoader = function () {
+            loaderMessages.splice(0, 1);
+            if (loaderMessages.length == 0) {
+                $('.modalLoader').remove();
+            }
+        }
+
+        var openConfirm = function (message, callbackYes, callbackNo) {
+            $('.modalConfirm').remove();
+            $('body').append($modalConfirm);
+            $('#modalConfirm').modal({ backdrop: false });
+            $('#modalConfirmMessage').text(message);
+
+            if (callbackYes) {
+                $('#modalConfirmYes').click(function () {
+                    callbackYes();
+                });
+            }
+
+            if (callbackNo) {
+                $('#modalConfirmNo').click(function () {
+                    callbackNo();
+                });
+            }
+        }
+
+        var closeConfirm = function () {
+            $('.modalConfirm').remove();
+        }
+
+    </script>
 
     <div class="page-wrapper">
 
@@ -66,7 +166,7 @@
     <footer class="wrapper">
         <p class="page-content-wrapper">&copy; @DateTime.Now.Year - @Resources.Resource.jbs_and_grt_aplication </p>
     </footer>
-
+    
     @RenderSection("scripts", required: false)
 
     <script>
@@ -78,31 +178,87 @@
         //$.fn.select2.defaults.set("language", "en");
 
         /*DataTable Padrão BR*/
-        $(document).ready(function () {
-            $.extend(true, $.fn.dataTable.defaults,
-            {
-                "columnDefs": [
-                    { "className": "dt-center", "targets": "_all" }
-                ],
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
-                "oLanguage": {
+        $.extend(true, $.fn.dataTable.defaults,
+           {
+               "columnDefs": [
+                   { "className": "dt-center", "targets": "_all" }
+               ],
+               "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+               "oLanguage": {
 
-                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
-                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
-                    "sZeroRecords": "Nenhum registro correspondente ao criterio encontrado",
-                    "sInfoEmtpy": "Exibindo 0 a 0 de 0 registros",
-                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
-                    "sInfoFiltered": "",
-                    "sSearch": "Procurar",
-                    "oPaginate": {
-                        "sFirst": "Primeiro",
-                        "sPrevious": "Anterior",
-                        "sNext": "Próximo",
-                        "sLast": "Último"
-                    }
-                }
-            });
+                   "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                   "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                   "sZeroRecords": "Nenhum registro correspondente ao criterio encontrado",
+                   "sInfoEmtpy": "Exibindo 0 a 0 de 0 registros",
+                   "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                   "sInfoFiltered": "",
+                   "sSearch": "Procurar",
+                   "oPaginate": {
+                       "sFirst": "Primeiro",
+                       "sPrevious": "Anterior",
+                       "sNext": "Próximo",
+                       "sLast": "Último"
+                   }
+               }
+           });
+
+
+        /*Configura date range picker para PT-BR*/
+        moment.locale("Pt-Br");
+        $.fn.daterangepicker('locale', {
+            "format": "DD/MM/YYYY",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "de",
+            "toLabel": "até",
+            "customRangeLabel": "Customizado",
+            "weekLabel": "W",
+            "daysOfWeek": [
+                "Dom",
+                "Seg",
+                "Ter",
+                "Qua",
+                "Qui",
+                "Sex",
+                "Sab"
+            ],
+            "monthNames": [
+                "Janeiro",
+                "Fevereiro",
+                "Março",
+                "Abril",
+                "Maio",
+                "Junho",
+                "Julho",
+                "Agosto",
+                "Setembro",
+                "Outubro",
+                "Novembro",
+                "Dezembro"
+            ],
+            //"firstDay": 0
         });
+
+        var rangesEUA = {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+
+        var rangesBR = {
+            'Hoje': [moment(), moment()],
+            'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+            'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+            'Este mês': [moment().startOf('month'), moment().endOf('month')],
+            'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+
+        //$.fn.daterangepicker('ranges', rangesBR);
 
         var monthNames = [
             '@Resources.Resource.january',
@@ -139,6 +295,14 @@
         }
 
         watcher();
+
+        $(document).ready(function () {
+            //var settngs = $.data($('form')[0], 'validator').settings;
+            //settngs.ignore = ".ignore";
+        });
     </script>
+
+    
+
 </body>
 </html>

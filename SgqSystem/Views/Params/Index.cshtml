@@ -171,54 +171,6 @@
     <!-- END CONTENT BODY -->
 </div>
 
-<!-- Modal Loader -->
-<div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-1">
-                        <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
-                    </div>
-                    <div class="col-xs-11" id="modalLoaderMessage">Message </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-<!-- Modal Confirm -->
-<div class="modal fade modalConfirm" id="modalConfirm" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">@Resources.Resource.confirm_the_action</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-12" id="modalConfirmMessage">Message </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button id="modalConfirmNo" type="button" class="btn btn-default">@Resources.Resource.no</button>
-                <button id="modalConfirmYes" type="button" class="btn btn-primary">@Resources.Resource.yes</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="overlay" class="overlay" style="display:none"></div>
-<div id="messageModal" class="message padding20" style="display:none">
-    <h1 class="head">Titulo</h1>
-    <div class="body font16">Mensagem</div>
-    <div class="foot">
-        <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button>
-    </div>
-</div>
-
 <!-- Modal Edição  crudNxN -->
 @Html.Partial("_crudNxNModal")
 
@@ -350,10 +302,7 @@
     $('#level1Title').text(t1);
     $('#level2Title').text(t2);
     $('#level3Title').text(t3);
-
-    $modalLoader = $('#modalLoader').clone();
-    $modalConfirm = $('#modalConfirm').clone();
-
+    
     $('#btnNewLevel1').click(function () {
         $('#parLevel1Select2').val('-1').trigger('select2:select').change();
         $('#level1_collapse').collapse('show');
@@ -459,48 +408,7 @@
 
     var removeLevel3Group = '@Html.Raw(@removeLevel3Group)';
 
-    var loaderMessages = [];
-    var openLoader = function(message){
-        if(loaderMessages.length == 0){
-            $('.modalLoader').remove();
-            $('body').append($modalLoader);
-            $('#modalLoader').modal({ backdrop: false });
-            $('#modalLoaderMessage').text(message);
-            loaderMessages.push(message);
-        }else{
-            loaderMessages.push(message);
-        }
-    }
-
-    var closeLoader = function(){
-        loaderMessages.splice(0, 1);
-        if(loaderMessages.length == 0){
-            $('.modalLoader').remove();
-        }
-    }
-
-    var openConfirm = function(message, callbackYes, callbackNo){
-        $('.modalConfirm').remove();
-        $('body').append($modalConfirm);
-        $('#modalConfirm').modal({backdrop: false });
-        $('#modalConfirmMessage').text(message);
-
-        if(callbackYes){
-            $('#modalConfirmYes').click(function(){
-                callbackYes();
-            });
-        }
-
-        if(callbackNo){
-            $('#modalConfirmNo').click(function(){
-                callbackNo();
-            });
-        }
-    }
-
-    var closeConfirm = function(){
-        $('.modalConfirm').remove();
-    }
+    //Loader estava aqui//
 
     /*LEVEL 1*/
     var indexParamsLevel1 = {
@@ -531,16 +439,24 @@
                 $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
 
                     //closeLoader();
-
+                    $btn.button('reset');
                     if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
                         indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
                         openMessageModal("Alerta", statusmessage);
                     }
-                    $btn.button('reset');
+
                 }).fail(function (e, h, x) {
                     //closeLoader();
-                    $btn.button('reset');
-                    openMessageModal("Alerta", e.responseJSON.Message);
+                    try {
+                        closeLoader();
+                        $btn.button('reset');
+                        openMessageModal("Alerta", e.responseJSON.Message);
+                    } catch (e) {
+                        closeLoader();
+                        $btn.button('reset');
+                        openMessageModal("Alerta", "Não foi possivel concluir a ação.");
+                        console.log(e);
+                    }
                 });
             }
 
@@ -690,8 +606,16 @@
                         openMessageModal("Alerta", statusmessage);
                     }
                 }).fail(function (e, h, x) {
-                    //closeLoader();
-                    openMessageModal("Alerta", e.responseJSON.Message);
+                    try {
+                        closeLoader();
+                        $btn.button('reset');
+                        openMessageModal("Alerta", e.responseJSON.Message);
+                    } catch (e) {
+                        $btn.button('reset');
+                        closeLoader();
+                        openMessageModal("Alerta", "Não foi possivel concluir a ação.");
+                        console.log(e);
+                    }
                 });
             }
 
@@ -870,9 +794,16 @@
                     initialFormLevel3 = $($('form')[2]).clone();
 
                 }).fail(function (e, h, x) {
-                    //closeLoader();
-                    $btn.button('loading');
-                    openMessageModal("Alerta", e.responseJSON.Message);
+                    try {
+                        $btn.button('reset');
+                        openMessageModal("Alerta", e.responseJSON.Message);
+                        closeLoader();
+                    } catch (e) {
+                        $btn.button('reset');
+                        closeLoader();
+                        openMessageModal("Alerta", "Não foi possivel concluir a ação.");
+                        console.log(e);
+                    }
                 });
 
             }

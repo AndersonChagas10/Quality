@@ -3,12 +3,13 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Dominio;
-using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System;
+using SgqSystem.Secirity;
 
 namespace SgqSystem.Controllers
 {
+    [CustomAuthorize]
     public class CepRecortesController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
@@ -73,8 +74,37 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,QtdadeMediaKgRecProdDia,QtdadeMediaKgRecProdHora,NBR,TotalKgAvaliaHoraProd,QtadeTrabEsteiraRecortes,TotalAvaliaColaborEsteirHoraProd,TamanhoAmostra,TotalAmostraAvaliaColabEsteiraHoraProd,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepRecortes cepRecortes)
         {
+
+            if (cepRecortes.Data == null)
+                ModelState.AddModelError("Data", "O campo Data precisa ser preenchido.");
+
+            if (cepRecortes.ParCompany_id == null || cepRecortes.ParCompany_id <= 0)
+                ModelState.AddModelError("ParCompany_id", "É necessário selecionar uma Empresa.");
+
+            if (cepRecortes.ParLevel1_id == null || cepRecortes.ParLevel1_id <= 0)
+                ModelState.AddModelError("ParLevel1_id", "É necessário selecionar um Indicador.");
+
+            if (cepRecortes.HorasTrabalhadasPorDia == null)
+                ModelState.AddModelError("HorasTrabalhadasPorDia", "O campo \"Horas trabalhadas por dia\" precisa ser preenchido.");
+
+            if (cepRecortes.QtdadeMediaKgRecProdDia == null)
+                ModelState.AddModelError("QtdadeMediaKgRecProdDia", "O campo \"Quantidade Média em KG de Recortes Produzidos Diáriamente\" precisa ser preenchido.");
+
+            if (cepRecortes.NBR == null || cepRecortes.NBR <= 0)
+                ModelState.AddModelError("NBR", "É necessário selecionar um NBR - Nível Geral de Inspeção Escolhido.");
+
+            if (cepRecortes.QtadeTrabEsteiraRecortes == null)
+                ModelState.AddModelError("QtadeTrabEsteiraRecortes", "O campo \"Quantidade de Colaboradores Ou Esteiras de Recortes\" precisa ser preenchido.");
+
+            if (cepRecortes.TotalAvaliaColaborEsteirHoraProd == null)
+                ModelState.AddModelError("TotalAvaliaColaborEsteirHoraProd", "O campo \"Total em KG Para Avaliação Por Colaborador/Esteira, Por Hora de Produção\" precisa ser preenchido.");
+
+            if (cepRecortes.TamanhoAmostra == null)
+                ModelState.AddModelError("TamanhoAmostra", "O campo \"Tamanho de Cada Amostra\" precisa ser preenchido.");
+
             if (ModelState.IsValid)
             {
+                cepRecortes.AddDate = DateTime.Now;
                 db.VolumeCepRecortes.Add(cepRecortes);
                 db.SaveChanges();
                 return RedirectToAction("Index");

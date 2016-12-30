@@ -6,6 +6,7 @@
     var urlDataCollectionReport = Url.Action("DataCollectionReport", "Reports");
     var urlCustomization = Url.Action("Index", "Params");
     var urlHome = Url.Action("Index", "Home");
+    var urlScorecard = Url.Action("Scorecard", "RelatoriosSgq");
 }
 
 <div class="page-header navbar navbar-fixed-top">
@@ -47,6 +48,9 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <ul class="mega-menu-submenu">
+                                                <li>
+                                                    <a href="@urlScorecard">Scorecard</a>
+                                                </li>
                                                 <li>
                                                     <a href="@urlCorrectiveActionReport">@Resources.Resource.corrective_action_reports</a>
                                                 </li>

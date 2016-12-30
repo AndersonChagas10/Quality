@@ -266,8 +266,6 @@ namespace SgqSystem.Services
                 string CollectionLevel02Id = result[30];
                 string correctiveActionCompleted = result[31];
                 string completeReaudit = result[32];
-                string sequential = null;
-                string side = null;
 
                 string weievaluation = result[35];
                 string weidefects = result[36];
@@ -277,6 +275,8 @@ namespace SgqSystem.Services
                 string avaliacaoultimoalerta = result[40];
                 string evaluatedresult = result[41];
                 string defectsresult = result[42];
+                string sequential = result[43];
+                string side = result[44];
                 //string alertaAtual = result[40];
 
                 //Gera o Cabeçalho do Level02
@@ -302,6 +302,9 @@ namespace SgqSystem.Services
                 level02HeaderJSon += ";" + avaliacaoultimoalerta;
                 level02HeaderJSon += ";" + evaluatedresult;
                 level02HeaderJSon += ";" + defectsresult;
+                level02HeaderJSon += ";" + sequential;
+                level02HeaderJSon += ";" + side;
+
                 //level02HeaderJSon += ";" + alertaAtual;
 
                 //Verifica o Resultado do Level03
@@ -582,8 +585,8 @@ namespace SgqSystem.Services
 
                                 string AlertLevel = arrayHeader[11];
                                 AlertLevel = DefaultValueReturn(AlertLevel, "0");
-                                string sequential = arrayHeader[12];
-                                string side = arrayHeader[13];
+                                //string sequential = arrayHeader[12];
+                                //string side = arrayHeader[13];
 
                                 string weievaluation = arrayHeader[14];
                                 string weidefects = arrayHeader[15];
@@ -597,6 +600,11 @@ namespace SgqSystem.Services
 
                                 string evaluatedresult = arrayHeader[20];
                                 string defectsresult = arrayHeader[21];
+                                string sequential = arrayHeader[22];
+                                sequential = DefaultValueReturn(sequential, "0");
+                                string side = arrayHeader[23];
+                                side = DefaultValueReturn(side, "0");
+
                                 //string alertaAtual = arrayHeader[19]; 
 
                                 int CollectionLevel2Id = InsertCollectionLevel2(ConsolidationLevel2, level01, level02, unitId, AuditorId, shift, period, Phase, Reaudit, reauditNumber, level02CollectionDate,
@@ -2186,6 +2194,8 @@ namespace SgqSystem.Services
 
             string modalVF = "<div class=\"modalVF panel panel-primary\" style=\"display:none;\"></div>";
 
+            string modalPCC1B = "<div class=\"modalPCC1B panel panel-primary\" style=\"display:none;\"></div>";
+
             string messageConfirm = "<div class=\"messageConfirm padding20\" style=\"display:none\">                                                                                                " +
                                         "    <h1 class=\"head\">Titulo</h1>                                                                                                                             " +
                                         "    <div class=\"body font16\"> <div class=\"txtMessage\"></div>                                                                                               " +
@@ -2213,6 +2223,7 @@ namespace SgqSystem.Services
                            correctiveAction() +
                            viewModal +
                            modalVF +
+                           modalPCC1B+
                            message +
                            messageConfirm;
         }
@@ -2242,6 +2253,7 @@ namespace SgqSystem.Services
                            "         <a href= \"#\" id=\"btnLog\" class=\"list-group-item\">Visualizar Log</a>                                               " +
                            "         <a href= \"#\" id=\"btnCollectDB\" class=\"list-group-item\">Visualizar banco de dados</a>                                    " +
                            "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">Limpar banco de dados</a>                                " +
+                           "         <a href=\"#\" id=\"btnMostrarContadores\" class=\"list-group-item\">Mostrar contadores</a>                                " +
                            "         <span id=\"version\" class=\"list-group-item\">Versão: <span class=\"number\"></span></span>                     " +
                            "         <span id=\"ambiente\" class=\"list-group-item\"><span class=\"base\"></span></span>                               " +
                            "     </div>                                                                                                                " +
@@ -2550,22 +2562,15 @@ namespace SgqSystem.Services
                 //Colocar função de gerar cabeçalhos por selectbox
                 //Monta os cabecalhos
                 #region Cabecalhos e Contadores
-                string headerCounter = html.div(
-                                               outerhtml: null,
-                                               classe: "col-xs-2"
-                                             ) +
-                                     html.div(
-                                               outerhtml: null,
-                                               classe: "col-xs-2"
-                                             ) +
+                string headerCounter = 
                                      html.div(
                                                outerhtml: "<b>Av.</b>",
-                                               classe: "col-xs-4",
+                                               classe: "col-xs-6",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
                                                outerhtml: "<b>Am.</b>",
-                                               classe: "col-xs-4",
+                                               classe: "col-xs-6",
                                                style: "text-align:center"
                                              ); ;
 
@@ -2577,22 +2582,15 @@ namespace SgqSystem.Services
 
 
                 string classXSLevel2 = " col-xs-5";
-                string counters = html.div(
-                                                outerhtml: null,
-                                                classe: "col-xs-2"
-                                              ) +
+                string counters = 
                                       html.div(
-                                                outerhtml: null,
-                                                classe: "col-xs-2"
-                                              ) +
-                                      html.div(
-                                                outerhtml: html.span(outerhtml: "1", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
-                                                classe: "col-xs-4",
+                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
+                                                classe: "col-xs-6",
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
-                                                outerhtml: html.span(outerhtml: "1", classe: "sampleCurrent") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal"),
-                                                classe: "col-xs-4",
+                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal"),
+                                                classe: "col-xs-6",
                                                 style: "text-align:center"
                                               );
 
@@ -3177,7 +3175,7 @@ namespace SgqSystem.Services
                                     classe: "form-group");
 
                 string niveishtml = html.div(
-                                    outerhtml: "<label class=\"font-small text-center\" style=\"display:inherit\">Níveis</label><label class='text-center' style=\"display:inherit; font-size: 20px;\">" + html.span(classe: "nivel1") + " / " + html.span(classe: "nivel2") + " / " + html.span(classe: "nivel3") + "</label>",
+                                    outerhtml: "<label class=\"font-small text-center\" style=\"display:inherit\">Níveis</label><label class='text-center' style=\"display:inherit; font-size: 20px;\">" + html.span(classe: "nivel1") + "  -  " + html.span(classe: "nivel2") + "  -  " + html.span(classe: "nivel3") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 

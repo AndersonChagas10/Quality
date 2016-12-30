@@ -50,6 +50,8 @@ namespace Dominio
         public Nullable<bool> HaveReaudit { get; set; }
         public Nullable<bool> HavePhase { get; set; }
         public Nullable<bool> Completed { get; set; }
+        public Nullable<int> EvaluatedResult { get; set; }
+        public Nullable<int> DefectsResult { get; set; }
     
         public virtual ConsolidationLevel02 ConsolidationLevel02 { get; set; }
         public virtual Level01 Level01 { get; set; }

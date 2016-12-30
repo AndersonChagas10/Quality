@@ -12,6 +12,7 @@ namespace SGQDBContext
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
         public int Id { get; set; }
+        public int hashKey { get; set; }
         public string Name { get; set; }
         public int ParCriticalLevel_Id { get; set; }
         public string ParCriticalLevel_Name { get; set; }
@@ -30,7 +31,7 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
             string sql = " SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
-                         " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific                                                                          " +
+                         " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey                                                                         " +
                          " FROM ParLevel1 P1                                                                                                          " +
                          " INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
                          " ON P321.ParLevel1_Id = P1.Id                                                                                               " +
@@ -190,9 +191,20 @@ namespace SGQDBContext
 
             using (var dbEf = new SgqDbDevEntities()) {
           
+                //var L2EQuery = from L1 in dbEf.ParLevel1
+                //               where L1.Id == ParLevel1_Id
+                //               select L1;
+
+                //var result = L2EQuery.FirstOrDefault();
+
+                //if (result != null)
+                //{
+                //    parLevel1Familia = result.IsFixedEvaluetionNumber;
+                //}
+
                 var result = (from L1 in dbEf.ParLevel1
-                               where L1.Id == ParLevel1_Id
-                               select L1).FirstOrDefault();
+                              where L1.Id == ParLevel1_Id
+                              select L1).FirstOrDefault();
 
                 //var result = L2EQuery.FirstOrDefault();
 
@@ -200,7 +212,6 @@ namespace SGQDBContext
                 {
                     parLevel1Familia = result.IsFixedEvaluetionNumber;
                 }
-
             }
 
         /****CONTROLE DE FAMÍLIA DE PRODUTOS*****/
@@ -265,7 +276,7 @@ namespace SGQDBContext
             string queryCompany = null;
           
 
-            if (ParLevel1.Id == 2 && ParCompany_Id != null)
+            if (ParLevel1.hashKey == 2 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
@@ -287,7 +298,7 @@ namespace SGQDBContext
 
 
             }
-            else if (ParLevel1.Id == 22 && ParCompany_Id != null)
+            else if (ParLevel1.hashKey == 3 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
@@ -309,7 +320,7 @@ namespace SGQDBContext
 
                 
             }
-            else if (ParLevel1.Id == 23 && ParCompany_Id != null)
+            else if (ParLevel1.hashKey == 4 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
@@ -331,7 +342,7 @@ namespace SGQDBContext
 
                 
             }
-            else if (ParLevel1.Id == 3 && ParCompany_Id != null)
+            else if (ParLevel1.hashKey == 1 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
@@ -597,6 +608,8 @@ namespace SGQDBContext
         public int EvaluateLast { get; set; }
         public int SampleLast { get; set; }
         public int ConsolidationLevel2_Id { get; set; }
+        //public int Sequential { get; set; }
+        //public int Side { get; set; }
 
         public IEnumerable<Level2Result> getList(int ParLevel1_Id, int ParCompany_Id, string dataInicio, string dataFim)
         {
@@ -825,6 +838,7 @@ namespace SGQDBContext
             return list;
         }
     }
+
     public partial class ParConfSGQ
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -844,6 +858,7 @@ namespace SGQDBContext
 
         }
     }
+
     public partial class UserSGQ
     {
         public int Id { get; set; }

@@ -4,9 +4,9 @@ using System.Web.Mvc;
 namespace SgqSystem.Controllers
 {
     [CustomAuthorize]
-    public class GestaoController : Controller
+    public class ManutencaoController : BaseController
     {
-        // GET: Gestao
+        // GET: Manutencao
         public ActionResult Index()
         {
             return View();

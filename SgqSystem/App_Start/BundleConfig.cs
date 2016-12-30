@@ -95,8 +95,10 @@ namespace SgqSystem
             ));
 
             bundles.Add(new StyleBundle("~/Content/DatePikerContentCss").Include(
-                    "~/Content/daterangepicker-bs3.css"));
+                    "~/Content/daterangepicker.css"));
 
+            //bundles.Add(new StyleBundle("~/Content/Hc").Include(
+            //      "~/Content/daterangepicker.css"));
             #endregion
 
 

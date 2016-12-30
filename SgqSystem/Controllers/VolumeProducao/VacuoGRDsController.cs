@@ -3,9 +3,12 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Dominio;
+using DTO.Helpers;
+using SgqSystem.Secirity;
 
 namespace SgqSystem.Controllers
 {
+    [CustomAuthorize]
     public class VacuoGRDsController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
@@ -47,6 +50,15 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeVacuoGRD vacuoGRD)
         {
+            if (vacuoGRD.Data == null)
+                ModelState.AddModelError("Data", Guard.MesangemModelError("Data", false));
+
+            if (vacuoGRD.HorasTrabalhadasPorDia == null)
+                ModelState.AddModelError("HorasTrabalhadasPorDia", Guard.MesangemModelError("Horas trabalhadas por dia", false));
+
+            if (vacuoGRD.QtdadeFamiliaProduto == null)
+                ModelState.AddModelError("QtdadeFamiliaProduto", Guard.MesangemModelError("Número de famílias cadastradas", false));
+
             if (ModelState.IsValid)
             {
                 db.VolumeVacuoGRD.Add(vacuoGRD);

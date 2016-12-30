@@ -26,7 +26,17 @@ namespace Dominio
         public int UnitId { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
+        public Nullable<int> AlertLevel { get; set; }
         public Nullable<System.DateTime> ConsolidationDate { get; set; }
+        public Nullable<decimal> WeiEvaluation { get; set; }
+        public Nullable<decimal> EvaluateTotal { get; set; }
+        public Nullable<decimal> DefectsTotal { get; set; }
+        public Nullable<decimal> WeiDefects { get; set; }
+        public Nullable<int> TotalLevel3Evaluation { get; set; }
+        public Nullable<int> TotalLevel3WithDefects { get; set; }
+        public Nullable<int> LastEvaluationAlert { get; set; }
+        public Nullable<int> EvaluatedResult { get; set; }
+        public Nullable<int> DefectsResult { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }

@@ -27,13 +27,22 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
         public System.DateTime ConsolidationDate { get; set; }
-        public Nullable<decimal> Defects { get; set; }
         public Nullable<decimal> Evaluation { get; set; }
+        public Nullable<int> AtualAlert { get; set; }
+        public Nullable<decimal> WeiEvaluation { get; set; }
+        public Nullable<decimal> EvaluateTotal { get; set; }
+        public Nullable<decimal> DefectsTotal { get; set; }
+        public Nullable<decimal> WeiDefects { get; set; }
+        public Nullable<int> TotalLevel3Evaluation { get; set; }
+        public Nullable<int> TotalLevel3WithDefects { get; set; }
+        public Nullable<int> LastEvaluationAlert { get; set; }
+        public Nullable<int> EvaluatedResult { get; set; }
+        public Nullable<int> DefectsResult { get; set; }
     
         public virtual Department Department { get; set; }
-        public virtual ParLevel1 ParLevel1 { get; set; }
         public virtual Unit Unit { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
+        public virtual ParLevel1 ParLevel1 { get; set; }
     }
 }

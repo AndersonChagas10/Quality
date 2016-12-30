@@ -3,9 +3,12 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Dominio;
+using DTO.Helpers;
+using SgqSystem.Secirity;
 
 namespace SgqSystem.Controllers
 {
+    [CustomAuthorize]
     public class CepDesossasController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
@@ -47,6 +50,24 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepDesossa cepDesossa)
         {
+            if (cepDesossa.Data == null)
+                ModelState.AddModelError("Data", Guard.MesangemModelError("Data", true));
+
+            if (cepDesossa.ParCompany_id == null)
+                ModelState.AddModelError("ParCompany_id", "O campo \"Unidade\" precisa ser selecionado.");
+
+            if (cepDesossa.ParLevel1_id == null)
+                ModelState.AddModelError("ParLevel1_id", "O campo \"Indicador\" precisa ser selecionado.");
+
+            if (cepDesossa.HorasTrabalhadasPorDia == null)
+                ModelState.AddModelError("HorasTrabalhadasPorDia", "O campo \"Horas trabalhadas por dia\" precisa ser preenchido.");
+
+            if (cepDesossa.AmostraPorDia == null)
+                ModelState.AddModelError("AmostraPorDia", "O campo \"Amostra por dia\" precisa ser selecionado.");
+
+            if (cepDesossa.QtdadeFamiliaProduto == null)
+                ModelState.AddModelError("QtdadeFamiliaProduto", "O campo \"Número de famílias cadastradas\" precisa ser preenchido.");
+
             if (ModelState.IsValid)
             {
                 db.VolumeCepDesossa.Add(cepDesossa);

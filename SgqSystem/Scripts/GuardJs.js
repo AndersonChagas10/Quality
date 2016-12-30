@@ -24,6 +24,14 @@ Inputmask.extendAliases({
 });
 
 Inputmask.extendAliases({
+    'mascaraNumericaInteira': {
+        alias: "numeric",
+        placeholder: '',
+        allowPlus: false,
+        allowMinus: false
+    }
+});
+Inputmask.extendAliases({
     'campoCalculado': {
             mask: '[-][+]9{1,16}[.][9]{15}x10^[-][+]9{1,5}'
             , placeholder: ' '

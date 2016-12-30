@@ -86,9 +86,15 @@ namespace DTO.Helpers
             return resultado;
         }
 
+        public static string MesangemModelError(string fieldName, bool isSelecionado)
+        {
+            var selecionado = isSelecionado ? "selecionado" : "preenchido";
+            return "O campo \"" + fieldName + "\" precisa ser " + selecionado + ".";
+        }
+
         #endregion
 
-            #region CONVERT
+        #region CONVERT
 
         public static bool ConverteValor<T>(this object valor, out T resultado, T valorPadrao, string paramiterName)
         {

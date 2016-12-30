@@ -1,8 +1,5 @@
-﻿using Dominio;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.ConsolidacaoTestes
@@ -86,7 +83,7 @@ namespace SgqSystem.Controllers.ConsolidacaoTestes
 
     #endregion
 
-    public class ConsolidacaoTestesController : Controller
+    public class ConsolidacaoTestesController : BaseController
     {
 
         #region MOCKS Lists
