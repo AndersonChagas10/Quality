@@ -202,7 +202,7 @@
                                         tabela += "                                        background: #FFFFFF;";
                                         tabela += "                                    }";
                                         tabela += "#fixBody" + id + "::-webkit-scrollbar-thumb {";
-                                        tabela += "                                        background: blue;";
+                                        tabela += "                                        background: #bf0d0e;";
                                         tabela += "                                    }";
                                         tabela += "";
                                         tabela += "  #colUie" + id + "::-webkit-scrollbar-track {";
@@ -214,7 +214,7 @@
                                         tabela += "                                        background: #FFFFFF;";
                                         tabela += "                                    }";
                                         tabela += "  #colUie" + id + "::-webkit-scrollbar-thumb {";
-                                        tabela += "                                       background: blue;";
+                                        tabela += "                                       background: #bf0d0e;";
                                         tabela += "                                   }";
                                         tabela += "";
                                         tabela += " #colUieFim" + id + "::-webkit-scrollbar-track {";
@@ -226,7 +226,7 @@
                                         tabela += "                                       background: #FFFFFF;";
                                         tabela += "                                   }";
                                         tabela += " #colUieFim" + id + "::-webkit-scrollbar-thumb {";
-                                        tabela += "                                       background: blue;";
+                                        tabela += "                                       background: #bf0d0e;";
                                         tabela += "                                   }";
 
 
@@ -484,6 +484,8 @@
                                         });
 
                                         $(div).show();
+
+                                        
 
                                     }
 
@@ -877,10 +879,19 @@
                                         $('#secoundTable .table').remove('table');
 
                                         var pacote = name.getAttribute("x");
-                                        alert(name.getAttribute("x") + " - " + name.getAttribute("y"));
+                                        //alert(name.getAttribute("x") + " - " + name.getAttribute("y"));
                                         var regional = name.getAttribute("y");
-                                        
-                                        $.post('../api/Manutencao/getTabela2', { pacote: pacote, regional: regional }, function (lista) {
+
+                                        /****
+                                        POST BY Celso TATO
+                                        ****/
+                                        //$.post('../api/Manutencao/getTabela2/' + pacote + '/' + regional + '/')
+        
+                                        /********************/
+                                       
+                                        var loader = "carregando..."
+
+                                        $.post('../api/Manutencao/getTabela2/null/null/null/null/' + escape(pacote.replace(/[/]/g, '|')) + '/' + escape(regional.replace(/[/]/g, '|')) + '/', function (lista) {
                                             // titleColumn1
                                             var titleColumn1 = [];
                                             titleColumn1[0] = ['&nbsp;', 1];
