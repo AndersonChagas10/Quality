@@ -224,7 +224,10 @@ namespace SGQDBContext
                              "ON P321.ParLevel3Level2_Id = P32.Id                                                               " +
                              "INNER JOIN ParLevel2 PL2                                                                          " +
                              "ON PL2.Id = P32.ParLevel2_Id                                                                      " +
-                             "INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL Left Join (SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany group by ParCompany_Id) F1 on f1.data = PL.initDate and (F1.UNIDADE = PL.ParCompany_id or F1.UNIDADE is null))  Familia                                                        " +
+                             "INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL Left Join                                    " +
+                             "(SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany                 " +
+                             "group by ParCompany_Id) F1 on f1.data = PL.initDate and (F1.UNIDADE = PL.ParCompany_id            " +
+                             "or F1.UNIDADE is null))  Familia                                                                  " +
                              "ON Familia.ParLevel2_Id = PL2.Id                                                                  " +
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'                                                  " +
                              "AND PL2.IsActive = 1                                                                              " +

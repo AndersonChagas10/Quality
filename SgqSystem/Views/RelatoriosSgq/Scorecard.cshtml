@@ -10,14 +10,47 @@
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
     <div id="formBodyContent">
+
+       
+        
+        <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+
+            <div id="regua1" style="width: 500px; height: 10px; background-color:#ddd;">
+                <div id="regua2" style="height:10px; width:500px; float:right; background-color:#999;"></div>
+            </div>
+            
+            <div id="contadorScore" style="display: inline; "></div> 
+             
+            <button type="button" class="btn btn-primary" id="btnSend" onclick="getSecs(60, 60); Send();">Atualizar Scorecard</button>
+        </div>
+
+        <script>
+            function getSecs(tempo, passagem) {
+
+                passagem--;
+
+                //document.getElementById("contadorScore").innerHTML = passagem + " segundos para a próxima atualização";
+                document.getElementById("regua2").style.width = (passagem / tempo * 500) + "px";
+
+                if (passagem == 0){
+                    Send();
+                    passagem = tempo
+                }
+
+                setTimeout("getSecs(" + tempo + ", " + passagem + ")", 1000);
+
+            }
+        </script>
+
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
         <table id="results" class="display" cellspacing="0" style="width:100%"></table>
     </div>
 </div>
 
 @section Scripts {
 
-   
+
 <script type="text/javascript">
 
 
@@ -45,7 +78,7 @@
             try {
                 var retornoArray = [];
                 var arrayItarator = r.Retorno;
-                $('#menu-toggle').click();
+                //$('#menu-toggle').click();
                 GerarTabela(r);
             } catch (e) {
                 console.log(e);
@@ -186,6 +219,6 @@
         formControl.showFullCallendar();
         formControl.showUnit();
     });
-</script>
+        </script>
 
 }
