@@ -512,6 +512,10 @@ namespace SGQDBContext
                 {
                     queryCompany = " AND PS.ParCompany_Id = '" + ParCompany_Id + "'";
                 }
+                else
+                {
+                    queryCompany = " AND PS.ParCompany_Id  IS NULL ";
+                }
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PS.Number AS Sample FROM  " +
                              "ParLevel3Level2 P32                                              " +
