@@ -1264,6 +1264,8 @@
     <Content Include="Views\RelatoriosSgq\Scorecard.cshtml" />
     <Content Include="Views\Manutencao\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioDiario.cshtml" />
+    <Content Include="Views\Shared\_RelatorioLayout.cshtml" />
+    <Content Include="Views\Example\TesteSelect2.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

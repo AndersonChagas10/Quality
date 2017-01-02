@@ -1,44 +1,22 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
     ViewBag.Title = "RelatorioDiario";
-    var url = Url.Action("Index", "Home");
-    var urlGrafico1 = Url.Action("Grafico1", "api/RelDiario");
-    var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/RelDiario");
 }
 
 <style>
-    .panel-info {
-        border-color: #999;
-    }
-
-        .panel-info > .panel-heading {
-            background-color: #ccc;
-            border-color: #999;
-            color: #333;
-        }
+  
 </style>
 
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-    <div id="formBodyContent">
-        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        <div id="load"></div>
-        <div id="plotPrincipal"></div>
-        <div class="panel panel-info" id="PanelFull" style="display:none">
-            <div class="panel-heading"></div>
-            <div class="panel-body" id="g1">
-            </div>
-            *O Peso atribuído as Tarefas influenciam no resultado gráfico.
-        </div>
-        @*<table id="results" class="display" cellspacing="0" style="width:100%"></table>*@
-    </div>
+    
 </div>
 
 @section Scripts {
 
 
-    <script type="text/javascript">
+    @*<script type="text/javascript">
 
 
         var url1 = '@Html.Raw(@urlGrafico1)';
@@ -131,11 +109,16 @@
             });
         };
 
-      
+        function MapeiaValorParaHC(array, prop) {
+            var arrayRetorno = $.map(array, function (o, c) {
+                return o[prop];
+            });
+            return arrayRetorno;
+        }
 
         function GraficoInicialLeTodosLevel1(data) {
 
-            var valoresX = MapeiaValorParaHC(data, "Level1Name")//["Lins", "Barretos", "Etc.."]
+            var valoresX = MapeiaValorParaHC(data, "Level1Name")
             var meta = MapeiaValorParaHC(data, "Meta")
             var nc = MapeiaValorParaHC(data, "TotalNC")
             var percentual = MapeiaValorParaHC(data, "NCProc")
@@ -844,6 +827,6 @@
                 )
             },
         };
-    </script>
+    </script>*@
 
 }

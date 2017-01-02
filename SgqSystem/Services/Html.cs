@@ -453,7 +453,7 @@ namespace SgqSystem.Services
                                 classe: "level1 col-xs-7 " + tipoTela,
                                 //Aqui vai as tags do level01
                                 tags: tags,
-                                outerhtml: ParLevel1.Name
+                                outerhtml: span(outerhtml: ParLevel1.Name, classe: "levelName")
                                 );
             //Adiciona Div Lateral
             level01 += div(

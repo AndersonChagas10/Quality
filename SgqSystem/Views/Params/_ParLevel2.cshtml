@@ -350,10 +350,10 @@
 
         $('[data-toggle="popover"]').popover();
 
-        var parLevel2 = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel2Dto));
+        var pesoDoVinculoSelecionado = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel2Dto.pesoDoVinculoSelecionado));
 
-        $('#pesoDefinido').html(parLevel2.pesoDoVinculoSelecionado);
-        $('#paramsDto_parLevel3Dto_pesoDoVinculo').html(parLevel2.pesoDoVinculoSelecionado);
+        $('#pesoDefinido').html(pesoDoVinculoSelecionado);
+        $('#paramsDto_parLevel3Dto_pesoDoVinculo').html(pesoDoVinculoSelecionado);
 
         ///initialize form
         initialFormLevel2 = $($('form')[1]).clone();
