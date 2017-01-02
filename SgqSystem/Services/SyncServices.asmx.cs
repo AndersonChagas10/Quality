@@ -3347,8 +3347,12 @@ namespace SgqSystem.Services
             else if (parLevel3.ParLevel3InputType_Id == 4)
             {
                 classInput = " calculado";
+
+                var intervalMin = Guard.ConverteValorCalculado(parLevel3.IntervalMin);
+                var intervalMax = Guard.ConverteValorCalculado(parLevel3.IntervalMax);
+
                 labels = html.div(
-                                           outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                           outerhtml: "<b>Min: </b> " + Guard.ConverteValorCalculado(parLevel3.IntervalMin) + " ~ <b>Max: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMax) + " " + parLevel3.ParMeasurementUnit_Name,
                                            classe: "font10",
                                            style: "font-size: 11px; margin-top:7px;"
                                        );
