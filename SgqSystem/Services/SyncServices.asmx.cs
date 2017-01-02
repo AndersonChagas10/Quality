@@ -38,6 +38,10 @@ namespace SgqSystem.Services
         /// <returns></returns>
         private DateTime DateCollectConvert(string collectionDate)
         {
+            if(!collectionDate.Contains("/"))
+            {
+                collectionDate = collectionDate.Substring(0, 2) + "/" + collectionDate.Substring(2, 2) + "/" + collectionDate.Substring(4, 4) + " 00:00:00";
+            }
             string[] data = collectionDate.Split('/');
 
             //verificar o tipo de data quando for no brasil
@@ -1533,23 +1537,17 @@ namespace SgqSystem.Services
                 return null;
             }
         }
-
-        [WebMethod]
-        public string reciveLastData(string unidadeId)
-        {
-            string lastDate = DateTime.Now.ToString("yyyy-MM-dd");
-            return GetConsolidationLevel01(unidadeId, lastDate: true);
-        }
         /// <summary>
         /// Metodo que para chamar o recebimento de dados
         /// </summary>
         /// <param name="unidadeId"></param>
         /// <returns></returns>
         [WebMethod]
-        public string reciveData(string unidadeId)
+        public string reciveData(string unidadeId, string data)
         {
-            string data = GetConsolidationLevel01(unidadeId);
-            return data;
+            DateTime dataConsolidation = DateCollectConvert(data);
+            string consolidation = getConsolidation(unidadeId, dataConsolidation);
+            return consolidation;
         }
         /// <summary>
         /// Metodo que verifica as consolidações necessárias
@@ -1651,19 +1649,13 @@ namespace SgqSystem.Services
             dataFim = periodoFim.ToString("yyyyMMdd");
 
         }
-        public string GetConsolidationLevel01(string UnidadeId, bool lastDate = false)
+        public string getConsolidation(string ParCompany_Id, DateTime data)
         {
-            //Retirar a unidade tem que vir do app
-            UnidadeId = DefaultValueReturn(UnidadeId, UnidadeId);
-
-            //aqui temos que mudar a data que a pessoa colocar no tablet
-            DateTime data = DateTime.Now;
-
-            //Verificamos os Indicadores que já foram consolidados para a Unidade selecionada
+          
+           //Verificamos os Indicadores que já foram consolidados para a Unidade selecionada
             var ParLevel1ConsolidationXParFrequencyDB = new SGQDBContext.ParLevel1ConsolidationXParFrequency();
             //Instanciamos uma variável que irá 
-            var parLevel1ConsolidationXParFrequency = ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(UnidadeId));
-
+            var parLevel1ConsolidationXParFrequency = ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id));
 
             string Results = null;
 
@@ -1679,7 +1671,7 @@ namespace SgqSystem.Services
 
                 //Instanciamos a tabela Resultados
                 var Level2ResultDB = new SGQDBContext.Level2Result();
-                var Level2ResultList = Level2ResultDB.getList(c.ParLevel1_Id, Convert.ToInt32(UnidadeId), dataInicio, dataFim);
+                var Level2ResultList = Level2ResultDB.getList(c.ParLevel1_Id, Convert.ToInt32(ParCompany_Id), dataInicio, dataFim);
 
                 //Percorremos os resultados do indicador
                 foreach (var Level2Result in Level2ResultList)
@@ -1688,7 +1680,7 @@ namespace SgqSystem.Services
                     var ConsolidationResultL1L2DB = new SGQDBContext.ConsolidationResultL1L2();
                     var consolidationResultL1L2 = ConsolidationResultL1L2DB.getConsolidation(Level2Result.ParLevel2_Id, Level2Result.Unit_Id);
 
-                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\"></div>";
+                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\"></div>";
                 }
             }
             return Results;
@@ -2161,7 +2153,7 @@ namespace SgqSystem.Services
             return sample;
         }
 
-        public string getAPPMain(int UserSgq_Id, int ParCompany_Id)
+        public string getAPPMain(int UserSgq_Id, int ParCompany_Id, string culture="pt-br")
         {
             var html = new Html();
 
@@ -2200,9 +2192,9 @@ namespace SgqSystem.Services
                                         "    <h1 class=\"head\">Titulo</h1>                                                                                                                             " +
                                         "    <div class=\"body font16\"> <div class=\"txtMessage\"></div>                                                                                               " +
                                         "        <input type=\"password\" id=\"passMessageComfirm\" placeholder=\"Password\" class=\"form-control input-sm\" style=\"max-width:160px;\" />        " +
-                                        "        <input type=\"date\" id=\"inputDate\" placeholder=\"99/99/9999\" class=\"form-control input-sm hide\" style=\"max-width:160px;\" /> </div>       " +
-                                        "    <div class=\"foot\"><button id=\"btnMessageYes\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> Yes </button></div>                 " +
-                                        "    <div class=\"foot\"><button id=\"btnMessageNo\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> No </button></div>                   " +
+                                        "        <input type=\"text\" masc=\"date\" id=\"inputDate\" placeholder=\"99/99/9999\" class=\"form-control input-sm hide\" style=\"max-width:160px;\" /> </div>       " +
+                                        "    <div class=\"foot\"><button id=\"btnMessageYes\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> Sim </button></div>                 " +
+                                        "    <div class=\"foot\"><button id=\"btnMessageNo\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> Não </button></div>                   " +
                                         "</div>                                                                                                                                                         ";
 
             //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                       " +
@@ -2218,7 +2210,7 @@ namespace SgqSystem.Services
                                        buttons +
                                        footer(),
                              classe: "App hide",
-                             tags: "breadmainlevel=\"Indicadores\""
+                             tags: "breadmainlevel=\"Indicadores\" culture=\"" + culture + "\"" 
                            ) +
                            correctiveAction() +
                            viewModal +
@@ -2285,7 +2277,7 @@ namespace SgqSystem.Services
                                                             "</div>" +
                                                             "<div class=\"col-xs-6\" id=\"AuditInformation\">" +
                                                             "<b class=\"font16\">Informação da Auditoria:<br/></b>" +
-                                                            "<b>Auditoria: </b><span id=\"auditText\"></span><br/>" +
+                                                            "<b>Indicador: </b><span id=\"auditText\"></span><br/>" +
                                                             "<b>Data Início:</b><span id=\"starttime\"></span><br/>" +
                                                             //"<b>Period:</b><span id=\"correctivePeriod\"></span>" +
                                                             "</div>" +
@@ -2855,7 +2847,7 @@ namespace SgqSystem.Services
                 var formControlPecas = "<input class='form-control input-sm pecasAvaliadas' type='number'>";
                 var formGroupPecas = html.div(
                                         outerhtml: labelPecas + formControlPecas,
-                                        classe: "form-group header",
+                                        classe: "form-group",
                                         style: "margin-bottom: 4px;"
                                         );
 
@@ -3034,7 +3026,7 @@ namespace SgqSystem.Services
                 var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
                 var formGroupSequencial = html.div(
                                         outerhtml: labelSequencial + formControlSequencial,
-                                        classe: "form-group header",
+                                        classe: "form-group",
                                         style: "margin-bottom: 4px;"
                                         );
 
@@ -3042,7 +3034,7 @@ namespace SgqSystem.Services
                 var formControlBanda = "<input class='form-control input-sm banda' type='number'>";
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,
-                                        classe: "form-group header",
+                                        classe: "form-group",
                                         style: "margin-bottom: 4px;"
                                         );
 
@@ -3126,15 +3118,15 @@ namespace SgqSystem.Services
                 var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
                 var formGroupSequencial = html.div(
                                         outerhtml: labelSequencial + formControlSequencial,
-                                        classe: "form-group header",
+                                        classe: "form-group",
                                         style: "margin-bottom: 4px;"
                                         );
 
                 var labelBanda = "<label class='font-small'>Banda</label>";
-                var formControlBanda = "<input class='form-control input-sm banda' type='number'>";
+                var formControlBanda = "<select class='form-control input-sm banda'><option value='1'>1</option><option value='2'>2</option></select>";
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,
-                                        classe: "form-group header",
+                                        classe: "form-group",
                                         style: "margin-bottom: 4px;"
                                         );
 
@@ -3347,8 +3339,12 @@ namespace SgqSystem.Services
             else if (parLevel3.ParLevel3InputType_Id == 4)
             {
                 classInput = " calculado";
+
+                var intervalMin = Guard.ConverteValorCalculado(parLevel3.IntervalMin);
+                var intervalMax = Guard.ConverteValorCalculado(parLevel3.IntervalMax);
+
                 labels = html.div(
-                                           outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                           outerhtml: "<b>Min: </b> " + Guard.ConverteValorCalculado(parLevel3.IntervalMin) + " ~ <b>Max: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMax) + " " + parLevel3.ParMeasurementUnit_Name,
                                            classe: "font10",
                                            style: "font-size: 11px; margin-top:7px;"
                                        );
@@ -3876,7 +3872,7 @@ namespace SgqSystem.Services
 
             if (!string.IsNullOrEmpty(options))
             {
-                options = "<select id=\"selectParCompany\" ParCompany_Id=\"" + ParCompany_Id + "\">" + options + "</select>";
+                options = "<select id=\"selectParCompany\" style=\"margin: 14px;\" ParCompany_Id=\"" + ParCompany_Id + "\">" + options + "</select>";
             }
             return options;
         }

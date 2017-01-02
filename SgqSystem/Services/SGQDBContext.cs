@@ -224,7 +224,10 @@ namespace SGQDBContext
                              "ON P321.ParLevel3Level2_Id = P32.Id                                                               " +
                              "INNER JOIN ParLevel2 PL2                                                                          " +
                              "ON PL2.Id = P32.ParLevel2_Id                                                                      " +
-                             "INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL Left Join (SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany group by ParCompany_Id) F1 on f1.data = PL.initDate and (F1.UNIDADE = PL.ParCompany_id or F1.UNIDADE is null))  Familia                                                        " +
+                             "INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL Left Join                                    " +
+                             "(SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany                 " +
+                             "group by ParCompany_Id) F1 on f1.data = PL.initDate and (F1.UNIDADE = PL.ParCompany_id            " +
+                             "or F1.UNIDADE is null))  Familia                                                                  " +
                              "ON Familia.ParLevel2_Id = PL2.Id                                                                  " +
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'                                                  " +
                              "AND PL2.IsActive = 1                                                                              " +
@@ -508,6 +511,10 @@ namespace SGQDBContext
                 if (ParCompany_Id > 0)
                 {
                     queryCompany = " AND PS.ParCompany_Id = '" + ParCompany_Id + "'";
+                }
+                else
+                {
+                    queryCompany = " AND PS.ParCompany_Id  IS NULL ";
                 }
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PS.Number AS Sample FROM  " +
@@ -868,18 +875,26 @@ namespace SGQDBContext
         public int ParCompany_Id { get; set; }
         public string ParCompany_Name { get; set; }
         public string Role { get; set; }
+
+
         public UserSGQ getUserByLogin(string userLogin)
         {
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT U.Id, U.Name AS Login, U.Password, U.FullName AS Name, U.ParCompany_Id , C.Name AS ParCompany_Name, PxU.Role " +
-                         "FROM                                                                                                                " +
-                         "UserSgq U                                                                                                           " +
-                         "INNER JOIN ParCompany C ON U.ParCompany_Id = C.Id                                                                   " +
-                         "INNER JOIN ParCompanyXUserSgq PxU ON U.Id = PxU.UserSgq_Id                                                          " +
-                         "WHERE U.Name = '" + userLogin + "' AND PxU.ParCompany_Id = C.Id                                                     ";
+            //string sql = "SELECT U.Id, U.Name AS Login, U.Password, U.FullName AS Name, U.ParCompany_Id , C.Name AS ParCompany_Name, PxU.Role " +
+            //             "FROM                                                                                                                " +
+            //             "UserSgq U                                                                                                           " +
+            //             "INNER JOIN ParCompany C ON U.ParCompany_Id = C.Id                                                                   " +
+            //             "INNER JOIN ParCompanyXUserSgq PxU ON U.Id = PxU.UserSgq_Id                                                          " +
+            //             "WHERE U.Name = '" + userLogin + "' AND PxU.ParCompany_Id = C.Id                                                     ";
+
+
+            string sql = "SELECT U.Id, U.Name AS Login, U.Password, U.FullName AS Name, U.ParCompany_Id , PC.Name AS ParCompany_Name, PxU.Role FROM UserSgq U " +
+                         "LEFT JOIN ParCompany PC ON U.ParCompany_Id = PC.Id   " +
+                         "LEFT JOIN ParCompanyXUserSgq PxU ON U.ParCompany_Id = PxU.ParCompany_Id AND PxU.UserSgq_Id = U.Id " +
+                         "WHERE U.name = '" +  userLogin + "'";
 
             var user = db.Query<UserSGQ>(sql).FirstOrDefault();
 

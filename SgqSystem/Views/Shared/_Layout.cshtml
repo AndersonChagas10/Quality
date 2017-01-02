@@ -148,6 +148,32 @@
             $('.modalConfirm').remove();
         }
 
+        function openMessageModal(title, content) {
+
+            var mensagem = $('#messageModal');
+
+            mensagem.children('.head').html(title);
+            mensagem.children('.body').html(content);
+            $('#overlay').fadeIn("fast");
+            $('#btnMessageOk').fadeIn("fast");
+
+            mensagem.fadeIn("fast");
+
+            setTimeout(function () {
+                $('#overlay').fadeOut("slow");
+                $('#btnMessageOk').fadeOut("slow");
+                mensagem.fadeOut("slow");
+            }, 2000);
+
+
+        }
+
+        $('#btnMessageOk').click(function () {
+            $('#overlay').fadeOut("fast");
+            var mensagem = $('#messageModal');
+            mensagem.fadeOut("fast");
+        });
+
     </script>
 
     <div class="page-wrapper">

@@ -307,7 +307,7 @@
     <value>Pontos</value>
   </data>
   <data name="register_total_evaluated" xml:space="preserve">
-    <value>Cadastro do Total Avaliado</value>
+    <value>Define monitoramentos por Família de produtos</value>
   </data>
   <data name="standard" xml:space="preserve">
     <value>Critério</value>
@@ -409,10 +409,10 @@
     <value>Define se esse nível acionará alertas. As regras do alerta serão definidas posteriormente no vínculo entre nível 2 e nível 3.</value>
   </data>
   <data name="permanent" xml:space="preserve">
-    <value>Fixo</value>
+    <value>Sim</value>
   </data>
   <data name="variable" xml:space="preserve">
-    <value>Variável</value>
+    <value>Não</value>
   </data>
   <data name="clusters" xml:space="preserve">
     <value>Clusters</value>
