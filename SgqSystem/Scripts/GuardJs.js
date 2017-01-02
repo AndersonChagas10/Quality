@@ -33,7 +33,7 @@ Inputmask.extendAliases({
 });
 Inputmask.extendAliases({
     'campoCalculado': {
-            mask: '[-][+]9{1,16}[.][9]{15}x10^[-][+]9{1,5}'
+        mask: '[-][+]9{1,16}[.][9]{15}x10^[-][+]9{1,5}'
             , placeholder: ' '
             , showMaskOnFocus: false
             , clearMaskOnLostFocus: true
@@ -41,8 +41,8 @@ Inputmask.extendAliases({
             , reverse: true
             , clearIfNotMatch: true
             , clearIncomplete: true
-            //, jitMasking: true
-    //, showTooltip: true
+        //, jitMasking: true
+        //, showTooltip: true
     }
 });
 
@@ -69,6 +69,13 @@ Inputmask.extendAliases({
         clearIfNotMatch: true
     }
 });
+
+function MapeiaValorParaHC(array, prop) {
+    var arrayRetorno = $.map(array, function (o, c) {
+        return o[prop];
+    });
+    return arrayRetorno;
+}
 
 function loadSelect2() {
     $.fn.select2.defaults.set("theme", "classic");
@@ -100,7 +107,7 @@ var DivManager = {
 
 GuardJs = {
 
-    mascaraNumericaPositiva : function(e){
+    mascaraNumericaPositiva: function (e) {
         $(e).inputmask("numericoPositivo");
     },
 

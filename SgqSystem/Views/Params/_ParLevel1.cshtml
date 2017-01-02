@@ -1247,11 +1247,8 @@
         }
     }
 
-    var modelLevel1 = @Html.Raw(Json.Encode(Model));
+    
     $(document).ready(function () {
-
-
-       
 
         defaults();
         loadSelect2();
@@ -1267,11 +1264,11 @@
 
         SingleCallendar.IntiFullCallendarByClass('dataInput');
 
-        var parLevel1 = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto));
-        if(parLevel1.parNotConformityRuleXLevelDto.ParNotConformityRule_Id > 0)
-            $('#newLevel1Modal').find('#selectNotConformityRule').val(parLevel1.parNotConformityRuleXLevelDto.ParNotConformityRule_Id).change();
+        var parNotConformityRuleXLevelDto = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto));
+        if(parNotConformityRuleXLevelDto.ParNotConformityRule_Id > 0)
+            $('#newLevel1Modal').find('#selectNotConformityRule').val(parNotConformityRuleXLevelDto.ParNotConformityRule_Id).change();
 
-        $('#newLevel1Modal').find('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(parLevel1.parNotConformityRuleXLevelDto.Value)
+        $('#newLevel1Modal').find('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(parNotConformityRuleXLevelDto.Value)
 
         //Geral.TableShow();
         ///initialize form
@@ -1287,14 +1284,25 @@
         }, 3000);
 
         $('input[name="paramsDto.parLevel1Dto.IsRuleConformity"]:first').prop("checked", true);
-        if(!modelLevel1.paramsDto.parLevel1Dto.IsRuleConformity){
-            $('input[name="paramsDto.parLevel1Dto.IsRuleConformity"]').not(':checked').prop("checked", true);
+
+        try {
+
+            var IsRuleConformity = @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsRuleConformity));
+            var IsSpecificNumberEvaluetion = @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion));
+
+            if(!IsRuleConformity){
+                $('input[name="paramsDto.parLevel1Dto.IsRuleConformity"]').not(':checked').prop("checked", true);
+            }
+
+            $('input[name="paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion"]:first').prop("checked", true);
+            if(!IsSpecificNumberEvaluetion){
+                $('input[name="paramsDto.parLevel1Dto.IsFixedEvaluetionNumber"]').not(':checked').prop("checked", true);
+            }
+
+        } catch (e) {
+            console.log(e);
         }
 
-        $('input[name="paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion"]:first').prop("checked", true);
-        if(!modelLevel1.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion){
-            $('input[name="paramsDto.parLevel1Dto.IsFixedEvaluetionNumber"]').not(':checked').prop("checked", true);
-        }
     });
     
 </script>

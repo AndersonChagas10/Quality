@@ -14,9 +14,10 @@ namespace Helper
         public void OnException(ExceptionContext filterContext)
         {
             var ex = filterContext.Exception;
-            filterContext.ExceptionHandled = true;
+            filterContext.ExceptionHandled = false;
             LogException(ex);
             CreateExceptionContextResult(filterContext);
+
         }
 
         /// <summary>

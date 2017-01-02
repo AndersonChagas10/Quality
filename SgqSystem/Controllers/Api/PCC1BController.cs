@@ -11,35 +11,56 @@ using System.Web.Http;
 namespace SgqSystem.Controllers.Api
 {
 
-    public partial class TestePCC1B
+    public partial class _PCC1B
     {
         public int Sequential { get; set; }
         public int Side { get; set; }
-
     };
+
+    public partial class _Receive
+    {
+        public String Data { get; set; }
+        public int Unit { get; set; }
+        public int ParLevel2 { get; set; }
+    }
 
     [HandleApi()]
     [RoutePrefix("api/PCC1B")]
     public class PCC1BController : ApiController
     {
-        private List<TestePCC1B> _list { get; set; }
+        private _PCC1B pcc1b { get; set; }
 
         [HttpPost]
         [Route("Next")]
-        public List<TestePCC1B> Save(Object dataAtual)
+        public _PCC1B Next(_Receive receive)
         {
 
-            using (var db = new SGQ_GlobalEntities())
+            List<_PCC1B> _list = new List<_PCC1B>();
+
+            using (var db = new SgqDbDevEntities())
             {
 
-                string query = "SELECT Max(Sequential) AS Sequencial, Max(Side) AS Side from CollectionLevel2 " +
-                    "WHERE ParLevel1_Id=3 and ParLevel2_Id in (66,67) AND UnitId=1 AND CollectionDate ";
-                    //"BETWEEN '"+ dataAtual.ToString("yyyyMMdd") + " 00:00:00' AND '"+ dataAtual.ToString("yyyyMMdd") + " 23:59:59'";
+                string query = "SELECT IsNull(Max(Sequential), 0) AS Sequential, 0 AS Side from CollectionLevel2 " +
+                    "WHERE ParLevel1_Id=3 and ParLevel2_Id = "+ receive.ParLevel2 + " AND UnitId="+receive.Unit+" AND CollectionDate "+
+                    "BETWEEN '"+ receive.Data + " 00:00:00' AND '"+ receive.Data + " 23:59:59'";
 
-                _list = db.Database.SqlQuery<TestePCC1B>(query).ToList();
+                _list = db.Database.SqlQuery<_PCC1B>(query).ToList();
+
+                if (_list.Count > 0)
+                {
+                    pcc1b = _list[0];
+
+                    query = "SELECT IsNull(Max(Sequential), 0) AS Sequential, IsNull(Max(Side), 0) AS Side from CollectionLevel2 " +
+                    "WHERE ParLevel1_Id=3 and ParLevel2_Id = " + receive.ParLevel2 + " AND UnitId=" + receive.Unit + " AND CollectionDate " +
+                    "BETWEEN '" + receive.Data + " 00:00:00' AND '" + receive.Data + " 23:59:59' AND Sequential = "+pcc1b.Sequential;
+
+                    _list = db.Database.SqlQuery<_PCC1B>(query).ToList();
+
+                    pcc1b = _list[0];
+                }
             }
-            
-            return _list;
+
+            return pcc1b;
         }
     }
 }

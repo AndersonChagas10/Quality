@@ -70,7 +70,7 @@
 
     var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
 
-    function atribuiLevelDivCounter (){
+    function atribuiLevelDivAvAm (){
 
         var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto));
         var levelDomain;
@@ -85,7 +85,7 @@
 
     }
 
-    atribuiLevelDivCounter();
+    atribuiLevelDivAvAm();
 
     function getCounterObject (levelDomain, listSalvo) {
         return {
