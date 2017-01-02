@@ -69,6 +69,7 @@
                                             </div>
                                         </div>
 
+                                        @{ Html.EnableClientValidation(false); }
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
@@ -76,6 +77,7 @@
                                                 @Html.ValidationMessageFor(model => model.Data, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
+                                        @{ Html.EnableClientValidation(true); }
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Departamento, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -191,7 +193,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Save" class="btn btn-default" />
+                                                <input type="submit" value="Save" onclick="habilitar()" class="btn btn-default" />
                                             </div>
                                         </div>
                                     </div>
@@ -211,6 +213,12 @@
     <!-- END CONTENT BODY -->
 </div>
 <script>
+
+
+    function habilitar() {
+        $('#Avaliacoes').attr('disabled', false)
+        $('#Amostras').attr('disabled', false)
+    }
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");

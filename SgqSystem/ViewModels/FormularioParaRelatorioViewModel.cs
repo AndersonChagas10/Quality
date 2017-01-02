@@ -94,7 +94,7 @@ namespace SgqSystem.ViewModels
 
         #endregion
 
-
+        
 
 
     }

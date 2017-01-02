@@ -21,7 +21,7 @@
 <script type="text/javascript">
 
 
-    var url1 = '@Html.Raw(@urlScorecardMock)';
+    var url1 = '@Html.Raw(@urlScorecard)';
     var $btn = $('#btnSend');
     $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -45,6 +45,7 @@
             try {
                 var retornoArray = [];
                 var arrayItarator = r.Retorno;
+                $('#menu-toggle').click();
                 GerarTabela(r);
             } catch (e) {
                 console.log(e);

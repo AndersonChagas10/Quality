@@ -50,14 +50,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeVacuoGRD vacuoGRD)
         {
-            if (vacuoGRD.Data == null)
-                ModelState.AddModelError("Data", Guard.MesangemModelError("Data", false));
-
-            if (vacuoGRD.HorasTrabalhadasPorDia == null)
-                ModelState.AddModelError("HorasTrabalhadasPorDia", Guard.MesangemModelError("Horas trabalhadas por dia", false));
-
-            if (vacuoGRD.QtdadeFamiliaProduto == null)
-                ModelState.AddModelError("QtdadeFamiliaProduto", Guard.MesangemModelError("Número de famílias cadastradas", false));
+            ValidaVacuoGRD(vacuoGRD);
 
             if (ModelState.IsValid)
             {
@@ -69,6 +62,18 @@ namespace SgqSystem.Controllers
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", vacuoGRD.ParLevel1_id);
             return View(vacuoGRD);
+        }
+
+        private void ValidaVacuoGRD(VolumeVacuoGRD vacuoGRD)
+        {
+            if (vacuoGRD.Data == null)
+                ModelState.AddModelError("Data", Guard.MesangemModelError("Data", false));
+
+            if (vacuoGRD.HorasTrabalhadasPorDia == null)
+                ModelState.AddModelError("HorasTrabalhadasPorDia", Guard.MesangemModelError("Horas trabalhadas por dia", false));
+
+            if (vacuoGRD.QtdadeFamiliaProduto == null)
+                ModelState.AddModelError("QtdadeFamiliaProduto", Guard.MesangemModelError("Número de famílias cadastradas", false));
         }
 
         // GET: VacuoGRDs/Edit/5
@@ -95,6 +100,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeVacuoGRD vacuoGRD)
         {
+            ValidaVacuoGRD(vacuoGRD);
             if (ModelState.IsValid)
             {
                 db.Entry(vacuoGRD).State = EntityState.Modified;

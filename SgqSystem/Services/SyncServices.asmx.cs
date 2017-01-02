@@ -1688,7 +1688,7 @@ namespace SgqSystem.Services
                     var ConsolidationResultL1L2DB = new SGQDBContext.ConsolidationResultL1L2();
                     var consolidationResultL1L2 = ConsolidationResultL1L2DB.getConsolidation(Level2Result.ParLevel2_Id, Level2Result.Unit_Id);
 
-                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\"></div>";
+                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\"></div>";
                 }
             }
             return Results;
@@ -2855,7 +2855,7 @@ namespace SgqSystem.Services
                 var formControlPecas = "<input class='form-control input-sm pecasAvaliadas' type='number'>";
                 var formGroupPecas = html.div(
                                         outerhtml: labelPecas + formControlPecas,
-                                        classe: "form-group header",
+                                        classe: "form-group",
                                         style: "margin-bottom: 4px;"
                                         );
 
@@ -3034,7 +3034,7 @@ namespace SgqSystem.Services
                 var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
                 var formGroupSequencial = html.div(
                                         outerhtml: labelSequencial + formControlSequencial,
-                                        classe: "form-group header",
+                                        classe: "form-group",
                                         style: "margin-bottom: 4px;"
                                         );
 
@@ -3042,7 +3042,7 @@ namespace SgqSystem.Services
                 var formControlBanda = "<input class='form-control input-sm banda' type='number'>";
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,
-                                        classe: "form-group header",
+                                        classe: "form-group",
                                         style: "margin-bottom: 4px;"
                                         );
 
@@ -3126,7 +3126,7 @@ namespace SgqSystem.Services
                 var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
                 var formGroupSequencial = html.div(
                                         outerhtml: labelSequencial + formControlSequencial,
-                                        classe: "form-group header",
+                                        classe: "form-group",
                                         style: "margin-bottom: 4px;"
                                         );
 
@@ -3134,7 +3134,7 @@ namespace SgqSystem.Services
                 var formControlBanda = "<input class='form-control input-sm banda' type='number'>";
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,
-                                        classe: "form-group header",
+                                        classe: "form-group",
                                         style: "margin-bottom: 4px;"
                                         );
 
@@ -3489,7 +3489,7 @@ namespace SgqSystem.Services
             string head = html.div(classe: "head");
 
             //Verifica as configurações iniciais da tela
-            var ParConfSGQDB = new SGQDBContext.ParConfSGQ();
+            var ParConfSGQDB = new SGQDBContext.ParConfSGQContext();
             var configuracoes = ParConfSGQDB.get();
 
 
@@ -3876,7 +3876,7 @@ namespace SgqSystem.Services
 
             if (!string.IsNullOrEmpty(options))
             {
-                options = "<select id=\"selectParCompany\" ParCompany_Id=\"" + ParCompany_Id + "\">" + options + "</select>";
+                options = "<select id=\"selectParCompany\" style=\"margin: 14px;\" ParCompany_Id=\"" + ParCompany_Id + "\">" + options + "</select>";
             }
             return options;
         }

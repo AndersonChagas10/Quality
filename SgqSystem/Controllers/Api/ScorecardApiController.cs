@@ -15,8 +15,8 @@ namespace SgqSystem.Controllers.Api
         private List<ScorecardResultSet> _list { get; set; }
 
         [HttpPost]
-        [Route("GetScorecardMock")]
-        public List<ScorecardResultSet> GetScorecardMock([FromBody] FormularioParaRelatorioViewModel form)
+        [Route("GetScorecard")]
+        public List<ScorecardResultSet> GetScorecard([FromBody] FormularioParaRelatorioViewModel form)
         {
             //CriaMock();
             var query = new ScorecardResultSet().SelectScorecard(form._dataInicio, form._dataFim, form.unitId);

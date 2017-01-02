@@ -310,6 +310,7 @@
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Api\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Api\PCC1BController.cs" />
+    <Compile Include="Controllers\Api\RelatorioDiarioApiController.cs" />
     <Compile Include="Controllers\Api\ScorecardApiController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoResultadosController.cs" />
@@ -1257,6 +1258,7 @@
     <Content Include="Views\ParLevel2ControlCompany\_ControlCompanySelectBoxLevel2UserCompany.cshtml" />
     <Content Include="Views\RelatoriosSgq\Scorecard.cshtml" />
     <Content Include="Views\Manutencao\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioDiario.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

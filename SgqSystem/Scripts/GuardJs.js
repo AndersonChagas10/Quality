@@ -79,6 +79,25 @@ function loadSelect2() {
     $('.select2-container--classic .select2-selection--single .select2-selection__arrow').css('height', '32px');
 }
 
+//Auxiliares para abas
+var DivManager = {
+    //Cria div dentro de um elemento, retorna Id da div criada.
+    // Parans: idString: Id do elemento aonde sera adicionada a nova Div, por ex, uma div,
+    //         Contador: Numero sequencial concatenado ao Id da Div criada, por ex "IdNovo" + 1 = IdNovo1, Idnovo2, etc...,
+    //         Tag: Complemento concatenado ao IdNovo, este não é sequencial,
+    //         W: Width da div.
+    // Returns: Id da Div criada.
+    criaDiv: function (idString, contador, tag, w) {
+        var novoId = idString + contador + (tag != undefined ? tag : "");
+        document.getElementById(idString).appendChild(document.createElement("div"));
+        $("#" + idString).children().last().attr("id", novoId);
+        if (w != undefined)
+            $("#" + idString).children().last().width(w);
+        return $("#" + idString).children().last().attr("id");
+    },
+
+};
+
 GuardJs = {
 
     mascaraNumericaPositiva : function(e){

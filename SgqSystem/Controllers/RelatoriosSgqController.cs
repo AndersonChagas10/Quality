@@ -64,5 +64,10 @@ namespace SgqSystem.Controllers
             return View(form);
         }
 
+        public ActionResult RelatorioDiario()
+        {
+            return View(form);
+        }
+
     }
 }

@@ -29,7 +29,7 @@ namespace SgqSystem.Controllers
             _baseParLevel2ControlCompany = baseParLevel2ControlCompany;
             _baseLevel1 = baseLevel1;
             _baseLevel2 = baseLevel2;
-            ViewBag.ParLevel1 = _baseLevel1.GetAll().Where(r => r.Id == 21 || r.Id == 2);
+            ViewBag.ParLevel1 = _baseLevel1.GetAll().Where(r => r.IsFixedEvaluetionNumber == true);
             ViewBag.ParLevel2Todos = new List<ParLevel2DTO>();
             ViewBag.level2Number = 0;
 
@@ -54,7 +54,8 @@ namespace SgqSystem.Controllers
                 var lastDate = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
                 var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDate).Select(r => r.ParLevel2);
 
-                ViewBag.ParLevel2Todos = todosLevel321.Select(r => r.ParLevel3Level2.ParLevel2);
+                ViewBag.ParLevel2Todos = todosLevel321.Select(r => r.ParLevel3Level2.ParLevel2).GroupBy(r => r.Id)
+                    .Select(group => group.First()).ToList();
                 ViewBag.ParLevel2Ids = level2Comporativo?.Select(r=>r.Id);
                 ViewBag.level2Number = _baseLevel1.GetById(id).level2Number;
             }
