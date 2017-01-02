@@ -877,10 +877,11 @@
                                         $('#secoundTable .table').remove('table');
 
                                         var pacote = name.getAttribute("x");
-                                        alert(name.getAttribute("x") + " - " + name.getAttribute("y"));
+                                       // alert(name.getAttribute("x") + " - " + name.getAttribute("y"));
                                         var regional = name.getAttribute("y");
+                                        pacote = "teste";
                                         
-                                        $.post('../api/Manutencao/getTabela2', { pacote: pacote, regional: regional }, function (lista) {
+                                        $.post('../api/Manutencao/getTabela2', { pacote: pacote }, function (lista) {
                                             // titleColumn1
                                             var titleColumn1 = [];
                                             titleColumn1[0] = ['&nbsp;', 1];
