@@ -7,7 +7,7 @@
 
 }
 
-<tr class="rowTabelaFamilia">
+<tr class="rowTabelaFamilia" id="monCorpAtivo">
     <td class="colTabelaFamilia">
         @Html.Label("Monitoramentos Corporativos Ativos:")
     </td>
@@ -16,18 +16,19 @@
     </td>
 </tr>
 
-<tr class="rowTabelaFamilia">
+<tr class="rowTabelaFamilia" id="numeroFamilias">
     <td class="colTabelaFamilia">
         @Html.Label("Numero de monitoramentos não corporativos:")
     </td>
     <td class="colTabelaFamilia" align="center">
-        @Html.TextBox("level2Number", leve2Number)
+        @Html.TextBox("level2Number", leve2Number, new { @class = "form-control" })
     </td>
 </tr>
 
 
 <script>
     var level2Selected = @Html.Raw(Json.Encode(ViewBag.ParLevel2Ids));
+    $('#level2Number').inputmask('integer', { rightAlign: false });
     $(document).ready(function () {
         loadSelect2();
         $('#level2').select2({ allowClear: true, placeholder: "" })

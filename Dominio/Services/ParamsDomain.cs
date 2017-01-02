@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
+using System;
 
 namespace Dominio.Services
 {
@@ -210,6 +211,7 @@ namespace Dominio.Services
         {
             /*ParLevel1*/
             var parlevel1 = _baseRepoParLevel1.GetById(idParLevel1);
+           
             var parlevel1Dto = Mapper.Map<ParLevel1DTO>(parlevel1);
             parlevel1Dto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parlevel1.ParCounterXLocal.OrderByDescending(r => r.IsActive));/*Contadores*/
             parlevel1Dto.listParGoalLevel1 = Mapper.Map<List<ParGoalDTO>>(parlevel1.ParGoal.OrderByDescending(r => r.IsActive));/*Meta*/
@@ -222,6 +224,22 @@ namespace Dominio.Services
 
             parlevel1Dto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();
             parlevel1Dto.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2NLL.GetAll()), parlevel1Dto.listParLevel3Level2Level1Dto);
+
+            foreach (var i in parlevel1Dto.listParLevel3Level2Level1Dto)
+            {
+                i.ParLevel3Level2.ParLevel2 = null;
+                i.ParLevel3Level2.ParCompany = null;
+                i.ParLevel3Level2.ParLevel3 = null;
+                i.ParLevel3Level2.ParLevel3Group = null;
+                i.ParLevel1 = null;
+            }
+
+            foreach (var i in parlevel1Dto.listParRelapseDto)
+            {
+                i.parLevel1 = null;
+                i.parLevel2 = null;
+                i.parLevel3 = null;
+            }
 
             return parlevel1Dto;
         }
@@ -304,7 +322,12 @@ namespace Dominio.Services
                 level2.pesoDoVinculoSelecionado = 0;
 
             paramsDto.parLevel2Dto = level2;
-
+            //foreach (var i in paramsDto.parLevel2Dto.listParLevel3Level2Dto)
+            //{
+            //    i.ParLevel2 = null;
+            //    i.ParLevel3 = null;
+            //    i.ParCompany = null;
+            //}
             return paramsDto;
         }
 

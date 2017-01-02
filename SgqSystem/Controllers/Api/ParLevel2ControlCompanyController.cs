@@ -30,8 +30,9 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("Save")]
-        public void Save([FromBody]  ParLevel1DTO parLevel1)
+        public List<ParLevel2ControlCompanyDTO> Save([FromBody]  ParLevel1DTO parLevel1)
         {
+            throw new Exception("ewqewqe");
             var initDate = DateTime.Now;
             if (parLevel1.CompanyControl_Id == null || parLevel1.CompanyControl_Id <= 0)
             {
@@ -46,6 +47,7 @@ namespace SgqSystem.Controllers.Api
                     foreach (var level2Id in parLevel1.level2PorCompany)
                         _list.Add(_baseParLevel2ControlCompany.AddOrUpdate(new ParLevel2ControlCompanyDTO(level2Id, parLevel1.Id, parLevel1.CompanyControl_Id, initDate)));
             }
+            return _list;
         }
 
 

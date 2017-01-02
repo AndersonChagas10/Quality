@@ -57,7 +57,7 @@
 <script>
 
     var levelControl = @Html.Raw(Json.Encode(@Model.levelControl));
-    function atribuiLevelDivCounter (){
+    function atribuiLevelDivReincidencia (){
 
         var paramsDto = @Html.Raw(Json.Encode(@Model.paramsDto));
         var levelDomain;
@@ -83,7 +83,7 @@
         }
     }
 
-    atribuiLevelDivCounter();
+    atribuiLevelDivReincidencia();
     function getCounterObject (levelDomain, listSalvo) {
         return {
             /*Setup*/

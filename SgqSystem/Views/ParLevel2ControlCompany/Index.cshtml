@@ -38,7 +38,7 @@
         </div>
         <!-- END PAGE BAR -->
         <!-- END PAGE HEADER-->
-        
+
 
 
         <div class="row">
@@ -53,58 +53,50 @@
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
+
+
                                 <div class="row">
-                                    <div class="col-xs-3">
-                                        @*<button class="btn btn-primary btn-block" id="btnNewLevel1">FAMILIAS</button>*@
-                                    </div>
-                                    <div class="col-xs-9">
 
-                                        <div class="row">
-                                            <div class="col-lg-12">
+                                    <style>
+                                        .colTabelaFamilia {
+                                            padding: 10px;
+                                        }
 
-                                                <style>
-                                                    .colTabelaFamilia {
-                                                        padding: 10px;
-                                                    }
+                                        .rowTabelaFamilia {
+                                            padding: 10px;
+                                        }
+                                    </style>
 
-                                                    .rowTabelaFamilia {
-                                                        padding: 10px;
-                                                    }
-                                                </style>
+                                    <table id="tblFamilia" style="width: 100%;">
+                                        <tbody>
 
-                                                <table id="tblFamilia">
-                                                    <tbody>
+                                            <tr class="rowTabelaFamilia">
+                                                <td style="width: 30%;" class="colTabelaFamilia">@Html.Label("Empresa:")</td>
+                                                <td class="colTabelaFamilia" align="center">@Html.DropDownList("company", new SelectList(ViewBag.company, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
+                                            </tr>
 
-                                                        <tr class="rowTabelaFamilia">
-                                                            <td class="colTabelaFamilia">@Html.Label("Empresa:")</td>
-                                                            <td class="colTabelaFamilia" align="center">@Html.DropDownList("company", new SelectList(ViewBag.company, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
-                                                        </tr>
+                                            <tr class="rowTabelaFamilia">
+                                                <td style="width: 30%;" class="colTabelaFamilia">@Html.Label("Indicador:")</td>
+                                                <td class="colTabelaFamilia" align="center">@Html.DropDownList("level1", new SelectList(ViewBag.ParLevel1, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
+                                            </tr>
 
-                                                        <tr class="rowTabelaFamilia">
-                                                            <td class="colTabelaFamilia">@Html.Label("Indicador:")</td>
-                                                            <td class="colTabelaFamilia" align="center">@Html.DropDownList("level1", new SelectList(ViewBag.ParLevel1, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
-                                                        </tr>
+                                            @Html.Partial("_ControlCompanySelectBoxLevel2")
 
-                                                        @Html.Partial("_ControlCompanySelectBoxLevel2")
+                                            @Html.Partial("_ControlCompanySelectBoxLevel2UserCompany")
 
-                                                        @Html.Partial("_ControlCompanySelectBoxLevel2UserCompany")
+                                            <tr class="rowTabelaFamilia">
+                                                <td class="colTabelaFamilia" align="left">
+                                                    <button class="btn btn-primary" type='button' id='send' onclick='send();'>Gravar as famílias escolhidas</button>
+                                                </td>
+                                                <td class="colTabelaFamilia"></td>
+                                            </tr>
 
-                                                        <tr class="rowTabelaFamilia">
-                                                            <td class="colTabelaFamilia"></td>
-                                                            <td class="colTabelaFamilia" align="center">
-                                                                <button class='btn btn-primary btn-sm' type='button' id='send' onclick='send();'>Gravar as famílias escolhidas</button>
-                                                            </td>
-                                                        </tr>
+                                        </tbody>
+                                    </table>
 
-                                                    </tbody>
-                                                </table>
-                                                
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <hr />
                                 </div>
+
+                                <hr />
                             </div>
                         </div>
                     </div>
@@ -112,9 +104,9 @@
             </div>
         </div>
 
-  
+
     </div>
-<!-- END CONTENT BODY -->
+    <!-- END CONTENT BODY -->
 </div>
 
 
@@ -141,17 +133,18 @@ else
     <script>
 
         function selectLevel2() {
+
             var id = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;
             var idComp = $('#company :selected').val() > 0 ? $('#company :selected').val() : 0;
             $.post(urlChangeLevel2UserCompany, { "id": id, "companyId": idComp }, function (r) {
-                $('#tblFamilia > tbody > tr')[4].remove();
-                $('#tblFamilia > tbody').append(r);
+                $('#MonEmpresa').remove();
+                $(r).insertAfter($($('#tblFamilia > tbody > tr')[2]).closest('tr'));
                 var id2 = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;
-                $.post(urlChangeLevel2, { "id": id2 }, function (r) {
+                $.post(urlChangeLevel2, { "id": id2 }, function (rr) {
                     $('#level2Number').val('');
-                    $('#tblFamilia > tbody > tr')[2].remove();
-                    $('#tblFamilia > tbody > tr')[2].remove();
-                    $($('#tblFamilia > tbody > tr')[2]).prev().after(r)
+                    $('#monCorpAtivo').remove();
+                    $('#numeroFamilias').remove();
+                    $(rr).insertAfter($('#MonEmpresa').closest('tr'));
                     $('#level2').attr('disabled', true);
                     $('#level2Number').attr('disabled', true);
                 });
@@ -169,9 +162,9 @@ else
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
-
+    var $btn = $('#send');
     navbarSelect("navbar1");
-
+    
     var formOriginal = $('#tblFamilia > tbody').clone();
     var urlSend = '@Html.Raw(@urlSend)';
     var urlChangeLevel2 = '@Html.Raw(@urlChangeLevel2)';
@@ -187,15 +180,24 @@ else
         if (data["Id"] == undefined)
             data["Id"] = $("#company :selected").val();
 
-        $.post(urlSend, data, function (r) { });
+        $btn.button('loading');
+        $.post(urlSend, data, function (r) {
+            $btn.button('reset');
+            //if (r.length)
+            //    openMessageModal('Feito!', '');
+            //else
+            //    openMessageModal('Não foi possível salvar os dados.', '');
+
+        });
     }
 
     $(document).ready(function () {
+       
         loadSelect2();
         $('#level1').on('change', selectLevel2)
         $('#company').on('change', function () {
             if ($('#level1').val() > 0) {
-                selectLevel2();
+                $('#level1').trigger("change");
             }
         });
         $('#level1').select2()
@@ -205,12 +207,26 @@ else
 
     })
 
-    $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
-        console.log("There was an ajax error!");
-        //console.log(event);
-        //console.log(xhr);
-        //console.log(ajaxOptions);
-        //console.log(thrownError);
+    $(document).ajaxStart(function () {
+        openLoader("@Resources.Resource.please_wait" + "...");
     });
+
+    $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
+        $btn.button('reset');
+        closeLoader();
+        //openMessageModal('Não foi possivel completar a requisição de dados.', '');
+    });
+
+    $(document).ajaxStop(function () {
+        closeLoader();
+    });
+
+    //$(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
+    //    console.log("There was an ajax error!");
+    //    //console.log(event);
+    //    //console.log(xhr);
+    //    //console.log(ajaxOptions);
+    //    //console.log(thrownError);
+    //});
 
 </script>
