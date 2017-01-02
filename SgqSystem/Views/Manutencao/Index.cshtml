@@ -536,8 +536,21 @@
                                     //quando clicar na primeira tabela
                                     $('#firstTableTeste').click(function () {
 
-                                        //secoundTable('name');
+                                        //var regional = name.getAttribute("y");
 
+                                        /****
+                                        POST BY Celso TATO
+                                        ****/
+                                        //$.post('../api/Manutencao/getTabela2/' + pacote + '/' + regional + '/')
+        
+                                        /********************/
+                                       
+                                        //var loader = "carregando..."
+
+                                        //$.post('../api/Manutencao/getGrafico2/null/null/null/null/' +  escape(regional.replace(/[/]/g, '|')) + '/', function (lista) {
+
+
+                                        //});
                                         var name = ['ARA', 'DMT', 'PDP', 'PEL', 'PIB', 'PVH', 'RBR', 'SMG', 'VHA'];
                                         var x1 = [-5.0, 22.0, -5.8, 15.3, 5.3, 26.7, -3.0, -1.4, -19.3];
                                         var x2 = [-1.7, 5.5, 2.0, 12.2, 3.2, 9.8, 7.1, -1.9, -15.7];
@@ -545,11 +558,13 @@
                                         var x4 = [5.8, 1.0, 3.2, 2.2, -3.2, 3.2, 20.6, 0.2, -6, .6];
                                         SecondChart(name, x1, x2, x3, x4);
 
+                                        
+
                                     });
 
                                     //quando clicar na segunda tabela
                                     $('#secoundTable').click(function () {
-
+                                    
                                         var name = ['ARA', 'DMT', 'PDP', 'PEL', 'PIB', 'PVH', 'RBR', 'SMG', 'VHA'];
                                         var x1 = [-5.0, 22.0, -5.8, 15.3, 5.3, 26.7, -3.0, -1.4, -19.3];
                                         var x2 = [-1.7, 5.5, 2.0, 12.2, 3.2, 9.8, 7.1, -1.9, -15.7];
