@@ -85,7 +85,8 @@ namespace SgqSystem.Controllers
                 ViewBag.level2Number = _baseLevel1.GetById(id).level2Number;
                 ViewBag.level2Comporativo = level2Comporativo;
                 ViewBag.level2ComporativoIds = level2Comporativo.Select(r => r.Id);
-                ViewBag.level2DisponivelParaEmpresa = level2DisponivelParaEmpresa;
+                ViewBag.level2DisponivelParaEmpresa = level2DisponivelParaEmpresa.GroupBy(r => r.Id)
+                    .Select(group => group.First()).ToList(); 
                 ViewBag.level2SelecionadosParaEmpresaIds = level2SelecionadosParaEmpresa?.Select(r => r.Id);
             }
             else

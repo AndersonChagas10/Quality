@@ -200,31 +200,6 @@
 
     navbarSelect("navbar1");
 
-    function openMessageModal(title, content) {
-
-        var mensagem = $('#messageModal');
-
-        mensagem.children('.head').html(title);
-        mensagem.children('.body').html(content);
-        $('#overlay').fadeIn("fast");
-        $('#btnMessageOk').fadeIn("fast");
-
-        mensagem.fadeIn("fast");
-
-        setTimeout(function(){
-            $('#overlay').fadeOut("slow");
-            $('#btnMessageOk').fadeOut("slow");
-            mensagem.fadeOut("slow");
-        }, 2000);
-      
-
-    }
-
-    $('#btnMessageOk').click(function(){
-        $('#overlay').fadeOut("fast");
-        var mensagem = $('#messageModal');
-        mensagem.fadeOut("fast");
-    });
 
     ///initialize switches
 
@@ -236,12 +211,13 @@
     }
 
     function loadSelect2(){
-        $.fn.select2.defaults.set("theme", "classic");
-        $('.select2').css("max-height","400px");
-        $('.select2').select2({matcher: modelMatcher});
-        $('.select2-container .select2-selection--single').css('height', '34px');
-        $('.select2-container--classic .select2-selection--single .select2-selection__rendered').css('line-height', '34px');
-        $('.select2-container--classic .select2-selection--single .select2-selection__arrow').css('height', '32px');
+    //    $.fn.select2.defaults.set("theme", "classic");
+    //    $('.select2').css("max-height","400px");
+    //  $('.select2').select2({matcher: modelMatcher});
+        $('.select2').select2();
+    //    $('.select2-container .select2-selection--single').css('height', '34px');
+    //    $('.select2-container--classic .select2-selection--single .select2-selection__rendered').css('line-height', '34px');
+    //    $('.select2-container--classic .select2-selection--single .select2-selection__arrow').css('height', '32px');
     }
 
     function modelMatcher (params, data) {
