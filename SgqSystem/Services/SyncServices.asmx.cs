@@ -2285,7 +2285,7 @@ namespace SgqSystem.Services
                                                             "</div>" +
                                                             "<div class=\"col-xs-6\" id=\"AuditInformation\">" +
                                                             "<b class=\"font16\">Informação da Auditoria:<br/></b>" +
-                                                            "<b>Auditoria: </b><span id=\"auditText\"></span><br/>" +
+                                                            "<b>Indicador: </b><span id=\"auditText\"></span><br/>" +
                                                             "<b>Data Início:</b><span id=\"starttime\"></span><br/>" +
                                                             //"<b>Period:</b><span id=\"correctivePeriod\"></span>" +
                                                             "</div>" +

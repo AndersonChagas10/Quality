@@ -871,18 +871,26 @@ namespace SGQDBContext
         public int ParCompany_Id { get; set; }
         public string ParCompany_Name { get; set; }
         public string Role { get; set; }
+
+
         public UserSGQ getUserByLogin(string userLogin)
         {
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT U.Id, U.Name AS Login, U.Password, U.FullName AS Name, U.ParCompany_Id , C.Name AS ParCompany_Name, PxU.Role " +
-                         "FROM                                                                                                                " +
-                         "UserSgq U                                                                                                           " +
-                         "INNER JOIN ParCompany C ON U.ParCompany_Id = C.Id                                                                   " +
-                         "INNER JOIN ParCompanyXUserSgq PxU ON U.Id = PxU.UserSgq_Id                                                          " +
-                         "WHERE U.Name = '" + userLogin + "' AND PxU.ParCompany_Id = C.Id                                                     ";
+            //string sql = "SELECT U.Id, U.Name AS Login, U.Password, U.FullName AS Name, U.ParCompany_Id , C.Name AS ParCompany_Name, PxU.Role " +
+            //             "FROM                                                                                                                " +
+            //             "UserSgq U                                                                                                           " +
+            //             "INNER JOIN ParCompany C ON U.ParCompany_Id = C.Id                                                                   " +
+            //             "INNER JOIN ParCompanyXUserSgq PxU ON U.Id = PxU.UserSgq_Id                                                          " +
+            //             "WHERE U.Name = '" + userLogin + "' AND PxU.ParCompany_Id = C.Id                                                     ";
+
+
+            string sql = "SELECT U.Id, U.Name AS Login, U.Password, U.FullName AS Name, U.ParCompany_Id , PC.Name AS ParCompany_Name, PxU.Role FROM UserSgq U " +
+                         "LEFT JOIN ParCompany PC ON U.ParCompany_Id = PC.Id   " +
+                         "LEFT JOIN ParCompanyXUserSgq PxU ON U.ParCompany_Id = PxU.ParCompany_Id AND PxU.UserSgq_Id = U.Id " +
+                         "WHERE U.name = '" +  userLogin + "'";
 
             var user = db.Query<UserSGQ>(sql).FirstOrDefault();
 
