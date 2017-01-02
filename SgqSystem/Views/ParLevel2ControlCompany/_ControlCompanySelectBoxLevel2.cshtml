@@ -4,7 +4,6 @@
     {
         leve2Number = ViewBag.level2Number;
     }
-
 }
 
 <tr class="rowTabelaFamilia" id="monCorpAtivo">
@@ -30,7 +29,6 @@
     var level2Selected = @Html.Raw(Json.Encode(ViewBag.ParLevel2Ids));
     $('#level2Number').inputmask('integer', { rightAlign: false });
     $(document).ready(function () {
-        loadSelect2();
         $('#level2').select2({ allowClear: true, placeholder: "" })
         if(level2Selected != null)
             $('#level2').val(level2Selected).change();

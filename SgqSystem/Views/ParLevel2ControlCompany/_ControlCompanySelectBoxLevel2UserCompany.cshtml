@@ -22,7 +22,6 @@
     var level2SelecionadosParaEmpresaIds = @Html.Raw(Json.Encode(ViewBag.level2SelecionadosParaEmpresaIds));
 
     $(document).ready(function () {
-        loadSelect2();
         var max = @Html.Raw(Json.Encode(leve2Number));
 
         $('#level2SelecionadoPorCompany').select2({ allowClear: true, placeholder: "Selecione..." , maximumSelectionLength: max })

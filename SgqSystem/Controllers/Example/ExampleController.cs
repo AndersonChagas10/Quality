@@ -9,9 +9,9 @@ namespace SgqSystem.Controllers
     /// <summary>
     /// Controller para aprendizagem do sistema.
     /// </summary>
+    [HandleController()]
     public class ExampleController : BaseController
     {
-        [HandleController()]
         public ActionResult Index()
         {
             using (var db = new FactoryADO(@"SERVERGRT\MSSQLSERVER2014", "SgqDbDev", "1qazmko0", "sa"))
@@ -21,6 +21,16 @@ namespace SgqSystem.Controllers
 
             ContextExampleViewModel pvm = new ContextExampleViewModel();
             return View(pvm);
+        }
+
+        public ActionResult TesteSelect2()
+        {
+            //using (var db = new FactoryADO(@"SERVERGRT\MSSQLSERVER2014", "SgqDbDev", "1qazmko0", "sa"))
+            //{
+            //    var results = db.SearchQuery<UserSgq>("Select * from UserSgq");
+            //}
+
+            return View();
         }
 
     }
