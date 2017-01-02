@@ -96,21 +96,6 @@ namespace SgqSystem.Controllers.Api
                     sql += "\n WHERE MesAno BETWEEN '20150101' AND '20180101' AND TipoInformacao = 'CustoFixo' and Pacote in (\'" + pacoteDecode + "\') and EmpresaRegional in (\'" + regionalDecode + "\') ";
                     sql += "\n group by EmpresaSigla )teste  group by Regional  order by 1 asc";
 
-
-                    //sql = " select EmpresaSigla as Regional,";
-                    //sql += " ROUND(SUM(DespesaOrcada), 0) AS Orçada,";
-                    //sql += " ROUND(SUM(DespesaRealizada), 0) AS Realizada,";
-                    //sql += " CASE WHEN SUM(DespesaOrcada) = 0 THEN 0 ELSE ROUND((SUM(DespesaRealizada) / SUM(DespesaOrcada) - 1) * 100, 0) END AS DesvioPorc,";
-                    //sql += " ROUND(SUM(DespesaRealizada) - SUM(DespesaOrcada), 0) AS DesvioReal";
-                    //sql += " from Manutencao";
-                    //sql += " WHERE MesAno BETWEEN '20150101' AND '20180101'";
-                    //sql += " AND TipoInformacao = 'CustoFixo'";
-                    //sql += " and Pacote in (\'" + pacoteDecode + "\')";
-                    //sql += " and EmpresaRegional in (\'" + regionalDecode + "\')";
-                    //sql += " and ContaContabil in ('" +item.Name+ "')";
-                    //sql += " group by EmpresaSigla";
-                    //sql += " order by EmpresaSigla asc;";
-
                     item.ListaRegionais = db.Database.SqlQuery<Reg>(sql).ToList();
 
                     sql = " select ContaContabil as Pacote, ROUND(SUM(DespesaOrcada), 0) AS Orçada,  ROUND(SUM(DespesaRealizada), 0) AS Realizada,";
