@@ -32,7 +32,7 @@ namespace SgqSystem.Controllers.Api
         [Route("Save")]
         public List<ParLevel2ControlCompanyDTO> Save([FromBody]  ParLevel1DTO parLevel1)
         {
-            throw new Exception("ewqewqe");
+            //throw new Exception("ewqewqe");
             var initDate = DateTime.Now;
             if (parLevel1.CompanyControl_Id == null || parLevel1.CompanyControl_Id <= 0)
             {

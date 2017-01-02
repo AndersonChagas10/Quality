@@ -183,10 +183,10 @@ else
         $btn.button('loading');
         $.post(urlSend, data, function (r) {
             $btn.button('reset');
-            //if (r.length)
-            //    openMessageModal('Feito!', '');
-            //else
-            //    openMessageModal('Não foi possível salvar os dados.', '');
+            if (r.length)
+                openMessageModal('Feito!', '');
+            else
+                openMessageModal('Não foi possível salvar os dados.', '');
 
         });
     }
@@ -214,7 +214,12 @@ else
     $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
         $btn.button('reset');
         closeLoader();
-        //openMessageModal('Não foi possivel completar a requisição de dados.', '');
+        try {
+            console.log(xhr.responseJSON.Message)
+        } catch (e) {
+
+        }
+        openMessageModal('Não foi possivel completar a requisição de dados.', '');
     });
 
     $(document).ajaxStop(function () {
