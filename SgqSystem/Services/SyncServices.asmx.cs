@@ -2374,7 +2374,7 @@ namespace SgqSystem.Services
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
 
             //Buscamos os ParLevel11 para a unidade selecionada
-            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id).Where(p => p.Id == 1);
+            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id);
 
             //Agrupamos o ParLevel1 por ParCriticalLevel
             var parLevel1GroupByCriticalLevel = parLevel1List.OrderBy(p => p.ParCriticalLevel_Id).GroupBy(p => p.ParCriticalLevel_Id);
