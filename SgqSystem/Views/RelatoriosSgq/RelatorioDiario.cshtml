@@ -16,15 +16,21 @@
             border-color: #999;
             color: #333;
         }
+
+    .chart-inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
 </style>
 
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
-
+    
     <div id="formBodyContent">
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
         <div id="load"></div>
-        <div id="plotPrincipal"></div>
+        <div id="plotPrincipal" ></div>
         <div class="panel panel-info" id="PanelFull" style="display:none">
             <div class="panel-heading"></div>
             <div class="panel-body" id="g1">
@@ -68,13 +74,14 @@
             FTA._unidadeId = $('#Unidade').val(),
             FTA._dataInicio = $('#dataInicio').val(),
             FTA._dataFim = FTA._dataInicio,
+             $('#menu-toggle').click();
 
             //AJAX
             $.post(url1, enviar, function (r) {
                 try {
                     var retornoArray = [];
                     var arrayItarator = r.Retorno;
-                    $('#menu-toggle').click();
+                   
                     GraficoInicialLeTodosLevel1(r);
 
                     r.forEach(function (o, c) {
@@ -86,7 +93,6 @@
                         $('#plotPrincipal').append(divClonada);
                         var div = DivManager.criaDiv(idDivTendencia, o.Id, "temperatura");
                         divClonada.find('.panel-heading').html(o.Level1Name); // Insere Titulo no Panel
-
                         var enviarClone = enviar;
 
                         enviarClone.level01Id = o.Id
@@ -100,7 +106,7 @@
 
                             //listResults["listResultSetLevel3"].forEach(function (oo, cc) {
                             //var divTarefaIndicador = DivManager.criaDiv(idDivTendencia, c, "tarefaIndicador");
-                                //GraficoTarefaIndicador(listResults["ResultsLevel3PorTarefa"], divTarefaIndicador, c, o);//Processa e cria grafico
+                            //GraficoTarefaIndicador(listResults["ResultsLevel3PorTarefa"], divTarefaIndicador, c, o);//Processa e cria grafico
                             //});
 
                             listResults["listResultSetLevel3"].forEach(function (oo, cc) {
@@ -108,7 +114,6 @@
                                 GraficoTarefa(listResults["listResultSetLevel3"], divTarefas, 'Titulo Level3', o.Id);//Processa e cria grafico
                             });
                         })
-
 
                     });
 
@@ -131,7 +136,7 @@
             });
         };
 
-      
+
 
         function GraficoInicialLeTodosLevel1(data) {
 
@@ -170,6 +175,7 @@
                     Chart.SimpleSerie(nc, "Total NC", Chart.CorTotalNc(), false, 1),
                     Chart.SimpleSerie(totalAvaliado, "Total Av", Chart.CorTotalAv(), false, 1)
                 ],
+                
             });
 
         }
@@ -471,7 +477,8 @@
                 yAxis: Chart.yAxisPadrao(true, true, true),
                 chart: {
                     type: 'column',
-                    zoomType: 'x, y'
+                    zoomType: 'x, y',
+                    height: '350'
                 },
                 zones: [{
                     value: 69,
@@ -490,7 +497,7 @@
             });
         }
 
-        function GraficoTarefa (data, idDiv, titulo, index) {
+        function GraficoTarefa(data, idDiv, titulo, index) {
 
             //Auxiliares.loading(idDiv);
 

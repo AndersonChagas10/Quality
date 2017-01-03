@@ -383,6 +383,7 @@
             //Ajusta as datatables presentes.
             var tables = $('table[id]')
             setTimeout(function (e) {
+
                 tables.each(function (c, o) {
                     if ($.fn.DataTable.isDataTable('#' + $(o).attr('id'))) {
                         var oTable = $(o).dataTable();
@@ -391,8 +392,16 @@
                         }
                         oTable = null;
                     }
-                })
+                });
+
+                $(Highcharts.charts).each(function (c, chart) {
+                    if (chart != undefined) {
+                        chart.reflow()
+                    }
+                });
+
             }, 500)
+
 
         });
     });
