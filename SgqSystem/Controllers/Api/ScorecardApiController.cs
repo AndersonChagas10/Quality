@@ -22,8 +22,23 @@ namespace SgqSystem.Controllers.Api
             var query = new ScorecardResultSet().SelectScorecard(form._dataInicio, form._dataFim, form.unitId);
             using (var db = new SgqDbDevEntities())
             {
-               _list = db.Database.SqlQuery<ScorecardResultSet>(query).ToList();
+
+                _list = db.Database.SqlQuery<ScorecardResultSet>(query).ToList();
+                var total = new ScorecardResultSet() { Level1Name = "Total:", Pontos = 0, Scorecard = 0 };
+
+                foreach (var i in _list)
+                {
+                    if (i.AV > 0)
+                    {
+                        total.Pontos += i.PontosAtingidos - i.Pontos;
+                        total.Scorecard += i.Scorecard;
+                    }
+                }
+                _list.Add(total);
             }
+
+
+            
 
             return _list;
         }
