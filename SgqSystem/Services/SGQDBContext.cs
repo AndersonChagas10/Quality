@@ -461,7 +461,7 @@ namespace SGQDBContext
 
 
             }
-            else if (ParLevel1.Id == 4 && ParCompany_Id != null)
+            else if (ParLevel1.hashKey == 4 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
@@ -483,7 +483,7 @@ namespace SGQDBContext
 
 
             }
-            else if (ParLevel1.Id == 1 && ParCompany_Id != null)
+            else if (ParLevel1.hashKey == 1 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
@@ -738,6 +738,7 @@ namespace SGQDBContext
         public int DefectsResultL2 { get; set; }
         public bool haveCorrectiveAction { get; set; }
 
+        public int CollectionLevel2_ID_CorrectiveAction { get; set; }
         public ConsolidationResultL1L2 getConsolidation(int ParLevel2_Id, int ParCompany_Id)
         {
 
@@ -745,7 +746,7 @@ namespace SGQDBContext
 
             string sql = "SELECT " +
                          "CDL1.AtualAlert AS AlertLevelL1, CDL1.WeiEvaluation AS WeiEvaluationL1, CDL1.EvaluateTotal AS EvaluateTotalL1, CDL1.DefectsTotal AS DefectsTotalL1, CDL1.WeiDefects AS WeiDefectsL1, CDL1.TotalLevel3Evaluation AS TotalLevel3EvaluationL1, CDL1.TotalLevel3WithDefects AS TotalLevel3WithDefectsL1, CDL1.LastEvaluationAlert AS LastEvaluationAlertL1, CDL1.EvaluatedResult AS EvaluatedResultL1, CDL1.DefectsResult AS DefectsResultL1, " +
-                         "CDL2.AlertLevel AS AlertLevelL2, CDL2.WeiEvaluation AS WeiEvaluationL2, CDL2.DefectsTotal AS DefectsL2, CDL2.WeiDefects AS WeiDefectsL2, CDL2.TotalLevel3WithDefects AS TotalLevel3WithDefectsL2, CDL2.TotalLevel3Evaluation AS TotalLevel3EvaluationL2, CDL2.EvaluateTotal AS EvaluateTotalL2, CDL2.DefectsTotal AS DefectsTotalL2, CDL2.EvaluatedResult AS EvaluatedResultL2, CDL2.DefectsResult AS DefectsResultL2, CL2.HaveCorrectiveAction AS HaveCorrectiveAction " +
+                         "CDL2.AlertLevel AS AlertLevelL2, CDL2.WeiEvaluation AS WeiEvaluationL2, CDL2.DefectsTotal AS DefectsL2, CDL2.WeiDefects AS WeiDefectsL2, CDL2.TotalLevel3WithDefects AS TotalLevel3WithDefectsL2, CDL2.TotalLevel3Evaluation AS TotalLevel3EvaluationL2, CDL2.EvaluateTotal AS EvaluateTotalL2, CDL2.DefectsTotal AS DefectsTotalL2, CDL2.EvaluatedResult AS EvaluatedResultL2, CDL2.DefectsResult AS DefectsResultL2, CL2.HaveCorrectiveAction AS HaveCorrectiveAction, MIN(CL2.Id) AS CollectionLevel2_ID_CorrectiveAction " +
                          "FROM ConsolidationLevel2 AS CDL2 " +
                          "INNER JOIN " +
                          "ConsolidationLevel1 AS CDL1 ON CDL2.ConsolidationLevel1_Id = CDL1.Id " +
@@ -1113,7 +1114,7 @@ namespace SGQDBContext
             SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT ConsolidationLevel2_Id, ParLevel2_Id, SUM(WeiEvaluation) AS [WeiEvaluationTotal], SUM(Defects) AS [DefectsTotal], SUM(WeiDefects) AS[WeiDefectsTotal], SUM(TotalLevel3WithDefects) AS [TotalLevel3WithDefects], SUM(TotalLevel3Evaluation) AS [TotalLevel3Evaluation], MAX(LastEvaluationAlert) AS LastEvaluationAlert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult " +
-                         "FROM CollectionLevel2 WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND ParLevel2_Id = " + ParLevel2_Id + " " +
+                         "FROM CollectionLevel2 WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND ParLevel2_Id = " + ParLevel2_Id + " AND NotEvaluatedIs=0" +
                          "group by ConsolidationLevel2_Id, ParLevel2_Id";
 
             var consolidationLevel2 = db.Query<CollectionLevel2Consolidation>(sql).FirstOrDefault();

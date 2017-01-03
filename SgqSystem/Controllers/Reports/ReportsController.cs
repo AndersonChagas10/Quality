@@ -55,7 +55,6 @@ namespace SgqSystem.Controllers
             form.SetPeriodSelectList(_period.GetAllNoLazyLoad());
             form.SetUnitsSelectList(_unit.GetAllNoLazyLoad());
             form.SetUserSelectList(_user.GetAllNoLazyLoad());
-            //form.SetUserSelectList(_userDomain.GetAllUserValidationAd(new UserDTO()).Retorno);
         }
 
         #endregion
