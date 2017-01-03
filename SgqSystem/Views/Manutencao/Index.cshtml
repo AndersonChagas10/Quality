@@ -3,10 +3,6 @@
     ViewBag.Title = "Index";
 }
 
-@*<script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>*@
-
-
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content" style="min-height: 600px;">
@@ -45,109 +41,84 @@
                                 <div id="corpo" style="margin-left: auto; margin-right:auto; padding:20px; z-index:1;">
 
                                     <div id="balao" style="position:fixed; width:200px; height:100px; border:1px solid #000; top:100px; right:0; z-index:9999; background-color: white;"> Dados filtrados</div>
-                                    <div id="mostrarBalao" style="position:fixed; width:20px; height:20px; border:1px solid #000; top:100px; right:0; z-index:9999; background-color: black; color:white;"><</div>
-
-
                                     
+                                    <div id="mostrarBalao" style="position:fixed; width:20px; height:20px; border:1px solid #000; top:100px; right:0; z-index:9999; background-color: black; color:white;"><</div>
+         
                                     <div id="firstChart" style="cursor:pointer;"></div>
 
-                                    <div id="firstTable" style="display:none; cursor:pointer; position: relative; overflow: auto; width: 100%; ">
-                                    </div>
+                                    <div id="firstTable" style="display:none; cursor:pointer; position: relative; overflow: auto; width: 100%; "></div>
 
-                                    <br /><br />
+                                    <div id="firstTableTeste" style="display:none; cursor:pointer; position: relative; overflow: auto; width: 100%; margin-left: auto; margin-right: auto; "></div>
 
-                                    <div id="firstTableTeste" style="display:none; cursor:pointer; position: relative; overflow: auto; width: 100%; margin-left: auto; margin-right: auto; ">
-                                    </div>
+                                    <div id="secoundTableTeste" style="display:none; cursor:pointer; position: relative; overflow: auto; width: 100%; margin-left: auto; margin-right: auto; "></div>
 
-                                    <br /><br />
-
-                                    <div id="secoundTable" style="display:none; cursor:pointer; position: relative; overflow: auto; width: 100%;">
-                                    </div>
-
-                                    <div id="secoundTableTeste" style="display:none; cursor:pointer; position: relative; overflow: auto; width: 100%; margin-left: auto; margin-right: auto; ">
-                                    </div>
-
-                                    <br /><br />
                                     <div id="SecondChart" style="display:none; cursor:pointer"></div>
 
-                                    <br /><br />
                                     <div id="ThirdChartMeses" style="display:none; cursor:pointer">
 
                                         <table>
                                             <tr>
                                                 <td rowspan="2"><b>ANOS</b></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                                <td colspan="10"></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
+                                                <td rowspan="2">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                <td rowspan="2"><b>MESES</b></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
+                                                <td align="center" style="padding-left:5px; padding-right:5px;"><input type="checkbox"></td>
                                                 <td rowspan="4"><input type="button" value=" Filtrar " /></td>
                                             </tr>
                                             <tr>
-                                                <td style="padding:5px;">2015</td>
-                                                <td style="padding:5px;">2016</td>
+                                                <td style="padding-left:5px; padding-right:5px;">2015</td>
+                                                <td style="padding-left:5px; padding-right:5px;">2016</td>
+                                                <td style="padding-left:5px; padding-right:5px;">JAN</td>
+                                                <td style="padding-left:5px; padding-right:5px;">FEV</td>
+                                                <td style="padding-left:5px; padding-right:5px;">MAR</td>
+                                                <td style="padding-left:5px; padding-right:5px;">ABR</td>
+                                                <td style="padding-left:5px; padding-right:5px;">MAI</td>
+                                                <td style="padding-left:5px; padding-right:5px;">JUN</td>
+                                                <td style="padding-left:5px; padding-right:5px;">JUL</td>
+                                                <td style="padding-left:5px; padding-right:5px;">AGO</td>
+                                                <td style="padding-left:5px; padding-right:5px;">SET</td>
+                                                <td style="padding-left:5px; padding-right:5px;">OUT</td>
+                                                <td style="padding-left:5px; padding-right:5px;">NOV</td>
+                                                <td style="padding-left:5px; padding-right:5px;">DEZ</td>
                                             </tr>
-                                        </table>
-
-                                        <table>
-                                            <tr>
-                                                <td rowspan="2"><b>MESES</b></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                                <td align="center" style="padding:5px;"><input type="checkbox"></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding:5px;">JAN</td>
-                                                <td style="padding:5px;">FEV</td>
-                                                <td style="padding:5px;">MAR</td>
-                                                <td style="padding:5px;">ABR</td>
-                                                <td style="padding:5px;">MAI</td>
-                                                <td style="padding:5px;">JUN</td>
-                                                <td style="padding:5px;">JUL</td>
-                                                <td style="padding:5px;">AGO</td>
-                                                <td style="padding:5px;">SET</td>
-                                                <td style="padding:5px;">OUT</td>
-                                                <td style="padding:5px;">NOV</td>
-                                                <td style="padding:5px;">DEZ</td>
-                                            </tr>
-
-
                                         </table>
 
                                     </div>
 
-                                    <br /><br />
-                                    <div id="ThirdChart" style="display:none; cursor:pointer">
-                                        Meses: <input type="checkbox">Jan | <input type="checkbox">Fev | <input type="checkbox">Mar | <input type="checkbox">Abr | <input type="checkbox">Mai | <input type="checkbox">Jun | <input type="checkbox">Jul | <input type="checkbox">Ago | <input type="checkbox">Set | <input type="checkbox">Out | <input type="checkbox">Nov | <input type="checkbox">Dez
-                                    </div>
+                                    <div id="ThirdChart" style="display:none; cursor:pointer"></div>
 
-                                    <br /><br />
                                     <div id="FourthChart" style="display:none; cursor:pointer"></div>
+
                                 </div>
 
                                 <script>
 
-                                    function buscaCor(posicao){
-            
+                                    function buscaCor(posicao) {
+
                                         var listaCor = [];
 
-                                        listaCor[0]  = ['#00FF00', 0, 0];
-                                        listaCor[1]  = ['#11FF00', 1, 0.04];
-                                        listaCor[2]  = ['#22FF00', 2, 0.08];
-                                        listaCor[3]  = ['#77FF00', 3, 0.12];
-                                        listaCor[4]  = ['#88FF00', 4, 0.16];
-                                        listaCor[5]  = ['#99FF00', 5, 0.2];
-                                        listaCor[6]  = ['#AAFF00', 6, 0.24];
-                                        listaCor[7]  = ['#BBFF00', 7, 0.28];
-                                        listaCor[8]  = ['#CCFF00', 8, 0.32];
-                                        listaCor[9]  = ['#DDFF00', 9, 0.36];
+                                        listaCor[0] = ['#00FF00', 0, 0];
+                                        listaCor[1] = ['#11FF00', 1, 0.04];
+                                        listaCor[2] = ['#22FF00', 2, 0.08];
+                                        listaCor[3] = ['#77FF00', 3, 0.12];
+                                        listaCor[4] = ['#88FF00', 4, 0.16];
+                                        listaCor[5] = ['#99FF00', 5, 0.2];
+                                        listaCor[6] = ['#AAFF00', 6, 0.24];
+                                        listaCor[7] = ['#BBFF00', 7, 0.28];
+                                        listaCor[8] = ['#CCFF00', 8, 0.32];
+                                        listaCor[9] = ['#DDFF00', 9, 0.36];
                                         listaCor[10] = ['#EEFF00', 10, 0.4];
                                         listaCor[11] = ['#FFFF00', 11, 0.44];
                                         listaCor[12] = ['#FFEE00', 12, 0.48];
@@ -168,23 +139,19 @@
 
                                         for (i = 0; i < listaCor.length; i++) {
                                             if (posicao <= listaCor[i][2]) {
-
-                                                //alert(listaCor[i][0]);
                                                 return listaCor[i][0];
-
                                             }
                                         }
-
-
-                                        }
+                                    }
 
                                     //inicialização
                                     $(function () {
                                         MountFirstChart();
-                                        firstTable("teste");
-
+                                        firstTable("");
                                     });
 
+
+                                    //monta a matriz
                                     function montaTabela(id, div, altura, colunaFixa1, titulosColunasCorpo, valoresColuna1, dadosPrincipais, footerColumn1, footerColumnsBody, footerTotal, titleTotal, columnsTotal) {
 
                                         $(div).empty();
@@ -536,72 +503,67 @@
                                     //quando clicar na primeira tabela
                                     $('#firstTableTeste').click(function () {
 
-                                        //var regional = name.getAttribute("y");
-
-                                        /****
-                                        POST BY Celso TATO
-                                        ****/
-                                        //$.post('../api/Manutencao/getTabela2/' + pacote + '/' + regional + '/')
-        
-                                        /********************/
-                                       
-                                        //var loader = "carregando..."
-
-                                        //$.post('../api/Manutencao/getGrafico2/null/null/null/null/' +  escape(regional.replace(/[/]/g, '|')) + '/', function (lista) {
-
-
-                                        //});
                                         var name = ['ARA', 'DMT', 'PDP', 'PEL', 'PIB', 'PVH', 'RBR', 'SMG', 'VHA'];
                                         var x1 = [-5.0, 22.0, -5.8, 15.3, 5.3, 26.7, -3.0, -1.4, -19.3];
                                         var x2 = [-1.7, 5.5, 2.0, 12.2, 3.2, 9.8, 7.1, -1.9, -15.7];
                                         var x3 = [-3.4, 15.6, -7.6, 2.7, 2.0, 15.4, -9.4, 0.6, -4.3];
                                         var x4 = [5.8, 1.0, 3.2, 2.2, -3.2, 3.2, 20.6, 0.2, -6, .6];
                                         SecondChart(name, x1, x2, x3, x4);
-
-                                        
 
                                     });
 
-                                    //quando clicar na segunda tabela
-                                    $('#secoundTable').click(function () {
-                                    
-                                        var name = ['ARA', 'DMT', 'PDP', 'PEL', 'PIB', 'PVH', 'RBR', 'SMG', 'VHA'];
-                                        var x1 = [-5.0, 22.0, -5.8, 15.3, 5.3, 26.7, -3.0, -1.4, -19.3];
-                                        var x2 = [-1.7, 5.5, 2.0, 12.2, 3.2, 9.8, 7.1, -1.9, -15.7];
-                                        var x3 = [-3.4, 15.6, -7.6, 2.7, 2.0, 15.4, -9.4, 0.6, -4.3];
-                                        var x4 = [5.8, 1.0, 3.2, 2.2, -3.2, 3.2, 20.6, 0.2, -6, .6];
-                                        SecondChart(name, x1, x2, x3, x4);
+                                    //quando clicar no segundo gráfico
+                                    $('#SecondChart').click(function () {
+
+                                        //MountThirdChart('');
+
                                     });
 
                                     //chamada ajax para montar primeiro gráfico
                                     function MountFirstChart() {
-                                        var name = ["Reg 1 - GO/MA/BA", "Reg 1 - MS/SP", "Reg 2 - MT I/AC/RO", "Reg 2 - MT II,TO,MA,PA", "Total Geral"];
-                                        var x1 = [40.975, 90.866, 77.343, 86.677];
-                                        var x2 = [51.218, 85.776, 77.578, 86.076];
 
-                                        var mediaDesvio = [];
-                                        var desvio = 0
+                                        $.post('../api/Manutencao/getSelectGrafico1/null/null/null/null/', function (lista) {
+
+                                            var titleLine = [];
+
+                                            lista.forEach(function (entry) {
+                                                titleLine.push(entry.Regional);
+                                            });
+
+                                            var x1 = [];
+
+                                            lista.forEach(function (entry) {
+                                                x1.push(entry.Orçada);
+                                            });
+
+                                            var x2 = [];
+
+                                            lista.forEach(function (entry) {
+                                                x2.push(entry.Realizada);
+                                            });
+
+                                            var mediaDesvio = [];
+                                            var desvio = 0
                                         
-
-                                        for (i = 0; i < x1.length; i++) {
-                                            mediaDesvio[i] = ((x2[i] - x1[i]) / x1[i] * 100); // (real - orcado) / orçado * 100
-                                            desvio += mediaDesvio[i]
-                                        }
-
-                                        var media = desvio / x1.length;
-
-                                        for (i = 0; i < x1.length; i++) {
-                                            if (x1[i] < x2[i]) {
-                                                x2[i] = { y: x2[i], color: '#a00808' };  //fica vermelho que a despesa for maior que o orçado
- 
-                                            } else {
-                                                x2[i] = { y: x2[i], color: '#116606' }; //fica verde que a despesa for menor que o orçado
+                                            for (i = 0; i < x1.length; i++) {
+                                                mediaDesvio[i] = ((x2[i] - x1[i]) / x1[i] * 100); // (real - orcado) / orçado * 100
+                                                desvio += mediaDesvio[i]
                                             }
-                                        }
 
-                                        //var x2 = [51.218, 85.776, { y: 77.578, color: '#ff0000' }, 86.076];
+                                            var media = desvio / x1.length;
 
-                                        firstChart(name, x1, x2, mediaDesvio, media);
+                                            for (i = 0; i < x1.length; i++) {
+                                                if (x1[i] < x2[i]) {
+                                                    x2[i] = { y: x2[i], color: '#a00808' };  //fica vermelho que a despesa for maior que o orçado
+ 
+                                                } else {
+                                                    x2[i] = { y: x2[i], color: '#116606' }; //fica verde que a despesa for menor que o orçado
+                                                }
+                                            }
+
+                                            firstChart(titleLine, x1, x2, mediaDesvio, media);
+
+                                        });
                                     }
 
                                     //locação primeiro gráfico
@@ -614,19 +576,17 @@
 
                                                 chart: {
                                                     type: 'column'
-                                                    //,backgroundColor: null
                                                 },
 
                                                 title: {
                                                     text: 'Despesas por Regional'
                                                 },
 
-
-                                                legend: {
-                                                    align: 'center',
-                                                    verticalAlign: 'bottom',
-                                                    layout: 'left'
-                                                },
+                                                //legend: {
+                                                //    align: 'center',
+                                                //    verticalAlign: 'bottom',
+                                                //    layout: 'center'
+                                                //},
 
                                                 xAxis: {
                                                     categories: name,
@@ -741,6 +701,7 @@
                                         });
                                     }
 
+                                    //locação primeira matriz
                                     function firstTable(name) {
 
                                         $('#firstTable .table').remove('table');
@@ -1009,6 +970,7 @@
                                         });
                                     }
 
+                                    //locação segunda matriz
                                     function secoundTable(name) {
 
                                         $('#secoundTableTeste .table').remove('table');
@@ -1021,17 +983,7 @@
                                         }, 1500);
 
                                         var pacote = name.getAttribute("x");
-                                        //alert(name.getAttribute("x") + " - " + name.getAttribute("y"));
                                         var regional = name.getAttribute("y");
-
-                                        /****
-                                        POST BY Celso TATO
-                                        ****/
-                                        //$.post('../api/Manutencao/getTabela2/' + pacote + '/' + regional + '/')
-        
-                                        /********************/
-                                       
-                                       
 
                                         $.post('../api/Manutencao/getTabela2/null/null/null/null/' + escape(pacote.replace(/[/]/g, '|')) + '/' + escape(regional.replace(/[/]/g, '|')) + '/', function (lista) {
                                             // titleColumn1
@@ -1391,20 +1343,60 @@
                                     }
 
                                     //chamada ajax terceiro gráfico
-                                    function MountThirdChart(n) {
+                                    function MountThirdChart(u) {
 
-                                        //função ajax para buscar dados
+                                        //função ajax para buscar dados  
+                                        
+                                        var unidade = u
 
-                                        var name = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-                                        var x1 = [719, 715, 781, 730, 707, 231, 891, 955, 881, 841];
-                                        var x2 = [987, 1037, 990, 897, 856, 904, 687, 958, 931, 936];
-                                        var x3 = [268, 322, 209, 167, 149, 673, -204, 3, 50, 94];
-                                        var line = [268, 590, 799, 965, 1115, 1787, 1583, 1587, 1637, 1731];
-                                        ThirdChart(name, x1, x2, x3, line);
+                                        $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidade/null/null/null/null/' + unidade, function (lista) {
+
+                                            var titleLine = [];
+
+                                            lista.forEach(function (entry) {
+                                                titleLine.push(entry.MesAno);
+                                            });
+
+                                            var x1 = [];
+
+                                            lista.forEach(function (entry) {
+                                                x1.push(entry.Orçada);
+                                            });
+
+                                            var x2 = [];
+
+                                            lista.forEach(function (entry) {
+                                                x2.push(entry.Realizada);
+                                            });
+
+                                            var x3 = [];
+
+                                            lista.forEach(function (entry) {
+                                                x3.push(entry.DesvioReal);
+                                            });
+
+                                            var desvioAcumulado = [];
+                                            var desvio = 0
+                                        
+                                            for (i = 0; i < x3.length; i++) {
+                                                desvio += x3[i];
+                                                desvioAcumulado[i] = desvio
+                                            }
+
+                                            ThirdChart(titleLine, x1, x2, x3, desvioAcumulado, unidade);
+
+                                        });
+
+                                        //var name = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                                        //var x1 = [719, 715, 781, 730, 707, 231, 891, 955, 881, 841];
+                                        //var x2 = [987, 1037, 990, 897, 856, 904, 687, 958, 931, 936];
+                                        //var x3 = [268, 322, 209, 167, 149, 673, -204, 3, 50, 94];
+                                        //var line = [268, 590, 799, 965, 1115, 1787, 1583, 1587, 1637, 1731];
+                                        //ThirdChart(titleLine, x1, x2, x3, mediaDesvio);
                                     }
 
                                     //locação terceiro gráfico
-                                    function ThirdChart(name, x1, x2, x3, line) {
+                                    function ThirdChart(name, x1, x2, x3, line, unidade) {
                                         $('#ThirdChart').show();
                                         $('#ThirdChartMeses').show();
 
@@ -1415,7 +1407,7 @@
                                                 },
 
                                                 title: {
-                                                    text: 'Evolutivo DMT'
+                                                    text: 'Evolutivo ' + unidade
                                                 },
                                                 chart: {
 
@@ -1571,7 +1563,6 @@
                                 </script>
 
                             </div>
-
                         </div>
                     </div>
                 </div>
