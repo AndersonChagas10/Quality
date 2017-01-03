@@ -226,7 +226,7 @@ namespace SgqSystem.Controllers.Api
                 sql += " \n         / sum(cast(case when TipoProducao = '011.QT. Bois Processados' then ProducaoOrcada else 0 end as float))";
                 sql += " \n      )";
                 sql += " \n - 1  as [DesvKWBoi]";
-                sql += " \n FROM    Manutencao WHERE MesAno between '2016-01-01' and '2016-10-30' and EmpresaCluster != 'Cluster 1 [Desossa 0%]' GROUP BY  EmpresaSigla ,MesAno";
+                sql += " \n FROM    Manutencao WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' and EmpresaCluster != 'Cluster 1 [Desossa 0%]' GROUP BY  EmpresaSigla ,MesAno";
 
 
 
@@ -291,9 +291,9 @@ namespace SgqSystem.Controllers.Api
                 sql += "FROM ";
                 sql += "manutencao ";
                 sql += "WHERE ";
-                sql += "MesAno between '2016-01-01' and '2016-10-30' ";
+                sql += "MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
                 sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
-                sql += "and EmpresaRegional = 'Reg 2 - MT II/TO/MA/PA' ";
+                sql += "and EmpresaRegional = \'" + regionalDecode + "\' ";
                 sql += "GROUP BY ";
                 sql += "EmpresaSigla ";
                 sql += "HAVING SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' then(CASE WHEN ConsumoRealizado = 0 THEN ConsumoOrcado ELSE ConsumoRealizado END) ELSE 0 END AS FLOAT)) > 0 ";
@@ -361,9 +361,9 @@ namespace SgqSystem.Controllers.Api
                 sql += "FROM ";
                 sql += "manutencao ";
                 sql += "WHERE ";
-                sql += "MesAno between '2016-01-01' and '2016-10-30' ";
+                sql += "MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
                 sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
-                sql += "and EmpresaSigla = 'ARA' ";
+                sql += "and EmpresaSigla = \'" + unidadeDecode + "\' ";
                 sql += "GROUP BY ";
                 sql += "EmpresaSigla, CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END) ";
                 sql += "HAVING SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' then(CASE WHEN ConsumoRealizado = 0 THEN ConsumoOrcado ELSE ConsumoRealizado END) ELSE 0 END AS FLOAT)) > 0 ";

@@ -374,7 +374,7 @@
                                                     }
 
                                                     tabela += "<td align=\"center\" style=\"background-color: " + color + "; min-width:" + larguraDasCelulasDeValor + "; padding:0px; height: " + alturaDasCelulasDeValor + ";\">";
-                                                    tabela += (footerColumnsBody[0][i][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + footerColumnsBody[0][i][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + "#ffff00" + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000))) + "</td>";
+                                                    tabela += (footerColumnsBody[0][i][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + footerColumnsBody[0][i][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + footerColumnsBody[0][i][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000))) + "</td>";
 
                                                 }
 
@@ -1288,6 +1288,8 @@
                                                     var dados = [];
                                                     lista.forEach(function (entry) {
 
+                                                        
+
                                                         orcada += entry.total.Orçada;
                                                         real += entry.total.Realizada;
                                                         desvioP += entry.total.DesvioPorc;
@@ -1320,7 +1322,63 @@
                                                     dados.push(lineDR);
                                                     footerTotal.push(dados);
 
+                                                    var valorMapaDeCalor = [];
+                                                    var orderMapaDeCalor = [];
+                                                    var i = 0;
 
+                                                    /*
+                                                    * GERAÇÃO DO MAPA DE CALOR
+                                                    */
+                                                    lista[0].totalColunaReg.forEach(function (valor) {
+
+                                                        valorMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
+                                                        orderMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
+                                                        i++;
+
+                                                    });
+
+                                                    orderMapaDeCalor = orderMapaDeCalor.sort(function (a, b) { return a - b; });
+                                                    console.log("Mapa: " + valorMapaDeCalor);
+                                                    console.log("Ordem: " + orderMapaDeCalor);
+
+                                                    var minVal = orderMapaDeCalor[0];
+                                                    var tamanhoArray = orderMapaDeCalor.length;
+                                                    var maxVal = orderMapaDeCalor[tamanhoArray - 1];
+
+                                                    var corPercent = [];
+
+                                                    var i = 0;
+                                                    orderMapaDeCalor.forEach(function (valor) {
+                                                        corPercent[i] = ((valor - minVal) / (maxVal - minVal));
+                                                        i++;
+                                                    });
+
+
+
+                                                    var arrayCor = [];
+
+                                                    var i = 0;
+                                                    var j = 0;
+                                                    var local = 0;
+
+
+                                                    for (i = 0; i < valorMapaDeCalor.length; i++) {
+
+                                                        local = 0;
+
+                                                        for (j = 0; j < orderMapaDeCalor.length; j++) {
+
+                                                            if (valorMapaDeCalor[i] == orderMapaDeCalor[j]) {
+                                                                local = j;
+                                                            }
+
+                                                        }
+
+                                                        arrayCor[i] = corPercent[local];
+
+                                                    }
+
+                                                    console.log(arrayCor);
 
                                                     var footerColumnsBody = [];
                                                     var line = [];
@@ -1344,7 +1402,7 @@
                                                         desvioP.push(0);
                                                         desvioP.push(valor.Regional);
                                                         desvioP.push('%');
-                                                        desvioP.push(0);
+                                                        desvioP.push(buscaCor(arrayCor[i]));
                                                         desvioR.push(valor.DesvioReal);
                                                         desvioR.push(0);
                                                         desvioR.push(valor.Regional);
@@ -1361,46 +1419,48 @@
 
                                                     montaTabela('2', '#secoundTableTeste', '170px', titleColumn1, titleColumnsBody, column1, dataColumn, footerColumn1, footerColumnsBody, footerTotal, titleTotal, columnsTotal);
 
+                                                    $.post('../api/Manutencao/getGraficoRegionalTecnico/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(regional.replace(/[/]/g, '|')) + '/null', function (lista) {
+
+                                                        var reg = regional
+
+                                                        var titleLine = [];
+
+                                                        lista.forEach(function (entry) {
+                                                            titleLine.push(entry.EmpresaSigla);
+                                                        });
+
+                                                        var x1 = [];
+
+                                                        lista.forEach(function (entry) {
+                                                            x1.push(Math.round(entry.DesvQtdeBoi * 100));
+                                                        });
+
+                                                        var x2 = [];
+
+                                                        lista.forEach(function (entry) {
+                                                            x2.push(Math.round(entry.DesvQtdeConsumoKW * 100));
+                                                        });
+
+                                                        var x3 = [];
+
+                                                        lista.forEach(function (entry) {
+                                                            x3.push(Math.round(entry.DesvPrecoKW * 100));
+                                                        });
+
+                                                        var x4 = [];
+
+                                                        lista.forEach(function (entry) {
+                                                            x4.push(Math.round(entry.DesvKWBoi * 100));
+                                                        });
+
+                                                        SecondChart(titleLine, x1, x2, x3, x4, reg);
+
+                                                    })
+
 
                                                 });
 
-                                                $.post('../api/Manutencao/getGraficoRegionalTecnico/null/null/null/null/' + escape(regional.replace(/[/]/g, '|')) + '/null', function (lista) {
-
-                                                    var reg = regional
-
-                                                    var titleLine = [];
-
-                                                    lista.forEach(function (entry) {
-                                                        titleLine.push(entry.EmpresaSigla);
-                                                    });
-
-                                                    var x1 = [];
-
-                                                    lista.forEach(function (entry) {
-                                                        x1.push(entry.DesvQtdeBoi);
-                                                    });
-
-                                                    var x2 = [];
-
-                                                    lista.forEach(function (entry) {
-                                                        x2.push(entry.DesvQtdeConsumoKW);
-                                                    });
-
-                                                    var x3 = [];
-
-                                                    lista.forEach(function (entry) {
-                                                        x3.push(entry.DesvPrecoKW);
-                                                    });
-
-                                                    var x4 = [];
-
-                                                    lista.forEach(function (entry) {
-                                                        x4.push(entry.DesvKWBoi);
-                                                    });
-
-                                                    SecondChart(titleLine, x1, x2, x3, x4, reg);
-
-                                                })
+                                                
 
                                             }
 
@@ -1502,7 +1562,7 @@
 
                                                 var unidade = u
 
-                                                $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidade/null/null/null/null/' + unidade, function (lista) {
+                                                $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidade/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + unidade, function (lista) {
 
                                                     var titleLine = [];
 
@@ -1538,14 +1598,7 @@
 
                                                     ThirdChart(titleLine, x1, x2, x3, desvioAcumulado, unidade);
 
-                                                });
-
-                                                //var name = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-                                                //var x1 = [719, 715, 781, 730, 707, 231, 891, 955, 881, 841];
-                                                //var x2 = [987, 1037, 990, 897, 856, 904, 687, 958, 931, 936];
-                                                //var x3 = [268, 322, 209, 167, 149, 673, -204, 3, 50, 94];
-                                                //var line = [268, 590, 799, 965, 1115, 1787, 1583, 1587, 1637, 1731];
-                                                //ThirdChart(titleLine, x1, x2, x3, mediaDesvio);
+                                                });                    
                                             }
 
                                             //locação terceiro gráfico
@@ -1622,7 +1675,7 @@
                                             function MountFourthChart(unidade, conta) {
 
                                                 //fazer ajax
-                                                $.post('../api/Manutencao/getGraficoUnidadeTecnico/null/null/null/null/' + unidade + '/' + conta + '', function (lista) {
+                                                $.post('../api/Manutencao/getGraficoUnidadeTecnico/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + unidade + '/' + conta + '', function (lista) {
 
                                                     var titleLine = [];
 
@@ -1633,28 +1686,28 @@
                                                     var x1 = [];
 
                                                     lista.forEach(function (entry) {
-                                                        x1.push(entry.DesvQtdeBoi);
+                                                        x1.push(Math.round(entry.DesvQtdeBoi * 100));
                                                     });
 
                                                     var x2 = [];
 
                                                     lista.forEach(function (entry) {
-                                                        x2.push(entry.DesvQtdeConsumoKW);
+                                                        x2.push(Math.round(entry.DesvQtdeConsumoKW * 100));
                                                     });
 
                                                     var x3 = [];
 
                                                     lista.forEach(function (entry) {
-                                                        x3.push(entry.DesvPrecoKW);
+                                                        x3.push(Math.round(entry.DesvPrecoKW * 100));
                                                     });
 
                                                     var x4 = [];
 
                                                     lista.forEach(function (entry) {
-                                                        x4.push(entry.DesvKWBoi);
+                                                        x4.push(Math.round(entry.DesvKWBoi * 100));
                                                     });
 
-                                                    FourthChart(titleLine, x1, x2, x3, x4);
+                                                    FourthChart(titleLine, x1, x2, x3, x4, unidade);
 
                                                 })
 
@@ -1662,7 +1715,7 @@
                                             }
 
                                             //locação quarto gráfico
-                                            function FourthChart(name, x1, x2, x3, x4) {
+                                            function FourthChart(name, x1, x2, x3, x4, unidade) {
                                                 $('#FourthChart').show();
                                                 $(function () {
                                                     Highcharts.chart('FourthChart', {
@@ -1674,7 +1727,7 @@
                                                             backgroundColor: null
                                                         },
                                                         title: {
-                                                            text: 'DMT - Evolução do impacto dos fatores de desvio (Real vs Orçado)'
+                                                            text: unidade + ' - Evolução do impacto dos fatores de desvio (Real vs Orçado)'
                                                         },
                                                         xAxis: {
                                                             categories: name
