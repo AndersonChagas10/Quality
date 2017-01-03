@@ -584,6 +584,7 @@ namespace Dominio.Services
                 var objToSave = new ParLevel3Level2Level1();
                 objToSave.ParLevel1_Id = idLevel1;
                 objToSave.ParLevel3Level2_Id = existsL3L2.Id;
+                objToSave.Active = true;
 
                 /*Verifica se o vinculo ja existe, se já existe, ele ALTERA colocando o ID no objeto NOVO*/
                 var existsLevel3Level2Level1 = _baseRepoParLevel3Level2Level1.GetAll().FirstOrDefault(r => r.ParLevel3Level2_Id == existsL3L2.Id);
@@ -611,6 +612,7 @@ namespace Dominio.Services
                 if (existeParLevel2Level1 == null)
                     _baseRepoParLevel2Level1.AddOrUpdate(level2level1);
 
+               
                 listObjToSave.Add(Mapper.Map<ParLevel3Level2Level1DTO>(objToSave));
             }
 

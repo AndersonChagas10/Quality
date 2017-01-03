@@ -7,6 +7,7 @@
     var urlCustomization = Url.Action("Index", "Params");
     var urlHome = Url.Action("Index", "Home");
     var urlScorecard = Url.Action("Scorecard", "RelatoriosSgq");
+    var urlRelatorioDiario = Url.Action("RelatorioDiario", "RelatoriosSgq");
 }
 
 <div class="page-header navbar navbar-fixed-top">
@@ -50,6 +51,9 @@
                                             <ul class="mega-menu-submenu">
                                                 <li>
                                                     <a href="@urlScorecard">Scorecard</a>
+                                                </li>
+                                                <li>
+                                                    <a href="@urlRelatorioDiario">Relatorio Diário</a>
                                                 </li>
                                                 <li>
                                                     <a href="@urlCorrectiveActionReport">@Resources.Resource.corrective_action_reports</a>
