@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Gestão";
     var urlScorecard = Url.Action("Scorecard", "RelatoriosSgq");
+    var urlRelatorioDiario = Url.Action("RelatorioDiario", "RelatoriosSgq");
 }
 
 <style>
@@ -317,7 +318,7 @@
                         <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
 
                         <ul id="nav">
-                            <li><a href="#">Reunião Diária</a></li>
+                            <li><a href="@urlRelatorioDiario">Reunião Diária</a></li>
                             <li><a href="#">Não Conformidades</a></li>
                             <li><a href="#">Cartas CEP</a></li>
                             <li><a href="@urlScorecard">Scorecard</a></li>
