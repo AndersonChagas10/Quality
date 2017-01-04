@@ -548,13 +548,16 @@
 
                                                     var mediaDesvio = [];
                                                     var desvio = 0
+                                                    var desvio1 = 0
+                                                    var desvio2 = 0
 
                                                     for (i = 0; i < x1.length; i++) {
-                                                        mediaDesvio[i] = ((x2[i] - x1[i]) / x1[i] * 100); // (real - orcado) / orçado * 100
-                                                        desvio += mediaDesvio[i]
+                                                        mediaDesvio[i] = Math.round(((x2[i] - x1[i]) / x1[i] * 100)); // (real - orcado) / orçado * 100
+                                                        desvio1 += x1[i]
+                                                        desvio2 += x2[i]
+                                                        //mediaDesvio[i] = mediaDesvio[i] 
                                                     }
-
-                                                    var media = desvio / x1.length;
+                                                    var media = (desvio2 / desvio1-1)*100;
 
                                                     for (i = 0; i < x1.length; i++) {
                                                         if (x1[i] < x2[i]) {
@@ -709,10 +712,17 @@
                                                             }
                                                         }, {
                                                             name: 'Desvio %',
-                                                            // data: mediaDesvio,
-                                                            data: [-17.12454, -8.78, -2.46, -3.87],
+                                                             data: mediaDesvio,
+                                                            //data: [-17.12454, -8.78, -2.46, -3.87],
                                                             yAxis: 0,
                                                             visible: false,
+                                                            dataLabels: {
+                                                                enabled: true,
+                                                                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                                                                formatter: function () {
+                                                                    return this.y + '%';
+                                                                }
+                                                            },
 
 
                                                             point: {
@@ -1505,16 +1515,16 @@
                                                             verticalAlign: 'bottom',
                                                             shadow: false
                                                         },
-                                                        tooltip: {
-                                                            headerFormat: '<b>{point.x}</b><br/>',
-                                                            pointFormat: '{series.name}: {point.y}<br/>Destacar a fórmula de cálculo!'
-                                                        },
+                                                        
                                                         plotOptions: {
                                                             column: {
                                                                 stacking: 'normal',
                                                                 dataLabels: {
                                                                     enabled: true,
-                                                                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black'
+                                                                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                                                                    formatter: function () {
+                                                                        return this.y + '%';
+                                                                    }
                                                                 }
                                                             }
                                                         },
@@ -1526,6 +1536,12 @@
                                                                     click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
                                                                 }
                                                             }
+                                                            , tooltip: {
+                                                                headerFormat: '<b>{point.x}</b><br/>',
+                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Δ% = Despesa Real / Despesa Orçada -1',
+                                                                valueSuffix: '%'
+                                                            }
+                                                            
 
 
                                                         }, {
@@ -1536,6 +1552,11 @@
                                                                     click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
                                                                 }
                                                             }
+                                                            , tooltip: {
+                                                                headerFormat: '<b>{point.x}</b><br/>',
+                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> KWs por Boi = Qtde de KWs Consumidos / Qtde de Bois',
+                                                                valueSuffix: '%'
+                                                            }
                                                         }, {
                                                             name: 'Bois/Proc',
                                                             data: x3,
@@ -1544,6 +1565,11 @@
                                                                     click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
                                                                 }
                                                             }
+                                                            , tooltip: {
+                                                                headerFormat: '<b>{point.x}</b><br/>',
+                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Δ% = Qtde de Bois Real / Qtde de Bois Orçada -1',
+                                                                valueSuffix: '%'
+                                                            }
                                                         }, {
                                                             name: 'Preço KW',
                                                             data: x3,
@@ -1551,6 +1577,11 @@
                                                                 events: {
                                                                     click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
                                                                 }
+                                                            }
+                                                            , tooltip: {
+                                                                headerFormat: '<b>{point.x}</b><br/>',
+                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Preço do KW = Despesa de KW / Qtde de KWs Consumidos',
+                                                                valueSuffix: '%'
                                                             }
                                                         }]
                                                     });
@@ -1687,28 +1718,28 @@
 
                                                     var x1 = [];
 
-                                                    lista.forEach(function (entry) {
-                                                        x1.push(Math.round(entry.DesvQtdeBoi * 100));
-                                                    });
+                                                        lista.forEach(function (entry) {
+                                                            x1.push(Math.round(entry.DesvQtdeBoi * 100));
+                                                        });
 
                                                     var x2 = [];
 
-                                                    lista.forEach(function (entry) {
-                                                        x2.push(Math.round(entry.DesvQtdeConsumoKW * 100));
-                                                    });
+                                                        lista.forEach(function (entry) {
+                                                            x2.push(Math.round(entry.DesvQtdeConsumoKW * 100));
+                                                        });
 
                                                     var x3 = [];
 
-                                                    lista.forEach(function (entry) {
-                                                        x3.push(Math.round(entry.DesvPrecoKW * 100));
-                                                    });
+                                                        lista.forEach(function (entry) {
+                                                            x3.push(Math.round(entry.DesvPrecoKW * 100));
+                                                        });
 
                                                     var x4 = [];
 
-                                                    lista.forEach(function (entry) {
-                                                        x4.push(Math.round(entry.DesvKWBoi * 100));
-                                                    });
-
+                                                        lista.forEach(function (entry) {
+                                                            x4.push(Math.round(entry.DesvKWBoi * 100));
+                                                        });
+                                                        
                                                     FourthChart(titleLine, x1, x2, x3, x4, unidade);
 
                                                 })
@@ -1764,23 +1795,49 @@
                                                                 stacking: 'normal',
                                                                 dataLabels: {
                                                                     enabled: true,
-                                                                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black'
+                                                                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                                                                    formatter: function () {
+                                                                        return this.y + '%';
+                                                                    }
                                                                 }
                                                             }
                                                         },
-                                                        series: [{
+                                                        series:
+[{
                                                             name: 'KW',
                                                             data: x1
+                                                            , tooltip: {
+                                                                headerFormat: '<b>{point.x}</b><br/>',
+                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Δ% = Despesa Real / Despesa Orçada -1',
+                                                                valueSuffix: '%'
+                                                            }
+                                                            
+
 
                                                         }, {
                                                             name: 'KW/BOI',
                                                             data: x2
+                                                            , tooltip: {
+                                                                headerFormat: '<b>{point.x}</b><br/>',
+                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> KWs por Boi = Qtde de KWs Consumidos / Qtde de Bois',
+                                                                valueSuffix: '%'
+                                                            }
                                                         }, {
                                                             name: 'Bois/Proc',
                                                             data: x3
+                                                            , tooltip: {
+                                                                headerFormat: '<b>{point.x}</b><br/>',
+                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Δ% = Qtde de Bois Real / Qtde de Bois Orçada -1',
+                                                                valueSuffix: '%'
+                                                            }
                                                         }, {
                                                             name: 'Preço KW',
                                                             data: x3
+                                                            , tooltip: {
+                                                                headerFormat: '<b>{point.x}</b><br/>',
+                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Preço do KW = Despesa de KW / Qtde de KWs Consumidos',
+                                                                valueSuffix: '%'
+                                                            }
                                                         }]
                                                     });
                                                 });
