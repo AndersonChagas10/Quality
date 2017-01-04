@@ -55,7 +55,7 @@ namespace SgqSystem.Secirity
                 }
 
                 if (!string.IsNullOrEmpty(_userSgqRoles))
-                    if (_userSgqRoles.Contains("somentemanutencao-sgq") && !HttpContext.Current.Request.RawUrl.Equals("/Manutencao/Index"))
+                    if (_userSgqRoles.Contains("somentemanutencao-sgq") && !HttpContext.Current.Request.RawUrl.Contains("/Manutencao/Index"))
                         filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Manutencao", action = "Index" }));
             }
           
