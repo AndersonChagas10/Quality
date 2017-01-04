@@ -558,6 +558,7 @@ namespace SGQDBContext
         public decimal Weight { get; set; }
         public decimal PunishmentValue { get; set; }
         public decimal WeiEvaluation { get; set; }
+        public int ParCompany_Id { get; set; }
 
 
         public IEnumerable<ParLevel3> getList()
@@ -569,12 +570,12 @@ namespace SGQDBContext
             return parLevel3List;
 
         }
-        public IEnumerable<ParLevel3> getLevel3ByLevel2(int ParLevel2_Id)
+        public IEnumerable<ParLevel3> getLevel3ByLevel2(int ParLevel2_Id, int ParCompany_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
-                         "L3V.IntervalMin AS IntervalMin, L3V.IntervalMax AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight                                                                                                                                                                                                                                    " +
+                         "L3V.IntervalMin AS IntervalMin, L3V.IntervalMax AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L32.ParCompany_Id                                                                                                                                                                                                                                     " +
                          "FROM ParLevel3 L3                                                                                                                                                                                                                                                                                                                                           " +
                          "INNER JOIN ParLevel3Value L3V                                                                                                                                                                                                                                                                                                                               " +
                          "        ON L3V.ParLevel3_Id = L3.Id                                                                                                                                                                                                                                                                                                                         " +
@@ -594,7 +595,26 @@ namespace SGQDBContext
                          "        ON L2.Id = L32.ParLevel2_Id                                                                                                                                                                                                                                                                                                                         " +
                          "                                                                                                                                                                                                                                                                                                                                                            " +
                          "WHERE  L3.IsActive = 1 AND L32.IsActive = 1                                                                                                                                                                                                                                                                                                                                                    " +
-                         " AND L2.Id = '" + ParLevel2_Id + "'                                                                                                                                                                                                                                                                                                                             ";
+                         " AND L2.Id = '" + ParLevel2_Id + "' " +
+                         " AND(L32.ParCompany_Id = '" + ParCompany_Id + "' OR L32.ParCompany_Id IS NULL) " +
+                         " GROUP BY " +
+
+            "    L3.Id " +
+            " , L3.Name " +
+            " , L3G.Id " +
+            " , L3G.Name " +
+            " , L3IT.Id " +
+            " , L3IT.Name " +
+            " , L3V.ParLevel3BoolFalse_Id " +
+            " , L3BF.Name " +
+            " , L3V.ParLevel3BoolTrue_Id " +
+            " , L3BT.Name " +
+            " , L3V.IntervalMin " +
+            " , L3V.IntervalMax " +
+            " , MU.Name " +
+            " , L32.Weight " +
+            " , L32.ParCompany_Id " +
+            "  ORDER BY L3.Name   ";
 
             var parLevel3List = db.Query<ParLevel3>(sql);
 

@@ -108,11 +108,17 @@
 
                                             <div id="ThirdChart" style="display:none; cursor:pointer"></div>
 
+                                            <div id="EvolutivoDaContaPorUnidade" style="display:none; cursor:pointer"></div>
+
+                                            
+
                                             <div id="FourthChart" style="display:none; cursor:pointer"></div>
 
                                         </div>
 
                                         <script>
+
+                                            var regionalSelecionada = '';
 
                                             function buscaCor(posicao) {
 
@@ -152,9 +158,6 @@
                                                     }
                                                 }
                                             }
-
-                                            
-
 
                                             //monta a matriz
                                             function montaTabela(id, div, altura, colunaFixa1, titulosColunasCorpo, valoresColuna1, dadosPrincipais, footerColumn1, footerColumnsBody, footerTotal, titleTotal, columnsTotal) {
@@ -346,7 +349,7 @@
                                                     for (var j = 0; j < dadosPrincipais[i].length; j++) {
                                                         //tabela += "<td height=\"" + alturaDasCelulasDeValor + "\" onclick=\"secoundTable(this)\"align=\"center\" x=\"" + dadosPrincipais[i][j][1] + "\" y=\"" + dadosPrincipais[i][j][2] + "\"style=\"min-width:" + larguraDasCelulasDeValor + ";  background-color: " + dadosPrincipais[i][j][4] + "\">" + (dadosPrincipais[i][j][3] == '%' ? '<i>' + dadosPrincipais[i][j][0] + '<i>%' : float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000))) + "</td>";
 
-                                                        tabela += "<td onclick=\"secoundTable(this)\"align=\"center\" x=\"" + dadosPrincipais[i][j][1] + "\" y=\"" + dadosPrincipais[i][j][2] + "\" align=\"center\" style=\"min-width:" + larguraDasCelulasDeValor + "; padding:0px; height: " + alturaDasCelulasDeValor + ";\">";
+                                                        tabela += "<td onclick=\"clickTabela(" + id + ", this)\"align=\"center\" x=\"" + dadosPrincipais[i][j][1] + "\" y=\"" + dadosPrincipais[i][j][2] + "\" align=\"center\" style=\"min-width:" + larguraDasCelulasDeValor + "; padding:0px; height: " + alturaDasCelulasDeValor + ";\">";
                                                         tabela += (dadosPrincipais[i][j][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + dadosPrincipais[i][j][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + dadosPrincipais[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000))) + "</td>";
 
                                                     }
@@ -439,7 +442,7 @@
                                                     for (var j = 0; j < columnsTotal[i].length; j++) {
 
                                                         tabela += "<td align=\"center\" style=\"min-width:" + larguraDasCelulasDeValor + "; padding:0px; height: " + alturaDasCelulasDeValor + ";\">";
-                                                        tabela += (columnsTotal[i][j][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + columnsTotal[i][j][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + "#ffff00" + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000))) + "</td>";
+                                                        tabela += (columnsTotal[i][j][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + columnsTotal[i][j][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + columnsTotal[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000))) + "</td>";
 
                                                     }
                                                     tabela += "</tr>";
@@ -504,24 +507,6 @@
 
 
                                             }
-
-                                            //quando clicar na primeira tabela
-                                            $('#firstTableTeste').click(function () {
-                                                                                           
-                                               
-
-                                               
-
-
-
-                                            });
-
-                                            //quando clicar no segundo gráfico
-                                            $('#SecondChart').click(function () {
-
-                                                //MountThirdChart('');
-
-                                            });
 
                                             //chamada ajax para montar primeiro gráfico
                                             function MountFirstChart() {
@@ -850,8 +835,8 @@
                                                         /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                         entry.ListaRegionais.forEach(function (valor) {
 
-                                                            valorMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
-                                                            orderMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
+                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
                                                             i++;
 
                                                         });
@@ -939,7 +924,75 @@
                                                     // columnsTotal
                                                     var columnsTotal = [];
 
+                                                    /***INI MAPA DE CALOR***/
+                                                    valorMapaDeCalor = [];
+                                                    orderMapaDeCalor = [];
+                                                    i = 0;
+                                                    /***FIM MAPA DE CALOR***/
+
+
+                                                    /****** INI GERAÇÃO DO MAPA DE CALOR *********/
+                                                    lista.forEach(function (valor) {
+
+
+
+                                                        valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
+                                                        orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
+                                                        i++;
+
+                                                    });
+
+                                                    orderMapaDeCalor = orderMapaDeCalor.sort(function (a, b) { return a - b; });
+                                                    console.log("Mapafooter: " + valorMapaDeCalor);
+                                                    console.log("Ordemfooter: " + orderMapaDeCalor);
+
+                                                    var minVal = orderMapaDeCalor[0];
+                                                    var tamanhoArray = orderMapaDeCalor.length;
+                                                    var maxVal = orderMapaDeCalor[tamanhoArray - 1];
+
+                                                    var corPercent = [];
+
+                                                    var i = 0;
+                                                    orderMapaDeCalor.forEach(function (valor) {
+                                                        corPercent[i] = ((valor - minVal) / (maxVal - minVal));
+                                                        i++;
+                                                    });
+
+
+
+                                                    var arrayCor = [];
+
+                                                    var i = 0;
+                                                    var j = 0;
+                                                    var local = 0;
+
+
+                                                    for (i = 0; i < valorMapaDeCalor.length; i++) {
+
+                                                        local = 0;
+
+                                                        for (j = 0; j < orderMapaDeCalor.length; j++) {
+
+                                                            if (valorMapaDeCalor[i] == orderMapaDeCalor[j]) {
+                                                                local = j;
+                                                            }
+
+                                                        }
+
+                                                        arrayCor[i] = corPercent[local];
+
+                                                    }
+
+                                                    console.log(arrayCor);
+                                                    /****** FIM GERAÇÃO DO MAPA DE CALOR *********/
+
+                                                    //entry.ListaRegionais.forEach(function (valor, arrayCor) {
+                                                    //for (i = 0; i < lista[0].totalColunaReg.length; i++) {
+                                                    //lista[0].totalColunaReg.forEach(function (valor) {
+                                                    var i = 0
+
                                                     lista.forEach(function (entry) {
+                                                        //for (i = 0; i < lista.length; i++) {
                                                         var dataColumn = [];
                                                         var orcada = [];
                                                         var real = [];
@@ -959,7 +1012,7 @@
                                                         desvioP.push(0);
                                                         desvioP.push(0);
                                                         desvioP.push('%');
-                                                        desvioP.push(0);
+                                                        desvioP.push(buscaCor(arrayCor[i])); /****** GERAÇÃO DO MAPA DE CALOR *********/
                                                         desvioR.push(entry.total.DesvioReal);
                                                         desvioR.push(0);
                                                         desvioR.push(0);
@@ -970,9 +1023,10 @@
                                                         dataColumn.push(desvioP);
                                                         dataColumn.push(desvioR);
                                                         columnsTotal.push(dataColumn);
-
+                                                        i++;
                                                     });
-
+                                                    
+                                                    i = 0;
                                                     // titleTotal
                                                     var titleTotal = [];
                                                     titleTotal[0] = [['Total', 4]];
@@ -994,6 +1048,7 @@
                                                     var desvioP = 0;
                                                     var desvioR = 0;
                                                     var dados = [];
+
                                                     lista.forEach(function (entry) {
 
                                                         orcada += entry.total.Orçada;
@@ -1030,37 +1085,100 @@
 
                                                     var footerColumnsBody = [];
                                                     var line = [];
+
+                                                    /***INI MAPA DE CALOR***/
+                                                    valorMapaDeCalor = [];
+                                                    orderMapaDeCalor = [];
+                                                    i = 0;
+                                                    /***FIM MAPA DE CALOR***/
+
+
+                                                    /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                     lista[0].totalColunaReg.forEach(function (valor) {
+
+                                                        valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                        orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                        i++;
+
+                                                    });
+
+                                                    orderMapaDeCalor = orderMapaDeCalor.sort(function (a, b) { return a - b; });
+                                                    console.log("Mapafooter: " + valorMapaDeCalor);
+                                                    console.log("Ordemfooter: " + orderMapaDeCalor);
+
+                                                    var minVal = orderMapaDeCalor[0];
+                                                    var tamanhoArray = orderMapaDeCalor.length;
+                                                    var maxVal = orderMapaDeCalor[tamanhoArray - 1];
+
+                                                    var corPercent = [];
+
+                                                    var i = 0;
+                                                    orderMapaDeCalor.forEach(function (valor) {
+                                                        corPercent[i] = ((valor - minVal) / (maxVal - minVal));
+                                                        i++;
+                                                    });
+
+
+
+                                                    var arrayCor = [];
+
+                                                    var i = 0;
+                                                    var j = 0;
+                                                    var local = 0;
+
+
+                                                    for (i = 0; i < valorMapaDeCalor.length; i++) {
+
+                                                        local = 0;
+
+                                                        for (j = 0; j < orderMapaDeCalor.length; j++) {
+
+                                                            if (valorMapaDeCalor[i] == orderMapaDeCalor[j]) {
+                                                                local = j;
+                                                            }
+
+                                                        }
+
+                                                        arrayCor[i] = corPercent[local];
+
+                                                    }
+
+                                                    console.log(arrayCor);
+                                                    /****** FIM GERAÇÃO DO MAPA DE CALOR *********/
+
+                                                    //entry.ListaRegionais.forEach(function (valor, arrayCor) {
+                                                    for (i = 0; i < lista[0].totalColunaReg.length; i++) {
+                                                    //lista[0].totalColunaReg.forEach(function (valor) {
                                                         //console.log(valor);
                                                         var orcada = [];
                                                         var real = [];
                                                         var desvioP = [];
                                                         var desvioR = [];
-                                                        orcada.push(valor.Orçada);
+                                                        orcada.push(lista[0].totalColunaReg[i].Orçada);
                                                         orcada.push(0);
-                                                        orcada.push(valor.Regional);
+                                                        orcada.push(lista[0].totalColunaReg[i].Regional);
                                                         orcada.push(0);
                                                         orcada.push(0);
-                                                        real.push(valor.Realizada);
+                                                        real.push(lista[0].totalColunaReg[i].Realizada);
                                                         real.push(0);
-                                                        real.push(valor.Regional);
+                                                        real.push(lista[0].totalColunaReg[i].Regional);
                                                         real.push(0);
                                                         real.push(0);
-                                                        desvioP.push(valor.DesvioPorc);
+                                                        desvioP.push(lista[0].totalColunaReg[i].DesvioPorc);
                                                         desvioP.push(0);
-                                                        desvioP.push(valor.Regional);
+                                                        desvioP.push(lista[0].totalColunaReg[i].Regional);
                                                         desvioP.push('%');
-                                                        desvioP.push(0);
-                                                        desvioR.push(valor.DesvioReal);
+                                                        desvioP.push(buscaCor(arrayCor[i])); /****** GERAÇÃO DO MAPA DE CALOR *********/
+                                                        desvioR.push(lista[0].totalColunaReg[i].DesvioReal);
                                                         desvioR.push(0);
-                                                        desvioR.push(valor.Regional);
+                                                        desvioR.push(lista[0].totalColunaReg[i].Regional);
                                                         desvioR.push(0);
                                                         desvioR.push(0);
                                                         line.push(orcada);
                                                         line.push(real);
                                                         line.push(desvioP);
                                                         line.push(desvioR);
-                                                    });
+                                                    }
                                                     footerColumnsBody[0] = line;
 
 
@@ -1068,6 +1186,525 @@
 
                                                     montaTabela('1', '#firstTableTeste', '90px', titleColumn1, titleColumnsBody, column1, dataColumn, footerColumn1, footerColumnsBody, footerTotal, titleTotal, columnsTotal);
                                                 });
+                                            }
+
+                                            function clickTabela(id, obj) {
+
+                                                if (id == 1) {
+
+                                                   
+                                                    $('#secoundTableTeste').empty();
+
+                                                    $('#SecondChart').empty();
+
+                                                    $('#ThirdChart').empty();
+                                                    $('#EvolutivoDaContaPorUnidade').empty();
+                                                    
+
+                                                    $('#FourthChart').empty();
+
+                                                    $('#secoundTableTeste .table').remove('table');
+
+                                                    $('#secoundTableTeste').show();
+                                                    $('#secoundTableTeste').empty();
+                                                    $('#secoundTableTeste').html('Carregando...');
+                                                    $("#secoundTableTeste").animate({
+                                                        opacity: 0.4,
+                                                    }, 1500);
+
+                                                    
+
+                                                    var pacote = obj.getAttribute("x");
+                                                    var regional = obj.getAttribute("y");
+
+                                                    regionalSelecionada = regional;
+
+                                                    $.post('../api/Manutencao/getTabela2/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(pacote.replace(/[/]/g, '|')) + '/' + escape(regional.replace(/[/]/g, '|')) + '/', function (lista) {
+                                                        // titleColumn1
+                                                        var titleColumn1 = [];
+                                                        titleColumn1[0] = [regional, 1];
+                                                        titleColumn1[1] = [pacote, 1];
+
+                                                        // titleColumn
+                                                        var titleColumn = [];
+                                                        var titleLine = [];
+                                                        lista[0].ListaRegionais.forEach(function (entry) {
+
+                                                            titleLine.push(entry.Regional);
+                                                        });
+
+
+                                                        var x1 = [];
+                                                        lista[0].ListaRegionais.forEach(function (entry) {
+                                                            a = [];
+                                                            a.push(entry.Regional);
+                                                            a.push(4);
+                                                            x1.push(a);
+                                                        });
+                                                        var x2 = [['Orçada', 1], ['Real', 1], ['Desvio %', 1], ['Desvio $', 1]];
+                                                        var aux1 = ['Orçada', 1];
+                                                        var aux2 = ['Real', 1];
+                                                        var aux3 = ['Desvio %', 1];
+                                                        var aux4 = ['Desvio $', 1];
+                                                        lista[0].ListaRegionais.forEach(function (entry) {
+                                                            x2.push(aux1);
+                                                            x2.push(aux2);
+                                                            x2.push(aux3);
+                                                            x2.push(aux4);
+                                                        });
+                                                        var titleColumnsBody = [];
+                                                        titleColumnsBody[0] = x1;
+                                                        titleColumnsBody[1] = x2;
+
+                                                        // column1
+                                                        var column1 = [];
+                                                        lista.forEach(function (entry) {
+                                                            var a = [];
+                                                            a.push(entry.Name);
+                                                            a.push(0);
+                                                            a.push(0);
+                                                            a.push(0);
+                                                            column1.push(a);
+                                                        });
+
+                                                        // dataColumn
+                                                        var name;
+                                                        var dataColumn = [];
+
+                                                        var valorMapaDeCalor = [];
+                                                        var orderMapaDeCalor = [];
+                                                        var i = 0;
+
+                                                        lista.forEach(function (entry) {
+                                                            var line = [];
+                                                            name = entry.Name;
+
+                                                            var i = 0;
+
+                                                            /*
+                                                             * GERAÇÃO DO MAPA DE CALOR
+                                                             */
+                                                            entry.ListaRegionais.forEach(function (valor) {
+
+                                                                valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                                orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                                i++;
+
+                                                            });
+
+                                                            orderMapaDeCalor = orderMapaDeCalor.sort(function (a, b) { return a - b; });
+                                                            console.log("Mapa: " + valorMapaDeCalor);
+                                                            console.log("Ordem: " + orderMapaDeCalor);
+
+                                                            var minVal = orderMapaDeCalor[0];
+                                                            var tamanhoArray = orderMapaDeCalor.length;
+                                                            var maxVal = orderMapaDeCalor[tamanhoArray - 1];
+
+                                                            var corPercent = [];
+
+                                                            var i = 0;
+                                                            orderMapaDeCalor.forEach(function (valor) {
+                                                                corPercent[i] = ((valor - minVal) / (maxVal - minVal));
+                                                                i++;
+                                                            });
+
+
+
+                                                            var arrayCor = [];
+
+                                                            var i = 0;
+                                                            var j = 0;
+                                                            var local = 0;
+
+
+                                                            for (i = 0; i < valorMapaDeCalor.length; i++) {
+
+                                                                local = 0;
+
+                                                                for (j = 0; j < orderMapaDeCalor.length; j++) {
+
+                                                                    if (valorMapaDeCalor[i] == orderMapaDeCalor[j]) {
+                                                                        local = j;
+                                                                    }
+
+                                                                }
+
+                                                                arrayCor[i] = corPercent[local];
+
+                                                            }
+
+                                                            console.log(arrayCor);
+
+                                                            //entry.ListaRegionais.forEach(function (valor) {
+
+                                                            for (i = 0; i < entry.ListaRegionais.length; i++) {
+                                                                var orcada = [];
+                                                                var real = [];
+                                                                var desvioP = [];
+                                                                var desvioR = [];
+                                                                orcada.push(entry.ListaRegionais[i].Orçada);
+                                                                orcada.push(name);
+                                                                orcada.push(entry.ListaRegionais[i].Regional);
+                                                                orcada.push(0);
+                                                                orcada.push(0);
+                                                                real.push(entry.ListaRegionais[i].Realizada);
+                                                                real.push(name);
+                                                                real.push(entry.ListaRegionais[i].Regional);
+                                                                real.push(0);
+                                                                real.push(0);
+                                                                desvioP.push(entry.ListaRegionais[i].DesvioPorc);
+                                                                desvioP.push(name);
+                                                                desvioP.push(entry.ListaRegionais[i].Regional);
+                                                                desvioP.push('%');
+                                                                desvioP.push(buscaCor(arrayCor[i]));
+                                                                desvioR.push(entry.ListaRegionais[i].DesvioReal);
+                                                                desvioR.push(name);
+                                                                desvioR.push(entry.ListaRegionais[i].Regional);
+                                                                desvioR.push(0);
+                                                                desvioR.push(0);
+                                                                line.push(orcada);
+                                                                line.push(real);
+                                                                line.push(desvioP);
+                                                                line.push(desvioR);
+
+                                                            }
+
+                                                            dataColumn.push(line);
+                                                        });
+
+
+                                                        // columnsTotal
+                                                        var columnsTotal = [];
+
+                                                        /***INI MAPA DE CALOR***/
+                                                        valorMapaDeCalor = [];
+                                                        orderMapaDeCalor = [];
+                                                        i = 0;
+                                                        /***FIM MAPA DE CALOR***/
+
+                                                        /****** INI GERAÇÃO DO MAPA DE CALOR *********/
+                                                        lista.forEach(function (valor) {
+
+                                                            valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
+                                                            orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
+                                                            i++;
+
+                                                        });
+
+                                                        orderMapaDeCalor = orderMapaDeCalor.sort(function (a, b) { return a - b; });
+                                                        console.log("Mapafooter: " + valorMapaDeCalor);
+                                                        console.log("Ordemfooter: " + orderMapaDeCalor);
+
+                                                        var minVal = orderMapaDeCalor[0];
+                                                        var tamanhoArray = orderMapaDeCalor.length;
+                                                        var maxVal = orderMapaDeCalor[tamanhoArray - 1];
+
+                                                        var corPercent = [];
+
+                                                        var i = 0;
+                                                        orderMapaDeCalor.forEach(function (valor) {
+                                                            corPercent[i] = ((valor - minVal) / (maxVal - minVal));
+                                                            i++;
+                                                        });
+
+
+
+                                                        var arrayCor = [];
+
+                                                        var i = 0;
+                                                        var j = 0;
+                                                        var local = 0;
+
+
+                                                        for (i = 0; i < valorMapaDeCalor.length; i++) {
+
+                                                            local = 0;
+
+                                                            for (j = 0; j < orderMapaDeCalor.length; j++) {
+
+                                                                if (valorMapaDeCalor[i] == orderMapaDeCalor[j]) {
+                                                                    local = j;
+                                                                }
+
+                                                            }
+
+                                                            arrayCor[i] = corPercent[local];
+
+                                                        }
+
+                                                        console.log(arrayCor);
+                                                        /****** FIM GERAÇÃO DO MAPA DE CALOR *********/
+
+                                                        //entry.ListaRegionais.forEach(function (valor, arrayCor) {
+                                                        //for (i = 0; i < lista[0].totalColunaReg.length; i++) {
+                                                        //lista[0].totalColunaReg.forEach(function (valor) {
+                                                        var i = 0
+
+
+                                                        //for (i = 0; i < lista.length; i++) {
+
+                                                        lista.forEach(function (entry) {
+                                                            var x = [];
+                                                            var orcada = [];
+                                                            var real = [];
+                                                            var desvioP = [];
+                                                            var desvioR = [];
+                                                            orcada.push(entry.total == null ? 0 : entry.total.Orçada);
+                                                            orcada.push(0);
+                                                            orcada.push(0);
+                                                            orcada.push(0);
+                                                            orcada.push(0);
+                                                            real.push(entry.total == null ? 0 : entry.total.Realizada);
+                                                            real.push(0);
+                                                            real.push(0);
+                                                            real.push(0);
+                                                            real.push(0);
+                                                            desvioP.push(entry.total == null ? 0 : entry.total.DesvioPorc);
+                                                            desvioP.push(0);
+                                                            desvioP.push(0);
+                                                            desvioP.push('%');
+                                                            desvioP.push(buscaCor(arrayCor[i])); /****** GERAÇÃO DO MAPA DE CALOR *********/
+                                                            desvioR.push(entry.total == null ? 0 : entry.total.DesvioReal);
+                                                            desvioR.push(0);
+                                                            desvioR.push(0);
+                                                            desvioR.push(0);
+                                                            desvioR.push(0);
+                                                            x.push(orcada);
+                                                            x.push(real);
+                                                            x.push(desvioP);
+                                                            x.push(desvioR);
+                                                            columnsTotal.push(x);
+                                                            i++;
+
+                                                        });
+
+                                                        // titleTotal
+                                                        var titleTotal = [];
+                                                        titleTotal[0] = [['Total', 4]];
+                                                        titleTotal[1] = [['Orçada', 1], ['Real', 1], ['Desvio %', 1], ['Desvio $', 1]];
+
+                                                        // footerColumn1
+                                                        var footerColumn1 = [];
+                                                        footerColumn1[0] = ['Total', 1];
+
+
+                                                        ////resultado dos totais
+                                                        var footerTotal = [];
+                                                        var lineO = [];
+                                                        var lineR = [];
+                                                        var lineDP = [];
+                                                        var lineDR = [];
+                                                        var orcada = 0;
+                                                        var real = 0;
+                                                        var desvioP = 0;
+                                                        var desvioR = 0;
+                                                        var dados = [];
+                                                        lista.forEach(function (entry) {
+
+
+
+                                                            orcada += entry.total == null ? 0 : entry.total.Orçada;
+                                                            real += entry.total == null ? 0 : entry.total.Realizada;
+                                                            desvioP += entry.total == null ? 0 : entry.total.DesvioPorc;
+                                                            desvioR += entry.total == null ? 0 : entry.total.DesvioReal;
+
+                                                        });
+                                                        lineO.push(orcada);
+                                                        lineO.push(0);
+                                                        lineO.push(0);
+                                                        lineO.push(0);
+
+                                                        lineR.push(real);
+                                                        lineR.push(0);
+                                                        lineR.push(0);
+                                                        lineR.push(0);
+
+                                                        lineDP.push(desvioP);
+                                                        lineDP.push(0);
+                                                        lineDP.push(0);
+                                                        lineDP.push(0);
+
+                                                        lineDR.push(desvioR);
+                                                        lineDR.push(0);
+                                                        lineDR.push(0);
+                                                        lineDR.push(0);
+
+                                                        dados.push(lineO);
+                                                        dados.push(lineR);
+                                                        dados.push(lineDP);
+                                                        dados.push(lineDR);
+                                                        footerTotal.push(dados);
+
+                                                        /***INI MAPA DE CALOR***/
+                                                        valorMapaDeCalor = [];
+                                                        orderMapaDeCalor = [];
+                                                        i = 0;
+                                                        /***FIM MAPA DE CALOR***/
+
+
+                                                        /****** INI GERAÇÃO DO MAPA DE CALOR *********/
+                                                        lista[0].totalColunaReg.forEach(function (valor) {
+
+                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                            i++;
+
+                                                        });
+
+                                                        orderMapaDeCalor = orderMapaDeCalor.sort(function (a, b) { return a - b; });
+                                                        console.log("Mapafooter: " + valorMapaDeCalor);
+                                                        console.log("Ordemfooter: " + orderMapaDeCalor);
+
+                                                        var minVal = orderMapaDeCalor[0];
+                                                        var tamanhoArray = orderMapaDeCalor.length;
+                                                        var maxVal = orderMapaDeCalor[tamanhoArray - 1];
+
+                                                        var corPercent = [];
+
+                                                        var i = 0;
+                                                        orderMapaDeCalor.forEach(function (valor) {
+                                                            corPercent[i] = ((valor - minVal) / (maxVal - minVal));
+                                                            i++;
+                                                        });
+
+
+
+                                                        var arrayCor = [];
+
+                                                        var i = 0;
+                                                        var j = 0;
+                                                        var local = 0;
+
+
+                                                        for (i = 0; i < valorMapaDeCalor.length; i++) {
+
+                                                            local = 0;
+
+                                                            for (j = 0; j < orderMapaDeCalor.length; j++) {
+
+                                                                if (valorMapaDeCalor[i] == orderMapaDeCalor[j]) {
+                                                                    local = j;
+                                                                }
+
+                                                            }
+
+                                                            arrayCor[i] = corPercent[local];
+
+                                                        }
+
+                                                        console.log(arrayCor);
+                                                        /****** FIM GERAÇÃO DO MAPA DE CALOR *********/
+
+                                                        //entry.ListaRegionais.forEach(function (valor, arrayCor) {
+                                                        //for (i = 0; i < lista[0].totalColunaReg.length; i++) {
+
+                                                        var footerColumnsBody = [];
+                                                        var line = [];
+                                                        //lista[0].totalColunaReg.forEach(function (valor) {
+                                                        for (i = 0; i < lista[0].totalColunaReg.length; i++) {
+                                                            //console.log(valor);
+                                                            var orcada = [];
+                                                            var real = [];
+                                                            var desvioP = [];
+                                                            var desvioR = [];
+                                                            orcada.push(lista[0].totalColunaReg[i].Orçada);
+                                                            orcada.push(0);
+                                                            orcada.push(lista[0].totalColunaReg[i].Regional);
+                                                            orcada.push(0);
+                                                            orcada.push(0);
+                                                            real.push(lista[0].totalColunaReg[i].Realizada);
+                                                            real.push(0);
+                                                            real.push(lista[0].totalColunaReg[i].Regional);
+                                                            real.push(0);
+                                                            real.push(0);
+                                                            desvioP.push(lista[0].totalColunaReg[i].DesvioPorc);
+                                                            desvioP.push(0);
+                                                            desvioP.push(lista[0].totalColunaReg[i].Regional);
+                                                            desvioP.push('%');
+                                                            desvioP.push(buscaCor(arrayCor[i])); /****** GERAÇÃO DO MAPA DE CALOR *********/
+                                                            desvioR.push(lista[0].totalColunaReg[i].DesvioReal);
+                                                            desvioR.push(0);
+                                                            desvioR.push(lista[0].totalColunaReg[i].Regional);
+                                                            desvioR.push(0);
+                                                            desvioR.push(0);
+                                                            line.push(orcada);
+                                                            line.push(real);
+                                                            line.push(desvioP);
+                                                            line.push(desvioR);
+                                                        }
+
+                                                        footerColumnsBody[0] = line;
+
+
+
+                                                        montaTabela('2', '#secoundTableTeste', '170px', titleColumn1, titleColumnsBody, column1, dataColumn, footerColumn1, footerColumnsBody, footerTotal, titleTotal, columnsTotal);
+
+
+
+
+                                                    });
+
+
+
+                                                } else if (id == 2) {
+
+   
+
+                                                    $('#SecondChart').empty();
+
+                                                    $('#ThirdChart').empty();
+                                                    $('#EvolutivoDaContaPorUnidade').empty();
+                                                    $('#FourthChart').empty();
+
+                                                    var conta = obj.getAttribute("x");
+                                                    var unidade = obj.getAttribute("y");
+                                                    var regional = regionalSelecionada;
+
+                                                    $.post('../api/Manutencao/getGraficoRegionalTecnico/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(regional.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, ' | ')) + '/', function (lista) {
+
+                                                    var reg = regional
+
+                                                    var titleLine = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        titleLine.push(entry.EmpresaSigla);
+                                                    });
+
+                                                    var x1 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x1.push(Math.round(entry.DesvQtdeBoi * 100));
+                                                    });
+
+                                                    var x2 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x2.push(Math.round(entry.DesvQtdeConsumoUN * 100));
+                                                    });
+
+                                                    var x3 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x3.push(Math.round(entry.DesvPrecoUN * 100));
+                                                    });
+
+                                                    var x4 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x4.push(Math.round(entry.DesvUNBoi * 100));
+                                                    });
+
+                                                    SecondChart(titleLine, x1, x2, x3, x4, reg, conta);
+
+                                                    })
+
+                                                    MountThirdChart(unidade, conta);
+
+                                                    MountFourthChart(unidade, conta);
+
+                                                }
+
+
                                             }
 
                                             //locação segunda matriz
@@ -1152,8 +1789,8 @@
                                                          */
                                                         entry.ListaRegionais.forEach(function (valor) {
 
-                                                            valorMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
-                                                            orderMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
+                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
                                                             i++;
 
                                                         });
@@ -1242,6 +1879,73 @@
                                                     // columnsTotal
                                                     var columnsTotal = [];
 
+                                                    /***INI MAPA DE CALOR***/
+                                                    valorMapaDeCalor = [];
+                                                    orderMapaDeCalor = [];
+                                                    i = 0;
+                                                    /***FIM MAPA DE CALOR***/
+
+                                                    /****** INI GERAÇÃO DO MAPA DE CALOR *********/
+                                                    lista.forEach(function (valor) {
+
+                                                        valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
+                                                        orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
+                                                        i++;
+
+                                                    });
+
+                                                    orderMapaDeCalor = orderMapaDeCalor.sort(function (a, b) { return a - b; });
+                                                    console.log("Mapafooter: " + valorMapaDeCalor);
+                                                    console.log("Ordemfooter: " + orderMapaDeCalor);
+
+                                                    var minVal = orderMapaDeCalor[0];
+                                                    var tamanhoArray = orderMapaDeCalor.length;
+                                                    var maxVal = orderMapaDeCalor[tamanhoArray - 1];
+
+                                                    var corPercent = [];
+
+                                                    var i = 0;
+                                                    orderMapaDeCalor.forEach(function (valor) {
+                                                        corPercent[i] = ((valor - minVal) / (maxVal - minVal));
+                                                        i++;
+                                                    });
+
+
+
+                                                    var arrayCor = [];
+
+                                                    var i = 0;
+                                                    var j = 0;
+                                                    var local = 0;
+
+
+                                                    for (i = 0; i < valorMapaDeCalor.length; i++) {
+
+                                                        local = 0;
+
+                                                        for (j = 0; j < orderMapaDeCalor.length; j++) {
+
+                                                            if (valorMapaDeCalor[i] == orderMapaDeCalor[j]) {
+                                                                local = j;
+                                                            }
+
+                                                        }
+
+                                                        arrayCor[i] = corPercent[local];
+
+                                                    }
+
+                                                    console.log(arrayCor);
+                                                    /****** FIM GERAÇÃO DO MAPA DE CALOR *********/
+
+                                                    //entry.ListaRegionais.forEach(function (valor, arrayCor) {
+                                                    //for (i = 0; i < lista[0].totalColunaReg.length; i++) {
+                                                    //lista[0].totalColunaReg.forEach(function (valor) {
+                                                    var i = 0
+
+                                                    
+                                                        //for (i = 0; i < lista.length; i++) {
+
                                                     lista.forEach(function (entry) {
                                                         var x = [];
                                                         var orcada = [];
@@ -1262,7 +1966,7 @@
                                                         desvioP.push(0);
                                                         desvioP.push(0);
                                                         desvioP.push('%');
-                                                        desvioP.push(0);
+                                                        desvioP.push(buscaCor(arrayCor[i])); /****** GERAÇÃO DO MAPA DE CALOR *********/
                                                         desvioR.push(entry.total.DesvioReal);
                                                         desvioR.push(0);
                                                         desvioR.push(0);
@@ -1273,6 +1977,7 @@
                                                         x.push(desvioP);
                                                         x.push(desvioR);
                                                         columnsTotal.push(x);
+                                                        i++;
 
                                                     });
 
@@ -1333,24 +2038,25 @@
                                                     dados.push(lineDR);
                                                     footerTotal.push(dados);
 
-                                                    var valorMapaDeCalor = [];
-                                                    var orderMapaDeCalor = [];
-                                                    var i = 0;
+                                                    /***INI MAPA DE CALOR***/
+                                                    valorMapaDeCalor = [];
+                                                    orderMapaDeCalor = [];
+                                                    i = 0;
+                                                    /***FIM MAPA DE CALOR***/
 
-                                                    /*
-                                                    * GERAÇÃO DO MAPA DE CALOR
-                                                    */
+
+                                                    /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                     lista[0].totalColunaReg.forEach(function (valor) {
 
-                                                        valorMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
-                                                        orderMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
+                                                        valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                        orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
                                                         i++;
 
                                                     });
 
                                                     orderMapaDeCalor = orderMapaDeCalor.sort(function (a, b) { return a - b; });
-                                                    console.log("Mapa: " + valorMapaDeCalor);
-                                                    console.log("Ordem: " + orderMapaDeCalor);
+                                                    console.log("Mapafooter: " + valorMapaDeCalor);
+                                                    console.log("Ordemfooter: " + orderMapaDeCalor);
 
                                                     var minVal = orderMapaDeCalor[0];
                                                     var tamanhoArray = orderMapaDeCalor.length;
@@ -1390,83 +2096,53 @@
                                                     }
 
                                                     console.log(arrayCor);
+                                                    /****** FIM GERAÇÃO DO MAPA DE CALOR *********/
+
+                                                    //entry.ListaRegionais.forEach(function (valor, arrayCor) {
+                                                    //for (i = 0; i < lista[0].totalColunaReg.length; i++) {
 
                                                     var footerColumnsBody = [];
                                                     var line = [];
-                                                    lista[0].totalColunaReg.forEach(function (valor) {
+                                                        //lista[0].totalColunaReg.forEach(function (valor) {
+                                                    for (i = 0; i < lista[0].totalColunaReg.length; i++) {
                                                         //console.log(valor);
                                                         var orcada = [];
                                                         var real = [];
                                                         var desvioP = [];
                                                         var desvioR = [];
-                                                        orcada.push(valor.Orçada);
+                                                        orcada.push(lista[0].totalColunaReg[i].Orçada);
                                                         orcada.push(0);
-                                                        orcada.push(valor.Regional);
+                                                        orcada.push(lista[0].totalColunaReg[i].Regional);
                                                         orcada.push(0);
                                                         orcada.push(0);
-                                                        real.push(valor.Realizada);
+                                                        real.push(lista[0].totalColunaReg[i].Realizada);
                                                         real.push(0);
-                                                        real.push(valor.Regional);
+                                                        real.push(lista[0].totalColunaReg[i].Regional);
                                                         real.push(0);
                                                         real.push(0);
-                                                        desvioP.push(valor.DesvioPorc);
+                                                        desvioP.push(lista[0].totalColunaReg[i].DesvioPorc);
                                                         desvioP.push(0);
-                                                        desvioP.push(valor.Regional);
+                                                        desvioP.push(lista[0].totalColunaReg[i].Regional);
                                                         desvioP.push('%');
-                                                        desvioP.push(buscaCor(arrayCor[i]));
-                                                        desvioR.push(valor.DesvioReal);
+                                                        desvioP.push(buscaCor(arrayCor[i])); /****** GERAÇÃO DO MAPA DE CALOR *********/
+                                                        desvioR.push(lista[0].totalColunaReg[i].DesvioReal);
                                                         desvioR.push(0);
-                                                        desvioR.push(valor.Regional);
+                                                        desvioR.push(lista[0].totalColunaReg[i].Regional);
                                                         desvioR.push(0);
                                                         desvioR.push(0);
                                                         line.push(orcada);
                                                         line.push(real);
                                                         line.push(desvioP);
                                                         line.push(desvioR);
-                                                    });
+                                                    }
+
                                                     footerColumnsBody[0] = line;
 
 
 
                                                     montaTabela('2', '#secoundTableTeste', '170px', titleColumn1, titleColumnsBody, column1, dataColumn, footerColumn1, footerColumnsBody, footerTotal, titleTotal, columnsTotal);
 
-                                                    $.post('../api/Manutencao/getGraficoRegionalTecnico/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(regional.replace(/[/]/g, '|')) + '/null', function (lista) {
-
-                                                        var reg = regional
-
-                                                        var titleLine = [];
-
-                                                        lista.forEach(function (entry) {
-                                                            titleLine.push(entry.EmpresaSigla);
-                                                        });
-
-                                                        var x1 = [];
-
-                                                        lista.forEach(function (entry) {
-                                                            x1.push(Math.round(entry.DesvQtdeBoi * 100));
-                                                        });
-
-                                                        var x2 = [];
-
-                                                        lista.forEach(function (entry) {
-                                                            x2.push(Math.round(entry.DesvQtdeConsumoKW * 100));
-                                                        });
-
-                                                        var x3 = [];
-
-                                                        lista.forEach(function (entry) {
-                                                            x3.push(Math.round(entry.DesvPrecoKW * 100));
-                                                        });
-
-                                                        var x4 = [];
-
-                                                        lista.forEach(function (entry) {
-                                                            x4.push(Math.round(entry.DesvKWBoi * 100));
-                                                        });
-
-                                                        SecondChart(titleLine, x1, x2, x3, x4, reg);
-
-                                                    })
+                                                    
 
 
                                                 });
@@ -1476,126 +2152,169 @@
                                             }
 
                                             //locação segundo gráfico
-                                            function SecondChart(name, x1, x2, x3, x4, regional) {
+                                            function SecondChart(name, x1, x2, x3, x4, regional, conta) {
 
-                                                $('#SecondChart').show();
+                                                if (conta == 'ENERGIA ELÉTRICA CONTRATADA') {
+                                                    UnidadeMedida = 'KW';
+                                                    UnidadeMedidaPorBoi = 'KW/BOI';
+                                                    PrecoUnidadeMedida = 'Preço KW';
 
-                                                $(function () {
-                                                    Highcharts.chart('SecondChart', {
-                                                        credits: {
-                                                            enabled: false
-                                                        },
-                                                        chart: {
-                                                            zoomType: 'x, y',
-                                                            type: 'column',
-                                                            backgroundColor: null
-                                                        },
-                                                        title: {
-                                                            text: 'Impacto dos Fatores Técnicos de Desvio - ' + regional,
-                                                        },
-                                                        xAxis: {
-                                                            categories: name
-                                                        },
-                                                        yAxis: {
+                                                } else if (conta == 'COMBUSTÍVEL PARA CALDEIRA') {
+                                                    
+                                                    UnidadeMedida = 'MCAL';
+                                                    UnidadeMedidaPorBoi = 'MCAL/BOI';
+                                                    PrecoUnidadeMedida = 'Preço MCAL';
 
-                                                            title: {
-                                                                text: null
+                                                } else if (conta == 'ÁGUA') {
+
+                                                    UnidadeMedida = 'M³';
+                                                    UnidadeMedidaPorBoi = 'M³/BOI';
+                                                    PrecoUnidadeMedida = 'Preço M³';
+
+                                                } else {
+                                                    
+                                                    UnidadeMedida = 'UnidadeMedida';
+                                                    UnidadeMedidaPorBoi = 'UnidadeMedidaPorBoi';
+                                                    PrecoUnidadeMedida = 'PrecoUnidadeMedida';
+
+                                                }
+
+                                                var frase = "";
+
+                                                if (x1.length < 1) {
+                                                    frase = "<p align=\"center\"><b>Não existem dados técnicos para a conta " + conta + "</b></p><br><br>";
+                                                    $('#SecondChart').show();
+                                                    $('#SecondChart').html(frase);
+                                                }else{
+
+
+                                                    $('#SecondChart').show();
+
+                                                    $(function () {
+                                                        Highcharts.chart('SecondChart', {
+                                                            credits: {
+                                                                enabled: false
                                                             },
-                                                            stackLabels: {
-                                                                enabled: true,
-                                                                style: {
-                                                                    fontWeight: 'bold',
-                                                                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                                                                }
-                                                            }
-                                                        },
-                                                        legend: {
-                                                            align: 'center',
+                                                            chart: {
+                                                                zoomType: 'x, y',
+                                                                type: 'column',
+                                                                backgroundColor: null
+                                                            },
+                                                            title: {
+                                                                text: 'Impacto dos Fatores Técnicos de Desvio - ' + regional + ' Conta: ' + conta,
+                                                            },
+                                                            xAxis: {
+                                                                categories: name
+                                                            },
+                                                            yAxis: {
 
-                                                            verticalAlign: 'bottom',
-                                                            shadow: false
-                                                        },
-                                                        
-                                                        plotOptions: {
-                                                            column: {
-                                                                stacking: 'normal',
-                                                                dataLabels: {
+                                                                title: {
+                                                                    text: 'Desvio %'
+                                                                },
+                                                                stackLabels: {
                                                                     enabled: true,
-                                                                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-                                                                    formatter: function () {
-                                                                        return this.y + '%';
+                                                                    style: {
+                                                                        fontWeight: 'bold',
+                                                                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
                                                                     }
                                                                 }
-                                                            }
-                                                        },
-                                                        series: [{
-                                                            name: 'KW',
-                                                            data: x1,
-                                                            point: {
-                                                                events: {
-                                                                    click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
-                                                                }
-                                                            }
-                                                            , tooltip: {
+                                                            },
+                                                            legend: {
+                                                                align: 'center',
+
+                                                                verticalAlign: 'bottom',
+                                                                shadow: false
+                                                            },
+                                                            tooltip: {
                                                                 headerFormat: '<b>{point.x}</b><br/>',
-                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Δ% = Despesa Real / Despesa Orçada -1',
-                                                                valueSuffix: '%'
-                                                            }
+                                                                pointFormat: '{series.name}: {point.y}<br/>Destacar a fórmula de cálculo!'
+                                                            },
+                                                            plotOptions: {
+                                                                column: {
+                                                                    stacking: 'normal',
+                                                                    dataLabels: {
+                                                                        enabled: true,
+                                                                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                                                                        formatter: function () {
+                                                                            return this.y + '%';
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            series: [{
+                                                                name: UnidadeMedida ,
+                                                                
                                                             
+                                                                
+                                                                data: x1,
+                                                                point: {
+                                                                    events: {
+                                                                        click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                                    }
+                                                                }
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> Δ% = Despesa Real / Despesa Orçada -1',
+                                                                    valueSuffix: '%'
+                                                                }
 
 
-                                                        }, {
-                                                            name: 'KW/BOI',
-                                                            data: x2,
-                                                            point: {
-                                                                events: {
-                                                                    click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                            }, {
+                                                                name: UnidadeMedidaPorBoi, //'KW/BOI',
+                                                                data: x2,
+                                                                point: {
+                                                                    events: {
+                                                                        click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                                    }
                                                                 }
-                                                            }
-                                                            , tooltip: {
-                                                                headerFormat: '<b>{point.x}</b><br/>',
-                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> KWs por Boi = Qtde de KWs Consumidos / Qtde de Bois',
-                                                                valueSuffix: '%'
-                                                            }
-                                                        }, {
-                                                            name: 'Bois/Proc',
-                                                            data: x3,
-                                                            point: {
-                                                                events: {
-                                                                    click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> ' + UnidadeMedidaPorBoi + ' = Qtde de ' + UnidadeMedida + ' Consumidos / Qtde de Bois',
+                                                                    valueSuffix: '%'
                                                                 }
-                                                            }
-                                                            , tooltip: {
-                                                                headerFormat: '<b>{point.x}</b><br/>',
-                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Δ% = Qtde de Bois Real / Qtde de Bois Orçada -1',
-                                                                valueSuffix: '%'
-                                                            }
-                                                        }, {
-                                                            name: 'Preço KW',
-                                                            data: x3,
-                                                            point: {
-                                                                events: {
-                                                                    click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                            }, {
+                                                                name: 'Bois/Proc',
+                                                                data: x3,
+                                                                point: {
+                                                                    events: {
+                                                                        click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                                    }
                                                                 }
-                                                            }
-                                                            , tooltip: {
-                                                                headerFormat: '<b>{point.x}</b><br/>',
-                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Preço do KW = Despesa de KW / Qtde de KWs Consumidos',
-                                                                valueSuffix: '%'
-                                                            }
-                                                        }]
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> Δ% = Qtde de Bois Real / Qtde de Bois Orçada -1',
+                                                                    valueSuffix: '%'
+                                                                }
+                                                            }, {
+                                                                name: PrecoUnidadeMedida, //'Preço KW',
+                                                                data: x3,
+                                                                point: {
+                                                                    events: {
+                                                                        click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                                    }
+                                                                }
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> Preço do ' + UnidadeMedida + ' = Despesa de ' + UnidadeMedida + ' / Qtde de ' + UnidadeMedida + ' Consumidos',
+                                                                    valueSuffix: '%'
+                                                                }
+                                                            }]
+                                                        });
                                                     });
-                                                });
+
+                                                }
                                             }
 
                                             //chamada ajax terceiro gráfico
-                                            function MountThirdChart(u) {
+                                            function MountThirdChart(u, conta) {
 
                                                 //função ajax para buscar dados
+                                               
+                                                //$('#FourthChart').empty();
 
                                                 var unidade = u
 
-                                                $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidade/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + unidade, function (lista) {
+                                                $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidade/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(unidade.replace(/[/]/g, '|')) + '/', function (lista) {
 
                                                     var titleLine = [];
 
@@ -1631,7 +2350,45 @@
 
                                                     ThirdChart(titleLine, x1, x2, x3, desvioAcumulado, unidade);
 
-                                                });                    
+                                                });
+
+                                                $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidadeEConta/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(unidade.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/', function (lista) {
+
+                                                    var titleLine = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        titleLine.push(entry.MesAno);
+                                                    });
+
+                                                    var x1 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x1.push(entry.Orçada);
+                                                    });
+
+                                                    var x2 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x2.push(entry.Realizada);
+                                                    });
+
+                                                    var x3 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x3.push(entry.DesvioReal);
+                                                    });
+
+                                                    var desvioAcumulado = [];
+                                                    var desvio = 0
+
+                                                    for (i = 0; i < x3.length; i++) {
+                                                        desvio += x3[i];
+                                                        desvioAcumulado[i] = desvio
+                                                    }
+
+                                                    EvolutivoDaContaPorUnidade(titleLine, x1, x2, x3, desvioAcumulado, unidade, conta);
+
+                                                });
                                             }
 
                                             //locação terceiro gráfico
@@ -1646,12 +2403,11 @@
                                                         },
 
                                                         title: {
-                                                            text: 'Evolutivo ' + unidade
+                                                            text: 'Evolutivo do orçamento geral - ' + unidade
                                                         },
                                                         chart: {
                                                             zoomType: 'x, y',
-                                                            backgroundColor: null,
-                                                            zoomType: 'x', zoomType: 'y'
+                                                            backgroundColor: null
                                                         },
                                                         xAxis: {
                                                             categories: name
@@ -1704,11 +2460,80 @@
                                                 });
                                             }
 
+                                            function EvolutivoDaContaPorUnidade(name, x1, x2, x3, line, unidade, conta) {
+                                                $('#EvolutivoDaContaPorUnidade').show();
+                                                $('#ThirdChartMeses').show();
+
+                                                $(function () {
+                                                    Highcharts.chart('EvolutivoDaContaPorUnidade', {
+                                                        credits: {
+                                                            enabled: false
+                                                        },
+
+                                                        title: {
+                                                            text: 'Evolutivo da conta ' + conta + ' - ' + unidade
+                                                        },
+                                                        chart: {
+                                                            zoomType: 'x, y',
+                                                            backgroundColor: null                                                  
+                                                        },
+                                                        xAxis: {
+                                                            categories: name
+                                                        },
+                                                        yAxis: {
+
+                                                            title: {
+                                                                text: 'R$ em milhares'
+                                                            },
+                                                            subtitle: {
+                                                                text: document.ontouchstart === undefined ?
+                                                                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                                                            }
+                                                            ,
+                                                            stackLabels: {
+                                                                enabled: true,
+                                                                style: {
+                                                                    fontWeight: 'bold',
+                                                                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                                                }
+                                                            }
+                                                        },
+
+                                                        series: [{
+                                                            type: 'column',
+                                                            name: 'Despesa Orçada',
+                                                            data: x1,
+
+                                                        }, {
+                                                            type: 'column',
+                                                            name: 'Despesa Real',
+                                                            data: x2,
+
+                                                        }, {
+                                                            type: 'column',
+                                                            name: 'Desvio R$',
+                                                            data: x3,
+
+                                                        }, {
+                                                            type: 'spline',
+                                                            name: 'Desvio R$ Acumulado',
+                                                            data: line,
+                                                            marker: {
+                                                                lineWidth: 2,
+                                                                lineColor: Highcharts.getOptions().colors[3],
+                                                                fillColor: 'white'
+                                                            }
+                                                        }]
+                                                    });
+                                                });
+                                            }
+
+
                                             //chamada ajax quarto gráfico
                                             function MountFourthChart(unidade, conta) {
 
                                                 //fazer ajax
-                                                $.post('../api/Manutencao/getGraficoUnidadeTecnico/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + unidade + '/' + conta + '', function (lista) {
+                                                $.post('../api/Manutencao/getGraficoUnidadeTecnico/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(unidade.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '', function (lista) {
 
                                                     var titleLine = [];
 
@@ -1724,23 +2549,23 @@
 
                                                     var x2 = [];
 
-                                                        lista.forEach(function (entry) {
-                                                            x2.push(Math.round(entry.DesvQtdeConsumoKW * 100));
-                                                        });
+                                                    lista.forEach(function (entry) {
+                                                        x2.push(Math.round(entry.DesvQtdeConsumoUN * 100));
+                                                    });
 
                                                     var x3 = [];
 
-                                                        lista.forEach(function (entry) {
-                                                            x3.push(Math.round(entry.DesvPrecoKW * 100));
-                                                        });
+                                                    lista.forEach(function (entry) {
+                                                        x3.push(Math.round(entry.DesvPrecoUN * 100));
+                                                    });
 
                                                     var x4 = [];
 
-                                                        lista.forEach(function (entry) {
-                                                            x4.push(Math.round(entry.DesvKWBoi * 100));
-                                                        });
-                                                        
-                                                    FourthChart(titleLine, x1, x2, x3, x4, unidade);
+                                                    lista.forEach(function (entry) {
+                                                        x4.push(Math.round(entry.DesvUNBoi * 100));
+                                                    });
+
+                                                    FourthChart(titleLine, x1, x2, x3, x4, unidade, conta);
 
                                                 })
 
@@ -1748,99 +2573,132 @@
                                             }
 
                                             //locação quarto gráfico
-                                            function FourthChart(name, x1, x2, x3, x4, unidade) {
-                                                $('#FourthChart').show();
-                                                $(function () {
-                                                    Highcharts.chart('FourthChart', {
-                                                        credits: {
-                                                            enabled: false
-                                                        },
-                                                        chart: {
-                                                            zoomType: 'x, y',
-                                                            type: 'column',
-                                                            backgroundColor: null
-                                                        },
-                                                        title: {
-                                                            text: unidade + ' - Evolução do impacto dos fatores de desvio (Real vs Orçado)'
-                                                        },
-                                                        xAxis: {
-                                                            categories: name
-                                                        },
-                                                        yAxis: {
+                                            function FourthChart(name, x1, x2, x3, x4, unidade, conta) {
 
-                                                            title: {
-                                                                text: null
+                                                if (conta == 'ENERGIA ELÉTRICA CONTRATADA') {
+                                                    UnidadeMedida = 'KW';
+                                                    UnidadeMedidaPorBoi = 'KW/BOI';
+                                                    PrecoUnidadeMedida = 'Preço KW';
+
+                                                } else if (conta == 'COMBUSTÍVEL PARA CALDEIRA') {
+                                                    
+                                                    UnidadeMedida = 'MCAL';
+                                                    UnidadeMedidaPorBoi = 'MCAL/BOI';
+                                                    PrecoUnidadeMedida = 'Preço MCAL';
+
+                                                } else if (conta == 'ÁGUA') {
+
+                                                    UnidadeMedida = 'M³';
+                                                    UnidadeMedidaPorBoi = 'M³/BOI';
+                                                    PrecoUnidadeMedida = 'Preço M³';
+
+                                                } else {
+                                                    
+                                                    UnidadeMedida = 'UnidadeMedida';
+                                                    UnidadeMedidaPorBoi = 'UnidadeMedidaPorBoi';
+                                                    PrecoUnidadeMedida = 'PrecoUnidadeMedida';
+
+                                                }
+
+                                                var frase = "";
+
+                                                if (x1.length < 1) {
+                                                    frase = "<p align=\"center\"><b>Não existem dados técnicos para a conta " + conta + "</b></p><br><br>";
+                                                    $('#FourthChart').show();
+                                                    $('#FourthChart').html(frase);
+                                                } else {
+                                                    $('#FourthChart').show();
+                                                    $(function () {
+                                                        Highcharts.chart('FourthChart', {
+                                                            credits: {
+                                                                enabled: false
                                                             },
-                                                            stackLabels: {
-                                                                enabled: true,
-                                                                style: {
-                                                                    fontWeight: 'bold',
-                                                                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                                                                }
-                                                            }
-                                                        },
-                                                        legend: {
-                                                            align: 'center',
+                                                            chart: {
+                                                                zoomType: 'x, y',
+                                                                type: 'column',
+                                                                backgroundColor: null
+                                                            },
+                                                            title: {
+                                                                text: 'Evolução do impacto dos fatores de desvio (Real vs Orçado) ' + unidade + ' Conta: ' + conta
+                                                            },
+                                                            xAxis: {
+                                                                categories: name
+                                                            },
+                                                            yAxis: {
 
-                                                            verticalAlign: 'bottom',
+                                                                title: {
+                                                                    text: 'Desvio %'
+                                                                },
 
-                                                            shadow: false
-                                                        },
-                                                        tooltip: {
-                                                            headerFormat: '<b>{point.x}</b><br/>',
-                                                            pointFormat: '{series.name}: {point.y}<br/>Total {point.stackTotal}'
-                                                        },
-                                                        plotOptions: {
-                                                            column: {
-                                                                stacking: 'normal',
-                                                                dataLabels: {
+                                                                stackLabels: {
                                                                     enabled: true,
-                                                                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-                                                                    formatter: function () {
-                                                                        return this.y + '%';
+                                                                    style: {
+                                                                        fontWeight: 'bold',
+                                                                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
                                                                     }
                                                                 }
-                                                            }
-                                                        },
-                                                        series:
-[{
-                                                            name: 'KW',
-                                                            data: x1
-                                                            , tooltip: {
-                                                                headerFormat: '<b>{point.x}</b><br/>',
-                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Δ% = Despesa Real / Despesa Orçada -1',
-                                                                valueSuffix: '%'
-                                                            }
-                                                            
+                                                            },
+                                                            legend: {
+                                                                align: 'center',
 
+                                                                verticalAlign: 'bottom',
 
-                                                        }, {
-                                                            name: 'KW/BOI',
-                                                            data: x2
-                                                            , tooltip: {
+                                                                shadow: false
+                                                            },
+                                                            tooltip: {
                                                                 headerFormat: '<b>{point.x}</b><br/>',
-                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> KWs por Boi = Qtde de KWs Consumidos / Qtde de Bois',
-                                                                valueSuffix: '%'
-                                                            }
-                                                        }, {
-                                                            name: 'Bois/Proc',
-                                                            data: x3
-                                                            , tooltip: {
-                                                                headerFormat: '<b>{point.x}</b><br/>',
-                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Δ% = Qtde de Bois Real / Qtde de Bois Orçada -1',
-                                                                valueSuffix: '%'
-                                                            }
-                                                        }, {
-                                                            name: 'Preço KW',
-                                                            data: x3
-                                                            , tooltip: {
-                                                                headerFormat: '<b>{point.x}</b><br/>',
-                                                                pointFormat: '{series.name}: <i>{point.y}%<i/><br/> Preço do KW = Despesa de KW / Qtde de KWs Consumidos',
-                                                                valueSuffix: '%'
-                                                            }
-                                                        }]
+                                                                pointFormat: '{series.name}: {point.y}<br/>Total {point.stackTotal}'
+                                                            },
+                                                            plotOptions: {
+                                                                column: {
+                                                                    stacking: 'normal',
+                                                                    dataLabels: {
+                                                                        enabled: true,
+                                                                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                                                                        formatter: function () {
+                                                                            return this.y + '%';
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            series: [{
+
+                                                                name: UnidadeMedida,
+                                                                data: x1
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> Δ% = Despesa Real / Despesa Orçada -1',
+                                                                    valueSuffix: '%'
+                                                                }
+
+                                                            }, {
+                                                                name: UnidadeMedidaPorBoi,
+                                                                data: x2
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> ' + UnidadeMedidaPorBoi + ' = Qtde de ' + UnidadeMedida + ' Consumidos / Qtde de Bois',
+                                                                    valueSuffix: '%'
+                                                                }
+                                                            }, {
+                                                                name: 'Bois/Proc',
+                                                                data: x3
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> Δ% = Qtde de Bois Real / Qtde de Bois Orçada -1',
+                                                                    valueSuffix: '%'
+                                                                }
+                                                            }, {
+                                                                name: PrecoUnidadeMedida,
+                                                                data: x3
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> Preço do ' + UnidadeMedida + ' = Despesa de ' + UnidadeMedida + ' / Qtde de ' + UnidadeMedida + ' Consumidos',
+                                                                    valueSuffix: '%'
+                                                                }
+                                                            }]
+                                                        });
                                                     });
-                                                });
+                                                }
                                             }
 
                                         </script>
@@ -1907,6 +2765,7 @@
             $('#SecondChart').empty();
 
             $('#ThirdChart').empty();
+            $('#EvolutivoDaContaPorUnidade').empty();
             $('#FourthChart').empty();
 
             MountFirstChart();
