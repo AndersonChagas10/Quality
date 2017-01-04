@@ -31,7 +31,11 @@ namespace SgqSystem.Controllers.Api
                     if (i.AV > 0)
                     {
                         total.Pontos += i.PontosAtingidos - i.Pontos;
-                        total.Scorecard += i.Scorecard;
+
+                        if (total.Scorecard >= 100)
+                            total.Scorecard = 100;
+                        else
+                            total.Scorecard += i.Scorecard;
                     }
                 }
                 _list.Add(total);

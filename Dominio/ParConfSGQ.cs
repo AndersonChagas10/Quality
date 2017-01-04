@@ -12,17 +12,10 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParLevel3Level2Level1
+    public partial class ParConfSGQ
     {
         public int Id { get; set; }
-        public int ParLevel3Level2_Id { get; set; }
-        public int ParLevel1_Id { get; set; }
-        public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool Active { get; set; }
-        public Nullable<int> ParCompany_Id { get; set; }
-    
-        public virtual ParLevel1 ParLevel1 { get; set; }
-        public virtual ParLevel3Level2 ParLevel3Level2 { get; set; }
+        public Nullable<bool> HaveUnitLogin { get; set; }
+        public Nullable<bool> HaveShitLogin { get; set; }
     }
 }

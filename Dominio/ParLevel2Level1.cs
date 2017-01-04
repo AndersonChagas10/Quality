@@ -22,7 +22,7 @@ namespace Dominio
         public System.DateTime AlterDate { get; set; }
         public bool IsActive { get; set; }
     
-        public virtual ParLevel2 ParLevel2 { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }
+        public virtual ParLevel2 ParLevel2 { get; set; }
     }
 }

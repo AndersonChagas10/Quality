@@ -295,6 +295,11 @@ namespace Data.Repositories
            return db.Database.ExecuteSqlCommand(v);
         }
 
+        public List<T> ExecuteSqlQuery(string v)
+        {
+            return db.Database.SqlQuery<T>(v).ToList();
+        }
+
         //public T ExecutaSql<T>(string sqlQuery, string sqlSelectLast)
         //{
         //    db.Database.ExecuteSqlCommand(sqlQuery);

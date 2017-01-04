@@ -17,6 +17,8 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParCompany()
         {
+            this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
+            this.ConsolidationLevel2 = new HashSet<ConsolidationLevel2>();
             this.VolumeCepDesossa = new HashSet<VolumeCepDesossa>();
             this.VolumeCepRecortes = new HashSet<VolumeCepRecortes>();
             this.VolumePcc1b = new HashSet<VolumePcc1b>();
@@ -47,6 +49,10 @@ namespace Dominio
         public Nullable<decimal> IntegrationId { get; set; }
         public Nullable<int> ParCompany_Id { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VolumeCepDesossa> VolumeCepDesossa { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

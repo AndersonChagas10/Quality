@@ -4,6 +4,7 @@ using DTO.Helpers;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System;
 
 namespace Data.Repositories
 {
@@ -799,6 +800,11 @@ namespace Data.Repositories
             db.ParLevel3Group.Attach(paramLevel03group);
             db.Entry(paramLevel03group).State = EntityState.Modified;
             db.SaveChanges();
+        }
+
+        public void ExecuteSql(string sql)
+        {
+            db.Database.ExecuteSqlCommand(sql);
         }
 
         #region Não implementado

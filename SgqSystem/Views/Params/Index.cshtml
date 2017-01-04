@@ -13,6 +13,8 @@
     var urlGetLevel3 = Url.Action("GetParLevel3ById", "api/ParamsApi");
     var vinculoL2L3 = Url.Action("AddVinculoL3L2", "api/ParamsApi");
     var vinculoL1L2 = Url.Action("AddVinculoL1L2", "api/ParamsApi");
+    var checkVinculoL1L2 = Url.Action("VerificaShowBtnRemVinculoL1L2", "api/ParamsApi");
+    var desvinculoVinculoL1L2 = Url.Action("RemVinculoL1L2", "api/ParamsApi");
 
     var removeLevel3Group = Url.Action("RemoveParLevel3Group", "api/ParamsApi");
     var AddLevel3Group = Url.Action("AddUpdateParLevel3Group", "api/ParamsApi");
@@ -110,7 +112,8 @@
                                                     </h4>
                                                 </div>
                                                 <div class="col-xs-4">
-                                                    <button id="vinculoLevel1" class="btn btn-warning pull-right" style="height: 42px;" title="Vincular ao Level 1"><span class="glyphicon glyphicon-link"></span></button>
+                                                    <button id="vinculoLevel1" class="btn btn-warning pull-right "  style="height: 42px;" title="Vincular ao Level 1" ><span class="glyphicon glyphicon-link"></span></button>
+                                                    <button id="desVinculoLevel1" class="btn btn-warning pull-right "  style="height: 42px; display:none" title="Vincular ao Level 1"><i class="fa fa-chain-broken" aria-hidden="true"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -213,8 +216,8 @@
     function loadSelect2(){
     //    $.fn.select2.defaults.set("theme", "classic");
     //    $('.select2').css("max-height","400px");
-    //  $('.select2').select2({matcher: modelMatcher});
-        $('.select2').select2();
+      $('.select2').select2({matcher: modelMatcher});
+    //    $('.select2').select2();
     //    $('.select2-container .select2-selection--single').css('height', '34px');
     //    $('.select2-container--classic .select2-selection--single .select2-selection__rendered').css('line-height', '34px');
     //    $('.select2-container--classic .select2-selection--single .select2-selection__arrow').css('height', '32px');
@@ -278,7 +281,7 @@
     $('#level1Title').text(t1);
     $('#level2Title').text(t2);
     $('#level3Title').text(t3);
-    
+
     $('#btnNewLevel1').click(function () {
         $('#parLevel1Select2').val('-1').trigger('select2:select').change();
         $('#level1_collapse').collapse('show');
@@ -338,6 +341,9 @@
     var url1 = '@Html.Raw(@url1)';
     var url2 = '@Html.Raw(@url2)';
     var url3 = '@Html.Raw(@url3)';
+    var desvinculoVinculoL1L2 = '@Html.Raw(@desvinculoVinculoL1L2)';
+    var checkVinculoL1L2 = '@Html.Raw(@checkVinculoL1L2)';
+    
     var AddLevel3Group = '@Html.Raw(@AddLevel3Group)';
 
     var Geral = {
@@ -922,17 +928,19 @@
             if (obj != null) {
                 console.log(obj);
 
-                var ids = $.map(obj, function(val,index) {                    
+                var ids = $.map(obj, function(val,index) {
                     var str = val.Id;
                     return str;
-                }).join(", ");  
+                }).join(", ");
 
                 openMessageModal("Feito!", "Monitoramento e Tarefa vinculados ao Indicador com sucesso! #" +  ids);
                 //alert("Vinculado L3 com L2 ID: " + obj.Id);
+                $('#desVinculoLevel1').show();
                 UpdateSelect2Level2(idLevel1);
             }
             initialFormLevel3 = $($('form')[2]).clone();
         }).fail(function (e, h, x) {
+            $('#desVinculoLevel1').hide();
             openMessageModal("Alerta", e.responseJSON.Message);
             //alert(e.responseJSON.Message); // or whatever
         });
@@ -1003,6 +1011,36 @@
     $(document).ready(function () {
         reloadPopovers();
 
+        $('#desVinculoLevel1').on('click', function() {
+
+            if($('#paramsDto_parLevel1Dto_Id').val() > 0 && $('#paramsDto_parLevel2Dto_Id').val() > 0){
+
+                $.post(desvinculoVinculoL1L2 + "/" + $('#paramsDto_parLevel1Dto_Id').val() + "/" + $('#paramsDto_parLevel2Dto_Id').val(), function(r) {
+                    if(r){
+                        openMessageModal($('#paramsDto_parLevel2Dto_Name').val() + " foi desvinculado de: " + $('#paramsDto_parLevel1Dto_Name').val() + ".")
+                        $('#desVinculoLevel1').hide();
+                    }else{
+                        $('#desVinculoLevel1').show();
+                        openMessageModal("Não foi possível remover o vínculo entre: " + $('#paramsDto_parLevel2Dto_Name').val() + " e: " + $('#paramsDto_parLevel1Dto_Name').val() + ".")
+                    }
+                }).fail(function (e, h, x) {
+                    closeLoader();
+                    $('#desVinculoLevel1').show();
+                    try {
+                        openMessageModal("Alerta", e.responseJSON.Message);
+                    } catch (e) {
+                        openMessageModal("Não foi possível remover o vínculo entre: " + $('#paramsDto_parLevel2Dto_Name').val() + " e: " + $('#paramsDto_parLevel1Dto_Name').val() + ".")
+                        console.log(e);
+                    }
+                });
+
+            }else{
+
+
+
+            }
+
+        });
         //initialFormLevel1 = $('form')[0];
         //initialFormLevel2 = $('form')[1];
         //initialFormLevel3 = $('form')[2];

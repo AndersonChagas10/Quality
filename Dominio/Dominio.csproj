@@ -350,6 +350,9 @@
     <Compile Include="ParCompanyXUserSgq.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParConfSGQ.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParConsolidationType.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -567,14 +570,12 @@
     <Compile Include="ScorecardConsolidadoDia.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Services\CorrectiveActionDomain.cs" />
     <Compile Include="Services\CompanyDomain.cs" />
     <Compile Include="ADO\FactoryADO.cs" />
     <Compile Include="Services\GetConsolidateDataCollectionDomain.cs" />
     <Compile Include="Services\ExampleDomain.cs" />
     <Compile Include="Services\ParamsDomain.cs" />
     <Compile Include="Services\RelatorioColetaDomain.cs" />
-    <Compile Include="Services\SaveConsolidateDataCollectionDomain.cs" />
     <Compile Include="Services\BaseDomain.cs" />
     <Compile Include="Services\UserDomain.cs" />
     <Compile Include="SgqBrasilEfContext.Context.cs">

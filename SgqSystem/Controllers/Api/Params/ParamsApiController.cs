@@ -52,12 +52,7 @@ namespace SgqSystem.Controllers.Api.Params
             paramsViewModel.paramsDto = _paramdDomain.AddUpdateLevel2(paramsViewModel.paramsDto);
             return paramsViewModel;
         }
-        //[HttpPost]
-        //[Route("AddUpdateParLevel3Group/{Id}")]
-        //public ParLevel3GroupDTO ParLevel3Group(int Id)
-        //{
-        //    return _paramdDomain.RemoveParLevel3Group(Id);
-        //}
+       
         [HttpPost]
         [Route("RemoveParLevel3Group/{Id}")]
         public ParLevel3GroupDTO RemoveParLevel3Group(int Id)
@@ -83,7 +78,6 @@ namespace SgqSystem.Controllers.Api.Params
         public ParLevel3Level2DTO AddVinculoL3L2(int idLevel2, int idLevel3, decimal peso, int? groupLevel2 = 0)
         {
             return _paramdDomain.AddVinculoL3L2(idLevel2, idLevel3, peso, groupLevel2);
-            //return paramsViewModel;
         }
 
 
@@ -96,9 +90,21 @@ namespace SgqSystem.Controllers.Api.Params
         public List<ParLevel3Level2Level1DTO> AddVinculoL1L2(int idLevel1, int idLevel2,int idLevel3)
         {
             return _paramdDomain.AddVinculoL1L2(idLevel1, idLevel2, idLevel3);
-            //return paramsViewModel;
         }
 
+        [HttpPost]
+        [Route("RemVinculoL1L2/{idLevel1}/{idLevel2}")]
+        public bool RemVinculoL1L2(int idLevel1, int idLevel2)
+        {
+            return _paramdDomain.RemVinculoL1L2(idLevel1, idLevel2);
+        }
+
+        [HttpPost]
+        [Route("VerificaShowBtnRemVinculoL1L2/{idLevel1}/{idLevel2}")]
+        public bool VerificaShowBtnRemVinculoL1L2(int idLevel1, int idLevel2)
+        {
+            return _paramdDomain.VerificaShowBtnRemVinculoL1L2(idLevel1, idLevel2);
+        }
 
         #endregion
 

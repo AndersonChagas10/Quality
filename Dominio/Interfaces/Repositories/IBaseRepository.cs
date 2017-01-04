@@ -51,5 +51,7 @@ namespace Dominio.Interfaces.Repositories
         void Dettach(T obj);
 
         int ExecuteSql(string v);
+
+        List<T> ExecuteSqlQuery(string v);
     }
 }

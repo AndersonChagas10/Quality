@@ -362,13 +362,20 @@ namespace Dominio.Services
                 if (paramsDto.parLevel3Dto.listLevel3Level2.Count() > 0)
                     paramsDto.parLevel3Dto.listLevel3Level2.ForEach(r => r.preparaParaInsertEmBanco());
 
-            List<ParLevel3Level2> parLevel3Level2peso = Mapper.Map<List<ParLevel3Level2>>(paramsDto.parLevel3Dto.listLevel3Level2);
+            List<ParLevel3Level2> parLevel3Level2peso = Mapper.Map<List<ParLevel3Level2>>(paramsDto.parLevel3Dto.listLevel3Level2.Where(r => r.IsActive == true));
+            List<ParLevel3Level2> parLevel3Level2pesoInativo = Mapper.Map<List<ParLevel3Level2>>(paramsDto.parLevel3Dto.listLevel3Level2.Where(r => r.IsActive == false));
             var existeLevel3VinculadoComLevel1 = _baseRepoParLevel3Level2Level1.GetAll();/*Verifica se existe vinculos com L3 a L1*/
 
             #endregion
 
             try
             {
+                foreach (var i in parLevel3Level2pesoInativo)
+                {
+                    var sql = "DELETE FROM ParLevel3Level2Level1 WHERE ParLevel3Level2_Id = " + i.Id + "; DELETE FROM ParLevel3Level2 WHERE id = " + i.Id;
+                   _paramsRepo.ExecuteSql(sql);
+                }
+
                 _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2peso);
 
                 foreach (var l32 in parLevel3Level2peso)
@@ -533,40 +540,7 @@ namespace Dominio.Services
 
         #endregion
 
-        #region Vinculo L3L2
-
-        public ParLevel3Level2DTO AddVinculoL3L2(int idLevel2, int idLevel3, decimal peso, int? groupLevel2 = 0)
-        {
-            ParLevel3Level2 objLelvel2Level3ToSave;
-            var level2 = _baseRepoParLevel2.GetById(idLevel2);
-
-            objLelvel2Level3ToSave = new ParLevel3Level2()
-            {
-                ParLevel2_Id = idLevel2,
-                ParLevel3_Id = idLevel3,
-                Weight = peso,
-                ParLevel3Group_Id = groupLevel2 == 0 ? null : groupLevel2
-            };
-
-            var existente = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
-            if (existente != null)
-            {
-                objLelvel2Level3ToSave = existente;
-                objLelvel2Level3ToSave.Weight = existente.Weight;/*Mantem o PESO*/
-                objLelvel2Level3ToSave.ParLevel3Group_Id = groupLevel2 == 0 ? null : groupLevel2;
-            }
-            else
-            {
-                objLelvel2Level3ToSave.Weight = 1;
-            }
-            objLelvel2Level3ToSave.IsActive = true;
-            _baseRepoParLevel3Level2.AddOrUpdate(objLelvel2Level3ToSave);
-            ParLevel3Level2DTO objtReturn = Mapper.Map<ParLevel3Level2DTO>(objLelvel2Level3ToSave);
-
-            
-
-            return objtReturn;
-        }
+        #region Vinculo ParLevel2Level1
 
         public List<ParLevel3Level2Level1DTO> AddVinculoL1L2(int idLevel1, int idLevel2, int idLevel3)
         {
@@ -574,8 +548,8 @@ namespace Dominio.Services
             /*Verifica se existe vinculo no level2 e level 3 selecionado na tela*/
             var listExistsL3L2 = allLevel1Level2.Where(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
             if (listExistsL3L2 == null)
-                if(listExistsL3L2.Count() <= 0)
-                throw new ExceptionHelper("É necessário vincular o level3 ao level 2 antes de realizar esta operação.");
+                if (listExistsL3L2.Count() <= 0)
+                    throw new ExceptionHelper("É necessário vincular o level3 ao level 2 antes de realizar esta operação.");
 
             var listObjToSave = new List<ParLevel3Level2Level1DTO>();
             /*Se o vinculo level2 e level3 Cria objeto do Level3Level2Level1*/
@@ -612,7 +586,7 @@ namespace Dominio.Services
                 if (existeParLevel2Level1 == null)
                     _baseRepoParLevel2Level1.AddOrUpdate(level2level1);
 
-               
+
                 listObjToSave.Add(Mapper.Map<ParLevel3Level2Level1DTO>(objToSave));
             }
 
@@ -620,6 +594,88 @@ namespace Dominio.Services
 
         }
 
+        public bool VerificaShowBtnRemVinculoL1L2(int idLevel1, int idLevel2)
+        {
+            var response = false;
+            using (var db = new SgqDbDevEntities())
+            {
+                var sql1 = "SELECT * FROM ParLevel3Level2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + ")";
+                var result1 = db.Database.SqlQuery<ParLevel3Level2Level1>(sql1).ToList();
+                var result2 = db.ParLevel2Level1.Where(r => r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2).ToList();
+                if (result1?.Count() > 0 || result2?.Count() > 0)
+                    response = true;
+                else
+                    response = false;
+            }
+            return response;
+        }
+
+        public bool RemVinculoL1L2(int idLevel1, int idLevel2)
+        {
+            //throw new Exception("teste");
+
+            using (var db = new SgqDbDevEntities())
+            {
+                var sql1 = "SELECT * FROM ParLevel3Level2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + ")";
+                var sql2 = "SELECT * FROM ParLevel2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel2_Id = " + idLevel2;
+                var result1 = db.Database.SqlQuery<ParLevel3Level2Level1>(sql1).ToList();
+                var result2 = db.ParLevel2Level1.Where(r=>r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2).ToList();
+                if (result1?.Count() > 0 || result2?.Count() > 0)
+                {
+                    if (result1?.Count() > 0)
+                        sql1 = "DELETE FROM ParLevel3Level2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + ")";
+                    if (result2?.Count() > 0)
+                        sql2 = "DELETE FROM ParLevel2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel2_Id = " + idLevel2;
+                }
+                else
+                {
+                    return false;
+                }
+
+                var r1 = db.Database.ExecuteSqlCommand(sql1);
+                var r2 = db.Database.ExecuteSqlCommand(sql2);
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region Vinculo L3L2
+
+        public ParLevel3Level2DTO AddVinculoL3L2(int idLevel2, int idLevel3, decimal peso, int? groupLevel2 = 0)
+        {
+            ParLevel3Level2 objLelvel2Level3ToSave;
+            var level2 = _baseRepoParLevel2.GetById(idLevel2);
+
+            objLelvel2Level3ToSave = new ParLevel3Level2()
+            {
+                ParLevel2_Id = idLevel2,
+                ParLevel3_Id = idLevel3,
+                Weight = peso,
+                ParLevel3Group_Id = groupLevel2 == 0 ? null : groupLevel2
+            };
+
+            var existente = _baseRepoParLevel3Level2.GetAll().FirstOrDefault(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
+            if (existente != null)
+            {
+                objLelvel2Level3ToSave = existente;
+                objLelvel2Level3ToSave.Weight = existente.Weight;/*Mantem o PESO*/
+                objLelvel2Level3ToSave.ParLevel3Group_Id = groupLevel2 == 0 ? null : groupLevel2;
+            }
+            else
+            {
+                objLelvel2Level3ToSave.Weight = 1;
+            }
+            objLelvel2Level3ToSave.IsActive = true;
+            _baseRepoParLevel3Level2.AddOrUpdate(objLelvel2Level3ToSave);
+            ParLevel3Level2DTO objtReturn = Mapper.Map<ParLevel3Level2DTO>(objLelvel2Level3ToSave);
+
+            
+
+            return objtReturn;
+        }
+      
         public ParLevel3GroupDTO RemoveParLevel3Group(int Id)
         {
             var parLevel3Group = _baseParLevel3Group.GetAll().FirstOrDefault(r => r.Id == Id);
