@@ -2702,7 +2702,7 @@ namespace SgqSystem.Services
                                                     );
 
                 //Gera monitoramento do level3
-                string groupLevel3 = GetLevel03(ParLevel1, parlevel2);
+                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id);
                 level3Group += groupLevel3;
             }
             //aqui tem que fazer a pesquisa se tem itens sao do level1 ex: cca,htp
@@ -2803,7 +2803,7 @@ namespace SgqSystem.Services
         /// <param name="ParLevel1"></param>
         /// <param name="ParLevel2"></param>
         /// <returns></returns>
-        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2)
+        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id)
         {
             var html = new Html();
 
@@ -2823,7 +2823,7 @@ namespace SgqSystem.Services
 
             //Pega uma lista de parleve3
             //pode colocar par level3 por unidades, como nos eua
-            var parlevel3List = ParLevel3DB.getLevel3ByLevel2(ParLevel2.Id);
+            var parlevel3List = ParLevel3DB.getLevel3ByLevel2(ParLevel2.Id, ParCompany_Id);
 
             string tipoTela = "";
 
