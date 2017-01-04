@@ -9,10 +9,12 @@ namespace SgqSystem.Secirity
     public class CustomAuthorizeAttribute : AuthorizeAttribute
     {
         private string _filter;
+        private string _userSgqRoles;
 
         public CustomAuthorizeAttribute()
         {
             _filter = this.Roles;
+            
         }
 
 
@@ -30,25 +32,31 @@ namespace SgqSystem.Secirity
             }
             else
             {
-                //Extends cookie ttl
-                cookie.Expires = DateTime.Now.AddMinutes(60);
+                if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+                    _userSgqRoles = cookie.Values["roles"].ToString();
+                    //Extends cookie ttl
+                    cookie.Expires = DateTime.Now.AddMinutes(60);
                 //ok - cookie is found.
                 //Gracefully check if the cookie has the key-value as expected.
                 if (!string.IsNullOrEmpty(Roles))
                 {
-                    if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+                    if (!string.IsNullOrEmpty(_userSgqRoles))
                     {
-                        string roles = cookie.Values["roles"].ToString();
                         //Yes userId is found. Mission accomplished.
                         //CustomPrincipal cp = new CustomPrincipal(SessionPersister.Username);
-                        if (!IsInRole(roles))
+                        if (!IsInRole(_userSgqRoles))
                             filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
+
                     }
                     else
                     {
                         filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
                     }
                 }
+
+                if (!string.IsNullOrEmpty(_userSgqRoles))
+                    if (_userSgqRoles.Contains("somentemanutencao-sgq") && !HttpContext.Current.Request.RawUrl.Contains("/Manutencao/Index"))
+                        filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Manutencao", action = "Index" }));
             }
           
 
