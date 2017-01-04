@@ -63,7 +63,7 @@ namespace SgqSystem.Controllers.Api
                 sql += "CASE WHEN SUM(DespesaOrcada) = 0 THEN 0 ELSE ROUND((SUM(DespesaRealizada) / SUM(DespesaOrcada) - 1) * 100, 0) END AS DesvioPorc, ";
                 sql += "ROUND(SUM(DespesaRealizada) / 1000 - SUM(DespesaOrcada) / 1000, 0) AS DesvioReal ";
                 sql += "from Manutencao ";
-                sql += "WHERE MesAno BETWEEN '20150101' AND '20180101' ";
+                sql += "WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
                 sql += "AND TipoInformacao = 'CustoFixo' ";
                 sql += "AND EmpresaSigla = \'" + unidade + "\' ";
                 sql += "group by CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END) ";
@@ -92,7 +92,7 @@ namespace SgqSystem.Controllers.Api
                 sql += "CASE WHEN SUM(DespesaOrcada) = 0 THEN 0 ELSE ROUND((SUM(DespesaRealizada) / SUM(DespesaOrcada) - 1) * 100, 0) END AS DesvioPorc, ";
                 sql += "ROUND(SUM(DespesaRealizada) / 1000 - SUM(DespesaOrcada) / 1000, 0) AS DesvioReal ";
                 sql += "from Manutencao ";
-                sql += "WHERE MesAno BETWEEN '20150101' AND '20180101' ";
+                sql += "WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
                 sql += "AND TipoInformacao = 'CustoFixo' ";
                 sql += "AND EmpresaSigla = \'" + unidade + "\' ";
                 sql += "AND ContaContabil = \'" + conta + "\' ";
@@ -404,48 +404,7 @@ namespace SgqSystem.Controllers.Api
 
             using (var db = new SgqDbDevEntities())
             {
-                //var sql = "";
-
-                //sql += "SELECT ";
-                //sql += "EmpresaSigla, CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END) AnoMes ";
-                //sql += " , ";
-                //sql += "  SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada  ELSE 0 END AS FLOAT)) - 1 ";
-                //sql += "  AS DesvQtdeBoi ";
-                //sql += " , ";
-                //sql += "  SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoRealizado ELSE 0 END AS FLOAT)) ";
-                //sql += "   / ";
-                //sql += "  SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoOrcado ELSE 0 END AS FLOAT)) - 1 ";
-                //sql += " AS DesvQtdeConsumoUN ";
-                //sql += ", ";
-                //sql += "(SUM(CAST(CASE WHEN ContaContabil = 'ENERGIA ELÉTRICA CONTRATADA' and TipoInformacao = 'CustoFixo' then DespesaRealizada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TIPOCONSUMO = '001.KWH. ENERGIA ELETRICA - CONCESSIONARIA' THEN CONSUMOREALIZADO ELSE 0 END AS FLOAT))) ";
-                //sql += "/ ";
-                //sql += "(SUM(CAST(CASE WHEN ContaContabil = 'ENERGIA ELÉTRICA CONTRATADA' and TipoInformacao = 'CustoFixo' THEN DespesaOrcada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN CONSUMOORCADO ELSE 0 END AS FLOAT))) ";
-                //sql += "- 1 ";
-                //sql += "AS DesvPrecoUN ";
-                //sql += ", ";
-                //sql += "( ";
-                //sql += "SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' then ConsumoRealizado ELSE 0 END AS FLOAT)) ";
-                //sql += "/ SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) ";
-                //sql += ") ";
-                //sql += "/ ";
-                //sql += "( ";
-                //sql += "SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoOrcado ELSE 0 END AS FLOAT)) ";
-                //sql += "/ SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)) ";
-                //sql += ") ";
-                //sql += "- 1 ";
-                //sql += "as DesvUNBoi ";
-                //sql += " ";
-                //sql += " ";
-                //sql += "FROM ";
-                //sql += "manutencao ";
-                //sql += "WHERE ";
-                //sql += "MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
-                //sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
-                //sql += "and EmpresaSigla = \'" + unidadeDecode + "\' ";
-                //sql += "GROUP BY ";
-                //sql += "EmpresaSigla, CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END) ";
-                //sql += "HAVING SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' then(CASE WHEN ConsumoRealizado = 0 THEN ConsumoOrcado ELSE ConsumoRealizado END) ELSE 0 END AS FLOAT)) > 0 ";
-                //sql += "ORDER BY 2 ";
+      
 
                 var sql = "";
 

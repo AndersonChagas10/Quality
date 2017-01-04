@@ -825,8 +825,8 @@
                                                         /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                         entry.ListaRegionais.forEach(function (valor) {
 
-                                                            valorMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
-                                                            orderMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
+                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
                                                             i++;
 
                                                         });
@@ -924,8 +924,10 @@
                                                     /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                     lista.forEach(function (valor) {
 
-                                                        valorMapaDeCalor[i] = parseFloat(valor.total.DesvioPorc);
-                                                        orderMapaDeCalor[i] = parseFloat(valor.total.DesvioPorc);
+
+
+                                                        valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
+                                                        orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
                                                         i++;
 
                                                     });
@@ -1084,8 +1086,8 @@
                                                     /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                     lista[0].totalColunaReg.forEach(function (valor) {
 
-                                                        valorMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
-                                                        orderMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
+                                                        valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                        orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
                                                         i++;
 
                                                     });
@@ -1274,8 +1276,8 @@
                                                              */
                                                             entry.ListaRegionais.forEach(function (valor) {
 
-                                                                valorMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
-                                                                orderMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
+                                                                valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                                orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
                                                                 i++;
 
                                                             });
@@ -1373,8 +1375,8 @@
                                                         /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                         lista.forEach(function (valor) {
 
-                                                            valorMapaDeCalor[i] = parseFloat(valor.total.DesvioPorc);
-                                                            orderMapaDeCalor[i] = parseFloat(valor.total.DesvioPorc);
+                                                            valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
+                                                            orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
                                                             i++;
 
                                                         });
@@ -1437,22 +1439,22 @@
                                                             var real = [];
                                                             var desvioP = [];
                                                             var desvioR = [];
-                                                            orcada.push(entry.total.Orçada);
+                                                            orcada.push(entry.total == null ? 0 : entry.total.Orçada);
                                                             orcada.push(0);
                                                             orcada.push(0);
                                                             orcada.push(0);
                                                             orcada.push(0);
-                                                            real.push(entry.total.Realizada);
+                                                            real.push(entry.total == null ? 0 : entry.total.Realizada);
                                                             real.push(0);
                                                             real.push(0);
                                                             real.push(0);
                                                             real.push(0);
-                                                            desvioP.push(entry.total.DesvioPorc);
+                                                            desvioP.push(entry.total == null ? 0 : entry.total.DesvioPorc);
                                                             desvioP.push(0);
                                                             desvioP.push(0);
                                                             desvioP.push('%');
                                                             desvioP.push(buscaCor(arrayCor[i])); /****** GERAÇÃO DO MAPA DE CALOR *********/
-                                                            desvioR.push(entry.total.DesvioReal);
+                                                            desvioR.push(entry.total == null ? 0 : entry.total.DesvioReal);
                                                             desvioR.push(0);
                                                             desvioR.push(0);
                                                             desvioR.push(0);
@@ -1491,10 +1493,10 @@
 
 
 
-                                                            orcada += entry.total.Orçada;
-                                                            real += entry.total.Realizada;
-                                                            desvioP += entry.total.DesvioPorc;
-                                                            desvioR += entry.total.DesvioReal;
+                                                            orcada += entry.total == null ? 0 : entry.total.Orçada;
+                                                            real += entry.total == null ? 0 : entry.total.Realizada;
+                                                            desvioP += entry.total == null ? 0 : entry.total.DesvioPorc;
+                                                            desvioR += entry.total == null ? 0 : entry.total.DesvioReal;
 
                                                         });
                                                         lineO.push(orcada);
@@ -1533,8 +1535,8 @@
                                                         /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                         lista[0].totalColunaReg.forEach(function (valor) {
 
-                                                            valorMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
-                                                            orderMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
+                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
                                                             i++;
 
                                                         });
@@ -1777,8 +1779,8 @@
                                                          */
                                                         entry.ListaRegionais.forEach(function (valor) {
 
-                                                            valorMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
-                                                            orderMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
+                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
                                                             i++;
 
                                                         });
@@ -1876,8 +1878,8 @@
                                                     /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                     lista.forEach(function (valor) {
 
-                                                        valorMapaDeCalor[i] = parseFloat(valor.total.DesvioPorc);
-                                                        orderMapaDeCalor[i] = parseFloat(valor.total.DesvioPorc);
+                                                        valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
+                                                        orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
                                                         i++;
 
                                                     });
@@ -2036,8 +2038,8 @@
                                                     /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                     lista[0].totalColunaReg.forEach(function (valor) {
 
-                                                        valorMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
-                                                        orderMapaDeCalor[i] = parseFloat(valor.DesvioPorc);
+                                                        valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                        orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
                                                         i++;
 
                                                     });
@@ -2184,6 +2186,7 @@
                                                                 enabled: false
                                                             },
                                                             chart: {
+                                                                zoomType: 'x, y',
                                                                 type: 'column',
                                                                 backgroundColor: null
                                                             },
@@ -2221,7 +2224,10 @@
                                                                     stacking: 'normal',
                                                                     dataLabels: {
                                                                         enabled: true,
-                                                                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black'
+                                                                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                                                                        formatter: function () {
+                                                                            return this.y + '%';
+                                                                        }
                                                                     }
                                                                 }
                                                             },
@@ -2236,6 +2242,11 @@
                                                                         click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
                                                                     }
                                                                 }
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> Δ% = Despesa Real / Despesa Orçada -1',
+                                                                    valueSuffix: '%'
+                                                                }
 
 
                                                             }, {
@@ -2246,6 +2257,11 @@
                                                                         click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
                                                                     }
                                                                 }
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> ' + UnidadeMedidaPorBoi + ' = Qtde de ' + UnidadeMedida + ' Consumidos / Qtde de Bois',
+                                                                    valueSuffix: '%'
+                                                                }
                                                             }, {
                                                                 name: 'Bois/Proc',
                                                                 data: x3,
@@ -2254,6 +2270,11 @@
                                                                         click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
                                                                     }
                                                                 }
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> Δ% = Qtde de Bois Real / Qtde de Bois Orçada -1',
+                                                                    valueSuffix: '%'
+                                                                }
                                                             }, {
                                                                 name: PrecoUnidadeMedida, //'Preço KW',
                                                                 data: x3,
@@ -2261,6 +2282,11 @@
                                                                     events: {
                                                                         click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
                                                                     }
+                                                                }
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> Preço do ' + UnidadeMedida + ' = Despesa de ' + UnidadeMedida + ' / Qtde de ' + UnidadeMedida + ' Consumidos',
+                                                                    valueSuffix: '%'
                                                                 }
                                                             }]
                                                         });
@@ -2370,9 +2396,8 @@
                                                             text: 'Evolutivo do orçamento geral - ' + unidade
                                                         },
                                                         chart: {
-
-                                                            backgroundColor: null,
-                                                            zoomType: 'x', zoomType: 'y'
+                                                            zoomType: 'x, y',
+                                                            backgroundColor: null
                                                         },
                                                         xAxis: {
                                                             categories: name
@@ -2440,8 +2465,7 @@
                                                         },
                                                         chart: {
                                                             zoomType: 'x, y',
-                                                            backgroundColor: null,
-                                                            zoomType: 'x', zoomType: 'y'
+                                                            backgroundColor: null                                                  
                                                         },
                                                         xAxis: {
                                                             categories: name
@@ -2580,6 +2604,7 @@
                                                                 enabled: false
                                                             },
                                                             chart: {
+                                                                zoomType: 'x, y',
                                                                 type: 'column',
                                                                 backgroundColor: null
                                                             },
@@ -2619,7 +2644,10 @@
                                                                     stacking: 'normal',
                                                                     dataLabels: {
                                                                         enabled: true,
-                                                                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black'
+                                                                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                                                                        formatter: function () {
+                                                                            return this.y + '%';
+                                                                        }
                                                                     }
                                                                 }
                                                             },
@@ -2627,16 +2655,36 @@
 
                                                                 name: UnidadeMedida,
                                                                 data: x1
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> Δ% = Despesa Real / Despesa Orçada -1',
+                                                                    valueSuffix: '%'
+                                                                }
 
                                                             }, {
                                                                 name: UnidadeMedidaPorBoi,
                                                                 data: x2
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> ' + UnidadeMedidaPorBoi + ' = Qtde de ' + UnidadeMedida + ' Consumidos / Qtde de Bois',
+                                                                    valueSuffix: '%'
+                                                                }
                                                             }, {
                                                                 name: 'Bois/Proc',
                                                                 data: x3
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> Δ% = Qtde de Bois Real / Qtde de Bois Orçada -1',
+                                                                    valueSuffix: '%'
+                                                                }
                                                             }, {
                                                                 name: PrecoUnidadeMedida,
                                                                 data: x3
+                                                                , tooltip: {
+                                                                    headerFormat: '<b>{point.x}</b><br/>',
+                                                                    pointFormat: '{series.name}: <i>{point.y}<i/><br/> Preço do ' + UnidadeMedida + ' = Despesa de ' + UnidadeMedida + ' / Qtde de ' + UnidadeMedida + ' Consumidos',
+                                                                    valueSuffix: '%'
+                                                                }
                                                             }]
                                                         });
                                                     });
