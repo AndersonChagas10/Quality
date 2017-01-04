@@ -874,10 +874,10 @@ namespace SgqSystem.Services
                 return 0;
             }
         }
-        public int updateCorrectiveAction_CollectionLevel2_By_ParLevel1(string ParLevel1_Id, string dataInicio, string dataFim)
+        public int updateCorrectiveAction_CollectionLevel2_By_ParLevel1(string ParLevel1_Id, string ParCompany_Id, string dataInicio, string dataFim)
         {
 
-            string sql = "UPDATE CollectionLevel2 SET HaveCorrectiveAction=0 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' AND HaveCorrectiveAction=1";
+            string sql = "UPDATE CollectionLevel2 SET HaveCorrectiveAction=0 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND UnitId='" + ParCompany_Id + "' AND CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' AND HaveCorrectiveAction=1";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -3951,17 +3951,23 @@ namespace SgqSystem.Services
             }
         }
         [WebMethod]
-        public string InsertCorrectiveAction(string ParLevel1_Id, string ParFrequency_Id, string data, string AuditorId, string CollectionLevel02Id, string SlaughterId, string TechinicalId, string DateTimeSlaughter, string DateTimeTechinical, string DateCorrectiveAction, string  AuditStartTime,string  DescriptionFailure, string ImmediateCorrectiveAction, string ProductDisposition, string PreventativeMeasure)
+        public string InsertCorrectiveAction(string CollectionLevel2_Id, string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber, string ParFrequency_Id, string data, string AuditorId, string SlaughterId, string TechinicalId, string DateTimeSlaughter, string DateTimeTechinical, string DateCorrectiveAction, string  AuditStartTime,string  DescriptionFailure, string ImmediateCorrectiveAction, string ProductDisposition, string PreventativeMeasure)
         {
             SlaughterId = DefaultValueReturn(SlaughterId, "1");
             TechinicalId = DefaultValueReturn(TechinicalId, "1");
             DateTimeSlaughter = DefaultValueReturn(DateTimeSlaughter, "03012017 00:00:00");
             DateTimeTechinical = DateTimeSlaughter;
 
-            //Instanciamos variavel de data
-          
+            if(string.IsNullOrEmpty(CollectionLevel2_Id))
+            {
+                CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber).ToString();
+                if(CollectionLevel2_Id == "0")
+                {
+                    return "error";
+                }
+            }
 
-            int id = correctiveActionInsert(AuditorId, CollectionLevel02Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure, ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
+            int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure, ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
             if(id > 0)
             {
 
@@ -3973,7 +3979,7 @@ namespace SgqSystem.Services
                 //Pega a data pela regra da frequencia
                 getFrequencyDate(Convert.ToInt32(ParFrequency_Id), dataAPP, ref dataInicio, ref dataFim);
 
-                var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, dataInicio, dataFim);
+                var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim);
 
 
                 //verificar ações corretivas que estão relacionadas ao collection level2
@@ -3987,5 +3993,45 @@ namespace SgqSystem.Services
                 return "error";
             }
         }
+        public int getCollectionLevel2WithCorrectiveAction(string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber)
+        {
+            //Converte a data no padrão de busca do Banco de Dados
+
+            string sql = "SELECT Id FROM CollectionLevel2 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND ParLevel2_Id='" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift + "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "' AND HaveCorrectiveAction=1";
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        using (SqlDataReader r = command.ExecuteReader())
+                        {
+                            //Se encontrar, retorna o Id da Consolidação
+                            if (r.Read())
+                            {
+                                return Convert.ToInt32(r[0]);
+                            }
+                            //Se não encontrar, retorna zero
+                            return 0;
+                        }
+                    }
+                }
+            }
+            //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
+                return 0;
+            }
+        }
+
     }
 }
