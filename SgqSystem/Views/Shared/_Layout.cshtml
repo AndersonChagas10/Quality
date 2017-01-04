@@ -230,6 +230,8 @@
 
         /*Configura date range picker para PT-BR*/
         moment.locale("Pt-Br");
+        moment.defaultFormat = "DD/MM/YYYY";
+
         $.fn.daterangepicker('locale', {
             "format": "DD/MM/YYYY",
             "separator": " - ",
