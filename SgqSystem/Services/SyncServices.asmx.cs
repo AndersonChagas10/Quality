@@ -1717,7 +1717,7 @@ namespace SgqSystem.Services
                     var consolidationResultL1L2 = ConsolidationResultL1L2DB.getConsolidation(Level2Result.ParLevel2_Id, Level2Result.Unit_Id);
 
                    // Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"false\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\"></div>";
-                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\"></div>";
+                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\"></div>";
                 }
             }
             return Results;
@@ -2841,6 +2841,7 @@ namespace SgqSystem.Services
                                     classe: "btn-warning btnNotAvaliable na font11"
                                 );
 
+            int Last_Id = 0;
             //Tela de bem estar animal
             if (tipoTela.Equals("BEA"))
             {
@@ -2849,15 +2850,22 @@ namespace SgqSystem.Services
 
                 foreach (var parLevel3 in parlevel3List)
                 {
-                    //Define a qual classe de input pertence o level3
-                    string classInput = null;
-                    //Labels que mostrar informaçãoes do tipo de input
-                    string labelsInputs = null;
-                    //tipo de input
-                    string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
 
-                    string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
-                    parLevel3Group += level3List;
+                    if (Last_Id != parLevel3.Id)
+                    {
+                        //Define a qual classe de input pertence o level3
+                        string classInput = null;
+                        //Labels que mostrar informaçãoes do tipo de input
+                        string labelsInputs = null;
+                        //tipo de input
+                        string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
+
+                        string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
+                        parLevel3Group += level3List;
+
+                        Last_Id = parLevel3.Id;
+
+                    }
                 }
 
                 //Avaliações e amostas para painel
@@ -2928,109 +2936,113 @@ namespace SgqSystem.Services
 
                 foreach (var parLevel3 in parlevel3List)
                 {
-                    string tags = null;
-                    string labels = null;
-
-                    //Gera o level3
-                    string level3 = html.link(
-                                                outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
-                                                classe: "col-xs-12 col-sm-12 col-md-12"
-                                                );
-
-                    switch (parLevel3.Name)
+                    if(Last_Id != parLevel3.Id)
                     {
-                        case "Verificação Tipificação - Falha Operacional":
-                            var listOper = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(206);
-                            var listOperHtml = "";
-                            foreach (var carac in listOper)
-                            {
-                                listOperHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
-                                                 carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
-                                                 " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
-                                                 carac.cSgCaracteristica + "</div>"; ;
-                            }
-                            var CtIdOpe = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(206).First().nCdCaracteristica;
-                            var TIdOpe = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdOpe).First().TarefaId;
-                            labels += html.div(outerhtml: listOperHtml, classe: "row items", name: "Falha Op.", tags: "listtype = multiple caracteristicatipificacaoid=" + CtIdOpe + " tarefaid=" + TIdOpe);
-                            break;
-                        case "Verificação Tipificação - Gordura":
-                            var listGordura = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(203);
-                            var listGorduraHtml = "";
-                            foreach (var carac in listGordura)
-                            {
-                                listGorduraHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
+                        string tags = null;
+                        string labels = null;
+
+                        //Gera o level3
+                        string level3 = html.link(
+                                                    outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
+                                                    classe: "col-xs-12 col-sm-12 col-md-12"
+                                                    );
+
+                        switch (parLevel3.Name)
+                        {
+                            case "Verificação Tipificação - Falha Operacional":
+                                var listOper = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(206);
+                                var listOperHtml = "";
+                                foreach (var carac in listOper)
+                                {
+                                    listOperHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
+                                                     carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
+                                                     " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
+                                                     carac.cSgCaracteristica + "</div>"; ;
+                                }
+                                var CtIdOpe = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(206).First().nCdCaracteristica;
+                                var TIdOpe = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdOpe).First().TarefaId;
+                                labels += html.div(outerhtml: listOperHtml, classe: "row items", name: "Falha Op.", tags: "listtype = multiple caracteristicatipificacaoid=" + CtIdOpe + " tarefaid=" + TIdOpe);
+                                break;
+                            case "Verificação Tipificação - Gordura":
+                                var listGordura = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(203);
+                                var listGorduraHtml = "";
+                                foreach (var carac in listGordura)
+                                {
+                                    listGorduraHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
+                                                        carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
+                                                        " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
+                                                        carac.cSgCaracteristica + "</div>"; ;
+                                }
+                                var CtIdGor = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(203).First().nCdCaracteristica;
+                                var TIdGor = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdGor).First().TarefaId;
+                                labels += html.div(outerhtml: listGorduraHtml, classe: "row items", name: "Gordura", tags: "listtype = single caracteristicatipificacaoid=" + CtIdGor + " tarefaid=" + TIdGor);
+                                break;
+                            case "Verificação Tipificação - Contusão":
+                                var listContusao = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(205);
+                                var listContusaoHtml = "";
+                                foreach (var carac in listContusao)
+                                {
+                                    listContusaoHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
+                                                        carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
+                                                        " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
+                                                        carac.cSgCaracteristica + "</div>"; ;
+                                }
+                                var CtIdCon = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(205).First().nCdCaracteristica;
+                                var TIdCon = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdCon).First().TarefaId;
+                                labels += html.div(outerhtml: listContusaoHtml, classe: "row items", name: "Contusão", tags: "listtype = multiple caracteristicatipificacaoid=" + CtIdCon + " tarefaid=" + TIdCon);
+                                break;
+                            case "Verificação Tipificação - Idade":
+                                var listIdade = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(201);
+                                var listIdadeHtml = "";
+                                foreach (var carac in listIdade)
+                                {
+                                    listIdadeHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
+                                                        carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
+                                                        " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
+                                                        carac.cSgCaracteristica + "</div>"; ;
+                                }
+                                var CtIdIdade = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(201).First().nCdCaracteristica;
+                                var TIdIdade = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdIdade).First().TarefaId;
+                                labels += html.div(outerhtml: listIdadeHtml, classe: "row items", name: "Maturidade", tags: "listtype = single caracteristicatipificacaoid=" + CtIdIdade + " tarefaid=" + TIdIdade);
+                                break;
+                            case "Verificação Tipificação - Sexo":
+                                var listSexo = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(207);
+                                var listSexoHtml = "";
+                                foreach (var carac in listSexo)
+                                {
+                                    listSexoHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
                                                     carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
                                                     " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
                                                     carac.cSgCaracteristica + "</div>"; ;
-                            }
-                            var CtIdGor = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(203).First().nCdCaracteristica;
-                            var TIdGor = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdGor).First().TarefaId;
-                            labels += html.div(outerhtml: listGorduraHtml, classe: "row items", name: "Gordura", tags: "listtype = single caracteristicatipificacaoid=" + CtIdGor + " tarefaid=" + TIdGor);
-                            break;
-                        case "Verificação Tipificação - Contusão":
-                            var listContusao = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(205);
-                            var listContusaoHtml = "";
-                            foreach (var carac in listContusao)
-                            {
-                                listContusaoHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
-                                                    carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
-                                                    " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
-                                                    carac.cSgCaracteristica + "</div>"; ;
-                            }
-                            var CtIdCon = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(205).First().nCdCaracteristica;
-                            var TIdCon = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdCon).First().TarefaId;
-                            labels += html.div(outerhtml: listContusaoHtml, classe: "row items", name: "Contusão", tags: "listtype = multiple caracteristicatipificacaoid=" + CtIdCon + " tarefaid=" + TIdCon);
-                            break;
-                        case "Verificação Tipificação - Idade":
-                            var listIdade = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(201);
-                            var listIdadeHtml = "";
-                            foreach (var carac in listIdade)
-                            {
-                                listIdadeHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
-                                                    carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
-                                                    " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
-                                                    carac.cSgCaracteristica + "</div>"; ;
-                            }
-                            var CtIdIdade = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(201).First().nCdCaracteristica;
-                            var TIdIdade = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdIdade).First().TarefaId;
-                            labels += html.div(outerhtml: listIdadeHtml, classe: "row items", name: "Maturidade", tags: "listtype = single caracteristicatipificacaoid=" + CtIdIdade + " tarefaid=" + TIdIdade);
-                            break;
-                        case "Verificação Tipificação - Sexo":
-                            var listSexo = CaracteristicaTipificacaoDB.getCaracteristicasTipificacao(207);
-                            var listSexoHtml = "";
-                            foreach (var carac in listSexo)
-                            {
-                                listSexoHtml += "<div class='col-xs-2 hide' cNmCaracteristica='" +
-                                                carac.cNmCaracteristica + "' cIdentificador='" + carac.cIdentificador + "' " +
-                                                " cNrCaracteristica='" + carac.cNrCaracteristica + "' cSgCaracteristica='" + carac.cSgCaracteristica + "'>" +
-                                                carac.cSgCaracteristica + "</div>"; ;
-                            }
-                            var CtIdSexo = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(207).First().nCdCaracteristica;
-                            var TIdSexo = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdSexo).First().TarefaId;
-                            labels += html.div(outerhtml: listSexoHtml, classe: "row items", name: "Sexo", tags: "listtype = single caracteristicatipificacaoid=" + CtIdSexo + " tarefaid=" + TIdSexo);
-                            break;
+                                }
+                                var CtIdSexo = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(207).First().nCdCaracteristica;
+                                var TIdSexo = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdSexo).First().TarefaId;
+                                labels += html.div(outerhtml: listSexoHtml, classe: "row items", name: "Sexo", tags: "listtype = single caracteristicatipificacaoid=" + CtIdSexo + " tarefaid=" + TIdSexo);
+                                break;
+                        }
+
+                        //gera os labels
+                        labels = html.div(
+                                                outerhtml: labels,
+                                                classe: "col-xs-12 col-sm-12 col-md-12"
+                                            );
+
+                        //Comandos para intervalos
+                        //tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
+                        tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
+                        //Gera uma linha de level3
+                        string level3List = html.listgroupItem(
+                                                                id: parLevel3.Id.ToString(),
+                                                                classe: "level3 row VF",
+                                                                tags: tags,
+                                                                outerhtml: level3 +
+                                                                            labels
+                                                            );
+
+                        parLevel3Group += level3List;
+                        Last_Id = parLevel3.Id;
+
                     }
-
-                    //gera os labels
-                    labels = html.div(
-                                            outerhtml: labels,
-                                            classe: "col-xs-12 col-sm-12 col-md-12"
-                                        );
-
-                    //Comandos para intervalos
-                    //tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\"";
-                    tags += " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"1\"";
-                    //Gera uma linha de level3
-                    string level3List = html.listgroupItem(
-                                                            id: parLevel3.Id.ToString(),
-                                                            classe: "level3 row VF",
-                                                            tags: tags,
-                                                            outerhtml: level3 +
-                                                                        labels
-                                                        );
-
-                    parLevel3Group += level3List;
-
                 }
 
                 var listAreasParticipantes = CaracteristicaTipificacaoDB.getAreasParticipantes();
@@ -3140,15 +3152,20 @@ namespace SgqSystem.Services
                 string parLevel3Group = null;
 
                 foreach (var parLevel3 in parlevel3List)
-                { //Define a qual classe de input pertence o level3
-                    string classInput = null;
-                    //Labels que mostrar informaçãoes do tipo de input
-                    string labelsInputs = null;
-                    //tipo de input
-                    string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
+                { 
+                    if(Last_Id != parLevel3.Id)
+                    {
+                        //Define a qual classe de input pertence o level3
+                        string classInput = null;
+                        //Labels que mostrar informaçãoes do tipo de input
+                        string labelsInputs = null;
+                        //tipo de input
+                        string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
 
-                    string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
-                    parLevel3Group += level3List;
+                        string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
+                        parLevel3Group += level3List;
+                        Last_Id = parLevel3.Id;
+                    }
                 }
 
                 //Avaliações e amostas para painel
@@ -3276,15 +3293,20 @@ namespace SgqSystem.Services
 
                 foreach (var parLevel3 in parlevel3List)
                 {
-                    //Define a qual classe de input pertence o level3
-                    string classInput = null;
-                    //Labels que mostrar informaçãoes do tipo de input
-                    string labelsInputs = null;
-                    //tipo de input
-                    string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
+                   if(Last_Id != parLevel3.Id)
+                    {
+                        //Define a qual classe de input pertence o level3
+                        string classInput = null;
+                        //Labels que mostrar informaçãoes do tipo de input
+                        string labelsInputs = null;
+                        //tipo de input
+                        string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
 
-                    string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
-                    parLevel3Group += level3List;
+                        string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
+                        parLevel3Group += level3List;
+
+                        Last_Id = parLevel3.Id;
+                    }
                 }
 
                 //< div class="form-group">
@@ -3957,8 +3979,9 @@ namespace SgqSystem.Services
             TechinicalId = DefaultValueReturn(TechinicalId, "1");
             DateTimeSlaughter = DefaultValueReturn(DateTimeSlaughter, "03012017 00:00:00");
             DateTimeTechinical = DateTimeSlaughter;
+            Period = DefaultValueReturn(Period, "1");
 
-            if(string.IsNullOrEmpty(CollectionLevel2_Id))
+            if(string.IsNullOrEmpty(CollectionLevel2_Id) || CollectionLevel2_Id == "0")
             {
                 CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber).ToString();
                 if(CollectionLevel2_Id == "0")
