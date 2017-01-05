@@ -292,6 +292,8 @@ namespace SgqSystem.Controllers.Api
                 {
                     sql = "SELECT ";
                     sql += "EmpresaSigla ";
+                    sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) BOIS_MORTOS ";
+                    sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada  ELSE 0 END AS FLOAT)) BOIS_MARCADOS_PARA_MORRER ";
                     sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada  ELSE 0 END AS FLOAT)) - 1   AS DesvQtdeBoi ";
                     sql += " , ";
                     sql += "  SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoRealizado ELSE 0 END AS FLOAT)) ";
@@ -333,6 +335,8 @@ namespace SgqSystem.Controllers.Api
                 {
                     sql = "SELECT ";
                     sql += "EmpresaSigla ";
+                    sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) BOIS_MORTOS ";
+                    sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada  ELSE 0 END AS FLOAT)) BOIS_MARCADOS_PARA_MORRER ";
                     sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada  ELSE 0 END AS FLOAT)) - 1   AS DesvQtdeBoi ";
                     sql += ", CASE WHEN SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN ConsumoOrcado ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE  SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN ConsumoRealizado ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN ConsumoOrcado ELSE 0 END AS FLOAT)) - 1  END AS DesvQtdeConsumoUN ";
                     sql += ", CASE WHEN(CASE WHEN SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN CONSUMOORCADO ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE(SUM(CAST(CASE WHEN ContaContabil = 'COMBUSTÍVEL PARA CALDEIRA' and TipoInformacao = 'CustoFixo' THEN DespesaOrcada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN CONSUMOORCADO ELSE 0 END AS FLOAT))) END) = 0 THEN 0 ELSE(CASE WHEN SUM(CAST(CASE WHEN TIPOCONSUMO = '003.MCAL. Vapor' THEN CONSUMOREALIZADO ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE(SUM(CAST(CASE WHEN ContaContabil = 'COMBUSTÍVEL PARA CALDEIRA' and TipoInformacao = 'CustoFixo' then DespesaRealizada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TIPOCONSUMO = '003.MCAL. Vapor' THEN CONSUMOREALIZADO ELSE 0 END AS FLOAT))) END) / (CASE WHEN SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN CONSUMOORCADO ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE(SUM(CAST(CASE WHEN ContaContabil = 'COMBUSTÍVEL PARA CALDEIRA' and TipoInformacao = 'CustoFixo' THEN DespesaOrcada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN CONSUMOORCADO ELSE 0 END AS FLOAT))) END) -1 END AS DesvPrecoUN ";
@@ -355,7 +359,8 @@ namespace SgqSystem.Controllers.Api
                 {
                     sql = "SELECT ";
                     sql += "EmpresaSigla ";
-
+                    sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) BOIS_MORTOS ";
+                    sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada  ELSE 0 END AS FLOAT)) BOIS_MARCADOS_PARA_MORRER ";
                     sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada  ELSE 0 END AS FLOAT)) - 1   AS DesvQtdeBoi ";
                     sql += ", CASE WHEN SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN ConsumoOrcado ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN ConsumoRealizado ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN ConsumoOrcado ELSE 0 END AS FLOAT)) - 1 END  AS DesvQtdeConsumoUN ";
                     sql += ", CASE WHEN SUM(CAST(CASE WHEN ContaContabil = 'ÁGUA' and TipoInformacao = 'CustoFixo' THEN DespesaOrcada ELSE 0 END AS FLOAT)) = 0 OR SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN CONSUMOORCADO ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE(CASE WHEN SUM(CAST(CASE WHEN TIPOCONSUMO = '002.M3. Agua' THEN CONSUMOREALIZADO ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE SUM(CAST(CASE WHEN ContaContabil = 'ÁGUA' and TipoInformacao = 'CustoFixo' then DespesaRealizada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TIPOCONSUMO = '002.M3. Agua' THEN CONSUMOREALIZADO ELSE 0 END AS FLOAT)) END) / (SUM(CAST(CASE WHEN ContaContabil = 'ÁGUA' and TipoInformacao = 'CustoFixo' THEN DespesaOrcada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN CONSUMOORCADO ELSE 0 END AS FLOAT))) - 1 END AS DesvPrecoUN ";
@@ -410,6 +415,8 @@ namespace SgqSystem.Controllers.Api
                 {
                     sql = "SELECT ";
                     sql += "EmpresaSigla, CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END) AnoMes  ";
+                    sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) BOIS_MORTOS ";
+                    sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada  ELSE 0 END AS FLOAT)) BOIS_MARCADOS_PARA_MORRER ";
                     sql += " , ";
                     sql += "  SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada  ELSE 0 END AS FLOAT)) - 1 ";
                     sql += "  AS DesvQtdeBoi ";
@@ -453,6 +460,8 @@ namespace SgqSystem.Controllers.Api
                 {
                     sql = "SELECT ";
                     sql += "EmpresaSigla, CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END) AnoMes  ";
+                    sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) BOIS_MORTOS ";
+                    sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada  ELSE 0 END AS FLOAT)) BOIS_MARCADOS_PARA_MORRER ";
                     sql += ",   SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada  ELSE 0 END AS FLOAT)) - 1   AS DesvQtdeBoi ";
                     sql += ", CASE WHEN SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN ConsumoOrcado ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE  SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN ConsumoRealizado ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN ConsumoOrcado ELSE 0 END AS FLOAT)) - 1  END AS DesvQtdeConsumoUN ";
                     sql += ", CASE WHEN(CASE WHEN SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN CONSUMOORCADO ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE(SUM(CAST(CASE WHEN ContaContabil = 'COMBUSTÍVEL PARA CALDEIRA' and TipoInformacao = 'CustoFixo' THEN DespesaOrcada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN CONSUMOORCADO ELSE 0 END AS FLOAT))) END) = 0 THEN 0 ELSE(CASE WHEN SUM(CAST(CASE WHEN TIPOCONSUMO = '003.MCAL. Vapor' THEN CONSUMOREALIZADO ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE(SUM(CAST(CASE WHEN ContaContabil = 'COMBUSTÍVEL PARA CALDEIRA' and TipoInformacao = 'CustoFixo' then DespesaRealizada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TIPOCONSUMO = '003.MCAL. Vapor' THEN CONSUMOREALIZADO ELSE 0 END AS FLOAT))) END) / (CASE WHEN SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN CONSUMOORCADO ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE(SUM(CAST(CASE WHEN ContaContabil = 'COMBUSTÍVEL PARA CALDEIRA' and TipoInformacao = 'CustoFixo' THEN DespesaOrcada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN CONSUMOORCADO ELSE 0 END AS FLOAT))) END) -1 END AS DesvPrecoUN ";
@@ -475,7 +484,8 @@ namespace SgqSystem.Controllers.Api
                 {
                     sql = "SELECT ";
                     sql += "EmpresaSigla, CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END) AnoMes  ";
-
+                    sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) BOIS_MORTOS ";
+                    sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada  ELSE 0 END AS FLOAT)) BOIS_MARCADOS_PARA_MORRER ";
                     sql += ", SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada  ELSE 0 END AS FLOAT)) - 1   AS DesvQtdeBoi ";
                     sql += ", CASE WHEN SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN ConsumoOrcado ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN ConsumoRealizado ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN ConsumoOrcado ELSE 0 END AS FLOAT)) - 1 END  AS DesvQtdeConsumoUN ";
                     sql += ", CASE WHEN SUM(CAST(CASE WHEN ContaContabil = 'ÁGUA' and TipoInformacao = 'CustoFixo' THEN DespesaOrcada ELSE 0 END AS FLOAT)) = 0 OR SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN CONSUMOORCADO ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE(CASE WHEN SUM(CAST(CASE WHEN TIPOCONSUMO = '002.M3. Agua' THEN CONSUMOREALIZADO ELSE 0 END AS FLOAT)) = 0 THEN 0 ELSE SUM(CAST(CASE WHEN ContaContabil = 'ÁGUA' and TipoInformacao = 'CustoFixo' then DespesaRealizada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TIPOCONSUMO = '002.M3. Agua' THEN CONSUMOREALIZADO ELSE 0 END AS FLOAT)) END) / (SUM(CAST(CASE WHEN ContaContabil = 'ÁGUA' and TipoInformacao = 'CustoFixo' THEN DespesaOrcada ELSE 0 END AS FLOAT)) / SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN CONSUMOORCADO ELSE 0 END AS FLOAT))) - 1 END AS DesvPrecoUN ";
@@ -565,6 +575,9 @@ public class Pacote
         public double? DesvPrecoUN { get; set; }
         public double? DesvUNBoi { get; set; }
         public string AnoMes { get; set; }
- 
-    }
+        public double? BOIS_MORTOS { get; set; }
+        public double? BOIS_MARCADOS_PARA_MORRER { get; set; }
+
+
+}
 
