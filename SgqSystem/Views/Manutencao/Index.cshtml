@@ -106,6 +106,7 @@
 
                                             </div>*@
 
+                                            <div id="UnitChart" style="display:none; cursor:pointer"></div>
                                             <div id="ThirdChart" style="display:none; cursor:pointer"></div>
 
                                             <div id="EvolutivoDaContaPorUnidade" style="display:none; cursor:pointer"></div>
@@ -1197,6 +1198,8 @@
 
                                                     $('#SecondChart').empty();
 
+                                                    $('#UnitChart').empty();
+
                                                     $('#ThirdChart').empty();
                                                     $('#EvolutivoDaContaPorUnidade').empty();
                                                     
@@ -1652,6 +1655,7 @@
 
                                                     $('#SecondChart').empty();
 
+                                                    $('#UnitChart').empty();
                                                     $('#ThirdChart').empty();
                                                     $('#EvolutivoDaContaPorUnidade').empty();
                                                     $('#FourthChart').empty();
@@ -1698,6 +1702,7 @@
 
                                                     })
 
+                                                    MountUnitChart(unidade, conta);
                                                     MountThirdChart(unidade, conta);
 
                                                     MountFourthChart(unidade, conta);
@@ -2257,7 +2262,7 @@
                                                                 data: x2,
                                                                 point: {
                                                                     events: {
-                                                                        click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                                        click: function () { MountThirdChart(this.category), MountUnitChart(this.category), MountFourthChart(this.category, null) }
                                                                     }
                                                                 }
                                                                 , tooltip: {
@@ -2272,7 +2277,7 @@
                                                                 data: x4,
                                                                 point: {
                                                                     events: {
-                                                                        click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                                        click: function () { MountThirdChart(this.category), MountUnitChart(this.category), MountFourthChart(this.category, null) }
                                                                     }
                                                                 }
                                                                 , tooltip: {
@@ -2285,7 +2290,7 @@
                                                                 data: x1,
                                                                 point: {
                                                                     events: {
-                                                                        click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                                        click: function () { MountThirdChart(this.category), MountUnitChart(this.category), MountFourthChart(this.category, null) }
                                                                     }
                                                                 }
                                                                 , tooltip: {
@@ -2298,7 +2303,7 @@
                                                                 data: x3,
                                                                 point: {
                                                                     events: {
-                                                                        click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                                        click: function () { MountThirdChart(this.category), MountUnitChart(this.category), MountFourthChart(this.category, null) }
                                                                     }
                                                                 }
                                                                 , tooltip: {
@@ -2311,6 +2316,161 @@
                                                     });
 
                                                 }
+                                            }
+
+                                            //chamada ajax unit gráfico
+                                            function MountUnitChart(u, conta) {
+
+                                                //função ajax para buscar dados
+
+                                                //$('#FourthChart').empty();
+
+                                                var unidade = u
+
+                                                $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidade/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(unidade.replace(/[/]/g, '|')) + '/', function (lista) {
+
+                                                    var titleLine = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        titleLine.push(entry.MesAno);
+                                                    });
+
+                                                    var x1 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x1.push(entry.Orçada);
+                                                    });
+
+                                                    var x2 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x2.push(entry.Realizada);
+                                                    });
+
+                                                    var x3 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x3.push(entry.DesvioReal);
+                                                    });
+
+                                                    var desvioAcumulado = [];
+                                                    var desvio = 0
+
+                                                    for (i = 0; i < x3.length; i++) {
+                                                        desvio += x3[i];
+                                                        desvioAcumulado[i] = desvio
+                                                    }
+
+                                                    UnitChart(titleLine, x1, x2, x3, desvioAcumulado, unidade);
+
+                                                });
+
+                                                $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidadeEConta/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(unidade.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/', function (lista) {
+
+                                                    var titleLine = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        titleLine.push(entry.MesAno);
+                                                    });
+
+                                                    var x1 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x1.push(entry.Orçada);
+                                                    });
+
+                                                    var x2 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x2.push(entry.Realizada);
+                                                    });
+
+                                                    var x3 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x3.push(entry.DesvioReal);
+                                                    });
+
+                                                    var desvioAcumulado = [];
+                                                    var desvio = 0
+
+                                                    for (i = 0; i < x3.length; i++) {
+                                                        desvio += x3[i];
+                                                        desvioAcumulado[i] = desvio
+                                                    }
+
+                                                    EvolutivoDaContaPorUnidade(titleLine, x1, x2, x3, desvioAcumulado, unidade, conta);
+
+                                                });
+                                            }
+
+                                            //locação unit gráfico
+                                            function UnitChart(name, x1, x2, x3, line, unidade) {
+                                                $('#UnitChart').show();
+                                                $('#UnitChartMeses').show();
+
+                                                $(function () {
+                                                    Highcharts.chart('UnitChart', {
+                                                        credits: {
+                                                            enabled: false
+                                                        },
+
+                                                        title: {
+                                                            text: 'Visão por Unidades de Medida - ' + unidade
+                                                        },
+                                                        chart: {
+                                                            zoomType: 'x, y',
+                                                            backgroundColor: null
+                                                        },
+                                                        xAxis: {
+                                                            categories: name
+                                                        },
+                                                        yAxis: {
+
+                                                            title: {
+                                                                text: 'R$ em milhares'
+                                                            },
+                                                            subtitle: {
+                                                                text: document.ontouchstart === undefined ?
+                                                                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                                                            }
+                                                            ,
+                                                            stackLabels: {
+                                                                enabled: true,
+                                                                style: {
+                                                                    fontWeight: 'bold',
+                                                                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                                                }
+                                                            }
+                                                        },
+
+                                                        series: [{
+                                                            type: 'column',
+                                                            name: 'Despesa Orçada',
+                                                            data: x1,
+
+                                                        }, {
+                                                            type: 'column',
+                                                            name: 'Despesa Real',
+                                                            data: x2,
+
+                                                        }, {
+                                                            type: 'column',
+                                                            name: 'Desvio R$',
+                                                            data: x3,
+
+                                                        }, {
+                                                            type: 'spline',
+                                                            name: 'Desvio R$ Acumulado',
+                                                            data: line,
+                                                            marker: {
+                                                                lineWidth: 2,
+                                                                lineColor: Highcharts.getOptions().colors[3],
+                                                                fillColor: 'white'
+                                                            }
+                                                        }]
+                                                    });
+                                                });
                                             }
 
                                             //chamada ajax terceiro gráfico
@@ -2780,6 +2940,7 @@
 
             $('#SecondChart').empty();
 
+            $('#UnitChart').empty();
             $('#ThirdChart').empty();
             $('#EvolutivoDaContaPorUnidade').empty();
             $('#FourthChart').empty();
