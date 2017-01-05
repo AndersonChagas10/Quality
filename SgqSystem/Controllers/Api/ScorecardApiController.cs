@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using SgqSystem.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -26,19 +27,31 @@ namespace SgqSystem.Controllers.Api
                 _list = db.Database.SqlQuery<ScorecardResultSet>(query).ToList();
                 var total = new ScorecardResultSet() { Level1Name = "Total:", Pontos = 0, Scorecard = 0 };
 
+                var totalPontosDisputados = 0.0M;
+                var totalPontosAtingidos = 0.0M;
+                var totalScorecard = 0.0M;
+
                 foreach (var i in _list)
                 {
                     if (i.AV > 0)
                     {
-                        total.Pontos += i.PontosAtingidos - i.Pontos;
 
-                        if (total.Scorecard >= 100)
-                            total.Scorecard = 100;
-                        else
-                            total.Scorecard += i.Scorecard;
+                        totalPontosDisputados += i.Pontos.Value;
+                        totalPontosAtingidos += i.PontosAtingidos.Value;
+
+
+                        //total.Pontos += i.PontosAtingidos - i.Pontos;
+
+                        //if (total.Scorecard >= 100)
+                        //    total.Scorecard = 100;
+                        //else
+                        //    total.Scorecard += i.Scorecard;
                     }
                 }
-                _list.Add(total);
+
+                totalScorecard = Math.Round((totalPontosAtingidos / totalPontosDisputados * 100) , 2);
+
+                _list.Add(new ScorecardResultSet() { Level1Name = "Total:", Pontos = totalPontosDisputados, Scorecard = totalScorecard, PontosAtingidos = totalPontosAtingidos });
             }
 
 
