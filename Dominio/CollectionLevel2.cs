@@ -60,12 +60,12 @@ namespace Dominio
         public Nullable<int> DefectsResult { get; set; }
     
         public virtual ConsolidationLevel2 ConsolidationLevel2 { get; set; }
+        public virtual ParLevel1 ParLevel1 { get; set; }
         public virtual ParLevel2 ParLevel2 { get; set; }
         public virtual UserSgq UserSgq { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2XParHeaderField> CollectionLevel2XParHeaderField { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Result_Level3> Result_Level3 { get; set; }
-        public virtual ParLevel1 ParLevel1 { get; set; }
     }
 }

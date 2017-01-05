@@ -53,14 +53,12 @@
     <Compile Include="ComplexType\RetornoQueryIndicadoresRelBate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CollectionLevel02Repo.cs" />
-    <Compile Include="Repositories\CorrectiveActionRepository.cs" />
     <Compile Include="Repositories\GetDataResultRepository.cs" />
     <Compile Include="Repositories\ParamsRepository.cs" />
     <Compile Include="Repositories\ParLevel3Repository.cs" />
     <Compile Include="Repositories\RelatorioColetaRepository.cs" />
     <Compile Include="Repositories\RepositoryBaseNoLazyLoad.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
-    <Compile Include="Repositories\SaveCollectionRepo.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>

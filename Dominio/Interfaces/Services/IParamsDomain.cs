@@ -24,5 +24,7 @@ namespace Dominio.Interfaces.Services
         //ParLevel3Level2Level1DTO AddVinculoL1L2(int idLevel1, int idLevel2Level3);
         List<ParLevel3Level2Level1DTO> AddVinculoL1L2(int idLevel1, int idLevel2, int idLevel3);
         ParLevel3Level2DTO AddVinculoL3L2(int idLevel2, int idLevel3, decimal peso, int? groupLevel2);
+        bool RemVinculoL1L2(int idLevel1, int idLevel2);
+        bool VerificaShowBtnRemVinculoL1L2(int idLevel1, int idLevel2);
     }
 }

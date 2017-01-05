@@ -115,10 +115,16 @@
                 { title: "Pontos Ating.", mData: "PontosAtingidos" },
                 { title: "Scorecard", mData: "Scorecard" },
             ],
-
+            fixedHeader: {
+                header: true,
+                footer: true
+            },
             scrollX: true,
-            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-            pageLength: 10,
+            //lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+            //pageLength: 10,
+            paginate: false,
+            paging: false,
+            bSort: false,
             loadingRecords: true,
             destroy: true,
             info: true,
@@ -147,6 +153,42 @@
 
             },
             fnDrawCallback: function (data, d, o) {
+
+                //var api = this.api();
+                //var scorecardTotal = 0;
+                //var pontosTotal = 0;
+                //var pontosAtingidos = 0;
+
+                ////sum ( atingidos  - disputados)
+                //for (var i = 0 ; i < data.aoData.length ; i++) {
+                //    for (var j = 0 ; j < data.aoData[i]._aData.length ; j++) {
+
+                //        /*Se for "avaliado"*/
+                //        if (data.aoData[0]._aData.AV > 0) {
+                //            pontosTotal += data.aoData[0]._aData.PontosAtingidos - data.aoData[0]._aData.Pontos;
+                //            scorecardTotal += data.aoData[0]._aData.Scorecard;
+                //        }
+
+                //    }
+                //}
+               
+                //$("#results").find('tbody')
+                //       .append($('<tr>')
+                //           .append($('<td >', { colspan: 7 }))
+                //           .append($('<td class=" dt-center">')
+                //               .text('Total')
+                //           )
+                //           .append($('<td class=" dt-center">')
+                //               .text(pontosTotal)
+                //           )
+                //           .append($('<td >', { colspan: '2' }))
+                //           .append($('<td class=" dt-center">')
+                //               .text(pontosTotal)
+                //           )
+                //           .append($('<td class=" dt-center">')
+                //               .text(scorecardTotal + "%")
+                //           )
+                //       );
 
             }
         });

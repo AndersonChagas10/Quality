@@ -46,9 +46,9 @@
                 if (oo == "btn") {
                     if (o["Id"] != null && o["Id"] != undefined && o["Id"] > 0) {
                         if (o["IsActive"]) {
-                            o[oo] = crudNxN.btnInactive + crudNxN.btnEdit;
+                            o[oo] = crudNxN.btnInactive + crudNxN.btnEdit; //+ crudNxN.btnRemoveDb;
                         } else {
-                            o[oo] = crudNxN.btnReActive + crudNxN.btnEdit;
+                            o[oo] = crudNxN.btnReActive + crudNxN.btnEdit; //+ crudNxN.btnRemoveDb;
                         }
                     } else {
                         o[oo] = crudNxN.btnRemove + crudNxN.btnEdit;
@@ -97,6 +97,18 @@
             element.find('td:last').append(crudNxN.btnInactive, crudNxN.btnEdit);
             reloadPopovers();
         },
+        //btnRemoveDb: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Excluir" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcRemove($(this));"><i class="fa fa-trash" aria-hidden="true"></i></button>',
+        //funcRemoveDb: function (e) {
+        //    var obj = $(e).parents('tr').data();
+        //    obj["IsRemove"] = true;
+        //    $(e).parents('tr').removeData();
+        //    $(e).parents('tr').data(obj);
+        //    var element = $(e).parents('tr');
+        //    element.find('td:last').empty();
+        //    element.find('td:last').append(crudNxN.btnInactive, crudNxN.btnEdit);
+        //    reloadPopovers();
+        //},
+
         btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
         funcEdit: function (e) {
 

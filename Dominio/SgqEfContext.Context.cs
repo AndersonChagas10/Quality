@@ -69,6 +69,7 @@ namespace Dominio
         public virtual DbSet<ParCompanyCluster> ParCompanyCluster { get; set; }
         public virtual DbSet<ParCompanyXStructure> ParCompanyXStructure { get; set; }
         public virtual DbSet<ParCompanyXUserSgq> ParCompanyXUserSgq { get; set; }
+        public virtual DbSet<ParConfSGQ> ParConfSGQ { get; set; }
         public virtual DbSet<ParConsolidationType> ParConsolidationType { get; set; }
         public virtual DbSet<ParCounter> ParCounter { get; set; }
         public virtual DbSet<ParCounterXLocal> ParCounterXLocal { get; set; }
@@ -79,6 +80,7 @@ namespace Dominio
         public virtual DbSet<ParFrequency> ParFrequency { get; set; }
         public virtual DbSet<ParGoal> ParGoal { get; set; }
         public virtual DbSet<ParHeaderField> ParHeaderField { get; set; }
+        public virtual DbSet<ParLevel1> ParLevel1 { get; set; }
         public virtual DbSet<ParLevel1XCluster> ParLevel1XCluster { get; set; }
         public virtual DbSet<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
         public virtual DbSet<ParLevel2> ParLevel2 { get; set; }
@@ -117,7 +119,6 @@ namespace Dominio
         public virtual DbSet<ParLevel1VariableProductionXLevel1> ParLevel1VariableProductionXLevel1 { get; set; }
         public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
         public virtual DbSet<ResultLevel2HeaderField> ResultLevel2HeaderField { get; set; }
-        public virtual DbSet<ParLevel1> ParLevel1 { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

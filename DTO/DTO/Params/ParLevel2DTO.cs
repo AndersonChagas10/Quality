@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
-using System;
 
 namespace DTO.DTO.Params
 {
@@ -11,6 +10,8 @@ namespace DTO.DTO.Params
     {
         public decimal pesoDoVinculoSelecionado;
         public List<ParLevel3DTO> listaParLevel3Colleta;
+        public List<int> listVinculoExistenLevel1Id;
+
         public List<ParCounterXLocalDTO> listParCounterXLocal { get; set; }
 
         [Range(0, 9999999999, ErrorMessage = "A Frequência é obrigatória.")]

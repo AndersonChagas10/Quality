@@ -282,8 +282,8 @@
 
     //moment.defaultFormat = "DD/MM/YYYY"
 
-    var stringConfigDateUSA = 'MM/DD/YYYY';
-    var stringConfigDateBr = 'DD/MM/YYYY';
+    //var stringConfigDateUSA = 'MM/DD/YYYY';
+    //var stringConfigDateBr = 'DD/MM/YYYY';
     var enviar = {};
     var start = moment();
     var end = moment();
@@ -324,8 +324,8 @@
             }
         }, function (start, end, label) {
             //console.log("New date range selected: ' + start.format('MM/DD/YYYY') + ' to ' + end.format('MM/DD/YYYY') + ' (predefined range: ' + label + ')");
-            enviar['startDate'] = start.format(stringConfigDateBr);
-            enviar['endDate'] = end.format(stringConfigDateBr);
+            enviar['startDate'] = start.format();
+            enviar['endDate'] = end.format();
         });
 
         $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
@@ -344,9 +344,9 @@
         var end = moment();
 
         function cb(start, end) {
-            $('#reportrange span').html(start.format(stringConfigDateBr) + ' - ' + end.format(stringConfigDateBr));
-            enviar['startDate'] = start.format(stringConfigDateBr);
-            enviar['endDate'] = end.format(stringConfigDateBr);
+            $('#reportrange span').html(start.format() + ' - ' + end.format());
+            enviar['startDate'] = start.format();
+            enviar['endDate'] = end.format();
         }
 
         $('#reportrange').daterangepicker({
@@ -369,8 +369,8 @@
         cb(start, end);
         //End config datepickerrange full
 
-        enviar['startDate'] = moment().format(stringConfigDateBr);
-        enviar['endDate'] = moment().format(stringConfigDateBr);
+        enviar['startDate'] = moment().format();
+        enviar['endDate'] = moment().format();
     });
 
     $(document).ready(function () {
