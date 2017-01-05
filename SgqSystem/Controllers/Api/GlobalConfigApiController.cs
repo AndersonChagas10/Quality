@@ -1,4 +1,4 @@
-﻿using Dominio;
+﻿using DTO;
 using DTO.Helpers;
 using SgqSystem.Handlres;
 using System.Collections.Generic;
