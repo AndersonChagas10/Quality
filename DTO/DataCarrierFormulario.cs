@@ -1,5 +1,5 @@
-﻿using System;
-using System.Globalization;
+﻿using DTO.Helpers;
+using System;
 
 namespace DTO
 {
@@ -14,8 +14,7 @@ namespace DTO
             {
                 if (startDate != null)
                 {
-                    if(!DateTime.TryParseExact(startDate, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalueInicio))
-                        DateTime.TryParseExact(startDate, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalueInicio);
+                    Guard.ParseDateToSql(startDate, ref _dtvalueInicio);
                     return _dtvalueInicio;
                 }
                 return DateTime.Now;
@@ -28,8 +27,7 @@ namespace DTO
             {
                 if (endDate != null)
                 {
-                    if(!DateTime.TryParseExact(endDate, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalueFim))
-                        DateTime.TryParseExact(endDate, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalueFim);
+                    Guard.ParseDateToSql(endDate, ref _dtvalueFim);
                     return _dtvalueFim;
                 }
                 return DateTime.Now;

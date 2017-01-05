@@ -221,7 +221,6 @@
     <Compile Include="GetScoreCardConsolidado_Result.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="GlobalConfig.cs" />
     <Compile Include="GrupoCabecalho.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>

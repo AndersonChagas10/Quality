@@ -33,6 +33,14 @@ namespace DTO.Helpers
             return retorno;
         }
 
+        internal static void ParseDateToSql(string date, ref DateTime _dtvalue)
+        {
+            if (GlobalConfig.Brasil)
+                DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+            else if (GlobalConfig.Eua)
+                DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+        }
+
         public static string ConverteValorCalculado(decimal valorDecimal)
         {
 
