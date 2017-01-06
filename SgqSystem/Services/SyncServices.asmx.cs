@@ -3981,6 +3981,8 @@ namespace SgqSystem.Services
             DateTimeTechinical = DateTimeSlaughter;
             Period = DefaultValueReturn(Period, "1");
 
+
+
             if(string.IsNullOrEmpty(CollectionLevel2_Id) || CollectionLevel2_Id == "0")
             {
                 CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber).ToString();
@@ -3989,6 +3991,11 @@ namespace SgqSystem.Services
                     return "error";
                 }
             }
+
+            DescriptionFailure = HttpUtility.UrlDecode(DescriptionFailure, System.Text.Encoding.Default);
+            ImmediateCorrectiveAction = HttpUtility.UrlDecode(ImmediateCorrectiveAction, System.Text.Encoding.Default);
+            ProductDisposition = HttpUtility.UrlDecode(ProductDisposition, System.Text.Encoding.Default);
+            PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
 
             int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure, ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
             if(id > 0)
@@ -4003,7 +4010,7 @@ namespace SgqSystem.Services
                 getFrequencyDate(Convert.ToInt32(ParFrequency_Id), dataAPP, ref dataInicio, ref dataFim);
 
                 var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim);
-
+                
 
                 //verificar ações corretivas que estão relacionadas ao collection level2
                 //atualizar para have corrective action = false
