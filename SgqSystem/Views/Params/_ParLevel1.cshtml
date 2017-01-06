@@ -1272,7 +1272,6 @@
 
         //Geral.TableShow();
         ///initialize form
-        initialFormLevel1 = $($('form')[0]).clone();
 
         $('[data-toggle="popover"]').popover();
 
@@ -1281,6 +1280,7 @@
 
         setTimeout(function(){
             reloadPopovers();
+            initialFormLevel1 = $($('form')[0]).clone();
         }, 3000);
 
         $('input[name="paramsDto.parLevel1Dto.IsRuleConformity"]:first').prop("checked", true);
