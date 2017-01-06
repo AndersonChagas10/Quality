@@ -2615,14 +2615,17 @@ namespace SgqSystem.Services
 
 
                 string classXSLevel2 = " col-xs-5";
+
+                int totalSampleXEvaluate = evaluate * sample;
+
                 string counters = 
                                       html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
+                                                outerhtml: html.span(outerhtml: "1", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
                                                 classe: "col-xs-6",
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal"),
+                                                outerhtml: html.span(outerhtml: "1", classe: "sampleCurrent hide") + html.span(classe: "sampleCurrentTotal") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
                                                 classe: "col-xs-6",
                                                 style: "text-align:center"
                                               );

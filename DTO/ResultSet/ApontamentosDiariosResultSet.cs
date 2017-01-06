@@ -20,6 +20,8 @@ public class ApontamentosDiariosResultSet
     public string _NA { get { return Conforme.Value ? "Avaliado" : "Não Avaliado"; } }
 
     public Nullable<decimal> AV_Peso { get; set; }
+    public Nullable<decimal> _AV_Peso { get { return AV_Peso.HasValue ? AV_Peso.Value : 0M ; } }
+
     public Nullable<decimal> NC_Peso { get; set; }
     public Nullable<int> Avaliacao { get; set; }
     public int Amostra { get; set; }
@@ -53,6 +55,6 @@ public class ApontamentosDiariosResultSet
                 " \n ON L2.Id = C2.ParLevel2_Id             " +
                 " \n LEFT JOIN ParLevel1 L1                 " +
                 " \n ON L1.Id = C2.ParLevel1_Id             " +
-                " \n WHERE C2.CollectionDate BETWEEN '" + dtInit + "' AND '" + dtF + "'";
+                " \n WHERE C2.CollectionDate BETWEEN '" + dtInit + " 00:00' AND '" + dtF + " 23:59'";
     }
 }
