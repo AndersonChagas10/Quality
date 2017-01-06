@@ -2750,9 +2750,20 @@ namespace SgqSystem.Services
                     case 1:
                         var listMultiple = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
                         var optionsMultiple = "";
-                        foreach (var value in listMultiple)
-                        {
-                            optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
+                        foreach (var value in listMultiple){
+                            if(value.IsDefaultOption == 1)
+                            {
+                                optionsMultiple += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
+                            }
+                            else if (listMultiple.ElementAt(0) == value && value.IsDefaultOption == 0)
+                            {
+                                optionsMultiple += "<option selected=\"selected\" value=\"0\">" + Resources.Resource.select + "...</option>";
+                                optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
+                            }
+                            else
+                            {
+                                optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
+                            }
                         }
                         form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsMultiple + "</select>";
                         break;
@@ -2766,7 +2777,14 @@ namespace SgqSystem.Services
                         var optionsBinario = "";
                         foreach (var value in listBinario)
                         {
-                            optionsBinario += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
+                            if (listBinario.ElementAt(0) == value)
+                            {
+                                optionsBinario += "<option selected value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
+                            }
+                            else
+                            {
+                                optionsBinario += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
+                            }
                         }
                         form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>" + optionsBinario + "</select>";
                         break;
@@ -3113,7 +3131,7 @@ namespace SgqSystem.Services
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent hide ") + html.span(classe: "sampleCurrentTotal") + " / " + html.span(classe: "sampleTotal hide")  + html.span(classe: "sampleXEvaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3258,7 +3276,7 @@ namespace SgqSystem.Services
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent hide") + html.span(classe: "sampleCurrentTotal") + " / " + html.span(classe: "sampleTotal hide") + html.span(classe: "sampleXEvaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3326,7 +3344,7 @@ namespace SgqSystem.Services
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent hide") + html.span(classe: "sampleCurrentTotal")  + " / " + html.span(classe: "sampleTotal hide") + html.span(classe: "sampleXEvaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
