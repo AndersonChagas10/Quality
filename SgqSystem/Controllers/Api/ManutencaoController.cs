@@ -317,7 +317,7 @@ namespace SgqSystem.Controllers.Api
                 sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                 sql += "and EmpresaSigla = \'" + unidadeDecode + "\'  ";
                 sql += "GROUP BY EmpresaSigla, CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END) ";
-                sql += ") TABELA ORDER BY 1";
+                sql += ") TABELA ORDER BY 2, 1";
 
                 lista = db.Database.SqlQuery<FatoresTecnicosMateriaPrima>(sql).ToList();
             }
