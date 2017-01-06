@@ -12,16 +12,10 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ParLevel1XHeaderField
+    public partial class budgets
     {
-        public int Id { get; set; }
-        public int ParLevel1_Id { get; set; }
-        public int ParHeaderField_Id { get; set; }
-        public System.DateTime AddDate { get; set; }
-        public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool IsActive { get; set; }
-    
-        public virtual ParHeaderField ParHeaderField { get; set; }
-        public virtual ParLevel1 ParLevel1 { get; set; }
+        public byte dept { get; set; }
+        public Nullable<decimal> current_year { get; set; }
+        public Nullable<decimal> previous_year { get; set; }
     }
 }

@@ -791,13 +791,12 @@ namespace SGQDBContext
         public string ParHeaderField_Name { get; set; }
         public int ParFieldType_Id { get; set; }
         public int IsRequired { get; set; }
-        public string DefaultSelected { get; set; }
 
         public IEnumerable<ParLevelHeader> getHeaderByLevel1(int ParLevel1_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PT.Id AS ParFieldType_Id, PL.IsRequired AS IsRequired, PL.DefaultSelected AS DefaultSelected FROM ParLevel1XHeaderField PL  " +
+            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PT.Id AS ParFieldType_Id, PH.IsRequired AS IsRequired FROM ParLevel1XHeaderField PL  " +
                          "LEFT JOIN ParHeaderField PH ON PH.Id = PL.ParHeaderField_Id                                                                                                                                    " +
                          "LEFT JOIN ParLevelDefiniton PD ON PH.ParLevelDefinition_Id = PD.Id                                                                                                                             " +
                          "LEFT JOIN ParFieldType PT ON PH.ParFieldType_Id = PT.Id                                                                                                                                        " +
@@ -805,7 +804,7 @@ namespace SGQDBContext
                          "PD.Id = 1 AND                                                                                                                                                                                  " +
                          "PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
                          "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
-                         "GROUP BY PH.Id, PH.Name, PT.Id, PL.IsRequired, PL.DefaultSelected;                                                                                                                             ";
+                         "GROUP BY PH.Id, PH.Name, PT.Id, PH.IsRequired;                                                                                                                             ";
 
 
 
@@ -818,7 +817,7 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PT.Id AS ParFieldType_Id, PL.IsRequired AS IsRequired, PL.DefaultSelected AS DefaultSelected FROM ParLevel1XHeaderField PL  " +
+            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PT.Id AS ParFieldType_Id, PH.IsRequired AS IsRequired FROM ParLevel1XHeaderField PL  " +
                          "LEFT JOIN ParHeaderField PH ON PH.Id = PL.ParHeaderField_Id                                                                                                                                    " +
                          "LEFT JOIN ParLevelDefiniton PD ON PH.ParLevelDefinition_Id = PD.Id                                                                                                                             " +
                          "LEFT JOIN ParFieldType PT ON PH.ParFieldType_Id = PT.Id                                                                                                                                        " +
@@ -826,7 +825,7 @@ namespace SGQDBContext
                          "PD.Id = 2 AND                                                                                                                                                                                  " +
                          "PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
                          "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
-                         "GROUP BY PH.Id, PH.Name, PT.Id, PL.IsRequired, PL.DefaultSelected;                                                                                                                             ";
+                         "GROUP BY PH.Id, PH.Name, PT.Id, PH.IsRequired;                                                                                                                             ";
 
             var parLevel3List = db.Query<ParLevelHeader>(sql);
 
@@ -840,13 +839,14 @@ namespace SGQDBContext
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal PunishmentValue { get; set; }
+        public int IsDefaultOption { get; set; }
 
         public IEnumerable<ParFieldType> getMultipleValues(int ParHeaderField_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
 
 
-            string sql = "SELECT Id, Name, PunishmentValue FROM ParMultipleValues                       " +
+            string sql = "SELECT Id, Name, PunishmentValue, IsDefaultOption FROM ParMultipleValues                       " +
                          "WHERE ParHeaderField_Id = '" + ParHeaderField_Id + "' and IsActive = 1;        ";
 
             var multipleValues = db.Query<ParFieldType>(sql);

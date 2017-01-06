@@ -27,11 +27,11 @@ namespace Dominio
             this.VolumeVacuoGRD = new HashSet<VolumeVacuoGRD>();
             this.ParLevel2Level1 = new HashSet<ParLevel2Level1>();
             this.ParLevel1XCluster = new HashSet<ParLevel1XCluster>();
+            this.ParLevel1XHeaderField = new HashSet<ParLevel1XHeaderField>();
             this.ParLevel2ControlCompany = new HashSet<ParLevel2ControlCompany>();
             this.ParLevel3Level2Level1 = new HashSet<ParLevel3Level2Level1>();
             this.ParNotConformityRuleXLevel = new HashSet<ParNotConformityRuleXLevel>();
             this.ParRelapse = new HashSet<ParRelapse>();
-            this.ParLevel1XHeaderField = new HashSet<ParLevel1XHeaderField>();
         }
     
         public int Id { get; set; }
@@ -81,6 +81,8 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel1XCluster> ParLevel1XCluster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel2ControlCompany> ParLevel2ControlCompany { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3Level2Level1> ParLevel3Level2Level1 { get; set; }
@@ -88,7 +90,5 @@ namespace Dominio
         public virtual ICollection<ParNotConformityRuleXLevel> ParNotConformityRuleXLevel { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParRelapse> ParRelapse { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
     }
 }

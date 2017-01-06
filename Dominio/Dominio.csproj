@@ -55,6 +55,9 @@
     <Compile Include="BkpCollection.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="budgets.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Cabecalho.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
