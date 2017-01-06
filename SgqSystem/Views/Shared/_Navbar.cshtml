@@ -1,4 +1,5 @@
-﻿@{
+﻿@using DTO
+@{
     Layout = null;
     var urlDataCollection = ViewBag.UrlDataCollect;
     //var urlDataCollection = Url.Action("", "DataCollect");
@@ -8,6 +9,7 @@
     var urlHome = Url.Action("Index", "Home");
     var urlScorecard = Url.Action("Scorecard", "RelatoriosSgq");
     var urlRelatorioDiario = Url.Action("RelatorioDiario", "RelatoriosSgq");
+    var urlApontamentosDiarios = Url.Action("ApontamentosDiarios", "RelatoriosSgq");
 }
 
 <div class="page-header navbar navbar-fixed-top">
@@ -49,18 +51,30 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <ul class="mega-menu-submenu">
-                                                <li>
-                                                    <a href="@urlScorecard">Scorecard</a>
-                                                </li>
-                                                <li>
-                                                    <a href="@urlRelatorioDiario">Relatorio Diário</a>
-                                                </li>
-                                                <li>
-                                                    <a href="@urlCorrectiveActionReport">@Resources.Resource.corrective_action_reports</a>
-                                                </li>
-                                                <li>
-                                                    <a href="@urlDataCollectionReport">@Resources.Resource.data_collection_reports</a>
-                                                </li>
+
+                                                @if (GlobalConfig.Brasil)
+                                                {
+                                                    <li>
+                                                        <a href="@urlScorecard">Scorecard</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="@urlRelatorioDiario">Relatorio Diário</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="@urlApontamentosDiarios">Apontamentos Diarios</a>
+                                                    </li>
+                                                }
+
+                                                @if (GlobalConfig.Eua)
+                                                {
+                                                    <li>
+                                                        <a href="@urlCorrectiveActionReport">@Resources.Resource.corrective_action_reports</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="@urlDataCollectionReport">@Resources.Resource.data_collection_reports</a>
+                                                    </li>
+                                                }
+
                                             </ul>
                                         </div>
                                     </div>

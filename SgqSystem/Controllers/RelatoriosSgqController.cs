@@ -69,5 +69,9 @@ namespace SgqSystem.Controllers
             return View(form);
         }
 
+        public ActionResult ApontamentosDiarios()
+        {
+            return View(form);
+        }
     }
 }

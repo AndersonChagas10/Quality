@@ -107,13 +107,15 @@ namespace DTO.DTO.Params
                     var sample = new ParSampleDTO()
                     {
                         Number = i.sampleNumber,
-                        Id = i.sampleId ?? 0
+                        Id = i.sampleId ?? 0,
+                        IsActive = i.IsActive
                     };
 
                     var evaluation = new ParEvaluationDTO()
                     {
                         Number = i.evaluationNumber,
-                        Id = i.evaluationId ?? 0
+                        Id = i.evaluationId ?? 0,
+                        IsActive = i.IsActive
                     };
 
                     if (i.companyId > 0)

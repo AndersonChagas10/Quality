@@ -95,7 +95,7 @@
                         divClonada.find('.panel-heading').html(o.Level1Name); // Insere Titulo no Panel
                         var enviarClone = enviar;
 
-                        enviarClone.level01Id = o.Id
+                        enviarClone.level01Id = o.Id;
 
                         $.post(urlGetPanelResultSet, enviarClone, function (listResults) {
 

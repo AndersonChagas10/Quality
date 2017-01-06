@@ -13,7 +13,7 @@
    
         <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
              
-            <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">Atualizar Scorecard</button>
+            <button type="button" class="btn btn-primary" id="btnSend" onclick="Send(true);">Atualizar Scorecard</button>
         </div>
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
@@ -38,7 +38,7 @@
         });
     });
 
-    function Send() {
+    function Send(toggle) {
         $btn.button('loading');
         $('#results').empty();
 
@@ -52,7 +52,8 @@
             try {
                 var retornoArray = [];
                 var arrayItarator = r.Retorno;
-                //$('#menu-toggle').click();
+                if (toggle == undefined)
+                    $('#menu-toggle').click();
                 GerarTabela(r);
             } catch (e) {
                 console.log(e);
