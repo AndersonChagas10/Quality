@@ -614,7 +614,7 @@ namespace SGQDBContext
             " , MU.Name " +
             " , L32.Weight " +
             " , L32.ParCompany_Id " +
-            "  ORDER BY L3.Name ASC, L32.ParCompany_Id  DESC  ";
+            "  ORDER BY L3IT.Id ASC, L3.Name ASC, L32.ParCompany_Id  DESC  ";
 
             var parLevel3List = db.Query<ParLevel3>(sql);
 
@@ -790,20 +790,22 @@ namespace SGQDBContext
         public int ParHeaderField_Id { get; set; }
         public string ParHeaderField_Name { get; set; }
         public int ParFieldType_Id { get; set; }
+        public int IsRequired { get; set; }
+        public string DefaultSelected { get; set; }
 
         public IEnumerable<ParLevelHeader> getHeaderByLevel1(int ParLevel1_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PT.Id AS ParFieldType_Id FROM ParLevel2XHeaderField PL  " +
-                         "LEFT JOIN ParHeaderField PH ON PH.Id = PL.ParHeaderField_Id                                                              " +
-                         "LEFT JOIN ParLevelDefiniton PD ON PH.ParLevelDefinition_Id = PD.Id                                                       " +
-                         "LEFT JOIN ParFieldType PT ON PH.ParFieldType_Id = PT.Id                                                                  " +
-                         "WHERE                                                                                                                    " +
-                         "PD.Id = 1 AND                                                                                                            " +
-                         "PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                " +
-                         "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                  " +
-                         "GROUP BY PH.Id, PH.Name, PT.Id;                                                                                          ";
+            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PT.Id AS ParFieldType_Id, PL.IsRequired AS IsRequired, PL.DefaultSelected AS DefaultSelected FROM ParLevel1XHeaderField PL  " +
+                         "LEFT JOIN ParHeaderField PH ON PH.Id = PL.ParHeaderField_Id                                                                                                                                    " +
+                         "LEFT JOIN ParLevelDefiniton PD ON PH.ParLevelDefinition_Id = PD.Id                                                                                                                             " +
+                         "LEFT JOIN ParFieldType PT ON PH.ParFieldType_Id = PT.Id                                                                                                                                        " +
+                         "WHERE                                                                                                                                                                                          " +
+                         "PD.Id = 1 AND                                                                                                                                                                                  " +
+                         "PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
+                         "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
+                         "GROUP BY PH.Id, PH.Name, PT.Id, PL.IsRequired, PL.DefaultSelected;                                                                                                                             ";
 
 
 
@@ -816,14 +818,15 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PT.Id AS ParFieldType_Id FROM ParLevel2XHeaderField PL " +
-                         "  LEFT JOIN ParHeaderField PH ON PH.Id = PL.ParHeaderField_Id                                                             " +
-                         "  LEFT JOIN ParLevelDefiniton PD ON PH.ParLevelDefinition_Id = PD.Id                                                      " +
-                         "  LEFT JOIN ParFieldType PT ON PH.ParFieldType_Id = PT.Id                                                                 " +
-                         "  WHERE                                                                                                                   " +
-                         "  PD.Id = 2 AND                                                                                                           " +
-                         "  PL.ParLevel1_Id = " + ParLevel1_Id + " AND PL.ParLevel2_Id = " + ParLevel2_Id + " AND                                   " +
-                         "  PL.IsActive = 1 AND PH.IsActive = 1 and PD.IsActive = 1;                                                                ";
+            string sql = "SELECT PH.Id AS ParHeaderField_Id, PH.Name AS ParHeaderField_Name, PT.Id AS ParFieldType_Id, PL.IsRequired AS IsRequired, PL.DefaultSelected AS DefaultSelected FROM ParLevel1XHeaderField PL  " +
+                         "LEFT JOIN ParHeaderField PH ON PH.Id = PL.ParHeaderField_Id                                                                                                                                    " +
+                         "LEFT JOIN ParLevelDefiniton PD ON PH.ParLevelDefinition_Id = PD.Id                                                                                                                             " +
+                         "LEFT JOIN ParFieldType PT ON PH.ParFieldType_Id = PT.Id                                                                                                                                        " +
+                         "WHERE                                                                                                                                                                                          " +
+                         "PD.Id = 2 AND                                                                                                                                                                                  " +
+                         "PL.ParLevel1_Id = " + ParLevel1_Id + " AND                                                                                                                                                     " +
+                         "PL.IsActive = 1 AND PH.IsActive = 1 AND PD.IsActive = 1                                                                                                                                        " +
+                         "GROUP BY PH.Id, PH.Name, PT.Id, PL.IsRequired, PL.DefaultSelected;                                                                                                                             ";
 
             var parLevel3List = db.Query<ParLevelHeader>(sql);
 

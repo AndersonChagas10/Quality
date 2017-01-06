@@ -2615,14 +2615,17 @@ namespace SgqSystem.Services
 
 
                 string classXSLevel2 = " col-xs-5";
+
+                int totalSampleXEvaluate = evaluate * sample;
+
                 string counters = 
                                       html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
+                                                outerhtml: html.span(outerhtml: "1", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
                                                 classe: "col-xs-6",
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal"),
+                                                outerhtml: html.span(outerhtml: "1", classe: "sampleCurrent hide") + html.span(classe: "sampleCurrentTotal") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
                                                 classe: "col-xs-6",
                                                 style: "text-align:center"
                                               );
@@ -2784,6 +2787,7 @@ namespace SgqSystem.Services
                 var form_group = html.div(
                                             outerhtml: label + form_control,
                                             classe: "form-group header",
+                                            tags: header.IsRequired == 1 ? "required" : "",
                                             style: "margin-bottom: 4px;"
                                             );
 
@@ -2858,7 +2862,7 @@ namespace SgqSystem.Services
                         //Labels que mostrar informaçãoes do tipo de input
                         string labelsInputs = null;
                         //tipo de input
-                        string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
+                        string input = getTipoInputBEA(parLevel3, ref classInput, ref labelsInputs);
 
                         string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
                         parLevel3Group += level3List;
@@ -2892,7 +2896,7 @@ namespace SgqSystem.Services
 
                 var painelLevel3HeaderListHtml = "";
 
-                var labelPecas = "<label class='font-small'>Peças Avaliadas</label>";
+                var labelPecas = "<label class='font-small'>Animais Avaliados</label>";
                 var formControlPecas = "<input class='form-control input-sm pecasAvaliadas' type='number'>";
                 var formGroupPecas = html.div(
                                         outerhtml: labelPecas + formControlPecas,
@@ -3109,7 +3113,7 @@ namespace SgqSystem.Services
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent hide ") + html.span(classe: "sampleCurrentTotal") + " / " + html.span(classe: "sampleTotal hide")  + html.span(classe: "sampleXEvaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3254,7 +3258,7 @@ namespace SgqSystem.Services
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent hide") + html.span(classe: "sampleCurrentTotal") + " / " + html.span(classe: "sampleTotal hide") + html.span(classe: "sampleXEvaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3322,7 +3326,7 @@ namespace SgqSystem.Services
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent hide") + html.span(classe: "sampleCurrentTotal")  + " / " + html.span(classe: "sampleTotal hide") + html.span(classe: "sampleXEvaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3435,6 +3439,23 @@ namespace SgqSystem.Services
             }
             return input;
         }
+        public string getTipoInputBEA(SGQDBContext.ParLevel3 parLevel3, ref string classInput, ref string labels)
+        {
+            var html = new Html();
+            string input = null;
+            classInput = " interval";
+            labels = html.div(
+                                       classe: "font10",
+                                       style: "font-size: 11px; margin-top:7px;"
+                                   );
+
+            input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                            intervalMin: parLevel3.IntervalMin,
+                                            intervalMax: parLevel3.IntervalMax,
+                                            unitName: parLevel3.ParMeasurementUnit_Name);
+            return input;
+        }
+
         //public string GetLevel03_novo(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2)
         //{
         //    var html = new Html();
