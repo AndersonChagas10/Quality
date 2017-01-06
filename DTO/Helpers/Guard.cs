@@ -446,7 +446,11 @@ namespace DTO.Helpers
             {
                 var text = i.GetType().GetProperty("Name") ?? i.GetType().GetProperty("Description");
                 var prop = i.GetType().GetProperty("Id");
-                retorno.Insert(counter, new SelectListItem() { Text = text.GetValue(i).ToString(), Value = prop.GetValue(i).ToString() });
+                var defaultSelected = i.GetType().GetProperty("IsDefaultOption");
+                var selectItem = new SelectListItem() { Text = text.GetValue(i).ToString(), Value = prop.GetValue(i).ToString() };
+                if (defaultSelected != null && (bool) defaultSelected.GetValue(i))
+                    selectItem.Selected = true;
+                retorno.Insert(counter, selectItem);
                 counter++;
             }
 

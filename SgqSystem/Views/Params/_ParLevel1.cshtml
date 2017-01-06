@@ -117,6 +117,7 @@
                                                 <tr class="row">
                                                     @Table.GerarColuna(@Html.Editor("objMultiplaEscolhaName", new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.option), Table.PosicaoLabel.top, @Html.ErrorManual("multiplaEscolhaNameCabecalho", "O campo Opção deve ser preenchido para o Cabeçalho."), null)
                                                     @Table.GerarColunaButton(@Html.Editor("objMultiplaEscolhaPunishmentValue", new { htmlAttributes = new { @value = 0, @type = "number", @style = "max-width: 200px;", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.punishment_value), Table.PosicaoLabel.top, @Html.ErrorManual("multiplaEscolhaPunishmentValueCabecalho", "O campo Punição/Premiação deve ser selecionado para o Cabeçalho."), button: "<button class='btn btn-primary btn-sm' type='button' id='btnIncluirMultiplaEscolha' onclick='Cabecalhos.IncluirMultiplaEscolha();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
+                                                    
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -211,7 +212,10 @@
                                     @*Btn salvar cabecalho*@
                                     <div style="width: 100%; float: left;" id="btnIncluirCabecalho">
                                         <input type="button" class="btn btn-primary btn-sm margin-button" id="salvarCabecalho" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
-                                        <input type="button" class="btn btn-primary btn-sm margin-button" id="salvarCabecalho1" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+                                        <div id="salvarCabecalho1Div">
+                                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsRequiredMultipleValue, new { @class = "form-control checkbox-erp" }), @Html.Label("É Obrigatório: ", new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null, null)
+                                            <input type="button" class="btn btn-primary btn-sm margin-button" id="salvarCabecalho1" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
+                                        </div>
                                         <input type="button" class="btn btn-primary btn-sm margin-button" id="salvarCabecalho2" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
                                         <input type="button" class="btn btn-primary btn-sm margin-button" id="salvarCabecalho3" value="" onclick=";" style="font-size: small; padding: 10px; font-weight: bold;">
                                     </div>
@@ -502,6 +506,7 @@
             $('#btnIncluirNumerico').hide();
             $('#btnIncluirData').hide();
             $('#btnIncluirIntegracoes').hide();
+            $('#salvarCabecalho1Div').hide();
 
             /*Esconde mensagens*/
             Cabecalhos.EscondeMensagemValidacaoCabecalho();
@@ -629,10 +634,14 @@
             $('#objMultiplaEscolhaName').val('');
             $('#objMultiplaEscolhaPunishmentValue').val('0');
 
-            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7){
+                $('#salvarCabecalho1Div').fadeOut();
                 $('#salvarCabecalho1').fadeOut();
-            else
+            }
+            else{
+                $('#salvarCabecalho1Div').fadeIn();
                 $('#salvarCabecalho1').fadeIn();
+            }
 
             updateAllTables();
 
@@ -1051,8 +1060,13 @@
             objects.each(function (c, o) {
                 
                 if($(o).find('select').length){
-                    var indexSelected = $(o).find('select :selected').val();
-                    $(o).find('td:eq(3)').append($('<input type="hidden" value='+ indexSelected +' name="paramsDto.listParHeaderFieldDto[~].DefaultSelected" />'))
+                    var hasDefaultSelected  = $(o).find('select :selected').text();
+                    var hasDefaultSelectedIndex  = $(o).find('select')[0].selectedIndex;
+                    if(hasDefaultSelectedIndex > 0){
+                        if($(o).find('td:eq(3) #jaExisteSelected').length == 0){
+                            $(o).find('td:eq(3)').append($('<input type="hidden" id="jaExisteSelected" value="'+ hasDefaultSelected +'" name="paramsDto.listParHeaderFieldDto[~].DefaultOption" />'))
+                        }
+                    }
                 }
 
                 $(o).find('input[type=hidden]').each(function (cc, oo) {

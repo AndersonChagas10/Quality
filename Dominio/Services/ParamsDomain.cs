@@ -160,7 +160,11 @@ namespace Dominio.Services
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);//ParLevel1
             List<ParGoal> listParGoal = Mapper.Map<List<ParGoal>>(paramsDto.parLevel1Dto.listParGoalLevel1);
             List<ParRelapse> listaReincidencia = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel1Dto.listParRelapseDto);//Reincidencia do Level1
+
+            foreach (var i in paramsDto.listParHeaderFieldDto.Where(r => !string.IsNullOrEmpty(r.DefaultOption)))
+                paramsDto.listParHeaderFieldDto.ForEach(r => r.parMultipleValuesDto.FirstOrDefault(c => c.Name.Equals(i.DefaultOption)).IsDefaultOption = true);
             List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);//Cabeçalhos do Level1
+
             List<ParCounterXLocal> ListaParCounterLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.parLevel1Dto.listParCounterXLocal);//Contadores do Level1
             List<ParLevel1XCluster> ListaParLevel1XCluster = Mapper.Map<List<ParLevel1XCluster>>(paramsDto.parLevel1Dto.listLevel1XClusterDto);//Clusters do Level1
             List<ParNotConformityRuleXLevel> listNonCoformitRule = Mapper.Map<List<ParNotConformityRuleXLevel>>(paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto);//Regra de NC do Level1
@@ -169,16 +173,6 @@ namespace Dominio.Services
             List<int> removerHeadField = paramsDto.parLevel1Dto.removerParHeaderField;
 
             List<ParLevel1XHeaderField> listaParLevel1XHeaderField = new List<ParLevel1XHeaderField>();
-            foreach (var i in paramsDto.listParHeaderFieldDto)
-            {
-                //var headerLevel1 = new ParLevel1XHeaderField();
-                //if ( !string.IsNullOrEmpty(i.DefaultSelected) && i.DefaultSelected != "-1")
-                //{
-                //    headerLevel1.DefaultSelected = i.DefaultSelected;
-                //    headerLevel1.IsActive = true;
-                //}
-                //listaParLevel1XHeaderField.Add(headerLevel1);
-            }
 
             try
             {
