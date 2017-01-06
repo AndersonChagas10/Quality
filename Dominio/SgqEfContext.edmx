@@ -321,52 +321,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SelectedElement" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'SgqDbDev.dbo.JBS_BaseManutencaoPura' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="JBS_BaseManutencaoPura">
-          <Property Name="TipoInformacao" Type="varchar" MaxLength="500" />
-          <Property Name="MesAno" Type="varchar" MaxLength="500" />
-          <Property Name="EmpresaCodigo" Type="varchar" MaxLength="500" />
-          <Property Name="EmpresaSigla" Type="varchar" MaxLength="500" />
-          <Property Name="EmpresaRegional" Type="varchar" MaxLength="500" />
-          <Property Name="EmpresaRegionalGrupo" Type="varchar" MaxLength="500" />
-          <Property Name="EmpresaCluster" Type="varchar" MaxLength="500" />
-          <Property Name="CentroDeCusto" Type="varchar" MaxLength="500" />
-          <Property Name="Pacote" Type="varchar" MaxLength="500" />
-          <Property Name="ContaContabilCodigo" Type="varchar" MaxLength="500" />
-          <Property Name="ContaContabil" Type="varchar" MaxLength="500" />
-          <Property Name="DespesaOrcada" Type="varchar" MaxLength="500" />
-          <Property Name="DespesaRealizada" Type="varchar" MaxLength="500" />
-          <Property Name="ConsumoOrcado" Type="varchar" MaxLength="500" />
-          <Property Name="ConsumoRealizado" Type="varchar" MaxLength="500" />
-          <Property Name="TipoConsumo" Type="varchar" MaxLength="500" />
-          <Property Name="ProducaoOrcada" Type="varchar" MaxLength="500" />
-          <Property Name="ProducaoRealizada" Type="varchar" MaxLength="500" />
-          <Property Name="TipoProducao" Type="varchar" MaxLength="500" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'SgqDbDev.dbo.JBS_BaseManutencaoTrat' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="JBS_BaseManutencaoTrat">
-          <Property Name="TipoInformacao" Type="varchar" MaxLength="500" />
-          <Property Name="MesAno" Type="date" />
-          <Property Name="EmpresaCodigo" Type="int" />
-          <Property Name="EmpresaSigla" Type="varchar" MaxLength="3" />
-          <Property Name="EmpresaRegional" Type="varchar" MaxLength="40" />
-          <Property Name="EmpresaRegionalGrupo" Type="varchar" MaxLength="20" />
-          <Property Name="EmpresaCluster" Type="varchar" MaxLength="40" />
-          <Property Name="CentroDeCusto" Type="varchar" MaxLength="100" />
-          <Property Name="Pacote" Type="varchar" MaxLength="50" />
-          <Property Name="ContaContabilCodigo" Type="varchar" MaxLength="20" />
-          <Property Name="ContaContabil" Type="varchar" MaxLength="100" />
-          <Property Name="DespesaOrcada" Type="float" />
-          <Property Name="DespesaRealizada" Type="float" />
-          <Property Name="ConsumoOrcado" Type="float" />
-          <Property Name="ConsumoRealizado" Type="float" />
-          <Property Name="TipoConsumo" Type="varchar" MaxLength="100" />
-          <Property Name="ProducaoOrcada" Type="float" />
-          <Property Name="ProducaoRealizada" Type="float" />
-          <Property Name="TipoProducao" Type="varchar" MaxLength="100" />
-        </EntityType>-->
         <EntityType Name="Level01">
           <Key>
             <PropertyRef Name="Id" />
@@ -455,29 +409,6 @@ warning 6013: The table/view 'SgqDbDev.dbo.JBS_BaseManutencaoTrat' does not have
           <Property Name="email" Type="varchar(max)" />
           <Property Name="Second_Log_Path" Type="varchar(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'SgqDbDev.dbo.manutencao' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="manutencao">
-          <Property Name="TipoInformacao" Type="varchar" MaxLength="500" />
-          <Property Name="MesAno" Type="date" />
-          <Property Name="EmpresaCodigo" Type="int" />
-          <Property Name="EmpresaSigla" Type="varchar" MaxLength="3" />
-          <Property Name="EmpresaRegional" Type="varchar" MaxLength="40" />
-          <Property Name="EmpresaRegionalGrupo" Type="varchar" MaxLength="20" />
-          <Property Name="EmpresaCluster" Type="varchar" MaxLength="40" />
-          <Property Name="CentroDeCusto" Type="varchar" MaxLength="100" />
-          <Property Name="Pacote" Type="varchar" MaxLength="50" />
-          <Property Name="ContaContabilCodigo" Type="varchar" MaxLength="20" />
-          <Property Name="ContaContabil" Type="varchar" MaxLength="100" />
-          <Property Name="DespesaOrcada" Type="float" />
-          <Property Name="DespesaRealizada" Type="float" />
-          <Property Name="ConsumoOrcado" Type="float" />
-          <Property Name="ConsumoRealizado" Type="float" />
-          <Property Name="TipoConsumo" Type="varchar" MaxLength="100" />
-          <Property Name="ProducaoOrcada" Type="float" />
-          <Property Name="ProducaoRealizada" Type="float" />
-          <Property Name="TipoProducao" Type="varchar" MaxLength="100" />
-        </EntityType>-->
         <EntityType Name="NQA">
           <Key>
             <PropertyRef Name="Id" />
@@ -771,6 +702,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParLevel1VariableProductionXLevel1' d
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="DefaultSelected" Type="nvarchar(max)" />
+          <Property Name="IsRequired" Type="bit" />
         </EntityType>
         <EntityType Name="ParLevel2">
           <Key>
@@ -1067,16 +1000,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParLevel2XHeaderField' does not have 
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'SgqDbDev.dbo.pvt' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="pvt">
-          <Property Name="VendorID" Type="int" />
-          <Property Name="Emp1" Type="int" />
-          <Property Name="Emp2" Type="int" />
-          <Property Name="Emp3" Type="int" />
-          <Property Name="Emp4" Type="int" />
-          <Property Name="Emp5" Type="int" />
-        </EntityType>-->
         <EntityType Name="Result_Level3">
           <Key>
             <PropertyRef Name="Id" />
@@ -3310,7 +3233,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="ParHeaderField" EntityType="SgqDbModel.ParHeaderField" />
           <EntitySet Name="ParLevel1" EntityType="SgqDbModel.ParLevel1" />
           <EntitySet Name="ParLevel1XCluster" EntityType="SgqDbModel.ParLevel1XCluster" />
-          <EntitySet Name="ParLevel1XHeaderField" EntityType="SgqDbModel.ParLevel1XHeaderField" />
           <EntitySet Name="ParLevel2" EntityType="SgqDbModel.ParLevel2" />
           <EntitySet Name="ParLevel2ControlCompany" EntityType="SgqDbModel.ParLevel2ControlCompany" />
           <EntitySet Name="ParLevel2Level1" EntityType="SgqDbModel.ParLevel2Level1" />
@@ -3595,10 +3517,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="ParLevelDefiniton" EntitySet="ParLevelDefiniton" />
             <End Role="ParHeaderField" EntitySet="ParHeaderField" />
           </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1XHeaderField_ParHeaderField" Association="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField">
-            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
-            <End Role="ParLevel1XHeaderField" EntitySet="ParLevel1XHeaderField" />
-          </AssociationSet>
           <AssociationSet Name="FK_ParMultipleValues_ParHeaderField" Association="SgqDbModel.FK_ParMultipleValues_ParHeaderField">
             <End Role="ParHeaderField" EntitySet="ParHeaderField" />
             <End Role="ParMultipleValues" EntitySet="ParMultipleValues" />
@@ -3626,10 +3544,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <AssociationSet Name="FK_ParLevel1XCluster_ParLevel1" Association="SgqDbModel.FK_ParLevel1XCluster_ParLevel1">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ParLevel1XCluster" EntitySet="ParLevel1XCluster" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel1XHeaderField_ParLevel1" Association="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ParLevel1XHeaderField" EntitySet="ParLevel1XHeaderField" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel2ControlCompany_ParLevel1" Association="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel1">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
@@ -3734,6 +3648,15 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <AssociationSet Name="FK_UnitUser_UserSgq" Association="SgqDbModel.FK_UnitUser_UserSgq">
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="UnitUser" EntitySet="UnitUser" />
+          </AssociationSet>
+          <EntitySet Name="ParLevel1XHeaderField" EntityType="SgqDbModel.ParLevel1XHeaderField" />
+          <AssociationSet Name="FK_ParLevel1XHeaderField_ParHeaderField" Association="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField">
+            <End Role="ParHeaderField" EntitySet="ParHeaderField" />
+            <End Role="ParLevel1XHeaderField" EntitySet="ParLevel1XHeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel1XHeaderField_ParLevel1" Association="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ParLevel1XHeaderField" EntitySet="ParLevel1XHeaderField" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="sysdiagrams">
@@ -4563,8 +4486,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="CollectionLevel2XParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_ParHeaderField" FromRole="ParHeaderField" ToRole="CollectionLevel2XParHeaderField" />
           <NavigationProperty Name="ParFieldType" Relationship="SgqDbModel.FK_ParHeaderField_ParFieldType" FromRole="ParHeaderField" ToRole="ParFieldType" />
           <NavigationProperty Name="ParLevelDefiniton" Relationship="SgqDbModel.FK_ParHeaderField_ParLevelDefinition" FromRole="ParHeaderField" ToRole="ParLevelDefiniton" />
-          <NavigationProperty Name="ParLevel1XHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" FromRole="ParHeaderField" ToRole="ParLevel1XHeaderField" />
           <NavigationProperty Name="ParMultipleValues" Relationship="SgqDbModel.FK_ParMultipleValues_ParHeaderField" FromRole="ParHeaderField" ToRole="ParMultipleValues" />
+          <NavigationProperty Name="ParLevel1XHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" FromRole="ParHeaderField" ToRole="ParLevel1XHeaderField" />
         </EntityType>
         <EntityType Name="ParLevel1">
           <Key>
@@ -4605,11 +4528,11 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="VolumeVacuoGRD" Relationship="SgqDbModel.FK__VacuoGRD__ParLev__112B6330" FromRole="ParLevel1" ToRole="VolumeVacuoGRD" />
           <NavigationProperty Name="ParLevel2Level1" Relationship="SgqDbModel.FK_Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel2Level1" />
           <NavigationProperty Name="ParLevel1XCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XCluster" />
-          <NavigationProperty Name="ParLevel1XHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XHeaderField" />
           <NavigationProperty Name="ParLevel2ControlCompany" Relationship="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel2ControlCompany" />
           <NavigationProperty Name="ParLevel3Level2Level1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel3Level2Level1" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" FromRole="ParLevel1" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel1" FromRole="ParLevel1" ToRole="ParRelapse" />
+          <NavigationProperty Name="ParLevel1XHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel1XHeaderField" />
         </EntityType>
         <EntityType Name="ParLevel1XCluster">
           <Key>
@@ -4626,19 +4549,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="ParCluster" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCluster" FromRole="ParLevel1XCluster" ToRole="ParCluster" />
           <NavigationProperty Name="ParCriticalLevel" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParCriticalLevel" FromRole="ParLevel1XCluster" ToRole="ParCriticalLevel" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" FromRole="ParLevel1XCluster" ToRole="ParLevel1" />
-        </EntityType>
-        <EntityType Name="ParLevel1XHeaderField">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParHeaderField_Id" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" FromRole="ParLevel1XHeaderField" ToRole="ParHeaderField" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1XHeaderField" ToRole="ParLevel1" />
         </EntityType>
         <EntityType Name="ParLevel2">
           <Key>
@@ -5982,18 +5892,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ParLevel1XHeaderField_ParHeaderField">
-          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel1XHeaderField" Role="ParLevel1XHeaderField" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParHeaderField">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1XHeaderField">
-              <PropertyRef Name="ParHeaderField_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ParMultipleValues_ParHeaderField">
           <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="1" />
           <End Type="SgqDbModel.ParMultipleValues" Role="ParMultipleValues" Multiplicity="*" />
@@ -6074,18 +5972,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ParLevel1XCluster">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel1XHeaderField_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel1XHeaderField" Role="ParLevel1XHeaderField" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel1XHeaderField">
               <PropertyRef Name="ParLevel1_Id" />
             </Dependent>
           </ReferentialConstraint>
@@ -6402,6 +6288,61 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ParLevel1XHeaderField">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParHeaderField_Id" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="DefaultSelected" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsRequired" Type="Boolean" />
+          <NavigationProperty Name="ParHeaderField" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" FromRole="ParLevel1XHeaderField" ToRole="ParHeaderField" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" FromRole="ParLevel1XHeaderField" ToRole="ParLevel1" />
+        </EntityType>
+        <Association Name="FK_ParLevel1XHeaderField_ParHeaderField">
+          <End Type="SgqDbModel.ParHeaderField" Role="ParHeaderField" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1XHeaderField" Role="ParLevel1XHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParHeaderField">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XHeaderField">
+              <PropertyRef Name="ParHeaderField_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel1XHeaderField_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel1XHeaderField" Role="ParLevel1XHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel1XHeaderField">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="ApontamentosDiarios_Result">
+          <Property Type="DateTime" Name="Data" Nullable="false" />
+          <Property Type="String" Name="Indicador" Nullable="true" MaxLength="155" />
+          <Property Type="String" Name="Monitoramento" Nullable="true" MaxLength="155" />
+          <Property Type="String" Name="Tarefa" Nullable="true" />
+          <Property Type="Decimal" Name="Peso" Nullable="true" Precision="10" Scale="5" />
+          <Property Type="String" Name="IntervaloMinimo" Nullable="true" />
+          <Property Type="String" Name="IntervaloMaximo" Nullable="true" />
+          <Property Type="String" Name="Lancado" Nullable="true" />
+          <Property Type="Boolean" Name="Conforme" Nullable="true" />
+          <Property Type="Boolean" Name="NA" Nullable="true" />
+          <Property Type="Decimal" Name="AV_Peso" Nullable="true" Precision="10" Scale="5" />
+          <Property Type="Decimal" Name="NC_Peso" Nullable="true" Precision="30" Scale="8" />
+          <Property Type="Int32" Name="Avaliacao" Nullable="true" />
+          <Property Type="Int32" Name="Amostra" Nullable="false" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7234,18 +7175,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ParLevel1XHeaderField">
-            <EntityTypeMapping TypeName="SgqDbModel.ParLevel1XHeaderField">
-              <MappingFragment StoreEntitySet="ParLevel1XHeaderField">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
-                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ParLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel2">
               <MappingFragment StoreEntitySet="ParLevel2">
@@ -7771,6 +7700,20 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
                 <ScalarProperty Name="CollectionLevel2_Id" ColumnName="CollectionLevel2_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParLevel1XHeaderField">
+            <EntityTypeMapping TypeName="SgqDbModel.ParLevel1XHeaderField">
+              <MappingFragment StoreEntitySet="ParLevel1XHeaderField">
+                <ScalarProperty Name="IsRequired" ColumnName="IsRequired" />
+                <ScalarProperty Name="DefaultSelected" ColumnName="DefaultSelected" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

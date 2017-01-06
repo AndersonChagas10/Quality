@@ -1,0 +1,206 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "Apontamentos Diarios";
+    var url = Url.Action("Index", "Home");
+    var urlGetApontamentosDiarios = Url.Action("GetApontamentosDiarios", "api/ApontamentosDiarios");
+}
+
+<div class="page-content" style="min-height: 600px;">
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+    <div id="formBodyContent">
+
+        <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+
+            <button type="button" class="btn btn-primary" id="btnSend" onclick="Send(true);">Atualizar</button>
+        </div>
+
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+        <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+    </div>
+</div>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+
+        var url1 = '@Html.Raw(@urlGetApontamentosDiarios)';
+        var $btn = $('#btnSend');
+
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $(document).ready(function () {
+            $("#btnSend").click(function (e) {
+                Send();
+            });
+        });
+
+        function Send(toggle) {
+            $btn.button('loading');
+            $('#results').empty();
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            //AJAX
+            $.post(url1, enviar, function (r) {
+                try {
+                    var retornoArray = [];
+                    var arrayItarator = r.Retorno;
+                    if (toggle == undefined)
+                        $('#menu-toggle').click();
+                    GerarTabela(r);
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    $btn.button('reset');
+                    //Hotfix: table não alinha resultados de centro no meio da tr....
+                }
+            }).fail(function (e, h, x) {
+                //closeLoader();
+                $btn.button('reset');
+                if (e.status == 0) {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+                //openMessageModal("Alerta", e.responseJSON.Message);
+            });
+        };
+
+        function GerarTabela(retornoArray) {
+
+            var table = $('#results').empty().DataTable({
+                data: retornoArray,
+                columns: [{ title: "Data", mData: "Data" },
+                    { title: "Indicador", mData: "Indicador" },
+                    { title: "Monitoramento", mData: "Monitoramento" },
+                    { title: "Tarefa", mData: "Tarefa" },
+                    { title: "Peso", mData: "Peso" },
+                    {
+                        title: "Intervalo Mínimo", mData: "IntervaloMinimo", mRender: function (data, type, full) {
+                            return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
+                        }
+                    },
+                    {
+                        title: "Intervalo Máximo", mData: "IntervaloMaximo", mRender: function (data, type, full) {
+                            return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
+                        }
+                    },
+                    { title: "Valor Lançado", mData: "Lancado" },
+                    { title: "Conforme", mData: "Conforme" },
+                    { title: "Não Avaliado", mData: "NA" },
+                    { title: "Avaliado (Com peso)", mData: "AV_Peso" },
+                    { title: "Não Conforme (Com peso)", mData: "NC_Peso" },
+                    { title: "Avaliação.", mData: "Avaliacao" },
+                    { title: "Amostra", mData: "Amostra" },
+                ],
+                fixedHeader: {
+                    header: true,
+                    footer: true
+                },
+                scrollX: true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                pageLength: 10,
+                //paginate: false,
+                //paging: false,
+                //bSort: false,
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                responsive: true,
+                initComplete: function () {
+                    $('#loading').hide();
+                    setTimeout(function (e) {
+                        var oTable = $('#results').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 100);
+                },
+                createdRow: function (row, data, index) {
+
+                
+                },
+                fnDrawCallback: function (data, d, o) {
+
+                   
+                }
+            });
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                     {
+                         extend: 'colvisGroup',
+                         text: 'Sintético',
+
+                         show: [3, 4, 5, 6, 9, 10, 12],
+                         hide: [0, 1, 2, 7, 8, 11]
+                     },
+                    {
+                        extend: 'colvisGroup',
+                        text: 'Analítico',
+                        show: ':hidden'
+                    },
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            //$(win.document.body)
+                            //    .css( 'font-size', '10pt' )
+                            //    .prepend(
+                            //        '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+                            //    );
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    //'excel',
+                    'pdf',
+                    //'colvis',
+                    //, 'print'
+
+
+                ]
+            });
+
+            table.buttons(0, null).container().prependTo(
+                table.table().container()
+            );
+
+        }
+
+        function ValidaDadosParaEnvio() {
+
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+         
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
+        $(document).ready(function () {
+            formControl.showFullCallendar();
+            formControl.showUnit();
+        });
+
+    </script>
+
+}

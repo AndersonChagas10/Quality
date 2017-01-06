@@ -304,6 +304,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
@@ -315,8 +316,8 @@
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Api\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Api\PCC1BController.cs" />
-    <Compile Include="Controllers\Api\RelatorioDiarioApiController.cs" />
-    <Compile Include="Controllers\Api\ScorecardApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioDiarioApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\ScorecardApiController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -1105,6 +1106,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\TableEditor\jquery.tabledit.min.js" />
     <Content Include="Scripts\theme\css\components.min.css" />
     <Content Include="Scripts\theme\css\darkblue.min.css" />
     <Content Include="Scripts\theme\css\layout.min.css" />
@@ -1266,6 +1268,7 @@
     <Content Include="Views\RelatoriosSgq\RelatorioDiario.cshtml" />
     <Content Include="Views\Shared\_RelatorioLayout.cshtml" />
     <Content Include="Views\Example\TesteSelect2.cshtml" />
+    <Content Include="Views\RelatoriosSgq\ApontamentosDiarios.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -42,7 +42,8 @@ namespace SgqSystem
                     "~/Scripts/DataTables/buttons.colVis.min.js",
                     "~/Scripts/DataTables/buttons.print.min.js",
                     "~/Scripts/DataTables/dataTables.fixedHeader.min.js",
-                    "~/Scripts/DataTables/dataTables.fixedColumns.min.js"
+                    "~/Scripts/DataTables/dataTables.fixedColumns.min.js",
+                    "~/Scripts/TableEditor/jquery.tabledit.min.js"
                     //"~/Scripts/jbs.jquery.dataTables.configuration.js",
                     //"~/Scripts/dataTable.CRUD.js",
                     ));

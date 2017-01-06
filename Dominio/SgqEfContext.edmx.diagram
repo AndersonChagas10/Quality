@@ -48,7 +48,6 @@
         <EntityTypeShape EntityType="SgqDbModel.ParHeaderField" Width="1.5" PointX="3" PointY="31.875" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel1" Width="1.5" PointX="3" PointY="45.375" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel1XCluster" Width="1.5" PointX="5.25" PointY="39.25" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel1XHeaderField" Width="1.5" PointX="5.25" PointY="43.5" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel2" Width="1.5" PointX="6" PointY="47" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel2ControlCompany" Width="1.5" PointX="14.25" PointY="44.25" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel2Level1" Width="1.5" PointX="8.25" PointY="48.375" />
@@ -147,7 +146,6 @@
         <AssociationConnector Association="SgqDbModel.FK_ParRelapse_ParFrequency" />
         <AssociationConnector Association="SgqDbModel.FK_ParGoal_ParLevel1" />
         <AssociationConnector Association="SgqDbModel.FK_ParHeaderField_ParLevelDefinition" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" />
         <AssociationConnector Association="SgqDbModel.FK_ParMultipleValues_ParHeaderField" />
         <AssociationConnector Association="SgqDbModel.FK__CepDesoss__ParLe__18CC84F8" />
         <AssociationConnector Association="SgqDbModel.FK__CepRecort__ParLe__14FBF414" />
@@ -155,7 +153,6 @@
         <AssociationConnector Association="SgqDbModel.FK__VacuoGRD__ParLev__112B6330" />
         <AssociationConnector Association="SgqDbModel.FK_Level2Level1_ParLevel1" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XCluster_ParLevel1" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel2ControlCompany_ParLevel1" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" />
         <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" />
@@ -182,7 +179,10 @@
         <AssociationConnector Association="SgqDbModel.FK_ParStructure_ParStructureGroup" />
         <AssociationConnector Association="SgqDbModel.FK_UnitUser_Unit" />
         <AssociationConnector Association="SgqDbModel.FK_UnitUser_UserSgq" />
-      </Diagram>
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel1XHeaderField" Width="1.5" PointX="5.25" PointY="27.5" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel1XHeaderField_ParHeaderField" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel1XHeaderField_ParLevel1" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
