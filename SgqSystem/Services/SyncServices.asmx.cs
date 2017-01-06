@@ -2787,6 +2787,7 @@ namespace SgqSystem.Services
                 var form_group = html.div(
                                             outerhtml: label + form_control,
                                             classe: "form-group header",
+                                            tags: header.IsRequired == 1 ? "required" : "",
                                             style: "margin-bottom: 4px;"
                                             );
 
@@ -2861,7 +2862,7 @@ namespace SgqSystem.Services
                         //Labels que mostrar informaçãoes do tipo de input
                         string labelsInputs = null;
                         //tipo de input
-                        string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
+                        string input = getTipoInputBEA(parLevel3, ref classInput, ref labelsInputs);
 
                         string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
                         parLevel3Group += level3List;
@@ -2895,7 +2896,7 @@ namespace SgqSystem.Services
 
                 var painelLevel3HeaderListHtml = "";
 
-                var labelPecas = "<label class='font-small'>Peças Avaliadas</label>";
+                var labelPecas = "<label class='font-small'>Animais Avaliados</label>";
                 var formControlPecas = "<input class='form-control input-sm pecasAvaliadas' type='number'>";
                 var formGroupPecas = html.div(
                                         outerhtml: labelPecas + formControlPecas,
@@ -3438,6 +3439,23 @@ namespace SgqSystem.Services
             }
             return input;
         }
+        public string getTipoInputBEA(SGQDBContext.ParLevel3 parLevel3, ref string classInput, ref string labels)
+        {
+            var html = new Html();
+            string input = null;
+            classInput = " interval";
+            labels = html.div(
+                                       classe: "font10",
+                                       style: "font-size: 11px; margin-top:7px;"
+                                   );
+
+            input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                                            intervalMin: parLevel3.IntervalMin,
+                                            intervalMax: parLevel3.IntervalMax,
+                                            unitName: parLevel3.ParMeasurementUnit_Name);
+            return input;
+        }
+
         //public string GetLevel03_novo(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2)
         //{
         //    var html = new Html();

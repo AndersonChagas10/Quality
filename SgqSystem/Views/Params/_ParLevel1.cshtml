@@ -1045,12 +1045,18 @@
         },
 
         UpdateCabecalhos: function () {
-            Cabecalhos.Counter = 0;
             //.not('#textPreview').not('#numericPreview')
+            Cabecalhos.Counter = 0;
             var objects = $('#tableCabecalhosPreview > tbody > tr').not('.alteracao')
             objects.each(function (c, o) {
+                
+                if($(o).find('select').length){
+                    var indexSelected = $(o).find('select :selected').val();
+                    $(o).find('td:eq(3)').append($('<input type="hidden" value='+ indexSelected +' name="paramsDto.listParHeaderFieldDto[~].DefaultSelected" />'))
+                }
 
                 $(o).find('input[type=hidden]').each(function (cc, oo) {
+                    
                     var parte1 = oo.name.split('[')[0];
                     var parte2 = oo.name.split(']')[1];
                     if (oo.name.split(']').length > 2)
@@ -1058,7 +1064,9 @@
 
                     var tempName = parte1 + '[' + Cabecalhos.Counter + ']' + parte2;
                     oo.name = tempName;
+
                 });
+
                 Cabecalhos.Counter++;
             });
         },
@@ -1272,7 +1280,6 @@
 
         //Geral.TableShow();
         ///initialize form
-        initialFormLevel1 = $($('form')[0]).clone();
 
         $('[data-toggle="popover"]').popover();
 
@@ -1281,6 +1288,7 @@
 
         setTimeout(function(){
             reloadPopovers();
+            initialFormLevel1 = $($('form')[0]).clone();
         }, 3000);
 
         $('input[name="paramsDto.parLevel1Dto.IsRuleConformity"]:first').prop("checked", true);

@@ -106,6 +106,7 @@
 
                                             </div>*@
 
+                                            <div id="RegionalChart" style="display:none; cursor:pointer"></div>
                                             <div id="ThirdChart" style="display:none; cursor:pointer"></div>
 
                                             <div id="EvolutivoDaContaPorUnidade" style="display:none; cursor:pointer"></div>
@@ -113,12 +114,14 @@
                                             
 
                                             <div id="FourthChart" style="display:none; cursor:pointer"></div>
+                                            <div id="UnitChart" style="display:none; cursor:pointer"></div>
 
                                         </div>
 
                                         <script>
 
                                             var regionalSelecionada = '';
+                                            var unidadeSelecionada = '';
 
                                             function buscaCor(posicao) {
 
@@ -460,7 +463,7 @@
                                                 tabela += "<tr>";
 
                                                 for (var i = 0; i < footerTotal[0].length; i++) {
-                                                    tabela += "<td height=\"" + alturaDasCelulasDeValor + "\"  align=\"center\" style=\"min-width:" + larguraDasCelulasDeValor + "; background-color: " + colTituloERodapeFixo + "\" colspan=\"" + footerTotal[0][i][1] + "\">" + (footerTotal[0][i][3] == '%' ? footerTotal[0][i][0] : float2moeda(Math.ceil(footerTotal[0][i][0] / 1000))) + "</td>";
+                                                    tabela += "<td height=\"" + alturaDasCelulasDeValor + "\"  align=\"center\" style=\"min-width:" + larguraDasCelulasDeValor + "; background-color: " + colTituloERodapeFixo + "\" colspan=\"" + footerTotal[0][i][1] + "\">" + (footerTotal[0][i][3] == '%' ? footerTotal[0][i][0] + '%' : float2moeda(Math.ceil(footerTotal[0][i][0] / 1000))) + "</td>";
                                                 }
 
                                                 tabela += "</tr>";
@@ -1067,10 +1070,11 @@
                                                     lineR.push(0);
                                                     lineR.push(0);
 
-                                                    lineDP.push(desvioP);
+                                                    //lineDP.push(desvioP);
+                                                    lineDP.push(Math.round(real / orcada * 100)-100);
                                                     lineDP.push(0);
                                                     lineDP.push(0);
-                                                    lineDP.push(0);
+                                                    lineDP.push('%');
 
                                                     lineDR.push(desvioR);
                                                     lineDR.push(0);
@@ -1196,6 +1200,9 @@
                                                     $('#secoundTableTeste').empty();
 
                                                     $('#SecondChart').empty();
+
+                                                    $('#RegionalChart').empty();
+                                                    $('#UnitChart').empty();
 
                                                     $('#ThirdChart').empty();
                                                     $('#EvolutivoDaContaPorUnidade').empty();
@@ -1519,10 +1526,11 @@
                                                         lineR.push(0);
                                                         lineR.push(0);
 
-                                                        lineDP.push(desvioP);
+                                                        //lineDP.push(desvioP);
+                                                        lineDP.push(Math.round(real / orcada * 100)-100);
                                                         lineDP.push(0);
                                                         lineDP.push(0);
-                                                        lineDP.push(0);
+                                                        lineDP.push('%');
 
                                                         lineDR.push(desvioR);
                                                         lineDR.push(0);
@@ -1651,7 +1659,8 @@
    
 
                                                     $('#SecondChart').empty();
-
+                                                    $('#RegionalChart').empty();
+                                                    $('#UnitChart').empty();
                                                     $('#ThirdChart').empty();
                                                     $('#EvolutivoDaContaPorUnidade').empty();
                                                     $('#FourthChart').empty();
@@ -1698,6 +1707,7 @@
 
                                                     })
 
+                                                  
                                                     MountThirdChart(unidade, conta);
 
                                                     MountFourthChart(unidade, conta);
@@ -2003,9 +2013,7 @@
                                                     var desvioR = 0;
                                                     var dados = [];
                                                     lista.forEach(function (entry) {
-
-                                                        
-
+                                                       
                                                         orcada += entry.total.Orçada;
                                                         real += entry.total.Realizada;
                                                         desvioP += entry.total.DesvioPorc;
@@ -2022,10 +2030,10 @@
                                                     lineR.push(0);
                                                     lineR.push(0);
 
-                                                    lineDP.push(desvioP);
+                                                    lineDP.push(Math.round(real / orcada *100)-100);
                                                     lineDP.push(0);
                                                     lineDP.push(0);
-                                                    lineDP.push(0);
+                                                    lineDP.push('%');
 
                                                     lineDR.push(desvioR);
                                                     lineDR.push(0);
@@ -2257,7 +2265,7 @@
                                                                 data: x2,
                                                                 point: {
                                                                     events: {
-                                                                        click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                                        click: function () { MountRegionalChart(this, conta) }
                                                                     }
                                                                 }
                                                                 , tooltip: {
@@ -2272,7 +2280,7 @@
                                                                 data: x4,
                                                                 point: {
                                                                     events: {
-                                                                        click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                                        click: function () { MountRegionalChart(this, conta) }
                                                                     }
                                                                 }
                                                                 , tooltip: {
@@ -2285,7 +2293,7 @@
                                                                 data: x1,
                                                                 point: {
                                                                     events: {
-                                                                        click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                                        click: function () { MountRegionalChart(this, conta) }
                                                                     }
                                                                 }
                                                                 , tooltip: {
@@ -2298,7 +2306,7 @@
                                                                 data: x3,
                                                                 point: {
                                                                     events: {
-                                                                        click: function () { MountThirdChart(this.category), MountFourthChart(this.category, null) }
+                                                                        click: function () { MountRegionalChart(this, conta) }
                                                                     }
                                                                 }
                                                                 , tooltip: {
@@ -2313,12 +2321,109 @@
                                                 }
                                             }
 
+                                            //chamada ajax unit gráfico
+                                            function MountRegionalChart(u, conta) {
+
+                                                //função ajax para buscar dados
+
+                                                //$('#FourthChart').empty();
+
+                                                var tipo = u.series.name;
+
+                                                //"getSelectGraficoFatoresTecnicoMateriaPrimaRegionalEConta/{dataIni}/{dataFim}/{meses}/{anos}/{regional}/{conta}/{tipo}"
+
+                                                $.post('../api/Manutencao/getSelectGraficoFatoresTecnicoMateriaPrimaRegionalEConta/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(regionalSelecionada.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/' + escape(tipo.replace(/[/]/g, '|')) + '/', function (lista) {
+
+                                                    var titleLine = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        titleLine.push(entry.EmpresaSigla);
+                                                    });
+
+                                                    var x1 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x1.push(entry.Orcado);
+                                                    });
+
+                                                    var x2 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x2.push(entry.Realizado);
+                                                    });
+
+                                                    var x3 = [];
+
+                                                    RegionalChart(titleLine, x1, x2, x3, x3, regionalSelecionada, tipo);
+
+                                                });
+
+                                            }
+
+                                            //locação unit gráfico
+                                            function RegionalChart(name, x1, x2, x3, line, regional, tipo) {
+                                                $('#RegionalChart').show();
+                                               
+
+                                                $(function () {
+                                                    Highcharts.chart('RegionalChart', {
+                                                        credits: {
+                                                            enabled: false
+                                                        },
+
+                                                        title: {
+                                                            text: 'Visão por Unidades de Medida - ' + tipo
+                                                        },
+                                                        chart: {
+                                                            zoomType: 'x, y',
+                                                            backgroundColor: null
+                                                        },
+                                                        xAxis: {
+                                                            categories: name
+                                                        },
+                                                        yAxis: {
+
+                                                            title: {
+                                                                text: ''
+                                                            },
+                                                            subtitle: {
+                                                                text: document.ontouchstart === undefined ?
+                                                                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                                                            }
+                                                            ,
+                                                            stackLabels: {
+                                                                enabled: true,
+                                                                style: {
+                                                                    fontWeight: 'bold',
+                                                                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                                                }
+                                                            }
+                                                        },
+
+                                                        series: [{
+                                                            type: 'column',
+                                                            name: 'Orçada',
+                                                            data: x1,
+
+                                                        }, {
+                                                            type: 'column',
+                                                            name: 'Real',
+                                                            data: x2,
+
+                                                        
+                                                        }]
+                                                    });
+                                                });
+                                            }
+
                                             //chamada ajax terceiro gráfico
                                             function MountThirdChart(u, conta) {
 
                                                 //função ajax para buscar dados
                                                
                                                 //$('#FourthChart').empty();
+
+                                                unidadeSelecionada = u;
 
                                                 var unidade = u
 
@@ -2680,16 +2785,29 @@
                                                             series: [{
 
                                                                 name: UnidadeMedida,
-                                                                data: x2
+                                                                data: x2,
+                                                                point: {
+                                                                    events: {
+                                                                        click: function () { MountUnitChart(this, conta) }
+                                                                    }
+                                                                }
+
                                                                 , tooltip: {
                                                                     headerFormat: '<b>{point.x}</b><br/>',
                                                                     pointFormat: '{series.name}: <i>{point.y}<i/><br/> Δ% = Despesa Real / Despesa Orçada -1',
                                                                     valueSuffix: '%'
                                                                 }
 
+                                                                
+
                                                             }, {
                                                                 name: UnidadeMedidaPorBoi,
-                                                                data: x4
+                                                                data: x4,
+                                                                point: {
+                                                                    events: {
+                                                                        click: function () { MountUnitChart(this, conta) }
+                                                                    }
+                                                                }
                                                                 , tooltip: {
                                                                     headerFormat: '<b>{point.x}</b><br/>',
                                                                     pointFormat: '{series.name}: <i>{point.y}<i/><br/> ' + UnidadeMedidaPorBoi + ' = Qtde de ' + UnidadeMedida + ' Consumidos / Qtde de Bois',
@@ -2697,7 +2815,12 @@
                                                                 }
                                                             }, {
                                                                 name: 'Bois/Proc',
-                                                                data: x1
+                                                                data: x1,
+                                                                point: {
+                                                                    events: {
+                                                                        click: function () { MountUnitChart(this, conta) }
+                                                                    }
+                                                                }
                                                                 , tooltip: {
                                                                     headerFormat: '<b>{point.x}</b><br/>',
                                                                     pointFormat: '{series.name}: <i>{point.y}<i/><br/> Δ% = Qtde de Bois Real / Qtde de Bois Orçada -1',
@@ -2705,7 +2828,12 @@
                                                                 }
                                                             }, {
                                                                 name: PrecoUnidadeMedida,
-                                                                data: x3
+                                                                data: x3,
+                                                                point: {
+                                                                    events: {
+                                                                        click: function () { MountUnitChart(this, conta) }
+                                                                    }
+                                                                }
                                                                 , tooltip: {
                                                                     headerFormat: '<b>{point.x}</b><br/>',
                                                                     pointFormat: '{series.name}: <i>{point.y}<i/><br/> Preço do ' + UnidadeMedida + ' = Despesa de ' + UnidadeMedida + ' / Qtde de ' + UnidadeMedida + ' Consumidos',
@@ -2715,6 +2843,106 @@
                                                         });
                                                     });
                                                 }
+                                            }
+
+                                            //chamada ajax unit gráfico
+                                    
+
+                                            function MountUnitChart(u, conta) {
+
+                                                //função ajax para buscar dados
+
+                                                //$('#FourthChart').empty();
+
+                                              
+
+                                                var tipo = u.series.name;
+
+                                                //"getSelectGraficoFatoresTecnicoMateriaPrimaRegionalEConta/{dataIni}/{dataFim}/{meses}/{anos}/{regional}/{conta}/{tipo}"
+
+                                                $.post('../api/Manutencao/getSelectGraficoFatoresTecnicoMateriaPrimaUnidadeEConta/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(unidadeSelecionada.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/' + escape(tipo.replace(/[/]/g, '|')) + '/', function (lista) {
+
+                                                    var titleLine = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        titleLine.push(entry.AnoMes);
+                                                    });
+
+                                                    var x1 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x1.push(entry.Orcado);
+                                                    });
+
+                                                    var x2 = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        x2.push(entry.Realizado);
+                                                    });
+
+                                                    var x3 = [];
+
+                                                    UnitChart(titleLine, x1, x2, x3, x3, unidadeSelecionada, tipo);
+
+                                                });
+
+                                            }
+
+
+                                            //locação unit gráfico
+                                            function UnitChart(name, x1, x2, x3, line, unidade, tipo) {
+                                                $('#UnitChart').show();
+                                                $('#UnitChartMeses').show();
+
+                                                $(function () {
+                                                    Highcharts.chart('UnitChart', {
+                                                        credits: {
+                                                            enabled: false
+                                                        },
+
+                                                        title: {
+                                                            text: 'Visão por Unidades de Medida - ' + tipo + ' - ' + unidade
+                                                        },
+                                                        chart: {
+                                                            zoomType: 'x, y',
+                                                            backgroundColor: null
+                                                        },
+                                                        xAxis: {
+                                                            categories: name
+                                                        },
+                                                        yAxis: {
+
+                                                            title: {
+                                                                text: ''
+                                                            },
+                                                            subtitle: {
+                                                                text: document.ontouchstart === undefined ?
+                                                                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                                                            }
+                                                            ,
+                                                            stackLabels: {
+                                                                enabled: true,
+                                                                style: {
+                                                                    fontWeight: 'bold',
+                                                                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                                                }
+                                                            }
+                                                        },
+
+                                                        series: [{
+                                                            type: 'column',
+                                                            name: 'Orçado',
+                                                            data: x1,
+
+                                                        }, {
+                                                            type: 'column',
+                                                            name: 'Real',
+                                                            data: x2,
+
+                                                        
+                                                        }]
+                                                    });
+                                                });
                                             }
 
                                         </script>
@@ -2780,6 +3008,7 @@
 
             $('#SecondChart').empty();
 
+            $('#UnitChart').empty();
             $('#ThirdChart').empty();
             $('#EvolutivoDaContaPorUnidade').empty();
             $('#FourthChart').empty();
