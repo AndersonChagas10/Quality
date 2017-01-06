@@ -4,6 +4,7 @@ public class ApontamentosDiariosResultSet
 {
     public System.DateTime Data { get; set; }
     public string _Data { get { return Data.ToShortDateString() + " " + Data.ToShortTimeString(); } }
+
     public string Indicador { get; set; }
     public string Monitoramento { get; set; }
     public string Tarefa { get; set; }
@@ -11,8 +12,13 @@ public class ApontamentosDiariosResultSet
     public string IntervaloMinimo { get; set; }
     public string IntervaloMaximo { get; set; }
     public string Lancado { get; set; }
+
     public Nullable<bool> Conforme { get; set; }
+    public string _Conforme { get { return Conforme.Value ? "Conforme" : "Não Conforme"; } }
+
     public Nullable<bool> NA { get; set; }
+    public string _NA { get { return Conforme.Value ? "Avaliado" : "Não Avaliado"; } }
+
     public Nullable<decimal> AV_Peso { get; set; }
     public Nullable<decimal> NC_Peso { get; set; }
     public Nullable<int> Avaliacao { get; set; }

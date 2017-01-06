@@ -92,8 +92,8 @@
                         }
                     },
                     { title: "Valor Lançado", mData: "Lancado" },
-                    { title: "Conforme", mData: "Conforme" },
-                    { title: "Não Avaliado", mData: "NA" },
+                    { title: "Conforme", mData: "_Conforme" },
+                    { title: "Não Avaliado", mData: "_NA" },
                     { title: "Avaliado (Com peso)", mData: "AV_Peso" },
                     { title: "Não Conforme (Com peso)", mData: "NC_Peso" },
                     { title: "Avaliação.", mData: "Avaliacao" },
@@ -134,18 +134,18 @@
 
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
-                     {
-                         extend: 'colvisGroup',
-                         text: 'Sintético',
+                    // {
+                    //     extend: 'colvisGroup',
+                    //     text: 'Sintético',
 
-                         show: [3, 4, 5, 6, 9, 10, 12],
-                         hide: [0, 1, 2, 7, 8, 11]
-                     },
-                    {
-                        extend: 'colvisGroup',
-                        text: 'Analítico',
-                        show: ':hidden'
-                    },
+                    //     show: [3, 4, 5, 6, 9, 10, 12],
+                    //     hide: [0, 1, 2, 7, 8, 11]
+                    // },
+                    //{
+                    //    extend: 'colvisGroup',
+                    //    text: 'Analítico',
+                    //    show: ':hidden'
+                    //},
                     {
                         extend: 'print',
                         customize: function (win) {
