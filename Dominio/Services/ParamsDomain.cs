@@ -160,7 +160,7 @@ namespace Dominio.Services
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);//ParLevel1
             List<ParGoal> listParGoal = Mapper.Map<List<ParGoal>>(paramsDto.parLevel1Dto.listParGoalLevel1);
             List<ParRelapse> listaReincidencia = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel1Dto.listParRelapseDto);//Reincidencia do Level1
-
+            if(paramsDto.listParHeaderFieldDto != null)
             foreach (var i in paramsDto.listParHeaderFieldDto.Where(r => !string.IsNullOrEmpty(r.DefaultOption)))
                 paramsDto.listParHeaderFieldDto.ForEach(r => r.parMultipleValuesDto.FirstOrDefault(c => c.Name.Equals(i.DefaultOption)).IsDefaultOption = true);
             List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);//Cabeçalhos do Level1
@@ -756,6 +756,20 @@ namespace Dominio.Services
 
 
         #endregion
+
+        public bool SetRequiredCamposCabecalho(int id)
+        {
+            var headerField = _baseRepoParHeaderField.GetById(id);
+            if (headerField.IsRequired == null)
+                headerField.IsRequired = true;
+            else
+                headerField.IsRequired = !headerField.IsRequired;
+
+            _baseRepoParHeaderField.AddOrUpdate(headerField);
+
+            return headerField.IsRequired.Value;
+
+        }
 
     }
 }

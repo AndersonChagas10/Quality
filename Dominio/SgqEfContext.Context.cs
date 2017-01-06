@@ -79,8 +79,10 @@ namespace Dominio
         public virtual DbSet<ParFieldType> ParFieldType { get; set; }
         public virtual DbSet<ParFrequency> ParFrequency { get; set; }
         public virtual DbSet<ParGoal> ParGoal { get; set; }
+        public virtual DbSet<ParHeaderField> ParHeaderField { get; set; }
         public virtual DbSet<ParLevel1> ParLevel1 { get; set; }
         public virtual DbSet<ParLevel1XCluster> ParLevel1XCluster { get; set; }
+        public virtual DbSet<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
         public virtual DbSet<ParLevel2> ParLevel2 { get; set; }
         public virtual DbSet<ParLevel2ControlCompany> ParLevel2ControlCompany { get; set; }
         public virtual DbSet<ParLevel2Level1> ParLevel2Level1 { get; set; }
@@ -95,6 +97,7 @@ namespace Dominio
         public virtual DbSet<ParLevelDefiniton> ParLevelDefiniton { get; set; }
         public virtual DbSet<ParLocal> ParLocal { get; set; }
         public virtual DbSet<ParMeasurementUnit> ParMeasurementUnit { get; set; }
+        public virtual DbSet<ParMultipleValues> ParMultipleValues { get; set; }
         public virtual DbSet<ParNotConformityRule> ParNotConformityRule { get; set; }
         public virtual DbSet<ParNotConformityRuleXLevel> ParNotConformityRuleXLevel { get; set; }
         public virtual DbSet<ParRelapse> ParRelapse { get; set; }
@@ -111,14 +114,12 @@ namespace Dominio
         public virtual DbSet<VolumeCepRecortes> VolumeCepRecortes { get; set; }
         public virtual DbSet<VolumePcc1b> VolumePcc1b { get; set; }
         public virtual DbSet<VolumeVacuoGRD> VolumeVacuoGRD { get; set; }
+        public virtual DbSet<budgets> budgets { get; set; }
         public virtual DbSet<Deviation> Deviation { get; set; }
         public virtual DbSet<ParLevel1VariableProduction> ParLevel1VariableProduction { get; set; }
         public virtual DbSet<ParLevel1VariableProductionXLevel1> ParLevel1VariableProductionXLevel1 { get; set; }
         public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
         public virtual DbSet<ResultLevel2HeaderField> ResultLevel2HeaderField { get; set; }
-        public virtual DbSet<ParHeaderField> ParHeaderField { get; set; }
-        public virtual DbSet<ParLevel1XHeaderField> ParLevel1XHeaderField { get; set; }
-        public virtual DbSet<ParMultipleValues> ParMultipleValues { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
