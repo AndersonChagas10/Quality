@@ -3,6 +3,7 @@
 public class ApontamentosDiariosResultSet
 {
     public System.DateTime Data { get; set; }
+    public string _Data { get { return Data.ToShortDateString() + " " + Data.ToShortTimeString(); } }
     public string Indicador { get; set; }
     public string Monitoramento { get; set; }
     public string Tarefa { get; set; }
