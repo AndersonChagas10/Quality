@@ -614,7 +614,7 @@ namespace SGQDBContext
             " , MU.Name " +
             " , L32.Weight " +
             " , L32.ParCompany_Id " +
-            "  ORDER BY L3.Name ASC, L32.ParCompany_Id  DESC  ";
+            "  ORDER BY L3IT.Id ASC, L3.Name ASC, L32.ParCompany_Id  DESC  ";
 
             var parLevel3List = db.Query<ParLevel3>(sql);
 
