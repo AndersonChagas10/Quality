@@ -3684,6 +3684,7 @@ namespace SgqSystem.Services
         public string getCompanyUsers(string ParCompany_Id)
         {
             var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq();
+            var RolesXUserSgqDB = new SGQDBContext.RoleXUserSgq();
 
             var users = ParCompanyXUserSgqDB.getCompanyUsers(Convert.ToInt32(ParCompany_Id));
             var html = new Html();
@@ -3695,7 +3696,9 @@ namespace SgqSystem.Services
                 Password = Guard.Descriptografar3DES(Password);
                 Password = UserDomain.EncryptStringAES(Password);
 
-                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+                var roles = RolesXUserSgqDB.getRoles(Convert.ToInt32(user.UserSGQ_Id));
+
+                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, roles);
             }
             return usersList;
         }
@@ -3714,7 +3717,7 @@ namespace SgqSystem.Services
                 Password = Guard.Descriptografar3DES(Password);
                 Password = UserDomain.EncryptStringAES(Password);
 
-                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name,null);
             }
             return usersList;
         }
@@ -3741,7 +3744,7 @@ namespace SgqSystem.Services
                 }
 
                 //colocar informação que usuario não tem unidade padrão, mas tem que verificar isso
-                return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+                return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name,null);
             }
             else
             {
