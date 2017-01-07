@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SGQDBContext;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -438,9 +439,24 @@ namespace SgqSystem.Services
                                 );
 
         }
-        public string user(int UserSGQ_Id, string UserSGQ_Name, string UserSGQ_Login, string UserSGQ_Pass, string Role, int ParCompany_Id, string ParCompany_Name)
+        public string user(int UserSGQ_Id, string UserSGQ_Name, string UserSGQ_Login, string UserSGQ_Pass, string Role, int ParCompany_Id, string ParCompany_Name, IEnumerable<RoleXUserSgq> roles)
         {
-            return "<div class=\"user\" userid=\"" + UserSGQ_Id + "\" username=\"" + UserSGQ_Name + "\" userlogin=\"" + UserSGQ_Login.ToLower() + "\" userpass=\"" + UserSGQ_Pass + "\" userprofile=\"" + Role + "\" unidadeid=\"" + ParCompany_Id + "\" unidadename=\"" + ParCompany_Name + "\"></div>";
+            string user = "<div class=\"user\" userid=\"" + UserSGQ_Id + "\" username=\"" + UserSGQ_Name + "\" userlogin=\"" + UserSGQ_Login.ToLower() + "\" userpass=\"" + UserSGQ_Pass + "\" userprofile=\"" + Role + "\" unidadeid=\"" + ParCompany_Id + "\" unidadename=\"" + ParCompany_Name + "\">";
+
+            if (roles != null)
+            {
+                foreach (RoleXUserSgq role in roles)
+                {
+                    user += "<div class='role'>" + role.HashKey + "</div>";
+                }
+            }
+            
+
+            //user += "<div class='role'>comp001</div><div class='role'>comp002</div><div class='role'>comp004</div>";
+            
+            user += "</div>";
+
+            return user;
         }
         public string level1(SGQDBContext.ParLevel1 ParLevel1, string tipoTela, int totalAvaliado, decimal totalDefeitos, decimal alertNivel1, decimal alertNivel2, decimal alertaNivel3, int alertaAtual, int avaliacaoultimoalerta)
         {

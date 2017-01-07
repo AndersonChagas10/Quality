@@ -988,6 +988,28 @@ namespace SGQDBContext
             return companys;
         }
     }
+    public partial class RoleXUserSgq
+    {
+        public string HashKey { get; set; }
+
+        /// <summary>
+        /// Retorna todos as permissões do usuário
+        /// </summary>
+        /// <param name="UserSGQ_Id"></param>
+        /// <returns></returns>
+        public IEnumerable<RoleXUserSgq> getRoles(int UserSGQ_Id)
+        {
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select HashKey from ScreenComponent;";
+
+            var users = db.Query<RoleXUserSgq>(sql);
+
+            return users;
+        }
+    }
     public partial class VolumePcc1b
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
