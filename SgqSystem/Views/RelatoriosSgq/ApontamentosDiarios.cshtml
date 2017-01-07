@@ -49,8 +49,7 @@
             //AJAX
             $.post(url1, enviar, function (r) {
                 try {
-                    var retornoArray = [];
-                    var arrayItarator = r.Retorno;
+                    
                     if (toggle == undefined)
                         $('#menu-toggle').click();
                     GerarTabela(r);
