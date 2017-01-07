@@ -614,7 +614,7 @@ namespace SGQDBContext
             " , MU.Name " +
             " , L32.Weight " +
             " , L32.ParCompany_Id " +
-            "  ORDER BY L3IT.Id ASC, L3.Name ASC, L32.ParCompany_Id  DESC  ";
+            "  ORDER BY L3IT.Id ASC, L3G.Name ASC, L3.Name ASC, L32.ParCompany_Id  DESC  ";
 
             var parLevel3List = db.Query<ParLevel3>(sql);
 
@@ -906,7 +906,7 @@ namespace SGQDBContext
         public string Role { get; set; }
 
 
-        public UserSGQ getUserByLogin(string userLogin)
+        public UserSGQ getUserByLoginOrId(string userLogin=null, int id=0)
         {
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
@@ -919,11 +919,16 @@ namespace SGQDBContext
             //             "INNER JOIN ParCompanyXUserSgq PxU ON U.Id = PxU.UserSgq_Id                                                          " +
             //             "WHERE U.Name = '" + userLogin + "' AND PxU.ParCompany_Id = C.Id                                                     ";
 
+            string where = "WHERE U.name = '" + userLogin + "'";
+            if(id > 0)
+            {
+                where = "WHERE U.Id = '" + id + "'";
+            }
 
             string sql = "SELECT U.Id, U.Name AS Login, U.Password, U.FullName AS Name, U.ParCompany_Id , PC.Name AS ParCompany_Name, PxU.Role FROM UserSgq U " +
                          "LEFT JOIN ParCompany PC ON U.ParCompany_Id = PC.Id   " +
                          "LEFT JOIN ParCompanyXUserSgq PxU ON U.ParCompany_Id = PxU.ParCompany_Id AND PxU.UserSgq_Id = U.Id " +
-                         "WHERE U.name = '" +  userLogin + "'";
+                        where;
 
             var user = db.Query<UserSGQ>(sql).FirstOrDefault();
 
@@ -981,6 +986,28 @@ namespace SGQDBContext
             var companys = db.Query<ParCompanyXUserSgq>(sql);
 
             return companys;
+        }
+    }
+    public partial class RoleXUserSgq
+    {
+        public string HashKey { get; set; }
+
+        /// <summary>
+        /// Retorna todos as permissões do usuário
+        /// </summary>
+        /// <param name="UserSGQ_Id"></param>
+        /// <returns></returns>
+        public IEnumerable<RoleXUserSgq> getRoles(int UserSGQ_Id)
+        {
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "select HashKey from ScreenComponent;";
+
+            var users = db.Query<RoleXUserSgq>(sql);
+
+            return users;
         }
     }
     public partial class VolumePcc1b

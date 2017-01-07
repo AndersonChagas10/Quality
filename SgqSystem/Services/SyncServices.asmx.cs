@@ -13,6 +13,7 @@ using Dominio.Services;
 using DTO.Helpers;
 using System.Net.Mail;
 using System.Net;
+using SgqSystem.ViewModels;
 
 namespace SgqSystem.Services
 {
@@ -2863,6 +2864,9 @@ namespace SgqSystem.Services
                                     classe: "btn-warning btnNotAvaliable na font11"
                                 );
 
+
+            bool haveAccordeon = false;
+
             int Last_Id = 0;
             //Tela de bem estar animal
             if (tipoTela.Equals("BEA"))
@@ -3313,22 +3317,53 @@ namespace SgqSystem.Services
                 //Instancia uma veriavel para gerar o agrupamento
                 string parLevel3Group = null;
 
-                foreach (var parLevel3 in parlevel3List)
+                var parlevel3GroupByLevel2 = parlevel3List.GroupBy(p => p.ParLevel3Group_Id);
+
+                foreach (var parLevel3GroupLevel2 in parlevel3GroupByLevel2)
                 {
-                   if(Last_Id != parLevel3.Id)
+                    string accordeonName = null;
+                    string acoordeonId = null;
+                    string level3Group = null;
+
+                    foreach (var parLevel3 in parLevel3GroupLevel2)
                     {
-                        //Define a qual classe de input pertence o level3
-                        string classInput = null;
-                        //Labels que mostrar informaçãoes do tipo de input
-                        string labelsInputs = null;
-                        //tipo de input
-                        string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
+                        
+                        if (Last_Id != parLevel3.Id)
+                        {
 
-                        string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
-                        parLevel3Group += level3List;
+                            if(parLevel3.ParLevel3Group_Id > 0)
+                            {
+                                accordeonName = parLevel3.ParLevel3Group_Name;
+                                acoordeonId = parLevel3.ParLevel3Group_Id.ToString();
+                            }
 
-                        Last_Id = parLevel3.Id;
+                            //Define a qual classe de input pertence o level3
+                            string classInput = null;
+                            //Labels que mostrar informaçãoes do tipo de input
+                            string labelsInputs = null;
+                            //tipo de input
+                            string input = getTipoInput(parLevel3, ref classInput, ref labelsInputs);
+
+                            string level3List = html.level3(parLevel3, input, classInput, labelsInputs);
+                            level3Group += level3List;
+
+                            Last_Id = parLevel3.Id;
+                        }
                     }
+
+                    if(!string.IsNullOrEmpty(acoordeonId))
+                    {
+                        haveAccordeon = true;   
+                        level3Group = html.accordeon(
+                                                        id: acoordeonId, 
+                                                        label: accordeonName, 
+                                                        outerhtml: level3Group,
+                                                        classe: "row"
+                                                    );
+                    }
+
+                    parLevel3Group += level3Group;
+
                 }
 
                 //< div class="form-group">
@@ -3364,6 +3399,13 @@ namespace SgqSystem.Services
 
                 //string HeaderLevel02 = null;
 
+                string accordeonbuttons = null;
+                if(haveAccordeon == true)
+                {
+                    accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> Mostrar Todos</button>" +
+                                       "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> Fechar Todos</button>";
+                }
+
                 string painellevel3 = html.listgroupItem(
                                                             outerhtml: avaliacoes +
                                                                        amostras +
@@ -3371,8 +3413,10 @@ namespace SgqSystem.Services
 
                                                classe: "painel painelLevel03 row");
 
-                string panelButton = html.listgroupItem(outerhtml: "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
-                                                            classe: "painel painelLevel02 row"
+                string panelButton = html.listgroupItem(    
+                                                           outerhtml: accordeonbuttons +
+                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
+                                                           classe: "painel painelLevel02 row"
                                                         );
 
                 //Se tiver level3 gera o agrupamento no padrão
@@ -3684,6 +3728,7 @@ namespace SgqSystem.Services
         public string getCompanyUsers(string ParCompany_Id)
         {
             var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq();
+            var RolesXUserSgqDB = new SGQDBContext.RoleXUserSgq();
 
             var users = ParCompanyXUserSgqDB.getCompanyUsers(Convert.ToInt32(ParCompany_Id));
             var html = new Html();
@@ -3695,7 +3740,9 @@ namespace SgqSystem.Services
                 Password = Guard.Descriptografar3DES(Password);
                 Password = UserDomain.EncryptStringAES(Password);
 
-                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+                var roles = RolesXUserSgqDB.getRoles(Convert.ToInt32(user.UserSGQ_Id));
+
+                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, roles);
             }
             return usersList;
         }
@@ -3714,7 +3761,7 @@ namespace SgqSystem.Services
                 Password = Guard.Descriptografar3DES(Password);
                 Password = UserDomain.EncryptStringAES(Password);
 
-                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+                usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name,null);
             }
             return usersList;
         }
@@ -3722,7 +3769,7 @@ namespace SgqSystem.Services
         public string UserSGQLogin(string UserName, string Password)
         {
             var UserSGQDB = new SGQDBContext.UserSGQ();
-            var user = UserSGQDB.getUserByLogin(UserName.Trim());
+            var user = UserSGQDB.getUserByLoginOrId(userLogin: UserName.Trim());
 
             var html = new Html();
 
@@ -3735,19 +3782,36 @@ namespace SgqSystem.Services
                 Password = Guard.Descriptografar3DES(Password);
                 Password = UserDomain.EncryptStringAES(Password);
 
-                if (user.ParCompany_Id == 0)
+               if (user.ParCompany_Id == 0)
                 {
                     return "A unidade padrão não foi definida";
                 }
-
+   
                 //colocar informação que usuario não tem unidade padrão, mas tem que verificar isso
-                return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+                return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name,null);
             }
             else
             {
                 return "Usuário ou senha inválidos";
             }
 
+        }
+        [WebMethod]
+        public string UserSGQById(int Id)
+        {
+            var UserSGQDB = new SGQDBContext.UserSGQ();
+            var user = UserSGQDB.getUserByLoginOrId(id: Id);
+
+            var html = new Html();
+            if(user != null)
+            {
+                string Password = Guard.Criptografar3DES(user.Password);
+                Password = UserDomain.EncryptStringAES(Password);
+
+                return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name,null);
+            }
+
+            return "Usuário não localizado";
         }
         #endregion
         [WebMethod]
