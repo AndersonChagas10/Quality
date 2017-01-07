@@ -3765,7 +3765,7 @@ namespace SgqSystem.Services
                 string Password = Guard.Criptografar3DES(user.Password);
                 Password = UserDomain.EncryptStringAES(Password);
 
-                return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+                return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name,null);
             }
 
             return "Usuário não localizado";
