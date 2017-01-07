@@ -246,7 +246,12 @@ namespace SgqSystem.Services
                 colorPanel = color.ToString();
             }
 
-            return "  <div class=\"panel-group\">                                                                                                          " +
+            if(!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            return "  <div class=\"panel-group" + classe + "\">                                                                                                          " +
                     "    <div class=\"panel panel-" + colorPanel + "\">                                                                                          " +
                     "      <div class=\"panel-heading\">                                                                                                    " +
                     "        <h4 class=\"panel-title\">                                                                                                     " +
@@ -261,50 +266,6 @@ namespace SgqSystem.Services
                     "    </div>                                                                                                                             " +
                     "  </div>                                                                                                                               ";
 
-
-            //#region panelHeading
-            //string panelHeading = div(classe: "panel-heading",
-            //                        id: "heading" + id,
-            //                        tags: "role=\"tab\"",
-            //                        outerhtml: head(
-            //                                          headnumber: h.h4,
-            //                                          classe: "panel-title",
-            //                                          outerhtml: link(href: "collapse" + id,
-            //                                                          tags: "role=\"button\" data-toggle=\"collapse\" data-parent=\"accordion" + id + "\" aria-expanded=\"true\" aria-controls=\"collapse" + id + "\"",
-            //                                                          outerhtml: label)
-            //                                        ));
-            //#endregion
-
-
-
-            //string panelCollapseBody = div(classe: "panel-body",
-            //                              outerhtml: div(outerhtml:"22222222222") +
-            //                                         div(outerhtml: "2222222") +
-            //                                         div(outerhtml: "33333333")
-
-
-            //                                         );
-
-
-
-            //string panelCollapse = div(classe: "panel-collapse",
-            //                          id: "collapse" + id,
-            //                          tags: "role=\"tabpanel\" aria-labelledby=\"heading" + id + "\" style=\"height: auto;\"",
-            //                          outerhtml: panelCollapseBody
-            //                          );
-
-
-
-            //string panel = div(classe: "panel panel-default",
-            //                   outerhtml: panelHeading +
-            //                              panelCollapse);
-
-            //classe += " panel-group";
-
-            //return div(id: "accordion" + id, 
-            //           classe: classe.Trim(),
-            //           tags: "role=\"tablist\" aria-multiselectable=\"true\"", 
-            //           outerhtml: panel);
         }
         public string link(string id = null, string classe = null, string href = null, string tags = null, string outerhtml = null)
         {
