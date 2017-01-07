@@ -906,7 +906,7 @@ namespace SGQDBContext
         public string Role { get; set; }
 
 
-        public UserSGQ getUserByLogin(string userLogin)
+        public UserSGQ getUserByLoginOrId(string userLogin=null, int id=0)
         {
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
@@ -919,11 +919,16 @@ namespace SGQDBContext
             //             "INNER JOIN ParCompanyXUserSgq PxU ON U.Id = PxU.UserSgq_Id                                                          " +
             //             "WHERE U.Name = '" + userLogin + "' AND PxU.ParCompany_Id = C.Id                                                     ";
 
+            string where = "WHERE U.name = '" + userLogin + "'";
+            if(id > 0)
+            {
+                where = "WHERE U.Id = '" + id + "'";
+            }
 
             string sql = "SELECT U.Id, U.Name AS Login, U.Password, U.FullName AS Name, U.ParCompany_Id , PC.Name AS ParCompany_Name, PxU.Role FROM UserSgq U " +
                          "LEFT JOIN ParCompany PC ON U.ParCompany_Id = PC.Id   " +
                          "LEFT JOIN ParCompanyXUserSgq PxU ON U.ParCompany_Id = PxU.ParCompany_Id AND PxU.UserSgq_Id = U.Id " +
-                         "WHERE U.name = '" +  userLogin + "'";
+                        where;
 
             var user = db.Query<UserSGQ>(sql).FirstOrDefault();
 

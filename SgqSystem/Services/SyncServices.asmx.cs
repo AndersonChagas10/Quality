@@ -13,6 +13,7 @@ using Dominio.Services;
 using DTO.Helpers;
 using System.Net.Mail;
 using System.Net;
+using SgqSystem.ViewModels;
 
 namespace SgqSystem.Services
 {
@@ -3722,7 +3723,7 @@ namespace SgqSystem.Services
         public string UserSGQLogin(string UserName, string Password)
         {
             var UserSGQDB = new SGQDBContext.UserSGQ();
-            var user = UserSGQDB.getUserByLogin(UserName.Trim());
+            var user = UserSGQDB.getUserByLoginOrId(userLogin: UserName.Trim());
 
             var html = new Html();
 
@@ -3735,11 +3736,11 @@ namespace SgqSystem.Services
                 Password = Guard.Descriptografar3DES(Password);
                 Password = UserDomain.EncryptStringAES(Password);
 
-                if (user.ParCompany_Id == 0)
+               if (user.ParCompany_Id == 0)
                 {
                     return "A unidade padrão não foi definida";
                 }
-
+   
                 //colocar informação que usuario não tem unidade padrão, mas tem que verificar isso
                 return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
             }
@@ -3748,6 +3749,23 @@ namespace SgqSystem.Services
                 return "Usuário ou senha inválidos";
             }
 
+        }
+        [WebMethod]
+        public string UserSGQById(int Id)
+        {
+            var UserSGQDB = new SGQDBContext.UserSGQ();
+            var user = UserSGQDB.getUserByLoginOrId(id: Id);
+
+            var html = new Html();
+            if(user != null)
+            {
+                string Password = Guard.Criptografar3DES(user.Password);
+                Password = UserDomain.EncryptStringAES(Password);
+
+                return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name);
+            }
+
+            return "Usuário não localizado";
         }
         #endregion
         [WebMethod]
