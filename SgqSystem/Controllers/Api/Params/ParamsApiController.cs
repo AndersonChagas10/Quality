@@ -38,6 +38,14 @@ namespace SgqSystem.Controllers.Api.Params
         }
 
         [HttpPost]
+        [Route("SetRequiredCCAB/{Id}")]
+        public bool SetRequiredCamposCabecalho(int id)
+        {
+            return _paramdDomain.SetRequiredCamposCabecalho(id);
+        }
+
+
+        [HttpPost]
         [Route("AddUpdateLevel2")]
         public ParamsViewModel AddUpdateLevel2([FromBody] ParamsViewModel paramsViewModel)
         {

@@ -59,19 +59,30 @@ namespace SgqSystem.Controllers
 
         #endregion
 
+        [OutputCache(Duration = 20, VaryByParam = "none")]
         public ActionResult Scorecard()
         {
             return View(form);
         }
 
+        [OutputCache(Duration = 20, VaryByParam = "none")]
         public ActionResult RelatorioDiario()
         {
             return View(form);
         }
 
+        [OutputCache(Duration = 20, VaryByParam = "none")]
         public ActionResult ApontamentosDiarios()
         {
             return View(form);
         }
+
+        [OutputCache(Duration = 20, VaryByParam = "none")]
+        public ActionResult NaoConformidade()
+        {
+            return View(form);
+        }
+
+        
     }
 }

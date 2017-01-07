@@ -138,8 +138,10 @@ namespace DTO.DTO.Params
         public List<int> level2PorCompany { get; set; }
         public Nullable<int> level2Number { get; set; }
         public Nullable<int> CompanyControl_Id { get; set; }
-        
+
         #endregion
+
+        public bool IsRequiredMultipleValue { get; set; }
 
     }
 }

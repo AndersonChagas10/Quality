@@ -10,5 +10,6 @@ namespace DTO.DTO
         public decimal PunishmentValue { get; set; }
         public bool Conformity { get; set; }
         public bool IsActive { get; set; } = true;
+        public bool IsDefaultOption { get; set; } = false;
     }
 }

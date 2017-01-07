@@ -316,6 +316,7 @@
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Api\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Api\PCC1BController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadeApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioDiarioApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\ScorecardApiController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoController.cs" />
@@ -1269,6 +1270,7 @@
     <Content Include="Views\Shared\_RelatorioLayout.cshtml" />
     <Content Include="Views\Example\TesteSelect2.cshtml" />
     <Content Include="Views\RelatoriosSgq\ApontamentosDiarios.cshtml" />
+    <Content Include="Views\RelatoriosSgq\NaoConformidade.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

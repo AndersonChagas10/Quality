@@ -14,7 +14,7 @@ namespace DTO.DTO.Params
         public int ParLevelDefinition_Id { get; set; }
         public bool LinkNumberEvaluetion { get; set; }
         public bool IsActive { get; set; }
-        public string DefaultSelected { get; set; }
+        public string DefaultOption { get; set; }
         public Nullable<bool> IsRequired { get; set; }
 
         //public ParLevelDefinitionDTO parLevelDefinitionDto { get; set; }
@@ -45,5 +45,6 @@ namespace DTO.DTO.Params
             }
         }
 
+       
     }
 }

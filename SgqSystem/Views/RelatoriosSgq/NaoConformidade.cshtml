@@ -1,0 +1,606 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "Não Conformidades";
+    var url = Url.Action("Index", "Home");
+    var urlGraficoUnidades = Url.Action("GraficoUnidades", "api/NaoConformidade");
+    var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/NaoConformidade");
+    var urlGraficoNcPorUnidadeIndicador = Url.Action("GraficoNcPorUnidadeIndicador", "api/NaoConformidade");
+}
+
+<style>
+
+</style>
+
+<div class="page-content" style="min-height: 600px;">
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+    <div id="inicio"></div>
+    <div id="btnRGUnidadesGrafico"></div>
+    <div id="RGUnidadesGrafico"></div>
+
+    <div id="btnRGDepartamentosGrafico"></div>
+    <div id="RGDepartamentosGrafico"></div>
+
+    <div id="btnRGOperacoesGrafico"></div>
+    <div id="RGOperacoesGrafico"></div>
+
+    <div id="btnRGOperacoesGrafico"></div>
+    <div id="RGOperacoesGrafico"></div>
+    <div id="loading"></div>
+
+    <div class="panel panel-info" id="PanelFull0" style="display:none">
+        <div class="panel-heading"></div>
+        <div class="panel-body" id="g0">
+            <div id="btnRGTarefasGrafico"></div>
+            <div id="RGTarefasGrafico"></div>
+
+            <div id="btnRGMonitoramentosGrafico"></div>
+            <div id="RGMonitoramentosGrafico"></div>
+        </div>
+    </div>
+
+    <div class="panel panel-info" id="PanelFull1" style="display:none">
+        <div class="panel-heading"></div>
+        <div class="panel-body" id="g1">
+            <div id="btnTarefasAcumuladas"></div>
+            <div id="RGOTarefasAcumuladas"></div>
+            <div id="btnMonitoramentosTarefa"></div>
+            <div id="RGOMonitoramentosTarefa"></div>
+        </div>
+        @**O Peso atribuído as Tarefas influenciam no resultado gráfico.*@
+    </div>
+   
+</div>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+
+        var Grafico1 = 'NC por unidade';
+        var GraficoDepto = 'NC por departamento: ';
+        var GraficoIndic = 'NC por Indicador: ';
+        var GraficoMon = 'NC por Monitoramento: ';
+        var GraficoTarefa = 'NC por Tarefa: ';
+        var GraficoTarefasAcumuladas = 'NC por Tarefas acumuladas: ';
+        var GraficoMoncomTarefa = 'NC por Monitoramento na Tarefa: ';
+        var $btn = $('#btnSend');
+        var urlGraficoUnidades = @Html.Raw(Json.Encode(urlGraficoUnidades));
+        var urlGraficoNcPorUnidadeIndicador = @Html.Raw(Json.Encode(urlGraficoNcPorUnidadeIndicador));
+        
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $(document).ready(function () {
+            $("#btnSend").click(function (e) {
+                Send();
+            });
+            formControl.showFullCallendar();
+            formControl.showUnit();
+        });
+
+        function Send() {
+
+            $btn.button('loading');
+            $('#results').empty();
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+             $('#menu-toggle').click();
+
+            //AJAX
+            $.post(urlGraficoUnidades, enviar, function (r) {
+
+                try {
+
+                    GraficoUnidade(r);
+
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    $btn.button('reset');
+                }
+
+            }).fail(function (e, h, x) {
+
+                $btn.button('reset');
+                if (e.status == 0) {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+
+            });
+
+        };
+
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            /*Especifico*/
+            if (!($('#unitId :selected').val() > 0)) {
+                GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
+                return false;
+            }
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
+        //function objAjax (url, data, callback, funcFinal) {
+        //    this.callback = function() {};
+        //    this.finallyFunc = function() {};
+        //    this.data = {};
+        //    this.url = "";
+        //}
+
+        function GetGraficoNcPorUnidadeIndicador (unidade) {
+
+            $.post(urlGraficoNcPorUnidadeIndicador + "/" + unidade, function (r) {
+
+                try {
+
+                    GraficoIndicador(r);
+
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    //$btn.button('reset');
+                }
+
+            }).fail(function (e, h, x) {
+
+                //$btn.button('reset');
+
+                if (e.status == 0) {
+                    openMessageModal("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    openMessageModal("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+
+            });
+        };
+
+      
+        function GraficoUnidade(data) {
+            //UNIDADE
+            //if (data == null) {
+            //    data = _result.unidadeTemp;
+            //}
+
+            //data = Auxiliar.organizarHighCharts(data, coluna, sentido);
+
+            //Done.btnOrdenacao('btnRGUnidadesGrafico', Done.totalNcPorUnidadeProdutiva, btn, sentido)
+            ////////////////////////////////
+
+            /////////////////////////////
+            var dataX = MapeiaValorParaHC(data, "UnidadeName");
+            var Nc = MapeiaValorParaHC(data, "Nc");
+            var Av = MapeiaValorParaHC(data, "Av");
+            var Proc = MapeiaValorParaHC(data, "Proc");
+
+            //if (data.length > 0) {
+                //var inverse = sentido == 'desc' ? undefined : 1;
+                $('#RGUnidadesGrafico').empty().highcharts({
+                    credits: Chart.Credits(),
+                    chart: Chart.Chart('column', 'xy'),
+                    title: Chart.Titulo(Grafico1),
+                    xAxis: Chart.Xaxis(dataX),
+                    yAxis: Chart.yAxisPadraoRelNc(),
+                    legend: {
+                        shadow: false
+                    },
+                    tooltip: {
+                        shared: true
+                    },
+                    plotOptions: {
+                        column: {
+                            shadow: false,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [
+                        //Chart.serie('column', 'Meta', Chart.CorMeta(), )
+                        Chart.ProcNc(Proc, GetGraficoNcPorUnidadeIndicador),
+                        Chart.NC(Nc, GetGraficoNcPorUnidadeIndicador),
+                        Chart.Av(Av, GetGraficoNcPorUnidadeIndicador)
+                        //Chart.curvaPareto(data, nc, 1, inverse),
+                    ]
+                });
+
+            //}
+            //else {
+            //        $('#inicio').nextUntil('footer').not('.panel').empty();
+            //        $('#RGUnidadesGrafico').empty().html('<l id="parar">Não existem dados no contexto do filtro selecionado.</l>');
+            //        $("#btnRGUnidadesGrafico input").remove();
+            //}
+
+            $('.body-content').css('height', '3350px');
+
+        }
+
+        function GraficoDepartamento() {
+
+
+        }
+
+        function GraficoIndicador(data) {
+
+            var nc = MapeiaValorParaHC(data, "Nc")
+            var nome = MapeiaValorParaHC(data, "IndicadorName")
+            var porc = MapeiaValorParaHC(data, "Proc")
+            var qtdAv = MapeiaValorParaHC(data, "Av")
+            var selector = "RGUnidadesGrafico";
+            //var id = MapeiaValorParaHC(data, "UnidadeName")
+
+            $('#' + selector).empty().highcharts({
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(Grafico1),
+                xAxis: Chart.Xaxis(nome),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    //Chart.serie('column', 'Meta', Chart.CorMeta(), )
+                    Chart.ProcNc(porc, function(){}),
+                    Chart.NC(nc, function(){}),
+                    Chart.Av(qtdAv, function(){})
+                    //Chart.curvaPareto(data, nc, 1, inverse),
+                ]
+            });
+
+        }
+
+        function GraficoMonitoramento() {
+
+
+        }
+
+        function GraficoTarefa() {
+
+
+        }
+
+        function GraficoTarefaAcumulada() {
+
+
+        }
+
+        function btnOrdenacao(id, func, btn, sentido) {
+                var inputTag = document.createElement("div");
+                //??
+                if (btn == undefined) {
+                    inputTag.innerHTML = '<input type = "button"  id="Nc"  value="NC " >';
+                    inputTag.innerHTML += '<input type = "button" id="ProcNc"  value = "% NC " >';
+                    $("#" + id).empty();
+                    document.getElementById(id).appendChild(inputTag);
+                } else {
+                    var result = sentido == 'asc' ? "↓": "↑";
+                    btn[0].value = btn[0].value.replace("↓", "").replace("↑", "");
+                    btn[0].value = btn[0].value + result;
+                    $("#" + id + " input").not(btn).val($("#" + id + " input").not(btn).val().replace("↓", "").replace("↑", ""));
+                }
+
+                if (sentido == 'asc') {
+                    $("#" + id + " #Nc").off('click').on("click", function () {
+                        func("desc", 0, null, $("#" + id + " #Nc"));
+                    });
+                    $("#" + id + " #ProcNc").off('click').on("click", function () {
+                        func("desc", 3, null, $("#" + id + " #ProcNc"));
+                    });
+                } else {
+                    $("#" + id + " #Nc").off('click').on("click", function () {
+                        func("asc", 0, null, $("#" + id + " #Nc"));
+                    })
+                    $("#" + id + " #ProcNc").off('click').on("click", function () {
+                        func("asc", 3, null, $("#" + id + " #ProcNc"));
+                    })
+                }
+        }
+
+
+
+        var Chart = {
+
+            /*
+                Arry: dadposNC
+                Object: dados
+                Int: axis
+            */
+            criaTitulo:  function(prefix, sufix){
+                return prefix + sufix;
+            },
+            curvaPareto: function (dados, dadosNC, axis, inverse) {
+
+                var totalNC = dadosNC.reduce(function (a, b) { return a + b; }, 0);
+                var porcentagemAcumuladaNC  = 0;
+                var data = []
+                dadosNC.forEach(function (a) {
+                    porcentagemAcumuladaNC += a / totalNC * 100;
+                    data.push(Math.round(porcentagemAcumuladaNC, 2));
+                });
+
+                return {
+                    type: 'line',
+                    yAxis: 1,
+                    name: 'Gráfico de Pareto',
+                    color: "Red",
+                    data: data,
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    },
+                    zones: [{
+                        value: 80,
+                        color: inverse == undefined ? 'Red' : 'Black'
+                    }, {
+                        color: inverse == undefined ? 'Black' : 'Red'
+                    }],
+                }
+            },
+            serie: function (tipo, nomeDaSerie, corDaSerie, dados, suffix, axis, paddin1, padding2, pointFunc,nome, id) {
+
+                var serieType = tipo == undefined ? 'line' : tipo;
+                var sufix = suffix == undefined ? '' : suffix
+                var padding1 =  0.3;
+                var padding2 = -0.2;
+
+
+                return  {
+                    type: serieType,
+                    yAxis: 1,
+                    name: nomeDaSerie,
+                    color: corDaSerie,
+                    data: dados,
+                    pointPadding: paddin1,
+                    pointPlacement: padding2,
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                if(typeof (pointFunc) == 'function'){
+                                    pointFunc(nome[this.x], id[this.x]);
+                                }
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: sufix
+                    }
+                }
+
+
+            },
+            CorTotalNc: function () { return '#F7BCB0' },
+            CorTotalAv: function () { return '#ccc' },
+            CorTotalPareto: function () { return '#900000' },
+            CorMeta: function () { return '#67D184' },
+            CorTotalProcNc: function () { return '#FF6347' },
+            Legend: function () {
+                return {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    borderWidth: 0
+                };
+            },
+            ToolTip: function (isShared, isCrosshairs) {
+                return {
+                    valueDecimals: 2,
+                    shared: isShared,
+                    crosshairs: isCrosshairs
+                }
+            },
+            Titulo: function (data, sufix) {
+
+                if(!!sufix)
+                    data = data + sufix;
+
+                return {
+
+                    text: data,
+                    x: -20 //center
+                };
+
+            },
+            Credits: function () {
+                return {
+                    enabled: false
+                }
+            },
+            Zones: function () {
+                return {
+                    enabled: false
+                }
+            },
+            Chart: function (tipo, zoon) {
+                return {
+                    type: tipo,
+                    zoomType: (!!zoon) ? zoon : ''
+                }
+            },
+            yAxisPadraoRelNc: function () {
+
+                return [{
+                    allowDecimals: false,
+                    min: 0,
+                    title: {
+                        text: 'Numero Amostras'
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }, {
+                    allowDecimals: false,
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: '% NC',
+                    },
+                    opposite: true
+                }];
+
+            },
+            Xaxis: function (dados) {
+                return [{
+                    categories: dados
+                }];
+            },
+            NC: function (data, func, nome, id, funcParaAcumuladas) {
+                return {
+                    name: 'NC',
+                    color: Chart.CorTotalNc(),//'rgba(77,143,189,1)',
+                    data: data,
+                    yAxis: 0,
+                    //pointPadding: 0.3,
+                    //pointPlacement: -0.2,
+                    dataLabels: Chart.DataLabelPadrao(),
+                    point: {
+                        events: {
+                            click: function () {
+                                if(!!func)
+                                    func(this.category);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' qtd'
+                    }
+                }
+
+            },
+            ProcNc: function(data, func, funcParaAcumuladas){
+                $.each(data, function(a, b){
+                    data[a] = parseFloat(b) > 100 ? 100 : b;
+                });
+                return {
+                    name: '% NC',
+                    color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
+                    data: data,
+                    yAxis: 1,
+                    tooltip: {
+                        valueSuffix: ' %'
+                    },
+                    //pointPadding: 0.4,
+                    //pointPlacement: -0.2,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+                            click: function () {
+                                if(!!func)
+                                    func(this.category);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' % (NC * Peso)'
+                    }
+                };
+
+            },
+            Meta: function(data, func, nome, id, funcParaAcumuladas){
+
+                return {
+                    visible: false,
+                    name: '% Meta',
+                    data: data,
+                    color: Chart.CorMeta(),//'rgba(81,207,64,1)',
+                    //pointPadding: 0.4,
+                    //pointPlacement: 0.4,
+                    yAxis: 1,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+                            click: function () {
+                                if(!!func)
+                                    func(this.category);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    }
+                };
+
+            },
+            Av: function(data, func, nome, id, funcParaAcumuladas){
+
+                return {
+                    visible: false,
+                    name: 'Avaliações',
+                    data: data,
+                    color: Chart.CorTotalAv(),//'rgba(81,207,64,1)',
+                    //pointPadding: 0.4,
+                    //pointPlacement: 0.2,
+                    yAxis: 0,
+                    dataLabels: Chart.DataLabelPadrao(),
+                    point: {
+                        events: {
+
+                            click: function () {
+                                if(!!func)
+                                    func(this.category);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' qtd'
+                    }
+
+                };
+
+            },
+            DataLabelPadrao: function (affix) {
+
+                return  {
+                    format: !!affix ? '{y:.2f} '+ affix : '{y:.2f}',
+                    enabled: true,
+                    color: 'black',
+                    align: 'center',
+                    rotation: 270,
+                    x: 2,
+                    y: -25,
+                    style: {
+                        fontSize: '12px',
+                        fontWeight: 'Arial'
+                    }
+                };
+            },
+
+        }
+    </script>
+
+}
