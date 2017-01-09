@@ -49,7 +49,7 @@ namespace SgqSystem.Controllers.Api
                     }
                 }
 
-                totalScorecard = Math.Round((totalPontosAtingidos / totalPontosDisputados * 100) , 2);
+                totalScorecard = totalPontosDisputados == 0 ? 0 : Math.Round((totalPontosAtingidos / totalPontosDisputados * 100) , 2);
 
                 _list.Add(new ScorecardResultSet() { Level1Name = "Total:", Pontos = totalPontosDisputados, Scorecard = totalScorecard, PontosAtingidos = totalPontosAtingidos });
             }
