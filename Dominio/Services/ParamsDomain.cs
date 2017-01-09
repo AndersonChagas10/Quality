@@ -160,9 +160,9 @@ namespace Dominio.Services
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);//ParLevel1
             List<ParGoal> listParGoal = Mapper.Map<List<ParGoal>>(paramsDto.parLevel1Dto.listParGoalLevel1);
             List<ParRelapse> listaReincidencia = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel1Dto.listParRelapseDto);//Reincidencia do Level1
-            if(paramsDto.listParHeaderFieldDto != null)
-            foreach (var i in paramsDto.listParHeaderFieldDto.Where(r => !string.IsNullOrEmpty(r.DefaultOption)))
-                paramsDto.listParHeaderFieldDto.ForEach(r => r.parMultipleValuesDto.FirstOrDefault(c => c.Name.Equals(i.DefaultOption)).IsDefaultOption = true);
+            if (paramsDto.listParHeaderFieldDto != null)
+                foreach (var i in paramsDto.listParHeaderFieldDto.Where(r => !string.IsNullOrEmpty(r.DefaultOption)))
+                    paramsDto.listParHeaderFieldDto.ForEach(r => r.parMultipleValuesDto.FirstOrDefault(c => c.Name.Equals(i.DefaultOption)).IsDefaultOption = true);
             List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);//Cabeçalhos do Level1
 
             List<ParCounterXLocal> ListaParCounterLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.parLevel1Dto.listParCounterXLocal);//Contadores do Level1
@@ -217,9 +217,9 @@ namespace Dominio.Services
         {
             /*ParLevel1*/
             var parlevel1 = _baseRepoParLevel1.GetById(idParLevel1);
-           
+
             var parlevel1Dto = Mapper.Map<ParLevel1DTO>(parlevel1);
-            parlevel1Dto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parlevel1.ParCounterXLocal.Where(r=>r.IsActive == true).OrderByDescending(r => r.IsActive));/*Contadores*/
+            parlevel1Dto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parlevel1.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Contadores*/
             parlevel1Dto.listParGoalLevel1 = Mapper.Map<List<ParGoalDTO>>(parlevel1.ParGoal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Meta*/
             parlevel1Dto.listLevel1XClusterDto = Mapper.Map<List<ParLevel1XClusterDTO>>(parlevel1.ParLevel1XCluster.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Clusters*/
             parlevel1Dto.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(parlevel1.ParLevel3Level2Level1.Where(r => r.Active == true));/*Level 2 e 3 vinculados*/
@@ -318,7 +318,7 @@ namespace Dominio.Services
 
             /*Estas prop deveriam estar dentro do parlevel2*/
             paramsDto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();/*Regra de Alerta, sem isto dava estouro...*/
-            
+
             /*Cria select Level 2 e 3 vinculados*/
             paramsDto.listParLevel3GroupDto = new List<ParLevel3GroupDTO>();
             level2.listParLevel3GroupDto = Mapper.Map<List<ParLevel3GroupDTO>>(parLevel2.ParLevel3Group.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));
@@ -330,7 +330,7 @@ namespace Dominio.Services
                 level2.pesoDoVinculoSelecionado = 0;
 
             paramsDto.parLevel2Dto = level2;
-        
+
             return paramsDto;
         }
 
@@ -342,7 +342,7 @@ namespace Dominio.Services
         {
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel3 saveParamLevel3 = Mapper.Map<ParLevel3>(paramsDto.parLevel3Dto);
-            
+
             #region Level3Value
 
             if (paramsDto.parLevel3Dto.listLevel3Value != null)
@@ -372,12 +372,13 @@ namespace Dominio.Services
 
             try
             {
-              
+
                 _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2peso);
 
-                foreach (var l32 in parLevel3Level2peso)
-                    if (existeLevel3VinculadoComLevel1.FirstOrDefault(r => r.ParLevel3Level2_Id == l32.Id) == null)
-                        AddVinculoL1L2(existeLevel3VinculadoComLevel1.FirstOrDefault(r=> parLevel3Level2peso.Any(c=>c.Id == r.ParLevel3Level2_Id)).ParLevel1_Id, parLevel3Level2peso.FirstOrDefault().ParLevel2_Id, saveParamLevel3.Id);
+                if (parLevel3Level2peso != null)
+                    foreach (var l32 in parLevel3Level2peso)
+                        if (existeLevel3VinculadoComLevel1.FirstOrDefault(r => r.ParLevel3Level2_Id == l32.Id) == null)
+                            AddVinculoL1L2(existeLevel3VinculadoComLevel1.FirstOrDefault(r => parLevel3Level2peso.Any(c => c.Id == r.ParLevel3Level2_Id)).ParLevel1_Id, parLevel3Level2peso.FirstOrDefault().ParLevel2_Id, saveParamLevel3.Id);
 
             }
             catch (DbUpdateException e)
@@ -408,7 +409,7 @@ namespace Dominio.Services
             ParamsDTO retorno = new ParamsDTO();
             var parlevel3 = _baseRepoParLevel3.GetById(idParLevel3);/*ParLevel3*/
             var level3 = Mapper.Map<ParLevel3DTO>(parlevel3);//Level3
-            level3.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parlevel3.ParRelapse.Where(r=>r.IsActive == true).OrderByDescending(r => r.IsActive));/*Reincidencia*/
+            level3.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parlevel3.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Reincidencia*/
             level3.listGroupsLevel2 = Mapper.Map<List<ParLevel3GroupDTO>>(_baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList());//DDL
             level3.listLevel3Level2 = Mapper.Map<List<ParLevel3Level2DTO>>(parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == level3.Id && r.IsActive == true).OrderByDescending(r => r.IsActive));
 
@@ -616,7 +617,7 @@ namespace Dominio.Services
                 var sql1 = "SELECT * FROM ParLevel3Level2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + ")";
                 var sql2 = "SELECT * FROM ParLevel2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel2_Id = " + idLevel2;
                 var result1 = db.Database.SqlQuery<ParLevel3Level2Level1>(sql1).ToList();
-                var result2 = db.ParLevel2Level1.Where(r=>r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2).ToList();
+                var result2 = db.ParLevel2Level1.Where(r => r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2).ToList();
                 if (result1?.Count() > 0 || result2?.Count() > 0)
                 {
                     if (result1?.Count() > 0)
@@ -668,11 +669,11 @@ namespace Dominio.Services
             _baseRepoParLevel3Level2.AddOrUpdate(objLelvel2Level3ToSave);
             ParLevel3Level2DTO objtReturn = Mapper.Map<ParLevel3Level2DTO>(objLelvel2Level3ToSave);
 
-            
+
 
             return objtReturn;
         }
-      
+
         public ParLevel3GroupDTO RemoveParLevel3Group(int Id)
         {
             var parLevel3Group = _baseParLevel3Group.GetAll().FirstOrDefault(r => r.Id == Id);
