@@ -297,7 +297,7 @@ namespace Dominio.Services
         /// </summary>
         /// <param name="IdParLevel2"></param>
         /// <returns></returns>
-        public ParamsDTO GetLevel2(int idParLevel2, int? level3Id = 0)
+        public ParamsDTO GetLevel2(int idParLevel2, int level3Id, int level1Id)
         {
             /*ParLevel2*/
             var paramsDto = new ParamsDTO();
@@ -314,7 +314,22 @@ namespace Dominio.Services
             level2.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parLevel2.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Reincidencia*/
             level2.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parLevel2.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Contadores*/
             level2.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(parLevel2.ParNotConformityRuleXLevel.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Regra de Alerta*/
-            level2.listParLevel3Level2Dto = Mapper.Map<List<ParLevel3Level2DTO>>(parLevel2.ParLevel3Level2.Where(r => r.IsActive == true));/*Vinculo L3 L2*/
+            
+            #region DropDown - Level3
+
+            /*Todos os Vinculos com este level2 / level3.*/
+            var vinculosComOLevel2 = parLevel2.ParLevel3Level2.Where(r => r.IsActive == true);/*Vinculo L3 L2*/
+
+            /*Se houver level 1 selecionado na tela filtro somente os que estão vinculados com level2 / Level3, e tem id do level 1 em ParLevel3Level2level1*/
+            if (level1Id > 0)
+                vinculosComOLevel2 = vinculosComOLevel2.Where(r => r.ParLevel3Level2Level1.Any(c => c.ParLevel1_Id == level1Id));
+            //else if(level1Id > 0 && level3Id <= 0)
+            //    vinculosComOLevel2 = _baseRepoParLevel2Level1.GetAll().Where(r=>r.ParLevel1_Id == level1Id && r.ParLevel2_Id == level2.Id ).Select(r=>r.)
+
+            level2.listParLevel3Level2Dto = Mapper.Map<List<ParLevel3Level2DTO>>(vinculosComOLevel2);
+            level2.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3NLL.GetAll().Where(r => r.IsActive == true)), level2.listParLevel3Level2Dto); 
+            
+            #endregion
 
             /*Estas prop deveriam estar dentro do parlevel2*/
             paramsDto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();/*Regra de Alerta, sem isto dava estouro...*/
@@ -322,7 +337,6 @@ namespace Dominio.Services
             /*Cria select Level 2 e 3 vinculados*/
             paramsDto.listParLevel3GroupDto = new List<ParLevel3GroupDTO>();
             level2.listParLevel3GroupDto = Mapper.Map<List<ParLevel3GroupDTO>>(parLevel2.ParLevel3Group.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));
-            level2.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3NLL.GetAll().Where(r => r.IsActive == true)), level2.listParLevel3Level2Dto);
 
             if (parLevel2.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == level3Id && r.IsActive == true) != null)/*Peso do vinculo*/
                 level2.pesoDoVinculoSelecionado = parLevel2.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == level3Id && r.IsActive == true).Weight;
@@ -376,12 +390,23 @@ namespace Dominio.Services
 
                 _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2peso);
 
+                /*
+                 * Verifica VINCULOS Com level2 e level1
+                 * 
+                 *Caso for utilizar este codigo com SQL:
+                 * 
+                 * select * from parlevel2level1 where ParLevel1_Id = 29
+                 * select * from parlevel3level2 where  ParLevel3_Id = 1074
+                 * select * from parlevel3level2level1 where ParLevel1_Id = 29 and ParLevel3Level2_id in (select id from parlevel3level2 where  ParLevel3_Id = 1074) 
+                 * 
+                 */
                 if (parLevel3Level2peso != null)
                     foreach (var l32 in parLevel3Level2peso)
                         if (existeLevel3VinculadoComLevel1.FirstOrDefault(r => r.ParLevel3Level2_Id == l32.Id) == null)
                         {
                             var existeNoLevel3Level2NaoExistenoLevel2Level1 = existeLevel3VinculadoComLevel1.FirstOrDefault(r => l32.Id == r.ParLevel3Level2_Id);
-                            AddVinculoL1L2(existeNoLevel3Level2NaoExistenoLevel2Level1.ParLevel1_Id, parLevel3Level2peso.FirstOrDefault().ParLevel2_Id, saveParamLevel3.Id);
+                            if (existeNoLevel3Level2NaoExistenoLevel2Level1 != null)
+                                AddVinculoL1L2(existeNoLevel3Level2NaoExistenoLevel2Level1.ParLevel1_Id, parLevel3Level2peso.FirstOrDefault().ParLevel2_Id, saveParamLevel3.Id);
                         }
 
             }
@@ -776,5 +801,22 @@ namespace Dominio.Services
 
         }
 
+        public void verificaVinculos(int level1 = 0, int level2 = 0, int level3 = 0)
+        {
+            var hasVinculoLevel32 = "select * from parlevel3level2 where  ParLevel3_Id = 1074";
+            var hasVinculoLevel321 = "select * from parlevel3level2level1 where ParLevel1_Id = 29 and ParLevel3Level2_id in (select id from parlevel3level2 where  ParLevel3_Id = 1074)";
+            var hasVinculoLevel12 = "select * from parlevel2level1 where ParLevel1_Id = 29";
+
+
+        }
+
+
+    }
+
+    public class Vinculos
+    {
+        public bool isVinculadoLevel1 {get; set ;}
+        public bool isVinculadoLevel2 {get; set ;}
+        public bool isVinculadoLevel3 { get; set ;}
     }
 }
