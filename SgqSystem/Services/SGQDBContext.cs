@@ -997,13 +997,23 @@ namespace SGQDBContext
         /// </summary>
         /// <param name="UserSGQ_Id"></param>
         /// <returns></returns>
-        public IEnumerable<RoleXUserSgq> getRoles(int UserSGQ_Id)
+        public IEnumerable<RoleXUserSgq> getRoles(int UserSGQ_Id, int ParCompany_id)
         {
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "select HashKey from ScreenComponent;";
+            string sql = "SELECT * FROM ScreenComponent TC                                                                 "+
+                         "INNER JOIN RoleSGQ TSgq ON Tsgq.ScreenComponent_Id = TC.Id                                       "+
+                         "INNER JOIN RoleJBS TJbs ON TJbs.ScreenComponent_Id = TC.Id                                       "+
+                         "INNER JOIN ParCompanyXUserSgq CU ON CU.Role = Tsgq.Role                                          "+
+                         "INNER JOIN UserSgq U ON U.Role = TJbs.Role                                                       "+
+                         "WHERE                                                                                            "+
+                         "U.Id = CU.UserSgq_Id                                                                             "+
+                         "AND                                                                                              "+
+                         "CU.ParCompany_Id = "+ ParCompany_id + "                                                          "+
+                         "AND                                                                                              "+
+                         "U.id = "+ UserSGQ_Id + "                                                                         ";
 
             var users = db.Query<RoleXUserSgq>(sql);
 
