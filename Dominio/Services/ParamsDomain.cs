@@ -330,6 +330,7 @@ namespace Dominio.Services
                 level2.pesoDoVinculoSelecionado = 0;
 
             paramsDto.parLevel2Dto = level2;
+            paramsDto.parLevel2Dto.listParLevel3Level2Dto = null;
 
             return paramsDto;
         }
@@ -378,7 +379,10 @@ namespace Dominio.Services
                 if (parLevel3Level2peso != null)
                     foreach (var l32 in parLevel3Level2peso)
                         if (existeLevel3VinculadoComLevel1.FirstOrDefault(r => r.ParLevel3Level2_Id == l32.Id) == null)
-                            AddVinculoL1L2(existeLevel3VinculadoComLevel1.FirstOrDefault(r => parLevel3Level2peso.Any(c => c.Id == r.ParLevel3Level2_Id)).ParLevel1_Id, parLevel3Level2peso.FirstOrDefault().ParLevel2_Id, saveParamLevel3.Id);
+                        {
+                            var existeNoLevel3Level2NaoExistenoLevel2Level1 = existeLevel3VinculadoComLevel1.FirstOrDefault(r => l32.Id == r.ParLevel3Level2_Id);
+                            AddVinculoL1L2(existeNoLevel3Level2NaoExistenoLevel2Level1.ParLevel1_Id, parLevel3Level2peso.FirstOrDefault().ParLevel2_Id, saveParamLevel3.Id);
+                        }
 
             }
             catch (DbUpdateException e)
