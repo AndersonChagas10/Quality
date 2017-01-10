@@ -84,12 +84,6 @@ namespace SgqSystem.Controllers
         }
 
         [OutputCache(Duration = 20, VaryByParam = "none")]
-        public ActionResult NovoRelatorio()
-        {
-            return View(form);
-        }
-
-        [OutputCache(Duration = 20, VaryByParam = "none")]
         public ActionResult ExemploRelatorio()
         {
             return View(form);

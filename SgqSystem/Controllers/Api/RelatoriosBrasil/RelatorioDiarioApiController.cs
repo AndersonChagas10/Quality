@@ -32,8 +32,6 @@ namespace SgqSystem.Controllers.Api
             return _mock;
         }
 
-
-
         private void CriaMockGrafico1Level1()
         {
             var firstDayOfLastMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(2).AddDays(1);
