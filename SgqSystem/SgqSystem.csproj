@@ -323,6 +323,7 @@
     <Compile Include="Controllers\Api\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\GestaoController.cs" />
+    <Compile Include="Controllers\ManDataCollectITController.cs" />
     <Compile Include="Controllers\ManutencaoController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
@@ -1273,6 +1274,7 @@
     <Content Include="Views\RelatoriosSgq\ApontamentosDiarios.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoConformidade.cshtml" />
     <Content Include="Views\RelatoriosSgq\ExemploRelatorio.cshtml" />
+    <Content Include="Views\ManDataCollectIT\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
