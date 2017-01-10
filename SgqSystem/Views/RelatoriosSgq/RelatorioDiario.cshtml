@@ -56,6 +56,9 @@
             $("#btnSend").click(function (e) {
                 Send();
             });
+
+            formControl.showFullCallendar();
+            formControl.showUnit();
         });
 
         function Send() {
@@ -775,11 +778,6 @@
 
             return true;
         }
-
-        $(document).ready(function () {
-            formControl.showFullCallendar();
-            formControl.showUnit();
-        });
 
         var Chart = {
             CorTotalNc: function () { return '#F7BCB0' },
