@@ -56,6 +56,9 @@
             $("#btnSend").click(function (e) {
                 Send();
             });
+
+            formControl.showSimpleDate();
+            formControl.showUnit();
         });
 
         function Send() {
@@ -133,8 +136,6 @@
                 //openMessageModal("Alerta", e.responseJSON.Message);
             });
         };
-
-
 
         function GraficoInicialLeTodosLevel1(data) {
 
@@ -775,11 +776,6 @@
 
             return true;
         }
-
-        $(document).ready(function () {
-            formControl.showFullCallendar();
-            formControl.showUnit();
-        });
 
         var Chart = {
             CorTotalNc: function () { return '#F7BCB0' },

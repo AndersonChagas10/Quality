@@ -326,7 +326,7 @@
     <Compile Include="Controllers\ManutencaoController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
-    <Compile Include="Controllers\RelatoriosSgqController.cs" />
+    <Compile Include="Controllers\RelatoriosBrasil\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
     <Compile Include="Controllers\GlobalConfigController.cs" />
@@ -1271,6 +1271,7 @@
     <Content Include="Views\Example\TesteSelect2.cshtml" />
     <Content Include="Views\RelatoriosSgq\ApontamentosDiarios.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoConformidade.cshtml" />
+    <Content Include="Views\RelatoriosSgq\ExemploRelatorio.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

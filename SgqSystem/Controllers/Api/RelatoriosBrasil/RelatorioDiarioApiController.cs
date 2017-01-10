@@ -1,5 +1,4 @@
-﻿using Dominio;
-using SgqSystem.ViewModels;
+﻿using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +36,8 @@ namespace SgqSystem.Controllers.Api
 
         private void CriaMockGrafico1Level1()
         {
+            var firstDayOfLastMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(2).AddDays(1);
+
             _mock = new PanelResulPanel();
 
             _mock.listResultSetLevel1 = new List<RelDiarioResultSet>();
@@ -62,7 +63,7 @@ namespace SgqSystem.Controllers.Api
                 level1_Id = 2,
                 Level1Name = "Level1 - 2",
                 Unidade_Id = 1,
-                Unidade = "Lins",
+                Unidade = "Lins2",
                 ProcentagemNc = 130.8M,
                 Meta = 5M,
                 NC = 8M,
@@ -75,7 +76,7 @@ namespace SgqSystem.Controllers.Api
                 /*Query2 Para Tendencia*/
                 for (int j = 0; j < 30; j++)
                 {
-                    if (j > 5 && j < 10)
+                    if (j == 5)
                     {
                         _mock.listResultSetTendencia.Add(new RelDiarioResultSet()
                         {
@@ -88,18 +89,18 @@ namespace SgqSystem.Controllers.Api
                             Meta = 5M,
                             Unidade = i.Unidade,
                             Unidade_Id = i.Unidade_Id,
-                            Data = DateTime.UtcNow.AddDays(j).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
+                            Data = DateTime.UtcNow.AddMonths(-1).AddDays(4).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
                         });
                     }
-                    else if (j > 16 && j < 23)
+                    else if (j == 16)
                     {
                         _mock.listResultSetTendencia.Add(new RelDiarioResultSet()
                         {
                             level1_Id = i.level1_Id,
                             Level1Name = i.Level1Name,
                             Level2Name = "Tendência Level2 " + counter,
-                            ProcentagemNc = 50M + counter,
-                            NC = 4M + counter,
+                            ProcentagemNc = 76M + counter,
+                            NC = 8M + counter,
                             Av = 12M + counter,
                             Meta = 5M,
                             Unidade = i.Unidade,
@@ -108,15 +109,15 @@ namespace SgqSystem.Controllers.Api
                             //;
                         });
                     }
-                    else if (j < 28 && j > 26)
+                    else if (j == 28)
                     {
                         _mock.listResultSetTendencia.Add(new RelDiarioResultSet()
                         {
                             level1_Id = i.level1_Id,
                             Level1Name = i.Level1Name,
                             Level2Name = "Tendência Level2 " + counter,
-                            ProcentagemNc = 50M + counter,
-                            NC = 4M + counter,
+                            ProcentagemNc = 20M + counter,
+                            NC = 1M + counter,
                             Av = 12M + counter,
                             Meta = 5M,
                             Unidade = i.Unidade,
@@ -124,21 +125,23 @@ namespace SgqSystem.Controllers.Api
                             Data = DateTime.UtcNow.AddDays(j).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
                         });
                     }
-                    else {
-                        _mock.listResultSetTendencia.Add(new RelDiarioResultSet()
-                        {
-                            level1_Id = i.level1_Id,
-                            Level1Name = i.Level1Name,
-                            Level2Name = "Tendência Level2 " + counter,
-                            //ProcentagemNc = 0M + counter,
-                            //NC = 0M + counter,
-                            //Av = 0M + counter,
-                            //Meta = 0M,
-                            Unidade = i.Unidade,
-                            Unidade_Id = i.Unidade_Id,
-                            Data = DateTime.UtcNow.AddDays(j).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
-                        });
-                    }
+                    //else {
+                    //    _mock.listResultSetTendencia.Add(new RelDiarioResultSet()
+                    //    {
+                    //        level1_Id = i.level1_Id,
+                    //        Level1Name = i.Level1Name,
+                    //        Level2Name = "Tendência Level2 " + counter,
+                    //        //ProcentagemNc = 0M + counter,
+                    //        //NC = 0M + counter,
+                    //        //Av = 0M + counter,
+                    //        //Meta = 0M,
+                    //        Unidade = i.Unidade,
+                    //        Unidade_Id = i.Unidade_Id,
+                    //        Data = DateTime.UtcNow.AddDays(j).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
+                    //    });
+                    //}
+
+
                 }
 
                 /*Query 3 para Monitoramentos do Indicador*/
@@ -258,7 +261,9 @@ namespace SgqSystem.Controllers.Api
         public decimal Meta { get; set; }
         public decimal ProcentagemNc { get; set; }
         public decimal Av { get; set; }
+        public decimal Av_Peso { get; set; }
         public decimal NC { get; set; }
+        public decimal NC_Peso { get; set; }
         public double Data { get; internal set; }
     }
 
