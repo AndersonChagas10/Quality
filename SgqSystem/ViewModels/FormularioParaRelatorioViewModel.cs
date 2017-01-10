@@ -16,6 +16,27 @@ namespace SgqSystem.ViewModels
 
 
         //}
+        public FormularioParaRelatorioViewModel()
+        {
+            //HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
+            //if (cookie == null)
+            //{
+            //    var rolesSgqCompany = "";
+            //    var userId = 0;
+            //    if (!string.IsNullOrEmpty(cookie.Values["userId"]))
+            //        int.TryParse(cookie.Values["userId"].ToString(), out userId);
+
+            //    if (userId > 0)
+            //    {
+            //        if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            //        {
+            //            rolesSgqCompany = cookie.Values["roles"].ToString();
+            //        }
+
+            //    }
+
+            //}
+        }
 
         #region Retorno
 
@@ -82,7 +103,6 @@ namespace SgqSystem.ViewModels
             var counter = 0;
             foreach (var i in enumerable)
             {
-
                 var text = i.GetType().GetProperty("Name") ?? i.GetType().GetProperty("Description");
                 var prop = i.GetType().GetProperty("Id");
                 retorno.Insert(counter, new SelectListItem() { Text = text.GetValue(i).ToString(), Value = prop.GetValue(i).ToString() });

@@ -677,6 +677,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="Level2Number" Type="int" />
           <Property Name="hashKey" Type="int" />
+          <Property Name="haveRealTimeConsolidation" Type="bit" />
+          <Property Name="RealTimeConsolitationUpdate" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SgqDbDev.dbo.ParLevel1VariableProduction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -746,6 +748,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParLevel1VariableProductionXLevel1' d
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="HasSampleTotal" Type="bit" />
         </EntityType>
         <EntityType Name="ParLevel2ControlCompany">
           <Key>
@@ -4587,6 +4590,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="ParLevel3Level2Level1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel3Level2Level1" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" FromRole="ParLevel1" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel1" FromRole="ParLevel1" ToRole="ParRelapse" />
+          <Property Name="haveRealTimeConsolidation" Type="Boolean" />
+          <Property Name="RealTimeConsolitationUpdate" Type="Int32" />
         </EntityType>
         <EntityType Name="ParLevel1XCluster">
           <Key>
@@ -4645,6 +4650,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel2" FromRole="ParLevel2" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel2" FromRole="ParLevel2" ToRole="ParRelapse" />
           <NavigationProperty Name="ParSample" Relationship="SgqDbModel.FK_ParSample_ParLevel2" FromRole="ParLevel2" ToRole="ParSample" />
+          <Property Name="HasSampleTotal" Type="Boolean" />
         </EntityType>
         <EntityType Name="ParLevel2ControlCompany">
           <Key>
@@ -7198,6 +7204,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySetMapping Name="ParLevel1">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel1">
               <MappingFragment StoreEntitySet="ParLevel1">
+                <ScalarProperty Name="RealTimeConsolitationUpdate" ColumnName="RealTimeConsolitationUpdate" />
+                <ScalarProperty Name="haveRealTimeConsolidation" ColumnName="haveRealTimeConsolidation" />
                 <ScalarProperty Name="hashKey" ColumnName="hashKey" />
                 <ScalarProperty Name="Level2Number" ColumnName="Level2Number" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
@@ -7253,6 +7261,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySetMapping Name="ParLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel2">
               <MappingFragment StoreEntitySet="ParLevel2">
+                <ScalarProperty Name="HasSampleTotal" ColumnName="HasSampleTotal" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
