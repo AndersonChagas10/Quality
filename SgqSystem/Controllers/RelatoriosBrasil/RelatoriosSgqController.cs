@@ -65,17 +65,46 @@ namespace SgqSystem.Controllers
         }
 
         #endregion
-
+        
         [OutputCache(Duration = 20, VaryByParam = "none")]
         public ActionResult Scorecard()
         {
+            FiltraUnidades();
             return View(form);
         }
 
         [OutputCache(Duration = 20, VaryByParam = "none")]
         public ActionResult RelatorioDiario()
         {
+            FiltraUnidades();
+            return View(form);
+        }
 
+        [OutputCache(Duration = 20, VaryByParam = "none")]
+        public ActionResult ApontamentosDiarios()
+        {
+            FiltraUnidades();
+            return View(form);
+        }
+
+        [OutputCache(Duration = 20, VaryByParam = "none")]
+        public ActionResult NaoConformidade()
+        {
+            FiltraUnidades();
+            return View(form);
+        }
+
+        [OutputCache(Duration = 20, VaryByParam = "none")]
+        public ActionResult ExemploRelatorio()
+        {
+            FiltraUnidades();
+            return View(form);
+        }
+
+        #region Auxiliares
+
+        private void FiltraUnidades()
+        {
             HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
             if (cookie != null)
             {
@@ -85,38 +114,17 @@ namespace SgqSystem.Controllers
                     int.TryParse(cookie.Values["userId"].ToString(), out userId);
 
                 if (userId > 0)
-                {
                     if (!string.IsNullOrEmpty(cookie.Values["rolesCompany"]))
                     {
                         rolesCompany = cookie.Values["rolesCompany"].ToString();
                         var companyesDoUser = _companyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userId).Select(r => r.ParCompany).ToList().OrderBy(r => r.Name).GroupBy(r => r.Id).Select(group => group.First());
                         form.SetUnitsSelectList(companyesDoUser);
+                        ViewBag.UnidadeUsuario = companyesDoUser;
                     }
-
-                }
-
             }
-            return View(form);
-        }
+        } 
 
-        [OutputCache(Duration = 20, VaryByParam = "none")]
-        public ActionResult ApontamentosDiarios()
-        {
-            return View(form);
-        }
-
-        [OutputCache(Duration = 20, VaryByParam = "none")]
-        public ActionResult NaoConformidade()
-        {
-            return View(form);
-        }
-
-        [OutputCache(Duration = 20, VaryByParam = "none")]
-        public ActionResult ExemploRelatorio()
-        {
-            return View(form);
-        }
-        
+        #endregion
 
     }
 }
