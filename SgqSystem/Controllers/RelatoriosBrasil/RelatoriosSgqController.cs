@@ -2,6 +2,7 @@
 using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.DTO.Params;
+using DTO.Helpers;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Linq;
@@ -76,6 +77,7 @@ namespace SgqSystem.Controllers
         [OutputCache(Duration = 20, VaryByParam = "none")]
         public ActionResult RelatorioDiario()
         {
+            //var teste = Guard.GetUsuarioLogado_Id(HttpContext);
             FiltraUnidades();
             return View(form);
         }
