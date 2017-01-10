@@ -408,7 +408,13 @@ namespace SgqSystem.Services
             {
                 foreach (RoleXUserSgq role in roles)
                 {
-                    user += "<div class='role'>" + role.HashKey + "</div>";
+                    if( role.Type == 0
+                        || (role.Type == 3 && role.RoleJBS != null && role.RoleSGQ != null)
+                        || (role.Type == 1 && role.RoleSGQ != null)
+                        || (role.Type == 2 && role.RoleJBS != null))
+                    {
+                        user += "<div class='role'>" + role.HashKey + "</div>";
+                    }
                 }
             }
             

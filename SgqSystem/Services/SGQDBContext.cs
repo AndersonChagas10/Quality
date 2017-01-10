@@ -991,6 +991,9 @@ namespace SGQDBContext
     public partial class RoleXUserSgq
     {
         public string HashKey { get; set; }
+        public int Type { get; set; }
+        public string RoleJBS { get; set; }
+        public string RoleSGQ { get; set; }
 
         /// <summary>
         /// Retorna todos as permissões do usuário
@@ -1003,17 +1006,15 @@ namespace SGQDBContext
 
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT * FROM ScreenComponent TC                                                                 "+
-                         "INNER JOIN RoleSGQ TSgq ON Tsgq.ScreenComponent_Id = TC.Id                                       "+
-                         "INNER JOIN RoleJBS TJbs ON TJbs.ScreenComponent_Id = TC.Id                                       "+
-                         "INNER JOIN ParCompanyXUserSgq CU ON CU.Role = Tsgq.Role                                          "+
-                         "INNER JOIN UserSgq U ON U.Role = TJbs.Role                                                       "+
-                         "WHERE                                                                                            "+
-                         "U.Id = CU.UserSgq_Id                                                                             "+
-                         "AND                                                                                              "+
-                         "CU.ParCompany_Id = "+ ParCompany_id + "                                                          "+
-                         "AND                                                                                              "+
-                         "U.id = "+ UserSGQ_Id + "                                                                         ";
+            string sql = "SELECT TC.HashKey as HashKey, RT.Id as Type, TJbs.Role as RoleJBS, Tsgq.Role as RoleSGQ FROM ScreenComponent TC " +
+                         "LEFT JOIN RoleType RT on RT.Id = TC.Type                                                                          " +
+                         "LEFT JOIN RoleSGQ TSgq ON Tsgq.ScreenComponent_Id = TC.Id                                                         " +
+                         "LEFT JOIN RoleJBS TJbs ON TJbs.ScreenComponent_Id = TC.Id                                                         " +
+                         "LEFT JOIN ParCompanyXUserSgq CU ON (CU.Role = TJbs.Role OR TJbs.Role IS NULL)                                       " +
+                         "LEFT JOIN UserSgq U ON (U.Role = Tsgq.Role OR Tsgq.Role IS NULL)                                                    " +
+                         "WHERE U.Id = CU.UserSgq_Id AND                                                                                          " +
+                         "CU.ParCompany_Id = "+ ParCompany_id + " AND                                                                       " +
+                         "U.id = "+ UserSGQ_Id + ";                                                                                         " ;
 
             var users = db.Query<RoleXUserSgq>(sql);
 
