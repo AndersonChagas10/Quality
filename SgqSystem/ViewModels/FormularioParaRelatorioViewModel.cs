@@ -18,24 +18,7 @@ namespace SgqSystem.ViewModels
         //}
         public FormularioParaRelatorioViewModel()
         {
-            //HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
-            //if (cookie == null)
-            //{
-            //    var rolesSgqCompany = "";
-            //    var userId = 0;
-            //    if (!string.IsNullOrEmpty(cookie.Values["userId"]))
-            //        int.TryParse(cookie.Values["userId"].ToString(), out userId);
-
-            //    if (userId > 0)
-            //    {
-            //        if (!string.IsNullOrEmpty(cookie.Values["roles"]))
-            //        {
-            //            rolesSgqCompany = cookie.Values["roles"].ToString();
-            //        }
-
-            //    }
-
-            //}
+          
         }
 
         #region Retorno
