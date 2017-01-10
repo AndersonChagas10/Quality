@@ -1,5 +1,4 @@
-﻿using Dominio;
-using SgqSystem.ViewModels;
+﻿using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +36,8 @@ namespace SgqSystem.Controllers.Api
 
         private void CriaMockGrafico1Level1()
         {
+            var firstDayOfLastMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(2).AddDays(1);
+
             _mock = new PanelResulPanel();
 
             _mock.listResultSetLevel1 = new List<RelDiarioResultSet>();
@@ -62,7 +63,7 @@ namespace SgqSystem.Controllers.Api
                 level1_Id = 2,
                 Level1Name = "Level1 - 2",
                 Unidade_Id = 1,
-                Unidade = "Lins",
+                Unidade = "Lins2",
                 ProcentagemNc = 130.8M,
                 Meta = 5M,
                 NC = 8M,
@@ -88,7 +89,7 @@ namespace SgqSystem.Controllers.Api
                             Meta = 5M,
                             Unidade = i.Unidade,
                             Unidade_Id = i.Unidade_Id,
-                            Data = DateTime.UtcNow.AddDays(j).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
+                            Data = DateTime.UtcNow.AddMonths(-1).AddDays(4).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
                         });
                     }
                     else if (j == 16)
@@ -260,7 +261,9 @@ namespace SgqSystem.Controllers.Api
         public decimal Meta { get; set; }
         public decimal ProcentagemNc { get; set; }
         public decimal Av { get; set; }
+        public decimal Av_Peso { get; set; }
         public decimal NC { get; set; }
+        public decimal NC_Peso { get; set; }
         public double Data { get; internal set; }
     }
 

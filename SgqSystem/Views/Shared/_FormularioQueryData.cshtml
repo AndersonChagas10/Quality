@@ -185,6 +185,12 @@
         width: 100%!important;
     }
 
+    .singleCalendar{
+        background-image: ;
+        background-repeat: no-repeat;
+        padding-left: 25px;
+    }
+
 </style>
 
 
@@ -200,10 +206,12 @@
 
         <li>
             <div class="" id="simpleCallendar" style="display:none">
-                <span class="redLabel">@Resources.Resource.date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
+                <span class="redLabel">@Resources.Resource.date </span>
                 <div class="has-feedback">
-                    <input type="text" class="form-control" name="datefilter" style="width:210px" />
-                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    <span>
+                        <input type="text" class="" name="datefilter" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 210px"/>
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                    </span>
                 </div>
             </div>
         </li>
