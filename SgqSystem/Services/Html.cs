@@ -232,6 +232,7 @@ namespace SgqSystem.Services
 
             return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + ">" + outerhtml + "</li>";
         }
+
         public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = true, bootstrapcolor? color = null)
         {
             string collapseIn = " in";
@@ -246,19 +247,19 @@ namespace SgqSystem.Services
                 colorPanel = color.ToString();
             }
 
-            if(!string.IsNullOrEmpty(classe))
+            if (!string.IsNullOrEmpty(classe))
             {
                 classe = " " + classe;
             }
 
             return "  <div class=\"panel-group" + classe + "\">                                                                                                          " +
                     "    <div class=\"panel panel-" + colorPanel + "\">                                                                                          " +
-                    "      <div class=\"panel-heading\">                                                                                                    " +
+                    "      <div class=\"panel-heading\" role=\"tab\" id=\"heading" + id + "\">                                                                                                    " +
                     "        <h4 class=\"panel-title\">                                                                                                     " +
-                    "          <a data-toggle=\"collapse\" href=\"#collapse" + id + "\" class=\"\" aria-expanded=\"true\">" + label + "</a>                " +
+                    "          <a role=\"button\" data-toggle=\"collapse\" href=\"#collapse" + id + "\" class=\"\" aria-expanded=\"true\" aria-controls=\"collapse" + id + "\">" + label + "</a>                " +
                     "      </div>                                                                                                                           " +
                     "        </h4>                                                                                                                          " +
-                    "      <div id = \"collapse" + id + "\" class=\"panel-collapse collapse" + collapseIn + "\" aria-expanded=\"true\">                     " +
+                    "         <div id=\"collapse" + id + "\" class=\"panel-collapse collapse" + collapseIn + "\" role=\"tabpanel\" aria-labelledby=\"heading" + id + "\">                     " +
                     "        <ul class=\"list-group\" style=\"margin:0\">                                                                                   " +
                              outerhtml +
                     "        </ul>                                                                                                                          " +
@@ -267,6 +268,7 @@ namespace SgqSystem.Services
                     "  </div>                                                                                                                               ";
 
         }
+
         public string link(string id = null, string classe = null, string href = null, string tags = null, string outerhtml = null)
         {
             if (string.IsNullOrEmpty(href))
@@ -330,7 +332,9 @@ namespace SgqSystem.Services
             }
 
             string calculado = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\">                                                                                                  " +
-                                 "    <input type=\"text\" value=\"\" class=\"form-control text-center levelValue\">     " +
+                                 "    <input type=\"text\" style=\"width:50px\" value=\"\" class=\"form-control text-center input01 \">     " +
+                                 " <span style=\"padding-left:24px;padding-right:24px;\"><b>x10^</b></span>" +
+                                 "    <input type=\"text\" style=\"width:50px\" value=\"\" class=\"form-control text-center input02 \">     " +
                                  "</div>                                                                                                                                                                      ";
             return calculado;
         }

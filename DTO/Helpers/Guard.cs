@@ -23,6 +23,28 @@ namespace DTO.Helpers
             return userId;
         }
 
+        //public static int GetUsuarioLogado_Id(HttpContextBase filterContext)
+        //{
+        //    var userId = 0;
+        //    HttpCookie cookie = filterContext.Request.Cookies.Get("webControlCookie");
+        //    if (cookie != null)
+        //        if (!string.IsNullOrEmpty(cookie.Values["userId"]))
+        //            int.TryParse(cookie.Values["userId"].ToString(), out userId);
+
+        //    return userId;
+        //}
+
+        //public static int GetUsuarioLogado_Id(HttpContextBase filterContext)
+        //{
+        //    var userId = 0;
+        //    HttpCookie cookie = filterContext.Request.Cookies.Get("webControlCookie");
+        //    if (cookie != null)
+        //        if (!string.IsNullOrEmpty(cookie.Values["userId"]))
+        //            int.TryParse(cookie.Values["userId"].ToString(), out userId);
+
+        //    return userId;
+        //}
+
         #region Campo Calculado
 
         public static decimal ConverteValorCalculado(string valorString)

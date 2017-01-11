@@ -212,7 +212,7 @@
                 </div>
             </div>
         </li>
-
+        
         <li>
             <div class="" id="complexCallendar" style="display:none">
                 <span class="redLabel">@Resources.Resource.date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
@@ -248,6 +248,15 @@
             <div id="showUsers" style="display:none">
                 <span class="redLabel">@Resources.Resource.auditor</span>
                 @Html.DropDownList("auditorId", Model.UserSelectList, "All", htmlAttributes: new { @class = "form-control required", @style = "width:210px" })
+            </div>
+        </li>
+
+        <li>
+            <div id="showManutencao" style="display:none">
+                <span class="redLabel">@Html.Label("2016")</span>
+                @Html.CheckBox("manutencaoAno", false) 
+
+               @*@Html.CheckBox("manutencaoAno", false) @Html.Label("2016")*@
             </div>
         </li>
 
@@ -414,8 +423,8 @@
         },
         orderDdls: function () {
 
-        }
-
+        },
+        showManutencao: function() {}
     }
 
 </script>
