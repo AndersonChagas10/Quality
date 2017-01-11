@@ -3740,7 +3740,7 @@ namespace SgqSystem.Services
                 Password = Guard.Descriptografar3DES(Password);
                 Password = UserDomain.EncryptStringAES(Password);
 
-                var roles = RolesXUserSgqDB.getRoles(Convert.ToInt32(user.UserSGQ_Id));
+                var roles = RolesXUserSgqDB.getRoles(Convert.ToInt32(user.UserSGQ_Id), Convert.ToInt32(ParCompany_Id));
 
                 usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, roles);
             }

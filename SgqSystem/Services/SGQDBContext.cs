@@ -991,19 +991,30 @@ namespace SGQDBContext
     public partial class RoleXUserSgq
     {
         public string HashKey { get; set; }
+        public int Type { get; set; }
+        public string RoleJBS { get; set; }
+        public string RoleSGQ { get; set; }
 
         /// <summary>
         /// Retorna todos as permissões do usuário
         /// </summary>
         /// <param name="UserSGQ_Id"></param>
         /// <returns></returns>
-        public IEnumerable<RoleXUserSgq> getRoles(int UserSGQ_Id)
+        public IEnumerable<RoleXUserSgq> getRoles(int UserSGQ_Id, int ParCompany_id)
         {
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "select HashKey from ScreenComponent;";
+            string sql = "SELECT TC.HashKey as HashKey, RT.Id as Type, TJbs.Role as RoleJBS, Tsgq.Role as RoleSGQ FROM ScreenComponent TC " +
+                         "LEFT JOIN RoleType RT on RT.Id = TC.Type                                                                          " +
+                         "LEFT JOIN RoleSGQ TSgq ON Tsgq.ScreenComponent_Id = TC.Id                                                         " +
+                         "LEFT JOIN RoleJBS TJbs ON TJbs.ScreenComponent_Id = TC.Id                                                         " +
+                         "LEFT JOIN ParCompanyXUserSgq CU ON (CU.Role = TJbs.Role OR TJbs.Role IS NULL)                                       " +
+                         "LEFT JOIN UserSgq U ON (U.Role = Tsgq.Role OR Tsgq.Role IS NULL)                                                    " +
+                         "WHERE U.Id = CU.UserSgq_Id AND                                                                                          " +
+                         "CU.ParCompany_Id = "+ ParCompany_id + " AND                                                                       " +
+                         "U.id = "+ UserSGQ_Id + ";                                                                                         " ;
 
             var users = db.Query<RoleXUserSgq>(sql);
 

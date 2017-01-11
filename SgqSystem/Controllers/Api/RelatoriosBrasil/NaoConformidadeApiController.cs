@@ -231,9 +231,13 @@ public class NaoConformidadeResultsSet
         return "";
     }
 
+    public string Indicador_Id { get; set; }
     public string IndicadorName { get; set; }
+    public string Unidade_Id { get; set; }
     public string UnidadeName { get; set; }
+    public string Monitoramento_Id { get; set; }
     public string MonitoramentoName { get; set; }
+    public string Tarefa_Id { get; set; }
     public string TarefaName { get; set; }
     public decimal Nc { get; set; }
     public decimal Av { get; set; }

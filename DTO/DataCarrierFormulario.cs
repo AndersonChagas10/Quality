@@ -43,5 +43,8 @@ namespace DTO
         public int auditorId { get; set; }
         public int shift { get; set; }
         public int period { get; set; }
+
+       
+
     }
 }

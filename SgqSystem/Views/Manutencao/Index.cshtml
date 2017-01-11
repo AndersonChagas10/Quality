@@ -2523,7 +2523,6 @@
 
     <script type="text/javascript">
 
-
         /*******INICIO MODEL RELATÓRIO*******/
 
         var $btn = $('#btnSend');
@@ -2543,12 +2542,6 @@
 
             return true;
         }
-
-        $(document).ready(function () {
-            $("#btnSend").click(function (e) {
-                Send();
-            });
-        });
 
         function Send() {
             $btn.button('loading');
@@ -2581,11 +2574,6 @@
 
 
         };
-
-        $(document).ready(function () {
-            formControl.showFullCallendar();
-            
-        });
 
         /*******FIM MODEL RELATÓRIO*******/
 
@@ -2629,6 +2617,13 @@
 
         })
 
+        $(document).ready(function () {
+            $("#btnSend").click(function (e) {
+                Send();
+            });
+            formControl.showFullCallendar();
+            formControl.showManutencao();
+        });
 
 
     </script>
