@@ -2491,6 +2491,7 @@ namespace SgqSystem.Services
                 }
                 //Quando termina o loop dos itens agrupados por ParCritialLevel 
                 //Se contem ParCritialLevel
+                
                 if (ParCriticalLevel == true)
                 {
                     Html.bootstrapcolor? color = null;
@@ -2508,7 +2509,7 @@ namespace SgqSystem.Services
                     }
                     //Adicionamos os itens em um acordeon
                     parLevel1 = html.accordeon(
-                                                id: parLevel1Group.Key.ToString(),
+                                                id: parLevel1Group.Key.ToString() + "critivalLevel",
                                                 label: nameParCritialLevel,
                                                 color: color,
                                                 outerhtml: parLevel1);
@@ -3334,7 +3335,7 @@ namespace SgqSystem.Services
                             if(parLevel3.ParLevel3Group_Id > 0)
                             {
                                 accordeonName = parLevel3.ParLevel3Group_Name;
-                                acoordeonId = parLevel3.ParLevel3Group_Id.ToString();
+                                acoordeonId = parLevel3.ParLevel3Group_Id.ToString() + ParLevel2.Id.ToString();
                             }
 
                             //Define a qual classe de input pertence o level3
@@ -3355,7 +3356,7 @@ namespace SgqSystem.Services
                     {
                         haveAccordeon = true;   
                         level3Group = html.accordeon(
-                                                        id: acoordeonId, 
+                                                        id: acoordeonId + "Level3", 
                                                         label: accordeonName, 
                                                         outerhtml: level3Group,
                                                         classe: "row"
