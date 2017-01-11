@@ -1,8 +1,12 @@
 ﻿@model Dominio.manDataCollectIT
 
+@{
+    ViewBag.Title = "Create";
+}
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content" style="min-height: 600px;">
+    <div class="page-content" style="min-height: 650px;">
+
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
@@ -12,7 +16,7 @@
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group hide">
-                    @Html.LabelFor(model => model.AddDate, htmlAttributes: new { @class = "control-label hide col-md-2" })
+                    @Html.LabelFor(model => model.AddDate, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.AddDate, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.AddDate, "", new { @class = "text-danger" })
@@ -20,7 +24,7 @@
                 </div>
 
                 <div class="form-group hide">
-                    @Html.LabelFor(model => model.AlterDate, htmlAttributes: new { @class = "control-label hide col-md-2" })
+                    @Html.LabelFor(model => model.AlterDate, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.AlterDate, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.AlterDate, "", new { @class = "text-danger" })
@@ -28,7 +32,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.Label("Data da coleta", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.Label("Data de Coleta", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.referenceDatetime, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.referenceDatetime, "", new { @class = "text-danger" })
@@ -36,7 +40,7 @@
                 </div>
 
                 <div class="form-group hide">
-                    @Html.LabelFor(model => model.userSGQ_id, htmlAttributes: new { @class = "control-label hide col-md-2" })
+                    @Html.LabelFor(model => model.userSGQ_id, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.userSGQ_id, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.userSGQ_id, "", new { @class = "text-danger" })
@@ -46,7 +50,6 @@
                 <div class="form-group">
                     @Html.Label("Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @*@Html.EditorFor(model => model.parCompany_id, new { htmlAttributes = new { @class = "form-control" } })*@
                         @Html.DropDownListFor(model => model.parCompany_id, new SelectList(ViewBag.listaParCompany, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.parCompany_id, "", new { @class = "text-danger" })
                     </div>
@@ -56,15 +59,14 @@
                     @Html.Label("Periodicidade", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownListFor(model => model.parFrequency_id, new SelectList(ViewBag.listaParFrequency, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
-                        @*@Html.EditorFor(model => model.parFrequency_id, new { htmlAttributes = new { @class = "form-control" } })*@
                         @Html.ValidationMessageFor(model => model.parFrequency_id, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.Label("Período", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.Label("Turno", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.shift, new { htmlAttributes = new { @class = "form-control", min = 1 } })
+                        @Html.EditorFor(model => model.shift, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.shift, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -89,7 +91,6 @@
                     @Html.Label("Unidade de Medida", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownListFor(model => model.ParMeasurementUnit_Id, new SelectList(ViewBag.listaParMeasurementUnit, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
-                        @*@Html.EditorFor(model => model.ParMeasurementUnit_Id, new { htmlAttributes = new { @class = "form-control" } })*@
                         @Html.ValidationMessageFor(model => model.ParMeasurementUnit_Id, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -106,31 +107,41 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="@Resources.Resource.create" class="btn btn-default" />
+                        <input type="submit" value="@Resources.Resource.save" class="btn btn-default" />
                     </div>
                 </div>
             </div>
         }
-    </div>
-</div>
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-<script>
-    $('#referenceDatetime').daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: true,
-        'locale': {
-            "format": "DD/MM/YYYY",
-        }
-    });
 
-    $(document).ready(function () {
-        var cookies = document.cookie.slice("&");
-        
-        if (cookies) {
-            $("#userSGQ_id").val(cookies.substr(cookies.indexOf("userId") + 7, cookies.indexOf("userName")));
-            $("#IsActive").val(1);
+        <div>
+            @Html.ActionLink(Resources.Resource.back, "Index")
+        </div>
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
         }
+        </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#referenceDatetime').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            'locale': {
+                "format": "DD/MM/YYYY",
+            }
+        });
+
+        $('#AddDate').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            'locale': {
+                "format": "DD/MM/YYYY",
+            }
+        });
+
+        $("#userSGQ_id").val(1);
+        $("#IsActive").val(true);
     });
 </script>
