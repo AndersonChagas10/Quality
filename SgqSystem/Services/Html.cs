@@ -232,6 +232,7 @@ namespace SgqSystem.Services
 
             return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + ">" + outerhtml + "</li>";
         }
+
         public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = true, bootstrapcolor? color = null)
         {
             string collapseIn = " in";
@@ -246,7 +247,7 @@ namespace SgqSystem.Services
                 colorPanel = color.ToString();
             }
 
-            if(!string.IsNullOrEmpty(classe))
+            if (!string.IsNullOrEmpty(classe))
             {
                 classe = " " + classe;
             }
@@ -255,7 +256,7 @@ namespace SgqSystem.Services
                     "    <div class=\"panel panel-" + colorPanel + "\">                                                                                          " +
                     "      <div class=\"panel-heading\" role=\"tab\" id=\"heading" + id + "\">                                                                                                    " +
                     "        <h4 class=\"panel-title\">                                                                                                     " +
-                    "          <a role=\"button\" data-toggle=\"collapse\" href=\"#collapse" + id + "\" class=\"\" aria-expanded=\"true\" aria-controls=\"collapse" +  id + "\">" + label + "</a>                " +
+                    "          <a role=\"button\" data-toggle=\"collapse\" href=\"#collapse" + id + "\" class=\"\" aria-expanded=\"true\" aria-controls=\"collapse" + id + "\">" + label + "</a>                " +
                     "      </div>                                                                                                                           " +
                     "        </h4>                                                                                                                          " +
                     "         <div id=\"collapse" + id + "\" class=\"panel-collapse collapse" + collapseIn + "\" role=\"tabpanel\" aria-labelledby=\"heading" + id + "\">                     " +
@@ -267,6 +268,7 @@ namespace SgqSystem.Services
                     "  </div>                                                                                                                               ";
 
         }
+
         public string link(string id = null, string classe = null, string href = null, string tags = null, string outerhtml = null)
         {
             if (string.IsNullOrEmpty(href))
@@ -410,7 +412,13 @@ namespace SgqSystem.Services
             {
                 foreach (RoleXUserSgq role in roles)
                 {
-                    user += "<div class='role'>" + role.HashKey + "</div>";
+                    if( role.Type == 0
+                        || (role.Type == 3 && role.RoleJBS != null && role.RoleSGQ != null)
+                        || (role.Type == 1 && role.RoleSGQ != null)
+                        || (role.Type == 2 && role.RoleJBS != null))
+                    {
+                        user += "<div class='role'>" + role.HashKey + "</div>";
+                    }
                 }
             }
             

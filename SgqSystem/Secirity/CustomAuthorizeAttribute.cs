@@ -14,7 +14,6 @@ namespace SgqSystem.Secirity
         public CustomAuthorizeAttribute()
         {
             _filter = this.Roles;
-            
         }
 
 

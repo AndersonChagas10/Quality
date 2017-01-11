@@ -952,7 +952,8 @@
     function UpdateSelect2Level3(idLevel2, idNewLevel3, callback) {
         //$('#parLevel3Select2').select2("destroy")
         var selecionado = $('#parLevel3Select2 :selected').val();
-        $('#partialSelectLevel3').load('UpdateSelectLevel3?id=' + idLevel2, function () {
+        var selecionadoLevel1 = $('#paramsDto_parLevel1Dto_Id').val();
+        $('#partialSelectLevel3').load('UpdateSelectLevel3?id=' + idLevel2 + "&level1Id=" + selecionadoLevel1, function () {
 
             indexParamsLevel3.selectNormal();
             if (selecionado > 0) {

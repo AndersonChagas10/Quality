@@ -33,7 +33,7 @@
         <div id="plotPrincipal" ></div>
         <div class="panel panel-info" id="PanelFull" style="display:none">
             <div class="panel-heading"></div>
-            <div class="panel-body" id="g1">
+            <div class="panel-body" id="g1" >
             </div>
             *O Peso atribuído as Tarefas influenciam no resultado gráfico.
         </div>
@@ -46,7 +46,7 @@
 
     <script type="text/javascript">
 
-
+        var meses = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
         var url1 = '@Html.Raw(@urlGrafico1)';
         var urlGetPanelResultSet = '@Html.Raw(@urlGetPanelResultSet)';
         var $btn = $('#btnSend');
@@ -56,6 +56,9 @@
             $("#btnSend").click(function (e) {
                 Send();
             });
+
+            formControl.showSimpleDate();
+            formControl.showUnit();
         });
 
         function Send() {
@@ -79,41 +82,39 @@
             //AJAX
             $.post(url1, enviar, function (r) {
                 try {
-                    var retornoArray = [];
-                    var arrayItarator = r.Retorno;
-                   
-                    GraficoInicialLeTodosLevel1(r);
+                                     
+                    GraficoInicialLeTodosLevel1(r.listResultSetLevel1);
 
-                    r.forEach(function (o, c) {
+                    r.listResultSetLevel1.forEach(function (o, c) {
 
                         var divClonada = $('#PanelFull').clone();
-                        divClonada.attr('id', divClonada.attr('id') + o.Id).show();
-                        divClonada.find('.panel-body').attr('id', divClonada.find('.panel-body').attr('id') + o.Id);
+                        divClonada.attr('id', divClonada.attr('id') + o.level1_Id).show();
+                        divClonada.find('.panel-body').attr('id', divClonada.find('.panel-body').attr('id') + o.level1_Id);
                         var idDivTendencia = divClonada.find('.panel-body').attr('id');
                         $('#plotPrincipal').append(divClonada);
-                        var div = DivManager.criaDiv(idDivTendencia, o.Id, "temperatura");
+                        var div = DivManager.criaDiv(idDivTendencia, o.level1_Id, "temperatura");
                         divClonada.find('.panel-heading').html(o.Level1Name); // Insere Titulo no Panel
-                        var enviarClone = enviar;
 
-                        enviarClone.level01Id = o.Id;
+                        var tendencia = $.grep(r.listResultSetTendencia, function (level2, c) { return level2.level1_Id == o.level1_Id });
+                        GraficoTendencia(tendencia, div, "Tendência do Indicador: " + tendencia[0].Level1Name + " - " + meses[0], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
 
-                        $.post(urlGetPanelResultSet, enviarClone, function (listResults) {
+                        //GraficoTendencia(listResults["Tendencia"], div, o);//Processa e cria grafico
+                        var divMonitoramento = DivManager.criaDiv(idDivTendencia, o.level1_Id, "monitoramento");
+                        var level2DoLevel1 = $.grep(r.listResultSetLevel2, function(level2,c) { return level2.level1_Id == o.level1_Id});
+                        GraficoMonitoramentos(level2DoLevel1, divMonitoramento);//Processa e cria grafico
+                        
 
-                            //GraficoTendencia(listResults["Tendencia"], div, o);//Processa e cria grafico
+                        var divTarefaIndicador = DivManager.criaDiv(divMonitoramento, o.level1_Id, "tarefaIndicador");
+                        var tarefaPorIndicador = $.grep(r.listResultSetTarefaPorIndicador, function (level2, c) { return level2.level1_Id == o.level1_Id });
+                        GraficoTarefaIndicadores(tarefaPorIndicador, divTarefaIndicador, "NC por Tarefas acumuladas: " + tarefaPorIndicador.Level2Name);//Processa e cria grafico
 
-                            var divMonitoramento = DivManager.criaDiv(idDivTendencia, o.Id, "monitoramento");
-                            GraficoMonitoramentos(listResults["listResultSetLevel2"], divMonitoramento, "NC por Monitoramento: " + o.Level1Name);//Processa e cria grafico
+                        level2DoLevel1.forEach(function (oo, cc) {
+                            var divTarefas = DivManager.criaDiv(divMonitoramento, oo.level2_Id, "monitoramento");
+                            var level3DoLevel2 = $.grep(r.listResultSetLevel3, function (level2, c) { return level2.level2_Id == oo.level2_Id });
+                            GraficoTarefa(level3DoLevel2, divTarefas, "Nc por Tarefa: " + level3DoLevel2[0].Level2Name, o.level1_Id);//Processa e cria grafico
+                        });
 
-                            //listResults["listResultSetLevel3"].forEach(function (oo, cc) {
-                            //var divTarefaIndicador = DivManager.criaDiv(idDivTendencia, c, "tarefaIndicador");
-                            //GraficoTarefaIndicador(listResults["ResultsLevel3PorTarefa"], divTarefaIndicador, c, o);//Processa e cria grafico
-                            //});
 
-                            listResults["listResultSetLevel3"].forEach(function (oo, cc) {
-                                var divTarefas = DivManager.criaDiv(divMonitoramento, oo.Id, "monitoramento");
-                                GraficoTarefa(listResults["listResultSetLevel3"], divTarefas, 'Titulo Level3', o.Id);//Processa e cria grafico
-                            });
-                        })
 
                     });
 
@@ -136,20 +137,19 @@
             });
         };
 
-
-
         function GraficoInicialLeTodosLevel1(data) {
 
             var valoresX = MapeiaValorParaHC(data, "Level1Name")//["Lins", "Barretos", "Etc.."]
             var meta = MapeiaValorParaHC(data, "Meta")
-            var nc = MapeiaValorParaHC(data, "TotalNC")
-            var percentual = MapeiaValorParaHC(data, "NCProc")
-            var totalAvaliado = MapeiaValorParaHC(data, "TotalAv")
+            var nc = MapeiaValorParaHC(data, "NC")
+            var percentual = MapeiaValorParaHC(data, "ProcentagemNc")
+            var unidadeName = MapeiaValorParaHC(data, "Unidade")[0];
+            var totalAvaliado = MapeiaValorParaHC(data, "Av")
 
             //Cria GRafico
             $('#plotPrincipal').empty().highcharts({
                 credits: Chart.Credits(),
-                title: Chart.Titulo("NC Por Indicador"),
+                title: Chart.Titulo("NC Por Indicador: " + unidadeName),
                 xAxis: Chart.Xaxis(valoresX),
                 tooltip: Chart.ToolTip(true, true),
                 legend: Chart.Legend(),
@@ -184,18 +184,20 @@
 
             var valoresX = MapeiaValorParaHC(data, "Level1Name")
             var meta = MapeiaValorParaHC(data, "Meta")
-            var totalNC = MapeiaValorParaHC(data, "TotalNC")
-            var percentual = MapeiaValorParaHC(data, "NCProc")
-            var totalAvaliado = MapeiaValorParaHC(data, "TotalAv")
+            var totalNC = MapeiaValorParaHC(data, "NC")
+            var percentual = MapeiaValorParaHC(data, "ProcentagemNc")
+            var totalAvaliado = MapeiaValorParaHC(data, "Av")
 
-            var from = $("#dataInicio").val().split("/");
+            //var from = $("#dataInicio").val().split("/");
+            var from = enviar.startDate.split("/");
             var dataSelecionada = new Date(from[2], from[1] - 1, from[0]);
             var tNcProc = 0;
             var total = 0;
-            var dataFim = new Date(parseInt(dtFim.replace(/[^0-9]/g, '')));
+            //var dataFim = new Date(parseInt(dtFim.replace(/[^0-9]/g, '')));
+            var dataFim = new Date(parseInt(dtFim));
 
             valoresYY = {
-                dataInicio: new Date(parseInt(dtInicio.replace(/[^0-9]/g, ''))),
+                dataInicio: new Date(parseInt(dtInicio/*.replace(/[^0-9]/g, '')*/)),
                 metaEstatica: meta[0],
                 NC: [],
                 totalNC: [],
@@ -206,28 +208,29 @@
                 ContaNC: [],
             };
 
-            data[0].Data[0].forEach(function (a, i) {
-                var dia = parseInt(a.replace(/[^0-9]/g, ''));
+            //Erro
+            data.forEach(function (a, i) {
+                var dia = parseInt(a.Data);
                 //dia = new Date(dia).setHours(0,0,0,0);
                 var lastDay = new Date(dataSelecionada.getFullYear(), dataSelecionada.getMonth(), 0);
                 if (i == 0) {
                     valoresYY.ContaNC.push([Date.UTC(dataSelecionada.getFullYear(), dataSelecionada.getMonth() - 1, 1), null]);;
                 }
 
-                tNcProc += data[0].NC[0][i];
-                total += data[0].TotalAvaliado[0][i];
+                tNcProc += a.NC;
+                total += a.Av;
 
                 valoresYY.totalNC.push([dia, tNcProc]),
                 valoresYY.ContaTA.push([dia, total]),
                 valoresYY.ContaNC.push([dia, tNcProc]),
 
-                valoresYY.ProcNC.push([dia, parseFloat(data[0].Percentual[0][i].toFixed(2))]);
-                valoresYY.totalAvaliado.push([dia, data[0].TotalAvaliado[0][i]]);
-                valoresYY.NC.push([dia, data[0].NC[0][i]]);
+                valoresYY.ProcNC.push([dia, parseFloat(a.ProcentagemNc.toFixed(2))]);
+                valoresYY.totalAvaliado.push([dia, a.Av]);
+                valoresYY.NC.push([dia, a.NC]);
             });
 
-            var inicio = new Date(parseInt(dtInicio.replace(/[^0-9]/g, '')));
-            var fim = new Date(parseInt(dtFim.replace(/[^0-9]/g, '')));
+            var inicio = new Date(parseInt(dtInicio));
+            var fim = new Date(parseInt(dtFim));
 
             var valorTA = 0;
             var valorNC = 0;
@@ -236,7 +239,6 @@
                 var dt = inicio.setDate(inicio.getDate());
 
                 valoresYY.ContaTA.forEach(function (a, i) {
-
                     if (new Date(a[0]).toLocaleDateString() == new Date(dt).toLocaleDateString()) {
                         valorTA = a[1];
                         return;//AAAAAAAAAAAAAAAAAAAAAAAAA
@@ -252,7 +254,7 @@
 
                 var calculo = valorTA == 0 ? 0 : valorNC / valorTA * 100;
                 calculo = parseFloat(calculo.toFixed(2));
-                var primeiroDia = new Date(dataInicioDate.getFullYear(), dataInicioDate.getMonth(), 1);
+                var primeiroDia = new Date(dataSelecionada.getFullYear(), dataSelecionada.getMonth(), 1);
 
                 if (inicio >= primeiroDia) {
                     valoresYY.linhaTendencia.push([dt, calculo]);
@@ -446,12 +448,12 @@
             });
         }
 
-        function GraficoMonitoramentos(data, idDiv, titulo) {
+        function GraficoMonitoramentos(data, idDiv) {
 
-            var valoresX = MapeiaValorParaHC(data, "Name")
+            var valoresX = MapeiaValorParaHC(data, "Level2Name")
             var NC = MapeiaValorParaHC(data, "NC")
             var TotalAvaliado = MapeiaValorParaHC(data, "Av")
-
+            var titulo = "Titulo: " + MapeiaValorParaHC(data, "Level1Name")[0];
             //Auxiliares.loading(idDiv);
 
             //Organiza dados do grafico
@@ -527,12 +529,214 @@
             //$('#' + idDiv).find("img").remove();
         }
 
+        function GraficoTarefaIndicadores(data, idDiv, titulo) {
+
+            var valoresX = MapeiaValorParaHC(data, "Level3Name")
+            var valoresY = {
+                //NC: obj.NC[0],
+                NC: MapeiaValorParaHC(data, "NC"),
+                pareto: []
+            };
+
+            var totalNC = valoresY.NC.reduce(function (a, b) { return a + b; }, 0);
+            var porcentagemAcumuladaNC = 0;
+            valoresY.NC.forEach(function (a) {
+                porcentagemAcumuladaNC += a / totalNC * 100;
+                valoresY.pareto.push(Math.round(porcentagemAcumuladaNC, 0));
+            });
+
+            //Cria Grafico
+            $('#' + idDiv).empty().highcharts({
+                credits: Chart.Credits(),
+                title: Chart.Titulo(titulo),
+                xAxis: Chart.Xaxis(valoresX),
+                tooltip: Chart.ToolTip(true, true),
+                legend: Chart.Legend(),
+                yAxis: Chart.yAxisPadrao(true, true, true),
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y',
+                    //borderColor: '#EBBA95',
+                    //borderWidth: 2,
+                    plotBackgroundColor: '#FFFFFF',
+                    plotShadow: true
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                    }
+                },
+                series: [
+                    Chart.SimpleSerie(valoresY.NC, "Total NC", Chart.CorTotalNc(), true),
+                    Chart.curvaPareto(valoresY.pareto)
+                ],
+            });
+
+        }
+
+        function Tendencia() {
+            $('#' + idString).empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    //renderTo: 'graficoNc',
+                    //type: 'column',
+                    zoomType: 'x,y'
+                },
+                title: {
+                    text: valorAbsoluto.titulo,
+                    x: -20 //center
+                },
+                xAxis: {
+                    type: 'datetime',
+                    labels: {
+                        rotation: 45
+                    },
+                    dateTimeLabelFormats: {
+                        day: '%e'
+                    },
+                    tickInterval: 24 * 3600 * 1000
+                },
+                yAxis: [
+                { // Primary yAxis
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    },
+                    title: {
+                        text: '(%) NC',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    }, plotLines: [{
+                        value: valorAbsoluto.dados.metaReal.Meta,
+                        width: 2,
+                        color: 'black',
+                        dashStyle: 'dash',
+                        zIndex: 4,
+                        label: {
+                            text: 'Meta %' + valorAbsoluto.dados.metaReal.Meta,
+                            align: 'right',
+                            y: -10,
+                            x: 0
+                        }
+                    }]
+                },
+                { // Secondary yAxis
+                    gridLineWidth: 0,
+                    title: {
+                        text: 'Numero Amostras',
+                        style: {
+                            color: Highcharts.getOptions().colors[2]
+                        }
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[2]
+                        }
+                    },
+                    opposite: true
+                }],
+                tooltip: {
+                    crosshairs: true,
+                    shared: true,
+                    valueSuffix: ''
+                },
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    borderWidth: 0
+                },
+                series: [{
+                    name: "% NC Dia",
+                    data: valorAbsoluto.proc,
+                    type: 'column',
+                    yAxis: 0,
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        },
+                        formatter: function () {
+                            if (this.y > 0) {
+                                return this.y + ' %';
+                            } else {
+                                return "";
+                            }
+                        },
+
+                    },
+                    pointStart: Date.UTC(dataInicioDate.getFullYear(), dataInicioDate.getMonth(), 1),
+                    pointInterval: 24 * 3600 * 1000 // one day
+                    //zones: [{
+                    //    value: valorAbsoluto.dados.metaReal.Meta,
+                    //    color: '#7cb5ec'
+                    //}, {
+                    //    color: '#FF6666'
+                    //}],
+                },
+                 //{
+                 //    name: "Acc",
+                 //    type: 'column',
+                 //    //type: 'spline',
+                 //    color: Highcharts.getOptions().colors[3],
+                 //    yAxis: 0,
+                 //    visible: true,
+                 //    data: valorAbsoluto.procAcc
+                 //},
+                {
+                    name: "% Tendência",
+                    //type: 'column',
+                    type: 'spline',
+                    yAxis: 0,
+                    marker: {
+                        enabled: false
+                    },
+                    color: Highcharts.getOptions().colors[3],
+                    visible: true,
+                    data: valorAbsoluto.linhaProc,
+                    pointStart: Date.UTC(dataInicioDate.getFullYear(), dataInicioDate.getMonth(), 1),
+                    pointInterval: 24 * 3600 * 1000 // one day
+                },
+                {
+                    name: "Total Fora do Padrao",
+                    yAxis: 1,
+                    type: 'column',
+                    color: "red",
+                    //color: Highcharts.getOptions().colors[2],
+                    visible: false,
+                    data: valorAbsoluto.TotalForaPadrao,
+                    pointStart: Date.UTC(dataInicioDate.getFullYear(), dataInicioDate.getMonth(), 1),
+                    pointInterval: 24 * 3600 * 1000 // one day
+                },
+                {
+                    name: "Total Avaliado",
+                    yAxis: 1,
+                    type: 'column',
+                    color: "black",
+                    //color: Highcharts.getOptions().colors[4],
+                    visible: false,
+                    data: valorAbsoluto.NumTotalAvaliado,
+                    pointStart: Date.UTC(dataInicioDate.getFullYear(), dataInicioDate.getMonth(), 1),
+                    pointInterval: 24 * 3600 * 1000 // one day
+                },
+                ]
+            });
+        }
+
         var DadoEspecificos = {
 
             Tarefa: function (data) {
                 //Organiza dados do grafico
                 var obj = data;
-                var valoresX = MapeiaValorParaHC(data, "Name");
+                var valoresX = MapeiaValorParaHC(data, "Level3Name");
                 var idOp = MapeiaValorParaHC(data, "Level1_Id");
                 var idMon = MapeiaValorParaHC(data, "Level2_Id");
                 var idTar = MapeiaValorParaHC(data, "Level3_Id");
@@ -572,11 +776,6 @@
 
             return true;
         }
-
-        $(document).ready(function () {
-            formControl.showFullCallendar();
-            formControl.showUnit();
-        });
 
         var Chart = {
             CorTotalNc: function () { return '#F7BCB0' },

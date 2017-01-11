@@ -1,0 +1,104 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+
+@{
+    ViewBag.Title = "Relatorio Diario";
+    var url = Url.Action("Index", "Home");
+}
+
+<style>
+     .panel-info {
+        border-color: #999;
+    }
+
+        .panel-info > .panel-heading {
+            background-color: #ccc;
+            border-color: #999;
+            color: #333;
+        }
+
+    .chart-inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<div class="page-content" style="min-height: 600px;">
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+    <div id="formBodyContent">
+        asdasdsadsad
+    </div>
+</div>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+
+        var meses = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+        var $btn = $('#btnSend');
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $(document).ready(function () {
+
+            $("#btnSend").click(function (e) {
+                Send();
+            });
+
+            formControl.showFullCallendar();
+            formControl.showUnit();
+        });
+
+        function Send() {
+
+            $btn.button('loading');
+            $('#results').empty();
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            $('#menu-toggle').click();
+
+            //AJAX
+            $.post("", enviar, function (r) {
+
+                try {
+
+
+
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    $btn.button('reset');
+                }
+
+            }).fail(function (e, h, x) {
+                $btn.button('reset');
+                if (e.status == 0) {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+            });
+
+        };
+
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+
+            /*Validação Específica*/
+
+            /*FIM Validação Específica*/
+
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+    </script>
+
+}

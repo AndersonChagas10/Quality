@@ -8,6 +8,9 @@ namespace SgqSystem.ViewModels
 {
     public class FormularioParaRelatorioViewModel : DataCarrierFormulario
     {
+
+        #region Contrutor
+
         //private readonly IBaseApp<Dominio.Unit, UnitDTO> _Unit;
         //public FormularioParaRelatorioViewModel(IBaseApp<Dominio.Unit, UnitDTO> Unit
         //    )
@@ -16,6 +19,12 @@ namespace SgqSystem.ViewModels
 
 
         //}
+        public FormularioParaRelatorioViewModel()
+        {
+
+        } 
+
+        #endregion
 
         #region Retorno
 
@@ -82,7 +91,6 @@ namespace SgqSystem.ViewModels
             var counter = 0;
             foreach (var i in enumerable)
             {
-
                 var text = i.GetType().GetProperty("Name") ?? i.GetType().GetProperty("Description");
                 var prop = i.GetType().GetProperty("Id");
                 retorno.Insert(counter, new SelectListItem() { Text = text.GetValue(i).ToString(), Value = prop.GetValue(i).ToString() });
@@ -93,9 +101,6 @@ namespace SgqSystem.ViewModels
         }
 
         #endregion
-
-        
-
 
     }
 }

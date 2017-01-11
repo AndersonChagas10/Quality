@@ -4,12 +4,46 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Security.Cryptography;
+using System.Web;
 using System.Web.Mvc;
 
 namespace DTO.Helpers
 {
     public static class Guard
     {
+
+        public static int GetUsuarioLogado_Id(HttpContextBase filterContext)
+        {
+            var userId = 0;
+            HttpCookie cookie = filterContext.Request.Cookies.Get("webControlCookie");
+            if (cookie != null)
+                if (!string.IsNullOrEmpty(cookie.Values["userId"]))
+                    int.TryParse(cookie.Values["userId"].ToString(), out userId);
+
+            return userId;
+        }
+
+        //public static int GetUsuarioLogado_Id(HttpContextBase filterContext)
+        //{
+        //    var userId = 0;
+        //    HttpCookie cookie = filterContext.Request.Cookies.Get("webControlCookie");
+        //    if (cookie != null)
+        //        if (!string.IsNullOrEmpty(cookie.Values["userId"]))
+        //            int.TryParse(cookie.Values["userId"].ToString(), out userId);
+
+        //    return userId;
+        //}
+
+        //public static int GetUsuarioLogado_Id(HttpContextBase filterContext)
+        //{
+        //    var userId = 0;
+        //    HttpCookie cookie = filterContext.Request.Cookies.Get("webControlCookie");
+        //    if (cookie != null)
+        //        if (!string.IsNullOrEmpty(cookie.Values["userId"]))
+        //            int.TryParse(cookie.Values["userId"].ToString(), out userId);
+
+        //    return userId;
+        //}
 
         #region Campo Calculado
 
@@ -20,14 +54,15 @@ namespace DTO.Helpers
             if (Decimal.TryParse(valorString, out number))
             {
                 retorno = number;
-            }else
+            }
+            else
             {
                 valorString = valorString.ToUpper().Replace(',', '.');
                 double v1 = double.Parse(valorString.Split('X')[0], CultureInfo.InvariantCulture);
                 double v2 = double.Parse(valorString.Split('^')[1]);
                 var resultado = v1 * Math.Pow(10, v2);
                 retorno = Convert.ToDecimal(resultado, CultureInfo.InvariantCulture);
-                
+
             }
 
             return retorno;
@@ -348,7 +383,7 @@ namespace DTO.Helpers
 
         #region Criptografia 3DES
 
-       
+
         /// <summary>     
         /// Representação de valor em base 64 (Chave Interna)    
         /// O Valor representa a transformação para base64 de     
@@ -448,7 +483,7 @@ namespace DTO.Helpers
                 var prop = i.GetType().GetProperty("Id");
                 var defaultSelected = i.GetType().GetProperty("IsDefaultOption");
                 var selectItem = new SelectListItem() { Text = text.GetValue(i).ToString(), Value = prop.GetValue(i).ToString() };
-                if (defaultSelected != null && (bool) defaultSelected.GetValue(i))
+                if (defaultSelected != null && (bool)defaultSelected.GetValue(i))
                     selectItem.Selected = true;
                 retorno.Insert(counter, selectItem);
                 counter++;
@@ -482,10 +517,10 @@ namespace DTO.Helpers
                 return ids.Count + " Registros " + acao + " com sucesso!";
             }
             else
-                if(ids[0].Id == 0)
-                    return "Registro inserido com sucesso!";
-                else
-                    return "Registro alterado com sucesso!";
+                if (ids[0].Id == 0)
+                return "Registro inserido com sucesso!";
+            else
+                return "Registro alterado com sucesso!";
 
 
         }
@@ -565,7 +600,7 @@ namespace DTO.Helpers
         public static void ForMaiorQuer(int number, int number2, string propName, string propName2)
         {
             if (number < number2)
-                throw new ExceptionHelper(propName + " não pode menor que "+ propName2 + "!");
+                throw new ExceptionHelper(propName + " não pode menor que " + propName2 + "!");
         }
 
         public static void ForMaiorQuer(decimal number, decimal number2, string propName, string propName2)
@@ -599,7 +634,7 @@ namespace DTO.Helpers
         /// <param name="WhiteSpacesStart"> Remove espaços no inicio da string. </param>
         /// <param name="WhiteSpacesEnd"> Remove espaços no fim da string.</param>
         public static void CheckStringFull(out string retorno, string propName, string value, string mensagem = null, bool requerido = false
-                                                 ,bool DuplicateWhiteEspace = false, bool WhiteSpacesStart = false, bool WhiteSpacesEnd = false)
+                                                 , bool DuplicateWhiteEspace = false, bool WhiteSpacesStart = false, bool WhiteSpacesEnd = false)
         {
             //Se o valor da STRING é NULL e for Obrigatório.
             if (string.IsNullOrEmpty(value) && requerido == true)
@@ -615,11 +650,12 @@ namespace DTO.Helpers
                 {
                     throw new ExceptionHelper("Formato do campo " + propName + " inválido.");
                 }
-                
+
                 //Caso a string contenha valor, trata espaços em branco.
                 RemoveEspacosEmString(value, DuplicateWhiteEspace, WhiteSpacesStart, WhiteSpacesEnd);
             }
-            else {
+            else
+            {
                 //Caso valor em branco "" retorna nulo para definição do padrão Data Base.
                 value = null;
             }

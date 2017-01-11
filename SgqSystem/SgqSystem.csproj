@@ -323,10 +323,11 @@
     <Compile Include="Controllers\Api\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\GestaoController.cs" />
+    <Compile Include="Controllers\ManDataCollectITController.cs" />
     <Compile Include="Controllers\ManutencaoController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
-    <Compile Include="Controllers\RelatoriosSgqController.cs" />
+    <Compile Include="Controllers\RelatoriosBrasil\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
     <Compile Include="Controllers\GlobalConfigController.cs" />
@@ -426,6 +427,7 @@
     <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
     <Compile Include="Secirity\RoleAuthorizeAttribute.cs" />
+    <Compile Include="Secirity\RolesPorUnidade.cs" />
     <Compile Include="Secirity\SessionPersister.cs" />
     <Compile Include="Services\Html.cs" />
     <Compile Include="Services\Level02Result.cs" />
@@ -1271,6 +1273,8 @@
     <Content Include="Views\Example\TesteSelect2.cshtml" />
     <Content Include="Views\RelatoriosSgq\ApontamentosDiarios.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoConformidade.cshtml" />
+    <Content Include="Views\RelatoriosSgq\ExemploRelatorio.cshtml" />
+    <Content Include="Views\ManDataCollectIT\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

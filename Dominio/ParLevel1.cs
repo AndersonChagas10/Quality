@@ -57,6 +57,8 @@ namespace Dominio
         public bool IsActive { get; set; }
         public Nullable<int> Level2Number { get; set; }
         public Nullable<int> hashKey { get; set; }
+        public Nullable<bool> haveRealTimeConsolidation { get; set; }
+        public Nullable<int> RealTimeConsolitationUpdate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
