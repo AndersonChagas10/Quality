@@ -14,6 +14,7 @@ using DTO.Helpers;
 using System.Net.Mail;
 using System.Net;
 using SgqSystem.ViewModels;
+using System.Threading;
 
 namespace SgqSystem.Services
 {
@@ -1411,7 +1412,7 @@ namespace SgqSystem.Services
                 {
                     sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiEvaluation],[WeiDefects]) " +
                            "VALUES " +
-                           "('" + CollectionLevel02Id + "','" + Level03Id + "', (SELECT Name FROM ParLevel3 WHERE Id='" + Level03Id + "'),'" + weight + "','" + intervalMin + "','" + intervalMax + "', '" + value + "','" + valueText + "','" + conform + "','" + isnotEvaluate + "', '" + punishimentValue + "', '" + defects + "', '" + evaluation + "', '" + WeiEvaluation + "', " + WeiDefects + ") ";
+                           "('" + CollectionLevel02Id + "','" + Level03Id + "', (SELECT Name FROM ParLevel3 WHERE Id='" + Level03Id + "'),'" + weight + "','" + intervalMin + "','" + intervalMax + "', " + value + ",'" + valueText + "','" + conform + "','" + isnotEvaluate + "', '" + punishimentValue + "', '" + defects + "', '" + evaluation + "', '" + WeiEvaluation + "', " + WeiDefects + ") ";
 
                     sql += " SELECT @@IDENTITY AS 'Identity'";
 
@@ -2491,6 +2492,7 @@ namespace SgqSystem.Services
                 }
                 //Quando termina o loop dos itens agrupados por ParCritialLevel 
                 //Se contem ParCritialLevel
+                
                 if (ParCriticalLevel == true)
                 {
                     Html.bootstrapcolor? color = null;
@@ -2508,7 +2510,7 @@ namespace SgqSystem.Services
                     }
                     //Adicionamos os itens em um acordeon
                     parLevel1 = html.accordeon(
-                                                id: parLevel1Group.Key.ToString(),
+                                                id: parLevel1Group.Key.ToString() + "critivalLevel",
                                                 label: nameParCritialLevel,
                                                 color: color,
                                                 outerhtml: parLevel1);
@@ -3334,7 +3336,7 @@ namespace SgqSystem.Services
                             if(parLevel3.ParLevel3Group_Id > 0)
                             {
                                 accordeonName = parLevel3.ParLevel3Group_Name;
-                                acoordeonId = parLevel3.ParLevel3Group_Id.ToString();
+                                acoordeonId = parLevel3.ParLevel3Group_Id.ToString() + ParLevel2.Id.ToString();
                             }
 
                             //Define a qual classe de input pertence o level3
@@ -3355,7 +3357,7 @@ namespace SgqSystem.Services
                     {
                         haveAccordeon = true;   
                         level3Group = html.accordeon(
-                                                        id: acoordeonId, 
+                                                        id: acoordeonId + "Level3", 
                                                         label: accordeonName, 
                                                         outerhtml: level3Group,
                                                         classe: "row"
@@ -3478,7 +3480,7 @@ namespace SgqSystem.Services
                                            style: "font-size: 11px; margin-top:7px;"
                                        );
 
-                input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+                input = html.campoCalculado(id: parLevel3.Id.ToString(),
                                                 intervalMin: parLevel3.IntervalMin,
                                                 intervalMax: parLevel3.IntervalMax,
                                                 unitName: parLevel3.ParMeasurementUnit_Name);
@@ -3771,6 +3773,8 @@ namespace SgqSystem.Services
             var UserSGQDB = new SGQDBContext.UserSGQ();
             var user = UserSGQDB.getUserByLoginOrId(userLogin: UserName.Trim());
 
+           // Password = Guard.Descriptografar3DES("h88Xcom5qf0Ok3LCqZUm1A==");
+
             var html = new Html();
 
             Password = UserDomain.DecryptStringAES(Password);
@@ -3918,7 +3922,6 @@ namespace SgqSystem.Services
                                    "<div style='font-family:Verdana; font-size:8px;color:gray'>GRT Soluções Alertas " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "</div>";
 
                 mailMessage.Priority = MailPriority.High;
-
                 string servidorSMTP = "mail.brzsoftwares.com";
                 int portaSMS = 587;
                 string usuarioSMTP = "services@brzsoftwares.com";
@@ -3937,7 +3940,127 @@ namespace SgqSystem.Services
             }
             return null;
         }
+        [WebMethod]
+        public string sendEmail(string email, string subject, string body, string email_CopiaOculta =null)
+        {
+            string destinatarios = email;
 
+            try
+            {
+                string termo = "<div style='font-family:Verdana; font-size:10px;color:gray'>Este email é direcionado apenas para a pessoa ou entidade para a qual foi endreçado e pode conter material confidencial ou privilegiado. Qualquer leitura, uso, revelação ou distribuição não autorizados são proibidos. Se você não for o destinatário dessa mensagem, mas não deseja receber mensagens através desse meio, por gentileza, avise o remetente imediatamente</div>";
+
+                string emailRemetente = "suporte.grt@grtsolucoes.com.br";
+                string nomeRemetente = "GRT Soluções";
+
+                MailMessage mailMessage = new MailMessage();
+                //Endereço que irá aparecer no e-mail do usuário 
+                mailMessage.From = new MailAddress(emailRemetente, nomeRemetente);
+                if(!string.IsNullOrEmpty(email_CopiaOculta))
+                {
+                    mailMessage.Bcc.Add(new MailAddress(email_CopiaOculta));
+                }
+                //destinatarios do e-mail, para incluir mais de um basta separar por ponto e virgula  
+                mailMessage.To.Add(destinatarios);
+
+                mailMessage.Subject = subject;
+                mailMessage.IsBodyHtml = true;
+                //conteudo do corpo do e-mail 
+
+                mailMessage.Body = "<div style='font-family:Verdana; font-size:14px'>" + body + "</div><br><br>" + 
+                                   "<div style='font-family:Verdana; font-size:10px;color:gray'>Esta é uma mensagem automática, por favor não responda. Antes de imprimir pense em seu compromisso com o meio ambiente.</div>" +
+                                   "<br>" +
+                                   termo +
+                                   "<div style='font-family:Verdana; font-size:8px;color:gray'>GRT Soluções " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "</div>";
+
+                mailMessage.Priority = MailPriority.High;
+             
+                string servidorSMTP = "mail.brzsoftwares.com";
+                int portaSMS = 587;
+                string usuarioSMTP = "services@brzsoftwares.com";
+                string senhaSMTP = "#Abn32878732";
+
+
+                ///************LOCAWEB GRT
+                //string servidorSMTP = "email-ssl.com.br";
+
+                //int portaSMS = 587;
+                //string usuarioSMTP = "suporte.grt@grtsolucoes.com.br";
+                //string senhaSMTP = "1qazmko0#";
+                ////smtp do e-mail que irá enviar 
+
+                ////*************
+                SmtpClient smtpClient = new SmtpClient(servidorSMTP, portaSMS);
+                smtpClient.EnableSsl = true;
+                //credenciais da conta que utilizará para enviar o e-mail 
+                smtpClient.Credentials = new NetworkCredential(usuarioSMTP, senhaSMTP);
+                smtpClient.Send(mailMessage);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(email, ex.Message, null, null, "sendEmail");
+            }
+            return null;
+        }
+        [WebMethod]
+        public string sendEmailManutencao()
+        {
+            //Converte a data no padrão de busca do Banco de Dados
+
+            string sql = "SELECT FullName, Name, email FROM UserSgq where role='somentemanutencao-sgq' and id > 432";
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        using (SqlDataReader r = command.ExecuteReader())
+                        {
+                            while(r.Read())
+                            {
+                                string nome = r[0].ToString();
+                                 
+                                string email = r[2].ToString();
+                              //  email = "antoniobrissolare@hotmail.com";
+                              //  email = "antoniobrissolare@hotmail.com; bruno.sousa@grtsolucoes.com.br";
+
+                                string login = r[1].ToString();
+
+                                var nomeArray = nome.Split(' ');
+                                string primeiroNome = nomeArray[0];
+
+
+
+                                string mensagem = "Olá " + primeiroNome + ", bem vindo ao SGM!<br><br>" +
+                                                  "Seus dados de acesso são:<br><br>" +
+                                                  "<b>Acesso: </b>http://mtzsvmqsc/SgqGlobal" +  
+                                                  "<br><b>Usuário: </b>" + login +
+                                                  "<br><b>Senha:</b> 123";
+
+
+                                sendEmail(email, "Dados de acesso SGM", mensagem, email_CopiaOculta: "bruno.sousa@grtsolucoes.com.br");
+                                Thread.Sleep(2000);
+                            }
+                            return null;
+                        }
+                    }
+                }
+            }
+            //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
+                return "erro";
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
+                return "erro";
+            }
+        }
         [WebMethod]
         public string updateLevel1Consolidaton(string ParLevel1_Id, string Unit_Id, string DepartmentId, string Evaluation, string Defects)
         {
