@@ -8,6 +8,9 @@ namespace SgqSystem.ViewModels
 {
     public class FormularioParaRelatorioViewModel : DataCarrierFormulario
     {
+
+        #region Contrutor
+
         //private readonly IBaseApp<Dominio.Unit, UnitDTO> _Unit;
         //public FormularioParaRelatorioViewModel(IBaseApp<Dominio.Unit, UnitDTO> Unit
         //    )
@@ -18,8 +21,10 @@ namespace SgqSystem.ViewModels
         //}
         public FormularioParaRelatorioViewModel()
         {
-          
-        }
+
+        } 
+
+        #endregion
 
         #region Retorno
 
@@ -96,9 +101,6 @@ namespace SgqSystem.ViewModels
         }
 
         #endregion
-
-        
-
 
     }
 }
