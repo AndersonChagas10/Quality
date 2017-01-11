@@ -58,6 +58,45 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
+        [Route("getSelectGrafico0/{dataIni}/{dataFim}/{meses}/{anos}")]
+        public List<Reg> getSelectGrafico0(string dataIni, string dataFim, string meses, string anos)
+        {
+            var lista = new List<Reg>();
+
+            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltrada, System.Text.Encoding.Default);
+            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+            string regionalFiltDecode = "";
+            string regionaisFiltradas = "";
+
+            if (regionalFiltDecode != "")
+            {
+                regionaisFiltradas = queryReg(regionalFiltDecode);
+            }
+
+            using (var db = new SgqDbDevEntities())
+            {
+                var sql = "";
+
+                sql = "select EmpresaRegionalGrupo as Regional, ";
+                sql += "ROUND(SUM(DespesaOrcada) / 1000, 0) AS Orçada, ";
+                sql += "ROUND(SUM(DespesaRealizada) / 1000, 0) AS Realizada, ";
+                sql += "CASE WHEN SUM(DespesaOrcada) = 0 THEN 0 ELSE ROUND((SUM(DespesaRealizada) / SUM(DespesaOrcada) - 1) * 100, 0) END AS DesvioPorc, ";
+                sql += "ROUND(SUM(DespesaRealizada) / 1000 - SUM(DespesaOrcada) / 1000, 0) AS DesvioReal ";
+                sql += "from Manutencao ";
+                sql += "WHERE 1=1 ";
+                sql += "and MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
+                sql += "AND TipoInformacao = 'CustoFixo' ";
+                sql += regionaisFiltradas;
+                sql += "group by EmpresaRegionalGrupo ";
+                sql += "order by EmpresaRegionalGrupo ";
+
+                lista = db.Database.SqlQuery<Reg>(sql).ToList();
+            }
+
+            return lista;
+        }
+
+        [HttpPost]
         [Route("getSelectGrafDespReg/{dataIni}/{dataFim}/{meses}/{anos}/{regional}")]
         public List<Reg> getSelectGrafDespReg(string dataIni, string dataFim, string meses, string anos, string regional)
         {
