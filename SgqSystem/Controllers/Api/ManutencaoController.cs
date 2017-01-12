@@ -19,14 +19,14 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("getSelectGrafico1/{dataIni}/{dataFim}/{meses}/{anos}")]
-        public List<Reg> getSelectGrafico1(string dataIni, string dataFim, string meses, string anos)
+        [Route("getSelectGrafico1/{dataIni}/{dataFim}/{meses}/{anos}/{regFiltro}")]
+        public List<Reg> getSelectGrafico1(string dataIni, string dataFim, string meses, string anos, string regFiltro)
         {
             var lista = new List<Reg>();
 
-            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltrada, System.Text.Encoding.Default);
-            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-            string regionalFiltDecode = "";
+            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+             
             string regionaisFiltradas = "";
 
             if (regionalFiltDecode != "")
@@ -58,8 +58,8 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("getSelectGrafDespReg/{dataIni}/{dataFim}/{meses}/{anos}/{regional}")]
-        public List<Reg> getSelectGrafDespReg(string dataIni, string dataFim, string meses, string anos, string regional)
+        [Route("getSelectGrafDespReg/{dataIni}/{dataFim}/{meses}/{anos}/{regional}/{regFiltro}")]
+        public List<Reg> getSelectGrafDespReg(string dataIni, string dataFim, string meses, string anos, string regional, string regFiltro)
         {
             
 
@@ -68,9 +68,9 @@ namespace SgqSystem.Controllers.Api
 
             var lista = new List<Reg>();
 
-            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltrada, System.Text.Encoding.Default);
-            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-            string regionalFiltDecode = "";
+            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+             
             string regionaisFiltradas = "";
 
             if (regionalFiltDecode != "")
@@ -100,15 +100,60 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("getSelectGraficoEvolutivoPorUnidade/{dataIni}/{dataFim}/{meses}/{anos}/{unidade}")]
-        public List<Uni> getSelectGraficoEvolutivoPorUnidade(string dataIni, string dataFim, string meses, string anos, string unidade)
+        [Route("getSelectGraficoEvolutivoPorUnidade/{dataIni}/{dataFim}/{meses}/{anos}/{unidade}/{regFiltro}")]
+        public List<Uni> getSelectGraficoEvolutivoPorUnidade(string dataIni, string dataFim, string meses, string anos, string unidade, string regFiltro)
         {
-
+            string sqlData = "";
+            
             var lista = new List<Uni>();
 
-            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltrada, System.Text.Encoding.Default);
-            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-            string regionalFiltDecode = "";
+            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+            var _mockFiltroMes = new List<string>();
+            var _mockFiltroAno = new List<string>();
+            //_mockFiltroMes.Add("01");
+            //_mockFiltroMes.Add("03");
+            //_mockFiltroMes.Add("07");
+            //_mockFiltroAno.Add("2015");
+            //_mockFiltroAno.Add("2016");
+            //_mockFiltroAno.Add("2017");
+            
+            if (_mockFiltroMes.Count != 0 && _mockFiltroAno.Count != 0 )
+            {
+                string mes = "";
+                for (int i = 0; i < _mockFiltroMes.Count; i++)
+                {
+                    if(i == 0)
+                    {
+                        mes = "'"+_mockFiltroMes[i]+"'";
+                    }
+                    else
+                    {
+                        mes += ','+"'"+_mockFiltroMes[i]+"'";
+                    }
+                    
+                }
+
+                string ano = "";
+                for (int i = 0; i < _mockFiltroMes.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        ano = "'" + _mockFiltroAno[i] + "'";
+                    }
+                    else
+                    {
+                        ano += ',' + "'" + _mockFiltroAno[i] + "'";
+                    }
+
+                }
+                sqlData = " and year(MesAno) in (" + ano + ") and MONTH(MesAno) in (" + mes + ") ";
+            }
+            else
+            {
+                sqlData = " and MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
+            }                                
+   
             string regionaisFiltradas = "";
 
             if (regionalFiltDecode != "")
@@ -126,7 +171,8 @@ namespace SgqSystem.Controllers.Api
                 sql += "CASE WHEN SUM(DespesaOrcada) = 0 THEN 0 ELSE ROUND((SUM(DespesaRealizada) / SUM(DespesaOrcada) - 1) * 100, 0) END AS DesvioPorc, ";
                 sql += "ROUND(SUM(DespesaRealizada) / 1000 - SUM(DespesaOrcada) / 1000, 0) AS DesvioReal ";
                 sql += "from Manutencao ";
-                sql += "WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
+                sql += "WHERE 1=1 ";
+                sql += sqlData;
                 sql += "AND TipoInformacao = 'CustoFixo' ";
                 sql += "AND EmpresaSigla = \'" + unidade + "\' ";
                 sql += regionaisFiltradas;
@@ -140,15 +186,58 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("getSelectGraficoEvolutivoPorUnidadeEConta/{dataIni}/{dataFim}/{meses}/{anos}/{unidade}/{conta}")]
-        public List<Uni> getSelectGraficoEvolutivoPorUnidadeEConta(string dataIni, string dataFim, string meses, string anos, string unidade, string conta)
+        [Route("getSelectGraficoEvolutivoPorUnidadeEConta/{dataIni}/{dataFim}/{meses}/{anos}/{unidade}/{conta}/{regFiltro}")]
+        public List<Uni> getSelectGraficoEvolutivoPorUnidadeEConta(string dataIni, string dataFim, string meses, string anos, string unidade, string conta, string regFiltro)
         {
 
             var lista = new List<Uni>();
+            var sqlData = "";
+            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+            var _mockFiltroMes = new List<string>();
+            var _mockFiltroAno = new List<string>();
+            //_mockFiltroMes.Add("01");
+            //_mockFiltroMes.Add("03");
+            //_mockFiltroMes.Add("07");
+            //_mockFiltroAno.Add("2015");
+            //_mockFiltroAno.Add("2016");
+            //_mockFiltroAno.Add("2017");
 
-            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltrada, System.Text.Encoding.Default);
-            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-            string regionalFiltDecode = "";
+            if (_mockFiltroMes.Count != 0 && _mockFiltroAno.Count != 0)
+            {
+                string mes = "";
+                for (int i = 0; i < _mockFiltroMes.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        mes = "'" + _mockFiltroMes[i] + "'";
+                    }
+                    else
+                    {
+                        mes += ',' + "'" + _mockFiltroMes[i] + "'";
+                    }
+
+                }
+
+                string ano = "";
+                for (int i = 0; i < _mockFiltroMes.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        ano = "'" + _mockFiltroAno[i] + "'";
+                    }
+                    else
+                    {
+                        ano += ',' + "'" + _mockFiltroAno[i] + "'";
+                    }
+
+                }
+                sqlData = " and year(MesAno) in (" + ano + ") and MONTH(MesAno) in (" + mes + ") ";
+            }
+            else
+            {
+                sqlData = " and MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
+            }
             string regionaisFiltradas = "";
 
             if (regionalFiltDecode != "")
@@ -166,8 +255,9 @@ namespace SgqSystem.Controllers.Api
                 sql += "CASE WHEN SUM(DespesaOrcada) = 0 THEN 0 ELSE ROUND((SUM(DespesaRealizada) / SUM(DespesaOrcada) - 1) * 100, 0) END AS DesvioPorc, ";
                 sql += "ROUND(SUM(DespesaRealizada) / 1000 - SUM(DespesaOrcada) / 1000, 0) AS DesvioReal ";
                 sql += "from Manutencao ";
-                sql += "WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
-                sql += "AND TipoInformacao = 'CustoFixo' ";
+                sql += "WHERE TipoInformacao = 'CustoFixo' ";
+                sql += sqlData;
+
                 sql += "AND EmpresaSigla = \'" + unidade + "\' ";
                 sql += "AND ContaContabil = \'" + conta + "\' ";
                 sql += regionaisFiltradas;
@@ -181,15 +271,15 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("getSelectGraficoFatoresTecnicoMateriaPrimaRegionalEConta/{dataIni}/{dataFim}/{meses}/{anos}/{regional}/{conta}/{tipo}")]
-        public List<FatoresTecnicosMateriaPrima> getSelectGraficoFatoresTecnicoMateriaPrimaRegionalEConta(string dataIni, string dataFim, string meses, string anos, string regional, string conta, string tipo)
+        [Route("getSelectGraficoFatoresTecnicoMateriaPrimaRegionalEConta/{dataIni}/{dataFim}/{meses}/{anos}/{regional}/{conta}/{tipo}/{regFiltro}")]
+        public List<FatoresTecnicosMateriaPrima> getSelectGraficoFatoresTecnicoMateriaPrimaRegionalEConta(string dataIni, string dataFim, string meses, string anos, string regional, string conta, string tipo, string regFiltro)
         {
 
             var lista = new List<FatoresTecnicosMateriaPrima>();
 
-            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltrada, System.Text.Encoding.Default);
-            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-            string regionalFiltDecode = "";
+            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+            //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
             if (regionalFiltDecode != "")
@@ -302,15 +392,15 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("getSelectGraficoFatoresTecnicoMateriaPrimaUnidadeEConta/{dataIni}/{dataFim}/{meses}/{anos}/{unidade}/{conta}/{tipo}")]
-        public List<FatoresTecnicosMateriaPrima> getSelectGraficoFatoresTecnicoMateriaPrimaUnidadeEConta(string dataIni, string dataFim, string meses, string anos, string unidade, string conta, string tipo)
+        [Route("getSelectGraficoFatoresTecnicoMateriaPrimaUnidadeEConta/{dataIni}/{dataFim}/{meses}/{anos}/{unidade}/{conta}/{tipo}/{regFiltro}")]
+        public List<FatoresTecnicosMateriaPrima> getSelectGraficoFatoresTecnicoMateriaPrimaUnidadeEConta(string dataIni, string dataFim, string meses, string anos, string unidade, string conta, string tipo, string regFiltro)
         {
 
             var lista = new List<FatoresTecnicosMateriaPrima>();
 
-            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltrada, System.Text.Encoding.Default);
-            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-            string regionalFiltDecode = "";
+            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+            //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
             if (regionalFiltDecode != "")
@@ -423,14 +513,14 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("getTabela1/{dataIni}/{dataFim}/{meses}/{anos}")]
-        public List<Pacote> getTabela1(string dataIni, string dataFim, string meses, string anos)
+        [Route("getTabela1/{dataIni}/{dataFim}/{meses}/{anos}/{regFiltro}")]
+        public List<Pacote> getTabela1(string dataIni, string dataFim, string meses, string anos, string regFiltro)
         {
             var lista = new List<Pacote>();
 
-            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltrada, System.Text.Encoding.Default);
-            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-            string regionalFiltDecode = "";
+            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+            //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
             if (regionalFiltDecode != "")
@@ -486,8 +576,8 @@ namespace SgqSystem.Controllers.Api
 
 
         [HttpPost]
-        [Route("getTabela2/{dataIni}/{dataFim}/{meses}/{anos}/{pacote}/{regional}")]
-        public List<Pacote> getSelectTabela2(string dataIni, string dataFim, string meses, string anos, string pacote, string regional)
+        [Route("getTabela2/{dataIni}/{dataFim}/{meses}/{anos}/{pacote}/{regional}/{regFiltro}")]
+        public List<Pacote> getSelectTabela2(string dataIni, string dataFim, string meses, string anos, string pacote, string regional, string regFiltro)
         {
 
             var pacoteDecode = HttpUtility.UrlDecode(pacote, System.Text.Encoding.Default);
@@ -498,9 +588,9 @@ namespace SgqSystem.Controllers.Api
 
             var lista = new List<Pacote>();
 
-            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltrada, System.Text.Encoding.Default);
-            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-            string regionalFiltDecode = "";
+            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+            //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
             if (regionalFiltDecode != "")
@@ -575,8 +665,8 @@ namespace SgqSystem.Controllers.Api
 
 
         [HttpPost]
-        [Route("getGrafico2/{dataIni}/{dataFim}/{meses}/{anos}/{regional}")]
-        public List<Pacote> getSelectGrafico2(string dataIni, string dataFim, string meses, string anos, string regional)
+        [Route("getGrafico2/{dataIni}/{dataFim}/{meses}/{anos}/{regional}/{regFiltro}")]
+        public List<Pacote> getSelectGrafico2(string dataIni, string dataFim, string meses, string anos, string regional, string regFiltro)
         {
 
             var regionalDecode = HttpUtility.UrlDecode(regional, System.Text.Encoding.Default);
@@ -584,9 +674,9 @@ namespace SgqSystem.Controllers.Api
 
             var lista = new List<Pacote>();
 
-            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltrada, System.Text.Encoding.Default);
-            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-            string regionalFiltDecode = "";
+            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+            //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
             if (regionalFiltDecode != "")
@@ -631,8 +721,8 @@ namespace SgqSystem.Controllers.Api
 
 
         [HttpPost]
-        [Route("getGraficoRegionalTecnico/{dataIni}/{dataFim}/{meses}/{anos}/{regional}/{conta}")]
-        public List<FatoresTecReg> getGraficoRegionalTecnico(string dataIni, string dataFim, string meses, string anos, string regional, string conta)
+        [Route("getGraficoRegionalTecnico/{dataIni}/{dataFim}/{meses}/{anos}/{regional}/{conta}/{regFiltro}")]
+        public List<FatoresTecReg> getGraficoRegionalTecnico(string dataIni, string dataFim, string meses, string anos, string regional, string conta, string regFiltro)
         {
 
             var regionalDecode = HttpUtility.UrlDecode(regional, System.Text.Encoding.Default);
@@ -643,9 +733,9 @@ namespace SgqSystem.Controllers.Api
 
             var lista = new List<FatoresTecReg>();
 
-            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltrada, System.Text.Encoding.Default);
-            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-            string regionalFiltDecode = "";
+            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+            //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
             if (regionalFiltDecode != "")
@@ -766,8 +856,8 @@ namespace SgqSystem.Controllers.Api
 
 
         [HttpPost]
-        [Route("getGraficoUnidadeTecnico/{dataIni}/{dataFim}/{meses}/{anos}/{unidade}/{conta}")]
-        public List<FatoresTecReg> getGraficoUnidadeTecnico(string dataIni, string dataFim, string meses, string anos, string unidade, string conta)
+        [Route("getGraficoUnidadeTecnico/{dataIni}/{dataFim}/{meses}/{anos}/{unidade}/{conta}/{regFiltro}")]
+        public List<FatoresTecReg> getGraficoUnidadeTecnico(string dataIni, string dataFim, string meses, string anos, string unidade, string conta, string regFiltro)
         {
 
             var unidadeDecode = HttpUtility.UrlDecode(unidade, System.Text.Encoding.Default);
@@ -778,9 +868,9 @@ namespace SgqSystem.Controllers.Api
 
             var lista = new List<FatoresTecReg>();
 
-            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltrada, System.Text.Encoding.Default);
-            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-            string regionalFiltDecode = "";
+            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+            //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
             if (regionalFiltDecode != "")
