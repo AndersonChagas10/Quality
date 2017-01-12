@@ -2,193 +2,193 @@
 
 <style>
 
-    /*!
-    * Start Bootstrap - Simple Sidebar (http://startbootstrap.com/)
-    * Copyright 2013-2016 Start Bootstrap
-    * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
-    */
+     /*!
+     * Start Bootstrap - Simple Sidebar (http://startbootstrap.com/)
+     * Copyright 2013-2016 Start Bootstrap
+     * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+     */
 
-    body {
-        overflow-x: hidden;
-    }
+     body {
+         overflow-x: hidden;
+     }
 
-    /* Toggle Styles */
+     /* Toggle Styles */
 
-    .wrapper {
-        padding-left: 0;
-        -webkit-transition: all 0.5s ease;
-        -moz-transition: all 0.5s ease;
-        -o-transition: all 0.5s ease;
-        transition: all 0.5s ease;
-    }
+     .wrapper {
+         padding-left: 0;
+         -webkit-transition: all 0.5s ease;
+         -moz-transition: all 0.5s ease;
+         -o-transition: all 0.5s ease;
+         transition: all 0.5s ease;
+     }
 
-        .wrapper.toggled {
-            padding-left: 300px;
-        }
+         .wrapper.toggled {
+             padding-left: 300px;
+         }
 
-    #sidebar-wrapper {
-        z-index: 1000;
-        position: fixed;
-        left: 300px;
-        width: 0;
-        height: 100%;
-        margin-left: -300px;
-        overflow-y: auto;
-        background: #ecebeb;
-        -webkit-transition: all 0.5s ease;
-        -moz-transition: all 0.5s ease;
-        -o-transition: all 0.5s ease;
-        transition: all 0.5s ease;
-    }
+     #sidebar-wrapper {
+         z-index: 1000;
+         position: fixed;
+         left: 300px;
+         width: 0;
+         height: 100%;
+         margin-left: -300px;
+         overflow-y: auto;
+         background: #ecebeb;
+         -webkit-transition: all 0.5s ease;
+         -moz-transition: all 0.5s ease;
+         -o-transition: all 0.5s ease;
+         transition: all 0.5s ease;
+     }
 
-    .wrapper.toggled #sidebar-wrapper {
-        width: 300px;
-    }
+     .wrapper.toggled #sidebar-wrapper {
+         width: 300px;
+     }
+
+     .page-content-wrapper {
+         width: 100%;
+         position: absolute;
+         padding: 15px;
+     }
+
+     .wrapper.toggled .page-content-wrapper {
+         position: absolute;
+         margin-right: -300px;
+
+     }
 
     .page-content-wrapper {
-        width: 100%;
-        position: absolute;
-        padding: 15px;
-    }
+         float: none!important;
+         width: 100%;
+     }
+     /* Sidebar Styles */
 
-    .wrapper.toggled .page-content-wrapper {
-        position: absolute;
-        margin-right: -300px;
-        
-    }
+     .sidebar-nav {
+         position: absolute;
+         top: 0;
+         width: 300px;
+         margin: 0;
+         padding: 0;
+         list-style: none;
+     }
 
-   .page-content-wrapper {
-        float: none!important;
-        width: 100%;
-    }
-    /* Sidebar Styles */
+         .sidebar-nav li {
+             text-indent: 20px;
+             line-height: 40px;
+         }
 
-    .sidebar-nav {
-        position: absolute;
-        top: 0;
-        width: 300px;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
+         .sidebar-nav button {
+             margin-left: 15px;
+             margin-top: 20px;
+         }
 
-        .sidebar-nav li {
-            text-indent: 20px;
-            line-height: 40px;
-        }
+         .sidebar-nav span.redLabel {
+             margin-left: 15px;
+             line-height: 25px;
+             font-size: 14px;
+             font-family: Verdana;
+             color: #247DBD;
+         }
 
-        .sidebar-nav button {
-            margin-left: 15px;
-            margin-top: 20px;
-        }
+         .sidebar-nav span.redLabelTitle {
+             margin-left: 15px;
+             line-height: 30px;
+             font-size: 19px;
+             font-family: Verdana;
+             color: #247DBD;
+         }
 
-        .sidebar-nav span.redLabel {
-            margin-left: 15px;
-            line-height: 25px;
-            font-size: 14px;
-            font-family: Verdana;
-            color: #247DBD;
-        }
+     span.redLabelSecTitle {
+         margin-left: 15px;
+         line-height: 25px;
+         font-size: 14px;
+         font-family: Verdana;
+         color: #247DBD;
+     }
 
-        .sidebar-nav span.redLabelTitle {
-            margin-left: 15px;
-            line-height: 30px;
-            font-size: 19px;
-            font-family: Verdana;
-            color: #247DBD;
-        }
+     .sidebar-nav input {
+         margin-left: 20px;
+     }
 
-    span.redLabelSecTitle {
-        margin-left: 15px;
-        line-height: 25px;
-        font-size: 14px;
-        font-family: Verdana;
-        color: #247DBD;
-    }
+     .sidebar-nav select {
+         margin-left: 20px;
+     }
 
-    .sidebar-nav input {
-        margin-left: 20px;
-    }
+     .sidebar-nav div {
+         margin-left: 20px;
+         text-indent: 5px;
+         line-height: 30px;
+     }
 
-    .sidebar-nav select {
-        margin-left: 20px;
-    }
+     .sidebar-nav li a {
+         display: block;
+         text-decoration: none;
+         color: #999999;
+     }
 
-    .sidebar-nav div {
-        margin-left: 20px;
-        text-indent: 5px;
-        line-height: 30px;
-    }
+         .sidebar-nav li a:hover {
+             text-decoration: none;
+             color: #fff;
+             background: rgba(255,255,255,0.2);
+         }
 
-    .sidebar-nav li a {
-        display: block;
-        text-decoration: none;
-        color: #999999;
-    }
+         .sidebar-nav li a:active,
+         .sidebar-nav li a:focus {
+             text-decoration: none;
+         }
 
-        .sidebar-nav li a:hover {
-            text-decoration: none;
-            color: #fff;
-            background: rgba(255,255,255,0.2);
-        }
+     .sidebar-nav > .sidebar-brand {
+         height: 65px;
+         font-size: 18px;
+         line-height: 60px;
+     }
 
-        .sidebar-nav li a:active,
-        .sidebar-nav li a:focus {
-            text-decoration: none;
-        }
+         .sidebar-nav > .sidebar-brand a {
+             color: #999999;
+         }
 
-    .sidebar-nav > .sidebar-brand {
-        height: 65px;
-        font-size: 18px;
-        line-height: 60px;
-    }
+             .sidebar-nav > .sidebar-brand a:hover {
+                 color: #fff;
+                 background: none;
+             }
 
-        .sidebar-nav > .sidebar-brand a {
-            color: #999999;
-        }
+     @@media(min-width:768px) {
+         .wrapper {
+             padding-left: 300px;
+         }
 
-            .sidebar-nav > .sidebar-brand a:hover {
-                color: #fff;
-                background: none;
-            }
+             .wrapper.toggled {
+                 padding-left: 0;
+             }
 
-    @@media(min-width:768px) {
-        .wrapper {
-            padding-left: 300px;
-        }
+         #sidebar-wrapper {
+             width: 300px;
+         }
 
-            .wrapper.toggled {
-                padding-left: 0;
-            }
+         .wrapper.toggled #sidebar-wrapper {
+             width: 0;
+         }
 
-        #sidebar-wrapper {
-            width: 300px;
-        }
+         .page-content-wrapper {
+             padding: 20px;
+             position: relative;
+         }
 
-        .wrapper.toggled #sidebar-wrapper {
-            width: 0;
-        }
+         .wrapper.toggled .page-content-wrapper {
+             position: relative;
+             margin-right: 0;
+         }
+     }
 
-        .page-content-wrapper {
-            padding: 20px;
-            position: relative;
-        }
+     .input-mini{
+         width: 100%!important;
+     }
 
-        .wrapper.toggled .page-content-wrapper {
-            position: relative;
-            margin-right: 0;
-        }
-    }
-
-    .input-mini{
-        width: 100%!important;
-    }
-
-    .singleCalendar{
-        background-image: ;
-        background-repeat: no-repeat;
-        padding-left: 25px;
-    }
+     .singleCalendar{
+         background-image: ;
+         background-repeat: no-repeat;
+         padding-left: 25px;
+     }
 
 </style>
 
@@ -207,12 +207,12 @@
                 <div class="has-feedback">
                     <span>
                         <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                        <input type="text" class="" name="datefilter" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 210px"/>
+                        <input type="text" class="" name="datefilter" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 210px" />
                     </span>
                 </div>
             </div>
         </li>
-        
+
         <li>
             <div class="" id="complexCallendar" style="display:none">
                 <span class="redLabel">@Resources.Resource.date @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@</span>
@@ -253,10 +253,14 @@
 
         <li>
             <div id="showManutencao" style="display:none">
-                <span class="redLabel">@Html.Label("2016")</span>
-                @Html.CheckBox("manutencaoAno", false) 
-
-               @*@Html.CheckBox("manutencaoAno", false) @Html.Label("2016")*@
+                <div>
+                    @Html.CheckBox("manutencaoAno2016", false, new { @class = "redLabel" })
+                    <span class="redLabel">@Html.Label("2016")</span>
+                </div>
+                <div>
+                    @Html.CheckBox("manutencaoAno2015", false, new { @class = "redLabel" })
+                    <span class="redLabel">@Html.Label("2015")</span>
+                </div>
             </div>
         </li>
 
@@ -270,7 +274,7 @@
 <!-- Menu Toggle Script -->
 
 <script>
-    
+
     var enviar = {};
     var start = moment();
     var end = moment();
@@ -424,8 +428,10 @@
         orderDdls: function () {
 
         },
-        showManutencao: function() {}
+        showManutencao: function () { }
     }
+
+
 
 </script>
 

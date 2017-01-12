@@ -1,0 +1,79 @@
+﻿@model Dominio.manDataCollectIT
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 650px;">
+
+        <div>
+            <h4>manDataCollectIT</h4>
+            <hr />
+            <dl class="dl-horizontal">
+               
+                <dt>
+                    @Html.DisplayName("Data da Coleta")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.referenceDatetime)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Unidade")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.parCompany_id)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Periodicidade")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.parFrequency_id)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Período")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.shift)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Descrição da Coleta")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.dataType)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Quantidade")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.amountData)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Unidade de Medida")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.ParMeasurementUnit_Id)
+                </dd>
+
+            </dl>
+        </div>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+            @Html.ActionLink(Resources.Resource.back, "Index")
+        </p>
+        </div>
+</div>
