@@ -714,8 +714,7 @@
 
                                             //chamada ajax para montar primeiro gráfico
                                             function MountGraficoDespesaTodasRegionais() {
-                                                var regFiltro = "";
-                                                $.post('../api/Manutencao/getSelectGrafico1/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(regFiltro.replace(/[/]/g, '|')) + '/',function (lista) {
+                                                $.post('../api/Manutencao/getSelectGrafico1/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + getManutencaoRegional() + '/',function (lista) {
 
                                                     var regional = [];
 
@@ -960,7 +959,7 @@
                                             
                                             //ajax - monta GRÁFICO DE DESPESA POR REGIONAL
                                             function MountGrafDespReg(regional) {
-                                                var regFiltro = "";
+                                                var regFiltro = $('#cbxlistaRegionais select').val().length == 0 ? "null" : $('#cbxlistaRegionais select').val();
                                                 $.post('../api/Manutencao/getSelectGrafDespReg/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(regional.replace(/[/]/g, '|')) + '/' + escape(regFiltro.replace(/[/]/g, '|')) + '/', function (lista) {
 
                                                     var titleLine = [];
@@ -1217,9 +1216,8 @@
                                                 $("#TabelaDespesaTodasRegionais").animate({
                                                     opacity: 0.4,
                                                 }, 1500);
-                                                var regFiltro = "";
                                                 var tabela1;
-                                                $.post('../api/Manutencao/getTabela1/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(regFiltro.replace(/[/]/g, '|')) + '/', function (lista) {
+                                                $.post('../api/Manutencao/getTabela1/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + getManutencaoRegional() + '/', function (lista) {
 
                                                     // titleColumn1 - Mostrar na primeira coluna a primeira linha em branco e a segunda com nome fixo PACOTE
                                                     var titleColumn1 = [];
@@ -1402,22 +1400,22 @@
                                                         var real = [];
                                                         var desvioP = [];
                                                         var desvioR = [];
-                                                        orcada.push(entry.total.Orçada);
+                                                        orcada.push(entry.total == null ? 0 : entry.total.Orçada);
                                                         orcada.push(0);
                                                         orcada.push(0);
                                                         orcada.push(0);
                                                         orcada.push(0);
-                                                        real.push(entry.total.Realizada);
+                                                        real.push(entry.total == null ? 0 : entry.total.Realizada);
                                                         real.push(0);
                                                         real.push(0);
                                                         real.push(0);
                                                         real.push(0);
-                                                        desvioP.push(entry.total.DesvioPorc);
+                                                        desvioP.push(entry.total == null ? 0 : entry.total.DesvioPorc);
                                                         desvioP.push(0);
                                                         desvioP.push(0);
                                                         desvioP.push('%');
                                                         desvioP.push(buscaCor(arrayCor[i])); /****** GERAÇÃO DO MAPA DE CALOR *********/
-                                                        desvioR.push(entry.total.DesvioReal);
+                                                        desvioR.push(entry.total == null ? 0 : entry.total.DesvioReal);
                                                         desvioR.push(0);
                                                         desvioR.push(0);
                                                         desvioR.push(0);
@@ -1454,10 +1452,10 @@
                                                     var dados = [];
 
                                                     lista.forEach(function (entry) {
-                                                        orcada += entry.total.Orçada;
-                                                        real += entry.total.Realizada;
-                                                        desvioP += entry.total.DesvioPorc;
-                                                        desvioR += entry.total.DesvioReal;
+                                                        orcada += entry.total == null ? 0 : entry.total.Orçada;
+                                                        real += entry.total == null ? 0 : entry.total.Realizada;
+                                                        desvioP += entry.total == null ? 0 : entry.total.DesvioPorc;
+                                                        desvioR += entry.total == null ? 0 : entry.total.DesvioReal;
                                                     });
                                                     lineO.push(orcada);
                                                     lineO.push(0);
@@ -1591,7 +1589,7 @@
                                                     var regional = obj.getAttribute("y");
 
                                                     regionalSelecionada = regional;
-                                                    var regFiltro = "";
+                                                    var regFiltro = $('#cbxlistaRegionais select').val().length == 0 ? "null" : $('#cbxlistaRegionais select').val();
                                                     $.post('../api/Manutencao/getTabela2/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(pacote.replace(/[/]/g, '|')) + '/' + escape(regional.replace(/[/]/g, '|')) + '/' + escape(regFiltro.replace(/[/]/g, '|')) + '/', function (lista) {
                                                         // titleColumn1 - Mostrar na primeira coluna a primeira linha em branco e a segunda com nome fixo PACOTE
                                                         var titleColumn1 = [];
@@ -1961,7 +1959,7 @@
                                                     var conta = obj.getAttribute("x");
                                                     var unidade = obj.getAttribute("y");
                                                     var regional = regionalSelecionada;
-                                                    var regFiltro = "";
+                                                    var regFiltro = $('#cbxlistaRegionais select').val().length == 0 ? "null" : $('#cbxlistaRegionais select').val();
                                                     $.post('../api/Manutencao/getGraficoRegionalTecnico/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(regional.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, ' | ')) + '/' + escape(regFiltro.replace(/[/]/g, '|')) + '/', function (lista) {
 
                                                     var reg = regional
@@ -2168,7 +2166,7 @@
                                             //chamada ajax unit gráfico
                                             function MountRegionalChart(u, conta) {
                                                 var tipo = u.series.name;
-                                                var regFiltro = "";
+                                                var regFiltro = $('#cbxlistaRegionais select').val().length == 0 ? "null" : $('#cbxlistaRegionais select').val();
                                                 $.post('../api/Manutencao/getSelectGraficoFatoresTecnicoMateriaPrimaRegionalEConta/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(regionalSelecionada.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/' + escape(tipo.replace(/[/]/g, '|')) + '/' + escape(regFiltro.replace(/[/]/g, '|')) + '/', function (lista) {
 
                                                     var titleLine = [];
@@ -2253,10 +2251,10 @@
                                             //chamada ajax terceiro gráfico
                                             function MountEvolutivoOrcamentoGeralChart(u, conta) {
                                                 
-                                                var regFiltro = "";
+                                                var regFiltro = $('#cbxlistaRegionais select').val().length == 0 ? "null" : $('#cbxlistaRegionais select').val();
                                                 unidadeSelecionada = u;
                                                 var unidade = u;
-                                                $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidade/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(unidade.replace(/[/]/g, '|')) + '/' + escape(regFiltro.replace(/[/]/g, '|')) + '/' , function (lista) {
+                                                $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidade/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/'+getManutencaoMes() +'/'+getManutencaoAno()+'/' + escape(unidade.replace(/[/]/g, '|')) + '/' + escape(regFiltro.replace(/[/]/g, '|')) + '/' , function (lista) {
 
                                                     var titleLine = [];
 
@@ -2294,7 +2292,7 @@
 
                                                 });
 
-                                                $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidadeEConta/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(unidade.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/' + escape(regFiltro.replace(/[/]/g, '|')) + '/', function (lista) {
+                                                $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidadeEConta/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + escape(unidade.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/' + escape(regFiltro.replace(/[/]/g, '|')) + '/', function (lista) {
 
                                                     var titleLine = [];
 
@@ -2473,7 +2471,7 @@
 
                                             //chamada ajax gráfico de DADOS TECNICOS POR CONTA SELECIONADA
                                             function MountDadosTecnicosContaChart(unidade, conta) {
-                                                var regFiltro = "";
+                                                var regFiltro = $('#cbxlistaRegionais select').val().length == 0 ? "null" : $('#cbxlistaRegionais select').val();
                                                 //fazer ajax
                                                 $.post('../api/Manutencao/getGraficoUnidadeTecnico/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(unidade.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/' + escape(regFiltro.replace(/[/]/g, '|')) + '/', function (lista) {
 
@@ -2670,7 +2668,7 @@
                                             function MountUnitChart(u, conta) {
                                                
                                                 var tipo = u.series.name;
-                                                var regFiltro = "";
+                                                var regFiltro = $('#cbxlistaRegionais select').val().length == 0 ? "null" : $('#cbxlistaRegionais select').val();
                                                 $.post('../api/Manutencao/getSelectGraficoFatoresTecnicoMateriaPrimaUnidadeEConta/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/null/null/' + escape(unidadeSelecionada.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/' + escape(tipo.replace(/[/]/g, '|')) + '/' + escape(regFiltro.replace(/[/]/g, '|')) + '/', function (lista) {
 
                                                     var titleLine = [];
@@ -2876,7 +2874,34 @@
             });
             formControl.showFullCallendar();
             formControl.showManutencao();
+            formControl.loadManutencaoParametros();
+
         });
+
+        function getManutencaoAno() {
+
+            return $('#cbxlistaAnos select').val();
+
+        };
+
+        function getManutencaoMes() {
+
+            return $('#cbxlistaMeses select').val();
+
+        };
+
+        function getManutencaoRegional() {
+            var regFiltro = $('#cbxlistaRegionais select').val().length == 0 ? "null" : $('#cbxlistaRegionais select').val();
+
+            if (regFiltro != "null") {
+                for (var i = 0; i < regFiltro.length; i++) {
+                    regFiltro[i] = escape(regFiltro[i].replace(/[/]/g, '|'))
+                }
+            }
+
+            return regFiltro;
+
+        }
 
 
     </script>
