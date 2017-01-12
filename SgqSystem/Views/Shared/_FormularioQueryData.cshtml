@@ -72,10 +72,7 @@
          list-style: none;
      }
 
-         .sidebar-nav li {
-             text-indent: 20px;
-             line-height: 40px;
-         }
+         
 
          .sidebar-nav button {
              margin-left: 15px;
@@ -249,18 +246,89 @@
                 <span class="redLabel">@Resources.Resource.auditor</span>
                 @Html.DropDownList("auditorId", Model.UserSelectList, "All", htmlAttributes: new { @class = "form-control required", @style = "width:210px" })
             </div>
+
+
         </li>
 
         <li>
+            <br />
             <div id="showManutencao" style="display:none">
-                <div>
-                    @Html.CheckBox("manutencaoAno2016", false, new { @class = "redLabel" })
-                    <span class="redLabel">@Html.Label("2016")</span>
+
+                <div class="btn-group hide" data-toggle="buttons">
+                    <label class="btn btn-primary" style="min-width: 0px; margin-left: -1px; margin-right: 0px;">
+                        <!--<input type="checkbox" autocomplete="off" class="manutencaoAno2015"> 2015-->
+                        @Html.CheckBox("manutencaoAno2015", false, new { @class = "redLabel" })
+                        @Html.Label("2015")
+                    </label>
+                    <label class="btn btn-primary" style="min-width: 0px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoAno2016", false, new { @class = "redLabel" })
+                        @Html.Label("2016")
+                    </label>
+                    <label class="btn btn-primary" style="min-width: 0px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoAno2017", false, new { @class = "redLabel" })
+                        @Html.Label("2017")
+                    </label>
                 </div>
-                <div>
-                    @Html.CheckBox("manutencaoAno2015", false, new { @class = "redLabel" })
-                    <span class="redLabel">@Html.Label("2015")</span>
+
+
+                <div class="btn-group hide" data-toggle="buttons">
+                    <label class="btn btn-primary data" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoJaneiro", false, new { @class = "redLabel" })
+                        @Html.Label("Jan")
+                    </label>
+                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoFevereiro", false, new { @class = "redLabel" })
+                        @Html.Label("Fev")
+                    </label>
+                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoMarco", false, new { @class = "redLabel" })
+                        @Html.Label("Mar")
+                    </label>
+                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoAbril", false, new { @class = "redLabel" })
+                        @Html.Label("Abr")
+                    </label>
+                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoMaio", false, new { @class = "redLabel" })
+                        @Html.Label("Mai")
+                    </label>
+                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoJunho", false, new { @class = "redLabel" })
+                        @Html.Label("Jun")
+                    </label>
+                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoJulho", false, new { @class = "redLabel" })
+                        @Html.Label("Jul")
+                    </label>
+                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoAgosto", false, new { @class = "redLabel" })
+                        @Html.Label("Ago")
+                    </label>
+                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoSetembro", false, new { @class = "redLabel" })
+                        @Html.Label("Set")
+                    </label>
+                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoOutubro", false, new { @class = "redLabel" })
+                        @Html.Label("Out")
+                    </label>
+                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoNovembro", false, new { @class = "redLabel" })
+                        @Html.Label("Nov")
+                    </label>
+                    <label class="btn btn-primary" style="min-width: 66px; margin-left: 0px; margin-right: 0px;">
+                        @Html.CheckBox("manutencaoDezembro", false, new { @class = "redLabel" })
+                        @Html.Label("Dez")
+                    </label>
+
                 </div>
+
+                <div class="form-group" id="cbxlistaAnos"></div>
+
+                <div class="form-group" id="cbxlistaMeses"></div>
+
+                <div class="form-group" id="cbxlistaRegionais"></>
+
             </div>
         </li>
 
@@ -278,6 +346,20 @@
     var enviar = {};
     var start = moment();
     var end = moment();
+
+    var monthNames = [
+        '@Resources.Resource.january',
+        '@Resources.Resource.february',
+        '@Resources.Resource.march',
+        '@Resources.Resource.april',
+        '@Resources.Resource.may',
+        '@Resources.Resource.june',
+        '@Resources.Resource.july',
+        '@Resources.Resource.august',
+        '@Resources.Resource.september',
+        '@Resources.Resource.october',
+        '@Resources.Resource.november',
+        '@Resources.Resource.december'];
 
     $(function () {
 
@@ -428,7 +510,44 @@
         orderDdls: function () {
 
         },
-        showManutencao: function () { }
+        showManutencao: function () {
+            $("#showManutencao").show();
+        },
+        loadManutencaoParametros: function (){
+
+            $("#cbxlistaAnos").empty();
+            var data = new Date();
+            var ano = data.getFullYear();
+            var selectAnos = $("<select multiple='multiple' class='form-control'></select>");
+            for (var i = ano; i > 2010; i--) {
+                selectAnos.append("<option value='" + i + "'>" + i + "</option>");
+            }
+            $("#cbxlistaAnos").append("<label>Anos: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>").append(selectAnos);
+            $("#cbxlistaAnos select").select2();
+
+            $("#cbxlistaMeses").empty();
+            var selectMeses = $("<select multiple='multiple' class='form-control'></select>");
+            for (var i = 0; i < 12; i++) {
+                selectMeses.append("<option value='" + parseInt(i + 1) + "'>" + monthNames[i] + "</option>");
+            }
+            $("#cbxlistaMeses").append("<label>Meses:     </label>").append(selectMeses);
+            $("#cbxlistaMeses select").select2();
+
+
+            $("#cbxlistaRegionais").empty();
+            var selectRegionais = $("<select multiple='multiple' class='form-control'></select>");
+            $.post("../api/Manutencao/getSelectEmpresaRegionalList", function (r) {
+                for (var i = 0 ; i < r.length; i++) {
+                    selectRegionais.append("<option value='" + r[i].Regional + "'>" + r[i].Regional + "</option>");
+                }
+                $("#cbxlistaRegionais").append("<label>Regionais:    </label>").append(selectRegionais);
+                $("#cbxlistaRegionais select").select2();
+
+                $("#showManutencao").find(".select2").css("width", "210px");
+            }); 
+
+            $("#showManutencao").find(".select2").css("width", "210px");
+        }
     }
 
 
