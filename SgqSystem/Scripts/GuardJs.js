@@ -6,34 +6,48 @@ Array.prototype.min = function () {
     return Math.min.apply(null, this);
 };
 
+/*
+    tableId [type=string] Ex: "Table1",
+    isInLine [type=bool] Ex: true,
+    isInColumn [type=bool] Ex: "Table1",
+    startIndex [type=int] Ex: 1, (Representa o índice do 1° elemento da tabela a ser interado, a primeira td é 0).
+    delimiterIndex [type=int] Ex: 3, (Representa o índice da ultima TD aonde começa a zona de repetição dos dados).
+*/
 function heatMap(tableId, isInLine, isInColumn, startIndex, delimiterIndex) {
 
     var startIndexFixed = startIndex;
 
+    //Se for por TR.
     if (isInLine) {
 
+        //Se for In Line > para cada TR procura indice e calcula o percentual.
         $('#fixBody1 > table tr').each(function (c, o) {
 
+            //Para manejar contadores por TR
             startIndex = startIndexFixed;
             var elems = [];
 
+            //Insere no array todos os elementos indicados em startIndex, insere o elemento Jquery "td" e o valor da "td".
             while (!!$(o).find('td:eq(' + startIndex + ')')[0]) {
                 elems.push({
-                    td: $(o).find('td:eq(' + startIndex + ')') //obj javascript > td
-                    , valor: $(o).find('td:eq(' + startIndex + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] // Extrai valor numerico da TD.
+                    //obj javascript > td
+                    td: $(o).find('td:eq(' + startIndex + ')') 
+                    // Extrai valor numerico da TD.
+                    , valor: $(o).find('td:eq(' + startIndex + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] 
                 });
-                startIndex += delimiterIndex + 1;
+                //Proximo index de TD a se inserir.
+                startIndex += delimiterIndex + 1; 
             }
 
-            //console.log(elems)
-
-            valorMaximo = Math.max.apply(Math, elems.map(function (o) { return o.valor; }))
-            valorMinimo = Math.min.apply(Math, elems.map(function (o) { return o.valor; }))
+            //Valor minimo e maximo encontrados na TR.
+            var valorMaximo = Math.max.apply(Math, elems.map(function (o) { return o.valor; }))
+            var valorMinimo = Math.min.apply(Math, elems.map(function (o) { return o.valor; }))
 
             elems.forEach(function (oo, cc) {
+                //Encontra valor em 1 percentual dentre os valores escolhidos, maior valor é 100% e menos é 0%
                 var percentual = parseFloat((((oo["valor"] * 100) / valorMaximo) / 100).toFixed(2));
-                console.log(percentual);
-                oo.td[0].style.backgroundColor = buscaCor(percentual)
+                //Atribui o Style com a cor de acordo com o valor percentual obtido acima.
+                oo.td[0].style.backgroundColor = buscaCor(percentual);
             });
         })
     }
