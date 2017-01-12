@@ -1,4 +1,45 @@
-﻿Inputmask.extendAliases({
+﻿Array.prototype.max = function () {
+    return Math.max.apply(null, this);
+};
+
+Array.prototype.min = function () {
+    return Math.min.apply(null, this);
+};
+
+function heatMap(tableId, isInLine, isInColumn, startIndex, delimiterIndex) {
+
+    var startIndexFixed = startIndex;
+
+    if (isInLine) {
+
+        $('#fixBody1 > table tr').each(function (c, o) {
+
+            startIndex = startIndexFixed;
+            var elems = [];
+
+            while (!!$(o).find('td:eq(' + startIndex + ')')[0]) {
+                elems.push({
+                    td: $(o).find('td:eq(' + startIndex + ')') //obj javascript > td
+                    , valor: $(o).find('td:eq(' + startIndex + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] // Extrai valor numerico da TD.
+                });
+                startIndex += delimiterIndex + 1;
+            }
+
+            //console.log(elems)
+
+            valorMaximo = Math.max.apply(Math, elems.map(function (o) { return o.valor; }))
+            valorMinimo = Math.min.apply(Math, elems.map(function (o) { return o.valor; }))
+
+            elems.forEach(function (oo, cc) {
+                var percentual = parseFloat((((oo["valor"] * 100) / valorMaximo) / 100).toFixed(2));
+                console.log(percentual);
+                oo.td[0].style.backgroundColor = buscaCor(percentual)
+            });
+        })
+    }
+}
+
+Inputmask.extendAliases({
     'numeric': {
         allowPlus: false,
         allowMinus: false
