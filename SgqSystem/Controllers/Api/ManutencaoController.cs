@@ -12,6 +12,8 @@ namespace SgqSystem.Controllers.Api
     [RoutePrefix("api/Manutencao")]
     public class ManutencaoController : ApiController
     {
+       
+
         public string queryReg(string regional)
         {        
 
@@ -107,10 +109,11 @@ namespace SgqSystem.Controllers.Api
 
             var lista = new List<Reg>();
 
-            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
-            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
              
             string regionaisFiltradas = "";
+            string regionalFiltDecode = "";
 
             if (regionalFiltDecode != "")
             {
