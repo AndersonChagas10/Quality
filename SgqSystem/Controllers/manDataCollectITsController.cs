@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Dominio;
 using DTO.DTO.Params;
 using Dominio.Interfaces.Services;
 using DTO.Helpers;
+using SgqSystem.Secirity;
 
 namespace SgqSystem.Controllers
 {
+    [CustomAuthorize(Roles = "somentemanutencao-sgq")]
     public class manDataCollectITsController : Controller
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
