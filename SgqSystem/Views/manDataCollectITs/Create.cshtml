@@ -125,6 +125,9 @@
 
 <script>
     $(document).ready(function () {
+
+
+
         $('#referenceDatetime').daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
@@ -135,9 +138,10 @@
 
         $('#AddDate').daterangepicker({
             singleDatePicker: true,
+            timePicker: true,
             showDropdowns: true,
             'locale': {
-                "format": "DD/MM/YYYY",
+                "format": "DD/MM/YYYY hh:mm:ss",
             }
         });
 
