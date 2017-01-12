@@ -54,11 +54,9 @@ namespace Dominio.ADO
         /// <param name="connectionStringDoWebConfig"></param>
         public FactoryADO(string connectionStringDoWebConfig = "DbContextSgqEUA")
         {
-
             try
             {
                 connection = new SqlConnection(connectionStringDoWebConfig);
-           
                 connection.Open();
             }
             catch (SqlException ex)
@@ -134,5 +132,7 @@ namespace Dominio.ADO
             closeConnection();
             Dispose();
         }
+
+
     }
 }
