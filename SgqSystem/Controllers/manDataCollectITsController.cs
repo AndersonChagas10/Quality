@@ -38,6 +38,7 @@ namespace SgqSystem.Controllers
         // GET: manDataCollectITs
         public ActionResult Index()
         {
+            ViewBag.listaParCompany = FiltraUnidades();
             return View(db.manDataCollectIT.ToList());
         }
 

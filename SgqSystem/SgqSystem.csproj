@@ -428,6 +428,8 @@
     <Compile Include="Mappers\UserMapperProfile.cs" />
     <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
+    <Compile Include="Secirity\FilterUnit.cs" />
+    <Compile Include="Secirity\FormularioPesquisa.cs" />
     <Compile Include="Secirity\RoleAuthorizeAttribute.cs" />
     <Compile Include="Secirity\RolesPorUnidade.cs" />
     <Compile Include="Secirity\SessionPersister.cs" />

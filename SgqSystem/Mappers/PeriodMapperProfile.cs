@@ -8,7 +8,7 @@ namespace SgqSystem.Mappers
     {
         public ShiftMapperProfile()
         {
-            CreateMap<Shift, ShiftDTO> ();
+            CreateMap<Shift, ShiftDTO>();
             CreateMap<ShiftDTO, Shift>();
         }
     }
