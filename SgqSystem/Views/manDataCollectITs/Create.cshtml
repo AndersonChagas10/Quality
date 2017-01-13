@@ -55,13 +55,13 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                @*<div class="form-group">
                     @Html.Label("Periodicidade", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownListFor(model => model.parFrequency_id, new SelectList(ViewBag.listaParFrequency, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.parFrequency_id, "", new { @class = "text-danger" })
                     </div>
-                </div>
+                </div>*@
 
                 <div class="form-group">
                     @Html.Label("Turno", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -138,8 +138,8 @@
         });
 
         $('#AddDate').daterangepicker({
-            singleDatePicker: true,
-            timePicker: true,
+            singleDateTimePicker: true,
+            //timePicker: true,
             showDropdowns: true,
             'locale': {
                 "format": "DD/MM/YYYY hh:mm:ss",
