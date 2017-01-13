@@ -7,6 +7,7 @@ using DTO.DTO.Params;
 using Dominio.Interfaces.Services;
 using DTO.Helpers;
 using SgqSystem.Secirity;
+using System;
 
 namespace SgqSystem.Controllers
 {
@@ -73,6 +74,7 @@ namespace SgqSystem.Controllers
 
             if (ModelState.IsValid)
             {
+                manDataCollectIT.AddDate = DateTime.Now;
                 db.manDataCollectIT.Add(manDataCollectIT);
                 db.SaveChanges();
                 return RedirectToAction("Index");
