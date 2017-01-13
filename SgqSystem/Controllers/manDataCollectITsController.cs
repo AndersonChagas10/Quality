@@ -12,7 +12,7 @@ using System;
 namespace SgqSystem.Controllers
 {
     [CustomAuthorize(Roles = "somentemanutencao-sgq")]
-    public class manDataCollectITsController : Controller
+    public class manDataCollectITsController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
@@ -59,7 +59,8 @@ namespace SgqSystem.Controllers
         // GET: manDataCollectITs/Create
         public ActionResult Create()
         {
-            return View();
+            ViewBag.listaParCompany = FiltraUnidades();
+            return View(new manDataCollectIT() {amountData=0});
         }
 
         // POST: manDataCollectITs/Create

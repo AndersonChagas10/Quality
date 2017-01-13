@@ -100,17 +100,20 @@
                     </div>
                 </div>
 
-                @{ Html.EnableClientValidation(false); }
+                
 
                 <div class="form-group">
                     @Html.Label("Quantidade", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.amountData, new { htmlAttributes = new { @class = "form-control"} })
+                        @Html.TextBoxFor(model => model.amountData, Model.amountData.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.amountData, "", new { @class = "text-danger" })
+
+                        @*@Html.EditorFor(model => model.amountData, new { htmlAttributes = new { @class = "form-control"} })
+                        @Html.ValidationMessageFor(model => model.amountData, "", new { @class = "text-danger" })*@
                     </div>
                 </div>
 
-                @{ Html.EnableClientValidation(true); }
+                
 
                 <div class="form-group hide">
                     @Html.Label("Unidade de Medida", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -147,6 +150,9 @@
         }
 
         <script>
+
+            $('#amountData').inputmask("decimal", { rightAlign: false });
+
             $(document).ready(function () {
 
                 $('#referenceDatetime').daterangepicker({
