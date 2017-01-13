@@ -306,13 +306,19 @@
 
                                                 for (var i = 0; i < dadosPrincipais.length; i++) {
                                                     tabela += "<tr>";
+                                                    var k = 0;
                                                     for (var j = 0; j < dadosPrincipais[i].length; j++) {
                                                         //tabela += "<td height=\"" + alturaDasCelulasDeValor + "\" onclick=\"secoundTable(this)\"align=\"center\" x=\"" + dadosPrincipais[i][j][1] + "\" y=\"" + dadosPrincipais[i][j][2] + "\"style=\"min-width:" + larguraDasCelulasDeValor + ";  background-color: " + dadosPrincipais[i][j][4] + "\">" + (dadosPrincipais[i][j][3] == '%' ? '<i>' + dadosPrincipais[i][j][0] + '<i>%' : float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000))) + "</td>";
 
                                                         tabela += "<td onclick=\"clickTabela(" + id + ", this)\"align=\"center\" x=\"" + dadosPrincipais[i][j][1] + "\" y=\"" + dadosPrincipais[i][j][2] + "\" align=\"center\" style=\"min-width:" + larguraDasCelulasDeValor + "; padding:0px; height: " + alturaDasCelulasDeValor + ";\">";
-                                                        tabela += (dadosPrincipais[i][j][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + dadosPrincipais[i][j][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + dadosPrincipais[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000))) + "</td>";
-
+                                                        tabela += (dadosPrincipais[i][j][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + dadosPrincipais[i][j][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + dadosPrincipais[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" :  k == 1 && dadosPrincipais[i][j-1][0] < dadosPrincipais[i][j][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000)) + '</span>' :  float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000))) + "</td>";
+                                                        if (k == 3) {
+                                                            k = 0;
+                                                        } else {
+                                                            k++;
+                                                        }
                                                     }
+                                                    k = 0;
                                                     tabela += "</tr>";
                                                 }
 
@@ -329,16 +335,20 @@
                                                 tabela += "<tr>";
 
                                                 var color = corColunasAlternadas1;
-
+                                                var k = 0;
                                                 for (var i = 0; i < footerColumnsBody[0].length; i++) {
 
                                                     if (i % 4 == 0) {
                                                         color == corColunasAlternadas1 ? color = corColunasAlternadas2 : color = corColunasAlternadas1;
                                                     }
-
+                                                    
                                                     tabela += "<td align=\"center\" style=\"background-color: " + color + "; min-width:" + larguraDasCelulasDeValor + "; padding:0px; height: " + alturaDasCelulasDeValor + ";\">";
-                                                    tabela += (footerColumnsBody[0][i][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + footerColumnsBody[0][i][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + footerColumnsBody[0][i][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000))) + "</td>";
-
+                                                    tabela += (footerColumnsBody[0][i][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + footerColumnsBody[0][i][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + footerColumnsBody[0][i][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : k == 1 && footerColumnsBody[0][i - 1][0] < footerColumnsBody[0][i][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000)) + '</span>' :  float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000))) + "</td>";
+                                                    if (k == 3) {
+                                                        k = 0;
+                                                    } else {
+                                                        k++;
+                                                    }
                                                 }
 
                                                 tabela += "</tr>";
@@ -399,11 +409,16 @@
 
                                                 for (var i = 0; i < columnsTotal.length; i++) {
                                                     tabela += "<tr>";
+                                                    var k = 0;
                                                     for (var j = 0; j < columnsTotal[i].length; j++) {
 
                                                         tabela += "<td align=\"center\" style=\"min-width:" + larguraDasCelulasDeValor + "; padding:0px; height: " + alturaDasCelulasDeValor + ";\">";
-                                                        tabela += (columnsTotal[i][j][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + columnsTotal[i][j][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + columnsTotal[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000))) + "</td>";
-
+                                                        tabela += (columnsTotal[i][j][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + columnsTotal[i][j][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + columnsTotal[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : k == 1 && columnsTotal[i][j - 1][0] < columnsTotal[i][j][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000)) + '</span>' :  float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000))) + "</td>";
+                                                        if (k == 3) {
+                                                            k = 0;
+                                                        } else {
+                                                            k++;
+                                                        }
                                                     }
                                                     tabela += "</tr>";
                                                 }
