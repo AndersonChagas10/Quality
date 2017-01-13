@@ -17,7 +17,7 @@ namespace Helper
             filterContext.ExceptionHandled = false;
             LogException(ex);
             CreateExceptionContextResult(filterContext);
-
+            throw ex;
         }
 
         /// <summary>
@@ -50,14 +50,14 @@ namespace Helper
             }
             else
             {
-                //Redirect user to error page
-                exceptionContext.ExceptionHandled = true;
-                exceptionContext.Result = new RedirectToRouteResult(
-                                   new RouteValueDictionary
-                                   {
-                                       { "action", "Index" },
-                                       { "controller", "Error" }
-                                   });
+                ////Redirect user to error page
+                //exceptionContext.ExceptionHandled = true;
+                //exceptionContext.Result = new RedirectToRouteResult(
+                //                   new RouteValueDictionary
+                //                   {
+                //                       { "action", "Index" },
+                //                       { "controller", "Error" }
+                //                   });
             }
         }
 

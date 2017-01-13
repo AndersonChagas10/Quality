@@ -1,6 +1,8 @@
 ﻿using Helper;
 using SgqSystem.Secirity;
+using System;
 using System.Diagnostics;
+using System.Web;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
@@ -21,22 +23,22 @@ namespace SgqSystem.Controllers
             return View();
         }
 
-        //public void ChangeCulture(string language = "pt-BR")
-        //{
-        //    Response.Cookies.Remove("Language");
-        //    HttpCookie languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
+        public void ChangeCulture(string language = "pt-BR")
+        {
+            Response.Cookies.Remove("Language");
+            HttpCookie languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
 
-        //    if (languageCookie == null) languageCookie = new HttpCookie("Language");
+            if (languageCookie == null) languageCookie = new HttpCookie("Language");
 
-        //    languageCookie.Value = language;
+            languageCookie.Value = language;
 
-        //    languageCookie.Expires = DateTime.Now.AddDays(10);
+            languageCookie.Expires = DateTime.Now.AddDays(10);
 
-        //    Response.SetCookie(languageCookie);
+            Response.SetCookie(languageCookie);
 
-        //    Response.Redirect(Request.UrlReferrer.ToString());
+            Response.Redirect(Request.UrlReferrer.ToString());
 
-        //}
+        }
 
         //public void teste()
         //{

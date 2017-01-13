@@ -33,8 +33,21 @@ namespace SgqSystem.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult TiposDeInputSgq()
+        {
+            return View(new ContextExampleViewModel() { IntegerProp = 2, DecimalProp = 3.983M });
+        }
+
+        [HttpPost]
+        public ActionResult TiposDeInputSgq(ContextExampleViewModel model)
+        {
+            return View(model);
+        }
+
+       
     }
 
-
+    
 
 }

@@ -359,6 +359,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Handlres\DecimalModelBinder.cs" />
     <Compile Include="Handlres\HandleApi.cs" />
     <Compile Include="Handlres\HandleController.cs" />
     <Compile Include="Handlres\ValidateModelAttribute.cs" />
@@ -1281,6 +1282,7 @@
     <Content Include="Views\manDataCollectITs\Edit.cshtml" />
     <Content Include="Views\manDataCollectITs\Index.cshtml" />
     <Content Include="Views\ExemploInput\Index.cshtml" />
+    <Content Include="Views\Example\TiposDeInputSgq.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
