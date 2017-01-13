@@ -1,4 +1,4 @@
-﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+﻿    @model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
     ViewBag.Title = "Manutenção";
 }
@@ -282,7 +282,7 @@
 
                                                 var color = corColunasAlternadas1;
 
-                                                for (var i = 0; i < titulosColunasCorpo[1].length; i++) {
+                                                for (var i = 0; i < titulosColunasCorpo[1].length-4; i++) {
 
                                                     if (i % 4 == 0) {
                                                         color == corColunasAlternadas1 ? color = corColunasAlternadas2 : color = corColunasAlternadas1;
