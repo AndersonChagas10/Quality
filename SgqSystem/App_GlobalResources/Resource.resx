@@ -762,4 +762,7 @@
   <data name="is_active" xml:space="preserve">
     <value>Is active</value>
   </data>
+  <data name="quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
 </root>

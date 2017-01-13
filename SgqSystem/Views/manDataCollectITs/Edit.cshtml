@@ -13,7 +13,8 @@
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-                <h4>Coleta de Dados IT</h4>
+                <h3>Coleta de Dados de Indicadores Técnicos</h3>
+                <h4>Editar</h4>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.Id)
@@ -138,7 +139,7 @@
         }
 
         <div>
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink(Resources.Resource.back_to_list, "Index")
         </div>
 
         @section Scripts {

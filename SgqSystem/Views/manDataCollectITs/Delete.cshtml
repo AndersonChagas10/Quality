@@ -8,6 +8,10 @@
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content" style="min-height: 650px;">
 
+        <div>
+            <h3>Coleta de Indicadores Técnicos</h3>
+        </div>
+
         <h3>@Resources.Resource.delete</h3>
         <div>
         
@@ -30,39 +34,39 @@
                 </dd>
 
                 <dt>
-                    @Html.DisplayName(Resources.Resource.date)
+                    @Html.DisplayName(Resources.Resource.data_collection)
                 </dt>
 
                 <dd>
                     @Html.DisplayFor(model => model.referenceDatetime)
                 </dd>
 
-                <dt>
+                @*<dt>
                     @Html.DisplayNameFor(model => model.userSGQ_id)
                 </dt>
 
                 <dd>
                     @Html.DisplayFor(model => model.userSGQ_id)
-                </dd>
+                </dd>*@
 
                 <dt>
-                    @Html.DisplayNameFor(model => model.parCompany_id)
+                    @Html.DisplayName(Resources.Resource.company)
                 </dt>
 
                 <dd>
                     @Html.DisplayFor(model => model.parCompany_id)
                 </dd>
 
-                <dt>
+                @*<dt>
                     @Html.DisplayNameFor(model => model.parFrequency_id)
                 </dt>
 
                 <dd>
                     @Html.DisplayFor(model => model.parFrequency_id)
-                </dd>
+                </dd>*@
 
                 <dt>
-                    @Html.DisplayNameFor(model => model.shift)
+                    @Html.DisplayName(Resources.Resource.shift)
                 </dt>
 
                 <dd>
@@ -70,7 +74,7 @@
                 </dd>
 
                 <dt>
-                    @Html.DisplayNameFor(model => model.dataType)
+                    @Html.DisplayName(Resources.Resource.description)
                 </dt>
 
                 <dd>
@@ -78,28 +82,28 @@
                 </dd>
 
                 <dt>
-                    @Html.DisplayNameFor(model => model.amountData)
+                    @Html.DisplayName(Resources.Resource.quantity)
                 </dt>
 
                 <dd>
                     @Html.DisplayFor(model => model.amountData)
                 </dd>
 
-                <dt>
+                @*<dt>
                     @Html.DisplayNameFor(model => model.ParMeasurementUnit_Id)
                 </dt>
 
                 <dd>
                     @Html.DisplayFor(model => model.ParMeasurementUnit_Id)
-                </dd>
+                </dd>*@
 
-                <dt>
+                @*<dt>
                     @Html.DisplayNameFor(model => model.IsActive)
                 </dt>
 
                 <dd>
                     @Html.DisplayFor(model => model.IsActive)
-                </dd>
+                </dd>*@
 
             </dl>
 
@@ -109,7 +113,7 @@
 
                 <div class="form-actions no-color">
                     <input type="submit" value="Delete" class="btn btn-default" /> |
-                    @Html.ActionLink("Back to List", "Index")
+                    @Html.ActionLink(Resources.Resource.back_to_list, "Index")
                 </div>
             }
         </div>

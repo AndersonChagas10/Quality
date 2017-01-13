@@ -7,12 +7,14 @@
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content" style="min-height: 650px;">
 
+
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-                <h4>Coleta de Dados de Indicadores Técnicos</h4>
+                <h3>Coleta de Dados de Indicadores Técnicos</h3>
+                <h4>Inserir</h4>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
