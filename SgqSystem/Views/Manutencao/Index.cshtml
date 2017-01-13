@@ -53,6 +53,8 @@
 
                                             <div id="GraficoDespesaTodasRegionais" style="cursor:pointer; width:100%;"></div>
 
+                                            <div id="GraficoDespesaTodasRegionaisPorPacote" style="cursor:pointer; width:100%;"></div>
+
                                             <div id="GrafDespReg" style="cursor:pointer; width:100%;"></div>
                                             <div id="TabelaDespesaTodasRegionais" style="display:none; cursor:pointer; position: relative; overflow: auto; width: 100%; margin-left: auto; margin-right: auto; "></div>
 
@@ -651,6 +653,251 @@
                                                             point: {
                                                                 events: {
                                                                     //click: function () { MountGrafDespReg(this.category) }
+                                                                }
+                                                            }
+                                                        }, {
+                                                            name: 'Desvio %',
+                                                            data: mediaDesvio,
+                                                            //data: [-17.12454, -8.78, -2.46, -3.87],
+                                                            yAxis: 0,
+                                                            visible: false,
+                                                            dataLabels: {
+                                                                enabled: true,
+                                                                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                                                                formatter: function () {
+                                                                    return this.y + '%';
+                                                                }
+                                                            },
+
+
+                                                            point: {
+                                                                events: {
+                                                                    click: function () { MountGrafDespReg(this.category) }
+                                                                }
+                                                            }
+                                                        }
+
+
+                                                        ],
+
+                                                        responsive: {
+                                                            rules: [{
+                                                                condition: {
+                                                                    maxWidth: 500
+                                                                },
+                                                                chartOptions: {
+                                                                    legend: {
+                                                                        align: 'center',
+                                                                        verticalAlign: 'bottom',
+                                                                        layout: 'horizontal'
+                                                                    },
+                                                                    yAxis: {
+                                                                        labels: {
+                                                                            align: 'left',
+                                                                            x: 0,
+                                                                            y: -5
+                                                                        },
+                                                                        title: {
+                                                                            text: null
+                                                                        }
+                                                                    },
+                                                                    subtitle: {
+                                                                        text: null
+                                                                    },
+                                                                    credits: {
+                                                                        enabled: false
+                                                                    }
+                                                                }
+                                                            }]
+                                                        }
+                                                    });
+                                                });
+                                            }
+
+                                            //chamada ajax para montar primeiro gráfico
+                                            function MountGraficoDespesaTodasRegionaisPorPacote() {
+                                                $.post('../api/Manutencao/getSelectGraficoRegionalPorPacote/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + getManutencaoRegional() + '/', function (lista) {
+
+                                                    var regional = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        regional.push(entry.Regional);
+                                                    });
+
+                                                    var xOrcada = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        xOrcada.push(entry.Orçada);
+                                                    });
+
+                                                    var xRealizada = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        xRealizada.push(entry.Realizada);
+                                                    });
+
+                                                    var mediaDesvio = [];
+                                                    var desvio = 0
+                                                    var desvio1 = 0
+                                                    var desvio2 = 0
+
+                                                    for (i = 0; i < xOrcada.length; i++) {
+                                                        mediaDesvio[i] = Math.round(((xRealizada[i] - xOrcada[i]) / xOrcada[i] * 100)); // (real - orcado) / orçado * 100
+                                                        desvio1 += xOrcada[i]
+                                                        desvio2 += xOrcada[i]
+                                                        //mediaDesvio[i] = mediaDesvio[i] 
+                                                    }
+                                                    var media = (desvio2 / desvio1 - 1) * 100;
+
+                                                    for (i = 0; i < xOrcada.length; i++) {
+                                                        if (xOrcada[i] < xRealizada[i]) {
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#a00808' };  //fica vermelho que a despesa for maior que o orçado
+
+                                                        } else {
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#116606' }; //fica verde que a despesa for menor que o orçado
+                                                        }
+                                                    }
+
+                                                    GraficoDespesaTodasRegionaisPorPacote(regional, xOrcada, xRealizada, mediaDesvio, media);
+
+                                                    $btn.button('reset');
+
+                                                });
+                                            }
+
+                                            //locação primeiro gráfico
+                                            function GraficoDespesaTodasRegionaisPorPacote(name, x1, x2, mediaDesvio, media) {
+                                                $(function () {
+
+
+                                                    (function (H) {
+                                                        var Axis = H.Axis,
+                                                            inArray = H.inArray,
+                                                            wrap = H.wrap;
+
+                                                        wrap(Axis.prototype, 'adjustTickAmount', function (proceed) {
+                                                            var chart = this.chart,
+                                                                primaryAxis = chart[this.coll][0],
+                                                                primaryThreshold,
+                                                                primaryIndex,
+                                                                index,
+                                                                newTickPos,
+                                                                threshold;
+
+                                                            // Find the index and return boolean result
+                                                            function isAligned(axis) {
+                                                                index = inArray(threshold, axis.tickPositions); // used in while-loop
+                                                                return axis.tickPositions.length === axis.tickAmount && index === primaryIndex;
+                                                            }
+
+                                                            if (chart.options.chart.alignThresholds && this !== primaryAxis) {
+                                                                primaryThreshold = (primaryAxis.series[0] && primaryAxis.series[0].options.threshold) || 0;
+                                                                threshold = (this.series[0] && this.series[0].options.threshold) || 0;
+
+                                                                primaryIndex = primaryAxis.tickPositions && inArray(primaryThreshold, primaryAxis.tickPositions);
+
+                                                                if (this.tickPositions && this.tickPositions.length &&
+                                                                        primaryIndex > 0 &&
+                                                                        primaryIndex < primaryAxis.tickPositions.length - 1 &&
+                                                                        this.tickAmount) {
+
+                                                                    // Add tick positions to the top or bottom in order to align the threshold
+                                                                    // to the primary axis threshold
+                                                                    while (!isAligned(this)) {
+
+                                                                        if (index < primaryIndex) {
+                                                                            newTickPos = this.tickPositions[0] - this.tickInterval;
+                                                                            this.tickPositions.unshift(newTickPos);
+                                                                            this.min = newTickPos;
+                                                                        } else {
+                                                                            newTickPos = this.tickPositions[this.tickPositions.length - 1] + this.tickInterval;
+                                                                            this.tickPositions.push(newTickPos);
+                                                                            this.max = newTickPos;
+                                                                        }
+                                                                        proceed.call(this);
+                                                                    }
+                                                                }
+
+                                                            } else {
+                                                                proceed.call(this);
+                                                            }
+                                                        });
+                                                    }(Highcharts));
+
+                                                    Highcharts.chart('GraficoDespesaTodasRegionaisPorPacote', {
+
+                                                        credits: {
+                                                            enabled: false
+                                                        },
+
+                                                        chart: {
+                                                            zoomType: 'x, y',
+                                                            alignThresholds: true,
+                                                            type: 'column'
+                                                        },
+
+                                                        title: {
+                                                            text: 'Despesas por Sub-Regional por Pacote'
+                                                        },
+
+                                                        xAxis: {
+                                                            categories: name
+                                                        },
+
+                                                        yAxis: [{
+                                                            allowDecimals: false,
+                                                            title: {
+                                                                text: 'Desvio %'
+                                                            },
+                                                            plotLines: [{
+                                                                color: 'black',
+                                                                dashStyle: 'dot',
+                                                                width: 2,
+                                                                value: media,
+                                                                label: {
+                                                                    rotation: 0,
+                                                                    y: 15,
+                                                                    style: {
+                                                                        fontStyle: 'italic'
+                                                                    },
+                                                                    text: 'Média de desvio: ' + media.toFixed(2) + '%'
+                                                                },
+                                                                zIndex: 99999
+                                                            }],
+                                                            opposite: true
+
+                                                        }, {
+                                                            allowDecimals: false,
+                                                            title: {
+                                                                text: 'R$ em milhares'
+                                                            },
+
+
+
+                                                        }],
+
+                                                        series: [{
+                                                            name: 'Despesa Orçada',
+                                                            data: x1,
+                                                            //data: [1,2,3,4],
+                                                            yAxis: 1,
+
+                                                            point: {
+                                                                events: {
+                                                                    click: function () { MountGrafDespReg(this.category) }
+                                                                }
+                                                            }
+                                                        }, {
+                                                            name: 'Despesa Real',
+                                                            data: x2,
+                                                            //data: [4,3,2,1],
+                                                            yAxis: 1,
+
+
+
+                                                            point: {
+                                                                events: {
+                                                                    click: function () { MountGrafDespReg(this.category) }
                                                                 }
                                                             }
                                                         }, {
@@ -2818,6 +3065,7 @@
             $('#DadosTecnicosContaChart').empty();
 
             MountGraficoDespesaTodasRegionais1();
+            MountGraficoDespesaTodasRegionaisPorPacote();
             MountGraficoDespesaTodasRegionais();
             firstTable("");
 

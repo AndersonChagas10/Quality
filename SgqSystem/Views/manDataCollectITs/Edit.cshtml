@@ -19,20 +19,22 @@
                 @Html.HiddenFor(model => model.Id)
 
                 @*<div class="form-group">
-                    @Html.LabelFor(model => model.AddDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.AddDate, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.AddDate, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
+                        @Html.LabelFor(model => model.AddDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.AddDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.AddDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
 
                 @*<div class="form-group">
-                    @Html.LabelFor(model => model.AlterDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.AlterDate, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.AlterDate, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
+                        @Html.LabelFor(model => model.AlterDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.AlterDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.AlterDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+
+                @{ Html.EnableClientValidation(false); }
 
                 <div class="form-group">
                     @Html.Label("Data da Coleta", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -41,6 +43,8 @@
                         @Html.ValidationMessageFor(model => model.referenceDatetime, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+                @{ Html.EnableClientValidation(true); }
 
                 <div class="form-group hide">
                     @Html.LabelFor(model => model.userSGQ_id, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -58,7 +62,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group hide">
                     @Html.Label("Periodicidade", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownListFor(model => model.parFrequency_id, new SelectList(ViewBag.listaParFrequency, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
@@ -67,7 +71,8 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.shift, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.Label("Turno", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @*@Html.LabelFor(model => model.shift, htmlAttributes: new { @class = "control-label col-md-2" })*@
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.shift, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.shift, "", new { @class = "text-danger" })
@@ -97,12 +102,12 @@
                 <div class="form-group">
                     @Html.Label("Quantidade", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.amountData, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.amountData, new { htmlAttributes = new { @class = "form-control"} })
                         @Html.ValidationMessageFor(model => model.amountData, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group hide">
                     @Html.Label("Unidade de Medida", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownListFor(model => model.ParMeasurementUnit_Id, new SelectList(ViewBag.listaParMeasurementUnit, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
@@ -135,5 +140,19 @@
         @section Scripts {
             @Scripts.Render("~/bundles/jqueryval")
         }
+
+        <script>
+            $(document).ready(function () {
+
+                $('#referenceDatetime').daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    'locale': {
+                        "format": "DD/MM/YYYY",
+                    }
+                });
+
+            });
+        </script>
     </div>
 </div>

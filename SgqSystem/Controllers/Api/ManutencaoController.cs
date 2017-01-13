@@ -72,6 +72,49 @@ namespace SgqSystem.Controllers.Api
             return lista;
         }
 
+
+        [HttpPost]
+        [Route("getSelectGraficoRegionalPorPacote/{dataIni}/{dataFim}/{meses}/{anos}/{regFiltro}")]
+        public List<Reg> getSelectGraficoRegionalPorPacote(string dataIni, string dataFim, string meses, string anos, string regFiltro)
+        {
+            var lista = new List<Reg>();
+
+            if (anos == "null") anos = "";
+            if (meses == "null") meses = "";
+
+            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+
+            string regionaisFiltradas = "";
+
+            if (regionalFiltDecode != "null")
+            {
+                regionaisFiltradas = queryReg(regionalFiltDecode);
+            }
+
+            using (var db = new SgqDbDevEntities())
+            {
+                var sql = "";
+
+                sql = "select concat(EmpresaRegional, ' <br><br> ', pacote) as Regional, ";
+                sql += "ROUND(SUM(DespesaOrcada) / 1000, 0) AS Orçada, ";
+                sql += "ROUND(SUM(DespesaRealizada) / 1000, 0) AS Realizada, ";
+                sql += "CASE WHEN SUM(DespesaOrcada) = 0 THEN 0 ELSE ROUND((SUM(DespesaRealizada) / SUM(DespesaOrcada) - 1) * 100, 0) END AS DesvioPorc, ";
+                sql += "ROUND(SUM(DespesaRealizada) / 1000 - SUM(DespesaOrcada) / 1000, 0) AS DesvioReal ";
+                sql += "from Manutencao ";
+                sql += "WHERE 1=1 ";
+                sql += "and MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
+                sql += "AND TipoInformacao = 'CustoFixo' ";
+                sql += regionaisFiltradas;
+                sql += "group by EmpresaRegional, pacote ";
+                sql += "order by EmpresaRegional, pacote ";
+
+                lista = db.Database.SqlQuery<Reg>(sql).ToList();
+            }
+
+            return lista;
+        }
+
         [HttpPost]
         [Route("getSelectEmpresaRegionalList")]
         public List<Reg> getSelectEmpresaRegionalList()
