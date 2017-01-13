@@ -99,14 +99,14 @@ public class ScorecardResultSet
                 "\n , CRL.Id AS Criterio " +
                 "\n , CRL.Name AS CriterioName " +
                 "\n , CASE WHEN L1.HashKey = 1 THEN (SELECT sum(Amostras) as AV FROM VolumePcc1b WHERE ParCompany_id = 1 and Data BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59') ELSE " +
-                "\n  CASE WHEN CT.Id = 1 THEN SUM(CL1.WeiEvaluation) WHEN CT.Id = 3 THEN SUM(CL1.EvaluatedResult) END END AS AV " +
-                "\n , CASE WHEN CT.Id = 1 THEN SUM(CL1.WeiDefects) WHEN CT.Id = 3 THEN SUM(CL1.DefectsResult) END      AS NC " +
+                "\n  CASE WHEN CT.Id IN (1,2) THEN SUM(CL1.WeiEvaluation) WHEN CT.Id = 3 THEN SUM(CL1.EvaluatedResult) END END AS AV " +
+                "\n , CASE WHEN CT.Id IN (1,2) THEN SUM(CL1.WeiDefects) WHEN CT.Id = 3 THEN SUM(CL1.DefectsResult) END      AS NC " +
                 "\n , L1C.Points AS Pontos " +
                 "\n , G.PercentValue AS Meta " +
                 "\n , CASE WHEN L1.HashKey = 1 THEN CAST(SUM(CL1.DefectsResult) AS DECIMAL) / (SELECT sum(Amostras) as AV FROM VolumePcc1b WHERE ParCompany_id = 1 and Data BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59') ELSE " +
                 "\n   CASE " +
 
-                   "\n  WHEN CT.Id = 1 THEN SUM(CL1.WeiDefects) / SUM(CL1.WeiEvaluation) " +
+                   "\n  WHEN CT.Id IN (1,2) THEN SUM(CL1.WeiDefects) / SUM(CL1.WeiEvaluation) " +
 
                    "\n  WHEN CT.Id = 3 THEN " +
 
@@ -197,6 +197,8 @@ public class ScorecardResultSet
                 "\n ,CT.Id " +
 
                 "\n ,L1.HashKey " +
+
+                "\n ,C.Id " +
 
             "\n ) AS Score " +
         "\n ) Real " +
