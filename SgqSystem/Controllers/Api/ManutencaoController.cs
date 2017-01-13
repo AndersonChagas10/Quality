@@ -132,7 +132,7 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("getSelectGrafDespReg/{dataIni}/{dataFim}/{meses}/{anos}/{regional}")]
+        [Route("getSelectGrafDespReg/{dataIni}/{dataFim}/{meses}/{anos}/{regional}/{param}")]
         public List<Reg> getSelectGrafDespReg(string dataIni, string dataFim, string meses, string anos, string regional)
         {
             if (anos == "null") anos = "";
@@ -165,7 +165,7 @@ namespace SgqSystem.Controllers.Api
                 sql += "WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
                 sql += "AND TipoInformacao = 'CustoFixo' ";
                 sql += "\n and EmpresaRegional in (\'" + regionalDecode + "\')";
-                sql += regionaisFiltradas;
+                //sql += regionaisFiltradas;
                 sql += "group by EmpresaSigla ";
                 sql += "order by EmpresaSigla ";
 
