@@ -31,9 +31,9 @@
                 <th>
                     @Html.DisplayName("Quantidade")
                 </th>
-                <th>
+                @*<th>
                     @Html.DisplayName("Unidade de Medida"/*model => model.cc*/)
-                </th>
+                </th>*@
                 <th></th>
             </tr>
 
@@ -58,9 +58,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.amountData)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.ParMeasurementUnit_Id)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.ActionLink("Alterar", "Edit", new { id = item.Id }) |
                         @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@

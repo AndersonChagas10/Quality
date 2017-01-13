@@ -107,7 +107,6 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                
                 manDataCollectIT.AlterDate = DateTime.Now;
                 db.Entry(manDataCollectIT).State = EntityState.Modified;
                 db.SaveChanges();
