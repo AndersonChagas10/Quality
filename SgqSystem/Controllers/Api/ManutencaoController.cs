@@ -36,12 +36,15 @@ namespace SgqSystem.Controllers.Api
         {
             var lista = new List<Reg>();
 
+            if (anos == "null") anos = "";
+            if (meses == "null") meses = "";
+
             var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
             regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
              
             string regionaisFiltradas = "";
 
-            if (regionalFiltDecode != "")
+            if (regionalFiltDecode != "null")
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
             }                       
@@ -92,6 +95,9 @@ namespace SgqSystem.Controllers.Api
         {
             var lista = new List<Reg>();
 
+            if (anos == "null") anos = "";
+            if (meses == "null") meses = "";
+
             //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltrada, System.Text.Encoding.Default);
             //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
             string regionalFiltDecode = "";
@@ -129,7 +135,8 @@ namespace SgqSystem.Controllers.Api
         [Route("getSelectGrafDespReg/{dataIni}/{dataFim}/{meses}/{anos}/{regional}")]
         public List<Reg> getSelectGrafDespReg(string dataIni, string dataFim, string meses, string anos, string regional)
         {
-            
+            if (anos == "null") anos = "";
+            if (meses == "null") meses = "";
 
             var regionalDecode = HttpUtility.UrlDecode(regional, System.Text.Encoding.Default);
             regionalDecode = regionalDecode.Replace("|", "/");
@@ -142,7 +149,7 @@ namespace SgqSystem.Controllers.Api
             string regionaisFiltradas = "";
             string regionalFiltDecode = "";
 
-            if (regionalFiltDecode != "")
+            if (regionalFiltDecode != "null")
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
             }
@@ -173,13 +180,11 @@ namespace SgqSystem.Controllers.Api
         public List<Uni> getSelectGraficoEvolutivoPorUnidade(string dataIni, string dataFim, string meses, string anos, string unidade, string regFiltro)
         {
             string sqlData = "";
-            
+
             var lista = new List<Uni>();
 
             var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
             regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-            var _mockFiltroMes = new List<string>(meses.Split(','));
-            var _mockFiltroAno = new List<string>(anos.Split(','));
             //_mockFiltroMes.Add("01");
             //_mockFiltroMes.Add("03");
             //_mockFiltroMes.Add("07");
@@ -187,7 +192,14 @@ namespace SgqSystem.Controllers.Api
             //_mockFiltroAno.Add("2016");
             //_mockFiltroAno.Add("2017");
 
-            if (_mockFiltroMes.Count != 0 && _mockFiltroAno.Count != 0 )
+            var _mockFiltroMes = new List<string>();
+            var _mockFiltroAno = new List<string>();
+
+            if (meses != "null") _mockFiltroMes = new List<string>(meses.Split(','));
+
+            if (anos != "null") _mockFiltroAno = new List<string>(anos.Split(','));
+
+            if (_mockFiltroMes.Count != 0 || _mockFiltroAno.Count != 0 )
             {
                 string mes = "";
                 for (int i = 0; i < _mockFiltroMes.Count; i++)
@@ -216,7 +228,12 @@ namespace SgqSystem.Controllers.Api
                     }
 
                 }
-                sqlData = " and year(MesAno) in (" + ano + ") and MONTH(MesAno) in (" + mes + ") ";
+                if (ano != "" && mes != "")
+                    sqlData = " and year(MesAno) in (" + ano + ") and MONTH(MesAno) in (" + mes + ") ";
+                else if (mes != "")
+                    sqlData = " and MONTH(MesAno) in (" + mes + ") ";
+                else if (ano != "")
+                    sqlData = " and year(MesAno) in (" + ano + ") ";
             }
             else
             {
@@ -225,7 +242,7 @@ namespace SgqSystem.Controllers.Api
    
             string regionaisFiltradas = "";
 
-            if (regionalFiltDecode != "")
+            if (regionalFiltDecode != "null")
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
             }
@@ -258,13 +275,19 @@ namespace SgqSystem.Controllers.Api
         [Route("getSelectGraficoEvolutivoPorUnidadeEConta/{dataIni}/{dataFim}/{meses}/{anos}/{unidade}/{conta}/{regFiltro}")]
         public List<Uni> getSelectGraficoEvolutivoPorUnidadeEConta(string dataIni, string dataFim, string meses, string anos, string unidade, string conta, string regFiltro)
         {
-
+            
             var lista = new List<Uni>();
             var sqlData = "";
             var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
             regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-            var _mockFiltroMes = new List<string>(meses.Split(','));
-            var _mockFiltroAno = new List<string>(anos.Split(',')); 
+
+            var _mockFiltroMes = new List<string>();
+            var _mockFiltroAno = new List<string>();
+
+            if (meses != "null") _mockFiltroMes = new List<string>(meses.Split(','));
+
+            if (anos != "null") _mockFiltroAno = new List<string>(anos.Split(','));
+
             //_mockFiltroMes.Add("01");
             //_mockFiltroMes.Add("03");
             //_mockFiltroMes.Add("07");
@@ -272,7 +295,7 @@ namespace SgqSystem.Controllers.Api
             //_mockFiltroAno.Add("2016");
             //_mockFiltroAno.Add("2017");
 
-            if (_mockFiltroMes.Count != 0 && _mockFiltroAno.Count != 0)
+            if (_mockFiltroMes.Count != 0 || _mockFiltroAno.Count != 0)
             {
                 string mes = "";
                 for (int i = 0; i < _mockFiltroMes.Count; i++)
@@ -301,7 +324,12 @@ namespace SgqSystem.Controllers.Api
                     }
 
                 }
-                sqlData = " and year(MesAno) in (" + ano + ") and MONTH(MesAno) in (" + mes + ") ";
+                if (ano != "" && mes != "")
+                    sqlData = " and year(MesAno) in (" + ano + ") and MONTH(MesAno) in (" + mes + ") ";
+                else if (mes != "")
+                    sqlData = " and MONTH(MesAno) in (" + mes + ") ";
+                else if (ano != "")
+                    sqlData = " and year(MesAno) in (" + ano + ") ";
             }
             else
             {
@@ -309,7 +337,7 @@ namespace SgqSystem.Controllers.Api
             }
             string regionaisFiltradas = "";
 
-            if (regionalFiltDecode != "")
+            if (regionalFiltDecode != "null")
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
             }
@@ -346,12 +374,15 @@ namespace SgqSystem.Controllers.Api
 
             var lista = new List<FatoresTecnicosMateriaPrima>();
 
+            if (anos == "null") anos = "";
+            if (meses == "null") meses = "";
+
             var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
             regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
             //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
-            if (regionalFiltDecode != "")
+            if (regionalFiltDecode != "null")
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
             }
@@ -467,12 +498,15 @@ namespace SgqSystem.Controllers.Api
 
             var lista = new List<FatoresTecnicosMateriaPrima>();
 
+            if (anos == "null") anos = "";
+            if (meses == "null") meses = "";
+
             var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
             regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
             //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
-            if (regionalFiltDecode != "")
+            if (regionalFiltDecode != "null")
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
             }
@@ -587,12 +621,15 @@ namespace SgqSystem.Controllers.Api
         {
             var lista = new List<Pacote>();
 
+            if (anos == "null") anos = "";
+            if (meses == "null") meses = "";
+
             var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
             regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
             //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
-            if (regionalFiltDecode != "")
+            if (regionalFiltDecode != "null")
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
             }
@@ -652,6 +689,9 @@ namespace SgqSystem.Controllers.Api
             var pacoteDecode = HttpUtility.UrlDecode(pacote, System.Text.Encoding.Default);
             pacoteDecode = pacoteDecode.Replace("|", "/");
 
+            if (anos == "null") anos = "";
+            if (meses == "null") meses = "";
+
             var regionalDecode = HttpUtility.UrlDecode(regional, System.Text.Encoding.Default);
             regionalDecode = regionalDecode.Replace("|", "/");
 
@@ -662,7 +702,7 @@ namespace SgqSystem.Controllers.Api
             //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
-            if (regionalFiltDecode != "")
+            if (regionalFiltDecode != "null")
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
             }
@@ -741,6 +781,9 @@ namespace SgqSystem.Controllers.Api
             var regionalDecode = HttpUtility.UrlDecode(regional, System.Text.Encoding.Default);
             regionalDecode = regionalDecode.Replace("|", "/");
 
+            if (anos == "null") anos = "";
+            if (meses == "null") meses = "";
+
             var lista = new List<Pacote>();
 
             var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
@@ -748,7 +791,7 @@ namespace SgqSystem.Controllers.Api
             //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
-            if (regionalFiltDecode != "")
+            if (regionalFiltDecode != "null")
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
             }
@@ -793,6 +836,8 @@ namespace SgqSystem.Controllers.Api
         [Route("getGraficoRegionalTecnico/{dataIni}/{dataFim}/{meses}/{anos}/{regional}/{conta}/{regFiltro}")]
         public List<FatoresTecReg> getGraficoRegionalTecnico(string dataIni, string dataFim, string meses, string anos, string regional, string conta, string regFiltro)
         {
+            if (anos == "null") anos = "";
+            if (meses == "null") meses = "";
 
             var regionalDecode = HttpUtility.UrlDecode(regional, System.Text.Encoding.Default);
             regionalDecode = regionalDecode.Replace("|", "/");
@@ -807,7 +852,7 @@ namespace SgqSystem.Controllers.Api
             //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
-            if (regionalFiltDecode != "")
+            if (regionalFiltDecode != "null")
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
             }
@@ -942,9 +987,59 @@ namespace SgqSystem.Controllers.Api
             //string regionalFiltDecode = "";
             string regionaisFiltradas = "";
 
-            if (regionalFiltDecode != "")
+            if (regionalFiltDecode != "null")
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
+            }
+
+            var _mockFiltroMes = new List<string>();
+            var _mockFiltroAno = new List<string>();
+
+            if (meses != "null") _mockFiltroMes = new List<string>(meses.Split(','));
+
+            if (anos != "null") _mockFiltroAno = new List<string>(anos.Split(','));
+
+            var sqlData = "";
+
+            if (_mockFiltroMes.Count != 0 || _mockFiltroAno.Count != 0)
+            {
+                string mes = "";
+                for (int i = 0; i < _mockFiltroMes.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        mes = "'" + _mockFiltroMes[i] + "'";
+                    }
+                    else
+                    {
+                        mes += ',' + "'" + _mockFiltroMes[i] + "'";
+                    }
+
+                }
+
+                string ano = "";
+                for (int i = 0; i < _mockFiltroAno.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        ano = "'" + _mockFiltroAno[i] + "'";
+                    }
+                    else
+                    {
+                        ano += ',' + "'" + _mockFiltroAno[i] + "'";
+                    }
+
+                }
+                if (ano != "" && mes != "")
+                    sqlData = " year(MesAno) in (" + ano + ") and MONTH(MesAno) in (" + mes + ") ";
+                else if (mes != "")
+                    sqlData = " MONTH(MesAno) in (" + mes + ") ";
+                else if (ano != "")
+                    sqlData = " year(MesAno) in (" + ano + ") ";
+            }
+            else
+            {
+                sqlData = " MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
             }
 
             using (var db = new SgqDbDevEntities())
@@ -992,7 +1087,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "FROM ";
                     sql += "manutencao ";
                     sql += "WHERE ";
-                    sql += "MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
+                    sql += sqlData;
                     sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                     sql += "and EmpresaSigla = \'" + unidadeDecode + "\' ";
                     sql += regionaisFiltradas;
@@ -1017,7 +1112,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "FROM ";
                     sql += "manutencao ";
                     sql += "WHERE ";
-                    sql += "MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
+                    sql += sqlData;
                     sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                     sql += "and EmpresaSigla = \'" + unidadeDecode + "\' ";
                     sql += regionaisFiltradas;
@@ -1043,7 +1138,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "FROM ";
                     sql += "manutencao ";
                     sql += "WHERE ";
-                    sql += "MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
+                    sql += sqlData;
                     sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                     sql += "and EmpresaSigla = \'" + unidadeDecode + "\' ";
                     sql += regionaisFiltradas;

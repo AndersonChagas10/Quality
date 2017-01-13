@@ -31,9 +31,9 @@
          position: fixed;
          left: 300px;
          width: 0;
-         height: 100%;
+         height: 95%;
          margin-left: -300px;
-         overflow-y: auto;
+         overflow-y: scroll;
          background: #ecebeb;
          -webkit-transition: all 0.5s ease;
          -moz-transition: all 0.5s ease;
@@ -323,17 +323,17 @@
 
                 </div>
 
+                <div class="form-group" id="cbxlistaRegionais"></div>
+
                 <div class="form-group" id="cbxlistaAnos"></div>
 
                 <div class="form-group" id="cbxlistaMeses"></div>
-
-                <div class="form-group" id="cbxlistaRegionais"></>
 
             </div>
         </li>
 
         <li>
-            <button type="button" class="btn margin-top btn-primary" id="btnSend" onclick="">@Resources.Resource.send</button>
+            <button style="margin-bottom: 40px; margin-left: 40px; max-width: 210px;" type="button" class="btn margin-top margin-bottom btn-block btn-primary" id="btnSend" onclick="">@Resources.Resource.send</button>
         </li>
 
     </ul>
@@ -516,7 +516,9 @@
         loadManutencaoParametros: function (){
 
             $("#cbxlistaAnos").empty();
+
             var data = new Date();
+
             var ano = data.getFullYear();
             var selectAnos = $("<select multiple='multiple' class='form-control'></select>");
             for (var i = ano; i > 2010; i--) {
