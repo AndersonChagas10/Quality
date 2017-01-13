@@ -2,11 +2,8 @@
 using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.DTO.Params;
-using DTO.Helpers;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
@@ -70,63 +67,37 @@ namespace SgqSystem.Controllers
         [OutputCache(Duration = 20, VaryByParam = "none")]
         public ActionResult Scorecard()
         {
-            FiltraUnidades();
+            form.SetUnitsSelectList(FiltraUnidades());
             return View(form);
         }
 
         [OutputCache(Duration = 20, VaryByParam = "none")]
         public ActionResult RelatorioDiario()
         {
-            //var teste = Guard.GetUsuarioLogado_Id(HttpContext);
-            FiltraUnidades();
+            form.SetUnitsSelectList(FiltraUnidades());
             return View(form);
         }
 
         [OutputCache(Duration = 20, VaryByParam = "none")]
         public ActionResult ApontamentosDiarios()
         {
-            FiltraUnidades();
+            form.SetUnitsSelectList(FiltraUnidades());
             return View(form);
         }
 
         [OutputCache(Duration = 20, VaryByParam = "none")]
         public ActionResult NaoConformidade()
         {
-            FiltraUnidades();
+            form.SetUnitsSelectList(FiltraUnidades());
             return View(form);
         }
 
         [OutputCache(Duration = 20, VaryByParam = "none")]
         public ActionResult ExemploRelatorio()
         {
-            FiltraUnidades();
+            form.SetUnitsSelectList(FiltraUnidades());
             return View(form);
         }
-
-        #region Auxiliares
-
-        private void FiltraUnidades()
-        {
-            HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
-            if (cookie != null)
-            {
-                var rolesCompany = "";
-                var userId = 0;
-                if (!string.IsNullOrEmpty(cookie.Values["userId"]))
-                    int.TryParse(cookie.Values["userId"].ToString(), out userId);
-
-                if (userId > 0)
-                    if (!string.IsNullOrEmpty(cookie.Values["rolesCompany"]))
-                    {
-                        rolesCompany = cookie.Values["rolesCompany"].ToString();
-                        var companyesDoUser = _companyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userId).Select(r => r.ParCompany).ToList().OrderBy(r => r.Name).GroupBy(r => r.Id).Select(group => group.First());
-                        form.SetUnitsSelectList(companyesDoUser);
-                        ViewBag.UnidadeUsuario = companyesDoUser;
-                    }
-            }
-        } 
-
-        #endregion
 
     }
 }

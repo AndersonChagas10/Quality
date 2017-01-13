@@ -232,7 +232,7 @@
                 companyName = "Todas";
             }
 
-            if(selectTipoInput == 3 || selectTipoInput == 4){
+            if(selectTipoInput == 2 || selectTipoInput == 3 || selectTipoInput == 4 || selectTipoInput == 5){
                 selectConformeName = "";
                 selectNaoConformeName = "";
             }
@@ -388,7 +388,7 @@
                         o["AcceptableValueBetween_Name"] = "";
                         o["IntervalMin"] = "";
                         o["IntervalMax"] = "";
-                    }else if (o.ParLevel3InputType_Id == 3){
+                    }else if (o.ParLevel3InputType_Id == 3 || o.ParLevel3InputType_Id == 2){
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";

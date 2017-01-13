@@ -41,6 +41,15 @@
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasAlert, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_alert), Table.PosicaoLabel.left, null, Resources.Resource.has_alert_popover)
                         </tr>
+
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.TextBoxFor(model => model.paramsDto.parLevel1Dto.haveRealTimeConsolidation, new { @class = "form-control checkbox-erp" }), @Html.Label("Possui consolidação em tempo real"), Table.PosicaoLabel.left, null, Resources.Resource.has_alert_popover)
+                        </tr>
+
+                        @*<tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.RealTimeConsolitationUpdate, new { @class = "form-control checkbox-erp" }), @Html.Label("Intervalo de tempo para consolidação em tempo real"), Table.PosicaoLabel.left, null, Resources.Resource.has_alert_popover)
+                        </tr>*@
+
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, null, Resources.Resource.allow_specific_register_by_unit_popover)
                         </tr>
@@ -1284,6 +1293,8 @@
         loadSelect2();
         $('#paramsDto_parLevel1Dto_IsRuleConformity[value="false"]').trigger('click');
         $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber[value="true"]').trigger('click');
+        
+        //Guard.mascaraInteger('#VolumeAnimais');
 
         if($('#paramsDto_parLevel1Dto_IsSpecific').is(':checked'))
             $('.groupCadastroEspecificoUnidade').fadeIn();
