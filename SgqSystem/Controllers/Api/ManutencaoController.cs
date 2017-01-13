@@ -72,6 +72,49 @@ namespace SgqSystem.Controllers.Api
             return lista;
         }
 
+
+        [HttpPost]
+        [Route("getSelectGraficoRegionalPorPacote/{dataIni}/{dataFim}/{meses}/{anos}/{regFiltro}")]
+        public List<Reg> getSelectGraficoRegionalPorPacote(string dataIni, string dataFim, string meses, string anos, string regFiltro)
+        {
+            var lista = new List<Reg>();
+
+            if (anos == "null") anos = "";
+            if (meses == "null") meses = "";
+
+            var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+
+            string regionaisFiltradas = "";
+
+            if (regionalFiltDecode != "null")
+            {
+                regionaisFiltradas = queryReg(regionalFiltDecode);
+            }
+
+            using (var db = new SgqDbDevEntities())
+            {
+                var sql = "";
+
+                sql = "select concat(EmpresaRegional, ' <br><br> ', pacote) as Regional, ";
+                sql += "ROUND(SUM(DespesaOrcada) / 1000, 0) AS Orçada, ";
+                sql += "ROUND(SUM(DespesaRealizada) / 1000, 0) AS Realizada, ";
+                sql += "CASE WHEN SUM(DespesaOrcada) = 0 THEN 0 ELSE ROUND((SUM(DespesaRealizada) / SUM(DespesaOrcada) - 1) * 100, 0) END AS DesvioPorc, ";
+                sql += "ROUND(SUM(DespesaRealizada) / 1000 - SUM(DespesaOrcada) / 1000, 0) AS DesvioReal ";
+                sql += "from Manutencao ";
+                sql += "WHERE 1=1 ";
+                sql += "and MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
+                sql += "AND TipoInformacao = 'CustoFixo' ";
+                sql += regionaisFiltradas;
+                sql += "group by EmpresaRegional, pacote ";
+                sql += "order by EmpresaRegional, pacote ";
+
+                lista = db.Database.SqlQuery<Reg>(sql).ToList();
+            }
+
+            return lista;
+        }
+
         [HttpPost]
         [Route("getSelectEmpresaRegionalList")]
         public List<Reg> getSelectEmpresaRegionalList()
@@ -132,7 +175,7 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("getSelectGrafDespReg/{dataIni}/{dataFim}/{meses}/{anos}/{regional}")]
+        [Route("getSelectGrafDespReg/{dataIni}/{dataFim}/{meses}/{anos}/{regional}/{param}")]
         public List<Reg> getSelectGrafDespReg(string dataIni, string dataFim, string meses, string anos, string regional)
         {
             if (anos == "null") anos = "";
@@ -165,7 +208,7 @@ namespace SgqSystem.Controllers.Api
                 sql += "WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
                 sql += "AND TipoInformacao = 'CustoFixo' ";
                 sql += "\n and EmpresaRegional in (\'" + regionalDecode + "\')";
-                sql += regionaisFiltradas;
+                //sql += regionaisFiltradas;
                 sql += "group by EmpresaSigla ";
                 sql += "order by EmpresaSigla ";
 
@@ -973,8 +1016,6 @@ namespace SgqSystem.Controllers.Api
         [Route("getGraficoUnidadeTecnico/{dataIni}/{dataFim}/{meses}/{anos}/{unidade}/{conta}/{regFiltro}")]
         public List<FatoresTecReg> getGraficoUnidadeTecnico(string dataIni, string dataFim, string meses, string anos, string unidade, string conta, string regFiltro)
         {
-            if (anos == "null") anos = "";
-            if (meses == "null") meses = "";
 
             var unidadeDecode = HttpUtility.UrlDecode(unidade, System.Text.Encoding.Default);
             unidadeDecode = unidadeDecode.Replace("|", "/");
@@ -992,6 +1033,56 @@ namespace SgqSystem.Controllers.Api
             if (regionalFiltDecode != "null")
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
+            }
+
+            var _mockFiltroMes = new List<string>();
+            var _mockFiltroAno = new List<string>();
+
+            if (meses != "null") _mockFiltroMes = new List<string>(meses.Split(','));
+
+            if (anos != "null") _mockFiltroAno = new List<string>(anos.Split(','));
+
+            var sqlData = "";
+
+            if (_mockFiltroMes.Count != 0 || _mockFiltroAno.Count != 0)
+            {
+                string mes = "";
+                for (int i = 0; i < _mockFiltroMes.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        mes = "'" + _mockFiltroMes[i] + "'";
+                    }
+                    else
+                    {
+                        mes += ',' + "'" + _mockFiltroMes[i] + "'";
+                    }
+
+                }
+
+                string ano = "";
+                for (int i = 0; i < _mockFiltroAno.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        ano = "'" + _mockFiltroAno[i] + "'";
+                    }
+                    else
+                    {
+                        ano += ',' + "'" + _mockFiltroAno[i] + "'";
+                    }
+
+                }
+                if (ano != "" && mes != "")
+                    sqlData = " year(MesAno) in (" + ano + ") and MONTH(MesAno) in (" + mes + ") ";
+                else if (mes != "")
+                    sqlData = " MONTH(MesAno) in (" + mes + ") ";
+                else if (ano != "")
+                    sqlData = " year(MesAno) in (" + ano + ") ";
+            }
+            else
+            {
+                sqlData = " MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
             }
 
             using (var db = new SgqDbDevEntities())
@@ -1039,7 +1130,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "FROM ";
                     sql += "manutencao ";
                     sql += "WHERE ";
-                    sql += "MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
+                    sql += sqlData;
                     sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                     sql += "and EmpresaSigla = \'" + unidadeDecode + "\' ";
                     sql += regionaisFiltradas;
@@ -1064,7 +1155,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "FROM ";
                     sql += "manutencao ";
                     sql += "WHERE ";
-                    sql += "MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
+                    sql += sqlData;
                     sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                     sql += "and EmpresaSigla = \'" + unidadeDecode + "\' ";
                     sql += regionaisFiltradas;
@@ -1090,7 +1181,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "FROM ";
                     sql += "manutencao ";
                     sql += "WHERE ";
-                    sql += "MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
+                    sql += sqlData;
                     sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                     sql += "and EmpresaSigla = \'" + unidadeDecode + "\' ";
                     sql += regionaisFiltradas;

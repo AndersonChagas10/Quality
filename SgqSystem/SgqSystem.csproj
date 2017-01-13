@@ -322,6 +322,7 @@
     <Compile Include="Controllers\Api\VerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ExemploInputController.cs" />
     <Compile Include="Controllers\GestaoController.cs" />
     <Compile Include="Controllers\manDataCollectITsController.cs" />
     <Compile Include="Controllers\ManutencaoController.cs" />
@@ -1279,6 +1280,7 @@
     <Content Include="Views\manDataCollectITs\Details.cshtml" />
     <Content Include="Views\manDataCollectITs\Edit.cshtml" />
     <Content Include="Views\manDataCollectITs\Index.cshtml" />
+    <Content Include="Views\ExemploInput\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
