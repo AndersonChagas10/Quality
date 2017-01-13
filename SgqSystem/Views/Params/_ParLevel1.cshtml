@@ -43,7 +43,7 @@
                         </tr>
 
                         <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.TextBoxFor(model => model.paramsDto.parLevel1Dto.haveRealTimeConsolidation, new { @class = "form-control checkbox-erp" }), @Html.Label("Possui consolidação em tempo real"), Table.PosicaoLabel.left, null, Resources.Resource.has_alert_popover)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.haveRealTimeConsolidation, new { @class = "form-control checkbox-erp" }), @Html.Label("Possui consolidação em tempo real"), Table.PosicaoLabel.left, null, Resources.Resource.has_alert_popover)
                         </tr>
 
                         @*<tr class="row">

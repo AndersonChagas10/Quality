@@ -46,7 +46,7 @@ namespace DTO.DTO.Params
         public List<ParLevel3GroupDTO> ParLevel3Group { get; set; }
         public ParEvaluationDTO ParamEvaluation { get; set; }
         public ParSampleDTO ParamSample { get; set; }
-        public Nullable<bool> HasSampleTotal { get; set; }
+        public bool HasSampleTotal { get; set; }
 
         //public List<ParLevel3Level2DTO> ParLevel3Level2 { get; set; }
 

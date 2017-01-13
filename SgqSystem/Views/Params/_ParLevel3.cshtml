@@ -575,7 +575,7 @@
             $('#companyValueL3').fadeIn();
         }
         //Intervalos
-        if ($("#selectTipoInput option:selected").val() == "3") {
+        if ($("#selectTipoInput option:selected").val() == "3" || $("#selectTipoInput option:selected").val() == "2") {
             resetaParIntervalos();
             resetaParBinarios();
             $('#parLevel3Value_IntervalMin').inputmask("numeric");
@@ -645,7 +645,6 @@
         modalPontos.appendTo('body');
         if(grouLevel2Selected > 0)
             $('#paramsDto_parLevel3Dto_listGroupsLevel2').val(grouLevel2Selected)
-
 
         updateAllTables();
 
