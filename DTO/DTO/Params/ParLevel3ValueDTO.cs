@@ -35,7 +35,7 @@ namespace DTO.DTO.Params
 
         public void preparaParaInsertEmBanco()
         {
-            if (ParLevel3InputType_Id == 3 || ParLevel3InputType_Id == 4)
+            if (ParLevel3InputType_Id == 3 || ParLevel3InputType_Id == 4 || ParLevel3InputType_Id == 2)
             {
                 ParLevel3BoolFalse_Id = null;
                 ParLevel3BoolTrue_Id = null;

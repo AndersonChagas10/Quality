@@ -184,6 +184,10 @@ GuardJs = {
         $(e).inputmask("numeric");
     },
 
+    mascaraInteger: function(e) {
+        $(e).inputmask("integer", { rightAlign: false });  
+    },
+
     message: "One or more fields are requireds: ",
 
     /*

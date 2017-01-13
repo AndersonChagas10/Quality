@@ -73,6 +73,10 @@ namespace DTO.DTO.Params
         //[Display(Name = "?IsActive ", ResourceType = typeof(Resource))]
         public bool IsActive { get; set; } = true;
 
+        public bool haveRealTimeConsolidation { get; set; }
+
+        public Nullable<int> RealTimeConsolitationUpdate { get; set; }
+
         public List<ParLevel2ControlCompanyDTO> listLevel2CorporativosObj { get; set; }
 
         public ParFrequencyDTO parFrequencyDto { get; set; }

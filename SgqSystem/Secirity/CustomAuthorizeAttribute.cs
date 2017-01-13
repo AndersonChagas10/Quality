@@ -35,6 +35,7 @@ namespace SgqSystem.Secirity
                     _userSgqRoles = cookie.Values["roles"].ToString();
                     //Extends cookie ttl
                     cookie.Expires = DateTime.Now.AddMinutes(60);
+                    filterContext.HttpContext.Response.Cookies.Set(cookie);
                 //ok - cookie is found.
                 //Gracefully check if the cookie has the key-value as expected.
                 if (!string.IsNullOrEmpty(Roles))
