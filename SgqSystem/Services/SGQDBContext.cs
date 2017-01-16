@@ -22,6 +22,10 @@ namespace SGQDBContext
         public int ParFrequency_Id { get; set; }
         public bool HasAlert { get; set; }
         public bool IsSpecific { get; set; }
+        public bool haveRealTimeConsolidation { get; set; }
+        public int RealTimeConsolitationUpdate { get; set; }
+
+
         public ParLevel1()
         {
 
@@ -31,7 +35,7 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
             string sql = " SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
-                         " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey                                                                         " +
+                         " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate" +
                          " FROM ParLevel1 P1                                                                                                          " +
                          " INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
                          " ON P321.ParLevel1_Id = P1.Id                                                                                               " +
@@ -175,6 +179,9 @@ namespace SGQDBContext
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool HasSampleTotal { get; set; }
+
+        public bool IsEmptyLevel3 { get; set; }
         //public int? Evaluate { get; set; }
         //public int? Sample { get; set; }
         //public int? ParCompany_Id_Evaluate { get; set; }
@@ -218,7 +225,7 @@ namespace SGQDBContext
 
             if(parLevel1Familia == true)
             {
-                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name                                                             " +
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3                      " +
                              "FROM ParLevel3Level2 P32                                                                          " +
                              "INNER JOIN ParLevel3Level2Level1 P321                                                             " +
                              "ON P321.ParLevel3Level2_Id = P32.Id                                                               " +
@@ -232,7 +239,7 @@ namespace SGQDBContext
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'                                                  " +
                              "AND PL2.IsActive = 1                                                                              " +
                              "AND (Familia.ParCompany_Id = '" + ParCompany_Id + "'  or Familia.ParCompany_Id IS NULL)           " +
-                             "GROUP BY PL2.Id, PL2.Name                                                                         ";
+                             "GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3                                                     ";
 
                 var parLevel2List = db.Query<ParLevel2>(sql);
 
@@ -242,25 +249,20 @@ namespace SGQDBContext
             else
             {
 
-                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name                        " +
-                         "FROM ParLevel3Level2 P32                                     " +
-                         "INNER JOIN ParLevel3Level2Level1 P321                        " +
-                         "ON P321.ParLevel3Level2_Id = P32.Id                          " +
-                         "INNER JOIN ParLevel2 PL2                                     " +
-                         "ON PL2.Id = P32.ParLevel2_Id                                 " +
-                         "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'             " +
-                         "AND PL2.IsActive = 1                                         " +
-                         "GROUP BY PL2.Id, PL2.Name                                    ";
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3 " +
+                         "FROM ParLevel3Level2 P32                                      " +
+                         "INNER JOIN ParLevel3Level2Level1 P321                         " +
+                         "ON P321.ParLevel3Level2_Id = P32.Id                           " +
+                         "INNER JOIN ParLevel2 PL2                                      " +
+                         "ON PL2.Id = P32.ParLevel2_Id                                  " +
+                         "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'              " +
+                         "AND PL2.IsActive = 1                                          " +
+                         "GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3                 ";
 
                 var parLevel2List = db.Query<ParLevel2>(sql);
 
                 return parLevel2List;
-
             }
-
-            
-
-
         }
     }
     public partial class ParLevel2Evaluate
@@ -705,7 +707,18 @@ namespace SGQDBContext
             return Level2ResultList;
 
         }
+        public int getMaxSampe(int ConsolidationLevel2_Id, int EvaluationNumber)
+        {
+
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "SELECT MAX(Sample) FROM CollectionLevel2 WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND EvaluationNumber = " +  EvaluationNumber;
+            var LastSample = db.Query<int>(sql).FirstOrDefault();
+            return LastSample;
+        }
     }
+    
+
     public partial class ParLevel1ConsolidationXParFrequency
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -1122,36 +1135,6 @@ namespace SGQDBContext
         }
     }
 
-    public partial class ConsolidationLevel2
-    {
-
-        public int Id { get; set; }
-        public int ConsolidationLevel1_Id { get; set; }
-        public int ParLevel2_Id { get; set; }
-        public DateTime ConsolidationDate { get; set; }
-        public decimal WeiEvaluation { get; set; }
-        public decimal EvaluateTotal { get; set; }
-        public decimal DefectsTotal { get; set; }
-
-        public decimal WeiDefects { get; set; }
-        public int TotalLevel3Evaluation { get; set; }
-        public int TotalLevel3WithDefects { get; set; }
-        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-
-
-        public ConsolidationLevel2 getbYConsolidationLevel1(int ConsolidationLevel1_Id, int ParLevel2_Id)
-        {
-
-            SqlConnection db = new SqlConnection(conexao);
-
-            string sql = "SELECT Id, ConsolidationLevel1_Id, ParLevel2_Id, ConsolidationDate, WeiEvaluation, EvaluateTotal, DefectsTotal, WeiDefects, TotalLevel3Evaluation, TotalLevel3WithDefects FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' AND ParLevel2_Id= '" + ParLevel2_Id + "'";
-
-            var consolidationLevel2 = db.Query<ConsolidationLevel2>(sql).LastOrDefault();
-
-            return consolidationLevel2;
-        }
-
-    }
 
     public partial class CollectionLevel2Consolidation
     {
@@ -1174,15 +1157,23 @@ namespace SGQDBContext
 
         public CollectionLevel2Consolidation getConsolidation(int ConsolidationLevel2_Id, int ParLevel2_Id)
         {
-            SqlConnection db = new SqlConnection(conexao);
+            try
+            {
+                SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT ConsolidationLevel2_Id, ParLevel2_Id, SUM(WeiEvaluation) AS [WeiEvaluationTotal], SUM(Defects) AS [DefectsTotal], SUM(WeiDefects) AS[WeiDefectsTotal], SUM(TotalLevel3WithDefects) AS [TotalLevel3WithDefects], SUM(TotalLevel3Evaluation) AS [TotalLevel3Evaluation], MAX(LastEvaluationAlert) AS LastEvaluationAlert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult " +
-                         "FROM CollectionLevel2 WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND ParLevel2_Id = " + ParLevel2_Id + " AND NotEvaluatedIs=0" +
-                         "group by ConsolidationLevel2_Id, ParLevel2_Id";
+                string sql = "SELECT ConsolidationLevel2_Id, ParLevel2_Id, SUM(WeiEvaluation) AS [WeiEvaluationTotal], SUM(Defects) AS [DefectsTotal], SUM(WeiDefects) AS[WeiDefectsTotal], SUM(TotalLevel3WithDefects) AS [TotalLevel3WithDefects], SUM(TotalLevel3Evaluation) AS [TotalLevel3Evaluation], MAX(LastEvaluationAlert) AS LastEvaluationAlert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult " +
+                             "FROM CollectionLevel2 WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND ParLevel2_Id = " + ParLevel2_Id + " AND NotEvaluatedIs=0" +
+                             "group by ConsolidationLevel2_Id, ParLevel2_Id";
 
-            var consolidationLevel2 = db.Query<CollectionLevel2Consolidation>(sql).FirstOrDefault();
+                var consolidationLevel2 = db.Query<CollectionLevel2Consolidation>(sql).FirstOrDefault();
 
-            return consolidationLevel2;
+                return consolidationLevel2;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
     }
@@ -1207,21 +1198,165 @@ namespace SGQDBContext
 
         public ConsolidationLevel1XConsolidationLevel2 getConsolidation(int ConsolidationLevel1_Id)
         {
-            SqlConnection db = new SqlConnection(conexao);
+            try
+            {
+                SqlConnection db = new SqlConnection(conexao);
 
-            //string sql = "SELECT CL1.ParLevel1_Id, COUNT(CL2.EvaluateTotal) AS EvaluationTotal, SUM(CL2.DefectsTotal) AS DefectsTotal FROM ConsolidationLevel2 CL2 " +
-            //             "INNER JOIN ConsolidationLevel1 CL1 ON CL2.ConsolidationLevel1_Id = CL1.Id " +
-            //             "WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + " " +
-            //             "GROUP BY CL2.ConsolidationLevel1_Id, CL1.ParLevel1_Id";
+                string sql = "select  SUM(WeiEvaluation) AS WeiEvaluation, SUM(EvaluateTotal) AS EvaluateTotal, SUM(DefectsTotal) AS DefectsTotal, SUM(WeiDefects) AS WeiDefects,  SUM(TotalLevel3Evaluation) AS TotalLevel3Evaluation, SUM(TotalLevel3WithDefects) AS TotalLevel3WithDefects, MAX(LastEvaluationAlert) AS LastEvaluationAlert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult FROM ConsolidationLevel2 where ConsolidationLevel1_Id=" + ConsolidationLevel1_Id + "";
 
+                var consolidationLevel1 = db.Query<ConsolidationLevel1XConsolidationLevel2>(sql).FirstOrDefault();
 
-            string sql = "select  SUM(WeiEvaluation) AS WeiEvaluation, SUM(EvaluateTotal) AS EvaluateTotal, SUM(DefectsTotal) AS DefectsTotal, SUM(WeiDefects) AS WeiDefects,  SUM(TotalLevel3Evaluation) AS TotalLevel3Evaluation, SUM(TotalLevel3WithDefects) AS TotalLevel3WithDefects, MAX(LastEvaluationAlert) AS LastEvaluationAlert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult FROM ConsolidationLevel2 where ConsolidationLevel1_Id=" + ConsolidationLevel1_Id + "";
+                return consolidationLevel1;
+            }
+            catch (Exception ex)
+            {
 
-            var consolidationLevel1 = db.Query<ConsolidationLevel1XConsolidationLevel2>(sql).FirstOrDefault();
-
-            return consolidationLevel1;
+                throw ex;
+            }
         }
 
       
     }
-  }
+    public partial class ConsolidationLevel1
+    {
+        public int Id { get; set; }
+        public int UnitId { get; set; }
+        public int DepartmentId { get; set; }
+        public int ParLevel1_Id { get; set; }
+        public DateTime AddDate { get; set; }
+        public DateTime? AlterDate { get; set; }
+        public DateTime ConsolidationDate { get; set; }
+        public int Evaluation { get; set; }
+        public int AtualAlert { get; set; }
+        public decimal WeiEvaluation { get; set; }
+        public decimal EvaluateTotal { get; set; }
+        public decimal DefectsTotal { get; set; }
+        public decimal WeiDefects { get; set; }
+        public int TotalLevel3Evaluation { get; set; }
+        public int TotalLevel3WithDefects { get; set; }
+        public int LastEvaluationAlert { get; set; }
+        public int EvaluatedResult { get; set; }
+        public int DefectsResult { get; set; }
+
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public ConsolidationLevel1 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate)
+        {
+            try
+            {
+                string sql = "SELECT * FROM ConsolidationLevel1 WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
+
+                SqlConnection db = new SqlConnection(conexao);
+                var obj = db.Query<ConsolidationLevel1>(sql).FirstOrDefault();
+                return obj;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+    public partial class ConsolidationLevel2
+    {
+        public int Id { get; set; }
+        public int ConsolidationLevel1_Id { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public int UnitId { get; set; }
+        public DateTime AddDate { get; set; }
+        public DateTime? AlterDate { get; set; }
+        public int AlertLevel { get; set; }
+        public DateTime ConsolidationDate { get; set; }
+        public decimal WeiEvaluation { get; set; }
+        public decimal EvaluateTotal { get; set; }
+        public decimal DefectsTotal { get; set; }
+        public decimal WeiDefects { get; set; }
+        public int TotalLevel3Evaluation { get; set; }
+        public int TotalLevel3WithDefects { get; set; }
+        public int LastEvaluationAlert { get; set; }
+        public int EvaluatedResult { get; set; }
+        public int DefectsResult { get; set; }
+
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public ConsolidationLevel2 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate)
+        {
+            try
+            {
+                string sql = "SELECT * FROM ConsolidationLevel2 WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
+
+                SqlConnection db = new SqlConnection(conexao);
+                var obj = db.Query<ConsolidationLevel2>(sql).FirstOrDefault();
+                return obj;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, int ConsolidationLevel1_Id, int ParLevel2_Id)
+        {
+            try
+            {
+                string sql = "SELECT Id, ConsolidationLevel1_Id, ParLevel2_Id, ConsolidationDate, WeiEvaluation, EvaluateTotal, DefectsTotal, WeiDefects, TotalLevel3Evaluation, TotalLevel3WithDefects FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' AND ParLevel2_Id= '" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "'";
+                SqlConnection db = new SqlConnection(conexao);
+                var obj = db.Query<ConsolidationLevel2>(sql).FirstOrDefault();
+                return obj;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+    }
+
+    public partial class CollectionJson
+    {
+        public int Id { get; set; }
+        public int Unit_Id { get; }
+        public int Shift { get; set; }
+        public int Period { get; set; }
+        public int level01_Id { get; set; }
+        public DateTime Level01CollectionDate { get; set; }
+        public int level02_Id { get; set; }
+        public int Evaluate { get; set; }
+        public int Sample { get; set; }
+
+        public int AuditorId { get; set; }
+        public DateTime Level02CollectionDate { get; set; }
+        public string Level02HeaderJson { get; set; }
+        public string Level03ResultJSon { get; set; }
+        public string CorrectiveActionJson { get; set; }
+        public bool Reaudit { get; set; }
+        public int ReauditNumber { get; set; }
+        public bool haveReaudit { get; set; }
+        public bool haveCorrectiveAction { get; set; }
+        public string Device_Id { get; set; }
+        public string AppVersion { get; set; }
+        public string Ambient { get; set; }
+        public bool IsProcessed { get; set; }
+        public string Device_Mac { get; set; }
+        public DateTime AddDate { get; set; }
+        public DateTime? AlterDate { get; set; }
+        public string Key { get; set; }
+        public string TTP { get; set; }
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+
+        public IEnumerable<CollectionJson> getJson(string sql)
+        {
+            try
+            {
+                SqlConnection db = new SqlConnection(conexao);
+                var list = db.Query<CollectionJson>(sql);
+                return list;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+}
