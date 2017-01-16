@@ -323,8 +323,9 @@
     <Compile Include="Controllers\Api\VerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ExemploInputController.cs" />
     <Compile Include="Controllers\GestaoController.cs" />
-    <Compile Include="Controllers\ManDataCollectITController.cs" />
+    <Compile Include="Controllers\manDataCollectITsController.cs" />
     <Compile Include="Controllers\ManutencaoController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
@@ -359,6 +360,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Handlres\DecimalModelBinder.cs" />
     <Compile Include="Handlres\HandleApi.cs" />
     <Compile Include="Handlres\HandleController.cs" />
     <Compile Include="Handlres\ValidateModelAttribute.cs" />
@@ -427,6 +429,8 @@
     <Compile Include="Mappers\UserMapperProfile.cs" />
     <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
+    <Compile Include="Secirity\FilterUnit.cs" />
+    <Compile Include="Secirity\FormularioPesquisa.cs" />
     <Compile Include="Secirity\RoleAuthorizeAttribute.cs" />
     <Compile Include="Secirity\RolesPorUnidade.cs" />
     <Compile Include="Secirity\SessionPersister.cs" />
@@ -955,6 +959,7 @@
     <None Include="Properties\PublishProfiles\SgqBrasilGlobal.pubxml" />
     <None Include="Properties\PublishProfiles\SGQMaster.pubxml" />
     <Content Include="Scripts\DataTables\datatablePtBr.json" />
+    <None Include="Properties\PublishProfiles\sqgOnline.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\GuardJs.js" />
     <Content Include="Scripts\i18n\ar.js" />
@@ -1275,7 +1280,13 @@
     <Content Include="Views\RelatoriosSgq\ApontamentosDiarios.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoConformidade.cshtml" />
     <Content Include="Views\RelatoriosSgq\ExemploRelatorio.cshtml" />
-    <Content Include="Views\ManDataCollectIT\Index.cshtml" />
+    <Content Include="Views\manDataCollectITs\Create.cshtml" />
+    <Content Include="Views\manDataCollectITs\Delete.cshtml" />
+    <Content Include="Views\manDataCollectITs\Details.cshtml" />
+    <Content Include="Views\manDataCollectITs\Edit.cshtml" />
+    <Content Include="Views\manDataCollectITs\Index.cshtml" />
+    <Content Include="Views\ExemploInput\Index.cshtml" />
+    <Content Include="Views\Example\TiposDeInputSgq.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

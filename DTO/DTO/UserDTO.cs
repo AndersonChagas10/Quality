@@ -2,6 +2,7 @@
 using DTO.Helpers;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace DTO.DTO
 {
@@ -48,7 +49,7 @@ namespace DTO.DTO
             //Verifica se ambos parametros estao nulos.
             if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Password))
                 throw new ExceptionHelper("Username and Password are required.");
-
+            Name = Regex.Replace(Name, @"\s+", "");
             SetName(Name);
             SetPassword(Password);
         }
@@ -62,6 +63,7 @@ namespace DTO.DTO
         {
             Guard.ForNullOrEmpty(name, "The Username is required.");
             Guard.CheckStringFull(out name, "Username", name, requerido: true, mensagem: "The Username is required.");
+            
             //Name = name;
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.ApplicationInsights.Extensibility;
+using SgqSystem.Handlres;
 using SgqSystem.Mappers;
 using System.Diagnostics;
 using System.Web.Http;
@@ -13,6 +14,7 @@ namespace SgqSystem
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

@@ -1,5 +1,7 @@
 ﻿using DTO.DTO;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace SgqSystem.ViewModels
@@ -22,6 +24,14 @@ namespace SgqSystem.ViewModels
             {
                 ShiftSelectListExample = value;
             }
+
         }
+
+        public int IntegerProp { get; set; }
+
+        public decimal DecimalProp { get; set; }
+
+        public float FloatProp { get; set; }
+        public DateTime DateTimeProp { get; set; }
     }
 }

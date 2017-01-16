@@ -1,4 +1,5 @@
-﻿@{
+﻿@using DTO
+@{
     ViewBag.Title = "Config";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var urlCheck = Url.Action("CheckGC", "GlobalConfigApi");
@@ -6,7 +7,7 @@
     var urlSenha = Url.Action("RecSenha", "GlobalConfigApi");
     var urlConverteValorCalculado = Url.Action("ConverteValorCalculadoString", "GlobalConfigApi");
     var urlConverteValorCalculadoDecimal = Url.Action("DesconverteValorCalculadoDecimal", "GlobalConfigApi");
-    var linkAtual = Dominio.GlobalConfig.linkDataCollect;
+    var linkAtual = GlobalConfig.linkDataCollect;
 }
 
 <h2>Config</h2>

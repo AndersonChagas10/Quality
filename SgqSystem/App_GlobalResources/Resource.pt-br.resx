@@ -759,4 +759,7 @@
   <data name="frequency1_popover" xml:space="preserve">
     <value>Define a frequência que o indicador será analisado: diariamente, semanalmente, mensalmente, etc.</value>
   </data>
+  <data name="quantity" xml:space="preserve">
+    <value>Quantidade</value>
+  </data>
 </root>
