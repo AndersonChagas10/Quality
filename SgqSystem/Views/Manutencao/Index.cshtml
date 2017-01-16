@@ -619,21 +619,7 @@
                                                             title: {
                                                                 text: 'Desvio %'
                                                             },
-                                                            plotLines: [{
-                                                                color: 'black',
-                                                                dashStyle: 'dot',
-                                                                width: 2,
-                                                                value: media,
-                                                                label: {
-                                                                    rotation: 0,
-                                                                    y: 15,
-                                                                    style: {
-                                                                        fontStyle: 'italic'
-                                                                    },
-                                                                    text: 'Média de desvio: ' + media.toFixed(2) + '%'
-                                                                },
-                                                                zIndex: 99999
-                                                            }],
+                                                            
                                                             opposite: true
 
                                                         }, {
@@ -645,6 +631,16 @@
 
 
                                                         }],
+
+                                                        plotOptions: {
+                                                            series: {
+                                                                borderWidth: 0,
+                                                                dataLabels: {
+                                                                    enabled: true,
+                                                                    format: '{point.y:.,0f}'
+                                                                }
+                                                            }
+                                                        },
 
                                                         series: [{
                                                             name: 'Despesa Orçada',
@@ -864,21 +860,7 @@
                                                             title: {
                                                                 text: 'Desvio %'
                                                             },
-                                                            plotLines: [{
-                                                                color: 'black',
-                                                                dashStyle: 'dot',
-                                                                width: 2,
-                                                                value: media,
-                                                                label: {
-                                                                    rotation: 0,
-                                                                    y: 15,
-                                                                    style: {
-                                                                        fontStyle: 'italic'
-                                                                    },
-                                                                    text: 'Média de desvio: ' + media.toFixed(2) + '%'
-                                                                },
-                                                                zIndex: 99999
-                                                            }],
+
                                                             opposite: true
 
                                                         }, {
@@ -890,6 +872,16 @@
 
 
                                                         }],
+
+                                                        plotOptions: {
+                                                            series: {
+                                                                borderWidth: 0,
+                                                                dataLabels: {
+                                                                    enabled: true,
+                                                                    format: '{point.y:.,0f}'
+                                                                }
+                                                            }
+                                                        },
 
                                                         series: [{
                                                             name: 'Despesa Orçada',
@@ -1109,21 +1101,7 @@
                                                             title: {
                                                                 text: 'Desvio %'
                                                             },
-                                                            plotLines: [{
-                                                                color: 'black',
-                                                                dashStyle: 'dot',
-                                                                width: 2,
-                                                                value: media,
-                                                                label: {
-                                                                    rotation: 0,
-                                                                    y: 15,
-                                                                    style: {
-                                                                        fontStyle: 'italic'
-                                                                    },
-                                                                    text: 'Média de desvio: ' + media.toFixed(2) + '%'
-                                                                },
-                                                                zIndex: 99999
-                                                            }],
+                                                           
                                                             opposite: true
 
                                                         }, {
@@ -1135,6 +1113,16 @@
 
 
                                                         }],
+
+                                                        plotOptions: {
+                                                            series: {
+                                                                borderWidth: 0,
+                                                                dataLabels: {
+                                                                    enabled: true,
+                                                                    format: '{point.y:.,0f}'
+                                                                }
+                                                            }
+                                                        },
 
                                                         series: [{
                                                             name: 'Despesa Orçada',
@@ -1354,21 +1342,7 @@
                                                             title: {
                                                                 text: 'Desvio %'
                                                             },
-                                                            plotLines: [{
-                                                                color: 'black',
-                                                                dashStyle: 'dot',
-                                                                width: 2,
-                                                                value: media,
-                                                                label: {
-                                                                    rotation: 0,
-                                                                    y: 15,
-                                                                    style: {
-                                                                        fontStyle: 'italic'
-                                                                    },
-                                                                    text: 'Média de desvio: ' + media.toFixed(2) + '%'
-                                                                },
-                                                                zIndex: 99999
-                                                            }],
+                                                            
                                                             opposite: true
 
                                                         }, {
@@ -1380,6 +1354,16 @@
 
 
                                                         }],
+
+                                                        plotOptions: {
+                                                            series: {
+                                                                borderWidth: 0,
+                                                                dataLabels: {
+                                                                    enabled: true,
+                                                                    format: '{point.y:.,0f}'
+                                                                }
+                                                            }
+                                                        },
 
                                                         series: [{
                                                             name: 'Despesa Orçada',
@@ -2493,6 +2477,16 @@
                                                             }
                                                         },
 
+                                                        plotOptions: {
+                                                            series: {
+                                                                borderWidth: 0,
+                                                                dataLabels: {
+                                                                    enabled: true,
+                                                                    format: '{point.y:.,0f}'
+                                                                }
+                                                            }
+                                                        },
+
                                                         series: [{
                                                             type: 'column',
                                                             name: 'Orçada',
@@ -2998,6 +2992,16 @@
                                                             }
                                                         },
 
+                                                        plotOptions: {
+                                                            series: {
+                                                                borderWidth: 0,
+                                                                dataLabels: {
+                                                                    enabled: true,
+                                                                    format: '{point.y:.,0f}'
+                                                                }
+                                                            }
+                                                        },
+
                                                         series: [{
                                                             type: 'column',
                                                             name: 'Orçado',
@@ -3162,6 +3166,16 @@
 
             return regFiltro;
 
+        }
+
+        function milhar(n) {
+            var n = '' + n, t = n.length - 1, novo = '';
+
+            for (var i = t, a = 1; i >= 0; i--, a++) {
+                var ponto = a % 3 == 0 && i > 0 ? '.' : '';
+                novo = ponto + n.charAt(i) + novo;
+            }
+            return novo;
         }
 
 
