@@ -223,28 +223,28 @@
         <li>
             <div id="showUnit" style="display:none">
                 <span class="redLabel">@Resources.Resource.unit</span>
-                @Html.DropDownList("unitId", Model.UnitsSelectList, @Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
         <li>
             <div id="showShift" style="display:none">
                 <span class="redLabel">@Resources.Resource.shift</span>
-                @Html.DropDownList("shift", Model.ShiftSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                @Html.DropDownList("shift", new SelectList(ViewBag.Shift, "Id", "Name"), "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
         <li>
             <div id="showPeriod" style="display:none">
                 <span class="redLabel">@Resources.Resource.period</span>
-                @Html.DropDownList("period", Model.PeriodSelectList, "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                @Html.DropDownList("period", new SelectList(ViewBag.Period, "Id", "Name"), "All", htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
 
         <li>
             <div id="showUsers" style="display:none">
                 <span class="redLabel">@Resources.Resource.auditor</span>
-                @Html.DropDownList("auditorId", Model.UserSelectList, "All", htmlAttributes: new { @class = "form-control required", @style = "width:210px" })
+                @Html.DropDownList("auditorId", new SelectList(ViewBag.UserSgq, "Id", "Name"), "All", htmlAttributes: new { @class = "form-control required", @style = "width:210px" })
             </div>
 
 

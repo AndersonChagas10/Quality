@@ -22,7 +22,7 @@ namespace SgqSystem.Mappers
                 x.AddProfile<Level02MapperProfile>();
                 x.AddProfile<Level03MapperProfile>();
                 x.AddProfile<PeriodMapperProfile>();
-                //x.AddProfile<ShiftMapperProfile>(); PROBLEMA NA TABELA, FORA DE PADRão, MOCKADO.
+                x.AddProfile<ShiftMapperProfile>(); //PROBLEMA NA TABELA, FORA DE PADRão, MOCKADO.
                 x.AddProfile<DepartmenMapperProfile>();
                 x.AddProfile<UnitMapperProfile>();
                 x.AddProfile<UnitUserMapperProfile>();
