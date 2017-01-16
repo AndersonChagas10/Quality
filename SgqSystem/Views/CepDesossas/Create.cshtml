@@ -95,13 +95,13 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        @*<div class="form-group">
                                             @Html.LabelFor(model => model.ParLevel1_id, "Indicador", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParLevel1_id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel1_id, "", new { @class = "text-danger" })
                                             </div>
-                                        </div>
+                                        </div>*@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.HorasTrabalhadasPorDia, "Horas trabalhadas por dia", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -131,7 +131,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.QtdadeFamiliaProduto, "Número de famílias cadastradas", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBoxFor(model => model.QtdadeFamiliaProduto, new {  @class = "form-control" } )
+                                                @Html.TextBoxFor(model => model.QtdadeFamiliaProduto, new {  @class = "form-control", @disabled = "true" } )
                                                 @Html.ValidationMessageFor(model => model.QtdadeFamiliaProduto, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -158,7 +158,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Salvar" class="btn btn-default" /> |
+                                                <input type="submit" value="Salvar" onclick="habilitar()" class="btn btn-default" /> |
                                                 @Html.ActionLink("Voltar para Volume de CEP Desossa", "Index")
                                             </div>
                                         </div>
@@ -232,7 +232,11 @@
         $('#Amostras').val(Math.ceil($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()));
         $('#amostraHidden').val(Math.ceil($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()));
     });
+    function habilitar() {
 
+        $('#Avaliacoes').attr('disabled', false)
+        $('#Amostras').attr('disabled', false)
+    }
 
     $(document).ready(function () {
 

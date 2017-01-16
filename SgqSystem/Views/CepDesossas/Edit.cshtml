@@ -85,13 +85,13 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        @*<div class="form-group">
                                             @Html.LabelFor(model => model.ParLevel1_id, "Indicador", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParLevel1_id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel1_id, "", new { @class = "text-danger" })
                                             </div>
-                                        </div>
+                                        </div>*@
 
                                         @*<div class="form-group">
                                             @Html.LabelFor(model => model.Departamento, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -135,15 +135,14 @@
                                             </div>
                                         </div>
 
+                                        @{ Html.EnableClientValidation(false); }
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.QtdadeFamiliaProduto, "Número de famílias cadastradas", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBoxFor(model => model.QtdadeFamiliaProduto,new { @class = "form-control" } )
+                                                @Html.TextBoxFor(model => model.QtdadeFamiliaProduto,new { @class = "form-control", @disabled = "true" } )
                                                 @Html.ValidationMessageFor(model => model.QtdadeFamiliaProduto, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-
-                                        
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Avaliacoes, "Avaliações", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -169,6 +168,7 @@
                                                 @Html.ActionLink("Voltar para Volume de CEP Desossa", "Index")
                                             </div>
                                         </div>
+                                        @{ Html.EnableClientValidation(true); }
                                     </div>
                                 }
 

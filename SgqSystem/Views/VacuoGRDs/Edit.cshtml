@@ -87,13 +87,13 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        @*<div class="form-group">
                                             @Html.LabelFor(model => model.ParLevel1_id, "Indicador", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("ParLevel1_id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel1_id, "", new { @class = "text-danger" })
                                             </div>
-                                        </div>
+                                        </div>*@
 
                                         @*<div class="form-group">
                                             @Html.LabelFor(model => model.Departamento, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -139,7 +139,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.QtdadeFamiliaProduto,"Número de familias cadastradas", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBoxFor(model => model.QtdadeFamiliaProduto,  new { @class = "form-control" } )
+                                                @Html.TextBoxFor(model => model.QtdadeFamiliaProduto,  new { @class = "form-control", @disabled = true } )
                                                 @Html.ValidationMessageFor(model => model.QtdadeFamiliaProduto, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -164,7 +164,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Salvar" class="btn btn-default" /> |
+                                                <input type="submit" value="Salvar" onclick="habilitar()" class="btn btn-default" /> |
                                                 @Html.ActionLink("Voltar para Volume de CEP Vácuo GRD", "Index")
                                             </div>
                                         </div>
@@ -182,6 +182,12 @@
     <!-- END CONTENT BODY -->
 </div>
 <script>
+
+    function habilitar() {
+
+        $('#Avaliacoes').attr('disabled', false)
+        $('#Amostras').attr('disabled', false)
+    }
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
