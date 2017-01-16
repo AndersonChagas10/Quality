@@ -1,4 +1,13 @@
-﻿Array.prototype.max = function () {
+﻿$(document).ready(function () {
+    $('.integer').each(function (index) {
+        $(this).inputmask("integer", { rightAlign: false });
+    });
+    $('.decimal').each(function (index) {
+        $(this).inputmask("decimal", { rightAlign: false });
+    });
+})
+
+Array.prototype.max = function () {
     return Math.max.apply(null, this);
 };
 

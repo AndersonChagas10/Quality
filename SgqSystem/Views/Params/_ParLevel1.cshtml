@@ -43,13 +43,12 @@
                         </tr>
 
                         <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.haveRealTimeConsolidation, new { @class = "form-control checkbox-erp" }), @Html.Label("Possui consolidação em tempo real"), Table.PosicaoLabel.left, null, Resources.Resource.has_alert_popover)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.haveRealTimeConsolidation, new { @class = "form-control checkbox-erp" }), @Html.Label("Possui consolidação em tempo real"), Table.PosicaoLabel.left, null, "Define consilidação em tempo real para o indicador.")
                         </tr>
-
-                        @*<tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.RealTimeConsolitationUpdate, new { @class = "form-control checkbox-erp" }), @Html.Label("Intervalo de tempo para consolidação em tempo real"), Table.PosicaoLabel.left, null, Resources.Resource.has_alert_popover)
-                        </tr>*@
-
+                        <tr class="row RealTimeConsolitationUpdate padding-left" style="display:none">
+                            @Table.GerarColunaCheckbox(@Html.TextBox("paramsDto.parLevel1Dto.RealTimeConsolitationUpdate", Model.paramsDto.parLevel1Dto.RealTimeConsolitationUpdate, new { @class = "form-control checkbox-erp integer" }), @Html.Label("Intervalo de tempo para a consildação em tempo real", new { @class = "padding-left" }), Table.PosicaoLabel.left, null, "Define intervalo de tempo para o item acima.")
+                        </tr>
+                  
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, null, Resources.Resource.allow_specific_register_by_unit_popover)
                         </tr>
@@ -427,6 +426,14 @@
             $('.groupCadastroEspecificoUnidade').fadeIn();
         } else {
             $('.groupCadastroEspecificoUnidade').fadeOut();
+        }
+    });
+
+    $('#paramsDto_parLevel1Dto_haveRealTimeConsolidation').on('switchChange.bootstrapSwitch', function (event, state) {
+        if (state) {
+            $('.RealTimeConsolitationUpdate').fadeIn();
+        } else {
+            $('.RealTimeConsolitationUpdate').fadeOut();
         }
     });
 
@@ -1299,8 +1306,11 @@
         if($('#paramsDto_parLevel1Dto_IsSpecific').is(':checked'))
             $('.groupCadastroEspecificoUnidade').fadeIn();
 
-        updateAllTables();
+        if($('#paramsDto_parLevel1Dto_haveRealTimeConsolidation').is(':checked'))
+            $('.RealTimeConsolitationUpdate').fadeIn();
 
+        updateAllTables();
+        
         $('[data-toggle="popover"]').popover();
 
         SingleCallendar.IntiFullCallendarByClass('dataInput');
