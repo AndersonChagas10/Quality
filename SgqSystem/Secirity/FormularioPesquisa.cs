@@ -48,6 +48,7 @@ namespace SgqSystem.Secirity
                 if (!string.IsNullOrEmpty(cookie.Values["userId"]))
                     int.TryParse(cookie.Values["userId"].ToString(), out userId);
 
+                unidades = GetData(filterContext, unidades, out _Users, out _Level1, out _Level2, out _Level3, out _Shift, out _Period);
                 if (userId > 0)
                     if (!string.IsNullOrEmpty(cookie.Values["rolesCompany"]))
                     {
@@ -66,37 +67,39 @@ namespace SgqSystem.Secirity
                                 #endregion
                             }
                         }
-
-
-                        using (var db2 = new SgqDbDevEntities())
-                        {
-                            db2.Configuration.LazyLoadingEnabled = false;
-                            if (!filtraUnidadePorUsuario)/*Se não filtra uNidades por Usuario*/
-                            {
-                                unidades = Mapper.Map<IEnumerable<ParCompanyDTO>>(db2.ParCompany.ToList());
-                            }
-                            _Users = db2.UserSgq.ToList();
-                            _Level1 = Mapper.Map<List<ParLevel1DTO>>(db2.ParLevel1.ToList());
-                            _Level2 = Mapper.Map<List<ParLevel2DTO>>(db2.ParLevel2.ToList());
-                            _Level3 = Mapper.Map<List<ParLevel3DTO>>(db2.ParLevel3.ToList());
-                            _Period = Mapper.Map<List<PeriodDTO>>(db2.Period.ToList());
-                            _Shift = Mapper.Map<List<ShiftDTO>>(db2.Shift.ToList());
-                        }
-
-                        filterContext.Controller.ViewBag.UnidadeUsuario = unidades;
-                        filterContext.Controller.ViewBag.UserSgq = _Users;
-                        filterContext.Controller.ViewBag.Level01 = _Level1;
-                        filterContext.Controller.ViewBag.Level02 = _Level2;
-                        filterContext.Controller.ViewBag.Level03 = _Level3;
-                        filterContext.Controller.ViewBag.Shift = _Shift;
-                        filterContext.Controller.ViewBag.Period = _Period;
-
                     }
             }
 
             //return retorno;
 
             base.OnActionExecuting(filterContext);
+        }
+
+        private IEnumerable<ParCompanyDTO> GetData(ActionExecutingContext filterContext, IEnumerable<ParCompanyDTO> unidades, out List<UserSgq> _Users, out List<ParLevel1DTO> _Level1, out List<ParLevel2DTO> _Level2, out List<ParLevel3DTO> _Level3, out List<ShiftDTO> _Shift, out List<PeriodDTO> _Period)
+        {
+            using (var db2 = new SgqDbDevEntities())
+            {
+                db2.Configuration.LazyLoadingEnabled = false;
+                if (!filtraUnidadePorUsuario)/*Se não filtra uNidades por Usuario*/
+                {
+                    unidades = Mapper.Map<IEnumerable<ParCompanyDTO>>(db2.ParCompany.ToList());
+                }
+                _Users = db2.UserSgq.ToList();
+                _Level1 = Mapper.Map<List<ParLevel1DTO>>(db2.ParLevel1.ToList());
+                _Level2 = Mapper.Map<List<ParLevel2DTO>>(db2.ParLevel2.ToList());
+                _Level3 = Mapper.Map<List<ParLevel3DTO>>(db2.ParLevel3.ToList());
+                _Period = Mapper.Map<List<PeriodDTO>>(db2.Period.ToList());
+                _Shift = Mapper.Map<List<ShiftDTO>>(db2.Shift.ToList());
+            }
+
+            filterContext.Controller.ViewBag.UnidadeUsuario = unidades;
+            filterContext.Controller.ViewBag.UserSgq = _Users;
+            filterContext.Controller.ViewBag.Level01 = _Level1;
+            filterContext.Controller.ViewBag.Level02 = _Level2;
+            filterContext.Controller.ViewBag.Level03 = _Level3;
+            filterContext.Controller.ViewBag.Shift = _Shift;
+            filterContext.Controller.ViewBag.Period = _Period;
+            return unidades;
         }
 
         //public override void OnActionExecuted(ActionExecutedContext filterContext)
