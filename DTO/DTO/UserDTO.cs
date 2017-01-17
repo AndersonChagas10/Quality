@@ -1,5 +1,6 @@
 ﻿using DTO.BaseEntity;
 using DTO.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
@@ -30,6 +31,7 @@ namespace DTO.DTO
 
         public string Role { get; set; }
         public bool isBrasil { get; set; }
+        public Nullable<int> ParCompany_Id { get; set; }
 
         /// <summary>
         /// Construtor Padrão
