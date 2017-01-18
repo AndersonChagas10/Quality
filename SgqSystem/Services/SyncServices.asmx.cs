@@ -2192,8 +2192,8 @@ namespace SgqSystem.Services
         {
             string menu = "<div class=\"rightMenu\">                                                                                                  " +
                            "     <div class=\"list-group list-group-inverse rightMenuList\">                                                           " +
-                           "         <a href= \"#\" id=\"btnSync\" class=\"list-group-item\">Sincronizar</a>                                                  " +
-                           "         <a href= \"index.html\" id=\"btnSyncParam\" class=\"list-group-item\" onClick=\"onDeviceReady();\">Parametrizações</a>                                                  " +
+                           "         <a href= \"#\" id=\"btnSync\" class=\"list-group-item\" style=\"background-color: black; font-weight: bold;\">Sincronizar Resultados</a>                                                  " +
+                           "         <a href= \"index.html\" id=\"btnSyncParam\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\" onClick=\"onDeviceReady();\">Sincronizar Parametrizações</a>                                                  " +
 
                            "         <a href= \"#\" id=\"btnLogout\" class=\"list-group-item\">Logout</a>                                              " +
                            "         <a href= \"#\" id=\"btnLog\" class=\"list-group-item\">Visualizar Log</a>                                               " +
