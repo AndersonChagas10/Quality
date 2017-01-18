@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Dominio;
 using DTO.Helpers;
 using SgqSystem.Secirity;
+using SgqSystem.Helpers;
 
 namespace SgqSystem.Controllers
 {
@@ -42,16 +43,16 @@ namespace SgqSystem.Controllers
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 2), "Id", "Name");
 
             var model = new VolumeCepDesossa();
-            GetNumeroDeFamilias(model);
+            GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(model);
 
             return View(model);
         }
 
-        private void GetNumeroDeFamilias(VolumeCepDesossa model)
+        private void GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(VolumeCepDesossa model)
         {
-            var parLevel1 = db.ParLevel1.AsNoTracking().FirstOrDefault(r => r.hashKey == 2);
-            var naoCorporativas = db.ParLevel2ControlCompany.Where(r => r.ParLevel1_Id == parLevel1.Id).Count();
-            model.QtdadeFamiliaProduto = db.ParLevel1.AsNoTracking().FirstOrDefault(r=>r.hashKey == 2).Level2Number + naoCorporativas;
+            var naoCorporativas = CommonData.GetNumeroDeFamiliasPorUnidadeDoUsuario(HttpContext, 2);
+            var corporativos = CommonData.GetNumeroDeFamiliasCorporativo(HttpContext, 2);
+            model.QtdadeFamiliaProduto = corporativos + naoCorporativas;
             model.ParLevel1_id = db.ParLevel1.AsNoTracking().FirstOrDefault(r=>r.hashKey == 2).Id;
         }
 
@@ -62,7 +63,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepDesossa cepDesossa)
         {
-            GetNumeroDeFamilias(cepDesossa);
+            GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(cepDesossa);
             ValidaCepDesossa(cepDesossa);
             if (ModelState.IsValid)
             {
@@ -111,7 +112,7 @@ namespace SgqSystem.Controllers
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 2), "Id", "Name", cepDesossa.ParLevel1_id);
-            GetNumeroDeFamilias(cepDesossa);
+            GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(cepDesossa);
 
             return View(cepDesossa);
         }
@@ -123,7 +124,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepDesossa cepDesossa)
         {
-            GetNumeroDeFamilias(cepDesossa);
+            GetNumeroDeFamiliasPorUnidadeDoUsuarioDesossa(cepDesossa);
             ValidaCepDesossa(cepDesossa);
 
             if (ModelState.IsValid)

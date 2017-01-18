@@ -181,7 +181,7 @@ namespace Dominio.Services
                 userDto.Id = isUser.Id;
                 AtualizaRolesSgqBrPelosDadosDoErp(userDto);
 
-                if (isCreate)
+                if (isCreate && isUser.ParCompany_Id == null || !(isUser.ParCompany_Id > 0))
                 {
                     var firstCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(r => r.UserSgq_Id == isUser.Id);
                     isUser.ParCompany_Id = firstCompany.ParCompany_Id;
