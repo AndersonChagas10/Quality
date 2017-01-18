@@ -13,6 +13,60 @@ namespace SgqSystem.Helpers
 {
     public static class CommonData
     {
+        public static int GetNumeroDeFamiliasPorUnidadeDoUsuario(HttpContextBase filterContext, int hashKey)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                var id = Guard.GetUsuarioLogado_Id(filterContext);
+                var user = db.UserSgq.FirstOrDefault(r => r.Id == id);
+                var level1 = db.ParLevel1.FirstOrDefault(r => r.hashKey == hashKey);
+                var existeAlgum = db.Database.SqlQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id is not null and ParLevel1_Id = " + level1.Id).ToList();
+
+                if (existeAlgum != null && existeAlgum.Count() > 0)
+                {
+                    var lastDate = existeAlgum.OrderByDescending(r => r.InitDate).FirstOrDefault().InitDate;
+                    var counter = existeAlgum.Count(r => r.InitDate == lastDate);
+                    return counter;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+        public static int GetNumeroDeFamiliasCorporativo(HttpContextBase filterContext, int hashKey)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                var id = Guard.GetUsuarioLogado_Id(filterContext);
+                var user = db.UserSgq.FirstOrDefault(r => r.Id == id);
+                var level1 = db.ParLevel1.FirstOrDefault(r => r.hashKey == hashKey);
+                var existeAlgum = db.Database.SqlQuery<ParLevel2ControlCompany>("select * from ParLevel2ControlCompany where ParCompany_Id is null and ParLevel1_Id = " + level1.Id).ToList();
+
+                if (existeAlgum != null && existeAlgum.Count() > 0)
+                {
+                    var lastDate = existeAlgum.OrderByDescending(r => r.InitDate).FirstOrDefault().InitDate;
+                    var counter = existeAlgum.Count(r => r.InitDate == lastDate);
+                    return counter;
+                }
+                else
+                {
+                    return 0;
+                }
+
+            }
+        }
+
+        public static UserSgq GetuserSgqLogado(HttpContextBase filterContext, int hashKey)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                var id = Guard.GetUsuarioLogado_Id(filterContext);
+                return db.UserSgq.FirstOrDefault(r => r.Id == id);
+            }
+        }
+
         /// <summary>
         /// Retorna as operações por unidade conforme parametrização do cluster
         /// </summary>
