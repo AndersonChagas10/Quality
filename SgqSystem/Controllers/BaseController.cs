@@ -41,6 +41,10 @@ namespace SgqSystem.Controllers
             base.Initialize(requestContext);
         }
 
+        //internal UserSgq GetUserLogado()
+        //{
+        //    return db.UserSgq.FirstOrDefault(r => r.Id == Guard.GetUsuarioLogado_Id(HttpContext));
+        //}
     }
 
 }
