@@ -320,6 +320,7 @@
     <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadeApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioDiarioApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\ScorecardApiController.cs" />
+    <Compile Include="Controllers\Api\Renan\GraficoTesteApiController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -330,6 +331,7 @@
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\RelatoriosBrasil\RelatoriosSgqController.cs" />
+    <Compile Include="Controllers\Renan\GraficoTesteController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
     <Compile Include="Controllers\GlobalConfigController.cs" />
@@ -1287,6 +1289,7 @@
     <Content Include="Views\manDataCollectITs\Index.cshtml" />
     <Content Include="Views\ExemploInput\Index.cshtml" />
     <Content Include="Views\Example\TiposDeInputSgq.cshtml" />
+    <Content Include="Views\GraficoTeste\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1298,6 +1301,7 @@
     <Folder Include="DataCollect\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
+    <Folder Include="Views\GraficoTesteApi\" />
     <Folder Include="Views\RelatorioController\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>

@@ -39,7 +39,7 @@ namespace SgqSystem.Controllers
         public ActionResult Index()
         {
             ViewBag.listaParCompany = FiltraUnidades();
-            return View(db.manDataCollectIT.ToList());
+            return View(db.ManDataCollectIT.ToList());
         }
 
         // GET: manDataCollectITs/Details/5
@@ -49,7 +49,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            manDataCollectIT manDataCollectIT = db.manDataCollectIT.Find(id);
+            ManDataCollectIT manDataCollectIT = db.ManDataCollectIT.Find(id);
             if (manDataCollectIT == null)
             {
                 return HttpNotFound();
@@ -61,7 +61,7 @@ namespace SgqSystem.Controllers
         public ActionResult Create()
         {
             ViewBag.listaParCompany = FiltraUnidades();
-            return View(new manDataCollectIT() {amountData=0});
+            return View(new ManDataCollectIT() {AmountData=0});
         }
 
         // POST: manDataCollectITs/Create
@@ -69,15 +69,15 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AddDate,AlterDate,referenceDatetime,userSGQ_id,parCompany_id,parFrequency_id,shift,dataType,amountData,ParMeasurementUnit_Id,IsActive")] manDataCollectIT manDataCollectIT)
+        public ActionResult Create([Bind(Include = "Id, AddDate, AlterDate, ReferenceDatetime, UserSGQ_Id, ParCompany_Id, ParFrequency_Id, Shift, DataType, AmountData, ParMeasurementUnit_Id, IsActive, Comments")] ManDataCollectIT manDataCollectIT)
         {
             manDataCollectIT.IsActive = true;
-            manDataCollectIT.userSGQ_id = Guard.GetUsuarioLogado_Id(HttpContext);
+            manDataCollectIT.UserSGQ_Id = Guard.GetUsuarioLogado_Id(HttpContext);
 
             if (ModelState.IsValid)
             {
                 manDataCollectIT.AddDate = DateTime.Now;
-                db.manDataCollectIT.Add(manDataCollectIT);
+                db.ManDataCollectIT.Add(manDataCollectIT);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -92,7 +92,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            manDataCollectIT manDataCollectIT = db.manDataCollectIT.Find(id);
+            ManDataCollectIT manDataCollectIT = db.ManDataCollectIT.Find(id);
             if (manDataCollectIT == null)
             {
                 return HttpNotFound();
@@ -105,7 +105,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AddDate,AlterDate,referenceDatetime,userSGQ_id,parCompany_id,parFrequency_id,shift,dataType,amountData,ParMeasurementUnit_Id,IsActive")] manDataCollectIT manDataCollectIT)
+        public ActionResult Edit([Bind(Include = "Id,AddDate,AlterDate,ReferenceDatetime,UserSGQ_Id,ParCompany_Id,ParFrequency_Id,Shift,DataType,AmountData,ParMeasurementUnit_Id,IsActive,Comments")] ManDataCollectIT manDataCollectIT)
         {
             if (ModelState.IsValid)
             {
@@ -124,7 +124,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            manDataCollectIT manDataCollectIT = db.manDataCollectIT.Find(id);
+            ManDataCollectIT manDataCollectIT = db.ManDataCollectIT.Find(id);
             if (manDataCollectIT == null)
             {
                 return HttpNotFound();
@@ -137,8 +137,8 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            manDataCollectIT manDataCollectIT = db.manDataCollectIT.Find(id);
-            db.manDataCollectIT.Remove(manDataCollectIT);
+            ManDataCollectIT manDataCollectIT = db.ManDataCollectIT.Find(id);
+            db.ManDataCollectIT.Remove(manDataCollectIT);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

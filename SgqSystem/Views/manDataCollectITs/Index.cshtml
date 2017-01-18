@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Dominio.manDataCollectIT>
+﻿@model IEnumerable<Dominio.ManDataCollectIT>
 
 @{
     ViewBag.Title = "Index";
@@ -38,6 +38,9 @@
                 @*<th>
                     @Html.DisplayName("Unidade de Medida"/*model => model.cc*/)
                 </th>*@
+                <th>
+                    @Html.DisplayName("Comentários")
+                </th>
                 <th></th>
             </tr>
 
@@ -45,30 +48,33 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.referenceDatetime)
+                        @Html.DisplayFor(modelItem => item.ReferenceDatetime)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.parCompany_id)
+                        @Html.DisplayFor(modelItem => item.ParCompany_Id)
                     </td>
                     @*<td>
                         @Html.DisplayFor(modelItem => item.parFrequency_id)
                     </td>*@
                     <td>
-                        @Html.DisplayFor(modelItem => item.shift)
+                        @Html.DisplayFor(modelItem => item.Shift)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.dataType)
+                        @Html.DisplayFor(modelItem => item.DataType)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.amountData)
+                        @Html.DisplayFor(modelItem => item.AmountData)
                     </td>
                     @*<td>
                         @Html.DisplayFor(modelItem => item.ParMeasurementUnit_Id)
                     </td>*@
                     <td>
-                        @Html.ActionLink("Alterar", "Edit", new { id = item.Id }) |
+                        @Html.DisplayFor(modelItem => item.Comments)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Alterar", "Edit", new { Id = item.Id }) |
                         @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
-                        @Html.ActionLink("Excluir", "Delete", new { id = item.Id })
+                        @Html.ActionLink("Excluir", "Delete", new { Id = item.Id })
                     </td>
                 </tr>
             }
