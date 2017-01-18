@@ -1,4 +1,4 @@
-﻿@model Dominio.manDataCollectIT
+﻿@model Dominio.ManDataCollectIT
 
 @{
     ViewBag.Title = "Create";
@@ -24,26 +24,26 @@
                 <div class="form-group">
                     @Html.Label("Data de Coleta", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.referenceDatetime, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.referenceDatetime, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.ReferenceDatetime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ReferenceDatetime, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 @{ Html.EnableClientValidation(true); }
 
                 <div class="form-group hide">
-                    @Html.LabelFor(model => model.userSGQ_id, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.UserSGQ_Id, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.userSGQ_id, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.userSGQ_id, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.UserSGQ_Id, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserSGQ_Id, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="form-group">
                     @Html.Label("Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.parCompany_id, new SelectList(ViewBag.listaParCompany, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.parCompany_id, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(model => model.ParCompany_Id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -58,8 +58,8 @@
                 <div class="form-group">
                     @Html.Label("Turno", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.shift, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.shift, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Shift, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Shift, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -74,7 +74,7 @@
                         </select>
 
                         @*@Html.EditorFor(model => model.dataType, new { htmlAttributes = new { @class = "form-control" } })*@
-                        @Html.ValidationMessageFor(model => model.dataType, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.DataType, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 
@@ -83,14 +83,22 @@
                     @Html.Label("Quantidade", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
 
-                        @Html.TextBoxFor(model => model.amountData, Model.amountData.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.amountData, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(model => model.AmountData, Model.AmountData.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" } )
+                        @Html.ValidationMessageFor(model => model.AmountData, "", new { @class = "text-danger" })
 
                         @*@Html.EditorFor(model => model.amountData, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.amountData, "", new { @class = "text-danger" })*@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    @Html.Label("Comentários", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        
+                        @Html.TextAreaFor(model => model.Comments, 5,5, new { @class = "form-control valid" })
+                        @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                    </div>
+                </div>
     
 
                 <div class="form-group hide">
@@ -124,9 +132,9 @@
 <script>
     $(document).ready(function () {
 
-        $('#amountData').inputmask("decimal", { rightAlign: false });
+        $('#AmountData').inputmask("decimal", { rightAlign: false });
 
-        $('#referenceDatetime').daterangepicker({
+        $('#ReferenceDatetime').daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
             'locale': {
@@ -134,7 +142,7 @@
             }
         });
 
-        $("#userSGQ_id").val(1);
+        $("#UserSGQ_Id").val(1);
         $("#IsActive").val(true);
     });
 </script>

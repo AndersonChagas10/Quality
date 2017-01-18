@@ -252,7 +252,7 @@ namespace SgqSystem.Services
                 //Chain Speed
                 string isemptylevel3 = result[14];
                 //Lot Number
-                string lotnumber = result[15];
+                string hassampletotal = result[15];
                 //Mud Score
                 string mudscore = result[16];
                 //Verifica falhas, descontinuado na JBS EUA por enquanto
@@ -314,6 +314,7 @@ namespace SgqSystem.Services
                 level02HeaderJSon += ";" + sequential;
                 level02HeaderJSon += ";" + side;
                 level02HeaderJSon += ";" + isemptylevel3;
+                level02HeaderJSon += ";" + hassampletotal;
                 //level02HeaderJSon += ";" + alertaAtual;
 
                 //Verifica o Resultado do Level03
@@ -441,6 +442,7 @@ namespace SgqSystem.Services
 
                 var collectionJson = CollectionJsonDB.getJson(sql);
 
+
                 //connection = new SqlConnection(conexao);
                 //connection.Open();
 
@@ -522,6 +524,7 @@ namespace SgqSystem.Services
                         string isemptylevel3 = arrayHeader[24];
                         isemptylevel3 = BoolConverter(isemptylevel3);
 
+                                             
 
                         string haveReaudit = BoolConverter(c.haveReaudit.ToString());
 
@@ -552,11 +555,23 @@ namespace SgqSystem.Services
                         ConsolidationLevel1_Id = consolidationLevel1.Id;
                         ConsolidationLevel2_Id = consolidationLevel2.Id;
 
-                        int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
-                                                StartPhase, c.Evaluate, c.Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit,
+
+                    int sampleCollect = c.Sample;
+                    int sampleTotal = consolidationLevel2.EvaluatedResult;
+
+                    bool hasSampleTotal = Convert.ToBoolean(arrayHeader[25]);
+                    if (hasSampleTotal == true)
+                    {
+                        sampleCollect = sampleTotal++;
+                    }
+
+                    int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
+                                                StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
                                                 weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, evaluatedresult, defectsresult, isemptylevel3);
 
+                    if(CollectionLevel2Id > 0)
+                    {
 
                         int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated);
 
@@ -645,19 +660,20 @@ namespace SgqSystem.Services
 
                         int jsonUpdate = updateJson(c.Id);
 
-                    //    transacao.Complete();
+                        //    transacao.Complete();
 
-                    //}
+                        //}
 
-                    var CollectionLevel2ConsolidationDB = new SGQDBContext.CollectionLevel2Consolidation();
-                    var collectionLevel2Consolidation = CollectionLevel2ConsolidationDB.getConsolidation(ConsolidationLevel2_Id, c.level02_Id);
+                        var CollectionLevel2ConsolidationDB = new SGQDBContext.CollectionLevel2Consolidation();
+                        var collectionLevel2Consolidation = CollectionLevel2ConsolidationDB.getConsolidation(ConsolidationLevel2_Id, c.level02_Id);
 
-                    var updateConsolidationLevel2Id = updateConsolidationLevel2(ConsolidationLevel2_Id, AlertLevel, avaliacaoultimoalerta, collectionLevel2Consolidation);
+                        var updateConsolidationLevel2Id = updateConsolidationLevel2(ConsolidationLevel2_Id, AlertLevel, avaliacaoultimoalerta, collectionLevel2Consolidation);
 
-                    var ConsolidationLevel1XConsolidationLevel2DB = new ConsolidationLevel1XConsolidationLevel2();
-                    var consolidationLevel1XConsolidationLevel2 = ConsolidationLevel1XConsolidationLevel2DB.getConsolidation(ConsolidationLevel1_Id);
+                        var ConsolidationLevel1XConsolidationLevel2DB = new ConsolidationLevel1XConsolidationLevel2();
+                        var consolidationLevel1XConsolidationLevel2 = ConsolidationLevel1XConsolidationLevel2DB.getConsolidation(ConsolidationLevel1_Id);
 
-                    var updateConsolidationLevel1Id = updateConsolidationLevel1(ConsolidationLevel1_Id, AlertLevel, avaliacaoultimoalerta, consolidationLevel1XConsolidationLevel2);
+                        var updateConsolidationLevel1Id = updateConsolidationLevel1(ConsolidationLevel1_Id, AlertLevel, avaliacaoultimoalerta, consolidationLevel1XConsolidationLevel2);
+                    }
                 }
 
                 return null;
@@ -1094,16 +1110,22 @@ namespace SgqSystem.Services
                                            string avaliacaoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3)
         {
             //Converte a data da coleta
-            string collectionDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             string sql = null;
             //Se o Id for igual a zero é um insert
 
+            string key = ConsolidationLevel2.UnitId.ToString();
+
+            key += "-" + ConsolidationLevel1.ParLevel1_Id.ToString();
+            key += "-" + ConsolidationLevel2.ParLevel2_Id.ToString();
+            key += "-" + Evaluation;
+            key += "-" + Sample;
+            key += "-" + CollectionDate.ToString("yyyyMMdd");
 
             if (id == "0")
             {
-                sql = "INSERT INTO CollectionLevel2 ([ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[EvaluatedResult],[DefectsResult],[IsEmptyLevel3]) " +
+                sql = "INSERT INTO CollectionLevel2 ([Key],[ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[EvaluatedResult],[DefectsResult],[IsEmptyLevel3]) " +
                 "VALUES " +
-                "('" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "') ";
+                "('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "') ";
 
                 sql += " SELECT @@IDENTITY AS 'Identity' ";
             }
@@ -1142,6 +1164,10 @@ namespace SgqSystem.Services
             catch (SqlException ex)
             {
                 int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2");
+                if (ex.Number == 2627)
+                {
+                    return 0;
+                }
                 throw ex;
             }
             catch (Exception ex)
@@ -1209,6 +1235,10 @@ namespace SgqSystem.Services
             catch (SqlException ex)
             {
                 int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2HeaderField");
+                if (ex.Number == 2627) // <-- but this will
+                {
+                    return 0;
+                }
                 throw ex;
             }
             catch (Exception ex)

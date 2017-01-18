@@ -49,7 +49,9 @@ namespace SgqSystem.Controllers
 
         private void GetNumeroDeFamilias(VolumeCepDesossa model)
         {
-            model.QtdadeFamiliaProduto = db.ParLevel1.AsNoTracking().FirstOrDefault(r=>r.hashKey == 2).Level2Number;
+            var parLevel1 = db.ParLevel1.AsNoTracking().FirstOrDefault(r => r.hashKey == 2);
+            var naoCorporativas = db.ParLevel2ControlCompany.Where(r => r.ParLevel1_Id == parLevel1.Id).Count();
+            model.QtdadeFamiliaProduto = db.ParLevel1.AsNoTracking().FirstOrDefault(r=>r.hashKey == 2).Level2Number + naoCorporativas;
             model.ParLevel1_id = db.ParLevel1.AsNoTracking().FirstOrDefault(r=>r.hashKey == 2).Id;
         }
 

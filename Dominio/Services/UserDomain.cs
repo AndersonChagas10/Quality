@@ -24,6 +24,8 @@ namespace Dominio.Services
 
         private static string dominio = "global.corp.prod";
 
+
+        public string erroUnidade = "É necessário ao menos uma unidade cadastrada para o usuario.";
         public string falhaGeral { get { return "It was not possible retrieve any data."; } }
 
         /// <summary>
@@ -73,15 +75,26 @@ namespace Dominio.Services
                 }
 
                 if (GlobalConfig.Brasil)
-                    LoginBraSil(userDto, userByName);
+                    LoginBrasil(userDto, userByName);
 
                 if (GlobalConfig.Eua)
-                {
-                    if (userByName == null)
-                        throw new ExceptionHelper("User not found, please verify Username and Password.");
+                    LoginEUA(userDto, userByName);
 
-                    AutenticaAdEUA(userDto);//Autenticação no AD JBS USA
-                }
+                #region Verifica no DB User Definitivamente
+
+                var user = Mapper.Map<UserDTO, UserSgq>(userDto);
+                user.Password = Guard.Criptografar3DES(user.Password);
+                var isUser = _userRepo.AuthenticationLogin(user);
+                if (isUser.IsNull())
+                    throw new ExceptionHelper("User not found, please verify Username and Password.");
+
+                #endregion
+
+                /*Caso usuario não possua ao menos uma unidade na tbl UserSgq, estes erros são acionados.*/
+                if (isUser.ParCompany_Id == null)
+                    throw new Exception(erroUnidade);
+                if (isUser.ParCompany_Id <= 0)
+                    throw new Exception(erroUnidade);
 
                 try
                 {
@@ -99,10 +112,18 @@ namespace Dominio.Services
             catch (Exception e)
             {
                 new CreateLog(e);
-                return new GenericReturn<UserDTO>(e, falhaGeral + e.Message);
+                return new GenericReturn<UserDTO>(e, e.Message);
             }
 
 
+        }
+
+        private void LoginEUA(UserDTO userDto, UserSgq userByName)
+        {
+            if (userByName == null)
+                throw new ExceptionHelper("User not found, please verify Username and Password.");
+
+            AutenticaAdEUA(userDto);//Autenticação no AD JBS USA
         }
 
         private void AutenticaAdEUA(UserDTO userDto)
@@ -122,13 +143,25 @@ namespace Dominio.Services
             }
         }
 
-        private void LoginBraSil(UserDTO userDto, UserSgq userByName)
+        /// <summary>
+        /// Ao logar um user já existente na tabela: 
+        /// "select * from Usuario"
+        /// Atualizada pelo ERP da JBS, este metodo verifica se ele é um novo usuário, ou um usuário já existente na base de dados do SGQGlobal.
+        /// Caso não exita ele cria um UserSgq na base SgqGlobal.
+        /// Caso exista ele não cria, apenas recupera o UsgerSgq.
+        /// ** Para ambos os casos o metodo atualiza as ParCompanyesXUserSgq e Roles existentes nela. **
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <param name="userByName"></param>
+        private void LoginBrasil(UserDTO userDto, UserSgq userByName)
         {
+            var isCreate = false;
             try
             {
                 if (userByName == null)//Não existe no nosso DB
                 {
                     CriaUSerSgqPeloUserSgqBR(userDto);
+                    isCreate = true;
                 }
 
             }
@@ -147,6 +180,14 @@ namespace Dominio.Services
 
                 userDto.Id = isUser.Id;
                 AtualizaRolesSgqBrPelosDadosDoErp(userDto);
+
+                if (isCreate)
+                {
+                    var firstCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(r => r.UserSgq_Id == isUser.Id);
+                    isUser.ParCompany_Id = firstCompany.ParCompany_Id;
+                    _userRepo.Salvar(isUser);
+                }
+
             }
             catch (Exception e)
             {
@@ -168,7 +209,7 @@ namespace Dominio.Services
                 {
                     throw new Exception("Erro ao buscar dados do usuario do ERP JSB", e);
                 }
-                    
+
                 if (usuarioSgqBr != null)
                 {
                     IEnumerable<UsuarioPerfilEmpresa> usuarioPerfilEmpresaSgqBr;
@@ -251,7 +292,7 @@ namespace Dominio.Services
                     }
 
                 }
-
+                
             }
 
         }

@@ -341,7 +341,8 @@ namespace SgqSystem.Services
         //public string level2(string id, string label, string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false,
         //                     string alertlevel1 = null, string alertlevel2 = null, string alertlevel3 = null, string AlertLevel = null, string ParFrequency_Id = null)
 
-        public string level2(string id, string label, string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1, bool reaudit = false, bool correctiveaction = false, bool phase = false, bool HasSampleTotal= false, bool IsEmptyLevel3=false)
+        public string level2(string id, string label, string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1, 
+                             bool reaudit = false, bool correctiveaction = false, bool phase = false, bool HasSampleTotal= false, bool IsEmptyLevel3=false)
         {
             return link(
                            id: id,
