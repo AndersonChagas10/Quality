@@ -46,7 +46,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.IntegerProp, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.IntegerProp, new { htmlAttributes = new { @class = "form-control integer" } })
+                    @Html.TextBoxFor(model => model.IntegerProp, new { @class = "form-control integer" })
                     @Html.ValidationMessageFor(model => model.IntegerProp, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -57,7 +57,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.DecimalProp, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.DecimalProp, Model.DecimalProp.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { htmlAttributes = new { @class = "form-control decimal" } })
+                    @Html.TextBoxFor(model => model.DecimalProp, Model.DecimalProp.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control decimal" })
                     @Html.ValidationMessageFor(model => model.DecimalProp, "", new { @class = "text-danger" })
                 </div>
             </div>
