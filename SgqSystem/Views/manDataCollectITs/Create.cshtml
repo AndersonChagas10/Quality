@@ -83,7 +83,7 @@
                     @Html.Label("Quantidade", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
 
-                        @Html.TextBoxFor(model => model.AmountData, Model.AmountData.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.TextBoxFor(model => model.AmountData, Model.AmountData.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" } )
                         @Html.ValidationMessageFor(model => model.AmountData, "", new { @class = "text-danger" })
 
                         @*@Html.EditorFor(model => model.amountData, new { htmlAttributes = new { @class = "form-control" } })
@@ -95,7 +95,7 @@
                     @Html.Label("Comentários", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         
-                        @Html.TextBoxFor(model => model.Comments, Model.Comments, new { htmlAttributes = new { @class = "form-control valid" } })
+                        @Html.TextAreaFor(model => model.Comments, 5,5, new { @class = "form-control valid" })
                         @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
                     </div>
                 </div>
