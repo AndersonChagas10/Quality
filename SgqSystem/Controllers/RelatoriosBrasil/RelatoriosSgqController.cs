@@ -89,5 +89,19 @@ namespace SgqSystem.Controllers
             return View(form);
         }
 
+        public ActionResult VisaoGeralDaArea()
+        {
+            return View(form);
+        }
+
+        public ActionResult VisaoGeralDaAreaTbl1()
+        {
+            return PartialView(form);
+        }
+
+        public ActionResult VisaoGeralDaAreaTbl2()
+        {
+            return PartialView(form);
+        }
     }
 }
