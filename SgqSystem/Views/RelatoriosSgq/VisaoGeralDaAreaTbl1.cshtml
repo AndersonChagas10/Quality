@@ -1,1 +1,177 @@
-﻿
+﻿@model  SgqSystem.Controllers.TabelaDinamicaResultados
+@{
+    Layout = null;
+
+}
+
+@Styles.Render("~/Content/General")
+@Styles.Render("~/Content/Erp")
+@Scripts.Render("~/bundles/modernizr")
+
+<link href="~/Scripts/theme/css/components.min.css" rel="stylesheet" />
+<link href="~/Scripts/theme/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Scripts/theme/css/layout.min.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/modernizr")
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div style="cursor: pointer; position: relative; overflow: auto; width: 100%; margin-left: auto; margin-right: auto; opacity: 1;">
+    
+    <div style="width:100%">
+
+        <div id="esquerda" style="width:20%; height:90px; float:left;">
+
+            <table id="Header1">
+                @foreach (var i in Model.trsCabecalho1)
+            {
+                    <tr>
+                        <td colspan="@i.coolspan">
+                            @i.name
+                        </td>
+                    </tr>
+
+                }
+            </table>
+
+            <table id="dadosEsquerdaName">
+                <tbody>
+                    @foreach (var i in Model.trsMeio)
+                    {
+                        <tr>
+                            <td>@i.name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <table id="footer1">
+                @foreach (var i in Model.footer)
+            {
+                    <tr>
+                        <td colspan="@i.coolspan">
+                            @i.name
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+
+        <div id="meio" style="width:50%; height:90px; float:left;">
+
+            <table id="Header2">
+                <tr>
+                    @foreach (var i in Model.trsCabecalho2)
+            {
+                        <td colspan="@i.coolspan">
+                            @i.name
+                        </td>
+                    }
+                </tr>
+                <tr>
+                    @foreach (var i in Model.trsCabecalho2)
+                    {
+                        foreach (var ii in i.tds)
+                        {
+                            <td colspan="@ii.coolspan">
+                                @ii.name
+                            </td>
+                        }
+                    }
+                </tr>
+            </table>
+
+            <table id="dadosEsquerda">
+                @foreach (var i in Model.trsMeio)
+            {
+                    <tr>
+                        @foreach (var ii in i.tdsEsquerda)
+                        {
+                            <td colspan="@ii.coolspan">
+                                @ii.valor
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
+
+            <table id="footer2">
+                <tr>
+                    @foreach (var i in Model.footer)
+                    {
+                        foreach (var ii in i.tdsEsquerda)
+                        {
+                            <td colspan="@ii.coolspan">
+                                @ii.valor
+                            </td>
+                        }
+                    }
+                </tr>
+            </table>
+
+        </div>
+
+        <div id="direita" style="width:30%; float:left;">
+
+            <table id="Header3">
+                <tr>
+                    @foreach (var i in Model.trsCabecalho3)
+            {
+                        <td colspan="@i.coolspan">
+                            @i.name
+                        </td>
+                    }
+                </tr>
+                <tr>
+                    @foreach (var i in Model.trsCabecalho3)
+                    {
+                        foreach (var ii in i.tds)
+                        {
+                            <td colspan="@ii.coolspan">
+                                @ii.name
+                            </td>
+                        }
+                    }
+                </tr>
+            </table>
+
+            <table id="dadosDireita">
+                @foreach (var i in Model.trsMeio)
+            {
+                    <tr>
+                        @foreach (var ii in i.tdsDireita)
+                        {
+                            <td colspan="@ii.coolspan">
+                                @ii.valor
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
+
+            <table id="footer3">
+                <tr>
+                    @foreach (var i in Model.footer)
+                    {
+                        foreach (var ii in i.tdsDireita)
+                        {
+                            <td colspan="@ii.coolspan">
+                                @ii.valor
+                            </td>
+                        }
+                    }
+                </tr>
+            </table>
+
+        </div>
+
+    </div>
+   
+
+</div>
