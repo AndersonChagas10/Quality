@@ -165,6 +165,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.budgets' does not have a primary key 
           <Property Name="LastEvaluationAlert" Type="int" />
           <Property Name="EvaluatedResult" Type="int" />
           <Property Name="DefectsResult" Type="int" />
+          <Property Name="IsEmptyLevel3" Type="bit" />
         </EntityType>
         <EntityType Name="CollectionLevel2XParHeaderField">
           <Key>
@@ -419,22 +420,24 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="email" Type="varchar(max)" />
           <Property Name="Second_Log_Path" Type="varchar(max)" />
         </EntityType>
-        <EntityType Name="manDataCollectIT">
+        <EntityType Name="ManDataCollectIT">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="referenceDatetime" Type="datetime" />
-          <Property Name="userSGQ_id" Type="int" />
-          <Property Name="parCompany_id" Type="int" />
-          <Property Name="parFrequency_id" Type="int" />
-          <Property Name="shift" Type="int" />
-          <Property Name="dataType" Type="nvarchar" MaxLength="110" />
-          <Property Name="amountData" Type="decimal" Precision="32" Scale="10" />
+          <Property Name="InstantDatetime" Type="datetime" />
+          <Property Name="ReferenceDatetime" Type="datetime" />
+          <Property Name="UserSGQ_Id" Type="int" />
+          <Property Name="ParCompany_Id" Type="int" />
+          <Property Name="ParFrequency_Id" Type="int" />
+          <Property Name="Shift" Type="int" />
+          <Property Name="DataType" Type="nvarchar" MaxLength="110" />
+          <Property Name="AmountData" Type="decimal" Precision="32" Scale="10" />
           <Property Name="ParMeasurementUnit_Id" Type="int" />
-          <Property Name="IsActive" Type="bit" />
+          <Property Name="Comments" Type="varchar" MaxLength="800" />
+          <Property Name="AddDate" Type="datetime" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="NQA">
           <Key>
@@ -2580,7 +2583,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="LogJson" EntityType="Self.LogJson" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogSgq" EntityType="Self.LogSgq" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogSgqGlobal" EntityType="Self.LogSgqGlobal" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="manDataCollectIT" EntityType="Self.manDataCollectIT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ManDataCollectIT" EntityType="Self.ManDataCollectIT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NQA" EntityType="Self.NQA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCluster" EntityType="Self.ParCluster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParClusterGroup" EntityType="Self.ParClusterGroup" Schema="dbo" store:Type="Tables" />
@@ -3697,7 +3700,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="UnitUser" EntitySet="UnitUser" />
           </AssociationSet>
-          <EntitySet Name="manDataCollectIT" EntityType="SgqDbModel.manDataCollectIT" />
+          <EntitySet Name="ManDataCollectIT" EntityType="SgqDbModel.ManDataCollectIT" />
           </EntityContainer>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -4028,6 +4031,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="CollectionLevel2" ToRole="UserSgq" />
           <NavigationProperty Name="CollectionLevel2XParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" FromRole="CollectionLevel2" ToRole="CollectionLevel2XParHeaderField" />
           <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_CollectionLevel2" FromRole="CollectionLevel2" ToRole="Result_Level3" />
+          <Property Name="IsEmptyLevel3" Type="Boolean" />
         </EntityType>
         <EntityType Name="CollectionLevel2XParHeaderField">
           <Key>
@@ -6394,22 +6398,24 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="manDataCollectIT">
+        <EntityType Name="ManDataCollectIT">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="referenceDatetime" Type="DateTime" Precision="3" />
-          <Property Name="userSGQ_id" Type="Int32" />
-          <Property Name="parCompany_id" Type="Int32" />
-          <Property Name="parFrequency_id" Type="Int32" />
-          <Property Name="shift" Type="Int32" />
-          <Property Name="dataType" Type="String" MaxLength="110" FixedLength="false" Unicode="true" />
-          <Property Name="amountData" Type="Decimal" Precision="32" Scale="10" />
+          <Property Name="InstantDatetime" Type="DateTime" Precision="3" />
+          <Property Name="ReferenceDatetime" Type="DateTime" Precision="3" />
+          <Property Name="UserSGQ_Id" Type="Int32" />
+          <Property Name="ParCompany_Id" Type="Int32" />
+          <Property Name="ParFrequency_Id" Type="Int32" />
+          <Property Name="Shift" Type="Int32" />
+          <Property Name="DataType" Type="String" MaxLength="110" FixedLength="false" Unicode="true" />
+          <Property Name="AmountData" Type="Decimal" Precision="32" Scale="10" />
           <Property Name="ParMeasurementUnit_Id" Type="Int32" />
-          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="Comments" Type="String" MaxLength="800" FixedLength="false" Unicode="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -6686,6 +6692,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySetMapping Name="CollectionLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel2">
               <MappingFragment StoreEntitySet="CollectionLevel2">
+                <ScalarProperty Name="IsEmptyLevel3" ColumnName="IsEmptyLevel3" />
                 <ScalarProperty Name="DefectsResult" ColumnName="DefectsResult" />
                 <ScalarProperty Name="EvaluatedResult" ColumnName="EvaluatedResult" />
                 <ScalarProperty Name="LastEvaluationAlert" ColumnName="LastEvaluationAlert" />
@@ -7798,20 +7805,22 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="manDataCollectIT">
-            <EntityTypeMapping TypeName="SgqDbModel.manDataCollectIT">
-              <MappingFragment StoreEntitySet="manDataCollectIT">
+          <EntitySetMapping Name="ManDataCollectIT">
+            <EntityTypeMapping TypeName="SgqDbModel.ManDataCollectIT">
+              <MappingFragment StoreEntitySet="ManDataCollectIT">
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="ParMeasurementUnit_Id" ColumnName="ParMeasurementUnit_Id" />
-                <ScalarProperty Name="amountData" ColumnName="amountData" />
-                <ScalarProperty Name="dataType" ColumnName="dataType" />
-                <ScalarProperty Name="shift" ColumnName="shift" />
-                <ScalarProperty Name="parFrequency_id" ColumnName="parFrequency_id" />
-                <ScalarProperty Name="parCompany_id" ColumnName="parCompany_id" />
-                <ScalarProperty Name="userSGQ_id" ColumnName="userSGQ_id" />
-                <ScalarProperty Name="referenceDatetime" ColumnName="referenceDatetime" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="ParMeasurementUnit_Id" ColumnName="ParMeasurementUnit_Id" />
+                <ScalarProperty Name="AmountData" ColumnName="AmountData" />
+                <ScalarProperty Name="DataType" ColumnName="DataType" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="ParFrequency_Id" ColumnName="ParFrequency_Id" />
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
+                <ScalarProperty Name="UserSGQ_Id" ColumnName="UserSGQ_Id" />
+                <ScalarProperty Name="ReferenceDatetime" ColumnName="ReferenceDatetime" />
+                <ScalarProperty Name="InstantDatetime" ColumnName="InstantDatetime" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
