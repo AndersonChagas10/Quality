@@ -2314,8 +2314,8 @@ namespace SgqSystem.Services
                                                         //"</button>" +
                                                         "</span>" +
 
-                                                        "<button class=\"btn btn-danger modal-close-ca\">Close</button>" +
-                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Send</button>" +
+                                                        "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
+                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
                                                     "</div>" +
                                                 "</div>" +
                                                 "</div>";
@@ -3361,7 +3361,9 @@ namespace SgqSystem.Services
 
                 string panelButton = html.listgroupItem(
                                                            outerhtml: accordeonbuttons +
-                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
+                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+
+                                                                      "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>",
                                                            classe: "painel painelLevel02 row"
                                                         );
 
