@@ -1,4 +1,4 @@
-﻿@model Dominio.manDataCollectIT
+﻿@model Dominio.ManDataCollectIT
 
 @{
     ViewBag.Title = "Details";
@@ -18,7 +18,7 @@
                 </dt>
 
                 <dd>
-                    @Html.DisplayFor(model => model.referenceDatetime)
+                    @Html.DisplayFor(model => model.ReferenceDatetime)
                 </dd>
 
                 <dt>
@@ -26,7 +26,7 @@
                 </dt>
 
                 <dd>
-                    @Html.DisplayFor(model => model.parCompany_id)
+                    @Html.DisplayFor(model => model.ParCompany_Id)
                 </dd>
 
                 @*<dt>
@@ -42,7 +42,7 @@
                 </dt>
 
                 <dd>
-                    @Html.DisplayFor(model => model.shift)
+                    @Html.DisplayFor(model => model.Shift)
                 </dd>
 
                 <dt>
@@ -50,7 +50,7 @@
                 </dt>
 
                 <dd>
-                    @Html.DisplayFor(model => model.dataType)
+                    @Html.DisplayFor(model => model.DataType)
                 </dd>
 
                 <dt>
@@ -58,7 +58,7 @@
                 </dt>
 
                 <dd>
-                    @Html.DisplayFor(model => model.amountData)
+                    @Html.DisplayFor(model => model.AmountData)
                 </dd>
 
                 @*<dt>
@@ -68,6 +68,14 @@
                 <dd>
                     @Html.DisplayFor(model => model.ParMeasurementUnit_Id)
                 </dd>*@
+                <dt>
+                    @Html.DisplayName("Comentários")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Comments)
+                </dd>
+
 
             </dl>
         </div>

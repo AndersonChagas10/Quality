@@ -23,31 +23,51 @@ namespace SgqSystem.Secirity
             //filterContext.HttpContext.Trace.Write("(Logging Filter)Action Executing: " +
             //    filterContext.ActionDescriptor.ActionName);
 
-            IEnumerable<ParCompanyDTO> retorno = new List<ParCompanyDTO>();
-            HttpCookie cookie = filterContext.HttpContext.Request.Cookies.Get("webControlCookie");
-            if (cookie != null)
+            using (var db = new SgqDbDevEntities())
             {
-                var rolesCompany = "";
-                var userId = 0;
-                if (!string.IsNullOrEmpty(cookie.Values["userId"]))
-                    int.TryParse(cookie.Values["userId"].ToString(), out userId);
 
-                if (userId > 0)
-                    if (!string.IsNullOrEmpty(cookie.Values["rolesCompany"]))
-                    {
-                        rolesCompany = cookie.Values["rolesCompany"].ToString();
-                        List<ParCompany> _companyXUserSgq;
-                        using (var db = new SgqDbDevEntities())
-                        {
-                            _companyXUserSgq = db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == userId).Select(r => r.ParCompany).ToList().OrderBy(r => r.Name).GroupBy(r => r.Id).Select(group => group.First()).ToList();
-                            retorno = Mapper.Map<IEnumerable<ParCompanyDTO>>(_companyXUserSgq);
-                        }
+                db.Configuration.LazyLoadingEnabled = false;
 
-                        filterContext.Controller.ViewBag.UnidadeUsuario = retorno;
+                HttpCookie cookie = filterContext.HttpContext.Request.Cookies.Get("webControlCookie");
 
-                    }
+                if (cookie != null)
+                {
+                    var rolesCompany = "";
+                    var userId = 0;
+
+                    if (!string.IsNullOrEmpty(cookie.Values["userId"]))
+                        int.TryParse(cookie.Values["userId"].ToString(), out userId);
+
+                    UserSgq userLogado = db.UserSgq.FirstOrDefault(r => r.Id == userId);
+
+                    filterContext.Controller.ViewBag.UserSgq = db.UserSgq.ToList();
+                 
+                        if (userId > 0)
+                            if (!string.IsNullOrEmpty(cookie.Values["rolesCompany"])) /*Se user possuir mais de uma unidade*/
+                            {
+                                rolesCompany = cookie.Values["rolesCompany"].ToString();
+
+                                #region Query Unidades
+
+                                var _companyXUserSgq = db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == userId).Select(r => r.ParCompany).ToList().OrderBy(r => r.Name).GroupBy(r => r.Id).Select(group => group.First()).ToList();
+
+                                filterContext.Controller.ViewBag.UnidadeUsuario = Mapper.Map<IEnumerable<ParCompanyDTO>>(_companyXUserSgq);
+
+                                #endregion
+                            }
+                            else /*Se não possui mais de uma undiade*/
+                            {
+                                var unidades = db.ParCompany.ToList();
+
+                                if (unidades == null || unidades.Count() > 0)
+                                    unidades = db.ParCompany.Where(r => r.Id == userLogado.ParCompany_Id).ToList();
+
+                                filterContext.Controller.ViewBag.UnidadeUsuario = Mapper.Map<IEnumerable<ParCompanyDTO>>(unidades);
+                            }
+                    
+                }
+                //return retorno;
             }
-
             //return retorno;
 
             base.OnActionExecuting(filterContext);

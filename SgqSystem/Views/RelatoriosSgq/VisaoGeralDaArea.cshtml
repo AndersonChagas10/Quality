@@ -1,0 +1,107 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "Scorecard";
+    var url = Url.Action("Index", "Home");
+    var urlTabela1 = Url.Action("GetScorecard", "api/Scorecard");
+}
+
+<div class="page-content" style="min-height: 600px;">
+    
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+    <div id="formBodyContent">
+
+        <div id="tabela1div">
+            
+        </div>
+
+        <div id="tabela2">
+
+        </div>
+
+        <div id="grafico1">
+
+        </div>
+
+        <div id="grafico2">
+
+        </div>
+
+        <div id="grafico3">
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+
+
+    var url1 = '@Html.Raw(@urlTabela1)';
+    var $btn = $('#btnSend');
+    $('#simpleCallendar').hide().attr('disabled', true);
+
+    function Send(toggle) {
+        $btn.button('loading');
+        $('#results').empty();
+
+        if (!ValidaDadosParaEnvio()) {
+            $btn.button('reset');
+            return;
+        }
+
+        //AJAX
+        $.post(url1, enviar, function (r) {
+            try {
+                if (toggle == undefined)
+                    $('#menu-toggle').click();
+                //SeuCallback(r);
+            } catch (e) {
+                console.log(e);
+            } finally {
+                $btn.button('reset');
+            }
+        }).fail(function (e, h, x) {
+            $btn.button('reset');
+            if (e.status == 0) {
+                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+            } else {
+                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+            }
+        });
+    };
+   
+    function ValidaDadosParaEnvio() {
+        GuardJs.resetForValidation();
+        GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+        /*Especifico*/
+        //if (!($('#unitId :selected').val() > 0))
+        //{
+        //    GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
+        //    return false;
+        //}
+        if (!GuardJs.isValid)
+            return !GuardJs.isValid;
+        GuardJs.esconderMensagem();
+
+        return true;
+    }
+
+    $(document).ready(function () {
+
+        $("#btnSend").click(function (e) {
+            Send();
+        });
+
+        //formControl.showFullCallendar();
+
+        //formControl.showUnit();
+
+    });
+    </script>
+
+}

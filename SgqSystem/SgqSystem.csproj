@@ -1287,6 +1287,8 @@
     <Content Include="Views\manDataCollectITs\Index.cshtml" />
     <Content Include="Views\ExemploInput\Index.cshtml" />
     <Content Include="Views\Example\TiposDeInputSgq.cshtml" />
+    <Content Include="Views\RelatoriosSgq\VisaoGeralDaArea.cshtml" />
+    <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaTbl1.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

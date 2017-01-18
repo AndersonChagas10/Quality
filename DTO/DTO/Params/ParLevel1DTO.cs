@@ -146,6 +146,7 @@ namespace DTO.DTO.Params
         #endregion
 
         public bool IsRequiredMultipleValue { get; set; }
+        public Nullable<int> hashKey { get; set; }
 
     }
 }

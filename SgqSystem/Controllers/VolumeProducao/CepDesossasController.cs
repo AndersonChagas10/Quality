@@ -40,7 +40,19 @@ namespace SgqSystem.Controllers
         {
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name");
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 2), "Id", "Name");
-            return View();
+
+            var model = new VolumeCepDesossa();
+            GetNumeroDeFamilias(model);
+
+            return View(model);
+        }
+
+        private void GetNumeroDeFamilias(VolumeCepDesossa model)
+        {
+            var parLevel1 = db.ParLevel1.AsNoTracking().FirstOrDefault(r => r.hashKey == 2);
+            var naoCorporativas = db.ParLevel2ControlCompany.Where(r => r.ParLevel1_Id == parLevel1.Id).Count();
+            model.QtdadeFamiliaProduto = db.ParLevel1.AsNoTracking().FirstOrDefault(r=>r.hashKey == 2).Level2Number + naoCorporativas;
+            model.ParLevel1_id = db.ParLevel1.AsNoTracking().FirstOrDefault(r=>r.hashKey == 2).Id;
         }
 
         // POST: CepDesossas/Create
@@ -50,8 +62,8 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepDesossa cepDesossa)
         {
+            GetNumeroDeFamilias(cepDesossa);
             ValidaCepDesossa(cepDesossa);
-
             if (ModelState.IsValid)
             {
                 db.VolumeCepDesossa.Add(cepDesossa);
@@ -99,6 +111,8 @@ namespace SgqSystem.Controllers
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 2), "Id", "Name", cepDesossa.ParLevel1_id);
+            GetNumeroDeFamilias(cepDesossa);
+
             return View(cepDesossa);
         }
 
@@ -109,6 +123,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepDesossa cepDesossa)
         {
+            GetNumeroDeFamilias(cepDesossa);
             ValidaCepDesossa(cepDesossa);
 
             if (ModelState.IsValid)
@@ -117,7 +132,7 @@ namespace SgqSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
+            ViewBag.ParCompany_id = new SelectList(db.ParCompany.AsNoTracking().OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepDesossa.ParLevel1_id);
             return View(cepDesossa);
         }

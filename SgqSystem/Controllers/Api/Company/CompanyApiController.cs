@@ -1,6 +1,4 @@
 ﻿using Dominio.Interfaces.Services;
-using DTO.DTO;
-using DTO.DTO.Params;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System.Web.Http;

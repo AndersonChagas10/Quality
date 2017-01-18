@@ -40,7 +40,9 @@ namespace SgqSystem.Controllers
         {
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name");
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 22), "Id", "Name");
-            return View();
+            var model = new VolumeVacuoGRD();
+            GetNumeroDeFamilias(model);
+            return View(model);
         }
 
         // POST: VacuoGRDs/Create
@@ -50,6 +52,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeVacuoGRD vacuoGRD)
         {
+            GetNumeroDeFamilias(vacuoGRD);
             ValidaVacuoGRD(vacuoGRD);
 
             if (ModelState.IsValid)
@@ -90,6 +93,7 @@ namespace SgqSystem.Controllers
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 22), "Id", "Name", vacuoGRD.ParLevel1_id);
+            GetNumeroDeFamilias(vacuoGRD);
             return View(vacuoGRD);
         }
 
@@ -100,6 +104,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeVacuoGRD vacuoGRD)
         {
+            GetNumeroDeFamilias(vacuoGRD);
             ValidaVacuoGRD(vacuoGRD);
             if (ModelState.IsValid)
             {
@@ -145,6 +150,12 @@ namespace SgqSystem.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void GetNumeroDeFamilias(VolumeVacuoGRD model)
+        {
+            model.QtdadeFamiliaProduto = db.ParLevel1.AsNoTracking().FirstOrDefault(r => r.hashKey == 3).Level2Number;
+            model.ParLevel1_id = db.ParLevel1.AsNoTracking().FirstOrDefault(r => r.hashKey == 3).Id;
         }
     }
 }
