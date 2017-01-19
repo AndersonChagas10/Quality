@@ -40,7 +40,7 @@ namespace SgqSystem.Controllers
         // GET: CepRecortes
         public ActionResult Index()
         {
-            var cepRecortes = db.VolumeCepRecortes.Include(c => c.ParCompany).Include(c => c.ParLevel1);
+            var cepRecortes = db.VolumeCepRecortes.Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
             return View(cepRecortes.ToList());
         }
 

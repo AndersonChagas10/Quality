@@ -16,7 +16,7 @@ namespace SgqSystem.Controllers
         // GET: Pcc1b
         public ActionResult Index()
         {
-            var pcc1b = db.VolumePcc1b.Include(p => p.ParCompany).Include(p => p.ParLevel1);
+            var pcc1b = db.VolumePcc1b.Include(p => p.ParCompany).Include(p => p.ParLevel1).OrderByDescending(p => p.Data);
             return View(pcc1b.ToList());
         }
 
