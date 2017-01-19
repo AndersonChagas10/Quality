@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.IO;
+using System.Reflection;
+using System.Web;
 using System.Web.Mvc;
 
 namespace SgqSystem.Helpers
@@ -11,5 +13,11 @@ namespace SgqSystem.Helpers
             return new MvcHtmlString(strLink);
         }
 
+        public static IHtmlString AssemblyVersion(this HtmlHelper helper)
+        {
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            var versionTime = File.GetCreationTime(Assembly.GetExecutingAssembly().Location);
+            return MvcHtmlString.Create(version + "<ll id='versionTime' style='display: none;'>" + versionTime +"</ll>");
+        }
     }
 }

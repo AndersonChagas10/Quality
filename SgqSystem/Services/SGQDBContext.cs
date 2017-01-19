@@ -24,7 +24,7 @@ namespace SGQDBContext
         public bool IsSpecific { get; set; }
         public bool haveRealTimeConsolidation { get; set; }
         public int RealTimeConsolitationUpdate { get; set; }
-
+        public bool IsLimitedEvaluetionNumber { get; set; }
 
         public ParLevel1()
         {
@@ -35,7 +35,7 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
             string sql = " SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
-                         " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate" +
+                         " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber" +
                          " FROM ParLevel1 P1                                                                                                          " +
                          " INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
                          " ON P321.ParLevel1_Id = P1.Id                                                                                               " +
