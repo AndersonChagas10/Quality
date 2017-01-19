@@ -1291,6 +1291,7 @@
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaArea.cshtml" />
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaTbl1.cshtml" />
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaTbl2.cshtml" />
+    <Content Include="Views\RelatoriosSgq\VisaoGeralDaArea - Copy.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

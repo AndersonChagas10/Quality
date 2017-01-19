@@ -25,13 +25,21 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         }
 
         [HttpPost]
-        [Route("Grafico2")]
-        public List<VisaoGeralDaAreaResultSet> Grafico2([FromBody] FormularioParaRelatorioViewModel form)
+        [Route("Grafico2/{regId}")]
+        public List<VisaoGeralDaAreaResultSet> Grafico2(int regId)
         {
             CriaMockG2();
             return _mock;
         }
 
+        [HttpPost]
+        [Route("Grafico3/{regId}")]
+        public List<VisaoGeralDaAreaResultSet> Grafico3(int regId)
+        {
+            CriaMockG3();
+            return _mock;
+        }
+       
         private void CriaMockG1()
         {
             _mock = new List<VisaoGeralDaAreaResultSet>();
@@ -59,18 +67,66 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             _mock.Add(new VisaoGeralDaAreaResultSet()
             {
-                regId = 1,
-                regName = "reg1",
+                companySigla = "Com",
+                companyScorecard = 90M,
                 scorecardJbs = 80M,
-                scorecardJbsReg = 26.5M
+                scorecardJbsReg = 66.2M
             });
 
             _mock.Add(new VisaoGeralDaAreaResultSet()
             {
-                regId = 2,
-                regName = "reg2",
+                companySigla = "Pan",
+                companyScorecard = 70M,
                 scorecardJbs = 80M,
                 scorecardJbsReg = 66.2M
+            });
+
+        }
+
+        private void CriaMockG3()
+        {
+            _mock = new List<VisaoGeralDaAreaResultSet>();
+
+            _mock.Add(new VisaoGeralDaAreaResultSet()
+            {
+               
+            });
+
+            _mock.Add(new VisaoGeralDaAreaResultSet()
+            {
+              
+            });
+
+        }
+
+        private void CriaMockG4()
+        {
+            _mock = new List<VisaoGeralDaAreaResultSet>();
+
+            _mock.Add(new VisaoGeralDaAreaResultSet()
+            {
+             
+            });
+
+            _mock.Add(new VisaoGeralDaAreaResultSet()
+            {
+               
+            });
+
+        }
+
+        private void CriaMockG5()
+        {
+            _mock = new List<VisaoGeralDaAreaResultSet>();
+
+            _mock.Add(new VisaoGeralDaAreaResultSet()
+            {
+              
+            });
+
+            _mock.Add(new VisaoGeralDaAreaResultSet()
+            {
+             
             });
 
         }
@@ -78,10 +134,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
     public class VisaoGeralDaAreaResultSet
     {
+        public decimal scorecard;
         public int regId { get; set; }
         public string regName { get; set; }
         public decimal scorecardJbs { get; set; }
         public decimal scorecardJbsReg { get; set; }
+        public string companySigla { get; set; }
+        public decimal companyScorecard { get; set; }
         
             
     }
