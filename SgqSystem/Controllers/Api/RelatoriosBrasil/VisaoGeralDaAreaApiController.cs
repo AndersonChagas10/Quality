@@ -34,9 +34,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         [HttpPost]
         [Route("Grafico3/{regId}")]
-        public List<VisaoGeralDaAreaResultSet> Grafico3(int regId)
+        public List<VisaoGeralDaAreaResultSet> Grafico3([FromBody] FormularioParaRelatorioViewModel form, int regId)
         {
-            CriaMockG3();
+            CriaMockG3(form);
             return _mock;
         }
        
@@ -83,7 +83,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         }
 
-        private void CriaMockG3()
+        private void CriaMockG3(FormularioParaRelatorioViewModel form)
         {
             _mock = new List<VisaoGeralDaAreaResultSet>();
 
