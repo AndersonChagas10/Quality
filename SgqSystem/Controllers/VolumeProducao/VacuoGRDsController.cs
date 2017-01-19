@@ -25,7 +25,7 @@ namespace SgqSystem.Controllers
         // GET: VacuoGRDs
         public ActionResult Index()
         {
-            var vacuoGRD = db.VolumeVacuoGRD.Include(v => v.ParCompany).Include(v => v.ParLevel1);
+            var vacuoGRD = db.VolumeVacuoGRD.Include(v => v.ParCompany).Include(v => v.ParLevel1).OrderByDescending(v => v.Data);
             return View(vacuoGRD.ToList());
         }
 

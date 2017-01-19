@@ -981,7 +981,8 @@ namespace SGQDBContext
             string sql = "select U.Id AS UserSGQ_Id, U.Name AS UserSGQ_Login, U.FullName AS UserSGQ_Name, U.Password AS UserSGQ_Pass, U.Role, PxC.Role AS Role, C.Id ParCompany_Id, C.Name ParCompany_Name from ParCompanyXUserSgq PxC " +
                          "INNER JOIN ParCompany C ON PxC.ParCompany_Id = c.Id                                                                                                                                                          " +
                          "INNER JOIN UserSgq U ON PxC.UserSgq_Id = u.Id                                                                                                                                                                " +
-                         "WHERE PxC.ParCompany_Id='" + ParCompany_Id + "'                                                                                                                                                              ";
+                         "WHERE PxC.ParCompany_Id='" + ParCompany_Id + "'                                                                                                                                                              " +
+                         "ORDER BY C.Name ASC                                                                                                                                                                                          ";
 
             var users = db.Query<ParCompanyXUserSgq>(sql);
 
@@ -1001,7 +1002,9 @@ namespace SGQDBContext
             string sql = "select U.Id AS UserSGQ_Id, U.Name AS UserSGQ_Login, U.FullName AS UserSGQ_Name, U.Password AS UserSGQ_Pass, U.Role, PxC.Role AS Role, C.Id ParCompany_Id, C.Name ParCompany_Name from ParCompanyXUserSgq PxC " +
                          "INNER JOIN ParCompany C ON PxC.ParCompany_Id = c.Id                                                                                                                                                          " +
                          "INNER JOIN UserSgq U ON PxC.UserSgq_Id = u.Id                                                                                                                                                                " +
-                         "WHERE PxC.UserSgq_Id='" + UserSgq_Id + "'                                                                                                                                                              ";
+                         "WHERE PxC.UserSgq_Id='" + UserSgq_Id + "'                                                                                                                                                              " +
+                         "ORDER BY C.Name ASC                                                                                                                                                                                          ";
+
 
             var companys = db.Query<ParCompanyXUserSgq>(sql);
 

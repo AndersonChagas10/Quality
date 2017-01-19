@@ -98,12 +98,48 @@ public class ScorecardResultSet
                 "\n , L1.Name AS Level1Name " +
                 "\n , CRL.Id AS Criterio " +
                 "\n , CRL.Name AS CriterioName " +
-                "\n , CASE WHEN L1.HashKey = 1 THEN (SELECT sum(Amostras) as AV FROM VolumePcc1b WHERE ParCompany_id = 1 and Data BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59') ELSE " +
+                "\n , CASE WHEN L1.HashKey = 1 THEN " +
+
+
+                "\n          ((SELECT sum(Amostras) * 2 as AV FROM VolumePcc1b WHERE ParCompany_id = " + unidadeId + " and Data BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59')" +
+                "\n          -" +
+                "\n          (" +
+                "\n              SELECT COUNT(1) FROM" +
+                "\n              (" +
+                "\n              SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
+                "\n              LEFT JOIN Result_Level3 C3" +
+                "\n              ON C3.CollectionLevel2_Id = C2.Id" +
+                "\n              WHERE C2.CollectionDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'" +
+                "\n              AND C2.ParLevel1_Id = L1.Id" +
+                "\n             AND C2.UnitId = " + unidadeId + "" +
+                "\n              GROUP BY C2.ID" +
+                "\n              ) NA" +
+                "\n              WHERE NA = 'NA'" +
+                "\n          )) ELSE" +
+
+               
                 "\n  CASE WHEN CT.Id IN (1,2) THEN SUM(CL1.WeiEvaluation) WHEN CT.Id = 3 THEN SUM(CL1.EvaluatedResult) END END AS AV " +
                 "\n , CASE WHEN CT.Id IN (1,2) THEN SUM(CL1.WeiDefects) WHEN CT.Id = 3 THEN SUM(CL1.DefectsResult) END      AS NC " +
                 "\n , L1C.Points AS Pontos " +
                 "\n , G.PercentValue AS Meta " +
-                "\n , CASE WHEN L1.HashKey = 1 THEN CAST(SUM(CL1.DefectsResult) AS DECIMAL) / (SELECT sum(Amostras) as AV FROM VolumePcc1b WHERE ParCompany_id = 1 and Data BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59') ELSE " +
+                "\n , CASE WHEN L1.HashKey = 1 THEN " +
+                "\n           CAST(SUM(CL1.DefectsResult) AS DECIMAL) / " +
+                "\n          ((SELECT sum(Amostras) * 2 as AV FROM VolumePcc1b WHERE ParCompany_id = " + unidadeId + " and Data BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59')" +
+                "\n          -" +
+                "\n          (" +
+                "\n              SELECT COUNT(1) FROM" +
+                "\n              (" +
+                "\n              SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
+                "\n              LEFT JOIN Result_Level3 C3" +
+                "\n              ON C3.CollectionLevel2_Id = C2.Id" +
+                "\n              WHERE C2.CollectionDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'" +
+                "\n              AND C2.ParLevel1_Id = L1.Id" +
+                "\n             AND C2.UnitId = " + unidadeId + "" +
+                "\n              GROUP BY C2.ID" +
+                "\n              ) NA" +
+                "\n              WHERE NA = 'NA'" +
+                "\n          )) ELSE" +
+
                 "\n   CASE " +
 
                    "\n  WHEN CT.Id IN (1,2) THEN SUM(CL1.WeiDefects) / SUM(CL1.WeiEvaluation) " +
@@ -239,7 +275,7 @@ public class ScorecardResultSet
             "\n                                                                                                                                                                              " +
             "\n  FROM ParLevel1 L1                                                                                                                                                           " +
             "\n  LEFT JOIN ParCompany C                                                                                                                                                      " +
-            "\n  ON C.Id = 1                                                                                                                                                                 " +
+            "\n  ON C.Id = " + unidadeId + "                                                                                                                                                                 " +
             "\n  LEFT JOIN ParCompanyXStructure CS                                                                                                                                           " +
             "\n  ON CS.ParCompany_Id = C.Id                                                                                                                                                  " +
             "\n  LEFT JOIN ParStructure S                                                                                                                                                    " +
@@ -259,7 +295,7 @@ public class ScorecardResultSet
             "\n  LEFT JOIN ParGoal G                                                                                                                                                         " +
             "\n  ON (G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id                                                                                           " +
             "\n  WHERE C.Id = " + unidadeId + "                                                                                                                                              " +
-            "\n  AND L1.Id NOT IN (SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC WHERE CCC.UnitId = 1                                                                                 " +
+            "\n  AND L1.Id NOT IN (SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC WHERE CCC.UnitId = " + unidadeId + "                                                                                  " +
             "\n  AND CCC.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59')                                             ";
     }
 

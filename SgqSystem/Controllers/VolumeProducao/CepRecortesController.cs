@@ -40,7 +40,7 @@ namespace SgqSystem.Controllers
         // GET: CepRecortes
         public ActionResult Index()
         {
-            var cepRecortes = db.VolumeCepRecortes.Include(c => c.ParCompany).Include(c => c.ParLevel1);
+            var cepRecortes = db.VolumeCepRecortes.Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
             return View(cepRecortes.ToList());
         }
 
@@ -74,8 +74,8 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,QtdadeMediaKgRecProdDia,QtdadeMediaKgRecProdHora,NBR,TotalKgAvaliaHoraProd,QtadeTrabEsteiraRecortes,TotalAvaliaColaborEsteirHoraProd,TamanhoAmostra,TotalAmostraAvaliaColabEsteiraHoraProd,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeCepRecortes cepRecortes)
         {
-            if (cepRecortes.Id > 0)
-                Edit(cepRecortes);
+            //if (cepRecortes.Id > 0)
+            //    Edit(cepRecortes);
 
             ValidaCepRecortes(cepRecortes);
 

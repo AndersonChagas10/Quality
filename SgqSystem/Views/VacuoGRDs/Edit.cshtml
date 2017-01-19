@@ -155,7 +155,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Amostras, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Amostras, "Amostras por Avaliação", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Amostras, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
                                                 @Html.HiddenFor(model => model.Amostras, htmlAttributes: new { @id = "amostraHidden" })
@@ -199,8 +199,8 @@
     });
 
     $('#AmostraPorDia, #QtdadeFamiliaProduto').on('input', function () {
-        $('#Amostras').val(Math.ceil($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()));
-        $('#amostraHidden').val(Math.ceil($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()));
+        $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+        $('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
     });
 
 
@@ -216,7 +216,7 @@
             }
         })
         $('#Avaliacoes').val($('#HorasTrabalhadasPorDia').val());
-        $('#Amostras').val(Math.ceil($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()));
+        $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
 
     });
 
