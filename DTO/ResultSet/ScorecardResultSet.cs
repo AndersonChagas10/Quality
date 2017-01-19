@@ -239,7 +239,7 @@ public class ScorecardResultSet
             "\n                                                                                                                                                                              " +
             "\n  FROM ParLevel1 L1                                                                                                                                                           " +
             "\n  LEFT JOIN ParCompany C                                                                                                                                                      " +
-            "\n  ON C.Id = 1                                                                                                                                                                 " +
+            "\n  ON C.Id = " + unidadeId + "                                                                                                                                                                 " +
             "\n  LEFT JOIN ParCompanyXStructure CS                                                                                                                                           " +
             "\n  ON CS.ParCompany_Id = C.Id                                                                                                                                                  " +
             "\n  LEFT JOIN ParStructure S                                                                                                                                                    " +
@@ -259,7 +259,7 @@ public class ScorecardResultSet
             "\n  LEFT JOIN ParGoal G                                                                                                                                                         " +
             "\n  ON (G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id                                                                                           " +
             "\n  WHERE C.Id = " + unidadeId + "                                                                                                                                              " +
-            "\n  AND L1.Id NOT IN (SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC WHERE CCC.UnitId = 1                                                                                 " +
+            "\n  AND L1.Id NOT IN (SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC WHERE CCC.UnitId = " + unidadeId + "                                                                                  " +
             "\n  AND CCC.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59')                                             ";
     }
 
