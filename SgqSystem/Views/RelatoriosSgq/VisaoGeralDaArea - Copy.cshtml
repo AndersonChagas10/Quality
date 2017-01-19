@@ -353,7 +353,6 @@
 
     }
 
-    //Novo Grafico Para o Celso
     function GraficoDesempenhoMonitoramentoIndicador(id) {
 
         //$.post(urlRGTarefasGrafico, function (data) {
@@ -500,6 +499,152 @@
             }]
         });
 
+    }
+
+    //Novo Grafico data Celso
+    function Grafico3(id) {
+
+        //$.post(urlGrafico3, function (data) {
+
+        var dia = ['01/12/2014', '01/12/2015', '01/12/2016'] //MapeiaValorParaHC(data, "");
+        var nc = [10, 15, 20] // MapeiaValorParaHC(data, "");
+        var porc = [70, 50, 35] //MapeiaValorParaHC(data, "");
+        var qtdAv = [50, 50, 50] //MapeiaValorParaHC(data, "");
+
+        //}
+
+        $('#Grafico3').empty().highcharts({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                type: 'column',
+                zoomType: 'x,y'
+            },
+            title: {
+                text: _RGOperacao
+            },
+            xAxis: {
+                categories: dia,
+                title: {
+                    text: 'Data',
+                },
+            },
+            yAxis: [
+                {
+                    min: 0,
+                    title: {
+                        text: 'Quantidade'
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }, {
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: '% NC',
+                    },
+                    opposite: true
+                }],
+            legend: {
+                shadow: false
+            },
+            tooltip: {
+                shared: true
+            },
+            plotOptions: {
+                column: {
+                    grouping: false,
+                    shadow: false,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'NC',
+                color: 'rgba(77,143,189,1)',
+                data: nc,
+                yAxis: 0,
+                pointPadding: 0.2,
+                pointPlacement: -0.2,
+                point: {
+                    events: {
+                        click: function () {
+                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' qtd'
+                }
+            }, {
+                name: '% NC',
+                color: 'rgba(240,124,0,1)',
+                data: porc,
+                yAxis: 1,
+                pointPadding: 0.4,
+                pointPlacement: -0.2,
+                point: {
+                    events: {
+                        click: function () {
+                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' %'
+                }
+            }, {
+                visible: false,
+                name: 'Avaliações',
+                data: qtdAv,
+                color: 'rgba(81,207,64,1)',
+                pointPadding: 0.3,
+                pointPlacement: 0.2,
+                yAxis: 0,
+                point: {
+                    events: {
+                        click: function () {
+                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' qtd'
+                }
+            }]
+        });
     }
 
     </script>
