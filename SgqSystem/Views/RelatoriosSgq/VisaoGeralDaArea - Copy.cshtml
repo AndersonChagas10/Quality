@@ -5,6 +5,7 @@
     var urlTabela1 = Url.Action("VisaoGeralDaAreaTbl1", "RelatoriosSgq");
     var urlGrafico1 = Url.Action("Grafico1", "api/VisaoGeralDaArea");
     var urlGrafico2 = Url.Action("Grafico2", "api/VisaoGeralDaArea");
+    var urlRGTarefasGrafico = Url.Action("RGTarefasGrafico", "api/VisaoGeralDaArea");
 
 }
 
@@ -27,6 +28,8 @@
 
         <div id="grafico3"></div>
 
+        <div id="RGTarefasGrafico"></div>
+
     </div>
 
 </div>
@@ -36,10 +39,10 @@
 
     <script type="text/javascript">
 
-
         var urlTabela1 = '@Html.Raw(@urlTabela1)';
         var urlGrafico1 = '@Html.Raw(@urlGrafico1)';
         var urlGrafico2 = '@Html.Raw(@urlGrafico2)';
+        var urlRGTarefasGrafico = '@Html.Raw(@urlRGTarefasGrafico)'
 
     var $btn = $('#btnSend');
     $('#simpleCallendar').hide().attr('disabled', true);
@@ -350,6 +353,154 @@
 
     }
 
+    //Novo Grafico Para o Celso
+    function GraficoDesempenhoMonitoramentoIndicador(id) {
+
+        //$.post(urlRGTarefasGrafico, function (data) {
+            
+        var nome = ['Astrogildo', 'Ederasonildo', 'Morietanila'] //MapeiaValorParaHC(data, "");
+        var nc = [10, 15, 20] // MapeiaValorParaHC(data, "");
+        var porc = [70, 50, 35] //MapeiaValorParaHC(data, "");
+        var qtdAv = [50, 50, 50] //MapeiaValorParaHC(data, "");
+
+        //}
+
+        $('#RGTarefasGrafico').empty().highcharts({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: ('Total NC Por Monitoramento - ')
+            },
+            xAxis: {
+                categories: nome,
+                title: {
+                    text: 'Monitoramentos',
+                },
+            },
+            yAxis: [
+                {
+                    min: 0,
+                    title: {
+                        text: 'Quantidade'
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }, {
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: '% NC',
+                    },
+                    opposite: true
+                }],
+            legend: {
+                shadow: false
+            },
+            tooltip: {
+                shared: true
+            },
+            plotOptions: {
+                column: {
+                    grouping: false,
+                    shadow: false,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'NC',
+                color: 'rgba(77,143,189,1)',
+                data: nc,
+                yAxis: 0,
+                pointPadding: 0.3,
+                pointPlacement: -0.2,
+                point: {
+                    events: {
+                        click: function () {
+                            //_MonitoramentoId = id[this.x];
+                            //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' qtd'
+                }
+            }, {
+                name: '% NC',
+                color: 'rgba(240,124,0,1)',
+                data: porc,
+                yAxis: 1,
+                pointPadding: 0.4,
+                pointPlacement: -0.2,
+                point: {
+                    events: {
+                        click: function () {
+                            //_MonitoramentoId = id[this.x];
+                            //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' %'
+                }
+            }, {
+                visible: false,
+                name: 'Avaliações',
+                data: qtdAv,
+                color: 'rgba(81,207,64,1)',
+                pointPadding: 0.3,
+                pointPlacement: 0.2,
+                yAxis: 0,
+                point: {
+                    events: {
+                        click: function () {
+                            //_MonitoramentoId = id[this.x];
+                            //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' qtd'
+                }
+            }]
+        });
+
+    }
 
     </script>
 
