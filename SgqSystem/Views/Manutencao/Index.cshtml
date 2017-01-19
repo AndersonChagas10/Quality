@@ -1251,7 +1251,7 @@
                                                         }
                                                     }
 
-                                                    GrafDespReg(titleLine, xOrçada, xRealizada, mediaDesvio, media);
+                                                    GrafDespReg(titleLine, xOrçada, xRealizada, mediaDesvio, media, regional);
 
                                                     $btn.button('reset');
 
@@ -1259,7 +1259,7 @@
                                             }
 
                                             //locação e exibição do GRÁFICO DE DESPESA POR REGIONAL
-                                            function GrafDespReg(name, xOrçada, xRealizada, mediaDesvio, media) {
+                                            function GrafDespReg(name, xOrçada, xRealizada, mediaDesvio, media, regional) {
                                                 $(function () {
 
 
@@ -1330,7 +1330,7 @@
                                                         },
 
                                                         title: {
-                                                            text: 'Despesas por Unidade'
+                                                            text: 'Despesas por Unidade - ' + regional
                                                         },
 
                                                         xAxis: {
