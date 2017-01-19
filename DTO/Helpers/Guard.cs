@@ -11,6 +11,26 @@ namespace DTO.Helpers
 {
     public static class Guard
     {
+        public static DateTime GetNextWeekday(DateTime start, DayOfWeek day)
+        {
+            // The (... + 7) % 7 ensures we end up with a value in the range [0, 6]
+            int daysToAdd = ((int)day - (int)start.DayOfWeek + 7) % 7;
+            return start.AddDays(daysToAdd);
+        }
+
+        public static DateTime PrimeiroDiaMesAnterior(DateTime data)
+        {
+            return new DateTime(data.Year, data.AddMonths(-1).Month, 1);
+        }
+
+        public static DateTime Next(this DateTime from, DayOfWeek dayOfWeek)
+        {
+            int start = (int)from.DayOfWeek;
+            int target = (int)dayOfWeek;
+            if (target <= start)
+                target += 7;
+            return from.AddDays(target - start);
+        }
 
         public static int GetUsuarioLogado_Id(HttpContextBase filterContext)
         {
