@@ -172,7 +172,6 @@ namespace SgqSystem.Services
         [WebMethod]
         public string InsertJson(string ObjResultJSon, string deviceId, string deviceMac, bool autoSend)
         {
-            //Se o objeto Json estiver nulo retornamos nulo
             if (string.IsNullOrEmpty(ObjResultJSon))
             {
                 return null;
@@ -184,199 +183,200 @@ namespace SgqSystem.Services
             //Gera um array
             string[] arrayObj = ObjResultJSon.Split('@');
             //Instanciamos a linha que gera a query
-            string sql = null;
             //Percorre o Objeto
             string versaoApp = null;
-            for (int i = 0; i < arrayObj.Length; i++)
-            {
-                //Estrai o resultado
-                string[] result = arrayObj[i].Split(';');
-                //Id do Level01
-                string level01Id = result[0];
-                //Data que a coleta começou ser gerada, pelo Id do Level01
-                string level01DataCollect = result[1];
-                //Converte a Data para o padrão correto
-                //Nos EUA a data é mostrado como "11/25/2016 13:05"
-                ////Tem que converter a data do padrão Brasil também
-                DateTime level01CollectData = DateCollectConvert(level01DataCollect);
-                //Converte a Data em String para utilizar no comando sql
-                level01DataCollect = level01CollectData.ToString("yyyy-MM-dd HH:mm:ss");
 
-                //Pega o Id do Level02
-                string level02Id = result[2];
-                //Pega a Data da Coleta do Level02
-                string level02DataCollect = result[3];
-
-                //Pega a Coleta do Level02
-                DateTime level02CollectData = DateCollectConvert(level02DataCollect);
-                //Converte a data no padrão igual a data do LEvel01
-                level02DataCollect = level02CollectData.ToString("yyyy-MM-dd HH:mm:ss");
-
-                //Pega o Id da Unidade
-                string unidadeId = result[4];
-
-                ////MOCK
-                //unidadeId = DefaultValueReturn(unidadeId, "1");
-                //Pega o Period
-
-
-                string period = result[5];
-                period = DefaultValueReturn(period, "1");
-
-                //Pega o Shit
-                string shift = result[6];
-                shift = DefaultValueReturn(shift, "1");
-
-                //Pega o Auditor
-                string auditorId = result[7];
-                //Verifica se é reauditoria
-                string reaudit = result[9];
-                //Converte para o padrão Sql
-                ///Criar funções de converter de data, campo nulo automaticos
-
-                reaudit = BoolConverter(reaudit);
-
-                //Pega número da Avaliação
-                string evaluate = result[11];
-                //Pega número da Amostra
-                string sample = result[12];
-                //Versão do App
-                versaoApp = result[20];
-                //Ambiente utilizado Ex: Homologação/Produção
-                string ambiente = result[21];
-                //Phase
-                string phase = result[8];
-                //StartPhaseDate
-                string startphasedate = result[10];
-                //Cattle Type (Biased/Unbiased está no Cattle Type também)
-                //Chain Speed
-                string isemptylevel3 = result[14];
-                //Lot Number
-                string hassampletotal = result[15];
-                //Mud Score
-                string mudscore = result[16];
-                //Verifica falhas, descontinuado na JBS EUA por enquanto
-                string consecutivefailurelevel = result[17];
-                string consecutivefailuretotal = result[18];
-                //Verifica se a coleta foi não avaliada
-                ///Sugestão EUA para motivo de não avaliar a coleta
-                string notavaliable = result[19];
-
-                //Coloca Biased/ Unbiased no Cattle Type
-                string baisedUnbaised = result[27];
-                baisedUnbaised = DefaultValueReturn(baisedUnbaised, "0");
-                //if (baisedUnbaised != "0")
-                //{
-                //    cattletype = baisedUnbaised;
-                //}
-                string AlertLevel = result[27];
-                string completed = result[28];
-                string havePhases = result[29];
-                string CollectionLevel02Id = result[30];
-                string correctiveActionCompleted = result[31];
-                string completeReaudit = result[32];
-
-                string weievaluation = result[35];
-                string weidefects = result[36];
-                string defects = result[37];
-                string totallevel3withdefects = result[38];
-                string totalLevel2Evaluation = result[39];
-                string avaliacaoultimoalerta = result[40];
-                string evaluatedresult = result[41];
-                string defectsresult = result[42];
-                string sequential = result[43];
-                string side = result[44];
-                //string alertaAtual = result[40];
-
-                //Gera o Cabeçalho do Level02
-                string level02HeaderJSon = result[13];
-                level02HeaderJSon += ";" + phase;
-                level02HeaderJSon += ";" + startphasedate;
-                level02HeaderJSon += ";" + consecutivefailurelevel;
-                level02HeaderJSon += ";" + consecutivefailuretotal;
-                level02HeaderJSon += ";" + notavaliable; //[5]
-                level02HeaderJSon += ";" + completed;
-                level02HeaderJSon += ";" + havePhases;
-                level02HeaderJSon += ";" + CollectionLevel02Id;
-                level02HeaderJSon += ";" + correctiveActionCompleted;
-                level02HeaderJSon += ";" + completeReaudit; //[10]
-                level02HeaderJSon += ";" + AlertLevel;
-                level02HeaderJSon += ";" + sequential;
-                level02HeaderJSon += ";" + side;
-                level02HeaderJSon += ";" + weievaluation;
-                level02HeaderJSon += ";" + weidefects;
-                level02HeaderJSon += ";" + defects;
-                level02HeaderJSon += ";" + totallevel3withdefects;
-                level02HeaderJSon += ";" + totalLevel2Evaluation;
-                level02HeaderJSon += ";" + avaliacaoultimoalerta;
-                level02HeaderJSon += ";" + evaluatedresult;
-                level02HeaderJSon += ";" + defectsresult;
-                level02HeaderJSon += ";" + sequential;
-                level02HeaderJSon += ";" + side;
-                level02HeaderJSon += ";" + isemptylevel3;
-                level02HeaderJSon += ";" + hassampletotal;
-                //level02HeaderJSon += ";" + alertaAtual;
-
-                //Verifica o Resultado do Level03
-                string level03ResultJson = result[22];
-                //Decodifica a o resultado
-                level03ResultJson = HttpUtility.UrlDecode(level03ResultJson, System.Text.Encoding.Default);
-                //Ação Corretiva
-                string correctiveActionJson = result[23];
-                //Verifica se tem reauditoria pendente
-                string haveReaudit = result[24];
-                //Convert Reauditoria Pendente para valor correto
-                haveReaudit = DefaultValueReturn(haveReaudit, "0");
-                if (haveReaudit != "0")
-                {
-                    haveReaudit = "1";
-                }
-                //Se Ação corretiva ficou pendente
-                string haveCorrectiveAction = result[25];
-                //Converte ação corretiva para valor correto
-                haveCorrectiveAction = DefaultValueReturn(haveCorrectiveAction, "0");
-                if (haveCorrectiveAction == "havecorrectiveaction")
-                {
-                    haveCorrectiveAction = "1";
-                }
-                //Número da reauditoria
-                string reauditNumber = result[26];
-                reauditNumber = DefaultValueReturn(reauditNumber, "0");
-                //Cria a linah de insert
-
-
-
-                sql += "INSERT INTO [dbo].[CollectionJson] " +
-                       "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
-                       "VALUES " +
-                       "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
-
-                if (autoSend == true)
-                {
-                    sql += "SELECT @@IDENTITY AS 'Identity'";
-                }
-                else
-                {
-                    sql += "SELECT '1' AS 'Identity'";
-                }
-            }
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                     connection.Open();
+
+                    SqlCommand command;
+                    for (int i = 0; i < arrayObj.Length; i++)
                     {
-                        connection.Open();
+                        //Estrai o resultado
+                        string[] result = arrayObj[i].Split(';');
+                        //Id do Level01
+                        string level01Id = result[0];
+                        //Data que a coleta começou ser gerada, pelo Id do Level01
+                        string level01DataCollect = result[1];
+                        //Converte a Data para o padrão correto
+                        //Nos EUA a data é mostrado como "11/25/2016 13:05"
+                        ////Tem que converter a data do padrão Brasil também
+                        DateTime level01CollectData = DateCollectConvert(level01DataCollect);
+                        //Converte a Data em String para utilizar no comando sql
+                        level01DataCollect = level01CollectData.ToString("yyyy-MM-dd HH:mm:ss");
+
+                        //Pega o Id do Level02
+                        string level02Id = result[2];
+                        //Pega a Data da Coleta do Level02
+                        string level02DataCollect = result[3];
+
+                        //Pega a Coleta do Level02
+                        DateTime level02CollectData = DateCollectConvert(level02DataCollect);
+                        //Converte a data no padrão igual a data do LEvel01
+                        level02DataCollect = level02CollectData.ToString("yyyy-MM-dd HH:mm:ss");
+
+                        //Pega o Id da Unidade
+                        string unidadeId = result[4];
+
+                        ////MOCK
+                        //unidadeId = DefaultValueReturn(unidadeId, "1");
+                        //Pega o Period
+
+
+                        string period = result[5];
+                        period = DefaultValueReturn(period, "1");
+
+                        //Pega o Shit
+                        string shift = result[6];
+                        shift = DefaultValueReturn(shift, "1");
+
+                        //Pega o Auditor
+                        string auditorId = result[7];
+                        //Verifica se é reauditoria
+                        string reaudit = result[9];
+                        //Converte para o padrão Sql
+                        ///Criar funções de converter de data, campo nulo automaticos
+
+                        reaudit = BoolConverter(reaudit);
+
+                        //Pega número da Avaliação
+                        string evaluate = result[11];
+                        //Pega número da Amostra
+                        string sample = result[12];
+                        //Versão do App
+                        versaoApp = result[20];
+                        //Ambiente utilizado Ex: Homologação/Produção
+                        string ambiente = result[21];
+                        //Phase
+                        string phase = result[8];
+                        //StartPhaseDate
+                        string startphasedate = result[10];
+                        //Cattle Type (Biased/Unbiased está no Cattle Type também)
+                        //Chain Speed
+                        string isemptylevel3 = result[14];
+                        //Lot Number
+                        string hassampletotal = result[15];
+                        //Mud Score
+                        string mudscore = result[16];
+                        //Verifica falhas, descontinuado na JBS EUA por enquanto
+                        string consecutivefailurelevel = result[17];
+                        string consecutivefailuretotal = result[18];
+                        //Verifica se a coleta foi não avaliada
+                        ///Sugestão EUA para motivo de não avaliar a coleta
+                        string notavaliable = result[19];
+
+                        //Coloca Biased/ Unbiased no Cattle Type
+                        string baisedUnbaised = result[27];
+                        baisedUnbaised = DefaultValueReturn(baisedUnbaised, "0");
+                        //if (baisedUnbaised != "0")
+                        //{
+                        //    cattletype = baisedUnbaised;
+                        //}
+                        string AlertLevel = result[27];
+                        string completed = result[28];
+                        string havePhases = result[29];
+                        string CollectionLevel02Id = result[30];
+                        string correctiveActionCompleted = result[31];
+                        string completeReaudit = result[32];
+
+                        string weievaluation = result[35];
+                        string weidefects = result[36];
+                        string defects = result[37];
+                        string totallevel3withdefects = result[38];
+                        string totalLevel2Evaluation = result[39];
+                        string avaliacaoultimoalerta = result[40];
+                        string evaluatedresult = result[41];
+                        string defectsresult = result[42];
+                        string sequential = result[43];
+                        string side = result[44];
+                        //string alertaAtual = result[40];
+
+                        //Gera o Cabeçalho do Level02
+                        string level02HeaderJSon = result[13];
+                        level02HeaderJSon += ";" + phase;
+                        level02HeaderJSon += ";" + startphasedate;
+                        level02HeaderJSon += ";" + consecutivefailurelevel;
+                        level02HeaderJSon += ";" + consecutivefailuretotal;
+                        level02HeaderJSon += ";" + notavaliable; //[5]
+                        level02HeaderJSon += ";" + completed;
+                        level02HeaderJSon += ";" + havePhases;
+                        level02HeaderJSon += ";" + CollectionLevel02Id;
+                        level02HeaderJSon += ";" + correctiveActionCompleted;
+                        level02HeaderJSon += ";" + completeReaudit; //[10]
+                        level02HeaderJSon += ";" + AlertLevel;
+                        level02HeaderJSon += ";" + sequential;
+                        level02HeaderJSon += ";" + side;
+                        level02HeaderJSon += ";" + weievaluation;
+                        level02HeaderJSon += ";" + weidefects;
+                        level02HeaderJSon += ";" + defects;
+                        level02HeaderJSon += ";" + totallevel3withdefects;
+                        level02HeaderJSon += ";" + totalLevel2Evaluation;
+                        level02HeaderJSon += ";" + avaliacaoultimoalerta;
+                        level02HeaderJSon += ";" + evaluatedresult;
+                        level02HeaderJSon += ";" + defectsresult;
+                        level02HeaderJSon += ";" + sequential;
+                        level02HeaderJSon += ";" + side;
+                        level02HeaderJSon += ";" + isemptylevel3;
+                        level02HeaderJSon += ";" + hassampletotal;
+                        //level02HeaderJSon += ";" + alertaAtual;
+
+                        //Verifica o Resultado do Level03
+                        string level03ResultJson = result[22];
+                        //Decodifica a o resultado
+                        level03ResultJson = HttpUtility.UrlDecode(level03ResultJson, System.Text.Encoding.Default);
+                        //Ação Corretiva
+                        string correctiveActionJson = result[23];
+                        //Verifica se tem reauditoria pendente
+                        string haveReaudit = result[24];
+                        //Convert Reauditoria Pendente para valor correto
+                        haveReaudit = DefaultValueReturn(haveReaudit, "0");
+                        if (haveReaudit != "0")
+                        {
+                            haveReaudit = "1";
+                        }
+                        //Se Ação corretiva ficou pendente
+                        string haveCorrectiveAction = result[25];
+                        //Converte ação corretiva para valor correto
+                        haveCorrectiveAction = DefaultValueReturn(haveCorrectiveAction, "0");
+                        if (haveCorrectiveAction == "havecorrectiveaction")
+                        {
+                            haveCorrectiveAction = "1";
+                        }
+                        //Número da reauditoria
+                        string reauditNumber = result[26];
+                        reauditNumber = DefaultValueReturn(reauditNumber, "0");
+                        //Cria a linah de insert
+
+
+
+                        string sql = "INSERT INTO [dbo].[CollectionJson] " +
+                               "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
+                               "VALUES " +
+                               "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
+
+                        if (autoSend == true)
+                        {
+                            sql += "SELECT @@IDENTITY AS 'Identity'";
+                        }
+                        else
+                        {
+                            sql += "SELECT '1' AS 'Identity'";
+                        }
+
+                        command = new SqlCommand(sql, connection);
+
                         // var i = command.ExecuteNonQuery();
-                        var i = Convert.ToInt32(command.ExecuteScalar());
-                        if (i > 0)
+                        var iSql = Convert.ToInt32(command.ExecuteScalar());
+                        if (iSql > 0)
                         {
                             if (autoSend == true)
                             {
-                                ProcessJson(null, i);
+                                ProcessJson(null, iSql);
                             }
-                            return null;
                         }
                         else
                         {
@@ -386,8 +386,8 @@ namespace SgqSystem.Services
                         }
                     }
                 }
+                return null;
             }
-            //Em caso de Erros salva o objeto completo no banco de dados
             catch (SqlException ex)
             {
                 int insertLog = insertLogJson(ObjResultJSon, ex.Message, deviceId, versaoApp, "InsertJson");
