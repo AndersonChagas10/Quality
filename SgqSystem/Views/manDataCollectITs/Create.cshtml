@@ -83,11 +83,10 @@
                     @Html.Label("Quantidade", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
 
-                        @Html.TextBoxFor(model => model.AmountData, Model.AmountData.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" } )
+                        @*AmountData deve ser decimal e não nullable<decimal> para que o filtro funcione*@
+                        @Html.TextBoxFor(model => model.AmountData, Model.AmountData.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" } )
                         @Html.ValidationMessageFor(model => model.AmountData, "", new { @class = "text-danger" })
 
-                        @*@Html.EditorFor(model => model.amountData, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.amountData, "", new { @class = "text-danger" })*@
                     </div>
                 </div>
 
@@ -97,6 +96,7 @@
                         
                         @Html.TextAreaFor(model => model.Comments, 5,5, new { @class = "form-control valid" })
                         @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+
                     </div>
                 </div>
     

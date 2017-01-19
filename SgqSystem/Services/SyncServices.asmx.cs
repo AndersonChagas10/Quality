@@ -2222,8 +2222,8 @@ namespace SgqSystem.Services
         {
             string menu = "<div class=\"rightMenu\">                                                                                                  " +
                            "     <div class=\"list-group list-group-inverse rightMenuList\">                                                           " +
-                           "         <a href= \"#\" id=\"btnSync\" class=\"list-group-item\">Sincronizar</a>                                                  " +
-                           "         <a href= \"index.html\" id=\"btnSyncParam\" class=\"list-group-item\" onClick=\"onDeviceReady();\">Parametrizações</a>                                                  " +
+                           "         <a href= \"#\" id=\"btnSync\" class=\"list-group-item\" style=\"background-color: black; font-weight: bold;\">Sincronizar Resultados</a>                                                  " +
+                           "         <a href= \"index.html\" id=\"btnSyncParam\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\" onClick=\"onDeviceReady();\">Sincronizar Parametrizações</a>                                                  " +
 
                            "         <a href= \"#\" id=\"btnLogout\" class=\"list-group-item\">Logout</a>                                              " +
                            "         <a href= \"#\" id=\"btnLog\" class=\"list-group-item\">Visualizar Log</a>                                               " +
@@ -2314,8 +2314,8 @@ namespace SgqSystem.Services
                                                         //"</button>" +
                                                         "</span>" +
 
-                                                        "<button class=\"btn btn-danger modal-close-ca\">Close</button>" +
-                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Send</button>" +
+                                                        "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
+                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
                                                     "</div>" +
                                                 "</div>" +
                                                 "</div>";
@@ -3048,7 +3048,7 @@ namespace SgqSystem.Services
                 var painelLevel3HeaderListHtml = "";
 
                 var labelSequencial = "<label class='font-small'>Sequencial</label>";
-                var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
+                var formControlSequencial = "<input class='form-control input-sm sequencial' style='font-size:100px; height: 150px; text-align:center;' type='number'>";
                 var formGroupSequencial = html.div(
                                         outerhtml: labelSequencial + formControlSequencial,
                                         classe: "form-group",
@@ -3056,7 +3056,7 @@ namespace SgqSystem.Services
                                         );
 
                 var labelBanda = "<label class='font-small'>Banda</label>";
-                var formControlBanda = "<input class='form-control input-sm banda' type='number'>";
+                var formControlBanda = "<input class='form-control input-sm banda' style='font-size:100px; height: 150px; text-align:center;' type='number'>";
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,
                                         classe: "form-group",
@@ -3145,7 +3145,7 @@ namespace SgqSystem.Services
                 var painelLevel3HeaderListHtml = "";
 
                 var labelSequencial = "<label class='font-small'>Sequencial</label>";
-                var formControlSequencial = "<input class='form-control input-sm sequencial' type='number'>";
+                var formControlSequencial = "<input class='form-control input-sm sequencial' style='font-size:100px; height: 150px; text-align:center;' type='number'>";
                 var formGroupSequencial = html.div(
                                         outerhtml: labelSequencial + formControlSequencial,
                                         classe: "form-group",
@@ -3153,7 +3153,7 @@ namespace SgqSystem.Services
                                         );
 
                 var labelBanda = "<label class='font-small'>Banda</label>";
-                var formControlBanda = "<select class='form-control input-sm banda'><option value='1'>1</option><option value='2'>2</option></select>";
+                var formControlBanda = "<select class='form-control input-sm banda' style='font-size:100px; height: 150px; text-align:center;'><option value='1'>1</option><option value='2'>2</option></select>";
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,
                                         classe: "form-group",
@@ -3162,13 +3162,13 @@ namespace SgqSystem.Services
 
                 painelLevel3HeaderListHtml += html.div(
                                                 outerhtml: formGroupSequencial,
-                                                classe: "col-xs-5 col-sm-4 col-md-4 col-lg-4",
+                                                classe: "col-xs-8 col-sm-6 col-md-6 col-lg-6",
                                                 style: "padding-right: 4px !important; padding-left: 4px !important;"
                                                 );
 
                 painelLevel3HeaderListHtml += html.div(
                                                 outerhtml: formGroupBanda,
-                                                classe: "col-xs-5 col-sm-4 col-md-4 col-lg-4",
+                                                classe: "col-xs-2 col-sm-2 col-md-2 col-lg-2",
                                                 style: "padding-right: 4px !important; padding-left: 4px !important;"
                                                 );
 
@@ -3361,7 +3361,9 @@ namespace SgqSystem.Services
 
                 string panelButton = html.listgroupItem(
                                                            outerhtml: accordeonbuttons +
-                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>",
+                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+
+                                                                      "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>",
                                                            classe: "painel painelLevel02 row"
                                                         );
 
@@ -3645,7 +3647,7 @@ namespace SgqSystem.Services
                                    html.br() +
                                    html.br() +
                                    html.span(
-                                              outerhtml: "Version" +
+                                              outerhtml: "Versão " +
                                                          html.span(classe: "number")
                                              , id: "versionLogin") +
                                    html.span(

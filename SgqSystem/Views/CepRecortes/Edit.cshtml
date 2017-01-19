@@ -229,7 +229,7 @@
     });
 
     $('#AmostraPorDia, #QtdadeFamiliaProduto').on('input', function () {
-        $('#Amostras').val(Math.ceil($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()));
+        $('#Amostras').val(Math.ceil(($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()) / $('#HorasTrabalhadasPorDia').val()));
     });
 
     $('#HorasTrabalhadasPorDia, #QtdadeMediaKgRecProdDia').on('input', function () {
@@ -246,7 +246,7 @@
 
     $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('input', function () {
         $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
-        $('#Amostras').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+        $('#Amostras').val(Math.ceil(($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()) / $('#HorasTrabalhadasPorDia').val()));
     });
 
     $('#Data').daterangepicker({
@@ -278,7 +278,7 @@
 
         $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('input', function () {
             $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
-            $('#Amostras').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+            $('#Amostras').val(Math.ceil(($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()) / $('#HorasTrabalhadasPorDia').val()));
         });
 
     });

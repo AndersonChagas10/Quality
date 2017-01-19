@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Dominio;
 using DTO.Helpers;
 using SgqSystem.Secirity;
+using SgqSystem.Helpers;
 
 namespace SgqSystem.Controllers
 {
@@ -13,10 +14,18 @@ namespace SgqSystem.Controllers
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
+        private void GetNumeroDeFamiliasPorUnidadeDoUsuarioVacuoGRD(VolumeVacuoGRD model, int hashKey)
+        {
+            var naoCorporativas = CommonData.GetNumeroDeFamiliasPorUnidadeDoUsuario(HttpContext, hashKey);
+            var corporativos = CommonData.GetNumeroDeFamiliasCorporativo(HttpContext, hashKey);
+            model.QtdadeFamiliaProduto = corporativos + naoCorporativas;
+            model.ParLevel1_id = db.ParLevel1.AsNoTracking().FirstOrDefault(r => r.hashKey == hashKey).Id;
+        }
+
         // GET: VacuoGRDs
         public ActionResult Index()
         {
-            var vacuoGRD = db.VolumeVacuoGRD.Include(v => v.ParCompany).Include(v => v.ParLevel1);
+            var vacuoGRD = db.VolumeVacuoGRD.Include(v => v.ParCompany).Include(v => v.ParLevel1).OrderByDescending(v => v.Data);
             return View(vacuoGRD.ToList());
         }
 
@@ -41,7 +50,7 @@ namespace SgqSystem.Controllers
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name");
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 22), "Id", "Name");
             var model = new VolumeVacuoGRD();
-            GetNumeroDeFamilias(model);
+            GetNumeroDeFamiliasPorUnidadeDoUsuarioVacuoGRD(model, 3);
             return View(model);
         }
 
@@ -52,7 +61,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeVacuoGRD vacuoGRD)
         {
-            GetNumeroDeFamilias(vacuoGRD);
+            GetNumeroDeFamiliasPorUnidadeDoUsuarioVacuoGRD(vacuoGRD, 3);
             ValidaVacuoGRD(vacuoGRD);
 
             if (ModelState.IsValid)
@@ -93,7 +102,7 @@ namespace SgqSystem.Controllers
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 22), "Id", "Name", vacuoGRD.ParLevel1_id);
-            GetNumeroDeFamilias(vacuoGRD);
+            GetNumeroDeFamiliasPorUnidadeDoUsuarioVacuoGRD(vacuoGRD, 3);
             return View(vacuoGRD);
         }
 
@@ -104,7 +113,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Indicador,Unidade,Data,Departamento,HorasTrabalhadasPorDia,AmostraPorDia,QtdadeFamiliaProduto,Avaliacoes,Amostras,AddDate,AlterDate,ParCompany_id,ParLevel1_id")] VolumeVacuoGRD vacuoGRD)
         {
-            GetNumeroDeFamilias(vacuoGRD);
+            GetNumeroDeFamiliasPorUnidadeDoUsuarioVacuoGRD(vacuoGRD, 3);
             ValidaVacuoGRD(vacuoGRD);
             if (ModelState.IsValid)
             {
@@ -152,10 +161,6 @@ namespace SgqSystem.Controllers
             base.Dispose(disposing);
         }
 
-        private void GetNumeroDeFamilias(VolumeVacuoGRD model)
-        {
-            model.QtdadeFamiliaProduto = db.ParLevel1.AsNoTracking().FirstOrDefault(r => r.hashKey == 3).Level2Number;
-            model.ParLevel1_id = db.ParLevel1.AsNoTracking().FirstOrDefault(r => r.hashKey == 3).Id;
-        }
+       
     }
 }
