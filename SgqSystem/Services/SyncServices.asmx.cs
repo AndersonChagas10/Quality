@@ -3647,7 +3647,7 @@ namespace SgqSystem.Services
                                    html.br() +
                                    html.br() +
                                    html.span(
-                                              outerhtml: "Version" +
+                                              outerhtml: "Versão " +
                                                          html.span(classe: "number")
                                              , id: "versionLogin") +
                                    html.span(
