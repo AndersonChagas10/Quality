@@ -73,7 +73,7 @@
                                                     @Html.ValidationMessageFor(model => model.Unidade, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>*@
-                                        @Html.HiddenFor(r => Model.Id)
+                                        
                                         @{ Html.EnableClientValidation(false); }
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -268,8 +268,8 @@
     $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('input', function () {
         $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
         $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
-        $('#Amostras').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
-        $('#amostraHidden').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+        $('#Amostras').val(Math.ceil(($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()) / $('#HorasTrabalhadasPorDia').val()));
+        $('#amostraHidden').val(Math.ceil(($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()) / $('#HorasTrabalhadasPorDia').val()));
     });
 
     $('#btnTeste').click(function (e) {

@@ -333,8 +333,12 @@ namespace SgqSystem.Services
 
             string calculado = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\">                                                                                                  " +
                                  "    <input type=\"text\" style=\"width:50px\" value=\"\" class=\"form-control text-center input01 \">     " +
-                                 " <span style=\"padding-left:24px;padding-right:24px;\"><b>x10^</b></span>" +
+                                 " <span style=\"padding-left:5px;padding-right:5px;\"><b>x10^</b></span>" +
                                  "    <input type=\"text\" style=\"width:50px\" value=\"\" class=\"form-control text-center input02 \">     " +
+                                 " <br><span style='font-size:x-small;'>      " +
+                                 " <span class=\"value \" style=\"text-weight: bold;\"></span> " +
+                                 " <span class=\"valueDecimal \" style=\"text-weight: bold;\"></span>" +
+                                 " </span> " +
                                  "</div>                                                                                                                                                                      ";
             return calculado;
         }

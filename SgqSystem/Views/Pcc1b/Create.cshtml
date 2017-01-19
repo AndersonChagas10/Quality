@@ -170,7 +170,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Amostras,"Amostras", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.Amostras,"Amostras por Monitoramento", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Amostras, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
                                                 @Html.ValidationMessageFor(model => model.Amostras, "", new { @class = "text-danger" })
@@ -207,8 +207,8 @@
         $('#avaliacaoHidden').val($('#Avaliacoes').val());
         $('#Quartos').val($('#VolumeAnimais').val() * 4);
         $('#QuartosHidden').val($('#VolumeAnimais').val() * 4);
-        $('#Amostras').val($('#VolumeAnimais').val() * 4);
-        $('#amostraHidden').val($('#VolumeAnimais').val() * 4);
+        $('#Amostras').val($('#VolumeAnimais').val() * 2);
+        $('#amostraHidden').val($('#VolumeAnimais').val() * 2);
     });
     
     $(document).ready(function () {

@@ -17,7 +17,7 @@ namespace SgqSystem.Controllers
         // GET: CepDesossas
         public ActionResult Index()
         {
-            var cepDesossa = db.VolumeCepDesossa.Include(c => c.ParCompany).Include(c => c.ParLevel1);
+            var cepDesossa = db.VolumeCepDesossa.Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
             return View(cepDesossa.ToList());
         }
 
