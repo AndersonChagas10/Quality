@@ -320,6 +320,7 @@
     <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadeApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioDiarioApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\ScorecardApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\VisaoGeralDaAreaApiController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -1289,6 +1290,7 @@
     <Content Include="Views\Example\TiposDeInputSgq.cshtml" />
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaArea.cshtml" />
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaTbl1.cshtml" />
+    <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaTbl2.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

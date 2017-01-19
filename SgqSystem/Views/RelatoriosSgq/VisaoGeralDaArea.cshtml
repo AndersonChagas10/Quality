@@ -1,8 +1,10 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
-    ViewBag.Title = "Scorecard";
+    ViewBag.Title = "Visão Geral da Área";
     var url = Url.Action("Index", "Home");
-    var urlTabela1 = Url.Action("GetScorecard", "api/Scorecard");
+    var urlTabela1 = Url.Action("VisaoGeralDaAreaTbl1", "RelatoriosSgq");
+    var urlGrafico1 = Url.Action("Grafico1", "api/VisaoGeralDaArea");
+    
 }
 
 <div class="page-content" style="min-height: 600px;">
@@ -11,25 +13,17 @@
 
     <div id="formBodyContent">
 
-        <div id="tabela1div">
-            
-        </div>
+        <div id="containerRankingMensalRegional"></div>
 
-        <div id="tabela2">
+        <div id="tabela1div"></div>
 
-        </div>
+        <div id="tabela2"></div>
 
-        <div id="grafico1">
+        <div id="grafico1"></div>
 
-        </div>
+        <div id="grafico2"></div>
 
-        <div id="grafico2">
-
-        </div>
-
-        <div id="grafico3">
-
-        </div>
+        <div id="grafico3"></div>
 
     </div>
 
@@ -41,7 +35,8 @@
     <script type="text/javascript">
 
 
-    var url1 = '@Html.Raw(@urlTabela1)';
+        var urlTabela1 = '@Html.Raw(@urlTabela1)';
+        var urlGrafico1 = '@Html.Raw(@urlGrafico1)';
     var $btn = $('#btnSend');
     $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -55,11 +50,32 @@
         }
 
         //AJAX
-        $.post(url1, enviar, function (r) {
+        $.post(urlGrafico1, enviar, function (r) {
             try {
                 if (toggle == undefined)
                     $('#menu-toggle').click();
-                //SeuCallback(r);
+                //CriarTbl1(r);
+                Grafico1(r);
+            } catch (e) {
+                console.log(e);
+            } finally {
+                $btn.button('reset');
+            }
+        }).fail(function (e, h, x) {
+            $btn.button('reset');
+            if (e.status == 0) {
+                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+            } else {
+                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+            }
+        });
+
+        //AJAX
+        $.post(urlTabela1, enviar, function (r) {
+            try {
+                if (toggle == undefined)
+                    $('#menu-toggle').click();
+                CriarTbl1(r);
             } catch (e) {
                 console.log(e);
             } finally {
@@ -74,7 +90,11 @@
             }
         });
     };
-   
+
+    function CriarTbl1(r) {
+        $('#tabela1div').append(r);
+    }
+
     function ValidaDadosParaEnvio() {
         GuardJs.resetForValidation();
         GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
@@ -97,11 +117,234 @@
             Send();
         });
 
-        //formControl.showFullCallendar();
-
+        formControl.showFullCallendar();
         //formControl.showUnit();
 
     });
+
+    function Grafico1(data) {
+
+        var scorecardJbs = MapeiaValorParaHC(data, "scorecardJbs");
+        var scorecardRegional = MapeiaValorParaHC(data, "scorecardJbsReg");
+        var NomeRegional = MapeiaValorParaHC(data, "regName");
+        //var meta = MapeiaValorParaHC(data, "meta");
+        var id = MapeiaValorParaHC(data, "regId");
+
+        $('#containerRankingMensalRegional').empty().highcharts({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                zoomType: 'xy'
+            },
+            title: {
+                text: ''
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: [{
+                categories: NomeRegional,
+                crosshair: true,
+                title: {
+                    text: 'Regionais',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    format: '{value} %',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                title: {
+                    text: '% Scorecard',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                plotLines: [{
+                    value: 80,
+                    width: 2,
+                    color: 'black',
+                    dashStyle: 'dash',
+                    zIndex: 4,
+                    label: {
+                        text: 'Meta 80%',
+                        align: 'right',
+                        y: -10,
+                        x: 0
+                    }
+                }]
+            }],
+            tooltip: {
+                shared: true
+            },
+            series: [
+                {
+                    name: 'Scorecard',
+                    data: scorecardRegional,
+                    linkedTo: 'id1',
+                    point: {
+                        events: {
+                            click: function () {
+                                //Index.popularTabelaRankingUnidades(id[this.x], scorecardJbs, scorecardRegional[this.x]);
+                                //console.log(this)
+                                console.log(id[this.x])
+                            }
+                        }
+                    },
+                    type: 'column',
+                    yAxis: 0,
+                    color: Highcharts.getOptions().colors[0],
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        align: 'right',
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: '%'
+                    },
+                    zones: [{
+                        value: 69,
+                        color: 'rgba(189,76,76,1)'
+                    }, {
+                        value: 80,
+                        color: 'rgba(207,206,64,1)'
+                    }, {
+                        color: 'rgba(81,207,64,1)'
+                    }],
+                },
+                {
+                    name: 'Scorecard JBS',
+                    data: scorecardJbs,
+                    color: 'rgba(170,0,0,1)',
+                    tooltip: {
+                        valueSuffix: '%'
+                    }
+                }
+            ]
+        });
+    }
+
+    function Grafico2(data) {
+
+        var scorecard = MapeiaValorParaHC(data, "scorecardJbs");
+        var sigla = MapeiaValorParaHC(data, "scorecardJbs");
+        var nome = MapeiaValorParaHC(data, "scorecardJbs");
+        var meta = MapeiaValorParaHC(data, "scorecardJbs");
+        var scorecardJbs = MapeiaValorParaHC(data, "scorecardJbs");
+        var scorecardRegional = MapeiaValorParaHC(data, "scorecardJbs");
+
+        $('#containerRankingMensalUnidade').empty().highcharts({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                zoomType: 'xy'
+            },
+            title: {
+                text: ''
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: [{
+                categories: sigla,
+                crosshair: true,
+                title: {
+                    text: 'Unidades',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+            }],
+            yAxis: [{
+                labels: {
+                    format: '{value} %',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                title: {
+                    text: '% Scorecard',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                plotLines: [{
+                    value: 80,
+                    width: 2,
+                    color: 'black',
+                    dashStyle: 'dash',
+                    zIndex: 4,
+                    label: {
+                        text: 'Meta 80%',
+                        align: 'right',
+                        y: -10,
+                        x: 0
+                    }
+                }]
+            }],
+            tooltip: {
+                shared: true
+            },
+            series: [
+                {
+                    linkedTo: 'id1',
+                    name: 'Scorecard',
+                    type: 'column',
+                    yAxis: 0,
+                    color: Highcharts.getOptions().colors[0],
+                    data: scorecard,
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        align: 'right',
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: '%'
+                    },
+                    zones: [{
+                        value: 69,
+                        color: 'rgba(189,76,76,1)'
+                    }, {
+                        value: 80,
+                        color: 'rgba(207,206,64,1)'
+                    }, {
+                        color: 'rgba(81,207,64,1)'
+                    }],
+                }, {
+                    name: 'Scorecard JBS',
+                    data: scorecardJbs,
+                    color: 'rgba(170,0,0,1)',
+                    tooltip: {
+                        valueSuffix: '%'
+                    }
+                }, {
+                    name: 'Scorecard Regional',
+                    data: scorecardRegional,
+                    color: 'rgba(0,0,139,1)',
+                    tooltip: {
+                        valueSuffix: '%'
+                    }
+                }]
+        });
+
+    }
+
+
     </script>
 
 }
