@@ -522,6 +522,7 @@ namespace SgqSystem.Services
                         side = DefaultValueReturn(side, "0");
 
                         string isemptylevel3 = arrayHeader[24];
+                        isemptylevel3 = DefaultValueReturn(isemptylevel3, "0");
                         isemptylevel3 = BoolConverter(isemptylevel3);
 
                                              
@@ -559,7 +560,7 @@ namespace SgqSystem.Services
                     int sampleCollect = c.Sample;
                     int sampleTotal = consolidationLevel2.EvaluatedResult;
 
-                    bool hasSampleTotal = Convert.ToBoolean(arrayHeader[25]);
+                    bool hasSampleTotal = false;
                     if (hasSampleTotal == true)
                     {
                         sampleCollect = sampleTotal++;
