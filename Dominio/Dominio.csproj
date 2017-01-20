@@ -169,6 +169,9 @@
     <Compile Include="Deviation.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DimManutencaoColetaITs.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Employees.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

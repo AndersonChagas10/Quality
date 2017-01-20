@@ -91,6 +91,7 @@
     <Compile Include="DTO\Level03DTO.cs" />
     <Compile Include="DTO\Level01DTO.cs" />
     <Compile Include="DTO\ContextExampleDTO.cs" />
+    <Compile Include="DTO\Manutencao\DimManutencaoColetaITsDTO.cs" />
     <Compile Include="DTO\Params\NxN.cs" />
     <Compile Include="DTO\Params\ParamsDdl.cs" />
     <Compile Include="DTO\Params\ParamsDTO.cs" />

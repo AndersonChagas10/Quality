@@ -129,6 +129,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.budgets' does not have a primary key 
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Key" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ConsolidationLevel2_Id" Type="int" Nullable="false" />
           <Property Name="ParLevel1_Id" Type="int" Nullable="false" />
           <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
@@ -311,6 +312,14 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="DeviationDate" Type="datetime" Nullable="false" />
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="sendMail" Type="bit" />
+        </EntityType>
+        <EntityType Name="DimManutencaoColetaITs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TipoInformacao" Type="varchar" MaxLength="150" />
+          <Property Name="IndicadorTecnico" Type="varchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="Employees">
           <Key>
@@ -1531,6 +1540,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CollectionLevel2_CollectionLevel2">
+          <End Role="CollectionLevel2" Type="Self.CollectionLevel2" Multiplicity="1" />
+          <End Role="CollectionLevel21" Type="Self.CollectionLevel2" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel21">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CollectionLevel2_ConsolidationLevel2">
           <End Role="ConsolidationLevel2" Type="Self.ConsolidationLevel2" Multiplicity="1" />
           <End Role="CollectionLevel2" Type="Self.CollectionLevel2" Multiplicity="*" />
@@ -2574,6 +2595,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="CorrectiveAction" EntityType="Self.CorrectiveAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DimManutencaoColetaITs" EntityType="Self.DimManutencaoColetaITs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Example" EntityType="Self.Example" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level01" EntityType="Self.Level01" Schema="dbo" store:Type="Tables" />
@@ -2857,6 +2879,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <AssociationSet Name="FK_CollectionLevel03_Level03" Association="Self.FK_CollectionLevel03_Level03">
             <End Role="Level03" EntitySet="Level03" />
             <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_CollectionLevel2" Association="Self.FK_CollectionLevel2_CollectionLevel2">
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+            <End Role="CollectionLevel21" EntitySet="CollectionLevel2" />
           </AssociationSet>
           <AssociationSet Name="FK_CollectionLevel2_ConsolidationLevel2" Association="Self.FK_CollectionLevel2_ConsolidationLevel2">
             <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
@@ -3700,7 +3726,12 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="UnitUser" EntitySet="UnitUser" />
           </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_CollectionLevel2" Association="SgqDbModel.FK_CollectionLevel2_CollectionLevel2">
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+            <End Role="CollectionLevel21" EntitySet="CollectionLevel2" />
+          </AssociationSet>
           <EntitySet Name="ManDataCollectIT" EntityType="SgqDbModel.ManDataCollectIT" />
+          <EntitySet Name="DimManutencaoColetaITs" EntityType="SgqDbModel.DimManutencaoColetaITs" />
           </EntityContainer>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -4032,6 +4063,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="CollectionLevel2XParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" FromRole="CollectionLevel2" ToRole="CollectionLevel2XParHeaderField" />
           <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_CollectionLevel2" FromRole="CollectionLevel2" ToRole="Result_Level3" />
           <Property Name="IsEmptyLevel3" Type="Boolean" />
+          <Property Name="Key" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CollectionLevel21" Relationship="SgqDbModel.FK_CollectionLevel2_CollectionLevel2" FromRole="CollectionLevel2" ToRole="CollectionLevel21" />
+          <NavigationProperty Name="CollectionLevel22" Relationship="SgqDbModel.FK_CollectionLevel2_CollectionLevel2" FromRole="CollectionLevel21" ToRole="CollectionLevel2" />
         </EntityType>
         <EntityType Name="CollectionLevel2XParHeaderField">
           <Key>
@@ -6398,6 +6432,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CollectionLevel2_CollectionLevel2">
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel21" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel21">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="ManDataCollectIT">
           <Key>
             <PropertyRef Name="Id" />
@@ -6416,6 +6462,14 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DimManutencaoColetaITs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TipoInformacao" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="IndicadorTecnico" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -6692,6 +6746,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySetMapping Name="CollectionLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel2">
               <MappingFragment StoreEntitySet="CollectionLevel2">
+                <ScalarProperty Name="Key" ColumnName="Key" />
                 <ScalarProperty Name="IsEmptyLevel3" ColumnName="IsEmptyLevel3" />
                 <ScalarProperty Name="DefectsResult" ColumnName="DefectsResult" />
                 <ScalarProperty Name="EvaluatedResult" ColumnName="EvaluatedResult" />
@@ -7822,6 +7877,15 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
                 <ScalarProperty Name="ReferenceDatetime" ColumnName="ReferenceDatetime" />
                 <ScalarProperty Name="InstantDatetime" ColumnName="InstantDatetime" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DimManutencaoColetaITs">
+            <EntityTypeMapping TypeName="SgqDbModel.DimManutencaoColetaITs">
+              <MappingFragment StoreEntitySet="DimManutencaoColetaITs">
+                <ScalarProperty Name="IndicadorTecnico" ColumnName="IndicadorTecnico" />
+                <ScalarProperty Name="TipoInformacao" ColumnName="TipoInformacao" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
