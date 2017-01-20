@@ -102,7 +102,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         private void CriaMockG3(FormularioParaRelatorioViewModel form)
         {
-            var primeiroDiaMesAnterior = Guard.PrimeiroDiaMesAnterior(form._dataFim);
+            var primeiroDiaMesAnterior = Guard.PrimeiroDiaMesAnterior(form._dataInicio);
             var proximoDomingo = Guard.GetNextWeekday(form._dataFim, DayOfWeek.Sunday);
 
             _mock = new List<VisaoGeralDaAreaResultSet>();
