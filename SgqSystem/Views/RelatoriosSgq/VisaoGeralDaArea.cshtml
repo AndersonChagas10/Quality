@@ -3,14 +3,42 @@
     ViewBag.Title = "Visão Geral da Área";
     var url = Url.Action("Index", "Home");
     var urlTabela1 = Url.Action("VisaoGeralDaAreaTbl1", "RelatoriosSgq");
+    var urlTabela2 = Url.Action("VisaoGeralDaAreaTbl2", "RelatoriosSgq");
     var urlGrafico1 = Url.Action("Grafico1", "api/VisaoGeralDaArea");
     var urlGrafico2 = Url.Action("Grafico2", "api/VisaoGeralDaArea");
     var urlGrafico3 = Url.Action("Grafico3", "api/VisaoGeralDaArea");
-
+    var urlGrafico4 = Url.Action("Grafico4", "api/VisaoGeralDaArea");
+    var urlGrafico5 = Url.Action("Grafico5", "api/VisaoGeralDaArea");
 }
 
+<style>
+
+    .loader {
+      border: 16px solid black;
+      border-radius: 50%;
+      border-top: 16px solid white;
+      border-right: 16px solid black;
+      border-bottom: 16px solid white;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+
+    @@-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @@keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+</style>
+
 <div class="page-content" style="min-height: 600px;">
-    
+
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
     <div id="formBodyContent">
@@ -18,20 +46,16 @@
         <div id="grafico1"></div>
 
         <div id="grafico2"></div>
-        
+
         <div id="tabela1div"></div>
 
-        <div id="tabela2"></div>
+        <div id="tabela2div"></div>
 
-        <div id="grafico1"></div>
-
-        <div id="grafico3"></div> 
+        <div id="grafico3"></div>
 
         <div id="grafico4"></div>
 
         <div id="grafico5"></div>
-
-        <div id="grafico3"></div>
 
     </div>
 
@@ -39,222 +63,143 @@
 
 @section Scripts {
 
-
     <script type="text/javascript">
 
 
         var urlTabela1 = '@Html.Raw(@urlTabela1)';
+        var urlTabela2 = '@Html.Raw(@urlTabela2)';
         var urlGrafico1 = '@Html.Raw(@urlGrafico1)';
         var urlGrafico2 = '@Html.Raw(@urlGrafico2)';
         var urlGrafico3 = '@Html.Raw(@urlGrafico3)';
+        var urlGrafico4 = '@Html.Raw(@urlGrafico4)';
+        var urlGrafico5 = '@Html.Raw(@urlGrafico5)';
 
-    var $btn = $('#btnSend');
-    $('#simpleCallendar').hide().attr('disabled', true);
+        var $btn = $('#btnSend');
+        $('#simpleCallendar').hide().attr('disabled', true);
 
-    function Send(toggle) {
-        $btn.button('loading');
-        $('#results').empty();
+        function Send(toggle) {
+            $('#grafico1').empty();
+            $('#grafico2').empty();
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+            $('#tabela1div').empty();
+            $('#tabela2div').empty();
 
-        if (!ValidaDadosParaEnvio()) {
-            $btn.button('reset');
-            return;
+            $btn.button('loading');
+            $('#results').empty();
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            $('#grafico1').empty().addClass('loader');
+
+            //AJAX
+            $.post(urlGrafico1, enviar, function (r) {
+                try {
+                    if (toggle == undefined)
+                        $('#menu-toggle').click();
+                    //CriarTbl1(r);
+                    $('#grafico1').removeClass('loader');
+                    Grafico1(r);
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    $btn.button('reset');
+                }
+            }).fail(function (e, h, x) {
+                $btn.button('reset');
+                if (e.status == 0) {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+            }).always(function () {
+                $('#grafico1').removeClass('loader')
+            });
+
+            $('#tabela1div').empty().addClass('loader');
+
+            //AJAX
+            $.post(urlTabela1, enviar, function (r) {
+                try {
+                    //if (toggle == undefined)
+                    //    $('#menu-toggle').click();
+                    $('#tabela1div').removeClass('loader');
+                    GetTabela1(r);
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    $btn.button('reset');
+                }
+            }).fail(function (e, h, x) {
+                $btn.button('reset');
+                if (e.status == 0) {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+            }).always(function () {
+                $('#tabela1div').removeClass('loader')
+            });
+        };
+
+        function GetTabela1(r) {
+            $('#tabela1div').empty().append(r);
         }
 
-        //AJAX
-        $.post(urlGrafico1, enviar, function (r) {
-            try {
-                if (toggle == undefined)
-                    $('#menu-toggle').click();
-                //CriarTbl1(r);
-                Grafico1(r);
-            } catch (e) {
-                console.log(e);
-            } finally {
-                $btn.button('reset');
-            }
-        }).fail(function (e, h, x) {
-            $btn.button('reset');
-            if (e.status == 0) {
-                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
-            } else {
-                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-            }
-        });
+        function GetTabela2() {
 
-        //AJAX
-        $.post(urlTabela1, enviar, function (r) {
-            try {
-                if (toggle == undefined)
-                    $('#menu-toggle').click();
-                CriarTbl1(r);
-            } catch (e) {
-                console.log(e);
-            } finally {
-                $btn.button('reset');
-            }
-        }).fail(function (e, h, x) {
-            $btn.button('reset');
-            if (e.status == 0) {
-                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
-            } else {
-                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-            }
-        });
-    };
+            $('#tabela2div').empty().addClass('loader');
 
-    function CriarTbl1(r) {
-        $('#tabela1div').append(r);
-    }
-
-    function ValidaDadosParaEnvio() {
-        GuardJs.resetForValidation();
-        GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
-        /*Especifico*/
-        //if (!($('#unitId :selected').val() > 0))
-        //{
-        //    GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
-        //    return false;
-        //}
-        if (!GuardJs.isValid)
-            return !GuardJs.isValid;
-        GuardJs.esconderMensagem();
-
-        return true;
-    }
-
-    $(document).ready(function () {
-
-        $("#btnSend").click(function (e) {
-            Send();
-        });
-
-        formControl.showFullCallendar();
-        //formControl.showUnit();
-
-    });
-
-    function Grafico1(data) {
-
-        var scorecardJbs = MapeiaValorParaHC(data, "scorecardJbs");
-        var scorecardRegional = MapeiaValorParaHC(data, "scorecardJbsReg");
-        var NomeRegional = MapeiaValorParaHC(data, "regName");
-        //var meta = MapeiaValorParaHC(data, "meta");
-        var id = MapeiaValorParaHC(data, "regId");
-
-        $('#grafico1').empty().highcharts({
-            credits: {
-                enabled: false
-            },
-            chart: {
-                zoomType: 'xy'
-            },
-            title: {
-                text: ''
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: [{
-                categories: NomeRegional,
-                crosshair: true,
-                title: {
-                    text: 'Regionais',
-                    style: {
-                        color: Highcharts.getOptions().colors[1]
-                    }
-                },
-            }],
-            yAxis: [{ // Primary yAxis
-                labels: {
-                    format: '{value} %',
-                    style: {
-                        color: Highcharts.getOptions().colors[1]
-                    }
-                },
-                title: {
-                    text: '% Scorecard',
-                    style: {
-                        color: Highcharts.getOptions().colors[1]
-                    }
-                },
-                plotLines: [{
-                    value: 80,
-                    width: 2,
-                    color: 'black',
-                    dashStyle: 'dash',
-                    zIndex: 4,
-                    label: {
-                        text: 'Meta 80%',
-                        align: 'right',
-                        y: -10,
-                        x: 0
-                    }
-                }]
-            }],
-            tooltip: {
-                shared: true
-            },
-            series: [
-                {
-                    name: 'Scorecard',
-                    data: scorecardRegional,
-                    linkedTo: 'id1',
-                    point: {
-                        events: {
-                            click: function () {
-                                //console.log(id[this.x])
-                                Grafico2(id[this.x]);
-
-                            }
-                        }
-                    },
-                    type: 'column',
-                    yAxis: 0,
-                    color: Highcharts.getOptions().colors[0],
-                    dataLabels: {
-                        enabled: true,
-                        color: 'black',
-                        align: 'right',
-                        style: {
-                            fontSize: '13px',
-                            fontFamily: 'Verdana, sans-serif'
-                        }
-                    },
-                    tooltip: {
-                        valueSuffix: '%'
-                    },
-                    zones: [{
-                        value: 69,
-                        color: 'rgba(189,76,76,1)'
-                    }, {
-                        value: 80,
-                        color: 'rgba(207,206,64,1)'
-                    }, {
-                        color: 'rgba(81,207,64,1)'
-                    }],
-                },
-                {
-                    name: 'Scorecard JBS',
-                    data: scorecardJbs,
-                    color: 'rgba(170,0,0,1)',
-                    tooltip: {
-                        valueSuffix: '%'
-                    }
+            $.post(urlTabela2, enviar, function (r) {
+                try {
+                    $('#tabela2div').removeClass('loader')
+                    $('#tabela2div').empty().append(r);
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    $btn.button('reset');
                 }
-            ]
-        });
-    }
+            }).fail(function (e, h, x) {
+                $btn.button('reset');
+                if (e.status == 0) {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+            }).always(function () {
+                $('#tabela2div').removeClass('loader')
+            });
+        }
 
-    function Grafico2(idRegional) {
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            /*Especifico*/
+            //if (!($('#unitId :selected').val() > 0))
+            //{
+            //    GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
+            //    return false;
+            //}
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
 
-        $.post(urlGrafico2 + "/" + idRegional, function (data) {
+            return true;
+        }
 
-            var sigla = MapeiaValorParaHC(data, "companySigla");
-            var scorecard = MapeiaValorParaHC(data, "companyScorecard");
+        function Grafico1(data) {
+
             var scorecardJbs = MapeiaValorParaHC(data, "scorecardJbs");
             var scorecardRegional = MapeiaValorParaHC(data, "scorecardJbsReg");
+            var NomeRegional = MapeiaValorParaHC(data, "regName");
+            //var meta = MapeiaValorParaHC(data, "meta");
+            var id = MapeiaValorParaHC(data, "regId");
 
-            $('#grafico2').empty().highcharts({
+            $('#grafico1').empty().highcharts({
                 credits: {
                     enabled: false
                 },
@@ -268,16 +213,16 @@
                     text: ''
                 },
                 xAxis: [{
-                    categories: sigla,
+                    categories: NomeRegional,
                     crosshair: true,
                     title: {
-                        text: 'Unidades',
+                        text: 'Regionais',
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
                     },
                 }],
-                yAxis: [{
+                yAxis: [{ // Primary yAxis
                     labels: {
                         format: '{value} %',
                         style: {
@@ -309,12 +254,21 @@
                 },
                 series: [
                     {
-                        linkedTo: 'id1',
                         name: 'Scorecard',
+                        data: scorecardRegional,
+                        linkedTo: 'id1',
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico2(id[this.x]);
+
+                                }
+                            }
+                        },
                         type: 'column',
                         yAxis: 0,
                         color: Highcharts.getOptions().colors[0],
-                        data: scorecard,
                         dataLabels: {
                             enabled: true,
                             color: 'black',
@@ -336,71 +290,57 @@
                         }, {
                             color: 'rgba(81,207,64,1)'
                         }],
-                    }, {
+                    },
+                    {
                         name: 'Scorecard JBS',
                         data: scorecardJbs,
                         color: 'rgba(170,0,0,1)',
                         tooltip: {
                             valueSuffix: '%'
                         }
-                    }, {
-                        name: 'Scorecard Regional',
-                        data: scorecardRegional,
-                        color: 'rgba(0,0,139,1)',
-                        tooltip: {
-                            valueSuffix: '%'
-                        }
-                    }]
+                    }
+                ]
             });
 
-        });
+        }
 
-    }
+        function Grafico2(idRegional) {
 
-    function Grafico3(id) {
+            $('#grafico2').empty().addClass('loader');
 
-        $.post(urlGrafico3 + "/" + id, enviar, function (data) {
-            //var name = MapeiaValorParaHC(data, "unitName")[0];
-            //var dia = ['01/12/2014', '01/12/2015', '01/12/2016'] //MapeiaValorParaHC(data, "");
-            //var nc = [10, 15, 20] // MapeiaValorParaHC(data, "");
-            //var porc = [70, 50, 35] //MapeiaValorParaHC(data, "");
-            //var qtdAv = [50, 50, 50] //MapeiaValorParaHC(data, "");
+            $.post(urlGrafico2 + "/" + idRegional, enviar, function (data) {
 
-            var dia = MapeiaValorParaHC(data, "_date");
-            var nc = MapeiaValorParaHC(data, "nc");
-            var porc = MapeiaValorParaHC(data, "procentagemNc");
-            var qtdAv = MapeiaValorParaHC(data, "av");
+                var sigla = MapeiaValorParaHC(data, "companySigla");
+                var scorecard = MapeiaValorParaHC(data, "companyScorecard");
+                var scorecardJbs = MapeiaValorParaHC(data, "scorecardJbs");
+                var scorecardRegional = MapeiaValorParaHC(data, "scorecardJbsReg");
 
-            $('#grafico3').empty().highcharts({
-                credits: {
-                    enabled: false
-                },
-                chart: {
-                    type: 'column',
-                    zoomType: 'x,y'
-                },
-                title: {
-                    text: "_RGOperacao"
-                },
-                xAxis: {
-                    categories: dia,
-                    title: {
-                        text: 'Data',
+                $('#grafico2').removeClass('loader');
+
+                $('#grafico2').empty().highcharts({
+                    credits: {
+                        enabled: false
                     },
-                },
-                yAxis: [
-                    {
-                        min: 0,
+                    chart: {
+                        zoomType: 'xy'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: [{
+                        categories: sigla,
+                        crosshair: true,
                         title: {
-                            text: 'Quantidade'
-                        },
-                        labels: {
-                            format: '{value}',
+                            text: 'Unidades',
                             style: {
                                 color: Highcharts.getOptions().colors[1]
                             }
                         },
-                    }, {
+                    }],
+                    yAxis: [{
                         labels: {
                             format: '{value} %',
                             style: {
@@ -408,400 +348,613 @@
                             }
                         },
                         title: {
-                            text: '% NC',
+                            text: '% Scorecard',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }
                         },
-                        opposite: true
+                        plotLines: [{
+                            value: 80,
+                            width: 2,
+                            color: 'black',
+                            dashStyle: 'dash',
+                            zIndex: 4,
+                            label: {
+                                text: 'Meta 80%',
+                                align: 'right',
+                                y: -10,
+                                x: 0
+                            }
+                        }]
                     }],
-                legend: {
-                    shadow: false
-                },
-                tooltip: {
-                    shared: true
-                },
-                plotOptions: {
-                    column: {
-                        grouping: false,
-                        shadow: false,
-                        borderWidth: 0
-                    }
-                },
-                series: [{
-                    name: 'NC',
-                    color: 'rgba(77,143,189,1)',
-                    data: nc,
-                    yAxis: 0,
-                    pointPadding: 0.2,
-                    pointPlacement: -0.2,
-                    point: {
-                        events: {
-                            click: function () {
-                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
-                            }
-                        }
+                    tooltip: {
+                        shared: true
                     },
-                    dataLabels: {
-                        enabled: true,
-                        color: 'black',
-                        align: 'center',
-                        style: {
-                            fontSize: '10px',
-                        }
+                    series: [
+                        {
+                            linkedTo: 'id1',
+                            name: 'Scorecard',
+                            type: 'column',
+                            yAxis: 0,
+                            color: Highcharts.getOptions().colors[0],
+                            data: scorecard,
+                            dataLabels: {
+                                enabled: true,
+                                color: 'black',
+                                align: 'right',
+                                style: {
+                                    fontSize: '13px',
+                                    fontFamily: 'Verdana, sans-serif'
+                                }
+                            },
+                            tooltip: {
+                                valueSuffix: '%'
+                            },
+                            zones: [{
+                                value: 69,
+                                color: 'rgba(189,76,76,1)'
+                            }, {
+                                value: 80,
+                                color: 'rgba(207,206,64,1)'
+                            }, {
+                                color: 'rgba(81,207,64,1)'
+                            }],
+                        }, {
+                            name: 'Scorecard JBS',
+                            data: scorecardJbs,
+                            color: 'rgba(170,0,0,1)',
+                            tooltip: {
+                                valueSuffix: '%'
+                            }
+                        }, {
+                            name: 'Scorecard Regional',
+                            data: scorecardRegional,
+                            color: 'rgba(0,0,139,1)',
+                            tooltip: {
+                                valueSuffix: '%'
+                            }
+                        }]
+                });
+
+            }).always(function () {
+                $('#grafico2').removeClass('loader');
+            });//Fim Ajax
+
+        }
+
+        function Grafico3(id) {
+
+            $('#grafico3').empty().addClass('loader');
+
+            $.post(urlGrafico3 + "/" + id, enviar, function (data) {
+                //var name = MapeiaValorParaHC(data, "unitName")[0];
+                //var dia = ['01/12/2014', '01/12/2015', '01/12/2016'] //MapeiaValorParaHC(data, "");
+                //var nc = [10, 15, 20] // MapeiaValorParaHC(data, "");
+                //var porc = [70, 50, 35] //MapeiaValorParaHC(data, "");
+                //var qtdAv = [50, 50, 50] //MapeiaValorParaHC(data, "");
+
+                var dia = MapeiaValorParaHC(data, "_date");
+                var nc = MapeiaValorParaHC(data, "nc");
+                var porc = MapeiaValorParaHC(data, "procentagemNc");
+                var qtdAv = MapeiaValorParaHC(data, "av");
+
+                $('#grafico3').removeClass('loader');
+
+                $('#grafico3').empty().highcharts({
+                    credits: {
+                        enabled: false
+                    },
+                    chart: {
+                        type: 'column',
+                        zoomType: 'x,y'
+                    },
+                    title: {
+                        text: "_RGOperacao"
+                    },
+                    xAxis: {
+                        categories: dia,
+                        title: {
+                            text: 'Data',
+                        },
+                    },
+                    yAxis: [
+                        {
+                            min: 0,
+                            title: {
+                                text: 'Quantidade'
+                            },
+                            labels: {
+                                format: '{value}',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                        }, {
+                            labels: {
+                                format: '{value} %',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            title: {
+                                text: '% NC',
+                            },
+                            opposite: true
+                        }],
+                    legend: {
+                        shadow: false
                     },
                     tooltip: {
-                        valueSuffix: ' qtd'
-                    }
-                }, {
-                    name: '% NC',
-                    color: 'rgba(240,124,0,1)',
-                    data: porc,
-                    yAxis: 1,
-                    pointPadding: 0.4,
-                    pointPlacement: -0.2,
-                    point: {
-                        events: {
-                            click: function () {
-                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
-                            }
+                        shared: true
+                    },
+                    plotOptions: {
+                        column: {
+                            grouping: false,
+                            shadow: false,
+                            borderWidth: 0
                         }
                     },
-                    dataLabels: {
-                        enabled: true,
-                        color: 'black',
-                        align: 'center',
-                        style: {
-                            fontSize: '10px',
+                    series: [{
+                        name: 'NC',
+                        color: 'rgba(77,143,189,1)',
+                        data: nc,
+                        yAxis: 0,
+                        pointPadding: 0.2,
+                        pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: ' qtd'
                         }
+                    }, {
+                        name: '% NC',
+                        color: 'rgba(240,124,0,1)',
+                        data: porc,
+                        yAxis: 1,
+                        pointPadding: 0.4,
+                        pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: ' %'
+                        }
+                    }, {
+                        visible: false,
+                        name: 'Avaliações',
+                        data: qtdAv,
+                        color: 'rgba(81,207,64,1)',
+                        pointPadding: 0.3,
+                        pointPlacement: 0.2,
+                        yAxis: 0,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: ' qtd'
+                        }
+                    }]
+                });
+
+            }).always(function () {
+                $('#grafico3').removeClass('loader');
+            });//Fim Ajax
+
+        }
+
+        function Grafico4(id) {
+
+            $('#grafico4').empty().addClass('loader');
+
+            $.post(urlGrafico4 + "/" + id, enviar, function (data) {
+
+                //var nome = ['Astrogildo', 'Ederasonildo', 'Morietanila'] //MapeiaValorParaHC(data, "");
+                //var nc = [10, 15, 20] // MapeiaValorParaHC(data, "");
+                //var porc = [70, 50, 35] //MapeiaValorParaHC(data, "");
+                //var qtdAv = [50, 50, 50] //MapeiaValorParaHC(data, "");
+                var titulo = MapeiaValorParaHC(data, "level1Name")[0];
+                var nome = MapeiaValorParaHC(data, "level2Name");
+                var id = MapeiaValorParaHC(data, "level2Id");
+                var nc = MapeiaValorParaHC(data, "nc");
+                var porc = MapeiaValorParaHC(data, "procentagemNc");
+                var qtdAv = MapeiaValorParaHC(data, "av");
+
+                $('#grafico4').removeClass('loader');
+
+                $('#grafico4').empty().highcharts({
+                    credits: {
+                        enabled: false
+                    },
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: ('Total NC Por Monitoramento - ' + titulo)
+                    },
+                    xAxis: {
+                        categories: nome,
+                        title: {
+                            text: 'Monitoramentos',
+                        },
+                    },
+                    yAxis: [
+                        {
+                            min: 0,
+                            title: {
+                                text: 'Quantidade'
+                            },
+                            labels: {
+                                format: '{value}',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                        }, {
+                            labels: {
+                                format: '{value} %',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            title: {
+                                text: '% NC',
+                            },
+                            opposite: true
+                        }],
+                    legend: {
+                        shadow: false
                     },
                     tooltip: {
-                        valueSuffix: ' %'
-                    }
-                }, {
-                    visible: false,
-                    name: 'Avaliações',
-                    data: qtdAv,
-                    color: 'rgba(81,207,64,1)',
-                    pointPadding: 0.3,
-                    pointPlacement: 0.2,
-                    yAxis: 0,
-                    point: {
-                        events: {
-                            click: function () {
-                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
-                            }
+                        shared: true
+                    },
+                    plotOptions: {
+                        column: {
+                            grouping: false,
+                            shadow: false,
+                            borderWidth: 0
                         }
                     },
-                    dataLabels: {
-                        enabled: true,
-                        color: 'black',
-                        align: 'center',
-                        style: {
-                            fontSize: '10px',
+                    series: [{
+                        name: 'NC',
+                        color: 'rgba(77,143,189,1)',
+                        data: nc,
+                        yAxis: 0,
+                        pointPadding: 0.3,
+                        pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
+                                    Grafico5(id[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: ' qtd'
                         }
+                    }, {
+                        name: '% NC',
+                        color: 'rgba(240,124,0,1)',
+                        data: porc,
+                        yAxis: 1,
+                        pointPadding: 0.4,
+                        pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
+                                    Grafico5(id[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: ' %'
+                        }
+                    }, {
+                        visible: false,
+                        name: 'Avaliações',
+                        data: qtdAv,
+                        color: 'rgba(81,207,64,1)',
+                        pointPadding: 0.3,
+                        pointPlacement: 0.2,
+                        yAxis: 0,
+                        point: {
+                            events: {
+                                click: function () {
+                                    Grafico5(id[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: ' qtd'
+                        }
+                    }]
+                });//Fim HC
+
+            }).always(function () {
+                $('#grafico4').removeClass('loader');
+            });//Fim Ajax
+
+        }
+
+        function Grafico5(id) {
+            EasyAjax(urlGrafico5 + "/" + id, {})
+            $('#grafico5').empty().addClass('loader');
+
+            $.post(urlGrafico5 + "/" + id, function (data) {
+
+                var level1Name = MapeiaValorParaHC(data, "level1Name")[0];
+                var level2Name = MapeiaValorParaHC(data, "level2Name")[0];
+                var nome = MapeiaValorParaHC(data, "level3Name");
+                var nc = MapeiaValorParaHC(data, "nc");
+                var porc = MapeiaValorParaHC(data, "procentagemNc");
+                var qtdAv = MapeiaValorParaHC(data, "av");
+
+                $('#grafico5').removeClass('loader');
+
+                $('#grafico5').empty().highcharts({
+                    credits: {
+                        enabled: false
+                    },
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: ('Total NC Por Monitoramento - ' + level2Name)
+                    },
+                    xAxis: {
+                        categories: nome,
+                        title: {
+                            text: 'Monitoramentos',
+                        },
+                    },
+                    yAxis: [
+                        {
+                            min: 0,
+                            title: {
+                                text: 'Quantidade'
+                            },
+                            labels: {
+                                format: '{value}',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                        }, {
+                            labels: {
+                                format: '{value} %',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            title: {
+                                text: '% NC',
+                            },
+                            opposite: true
+                        }],
+                    legend: {
+                        shadow: false
                     },
                     tooltip: {
-                        valueSuffix: ' qtd'
-                    }
-                }]
+                        shared: true
+                    },
+                    plotOptions: {
+                        column: {
+                            grouping: false,
+                            shadow: false,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        name: 'NC',
+                        color: 'rgba(77,143,189,1)',
+                        data: nc,
+                        yAxis: 0,
+                        pointPadding: 0.3,
+                        pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //_MonitoramentoId = id[this.x];
+                                    //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: ' qtd'
+                        }
+                    }, {
+                        name: '% NC',
+                        color: 'rgba(240,124,0,1)',
+                        data: porc,
+                        yAxis: 1,
+                        pointPadding: 0.4,
+                        pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //_MonitoramentoId = id[this.x];
+                                    //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: ' %'
+                        }
+                    }, {
+                        visible: false,
+                        name: 'Avaliações',
+                        data: qtdAv,
+                        color: 'rgba(81,207,64,1)',
+                        pointPadding: 0.3,
+                        pointPlacement: 0.2,
+                        yAxis: 0,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //_MonitoramentoId = id[this.x];
+                                    //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: ' qtd'
+                        }
+                    }]
+                });
+
+            }).always(function () {
+                $('#grafico5').removeClass('loader');
+            });//Fim Ajax
+
+        }
+
+        $(document).ready(function () {
+
+            $("#btnSend").click(function (e) {
+                Send();
             });
 
-        });
-    }
+            formControl.showFullCallendar();
+            //formControl.showUnit();
 
-    function Grafico4(id) {
-
-        //$.post(urlRGTarefasGrafico, function (data) {
-
-        var nome = ['Astrogildo', 'Ederasonildo', 'Morietanila'] //MapeiaValorParaHC(data, "");
-        var nc = [10, 15, 20] // MapeiaValorParaHC(data, "");
-        var porc = [70, 50, 35] //MapeiaValorParaHC(data, "");
-        var qtdAv = [50, 50, 50] //MapeiaValorParaHC(data, "");
-
-        //}
-
-        $('#grafico4').empty().highcharts({
-            credits: {
-                enabled: false
-            },
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: ('Total NC Por Monitoramento - ')
-            },
-            xAxis: {
-                categories: nome,
-                title: {
-                    text: 'Monitoramentos',
-                },
-            },
-            yAxis: [
-                {
-                    min: 0,
-                    title: {
-                        text: 'Quantidade'
-                    },
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
-                    },
-                }, {
-                    labels: {
-                        format: '{value} %',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
-                    },
-                    title: {
-                        text: '% NC',
-                    },
-                    opposite: true
-                }],
-            legend: {
-                shadow: false
-            },
-            tooltip: {
-                shared: true
-            },
-            plotOptions: {
-                column: {
-                    grouping: false,
-                    shadow: false,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: 'NC',
-                color: 'rgba(77,143,189,1)',
-                data: nc,
-                yAxis: 0,
-                pointPadding: 0.3,
-                pointPlacement: -0.2,
-                point: {
-                    events: {
-                        click: function () {
-                            //_MonitoramentoId = id[this.x];
-                            //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
-                        }
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    color: 'black',
-                    align: 'center',
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueSuffix: ' qtd'
-                }
-            }, {
-                name: '% NC',
-                color: 'rgba(240,124,0,1)',
-                data: porc,
-                yAxis: 1,
-                pointPadding: 0.4,
-                pointPlacement: -0.2,
-                point: {
-                    events: {
-                        click: function () {
-                            //_MonitoramentoId = id[this.x];
-                            //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
-                        }
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    color: 'black',
-                    align: 'center',
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueSuffix: ' %'
-                }
-            }, {
-                visible: false,
-                name: 'Avaliações',
-                data: qtdAv,
-                color: 'rgba(81,207,64,1)',
-                pointPadding: 0.3,
-                pointPlacement: 0.2,
-                yAxis: 0,
-                point: {
-                    events: {
-                        click: function () {
-                            //_MonitoramentoId = id[this.x];
-                            //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
-                        }
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    color: 'black',
-                    align: 'center',
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueSuffix: ' qtd'
-                }
-            }]
         });
 
-    }
-
-    function Grafico5(id) {
-
-        //$.post(urlRGTarefasGrafico, function (data) {
-
-        var nome = ['Astrogildo', 'Ederasonildo', 'Morietanila'] //MapeiaValorParaHC(data, "");
-        var nc = [10, 15, 20] // MapeiaValorParaHC(data, "");
-        var porc = [70, 50, 35] //MapeiaValorParaHC(data, "");
-        var qtdAv = [50, 50, 50] //MapeiaValorParaHC(data, "");
-
-        //}
-
-        $('#grafico5').empty().highcharts({
-            credits: {
-                enabled: false
-            },
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: ('Total NC Por Monitoramento - ')
-            },
-            xAxis: {
-                categories: nome,
-                title: {
-                    text: 'Monitoramentos',
-                },
-            },
-            yAxis: [
-                {
-                    min: 0,
-                    title: {
-                        text: 'Quantidade'
-                    },
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
-                    },
-                }, {
-                    labels: {
-                        format: '{value} %',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
-                    },
-                    title: {
-                        text: '% NC',
-                    },
-                    opposite: true
-                }],
-            legend: {
-                shadow: false
-            },
-            tooltip: {
-                shared: true
-            },
-            plotOptions: {
-                column: {
-                    grouping: false,
-                    shadow: false,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: 'NC',
-                color: 'rgba(77,143,189,1)',
-                data: nc,
-                yAxis: 0,
-                pointPadding: 0.3,
-                pointPlacement: -0.2,
-                point: {
-                    events: {
-                        click: function () {
-                            //_MonitoramentoId = id[this.x];
-                            //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
-                        }
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    color: 'black',
-                    align: 'center',
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueSuffix: ' qtd'
-                }
-            }, {
-                name: '% NC',
-                color: 'rgba(240,124,0,1)',
-                data: porc,
-                yAxis: 1,
-                pointPadding: 0.4,
-                pointPlacement: -0.2,
-                point: {
-                    events: {
-                        click: function () {
-                            //_MonitoramentoId = id[this.x];
-                            //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
-                        }
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    color: 'black',
-                    align: 'center',
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueSuffix: ' %'
-                }
-            }, {
-                visible: false,
-                name: 'Avaliações',
-                data: qtdAv,
-                color: 'rgba(81,207,64,1)',
-                pointPadding: 0.3,
-                pointPlacement: 0.2,
-                yAxis: 0,
-                point: {
-                    events: {
-                        click: function () {
-                            //_MonitoramentoId = id[this.x];
-                            //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
-                        }
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    color: 'black',
-                    align: 'center',
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueSuffix: ' qtd'
-                }
-            }]
+        var ajaxCount = 0;
+        $(document).ajaxStart(function () {
+            ajaxCount++;
         });
 
-    }
+        $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
+            ajaxCount--;
+        });
+
+        $(document).ajaxStop(function () {
+            ajaxCount--;
+            if (ajaxCount == 0) {
+                $(".loader").removeClass("loader");
+            }
+        });
+
+        function EasyAjax(url, dados, callback, loader) {
+
+            if (!!loader)
+                $('#' + loader).addClass('loader');
+
+            if (dados == undefined)
+                dados = {};
+
+            //AJAX
+            $.post(url, dados, function (r) {
+                try {
+                    //if (toggle == undefined)
+                    //    $('#menu-toggle').click();
+
+                    if (!!loader)
+                        $('#' + loader).removeClass('loader');
+
+                    callback(r);
+
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    $btn.button('reset');
+                }
+            }).fail(function (e, h, x) {
+                $btn.button('reset');
+                if (e.status == 0) {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+            }).always(function () {
+                if (!!loader)
+                    $('#' + loader).removeClass('loader');
+            });
+        }
 
     </script>
 
