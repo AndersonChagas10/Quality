@@ -20,6 +20,10 @@ namespace DTO.Helpers
 
         public static DateTime PrimeiroDiaMesAnterior(DateTime data)
         {
+            if (data.Month.Equals(1))
+            {
+                return new DateTime(data.Year - 1, data.AddMonths(-1).Month, 1);
+            }
             return new DateTime(data.Year, data.AddMonths(-1).Month, 1);
         }
 
