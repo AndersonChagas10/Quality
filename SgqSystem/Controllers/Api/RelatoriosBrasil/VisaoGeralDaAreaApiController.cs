@@ -1,4 +1,5 @@
-﻿using SgqSystem.ViewModels;
+﻿using DTO.Helpers;
+using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,9 +35,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         [HttpPost]
         [Route("Grafico3/{regId}")]
-        public List<VisaoGeralDaAreaResultSet> Grafico3(int regId)
+        public List<VisaoGeralDaAreaResultSet> Grafico3([FromBody] FormularioParaRelatorioViewModel form, int regId)
         {
-            CriaMockG3();
+            CriaMockG3(form);
             return _mock;
         }
        
@@ -83,19 +84,68 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         }
 
-        private void CriaMockG3()
+        private void CriaMockG3(FormularioParaRelatorioViewModel form)
         {
+            var primeiroDiaMesAnterior = Guard.PrimeiroDiaMesAnterior(form._dataInicio);
+            var proximoDomingo = Guard.GetNextWeekday(form._dataFim, DayOfWeek.Sunday);
+
             _mock = new List<VisaoGeralDaAreaResultSet>();
-
+            
             _mock.Add(new VisaoGeralDaAreaResultSet()
             {
-               
+               nc = 10M,
+               procentagemNc = 90M,
+               date = proximoDomingo.AddDays(-8)
             });
-
             _mock.Add(new VisaoGeralDaAreaResultSet()
             {
-              
+                nc = 50M,
+                av = 50M,
+                procentagemNc = 40M,
+                date = proximoDomingo.AddDays(-9)
             });
+            _mock.Add(new VisaoGeralDaAreaResultSet()
+            {
+                nc = 20M,
+                av = 150M,
+                procentagemNc = 50M,
+                date = proximoDomingo.AddDays(-18)
+            });
+            _mock.Add(new VisaoGeralDaAreaResultSet()
+            {
+                nc = 90M,
+                av = 200M,
+                procentagemNc = 90M,
+                date = proximoDomingo.AddDays(-15)
+            });
+            _mock.Add(new VisaoGeralDaAreaResultSet()
+            {
+                nc = 120M,
+                av = 75M,
+                procentagemNc = 20M,
+                date = proximoDomingo.AddDays(-22)
+            });
+
+            for (DateTime i = primeiroDiaMesAnterior;  i < proximoDomingo; i = i.AddDays(1))
+            {
+                if (_mock.FirstOrDefault(r => r.date == i) == null)
+                {
+                    _mock.Add(new VisaoGeralDaAreaResultSet()
+                    {
+                        nc = 0M,
+                        av = 0M,
+                        procentagemNc = 0M,
+                        date = i
+                    });
+
+                    //_mock.Add(new VisaoGeralDaAreaResultSet());
+
+                }
+            }
+            _mock = _mock.OrderBy(r => r.date).ToList();
+            foreach (var i in _mock)
+            {
+            }
 
         }
 
@@ -134,14 +184,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
     public class VisaoGeralDaAreaResultSet
     {
-        public decimal scorecard;
+        public DateTime date { get; set; }
+        public string _date { get { return date.ToString("dd/MM/yyyy"); } }
+
+        public decimal scorecard { get; set; }
         public int regId { get; set; }
         public string regName { get; set; }
         public decimal scorecardJbs { get; set; }
         public decimal scorecardJbsReg { get; set; }
         public string companySigla { get; set; }
         public decimal companyScorecard { get; set; }
-        
-            
+        public decimal procentagemNc { get; set; }
+        public decimal nc { get; set; }
+        public decimal av { get; set; }
     }
 }
