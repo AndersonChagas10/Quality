@@ -183,7 +183,9 @@
         <AssociationConnector Association="SgqDbModel.FK_ParStructure_ParStructureGroup" />
         <AssociationConnector Association="SgqDbModel.FK_UnitUser_Unit" />
         <AssociationConnector Association="SgqDbModel.FK_UnitUser_UserSgq" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_CollectionLevel2" />
         <EntityTypeShape EntityType="SgqDbModel.ManDataCollectIT" Width="1.5" PointX="0.75" PointY="13.75" />
+        <EntityTypeShape EntityType="SgqDbModel.DimManutencaoColetaITs" Width="1.5" PointX="11.375" PointY="10.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
