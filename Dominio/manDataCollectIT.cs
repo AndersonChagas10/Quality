@@ -22,7 +22,7 @@ namespace Dominio
         public Nullable<int> ParFrequency_Id { get; set; }
         public Nullable<int> Shift { get; set; }
         public string DataType { get; set; }
-        public decimal AmountData { get; set; }
+        public Nullable<decimal> AmountData { get; set; }
         public Nullable<int> ParMeasurementUnit_Id { get; set; }
         public string Comments { get; set; }
         public System.DateTime AddDate { get; set; }

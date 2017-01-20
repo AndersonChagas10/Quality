@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SgqSystem.Mappers.Manutencao;
 using SgqSystem.Mappers.ParamsBrasil;
 
 namespace SgqSystem.Mappers
@@ -90,6 +91,9 @@ namespace SgqSystem.Mappers
                 /*ParamsBrasil*/
 
                 x.AddProfile<ParLevel2ControlCompanyMapperProfile>();
+
+                /*Manutencao*/
+                x.AddProfile<DimManutencaoColetaITsMapperProfile>();
             });
 
         }
