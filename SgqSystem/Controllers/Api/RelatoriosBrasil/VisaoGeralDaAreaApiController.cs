@@ -27,7 +27,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         [HttpPost]
         [Route("Grafico2/{regId}")]
-        public List<VisaoGeralDaAreaResultSet> Grafico2(int regId)
+        public List<VisaoGeralDaAreaResultSet> Grafico2([FromBody] FormularioParaRelatorioViewModel form, int regId)
         {
             CriaMockG2();
             return _mock;
@@ -40,7 +40,23 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             CriaMockG3(form);
             return _mock;
         }
-       
+
+        [HttpPost]
+        [Route("Grafico4/{regId}")]
+        public List<VisaoGeralDaAreaResultSet> Grafico4([FromBody] FormularioParaRelatorioViewModel form, int regId)
+        {
+            CriaMockG4();
+            return _mock;
+        }
+
+        [HttpPost]
+        [Route("Grafico5/{regId}")]
+        public List<VisaoGeralDaAreaResultSet> Grafico5([FromBody] FormularioParaRelatorioViewModel form, int regId)
+        {
+            CriaMockG5();
+            return _mock;
+        }
+
         private void CriaMockG1()
         {
             _mock = new List<VisaoGeralDaAreaResultSet>();
@@ -143,10 +159,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 }
             }
             _mock = _mock.OrderBy(r => r.date).ToList();
-            foreach (var i in _mock)
-            {
-            }
-
+          
         }
 
         private void CriaMockG4()
@@ -155,12 +168,24 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             _mock.Add(new VisaoGeralDaAreaResultSet()
             {
-             
+                nc = 10M,
+                procentagemNc = 50M,
+                av = 20M,
+                level1Name = "level1 Name1",
+                level2Name = "level2 Name1",
+                level1Id = 1,
+                level2Id = 1,
             });
 
             _mock.Add(new VisaoGeralDaAreaResultSet()
             {
-               
+                nc = 50M,
+                procentagemNc = 33.3M,
+                av = 120M,
+                level1Name = "level1 Name1",
+                level2Name = "level2 Name2",
+                level1Id = 1,
+                level2Id = 2,
             });
 
         }
@@ -171,12 +196,40 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             _mock.Add(new VisaoGeralDaAreaResultSet()
             {
-              
+                nc = 10M,
+                procentagemNc = 50M,
+                av = 20M,
+                level1Name = "level1 Name1",
+                level2Name = "level2 Name1",
+                level3Name = "level3 Name1",
+                level1Id = 1,
+                level2Id = 1,
+                level3Id = 1,
             });
 
             _mock.Add(new VisaoGeralDaAreaResultSet()
             {
-             
+                nc = 50M,
+                procentagemNc = 33.3M,
+                av = 120M,
+                level1Name = "level1 Name1",
+                level2Name = "level2 Name1",
+                level3Name = "level3 Name2",
+                level1Id = 1,
+                level2Id = 1,
+                level3Id = 2,
+            });
+            _mock.Add(new VisaoGeralDaAreaResultSet()
+            {
+                nc = 102M,
+                procentagemNc = 90.3M,
+                av = 120M,
+                level1Name = "level1 Name1",
+                level2Name = "level2 Name1",
+                level3Name = "level3 Name3",
+                level1Id = 1,
+                level2Id = 1,
+                level3Id = 3,
             });
 
         }
@@ -190,6 +243,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         public decimal scorecard { get; set; }
         public int regId { get; set; }
         public string regName { get; set; }
+
+        public string level1Name { get; set; }
+        public string level2Name { get; set; }
+        public string level3Name { get; set; }
+        public int level1Id { get; set; }
+        public int level2Id { get; set; }
+        public int level3Id { get; set; }
+
         public decimal scorecardJbs { get; set; }
         public decimal scorecardJbsReg { get; set; }
         public string companySigla { get; set; }
