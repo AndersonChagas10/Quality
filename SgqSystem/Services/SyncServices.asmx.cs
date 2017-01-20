@@ -1338,7 +1338,7 @@ namespace SgqSystem.Services
                 {
                     sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiEvaluation],[WeiDefects]) " +
                            "VALUES " +
-                           "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3List.Where(p => p.Id == Convert.ToInt32(Level03Id)).FirstOrDefault().Id + "'," + weight + "," + intervalMin + "," + intervalMax + ", " + value + ",'" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + WeiEvaluation + ", " + WeiDefects + ") ";
+                           "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3List.Where(p => p.Id == Convert.ToInt32(Level03Id)).FirstOrDefault().Name + "'," + weight + "," + intervalMin + "," + intervalMax + ", " + value + ",'" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + WeiEvaluation + ", " + WeiDefects + ") ";
 
                     sql += " SELECT @@IDENTITY AS 'Identity'";
 
@@ -2399,22 +2399,34 @@ namespace SgqSystem.Services
                         decimal alertaNivel1 = 0;
                         decimal alertaNivel2 = 0;
                         decimal alertaNivel3 = 0;
+
+                        decimal volumeAlerta = 0;
+                        decimal meta = 0;
+
                         if (alertas != null)
                         {
                             alertaNivel1 = alertas.Nivel1;
                             alertaNivel2 = alertas.Nivel2;
                             alertaNivel3 = alertas.Nivel3;
+                            volumeAlerta = alertas.VolumeAlerta;
+                            meta = alertas.Meta;
                         }
 
                         string level01 = html.level1(parlevel1,
                                                      tipoTela: tipoTela,
                                                      totalAvaliado: 0,
-                                                     totalDefeitos: 0,
+                                                     totalDefeitos: 0,                                                     
                                                      alertNivel1: alertaNivel1,
                                                      alertNivel2: alertaNivel2,
                                                      alertaNivel3: alertaNivel3,
+                                                     numeroAvaliacoes: 0,
+                                                     metaDia: alertaNivel3,
+                                                     metaTolerancia: alertaNivel1,
+                                                     metaAvaliacao: 0,
                                                      alertaAtual: 0,
-                                                     avaliacaoultimoalerta: 0);
+                                                     avaliacaoultimoalerta: 0,
+                                                     volumeAlertaIndicador: volumeAlerta,
+                                                     metaIndicador: meta);
                         //Incrementa level1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
                     }

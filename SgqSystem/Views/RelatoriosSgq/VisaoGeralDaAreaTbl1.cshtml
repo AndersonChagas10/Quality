@@ -1,177 +1,371 @@
 ﻿@model  SgqSystem.Controllers.TabelaDinamicaResultados
 @{
     Layout = null;
-
+    var espacoTd = 75;
+    var counter = 0;
+    var counter2 = 0;
+    var counter3 = 0;
 }
 
-@Styles.Render("~/Content/General")
-@Styles.Render("~/Content/Erp")
-@Scripts.Render("~/bundles/modernizr")
+<style>
+    #fixarcoluna table {
+        border: none;
+        background-color: none;
+    }
 
-<link href="~/Scripts/theme/css/components.min.css" rel="stylesheet" />
-<link href="~/Scripts/theme/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-<link href="~/Scripts/theme/css/layout.min.css" rel="stylesheet" />
-<link href="~/Content/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
-<link href="~/Content/Site.css" rel="stylesheet" />
+    #fixarColuna tr {
+        border-bottom: 1px #eee solid;
+    }
 
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-@Scripts.Render("~/bundles/modernizr")
+    #fixarColuna .content table {
+        width: 100%;
+    }
 
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    #fixarColuna .content tr {
+        background-color: none;
+    }
 
-<div style="cursor: pointer; position: relative; overflow: auto; width: 100%; margin-left: auto; margin-right: auto; opacity: 1;">
-    
-    <div style="width:100%">
+        #fixarColuna .content tr:hover {
+            background-color: none;
+        }
 
-        <div id="esquerda" style="width:20%; height:90px; float:left;">
+    #fixarColuna .content td {
+        border-bottom: solid 1px #999;
+        padding: 0px;
+    }
 
-            <table id="Header1">
-                @foreach (var i in Model.trsCabecalho1)
-            {
-                    <tr>
-                        <td colspan="@i.coolspan">
-                            @i.name
-                        </td>
-                    </tr>
+    #fixarColuna .contentHead td {
+        border-bottom: solid 2px #CCC;
+        padding: 0px;
+    }
 
-                }
-            </table>
+    #fixarColuna .contentHead tr {
+        background-color: none;
+    }
 
-            <table id="dadosEsquerdaName">
-                <tbody>
-                    @foreach (var i in Model.trsMeio)
+    #fixarColuna .content1 {
+        display: block;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        overflow-y: hidden;
+        height: 90px;
+    }
+
+    fixarColuna .contentHead {
+        display: block;
+        width: 98.5%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        height: 35px;
+    }
+
+    #fixarColuna .content div {
+        display: inline;
+        float: left;
+        position: relative;
+        border: none;
+        width: 100%;
+    }
+
+    #fixarColuna .contentHead div {
+        display: inline;
+        float: left;
+        position: relative;
+        border: none;
+        width: 100%;
+    }
+
+    #fixarColuna .content .contentHead .larguraP19 {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    #fixBody1::-webkit-scrollbar-track {
+        background-color: #FFFFFF;
+    }
+
+    #fixBody1::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        background: #FFFFFF;
+    }
+
+    #fixBody1::-webkit-scrollbar-thumb {
+        background: #bf0d0e;
+    }
+
+    #colUie1::-webkit-scrollbar-track {
+        background-color: #FFFFFF;
+    }
+
+    #colUie1::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        background: #FFFFFF;
+    }
+
+    #colUie1::-webkit-scrollbar-thumb {
+        background: #bf0d0e;
+    }
+
+    #colUieFim1::-webkit-scrollbar-track {
+        background-color: #FFFFFF;
+    }
+
+    #colUieFim1::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        background: #FFFFFF;
+    }
+
+    #colUieFim1::-webkit-scrollbar-thumb {
+        background: #bf0d0e;
+    }
+</style>
+
+<div id="TabelaDespesaTodasRegionais" style="cursor: pointer; position: relative; overflow: auto; width: 100%; margin-left: auto; margin-right: auto; opacity: 1;">
+    <div id="fixarColuna" style="font-size:11px; width:100%;">
+        <div style="width:20%; height:90px; float:left;">
+            <div class="larguraP19" style="width:100%; overflow-x: hidden; float:left;">
+
+                <table cellspacing="0" cellpadding="0" width="100%" id="Header1">
+                    @* Pacotes *@
+                    @foreach (var i in Model.trsCabecalho1)
                     {
                         <tr>
-                            <td>@i.name</td>
+                            <td colspan="@i.coolspan" height="30px" width="100%" style="background-color: #DDDDDD;">
+                                @i.name
+                            </td>
                         </tr>
                     }
-                </tbody>
-            </table>
+                </table>
 
-            <table id="footer1">
-                @foreach (var i in Model.footer)
-            {
-                    <tr>
-                        <td colspan="@i.coolspan">
-                            @i.name
-                        </td>
-                    </tr>
-                }
-            </table>
+            </div>
+            <div class="larguraP19" style="width:100%;overflow-y:hidden;overflow-x:scroll; float:left; height:90px;" id="colUie1">
 
-        </div>
-
-        <div id="meio" style="width:50%; height:90px; float:left;">
-
-            <table id="Header2">
-                <tr>
-                    @foreach (var i in Model.trsCabecalho2)
-            {
-                        <td colspan="@i.coolspan">
-                            @i.name
-                        </td>
-                    }
-                </tr>
-                <tr>
-                    @foreach (var i in Model.trsCabecalho2)
-                    {
-                        foreach (var ii in i.tds)
+                <table cellspacing="0" cellpadding="0" width="100%" id="dadosEsquerdaName">
+                    @* Nome dos pacotes *@
+                    <tbody>
+                        @foreach (var i in Model.trsMeio)
                         {
-                            <td colspan="@ii.coolspan">
-                                @ii.name
-                            </td>
+                            <tr>
+                                <td height="40px">@i.name</td>
+                            </tr>
                         }
-                    }
-                </tr>
-            </table>
+                    </tbody>
+                </table>
 
-            <table id="dadosEsquerda">
-                @foreach (var i in Model.trsMeio)
-            {
-                    <tr>
-                        @foreach (var ii in i.tdsEsquerda)
-                        {
-                            <td colspan="@ii.coolspan">
-                                @ii.valor
-                            </td>
-                        }
-                    </tr>
-                }
-            </table>
+            </div>
+            <div class="larguraP19" style="width:100%; overflow-x: hidden; float:left;">
 
-            <table id="footer2">
-                <tr>
+                <table cellspacing="0" cellpadding="0" width="100%" id="footer1">
+                    @* Total *@
                     @foreach (var i in Model.footer)
                     {
-                        foreach (var ii in i.tdsEsquerda)
-                        {
-                            <td colspan="@ii.coolspan">
-                                @ii.valor
+                        <tr>
+                            <td style="background-color: #DCDCDC" height="40px" rowspan="1" style="background-color: #DCDCDC;">
+                                @i.name
                             </td>
-                        }
+                        </tr>
                     }
-                </tr>
-            </table>
+                </table>
 
+            </div>
         </div>
+        <div style="width:50%; height:90px; float:left;">
+            <div id="colHead1" style="width:100%; overflow-x: hidden; float: right;">
 
-        <div id="direita" style="width:30%; float:left;">
+                <table cellspacing="0" cellpadding="0" border="0" id="Header2">
+                    @* Reg1 por ex *@
+                    <thead>
+                        <tr>
+                            @foreach (var i in Model.trsCabecalho2)
+                            {
+                                <td align="center" style="height:30px; min-width:70px; background-color: #DDDDDD;" colspan="4">
+                                    <b>@i.name</b>
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            @* Orçado Rel Desvio etc... *@
+                            @foreach (var i in Model.trsCabecalho2)
+                            {
+                                foreach (var ii in i.tds)
+                                {
+                                    <td align="center" style="height:30px;min-width:70px; background-color: #DCDCDC;" colspan="1">
+                                        <b>@ii.name</b>
+                                    </td>
+                                }
+                            }
+                        </tr>
+                    </thead>
+                </table>
 
-            <table id="Header3">
-                <tr>
-                    @foreach (var i in Model.trsCabecalho3)
-            {
-                        <td colspan="@i.coolspan">
-                            @i.name
-                        </td>
-                    }
-                </tr>
-                <tr>
-                    @foreach (var i in Model.trsCabecalho3)
-                    {
-                        foreach (var ii in i.tds)
+            </div>
+            <div id="fixBody1" style="width:100%;overflow: scroll;height:90px;z-index:2; float: right;">
+                @{
+                    counter = 0;
+                }
+                <table cellspacing="0" cellpadding="0" border="0" id="dadosEsquerda">
+                    @* DadosCorpo Da Table Meio Esquerda *@
+                    <tbody>
+                        @foreach (var i in Model.trsMeio)
                         {
-                            <td colspan="@ii.coolspan">
-                                @ii.name
-                            </td>
+                            counter2 = 0;
+                            <tr>
+                                @foreach (var ii in i.tdsEsquerda)
+                                {
+                                    if (counter2 == 4)
+                                    {
+                                        counter2 = 0;
+                                        counter3++;
+                                    }
+                                    <td dado1="@i.name" dado2="@Model.trsCabecalho2[counter].tds[counter2].name" dado3="@Model.trsCabecalho2[counter3].name" onclick="@ii.click" align="center" style="min-width:70px; padding:0px; height: 40px;">
+                                        @ii.valor
+                                    </td>
+                                    counter2++;
+                                }
+                            </tr>
+                            counter3 = 0;
+                            counter++;
                         }
-                    }
-                </tr>
-            </table>
+                    </tbody>
+                </table>
+                @{
+                    counter = 0;
+                    counter2 = 0;
+                    counter3 = 0;
+                }
 
-            <table id="dadosDireita">
-                @foreach (var i in Model.trsMeio)
-            {
+            </div>
+            <div id="footerBody1" style="width:100%; overflow-x: hidden; float: right;">
+
+                <table cellspacing="0" cellpadding="0" border="0" id="footer2">
+                    <thead>
+                        <tr>
+                            @foreach (var i in Model.footer)
+                            {
+                                foreach (var ii in i.tdsEsquerda)
+                                {
+                                    <td align="center" style="background-color: #DCDCDC; min-width:70px; padding:0px; height: 40px;">
+                                        @ii.valor
+                                    </td>
+                                }
+                            }
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+        <div style="width:30%; 90px; float:left;">
+            <div id="headTotal1" class="larguraP19" style="width:100%; overflow-x: hidden; float:left;">
+
+                <table cellspacing="0" cellpadding="0" id="Header3">
                     <tr>
-                        @foreach (var ii in i.tdsDireita)
+                        @foreach (var i in Model.trsCabecalho3)
                         {
-                            <td colspan="@ii.coolspan">
-                                @ii.valor
+                            <td align="center" style="height:30px; width:100%; background-color: #DDDDDD;" colspan="4">
+                                @i.name
                             </td>
                         }
                     </tr>
-                }
-            </table>
-
-            <table id="footer3">
-                <tr>
-                    @foreach (var i in Model.footer)
-                    {
-                        foreach (var ii in i.tdsDireita)
+                    <tr>
+                        @foreach (var i in Model.trsCabecalho3)
                         {
-                            <td colspan="@ii.coolspan">
-                                @ii.valor
-                            </td>
+                            foreach (var ii in i.tds)
+                            {
+                                <td align="center" style="height:30px; min-width:70px; background-color: #DCDCDC;" colspan="1">
+                                    @ii.name
+                                </td>
+                            }
                         }
-                    }
-                </tr>
-            </table>
+                    </tr>
+                </table>
 
+            </div>
+            <div class="larguraP19" style="width:100%;overflow-y:hidden; float:left;overflow-x:scroll;height:90px;" id="colUieFim1">
+
+                <table cellspacing="0" cellpadding="0" id="dadosDireita">
+                    <tbody>
+                        @foreach (var i in Model.trsMeio)
+                        {
+                            <tr>
+                                @foreach (var ii in i.tdsDireita)
+                                {
+                                    <td align="center" style="min-width:70px; padding:0px; height: 40px;">
+                                        @ii.valor
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+            <div id="footerTotal1" class="larguraP19" style="width:100%; overflow-x: hidden;  float:left;">
+
+                <table cellspacing="0" cellpadding="0" id="footer3">
+                    <thead>
+                        <tr>
+                            @foreach (var i in Model.footer)
+                            {
+                                foreach (var ii in i.tdsDireita)
+                                {
+                                    <td height="40px" align="center" style="min-width:70px; background-color: #DCDCDC" colspan="1">
+                                        @ii.valor
+                                    </td>
+                                }
+                            }
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
         </div>
-
     </div>
-   
-
 </div>
+
+<script>
+
+    $('#fixBody1').scroll(function () {
+        $("#colHead1").scrollLeft($(this).scrollLeft());
+        $("#colFoot1").scrollLeft($(this).scrollLeft());
+        $("#footerBody1").scrollLeft($(this).scrollLeft());
+    });
+
+    $('#colUieFim1').scroll(function () {
+        $("#headTotal1").scrollLeft($(this).scrollLeft());
+        $("#footerTotal1").scrollLeft($(this).scrollLeft());
+    });
+
+    $('#fixBody1').scroll(function () {
+        $("#colUie1").scrollTop($(this).scrollTop());
+        $("#colUieFim1").scrollTop($(this).scrollTop());
+    });
+    $('#colUieFim1').scroll(function () {
+        $("#colUie1").scrollTop($(this).scrollTop());
+        $("#fixBody1").scrollTop($(this).scrollTop());
+    });
+    $('#colUie1').scroll(function () {
+        $("#fixBody1").scrollTop($(this).scrollTop());
+        $("#colUieFim1").scrollTop($(this).scrollTop());
+    });
+
+    var _dados1;
+    var _dados2;
+    var _dados3;
+
+    $(document).ready(function () {
+
+        $('#dadosEsquerda  td').on('click', function(){
+            _dados1 = $(this).attr("dado1");
+            _dados2 = $(this).attr("dado2");
+            _dados3 = $(this).attr("dado3");
+        });
+
+    });
+
+</script>

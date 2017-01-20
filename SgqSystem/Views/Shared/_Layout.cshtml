@@ -4,6 +4,7 @@
 //var urlChangeLevel2UserCompany = Url.Action("ChangeLevel2UserCompany", "ParLevel2ControlCompany"); //URL relativa
 //var userRolesCompany =
 }
+@using SgqSystem.Helpers
 
 <!DOCTYPE html>
 <html>
@@ -190,6 +191,7 @@
 
     <footer class="wrapper">
         <p class="page-content-wrapper">&copy; @DateTime.Now.Year - @Resources.Resource.jbs_and_grt_aplication </p>
+        <p class="page-content-wrapper">Version: @Html.AssemblyVersion() </p>
     </footer>
     
     @RenderSection("scripts", required: false)

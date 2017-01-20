@@ -97,6 +97,19 @@ namespace SgqSystem.Controllers
 
         public ActionResult VisaoGeralDaAreaTbl1()
         {
+            TabelaDinamicaResultados tabela = MockTabelaVisaoGeralDaArea();
+            return View(tabela);
+        }
+
+
+        public ActionResult VisaoGeralDaAreaTbl2()
+        {
+            TabelaDinamicaResultados tabela = MockTabelaVisaoGeralDaArea(true);
+            return PartialView("VisaoGeralDaAreaTbl1", tabela);
+        }
+
+        private static TabelaDinamicaResultados MockTabelaVisaoGeralDaArea(bool tbl2 = false)
+        {
             var tabela = new TabelaDinamicaResultados();
 
             #region Cabecalhos
@@ -113,7 +126,7 @@ namespace SgqSystem.Controllers
 
             tabela.trsCabecalho1.Add(new Ths()
             {
-                name = ""
+                name = "&nbsp"
             });
 
             tabela.trsCabecalho1.Add(new Ths()
@@ -161,17 +174,11 @@ namespace SgqSystem.Controllers
 
             for (int i = 0; i < 4 * 3; i++)
             {
-                tdsEsquerda1.Add(new Tds() { valor = (1M * i).ToString(), coolspan = 1 });
-                tdsEsquerda1.Add(new Tds() { valor = (3M * i).ToString(), coolspan = 1 });
-                tdsEsquerda1.Add(new Tds() { valor = (4M * i).ToString(), coolspan = 1 });
+                tdsEsquerda1.Add(new Tds() { valor = (1M * i).ToString(), coolspan = 1, click = tbl2 ? "Grafico3(1);Grafico4(1);" : "GetTabela2()" });
 
-                tdsEsquerda2.Add(new Tds() { valor = (6M * i).ToString(), coolspan = 1 });
-                tdsEsquerda2.Add(new Tds() { valor = (7M * i).ToString(), coolspan = 1 });
-                tdsEsquerda2.Add(new Tds() { valor = (8M * i).ToString(), coolspan = 1 });
-                                                     
-                tdsEsquerda3.Add(new Tds() { valor = (9M * i).ToString(), coolspan = 1 });
-                tdsEsquerda3.Add(new Tds() { valor = (10M * i).ToString(), coolspan = 1 });
-                tdsEsquerda3.Add(new Tds() { valor = (12M * i).ToString(), coolspan = 1 });
+                tdsEsquerda2.Add(new Tds() { valor = (6M * i).ToString(), coolspan = 1, click = tbl2 ? "Grafico3(1);Grafico4(1);" : "GetTabela2()" });
+
+                tdsEsquerda3.Add(new Tds() { valor = (9M * i).ToString(), coolspan = 1, click = tbl2 ? "Grafico3(1);Grafico4(1);" : "GetTabela2()" });
             }
 
             var tdsDireita1 = new List<Tds>();
@@ -211,6 +218,9 @@ namespace SgqSystem.Controllers
 
             });
 
+
+
+
             #endregion
 
             #region Rodapé
@@ -218,9 +228,10 @@ namespace SgqSystem.Controllers
             tabela.footer = new List<Trs>();
 
             var tdsDoFooter2 = new List<Tds>();
-            for (int i = 0; i < 4*3; i++)
+            for (int i = 0; i < 4 * 3; i++)
             {
-                tdsDoFooter2.Add(new Tds() {
+                tdsDoFooter2.Add(new Tds()
+                {
                     coolspan = 1,
                     valor = (1.2M * i).ToString()
                 });
@@ -246,8 +257,7 @@ namespace SgqSystem.Controllers
             });
 
             #endregion
-
-            return View(tabela);
+            return tabela;
         }
 
     }
@@ -277,6 +287,7 @@ namespace SgqSystem.Controllers
     public class Tds
     {
         public string valor { get; set; }
+        public string click { get; set; }
         public int coolspan { get; set; }
     }
 

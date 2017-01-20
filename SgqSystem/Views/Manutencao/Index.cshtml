@@ -1,6 +1,7 @@
 ﻿    @model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
     ViewBag.Title = "Manutenção";
+    var url1 = Url.Action("Index", "manDataCollectITs");
 }
 
 
@@ -10,6 +11,7 @@
 
         <div class="page-content-wrapper">
             <!-- BEGIN CONTENT BODY -->
+                <a id="linkGambiara" href="@url1" >Coleta de Indicadores Técnicos</a>
             <div class="page-content" style="min-height: 600px;">
                 <!-- BEGIN PAGE HEADER-->
                 <!-- BEGIN PAGE BAR -->

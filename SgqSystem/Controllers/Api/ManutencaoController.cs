@@ -12,7 +12,7 @@ namespace SgqSystem.Controllers.Api
     [RoutePrefix("api/Manutencao")]
     public class ManutencaoController : ApiController
     {
-       
+
 
         public string queryReg(string regional)
         {
@@ -20,7 +20,8 @@ namespace SgqSystem.Controllers.Api
             var valor = "";
             var count = 0;
 
-            foreach(string r in regionais){
+            foreach (string r in regionais)
+            {
                 valor += "'" + r + "'";
                 if (count < regionais.Count - 1)
                     valor += ",";
@@ -41,13 +42,13 @@ namespace SgqSystem.Controllers.Api
 
             var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
             regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-             
+
             string regionaisFiltradas = "";
 
             if (regionalFiltDecode != "null")
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
-            }                       
+            }
 
             using (var db = new SgqDbDevEntities())
             {
@@ -188,7 +189,7 @@ namespace SgqSystem.Controllers.Api
 
             //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
             //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
-             
+
             string regionaisFiltradas = "";
             string regionalFiltDecode = "";
 
@@ -242,20 +243,20 @@ namespace SgqSystem.Controllers.Api
 
             if (anos != "null") _mockFiltroAno = new List<string>(anos.Split(','));
 
-            if (_mockFiltroMes.Count != 0 || _mockFiltroAno.Count != 0 )
+            if (_mockFiltroMes.Count != 0 || _mockFiltroAno.Count != 0)
             {
                 string mes = "";
                 for (int i = 0; i < _mockFiltroMes.Count; i++)
                 {
-                    if(i == 0)
+                    if (i == 0)
                     {
-                        mes = "'"+_mockFiltroMes[i]+"'";
+                        mes = "'" + _mockFiltroMes[i] + "'";
                     }
                     else
                     {
-                        mes += ','+"'"+_mockFiltroMes[i]+"'";
+                        mes += ',' + "'" + _mockFiltroMes[i] + "'";
                     }
-                    
+
                 }
 
                 string ano = "";
@@ -281,8 +282,8 @@ namespace SgqSystem.Controllers.Api
             else
             {
                 sqlData = " and MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
-            }                                
-   
+            }
+
             string regionaisFiltradas = "";
 
             if (regionalFiltDecode != "null")
@@ -318,7 +319,7 @@ namespace SgqSystem.Controllers.Api
         [Route("getSelectGraficoEvolutivoPorUnidadeEConta/{dataIni}/{dataFim}/{meses}/{anos}/{unidade}/{conta}/{regFiltro}")]
         public List<Uni> getSelectGraficoEvolutivoPorUnidadeEConta(string dataIni, string dataFim, string meses, string anos, string unidade, string conta, string regFiltro)
         {
-            
+
             var lista = new List<Uni>();
             var sqlData = "";
             var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
@@ -522,12 +523,12 @@ namespace SgqSystem.Controllers.Api
 
                 sql += "FROM manutencao ";
                 sql += "WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
-                sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
+                //sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                 sql += "and EmpresaRegional = \'" + regionalDecode + "\'  ";
                 sql += regionaisFiltradas;
                 sql += "GROUP BY EmpresaSigla ";
                 sql += ") TABELA ORDER BY 1";
-               
+
                 lista = db.Database.SqlQuery<FatoresTecnicosMateriaPrima>(sql).ToList();
             }
 
@@ -646,7 +647,7 @@ namespace SgqSystem.Controllers.Api
 
                 sql += "FROM manutencao ";
                 sql += "WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
-                sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
+                //sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                 sql += "and EmpresaSigla = \'" + unidadeDecode + "\'  ";
                 sql += regionaisFiltradas;
                 sql += "GROUP BY EmpresaSigla, CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END) ";
@@ -786,7 +787,7 @@ namespace SgqSystem.Controllers.Api
                     sql += " WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' AND TipoInformacao = 'CustoFixo'";
                     sql += " and Pacote in (\'" + pacoteDecode + "\') and EmpresaRegional in (\'" + regionalDecode + "\') and ContaContabil in ( '" + item.Name + "') ";
                     sql += regionaisFiltradas;
-                    sql +=" group by ContaContabil  order by ContaContabil asc; ";
+                    sql += " group by ContaContabil  order by ContaContabil asc; ";
                     item.total = db.Database.SqlQuery<TotalPacote>(sql).FirstOrDefault();
 
                     sql = "select Regional, sum(Orçada) as Orçada, sum(Realizada) as Realizada, sum(DesvioPorc) as DesvioPorc, sum(DesvioReal) as DesvioReal from(";
@@ -858,7 +859,7 @@ namespace SgqSystem.Controllers.Api
                 sql += " \n         / sum(cast(case when TipoProducao = '011.QT. Bois Processados' then ProducaoOrcada else 0 end as float))";
                 sql += " \n      )";
                 sql += " \n - 1  as [DesvUNBoi]";
-                sql += " \n FROM    Manutencao WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
+                sql += " \n FROM    Manutencao WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\'";
                 sql += regionaisFiltradas;
                 sql += " GROUP BY  EmpresaSigla ,MesAno";
 
@@ -904,7 +905,7 @@ namespace SgqSystem.Controllers.Api
             {
                 var sql = "";
 
-                if( conta == "ENERGIA ELÉTRICA CONTRATADA")
+                if (conta == "ENERGIA ELÉTRICA CONTRATADA")
                 {
                     sql = "SELECT ";
                     sql += "EmpresaSigla ";
@@ -940,7 +941,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "manutencao ";
                     sql += "WHERE ";
                     sql += "MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
-                    sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
+                    //sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                     sql += "and EmpresaRegional = \'" + regionalDecode + "\' ";
                     sql += regionaisFiltradas;
                     sql += "GROUP BY ";
@@ -965,7 +966,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "manutencao ";
                     sql += "WHERE ";
                     sql += "MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
-                    sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
+                    //sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                     sql += "and EmpresaRegional = \'" + regionalDecode + "\' ";
                     sql += regionaisFiltradas;
                     sql += "GROUP BY ";
@@ -989,7 +990,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "manutencao ";
                     sql += "WHERE ";
                     sql += "MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
-                    sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
+                    //sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                     sql += "and EmpresaRegional = \'" + regionalDecode + "\' ";
                     sql += regionaisFiltradas;
                     sql += "GROUP BY ";
@@ -1087,7 +1088,7 @@ namespace SgqSystem.Controllers.Api
 
             using (var db = new SgqDbDevEntities())
             {
-      
+
 
                 var sql = "";
 
@@ -1131,7 +1132,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "manutencao ";
                     sql += "WHERE ";
                     sql += sqlData;
-                    sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
+                    //sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                     sql += "and EmpresaSigla = \'" + unidadeDecode + "\' ";
                     sql += regionaisFiltradas;
                     sql += "GROUP BY ";
@@ -1156,7 +1157,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "manutencao ";
                     sql += "WHERE ";
                     sql += sqlData;
-                    sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
+                    //sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                     sql += "and EmpresaSigla = \'" + unidadeDecode + "\' ";
                     sql += regionaisFiltradas;
                     sql += "GROUP BY ";
@@ -1182,7 +1183,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "manutencao ";
                     sql += "WHERE ";
                     sql += sqlData;
-                    sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
+                    //sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                     sql += "and EmpresaSigla = \'" + unidadeDecode + "\' ";
                     sql += regionaisFiltradas;
                     sql += "GROUP BY ";
@@ -1209,62 +1210,62 @@ namespace SgqSystem.Controllers.Api
 }
 
 public class Pacote
-    {
-        public string Name { get; set; }
-        public List<Reg> ListaRegionais { get; set; }
-        public TotalPacote total { get; set; }
-        public List<Reg> totalColunaReg { get; set; }
+{
+    public string Name { get; set; }
+    public List<Reg> ListaRegionais { get; set; }
+    public TotalPacote total { get; set; }
+    public List<Reg> totalColunaReg { get; set; }
 }
-   
-
-    public class Reg
-    {
-        public string Regional { get; set; }
-        public double? Orçada { get; set; }
-        public double? Realizada { get; set; }
-        public double? DesvioPorc { get; set; }
-        public double? DesvioReal { get; set; }
-    }
-
-    public class Uni
-    {
-        public string MesAno { get; set; }
-        public double? Orçada { get; set; }
-        public double? Realizada { get; set; }
-        public double? DesvioPorc { get; set; }
-        public double? DesvioReal { get; set; }
-    }
-
-    public class TotalPacote
-    {
-        public string Pacote { get; set; }
-        public double? Orçada { get; set; }
-        public double? Realizada { get; set; }
-        public double? DesvioPorc { get; set; }
-        public double? DesvioReal { get; set; }
-    }
-
-    public class Desvio
-    {
-        public string nome { set; get; }
-        public string Regional { get; set; }
-        public double? Orçada { get; set; }
-        public double? Realizada { get; set; }
-        public double? DesvioPorc { get; set; }
-        public double? DesvioReal { get; set; }
-    }
 
 
-    public class FatoresTecReg
-    {
-        public string EmpresaSigla { set; get; }
-        public double? DesvQtdeBoi { get; set; }
-        public double? DesvQtdeConsumoUN { get; set; }
-        public double? DesvPrecoUN { get; set; }
-        public double? DesvUNBoi { get; set; }
-        public string AnoMes { get; set; }
-        public double? BOIS_MORTOS { get; set; }
-        public double? BOIS_MARCADOS_PARA_MORRER { get; set; }
+public class Reg
+{
+    public string Regional { get; set; }
+    public double? Orçada { get; set; }
+    public double? Realizada { get; set; }
+    public double? DesvioPorc { get; set; }
+    public double? DesvioReal { get; set; }
+}
+
+public class Uni
+{
+    public string MesAno { get; set; }
+    public double? Orçada { get; set; }
+    public double? Realizada { get; set; }
+    public double? DesvioPorc { get; set; }
+    public double? DesvioReal { get; set; }
+}
+
+public class TotalPacote
+{
+    public string Pacote { get; set; }
+    public double? Orçada { get; set; }
+    public double? Realizada { get; set; }
+    public double? DesvioPorc { get; set; }
+    public double? DesvioReal { get; set; }
+}
+
+public class Desvio
+{
+    public string nome { set; get; }
+    public string Regional { get; set; }
+    public double? Orçada { get; set; }
+    public double? Realizada { get; set; }
+    public double? DesvioPorc { get; set; }
+    public double? DesvioReal { get; set; }
+}
+
+
+public class FatoresTecReg
+{
+    public string EmpresaSigla { set; get; }
+    public double? DesvQtdeBoi { get; set; }
+    public double? DesvQtdeConsumoUN { get; set; }
+    public double? DesvPrecoUN { get; set; }
+    public double? DesvUNBoi { get; set; }
+    public string AnoMes { get; set; }
+    public double? BOIS_MORTOS { get; set; }
+    public double? BOIS_MARCADOS_PARA_MORRER { get; set; }
 
 }
 
@@ -1272,8 +1273,8 @@ public class FatoresTecnicosMateriaPrima
 {
 
     public double? Orcado { get; set; }
-    public double? Realizado  { get; set; }
- 
+    public double? Realizado { get; set; }
+
     public string EmpresaSigla { get; set; }
     public string AnoMes { get; set; }
 

@@ -64,6 +64,9 @@ namespace SGQDBContext
         public decimal Nivel1 { get; set; }
         public decimal Nivel2 { get; set; }
         public decimal Nivel3 { get; set; }
+        public decimal VolumeAlerta { get; set; }
+        public decimal Meta { get; set; }
+        
 
         //public DateTime DataCollect { get; set; }
         //public int? Evaluate { get; set; }
@@ -84,6 +87,8 @@ namespace SGQDBContext
             sql += "\n	(Nivel3) as nivel3                                                                                                                                      ";
             sql += "\n	,(Nivel3 / 3) * 2 as nivel2				                                                                                                    			";
             sql += "\n	,(Nivel3 / 3) as nivel1					                                                                                                    			";
+            sql += "\n	,[Volume total de alerta] AS VolumeAlerta				                                                                                                ";
+            sql += "\n	,[Meta do indicador] AS Meta			                                                                                                    			";
             sql += "\n	FROM									                                                                                                    			";
             sql += "\n											                                                                                                    			";
             sql += "\n	(										                                                                                                    			";
@@ -154,10 +159,10 @@ namespace SGQDBContext
             sql += "\n														                                                                                         	        ";
             sql += "\n			 WHERE 1=1											                                                                             	            ";
             sql += "\n			   AND P321.ParLevel1_Id  = '" + ParLevel1_Id + "' 		                                                             							";
-            sql += "\n			   AND P32.ParCompany_Id  IS NULL						                                                             						    ";
-            sql += "\n			   AND AV.ParCompany_Id   IS NULL						                                                             						    ";
-            sql += "\n			   AND AM.ParCompany_Id   IS NULL						                                                            						    ";
-            sql += "\n			   AND Meta.ParCompany_Id IS NULL						                                                            						    ";
+            sql += "\n			   --AND P32.ParCompany_Id  IS NULL						                                                             						    ";
+            sql += "\n			   --AND AV.ParCompany_Id   IS NULL						                                                             						    ";
+            sql += "\n			   --AND AM.ParCompany_Id   IS NULL						                                                            						    ";
+            sql += "\n			   --AND Meta.ParCompany_Id IS NULL						                                                            						    ";
             sql += "\n			   AND P321.Active        = 1							                                                            					        ";
             sql += "\n			   AND P32.IsActive       = 1							                                                            					        ";
             sql += "\n			   AND L3.IsActive        = 1							                                                            					        ";
