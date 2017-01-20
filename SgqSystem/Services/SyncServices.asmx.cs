@@ -2152,7 +2152,7 @@ namespace SgqSystem.Services
 
                                         , classe: "container");
 
-            string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btnSave btnRounded btn-warning hide\"><i class=\"fa fa-save\"></i></button><!--Save-->" +
+            string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button><!--Save-->" +
                              " <button class=\"btn btn-lg btn-danger btnCA hide\">Ação Corretiva</button><!--Corrective Action-->";
 
             string message = "<div class=\"message padding20\" style=\"display:none\">                                                                                      " +
@@ -2223,12 +2223,12 @@ namespace SgqSystem.Services
         {
             string menu = "<div class=\"rightMenu\">                                                                                                  " +
                            "     <div class=\"list-group list-group-inverse rightMenuList\">                                                           " +
-                           "         <a href= \"#\" id=\"btnSync\" class=\"list-group-item\" style=\"background-color: black; font-weight: bold;\">Sincronizar Resultados</a>                                                  " +
-                           "         <a href= \"index.html\" id=\"btnSyncParam\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\" onClick=\"onDeviceReady();\">Sincronizar Parametrizações</a>                                                  " +
+                           "         <a href=\"#\" id=\"btnSync\" class=\"list-group-item\" style=\"background-color: black; font-weight: bold;\">Sincronizar Resultados</a>                                                  " +
+                           "         <a href=\"#\" id=\"btnSyncParam\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">Sincronizar Parametrizações</a>                                                  " +
 
-                           "         <a href= \"#\" id=\"btnLogout\" class=\"list-group-item\">Logout</a>                                              " +
-                           "         <a href= \"#\" id=\"btnLog\" class=\"list-group-item\">Visualizar Log</a>                                               " +
-                           "         <a href= \"#\" id=\"btnCollectDB\" class=\"list-group-item\">Visualizar banco de dados</a>                                    " +
+                           "         <a href=\"#\" id=\"btnLogout\" class=\"list-group-item\">Logout</a>                                              " +
+                           "         <a href=\"#\" id=\"btnLog\" class=\"list-group-item\">Visualizar Log</a>                                               " +
+                           "         <a href=\"#\" id=\"btnCollectDB\" class=\"list-group-item\">Visualizar banco de dados</a>                                    " +
                            "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">Limpar banco de dados</a>                                " +
                            "         <a href=\"#\" id=\"btnMostrarContadores\" class=\"list-group-item\">Mostrar contadores</a>                                " +
                            "         <span id=\"version\" class=\"list-group-item\">Versão: <span class=\"number\"></span></span>                     " +
@@ -4175,9 +4175,22 @@ namespace SgqSystem.Services
                     int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, Convert.ToDateTime(DateCorrectiveAction).ToString("yyyy-MM-dd HH:mm:ss"), Convert.ToDateTime(AuditStartTime).ToString("yyyy-MM-dd HH:mm:ss"), DescriptionFailure, ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
                     if (id > 0)
                     {
+                    //01/20/2017
+
+                        
                         string dataInicio = null;
                         string dataFim = null;
+
+                        if(!data.Contains("/"))
+                        {
+                            string dia = data.Substring(2, 2);
+                            string mes = data.Substring(0, 2);
+                            string ano = data.Substring(4, 4); 
+
+                            data = ano + "/" + mes + "/" + dia;
+                        }
                         DateTime dataAPP = Convert.ToDateTime(data);
+                        
                         //Pega a data pela regra da frequencia
                         getFrequencyDate(Convert.ToInt32(ParFrequency_Id), dataAPP, ref dataInicio, ref dataFim);
                         var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim);
@@ -4192,6 +4205,8 @@ namespace SgqSystem.Services
             }
             catch (Exception ex)
             {
+                int insertLog = insertLogJson("", ex.Message, "N/A", "N/A", "InsertCorrectiveAction");
+
                 return "erro";
                 throw ex;
             }
