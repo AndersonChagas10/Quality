@@ -3,13 +3,39 @@
     ViewBag.Title = "Visão Geral da Área";
     var url = Url.Action("Index", "Home");
     var urlTabela1 = Url.Action("VisaoGeralDaAreaTbl1", "RelatoriosSgq");
+    var urlTabela2 = Url.Action("VisaoGeralDaAreaTbl2", "RelatoriosSgq");
     var urlGrafico1 = Url.Action("Grafico1", "api/VisaoGeralDaArea");
     var urlGrafico2 = Url.Action("Grafico2", "api/VisaoGeralDaArea");
     var urlGrafico3 = Url.Action("Grafico3", "api/VisaoGeralDaArea");
     var urlGrafico4 = Url.Action("Grafico4", "api/VisaoGeralDaArea");
     var urlGrafico5 = Url.Action("Grafico5", "api/VisaoGeralDaArea");
-    
 }
+
+<style>
+
+    .loader {
+      border: 16px solid black;
+      border-radius: 50%;
+      border-top: 16px solid white;
+      border-right: 16px solid black;
+      border-bottom: 16px solid white;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+
+    @@-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @@keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+</style>
 
 <div class="page-content" style="min-height: 600px;">
 
@@ -23,17 +49,13 @@
 
         <div id="tabela1div"></div>
 
-        <div id="tabela2"></div>
-
-        <div id="grafico1"></div>
+        <div id="tabela2div"></div>
 
         <div id="grafico3"></div>
 
         <div id="grafico4"></div>
 
         <div id="grafico5"></div>
-
-        <div id="grafico3"></div>
 
     </div>
 
@@ -45,16 +67,25 @@
 
 
         var urlTabela1 = '@Html.Raw(@urlTabela1)';
+        var urlTabela2 = '@Html.Raw(@urlTabela2)';
         var urlGrafico1 = '@Html.Raw(@urlGrafico1)';
         var urlGrafico2 = '@Html.Raw(@urlGrafico2)';
         var urlGrafico3 = '@Html.Raw(@urlGrafico3)';
         var urlGrafico4 = '@Html.Raw(@urlGrafico4)';
         var urlGrafico5 = '@Html.Raw(@urlGrafico5)';
-        
+
         var $btn = $('#btnSend');
         $('#simpleCallendar').hide().attr('disabled', true);
 
         function Send(toggle) {
+            $('#grafico1').empty();
+            $('#grafico2').empty();
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+            $('#tabela1div').empty();
+            $('#tabela2div').empty();
+
             $btn.button('loading');
             $('#results').empty();
 
@@ -63,12 +94,15 @@
                 return;
             }
 
+            $('#grafico1').empty().addClass('loader');
+
             //AJAX
             $.post(urlGrafico1, enviar, function (r) {
                 try {
                     if (toggle == undefined)
                         $('#menu-toggle').click();
                     //CriarTbl1(r);
+                    $('#grafico1').removeClass('loader');
                     Grafico1(r);
                 } catch (e) {
                     console.log(e);
@@ -82,14 +116,19 @@
                 } else {
                     GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
                 }
+            }).always(function () {
+                $('#grafico1').removeClass('loader')
             });
+
+            $('#tabela1div').empty().addClass('loader');
 
             //AJAX
             $.post(urlTabela1, enviar, function (r) {
                 try {
-                    if (toggle == undefined)
-                        $('#menu-toggle').click();
-                    CriarTbl1(r);
+                    //if (toggle == undefined)
+                    //    $('#menu-toggle').click();
+                    $('#tabela1div').removeClass('loader');
+                    GetTabela1(r);
                 } catch (e) {
                     console.log(e);
                 } finally {
@@ -102,11 +141,38 @@
                 } else {
                     GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
                 }
+            }).always(function () {
+                $('#tabela1div').removeClass('loader')
             });
         };
 
-        function CriarTbl1(r) {
-            $('#tabela1div').append(r);
+        function GetTabela1(r) {
+            $('#tabela1div').empty().append(r);
+        }
+
+        function GetTabela2() {
+
+            $('#tabela2div').empty().addClass('loader');
+
+            $.post(urlTabela2, enviar, function (r) {
+                try {
+                    $('#tabela2div').removeClass('loader')
+                    $('#tabela2div').empty().append(r);
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    $btn.button('reset');
+                }
+            }).fail(function (e, h, x) {
+                $btn.button('reset');
+                if (e.status == 0) {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+            }).always(function () {
+                $('#tabela2div').removeClass('loader')
+            });
         }
 
         function ValidaDadosParaEnvio() {
@@ -124,17 +190,6 @@
 
             return true;
         }
-
-        $(document).ready(function () {
-
-            $("#btnSend").click(function (e) {
-                Send();
-            });
-
-            formControl.showFullCallendar();
-            //formControl.showUnit();
-
-        });
 
         function Grafico1(data) {
 
@@ -251,12 +306,16 @@
 
         function Grafico2(idRegional) {
 
+            $('#grafico2').empty().addClass('loader');
+
             $.post(urlGrafico2 + "/" + idRegional, enviar, function (data) {
 
                 var sigla = MapeiaValorParaHC(data, "companySigla");
                 var scorecard = MapeiaValorParaHC(data, "companyScorecard");
                 var scorecardJbs = MapeiaValorParaHC(data, "scorecardJbs");
                 var scorecardRegional = MapeiaValorParaHC(data, "scorecardJbsReg");
+
+                $('#grafico2').removeClass('loader');
 
                 $('#grafico2').empty().highcharts({
                     credits: {
@@ -357,11 +416,15 @@
                         }]
                 });
 
+            }).always(function () {
+                $('#grafico2').removeClass('loader');
             });//Fim Ajax
 
         }
 
         function Grafico3(id) {
+
+            $('#grafico3').empty().addClass('loader');
 
             $.post(urlGrafico3 + "/" + id, enviar, function (data) {
                 //var name = MapeiaValorParaHC(data, "unitName")[0];
@@ -374,6 +437,8 @@
                 var nc = MapeiaValorParaHC(data, "nc");
                 var porc = MapeiaValorParaHC(data, "procentagemNc");
                 var qtdAv = MapeiaValorParaHC(data, "av");
+
+                $('#grafico3').removeClass('loader');
 
                 $('#grafico3').empty().highcharts({
                     credits: {
@@ -508,11 +573,15 @@
                     }]
                 });
 
+            }).always(function () {
+                $('#grafico3').removeClass('loader');
             });//Fim Ajax
 
         }
 
         function Grafico4(id) {
+
+            $('#grafico4').empty().addClass('loader');
 
             $.post(urlGrafico4 + "/" + id, enviar, function (data) {
 
@@ -526,6 +595,8 @@
                 var nc = MapeiaValorParaHC(data, "nc");
                 var porc = MapeiaValorParaHC(data, "procentagemNc");
                 var qtdAv = MapeiaValorParaHC(data, "av");
+
+                $('#grafico4').removeClass('loader');
 
                 $('#grafico4').empty().highcharts({
                     credits: {
@@ -659,11 +730,15 @@
                     }]
                 });//Fim HC
 
+            }).always(function () {
+                $('#grafico4').removeClass('loader');
             });//Fim Ajax
 
         }
 
         function Grafico5(id) {
+            EasyAjax(urlGrafico5 + "/" + id, {})
+            $('#grafico5').empty().addClass('loader');
 
             $.post(urlGrafico5 + "/" + id, function (data) {
 
@@ -673,6 +748,8 @@
                 var nc = MapeiaValorParaHC(data, "nc");
                 var porc = MapeiaValorParaHC(data, "procentagemNc");
                 var qtdAv = MapeiaValorParaHC(data, "av");
+
+                $('#grafico5').removeClass('loader');
 
                 $('#grafico5').empty().highcharts({
                     credits: {
@@ -809,8 +886,74 @@
                     }]
                 });
 
+            }).always(function () {
+                $('#grafico5').removeClass('loader');
             });//Fim Ajax
 
+        }
+
+        $(document).ready(function () {
+
+            $("#btnSend").click(function (e) {
+                Send();
+            });
+
+            formControl.showFullCallendar();
+            //formControl.showUnit();
+
+        });
+
+        var ajaxCount = 0;
+        $(document).ajaxStart(function () {
+            ajaxCount++;
+        });
+
+        $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
+            ajaxCount--;
+        });
+
+        $(document).ajaxStop(function () {
+            ajaxCount--;
+            if (ajaxCount == 0) {
+                $(".loader").removeClass("loader");
+            }
+        });
+
+        function EasyAjax(url, dados, callback, loader) {
+
+            if (!!loader)
+                $('#' + loader).addClass('loader');
+
+            if (dados == undefined)
+                dados = {};
+
+            //AJAX
+            $.post(url, dados, function (r) {
+                try {
+                    //if (toggle == undefined)
+                    //    $('#menu-toggle').click();
+
+                    if (!!loader)
+                        $('#' + loader).removeClass('loader');
+
+                    callback(r);
+
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    $btn.button('reset');
+                }
+            }).fail(function (e, h, x) {
+                $btn.button('reset');
+                if (e.status == 0) {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+            }).always(function () {
+                if (!!loader)
+                    $('#' + loader).removeClass('loader');
+            });
         }
 
     </script>
