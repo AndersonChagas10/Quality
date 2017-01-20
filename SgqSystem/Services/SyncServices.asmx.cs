@@ -3450,7 +3450,7 @@ namespace SgqSystem.Services
                 classInput = " interval";
 
                 labels = html.div(
-                                    outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                    outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
                                     classe: "font10",
                                     style: "font-size: 11px; margin-top:7px;"
                                 );
