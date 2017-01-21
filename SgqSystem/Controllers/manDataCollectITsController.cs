@@ -8,6 +8,7 @@ using Dominio.Interfaces.Services;
 using DTO.Helpers;
 using SgqSystem.Secirity;
 using System;
+using DTO.DTO.Manutencao;
 
 namespace SgqSystem.Controllers
 {
@@ -20,19 +21,22 @@ namespace SgqSystem.Controllers
         private IBaseDomain<ParCompany, ParCompanyDTO> _baseDomainParCompany;
         private IBaseDomain<ParFrequency, ParFrequencyDTO> _baseDomainParFrequency;
         private IBaseDomain<ParMeasurementUnit, ParMeasurementUnitDTO> _baseDomainParMeasurementUnit;
+        private IBaseDomain<DimManutencaoColetaITs, DimManutencaoColetaITsDTO> _dimManutencaoColetaITs;
 
         public manDataCollectITsController(IBaseDomain<ParCompany, ParCompanyDTO> baseDomainParCompany,
                     IBaseDomain<ParFrequency, ParFrequencyDTO> baseDomainParFrequency,
-                    IBaseDomain<ParMeasurementUnit, ParMeasurementUnitDTO> baseDomainParMeasurementUnit)
+                    IBaseDomain<ParMeasurementUnit, ParMeasurementUnitDTO> baseDomainParMeasurementUnit,
+                    IBaseDomain<DimManutencaoColetaITs, DimManutencaoColetaITsDTO> dimManutencaoColetaITs)
         {
             _baseDomainParCompany = baseDomainParCompany;
             _baseDomainParFrequency = baseDomainParFrequency;
             _baseDomainParMeasurementUnit = baseDomainParMeasurementUnit;
+            _dimManutencaoColetaITs = dimManutencaoColetaITs;
 
             ViewBag.listaParCompany = _baseDomainParCompany.GetAll();
             ViewBag.listaParFrequency = _baseDomainParFrequency.GetAll();
             ViewBag.listaParMeasurementUnit = _baseDomainParMeasurementUnit.GetAll();
-
+            ViewBag.listaDataDataType = _dimManutencaoColetaITs.GetAll();
 
         }
 

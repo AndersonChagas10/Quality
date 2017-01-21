@@ -48,7 +48,10 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ReferenceDatetime)
+                        @if (item.ReferenceDatetime.HasValue)
+                        {
+                            @Html.Label(item.ReferenceDatetime.Value.ToString("dd/MM/yyyy"))
+                        }
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.ParCompany_Id)

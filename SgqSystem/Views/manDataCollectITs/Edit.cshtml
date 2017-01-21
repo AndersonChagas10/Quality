@@ -83,11 +83,7 @@
                 <div class="form-group">
                     @Html.Label("Descrição da Coleta", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        <select id="dataType" name="dataType" class="form-control valid">
-                            <option value="001.KWH. Energia Eletrica - Concessionaria">001.KWH. Energia Eletrica - Concessionaria</option>
-                            <option value="002.M3. Agua">002.M3. Agua</option>
-                            <option value="003.MCAL. Vapor">003.MCAL. Vapor</option>
-                        </select>
+                        @Html.DropDownListFor(model => model.DataType, new SelectList(ViewBag.listaDataDataType, "id", "IndicadorTecnico"), Resources.Resource.select + "...", new { @class = "form-control" })              
                         <script>
 
                             var dataTypeSelecionado = @Html.Raw(Json.Encode(Model.DataType));
@@ -105,7 +101,12 @@
                     <div class="col-md-10">
 
                         @*AmountData deve ser decimal e não nullable<decimal> para que o filtro funcione*@
-                        @Html.TextBoxFor(model => model.AmountData, Model.AmountData.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" })
+                        @if (Model.ReferenceDatetime.HasValue)
+                        {
+                            @Html.TextBoxFor(model => model.AmountData, Model.AmountData.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" })
+                        }
+
+                        
                         @Html.ValidationMessageFor(model => model.AmountData, "", new { @class = "text-danger" })
 
                     </div>
@@ -140,7 +141,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" class="btn btn-default" />
+                        <input type="submit" value="@Resources.Resource.save" class="btn btn-default" />
                     </div>
                 </div>
             </div>

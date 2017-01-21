@@ -640,6 +640,8 @@ namespace SGQDBContext
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
+        public int Id { get; set; }
+        public string Key { get; set; }
         public int ParLevel1_Id { get; set; }
         public int ParLevel2_Id { get; set; }
         public int Unit_Id { get; set; }
@@ -666,53 +668,6 @@ namespace SGQDBContext
                          "GROUP BY CL2.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, Shift, Period, CONVERT(date, CollectionDate), EvaluationNumber, ConsolidationLevel2_Id) AS ultimas_amostras " +
                          "GROUP BY ParLevel1_Id, ParLevel2_Id, UnitId, Shift, Period, CollectionDate, ConsolidationLevel2_Id ";
 
-            //string sql = "SELECT                                                           " +
-            //            "   ParLevel1_Id                                                   " +
-            //            "    , ParLevel2_Id                                                " +
-            //            "    , UnitId      AS Unit_Id                                      " +
-            //            "    , Shift                                                       " +
-            //            "    , Period                                                      " +
-            //            "    , CollectionDate                                              " +
-            //            "    ,max(EvaluationNumber) as EvaluateLast                        " +
-            //            "    ,max(Sample) as SampleLast                                    " +
-            //            "    ,max(ConsolidationLevel2_Id)AS ConsolidationLevel2_Id         " +
-            //            "   FROM                                                           " +
-            //            "   (                                                              " +
-            //            "    SELECT                                                        " +
-            //            "                                                                  " +
-            //            "    ParLevel1_Id                                                  " +
-            //            "    , ParLevel2_Id                                                " +
-            //            "    , UnitId                                                      " +
-            //            "    , Shift                                                       " +
-            //            "    , Period                                                      " +
-            //            "    , convert(date, CollectionDate) as CollectionDate             " +
-            //            "    , EvaluationNumber                                            " +
-            //            "    , max(Sample) as Sample                                       " +
-            //            "    , max(ConsolidationLevel2_Id)AS ConsolidationLevel2_Id        " +
-            //            "                                                                  " +
-            //            "    FROM CollectionLevel2                                         " +
-            //            "                                                                  " +
-            //            "    where UnitId = '" + UnidadeId + "'                            " +
-            //            "                                                                  " +
-            //            "    group by                                                      " +
-            //            "    ParLevel1_Id                                                  " +
-            //            "    , ParLevel2_Id                                                " +
-            //            "    , UnitId                                                      " +
-            //            "    , Shift                                                       " +
-            //            "    , Period                                                      " +
-            //            "    , convert(date, CollectionDate)                               " +
-            //            "    , EvaluationNumber                                            " +
-            //            "    , ConsolidationLevel2_Id                                      " +
-            //            "   ) ultimas_amostras                                             " +
-            //            "                                                                  " +
-            //            "   group by                                                       " +
-            //            "   ParLevel1_Id                                                   " +
-            //            "   , ParLevel2_Id                                                 " +
-            //            "   , UnitId                                                       " +
-            //            "   , Shift                                                        " +
-            //            "   , Period                                                       " +
-            //            "   , CollectionDate                                               " +
-            //            "   ,ConsolidationLevel2_Id                                        ";
 
             var Level2ResultList = db.Query<Level2Result>(sql);
 
@@ -728,8 +683,20 @@ namespace SGQDBContext
             var LastSample = db.Query<int>(sql).FirstOrDefault();
             return LastSample;
         }
+        public IEnumerable<Level2Result> getKeys(int ParLevel1_Id, int ParCompany_Id, string dataInicio, string dataFim)
+        {
+
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "SELECT CL2.Id, CL2.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, CL2.Shift, CL2.Period, CL2.EvaluationNumber, CL2.Sample, CL2.ConsolidationLevel2_Id, CL2.[Key] " +
+                         "FROM CollectionLevel2 CL2 " +
+                         "WHERE CL2.ParLevel1_Id = '" + ParLevel1_Id + "' AND CL2.UnitId = '" + ParCompany_Id + "' AND CL2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
+            var Level2ResultList = db.Query<Level2Result>(sql);
+            return Level2ResultList;
+        }
+
     }
-    
+
 
     public partial class ParLevel1ConsolidationXParFrequency
     {

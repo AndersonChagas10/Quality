@@ -3450,7 +3450,7 @@ namespace SgqSystem.Services
                 classInput = " interval";
 
                 labels = html.div(
-                                    outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString() + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString() + " " + parLevel3.ParMeasurementUnit_Name,
+                                    outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
                                     classe: "font10",
                                     style: "font-size: 11px; margin-top:7px;"
                                 );
@@ -4263,5 +4263,57 @@ namespace SgqSystem.Services
             }
         }
 
+        [WebMethod]
+        public string getCollectionLevel2Keys(string ParCompany_Id, DateTime data, int ParLevel1_Id = 0)
+        {
+
+            //Verificamos os Indicadores que já foram consolidados para a Unidade selecionada
+            var ParLevel1ConsolidationXParFrequencyDB = new SGQDBContext.ParLevel1ConsolidationXParFrequency();
+            //Instanciamos uma variável que irá 
+            var parLevel1ConsolidationXParFrequency = ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id));
+
+            
+
+            if (ParLevel1_Id > 0)
+            {
+                parLevel1ConsolidationXParFrequency = parLevel1ConsolidationXParFrequency.Where(p => p.ParLevel1_Id == ParLevel1_Id);
+            }
+            string ResultsKeys = null;
+            //Percorremos as consolidações de ParLevel1
+            foreach (var c in parLevel1ConsolidationXParFrequency)
+            {
+                //Instanciamos variavel de data
+                string dataInicio = null;
+                string dataFim = null;
+
+                //Pega a data pela regra da frequencia
+                getFrequencyDate(c.ParFrequency_Id, data, ref dataInicio, ref dataFim);
+
+                //Instanciamos a tabela Resultados
+                var Level2ResultDB = new SGQDBContext.Level2Result();
+                var Level2ResultList = Level2ResultDB.getKeys(c.ParLevel1_Id, Convert.ToInt32(ParCompany_Id), dataInicio, dataFim);
+                string listKeys = null;
+
+
+                //Percorremos os resultados do indicador
+                foreach (var key in Level2ResultList)
+                {
+                    listKeys += "<div id=\"" + key.Key + "\" class=\"collectionLevel2Key\"></div>";
+                }
+
+                if(!string.IsNullOrEmpty(listKeys))
+                {
+                    ResultsKeys += "<div class=\"ResultLevel2Key\">" +
+                                        listKeys +
+                                   "</div>";
+                }
+            }
+
+
+
+            return ResultsKeys;
+        }
+
     }
+
 }
