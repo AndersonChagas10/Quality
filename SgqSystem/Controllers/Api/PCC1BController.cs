@@ -82,14 +82,14 @@ namespace SgqSystem.Controllers.Api
                         "\n and ParLevel2_Id = " + parLevel2IdDianteiro + " --Dianteiro                                                                     " +
                         "\n and UnitId = " + receive.Unit +
                         "\n and CollectionDate Between ('" + receive.Data.ToString() + " 00:00:00.0000000') and ('" + receive.Data + " 23:59:59.0000000')   " +
-                        "\n ) jesus, (                                                                                                                      " +
+                        "\n ) j, (                                                                                                                      " +
                         "\n select ISNULL (SUM(WeiDefects), 0) as ncTraseiro                                                                                " +
                         "\n from CollectionLevel2                                                                                                           " +
                         "\n where parlevel1_Id = 3                                                                                                          " +
                         "\n and ParLevel2_Id = " + parLevel2Id2Traseiro + " --Traseiro                                                                      " +
                         "\n and UnitId = " + receive.Unit +
                         "\n and CollectionDate Between ('" + receive.Data + " 00:00:00.0000000') and ('" + receive.Data + " 23:59:59.0000000')              " +
-                        "\n ) maria";
+                        "\n ) m";
 
             using (var db = new SgqDbDevEntities())
             {
