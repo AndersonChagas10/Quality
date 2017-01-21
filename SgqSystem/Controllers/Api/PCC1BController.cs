@@ -40,21 +40,30 @@ namespace SgqSystem.Controllers.Api
             using (var db = new SgqDbDevEntities())
             {
 
-                string query = "SELECT IsNull(Max(Sequential), 0) AS Sequential, 0 AS Side from CollectionLevel2 " +
-                    "WHERE ParLevel1_Id=3 and ParLevel2_Id = "+ receive.ParLevel2 + " AND UnitId="+receive.Unit+" AND CollectionDate "+
-                    "BETWEEN '"+ receive.Data + " 00:00:00' AND '"+ receive.Data + " 23:59:59'";
+                string querySequencial =   
+                        "SELECT                                                                                             " +
+                        "\n IsNull(Max(Sequential), 0) AS Sequential,                                                       " +
+                        "\n 0 AS Side from CollectionLevel2                                                                 " +
+                        "\n WHERE ParLevel1_Id=3 and ParLevel2_Id = "+ receive.ParLevel2 + " AND                            " +
+                        "\n UnitId="+receive.Unit+" AND                                                                     " +
+                        "\n CollectionDate BETWEEN '" + receive.Data + " 00:00:00' AND '"+ receive.Data + " 23:59:59'       ";
 
-                _list = db.Database.SqlQuery<_PCC1B>(query).ToList();
+                _list = db.Database.SqlQuery<_PCC1B>(querySequencial).ToList();
 
                 if (_list.Count > 0)
                 {
                     pcc1b = _list[0];
 
-                    query = "SELECT IsNull(Max(Sequential), 0) AS Sequential, IsNull(Max(Side), 0) AS Side from CollectionLevel2 " +
-                    "WHERE ParLevel1_Id=3 and ParLevel2_Id = " + receive.ParLevel2 + " AND UnitId=" + receive.Unit + " AND CollectionDate " +
-                    "BETWEEN '" + receive.Data + " 00:00:00' AND '" + receive.Data + " 23:59:59' AND Sequential = "+pcc1b.Sequential;
+                    string queryBanda = 
+                        "SELECT                                                                                             " +
+                        "\n IsNull(Max(Sequential), 0) AS Sequential,                                                       " +
+                        "\n IsNull(Max(Side), 0) AS Side from CollectionLevel2                                              " +
+                        "\n WHERE ParLevel1_Id=3 and ParLevel2_Id = " + receive.ParLevel2 + "                               " +
+                        "\n AND UnitId=" + receive.Unit + " AND CollectionDate                                              " +
+                        "\n BETWEEN '" + receive.Data + " 00:00:00' AND '" + receive.Data + " 23:59:59'                     "+
+                        "\n AND Sequential = " + pcc1b.Sequential+"                                                         ";
 
-                    _list = db.Database.SqlQuery<_PCC1B>(query).ToList();
+                    _list = db.Database.SqlQuery<_PCC1B>(queryBanda).ToList();
 
                     pcc1b = _list[0];
                 }
