@@ -26,5 +26,6 @@ namespace Dominio
         public bool IsActive { get; set; }
     
         public virtual DimManutencaoColetaITs DimManutencaoColetaITs { get; set; }
+        public virtual ParCompany ParCompany { get; set; }
     }
 }
