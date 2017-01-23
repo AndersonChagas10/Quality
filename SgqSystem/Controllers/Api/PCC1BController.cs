@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using Dominio.ADO;
+using DTO;
 using SgqSystem.Handlres;
 using System;
 using System.Collections.Generic;
@@ -43,18 +44,18 @@ namespace SgqSystem.Controllers.Api
         public _PCC1B Next(_Receive receive)
         {
 
-            string userName = "grJsoluco3s";
-            string pass = "UserGQualidade";
+            string pass = "grJsoluco3s";
+            string userName = "UserGQualidade";
             ParCompany company;
             var retorno = new _PCC1B();
             retorno.Side = 1;
 
             ResultadosSequencialBanda _result = new ResultadosSequencialBanda();
 
-            //if (RequestContext.IsLocal)
+            //if (GlobalConfig.Brasil)
             //{
-            userName = "sa";
-            pass = "1qazmko0";
+            //    userName = "sa";
+            //    pass = "1qazmko0";
             //}
 
             using (var db = new SgqDbDevEntities())
