@@ -439,9 +439,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="ReferenceDatetime" Type="datetime" />
           <Property Name="UserSGQ_Id" Type="int" />
-          <Property Name="ParCompany_Id" Type="int" />
-          <Property Name="DimManutencaoColetaITs_id" Type="int" />
-          <Property Name="AmountData" Type="decimal" Precision="32" Scale="10" />
+          <Property Name="ParCompany_Id" Type="int" Nullable="false" />
+          <Property Name="DimManutencaoColetaITs_id" Type="int" Nullable="false" />
+          <Property Name="AmountData" Type="decimal" Precision="32" Scale="10" Nullable="false" />
           <Property Name="Comments" Type="varchar" MaxLength="800" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
@@ -1814,7 +1814,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ManDataCollectIT_DimManutencaoColetaITs_id">
-          <End Role="DimManutencaoColetaITs" Type="Self.DimManutencaoColetaITs" Multiplicity="0..1" />
+          <End Role="DimManutencaoColetaITs" Type="Self.DimManutencaoColetaITs" Multiplicity="1" />
           <End Role="ManDataCollectIT" Type="Self.ManDataCollectIT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DimManutencaoColetaITs">
@@ -6480,15 +6480,15 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="ReferenceDatetime" Type="DateTime" Precision="3" />
           <Property Name="UserSGQ_Id" Type="Int32" />
-          <Property Name="ParCompany_Id" Type="Int32" />
-          <Property Name="DimManutencaoColetaITs_id" Type="Int32" />
-          <Property Name="AmountData" Type="Decimal" Precision="32" Scale="10" />
+          <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
+          <Property Name="DimManutencaoColetaITs_id" Type="Int32" Nullable="false" />
+          <Property Name="AmountData" Type="Decimal" Nullable="false" Precision="32" Scale="10" />
           <Property Name="Comments" Type="String" MaxLength="800" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DimManutencaoColetaITs" Relationship="SgqDbModel.FK_ManDataCollectIT_DimManutencaoColetaITs_id" FromRole="ManDataCollectIT" ToRole="DimManutencaoColetaITs" />
         </EntityType>
         <Association Name="FK_ManDataCollectIT_DimManutencaoColetaITs_id">
-          <End Type="SgqDbModel.DimManutencaoColetaITs" Role="DimManutencaoColetaITs" Multiplicity="0..1" />
+          <End Type="SgqDbModel.DimManutencaoColetaITs" Role="DimManutencaoColetaITs" Multiplicity="1" />
           <End Type="SgqDbModel.ManDataCollectIT" Role="ManDataCollectIT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DimManutencaoColetaITs">
