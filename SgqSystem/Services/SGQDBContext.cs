@@ -81,103 +81,150 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
 
+            string _DataCollect = DataCollect.ToString("yyyyMMdd");
+
             string sql = "";
 
-            sql += "\n	SELECT									                                                                                                    			";
-            sql += "\n	(Nivel3) as nivel3                                                                                                                                      ";
-            sql += "\n	,(Nivel3 / 3) * 2 as nivel2				                                                                                                    			";
-            sql += "\n	,(Nivel3 / 3) as nivel1					                                                                                                    			";
-            sql += "\n	,[Volume total de alerta] AS VolumeAlerta				                                                                                                ";
-            sql += "\n	,[Meta do indicador] AS Meta			                                                                                                    			";
-            sql += "\n	FROM									                                                                                                    			";
-            sql += "\n											                                                                                                    			";
-            sql += "\n	(										                                                                                                    			";
-            sql += "\n											                                                                                                    			";
-            sql += "\n		SELECT								                                                                                                    			";
-            sql += "\n											                                                                                                    			";
-            sql += "\n		 [Unidade]							                                                                                                    			";
-            sql += "\n		,[Cód. do Indicador]				                                                                                                    			";
-            sql += "\n		,[Indicador]						                                                                                                    			";
-            sql += "\n		,[Tipo de Consolidação]				                                                                                                    			";
-            sql += "\n		,CASE 								                                                                                                    			";
-            sql += "\n			WHEN [HashKey] = 1 THEN (SELECT sum(Amostras) as AV FROM VolumePcc1b WHERE ParCompany_id = " + ParCompany_Id + ")                                ";
-            sql += "\n                                                        ";
-            sql += "\n			WHEN [Tipo de Consolidação] = 1 THEN SUM([Número de Avaliações] * [Número de Amostras] * [Peso da Tarefa])										";
-            sql += "\n			WHEN [Tipo de Consolidação] = 3 THEN SUM([Número de Avaliações] * [Número de Amostras])												            ";
-            sql += "\n			WHEN [Tipo de Consolidação] = 2 THEN SUM([Número de Avaliações] * [Número de Amostras] * [Peso da Tarefa])										";
-            sql += "\n		 END AS [Volume total de alerta]													                                                                ";
-            sql += "\n		 ,[Meta do indicador]													                                                                            ";
-            sql += "\n		 ,CASE 											                                                                                                    ";
-            sql += "\n			WHEN [HashKey] = 1 THEN (SELECT sum(Amostras) as AV FROM VolumePcc1b WHERE ParCompany_id = " + ParCompany_Id  + "   )                            ";
-            sql += "\n                    					                    ";
-            sql += "\n			WHEN [Tipo de Consolidação] = 1 THEN SUM([Número de Avaliações] * [Número de Amostras] * [Peso da Tarefa]) * ([Meta do indicador]/100)			";
-            sql += "\n			WHEN [Tipo de Consolidação] = 3 THEN SUM([Número de Avaliações] * [Número de Amostras]) * ([Meta do indicador]/100)								";
-            sql += "\n			WHEN [Tipo de Consolidação] = 2 THEN SUM([Número de Avaliações] * [Número de Amostras] * [Peso da Tarefa]) * ([Meta do indicador]/100)			";
-            sql += "\n		 END AS Nivel3							                                                                                                    		";
-            sql += "\n												                                                                                                    		";
-            sql += "\n		FROM 									                                                                                                    		";
-            sql += "\n												                                                                                                    		";
-            sql += "\n		(										                                                                                                    		";
-            sql += "\n												                                                                                                    		";
-            sql += "\n		SELECT									                                                                                                    		";
-            sql += "\n												                                                                                                    		";
-            sql += "\n			 NULL                            AS [Unidade]							                                                        				";
-            sql += "\n			,L1.Id                           AS [Cód. do Indicador]					                                                        				";
-            sql += "\n			,L1.Name                         AS [Indicador]							                                                        				";
-            sql += "\n			,L1.HashKey						 AS [HashKey]   						                                                        				";
-            sql += "\n			,L1.ParConsolidationType_Id      AS [Tipo de Consolidação]				                                                        				";
-            sql += "\n			,L1.IsSpecific                   AS [Indicador contém valores específicos por unidades?]											    	    ";
-            sql += "\n			,L1.IsSpecificNumberEvaluetion   AS [Indicador permite que monitoramentos tenham Numero de Avaliações diferentes?]								";
-            sql += "\n			,L1.IsSpecificNumberSample       AS [Indicador permite que monitoramentos tenham Numero de Amostras diferentes?]								";
-            sql += "\n			,L1.IsSpecificLevel3             AS [Indicador permite que unidades tenham tarefas diferentes?]												    ";
-            sql += "\n			,L1.IsSpecificGoal               AS [Indicador permite que unidades tenham metas diferentes?]												    ";
-            sql += "\n			,L1.IsRuleConformity             AS [Tipo de Não conformidade. (Menor ou maior que a meta)]												        ";
-            sql += "\n			,L2.Id                           AS [Cód. do Monitoramento]			                                                        					";
-            sql += "\n			,L2.Name                         AS [Monitoramento]					                                                        					";
-            sql += "\n			,L2.ParFrequency_Id              AS [Frequencia do Monitoramento]	                                                        					";
-            sql += "\n			,AV.Number                       AS [Número de Avaliações]			                                                        					";
-            sql += "\n			,AM.Number                       AS [Número de Amostras]			                                                        					";
-            sql += "\n			,L3.Id							 AS [Cód. da Tarefa]				                                                                            ";
-            sql += "\n			,L3.Name                         AS [Tarefa]						                                                        					";
-            sql += "\n			,P32.Weight                      AS [Peso da Tarefa]				                                                        					";
-            sql += "\n			,Meta.PercentValue               AS [Meta do indicador]				                                                        					";
-            sql += "\n		FROM       ParLevel3Level2Level1 P321						                                                                                    	";
-            sql += "\n		INNER JOIN ParLevel3Level2 P32								                                                                                  		";
-            sql += "\n				ON P32.Id = P321.ParLevel3Level2_Id					                                                                   						";
-            sql += "\n		INNER JOIN ParLevel3 L3										                                                                               			";
-            sql += "\n				ON L3.Id = P32.ParLevel3_Id							                                                                           				";
-            sql += "\n		INNER JOIN ParLevel2 L2										                                                                               			";
-            sql += "\n				ON L2.Id = P32.ParLevel2_Id							                                                                           				";
-            sql += "\n		INNER JOIN ParEvaluation AV									                                                                           				";
-            sql += "\n				ON AV.ParLevel2_Id = L2.Id							                                                                           				";
-            sql += "\n		INNER JOIN ParSample AM										                                                                               			";
-            sql += "\n				ON AM.ParLevel2_Id = L2.Id							                                                                           				";
-            sql += "\n		INNER JOIN ParLevel1 L1										                                                                               			";
-            sql += "\n				ON L1.Id = P321.ParLevel1_Id						                                                                       					";
-            sql += "\n		INNER JOIN ParGoal Meta										                                                                               			";
-            sql += "\n				ON Meta.ParLevel1_Id = L1.Id						                                                          	                            ";
-            sql += "\n														                                                                                         	        ";
-            sql += "\n			 WHERE 1=1											                                                                             	            ";
-            sql += "\n			   AND P321.ParLevel1_Id  = '" + ParLevel1_Id + "' 		                                                             							";
-            sql += "\n			   --AND P32.ParCompany_Id  IS NULL						                                                             						    ";
-            sql += "\n			   --AND AV.ParCompany_Id   IS NULL						                                                             						    ";
-            sql += "\n			   --AND AM.ParCompany_Id   IS NULL						                                                            						    ";
-            sql += "\n			   --AND Meta.ParCompany_Id IS NULL						                                                            						    ";
-            sql += "\n			   AND P321.Active        = 1							                                                            					        ";
-            sql += "\n			   AND P32.IsActive       = 1							                                                            					        ";
-            sql += "\n			   AND L3.IsActive        = 1							                                                            					        ";
-            sql += "\n			   AND L2.IsActive        = 1							                                                            					        ";
-            sql += "\n			   AND L1.IsActive        = 1							                                                            					        ";
-            sql += "\n			   AND AV.IsActive        = 1							                                                            					        ";
-            sql += "\n			   AND AM.IsActive        = 1							                                                            					        ";
-            sql += "\n			   AND Meta.IsActive      = 1							                                                            					        ";
-            sql += "\n												                                                                                                 			";
-            sql += "\n		) V										                                                                                            			    ";
-            sql += "\n												                                                                                            			    ";
-            sql += "\n		GROUP BY [Unidade], [Cód. do Indicador], [Indicador], [Tipo de Consolidação], [Meta do indicador], [HashKey]                   						";
-            sql += "\n									                                                                                    			            			";
-            sql += "\n	) META_POR_INDICADOR			                                                                                    						    		";
-                                                                                                                                                                       
+            sql =   "\n SELECT " +
+                    "\n SUM((VolumeAlerta * (Meta/100)))		AS nivel3    " +
+                    "\n ,SUM((VolumeAlerta * (Meta / 100)) / 3 * 2)   AS nivel2 " +
+                    "\n , SUM((VolumeAlerta * (Meta / 100)) / 3)     AS nivel1 " +
+                    "\n , sum(VolumeAlerta) AS VolumeAlerta " +
+                    "\n , AVG(Meta) AS Meta " +
+                    "\n   FROM " +
+                    "\n   ( " +
+                    "\n       SELECT " +
+                    "\n       CASE " +
+                    "\n           WHEN ParConsolidationType_Id = 1 THEN AV * AM * PESO " +
+                    "\n           WHEN ParConsolidationType_Id = 2 THEN AV * AM * (CASE WHEN PESO > 0 THEN 1 ELSE 0 END) " +
+                    "\n        ELSE AV * AM * PESO " +
+                    "\n        END AS VolumeAlerta " +
+                    "\n       , _META AS Meta " +
+                    "\n       , * " +
+                    "\n       FROM " +
+                    "\n           ( " +
+                    "\n           SELECT  RESULT.* " +
+                    "\n                  , (SELECT ParConsolidationType_Id FROM ParLevel1 WHERE Id = " + ParLevel1_Id + ") AS ParConsolidationType_Id " +
+                    "\n                  , (SELECT TOP 1 PercentValue FROM ParGoal WHERE ParLevel1_Id = " + ParLevel1_Id + " AND(ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) ORDER BY ParCompany_id DESC) AS _META " +
+                    "\n                FROM " +
+                    "\n         ( " +
+                    "\n             /*****PCC1b**************************************************************************************************************************************************************************/ " +
+                    "\n             SELECT * FROM " +
+                    "\n             (SELECT TOP 1 1 AS \"hashKey\" " +
+                    "\n             , (SELECT Id FROM ParLevel1 WHERE hashKey = 1) AS ID " +
+                    "\n             , 'PCC1b' AS INDICADOR, 1 AS AV, COALESCE(Amostras, 0) * 2 AS AM, 1 AS PESO FROM VolumePcc1b WHERE ParCompany_id = " + ParCompany_Id + " and CONVERT(DATE, Data) = CONVERT(DATE, '" + _DataCollect + "')) PCC " +
+                    "\n               /************************************************************************************************************************************************************************************/ " +
+                    "\n               UNION ALL " +
+                    "\n            /*****CEP VÁCUO GRD******************************************************************************************************************************************************************/ " +
+                    "\n            SELECT* FROM " +
+                    "\n            (SELECT TOP 1 3 AS \"hashKey\" " +
+                    "\n            , (SELECT Id FROM ParLevel1 WHERE hashKey = 3) AS ID " +
+                    "\n             ,'CEP VÁCUO GRD' AS INDICADOR, Avaliacoes AS AV, Amostras *QtdadeFamiliaProduto AS AM, 1 AS PESO FROM VolumeVacuoGRD WHERE ParCompany_id = " + ParCompany_Id + " and CONVERT(DATE, Data) <= CONVERT(DATE, '" + _DataCollect + "') ORDER BY Data DESC) GRD " +
+                    "\n            /************************************************************************************************************************************************************************************/ " +
+                    "\n            UNION ALL " +
+                    "\n            /*****CEP DESOSSA********************************************************************************************************************************************************************/ " +
+                    "\n            SELECT* FROM " +
+                    "\n            (SELECT TOP 1 2 AS \"hashKey\" " +
+                    "\n            , (SELECT Id FROM ParLevel1 WHERE hashKey = 2) AS ID " +
+                    "\n             ,'CEP DESOSSA' AS INDICADOR, Avaliacoes AS AV, Amostras *QtdadeFamiliaProduto AS AM, 1 AS PESO FROM VolumeCepDesossa WHERE ParCompany_id = " + ParCompany_Id + " and CONVERT(DATE, Data) <= CONVERT(DATE, '" + _DataCollect + "') ORDER BY Data DESC) DESOSSA " +
+                    "\n            /************************************************************************************************************************************************************************************/ " +
+                    "\n            UNION ALL " +
+                    "\n            /*****CEP RECORTES*******************************************************************************************************************************************************************/ " +
+                    "\n            SELECT* FROM " +
+                    "\n            (SELECT TOP 1 4 AS \"hashKey\" " +
+                    "\n            , (SELECT Id FROM ParLevel1 WHERE hashKey = 4) AS ID " +
+                    "\n             ,'CEP RECORTES' AS INDICADOR, Avaliacoes AS AV, Amostras AS AM, 1 AS PESO FROM VolumeCepRecortes WHERE ParCompany_id = " + ParCompany_Id + " and CONVERT(DATE, Data) <= CONVERT(DATE, '" + _DataCollect + "') ORDER BY Data DESC) RECORTES " +
+                    "\n             /************************************************************************************************************************************************************************************/ " +
+                    "\n             UNION ALL " +
+                    "\n             /*****OUTROS*************************************************************************************************************************************************************************/ " +
+                    "\n             SELECT " +
+                    "\n             hashKey AS hasKey " +
+                    "\n			,Id AS Id " +
+                    "\n			,INDICADOR AS INDICADOR " +
+                    "\n			,AVALIACOES AS AV " +
+                    "\n			,AMOSTRAS AS AM " +
+                    "\n			,PESO_DA_TAREFA AS PESO " +
+                    "\n            FROM " +
+                    "\n            ( " +
+                    "\n                SELECT " +
+                    "\n                 INDICADOR.* " +
+                    "\n               , MON.Name AS MONITORAMENTO " +
+                    "\n                , TAR.Name AS TAREFA " +
+                    "\n                , MONITORAMENTOS.Weight AS \"PESO_DA_TAREFA\" " +
+                    "\n                , (SELECT TOP 1 Number FROM ParEvaluation WHERE ParLevel2_Id = MON.Id AND(ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC) AS AVALIACOES " +
+                    "\n                ,(SELECT TOP 1 Number FROM ParSample     WHERE ParLevel2_Id = MON.Id AND(ParCompany_Id = " + ParCompany_Id + " OR ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC) AS AMOSTRAS " +
+                    "\n                FROM " +
+                    "\n                ----INDICADOR-------------------------------------------------- " +
+                    "\n                ( " +
+                    "\n                    SELECT " +
+                    "\n                     IND.Id                             AS \"Id\" " +
+                    "\n                    , IND.\"hashKey\"                      AS \"hashKey\" " +
+                    "\n                    , IND.Name                           AS \"INDICADOR\" " +
+                    "\n                    , IND.hashKey                        AS \"CÓDIGO ESPECÍFICO\" " +
+                    "\n                    , Cons.Name                          AS \"TIPO_DE_CONSOLIDACAO\" " +
+                    "\n                    , IND.HasAlert                       AS \"EMITE_ALERTA ? \" " +
+                    "\n                    , IND.IsSpecific                     AS \"ESPECÍFICO\" " +
+                    "\n                    , IND.IsSpecificNumberEvaluetion     AS \"ESPECÍFICO - AVALIAÇÕES\" " +
+                    "\n                    , IND.IsSpecificNumberSample         AS \"ESPECÍFICO - AMOSTRAS\" " +
+                    "\n                    , IND.IsFixedEvaluetionNumber        AS \"ESPECÍFICO - FAMÍLIA DE PRODUTOS\" " +
+                    "\n                    FROM ParLevel1 IND " +
+                    "\n                    LEFT JOIN ParConsolidationType Cons " +
+                    "\n                    ON Cons.Id = IND.ParConsolidationType_Id " +
+                    "\n                   WHERE IND.Id = " + ParLevel1_Id + " " +
+                    "\n                )INDICADOR " +
+                    "\n                INNER JOIN " +
+                    "\n                ----MONITORAMENTO---------------------------------------------- " +
+                    "\n                ( " +
+                    "\n                    SELECT " +
+                    "\n                     " + ParLevel1_Id + " AS INDICADOR " +
+                    "\n                    , * " +
+                    "\n                    FROM " +
+                    "\n                    ( " +
+                    "\n                        SELECT " +
+                    "\n                         I_M_T.ParLevel3Level2_Id " +
+                    "\n                        , MAX(I_M_T.ParCompany_Id) AS ParCompany_Id " +
+                    "\n                        FROM ParLevel3Level2Level1 I_M_T " +
+                    "\n                        WHERE I_M_T.ParLevel1_Id = " + ParLevel1_Id + " " +
+                    "\n                        AND(I_M_T.ParCompany_Id = " + ParCompany_Id + " " +
+                    "\n                         OR I_M_T.ParCompany_Id IS NULL) " +
+                    "\n                        GROUP BY I_M_T.ParLevel3Level2_Id " +
+                    "\n                    ) M1 " +
+                    "\n                    INNER JOIN " +
+                    "\n                    ( " +
+                    "\n                        SELECT " +
+                    "\n                         (SELECT TOP 1 Id     FROM ParLevel3Level2 WHERE ParLevel2_Id = M_T.ParLevel2_Id AND ParLevel3_Id = M_T.ParLevel3_Id AND COALESCE(ParCompany_Id, 0) = MAX(COALESCE(M_T.ParCompany_Id, 0))) AS Id " +
+                    "\n                        , (SELECT TOP 1 Weight FROM ParLevel3Level2 WHERE ParLevel2_Id = M_T.ParLevel2_Id AND ParLevel3_Id = M_T.ParLevel3_Id AND COALESCE(ParCompany_Id, 0) = MAX(COALESCE(M_T.ParCompany_Id, 0))) AS Weight " +
+                    "\n                        , M_T.ParLevel2_Id " +
+                    "\n                        , M_T.ParLevel3_Id " +
+                    "\n                        , MAX(M_T.ParCompany_Id) AS _ParCompany_Id " +
+                    "\n                        FROM ParLevel3Level2 M_T " +
+                    "\n                        INNER JOIN ParLevel3 TAR " +
+                    "\n                        ON TAR.Id = M_T.ParLevel3_Id " +
+                    "\n                        AND TAR.IsActive = 1 " +
+                    "\n                        INNER JOIN ParLevel2 MON " +
+                    "\n                        ON MON.Id = M_T.ParLevel2_Id " +
+                    "\n                        AND MON.IsActive = 1 " +
+                    "\n                        WHERE(M_T.ParCompany_Id = " + ParCompany_Id + " " +
+                    "\n                        OR M_T.ParCompany_Id IS NULL) " +
+                    "\n                        GROUP BY " +
+                    "\n                         M_T.ParLevel2_Id " +
+                    "\n                        , M_T.ParLevel3_Id " +
+                    "\n                    ) M2 " +
+                    "\n                    ON M1.ParLevel3Level2_Id = M2.Id " +
+                    "\n				) MONITORAMENTOS " +
+                    "\n                ON INDICADOR.ID = MONITORAMENTOS.INDICADOR " +
+                    "\n                INNER JOIN ParLevel2 MON " +
+                    "\n                ON MON.Id = MONITORAMENTOS.ParLevel2_Id " +
+                    "\n                INNER JOIN ParLevel3 TAR " +
+                    "\n                ON TAR.Id = MONITORAMENTOS.ParLevel3_Id " +
+                    "\n                WHERE hashKey IS NULL " +
+                    "\n			) OUTROS " +
+                    "\n/************************************************************************************************************************************************************************************/ " +
+                    "\n		) RESULT " +
+                    "\n        WHERE RESULT.ID = " + ParLevel1_Id + " " +
+                    "\n	) SELECAO " +
+                    "\n) FIM  ";
+
 
             var parLevel2List = db.Query<ParLevel1Alertas>(sql).FirstOrDefault();
 
