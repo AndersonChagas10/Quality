@@ -282,7 +282,7 @@ namespace SgqSystem.Services
                         string CollectionLevel02Id = result[30];
                         string correctiveActionCompleted = result[31];
                         string completeReaudit = result[32];
-
+                        string hashKey = result[33];
                         string weievaluation = result[35];
                         string weidefects = result[36];
                         string defects = result[37];
@@ -322,6 +322,7 @@ namespace SgqSystem.Services
                         level02HeaderJSon += ";" + side;
                         level02HeaderJSon += ";" + isemptylevel3;
                         level02HeaderJSon += ";" + hassampletotal;
+                        level02HeaderJSon += ";" + hashKey;
                         //level02HeaderJSon += ";" + alertaAtual;
 
                         //Verifica o Resultado do Level03
@@ -560,16 +561,20 @@ namespace SgqSystem.Services
                     int sampleCollect = c.Sample;
                     int sampleTotal = consolidationLevel2.EvaluatedResult;
 
-                    bool hasSampleTotal = false;
+
+                    bool hasSampleTotal = Convert.ToBoolean(DefaultValueReturn(arrayHeader[25], "0"));
                     if (hasSampleTotal == true)
                     {
                         sampleCollect = sampleTotal++;
                     }
 
+                    string hashKey = arrayHeader[26];
+                    hashKey = DefaultValueReturn(hashKey, "0");
+
                     int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
-                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, evaluatedresult, defectsresult, isemptylevel3);
+                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, hashKey);
 
                     if(CollectionLevel2Id > 0)
                     {
@@ -1108,7 +1113,7 @@ namespace SgqSystem.Services
                                            string StartPhase, int Evaluation, int Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
                                            string Duplicated, string haveReaudit, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel,
                                            string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation,
-                                           string avaliacaoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3)
+                                           string avaliacaoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string hashKey=null)
         {
             //Converte a data da coleta
             string sql = null;
@@ -1118,8 +1123,16 @@ namespace SgqSystem.Services
 
             key += "-" + ConsolidationLevel1.ParLevel1_Id.ToString();
             key += "-" + ConsolidationLevel2.ParLevel2_Id.ToString();
-            key += "-" + Evaluation;
-            key += "-" + Sample;
+            if(hashKey == "1")
+            {
+                key += "-" + sequential;
+                key += "-" + side;
+            }
+            else
+            {
+                key += "-" + Evaluation;
+                key += "-" + Sample;
+            }
             key += "-" + CollectionDate.ToString("yyyyMMdd");
 
             if (id == "0")
@@ -2088,6 +2101,7 @@ namespace SgqSystem.Services
 
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
+                               "<div class=\"ResultsKeys hide\"></div>" +
                               "<div class=\"Deviations\"></div>" +
                               "<div class=\"Users hide\"></div>" +
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
@@ -2577,12 +2591,12 @@ namespace SgqSystem.Services
 
                 string counters =
                                       html.div(
-                                                outerhtml: html.span(outerhtml: "1", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
+                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
                                                 classe: "col-xs-6",
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
-                                                outerhtml: html.span(outerhtml: "1", classe: "sampleCurrent hide") + html.span(classe: "sampleCurrentTotal") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
+                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
                                                 classe: "col-xs-6",
                                                 style: "text-align:center"
                                               );
@@ -4264,7 +4278,7 @@ namespace SgqSystem.Services
         }
 
         [WebMethod]
-        public string getCollectionLevel2Keys(string ParCompany_Id, DateTime data, int ParLevel1_Id = 0)
+        public string getCollectionLevel2Keys(string ParCompany_Id, string date, int ParLevel1_Id = 0)
         {
 
             //Verificamos os Indicadores que já foram consolidados para a Unidade selecionada
@@ -4272,7 +4286,7 @@ namespace SgqSystem.Services
             //Instanciamos uma variável que irá 
             var parLevel1ConsolidationXParFrequency = ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id));
 
-            
+            DateTime data = DateCollectConvert(date);
 
             if (ParLevel1_Id > 0)
             {
@@ -4303,14 +4317,11 @@ namespace SgqSystem.Services
 
                 if(!string.IsNullOrEmpty(listKeys))
                 {
-                    ResultsKeys += "<div class=\"ResultLevel2Key\">" +
+                    ResultsKeys += "<div parlevel1_id=\"" + c.ParLevel1_Id + "\" class=\"ResultLevel2Key\">" +
                                         listKeys +
                                    "</div>";
                 }
             }
-
-
-
             return ResultsKeys;
         }
 

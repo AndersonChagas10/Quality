@@ -24,11 +24,11 @@
                     @Html.DisplayName("Unidade")
                 </th>
                 @*<th>
-                    @Html.DisplayName("Periodicidade")
-                </th>*@
-                <th>
-                    @Html.DisplayName("Turno")
-                </th>
+                        @Html.DisplayName("Periodicidade")
+                    </th>*@
+                @*<th>
+                        @Html.DisplayName("Turno")
+                    </th>*@
                 <th>
                     @Html.DisplayName("Descrição da Coleta")
                 </th>
@@ -36,8 +36,8 @@
                     @Html.DisplayName("Quantidade")
                 </th>
                 @*<th>
-                    @Html.DisplayName("Unidade de Medida"/*model => model.cc*/)
-                </th>*@
+                        @Html.DisplayName("Unidade de Medida"/*model => model.cc*/)
+                    </th>*@
                 <th>
                     @Html.DisplayName("Comentários")
                 </th>
@@ -46,6 +46,7 @@
 
             @foreach (var item in Model)
             {
+
                 <tr>
                     <td>
                         @if (item.ReferenceDatetime.HasValue)
@@ -57,20 +58,20 @@
                         @Html.DisplayFor(modelItem => item.ParCompany_Id)
                     </td>
                     @*<td>
-                        @Html.DisplayFor(modelItem => item.parFrequency_id)
-                    </td>*@
+                            @Html.DisplayFor(modelItem => item.parFrequency_id)
+                        </td>*@
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Shift)
+                        </td>*@
                     <td>
-                        @Html.DisplayFor(modelItem => item.Shift)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DataType)
+                        @Html.DisplayFor(modelItem => item.DimManutencaoColetaITs.TechnicalIndicator)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.AmountData)
                     </td>
                     @*<td>
-                        @Html.DisplayFor(modelItem => item.ParMeasurementUnit_Id)
-                    </td>*@
+                            @Html.DisplayFor(modelItem => item.ParMeasurementUnit_Id)
+                        </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.Comments)
                     </td>
@@ -83,5 +84,5 @@
             }
 
         </table>
-        </div>
+    </div>
 </div>

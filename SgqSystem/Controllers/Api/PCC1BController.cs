@@ -77,14 +77,14 @@ namespace SgqSystem.Controllers.Api
 
             var _result = new ResultTotalNC();
 
-            var query = "\n SELECT * from (SELECT ISNULL (SUM(WeiDefects), 0) as ncDianteiro                                                                " +
+            var query = "\n SELECT * from (SELECT ISNULL (SUM(CONVERT(Decimal,DefectsResult)), 0) as ncDianteiro                                                                " +
                         "\n FROM CollectionLevel2                                                                                                           " +
                         "\n WHERE parlevel1_Id = 3                                                                                                          " +
                         "\n and ParLevel2_Id = " + parLevel2IdDianteiro + " --Dianteiro                                                                     " +
                         "\n and UnitId = " + receive.Unit +
                         "\n and CollectionDate Between ('" + receive.Data.ToString() + " 00:00:00.0000000') and ('" + receive.Data + " 23:59:59.0000000')   " +
                         "\n ) j, (                                                                                                                      " +
-                        "\n select ISNULL (SUM(WeiDefects), 0) as ncTraseiro                                                                                " +
+                        "\n select ISNULL (SUM(CONVERT(Decimal,DefectsResult)), 0) as ncTraseiro                                                                                " +
                         "\n from CollectionLevel2                                                                                                           " +
                         "\n where parlevel1_Id = 3                                                                                                          " +
                         "\n and ParLevel2_Id = " + parLevel2Id2Traseiro + " --Traseiro                                                                      " +
@@ -111,6 +111,8 @@ namespace SgqSystem.Controllers.Api
     {
         public decimal ncDianteiro { get; set; }
         public decimal ncTraseiro { get; set; }
+
+
         public int _ncDianteiro
         {
             get
