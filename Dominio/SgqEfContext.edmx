@@ -439,9 +439,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="ReferenceDatetime" Type="datetime" />
           <Property Name="UserSGQ_Id" Type="int" />
-          <Property Name="ParCompany_Id" Type="int" />
-          <Property Name="DimManutencaoColetaITs_id" Type="int" />
-          <Property Name="AmountData" Type="decimal" Precision="32" Scale="10" />
+          <Property Name="ParCompany_Id" Type="int" Nullable="false" />
+          <Property Name="DimManutencaoColetaITs_id" Type="int" Nullable="false" />
+          <Property Name="AmountData" Type="decimal" Precision="32" Scale="10" Nullable="false" />
           <Property Name="Comments" Type="varchar" MaxLength="800" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
@@ -1814,7 +1814,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ManDataCollectIT_DimManutencaoColetaITs_id">
-          <End Role="DimManutencaoColetaITs" Type="Self.DimManutencaoColetaITs" Multiplicity="0..1" />
+          <End Role="DimManutencaoColetaITs" Type="Self.DimManutencaoColetaITs" Multiplicity="1" />
           <End Role="ManDataCollectIT" Type="Self.ManDataCollectIT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DimManutencaoColetaITs">
@@ -1822,6 +1822,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Principal>
             <Dependent Role="ManDataCollectIT">
               <PropertyRef Name="DimManutencaoColetaITs_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ManDataCollectIT_ParCompany_id">
+          <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="1" />
+          <End Role="ManDataCollectIT" Type="Self.ManDataCollectIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ManDataCollectIT">
+              <PropertyRef Name="ParCompany_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2985,6 +2997,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="DimManutencaoColetaITs" EntitySet="DimManutencaoColetaITs" />
             <End Role="ManDataCollectIT" EntitySet="ManDataCollectIT" />
           </AssociationSet>
+          <AssociationSet Name="FK_ManDataCollectIT_ParCompany_id" Association="Self.FK_ManDataCollectIT_ParCompany_id">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ManDataCollectIT" EntitySet="ManDataCollectIT" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParCluster_ParClusterGroup" Association="Self.FK_ParCluster_ParClusterGroup">
             <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
             <End Role="ParCluster" EntitySet="ParCluster" />
@@ -3749,6 +3765,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="DimManutencaoColetaITs" EntitySet="DimManutencaoColetaITs" />
             <End Role="ManDataCollectIT" EntitySet="ManDataCollectIT" />
           </AssociationSet>
+          <AssociationSet Name="FK_ManDataCollectIT_ParCompany_id" Association="SgqDbModel.FK_ManDataCollectIT_ParCompany_id">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ManDataCollectIT" EntitySet="ManDataCollectIT" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -4414,6 +4434,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParCompany" FromRole="ParCompany" ToRole="ParLevel3Value" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" FromRole="ParCompany" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParSample" Relationship="SgqDbModel.FK_ParSample_ParCompany" FromRole="ParCompany" ToRole="ParSample" />
+          <NavigationProperty Name="ManDataCollectIT" Relationship="SgqDbModel.FK_ManDataCollectIT_ParCompany_id" FromRole="ParCompany" ToRole="ManDataCollectIT" />
         </EntityType>
         <EntityType Name="ParCompanyCluster">
           <Key>
@@ -6480,15 +6501,16 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="ReferenceDatetime" Type="DateTime" Precision="3" />
           <Property Name="UserSGQ_Id" Type="Int32" />
-          <Property Name="ParCompany_Id" Type="Int32" />
-          <Property Name="DimManutencaoColetaITs_id" Type="Int32" />
-          <Property Name="AmountData" Type="Decimal" Precision="32" Scale="10" />
+          <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
+          <Property Name="DimManutencaoColetaITs_id" Type="Int32" Nullable="false" />
+          <Property Name="AmountData" Type="Decimal" Nullable="false" Precision="32" Scale="10" />
           <Property Name="Comments" Type="String" MaxLength="800" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DimManutencaoColetaITs" Relationship="SgqDbModel.FK_ManDataCollectIT_DimManutencaoColetaITs_id" FromRole="ManDataCollectIT" ToRole="DimManutencaoColetaITs" />
+          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ManDataCollectIT_ParCompany_id" FromRole="ManDataCollectIT" ToRole="ParCompany" />
         </EntityType>
         <Association Name="FK_ManDataCollectIT_DimManutencaoColetaITs_id">
-          <End Type="SgqDbModel.DimManutencaoColetaITs" Role="DimManutencaoColetaITs" Multiplicity="0..1" />
+          <End Type="SgqDbModel.DimManutencaoColetaITs" Role="DimManutencaoColetaITs" Multiplicity="1" />
           <End Type="SgqDbModel.ManDataCollectIT" Role="ManDataCollectIT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DimManutencaoColetaITs">
@@ -6496,6 +6518,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Principal>
             <Dependent Role="ManDataCollectIT">
               <PropertyRef Name="DimManutencaoColetaITs_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ManDataCollectIT_ParCompany_id">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
+          <End Type="SgqDbModel.ManDataCollectIT" Role="ManDataCollectIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ManDataCollectIT">
+              <PropertyRef Name="ParCompany_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

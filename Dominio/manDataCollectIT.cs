@@ -19,12 +19,13 @@ namespace Dominio
         public Nullable<System.DateTime> AlterDate { get; set; }
         public Nullable<System.DateTime> ReferenceDatetime { get; set; }
         public Nullable<int> UserSGQ_Id { get; set; }
-        public Nullable<int> ParCompany_Id { get; set; }
-        public Nullable<int> DimManutencaoColetaITs_id { get; set; }
-        public Nullable<decimal> AmountData { get; set; }
+        public int ParCompany_Id { get; set; }
+        public int DimManutencaoColetaITs_id { get; set; }
+        public decimal AmountData { get; set; }
         public string Comments { get; set; }
         public bool IsActive { get; set; }
     
         public virtual DimManutencaoColetaITs DimManutencaoColetaITs { get; set; }
+        public virtual ParCompany ParCompany { get; set; }
     }
 }

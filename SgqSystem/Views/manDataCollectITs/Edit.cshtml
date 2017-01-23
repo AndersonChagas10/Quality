@@ -82,7 +82,7 @@
                 <div class="form-group">
                     @Html.Label("Descrição da Coleta", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.DimManutencaoColetaITs_id, new SelectList(ViewBag.listaDataDataType, "id", "TechnicalIndicator"), Resources.Resource.select + "...", new { @class = "form-control", disabled = "disabled" })
+                        @Html.DropDownListFor(model => model.DimManutencaoColetaITs_id, new SelectList(ViewBag.listaDataDataType, "id", "TechnicalIndicator"), Resources.Resource.select + "...", new { @class = "form-control"})
                         <script>
 
                             var dataTypeSelecionado = @Html.Raw(Json.Encode(Model.DimManutencaoColetaITs_id));
@@ -99,12 +99,7 @@
                     @Html.Label("Quantidade", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
 
-                        @if (Model.AmountData.HasValue)
-                        {
-                            @Html.TextBoxFor(model => model.AmountData, Model.AmountData.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" })
-                        }
-
-
+                        @Html.TextBoxFor(model => model.AmountData, Model.AmountData.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.AmountData, "", new { @class = "text-danger" })
 
                     </div>
@@ -154,6 +149,8 @@
         }
 
         <script>
+
+            //$('#DimManutencaoColetaITs_id').prop( "disabled", true );
 
             $('#AmountData').inputmask("decimal", { rightAlign: false });
 
