@@ -48,24 +48,24 @@ namespace SgqSystem.Controllers.Api
             _mock.listResultSetLevel1.Add(new RelDiarioResultSet()
             {
                 level1_Id = 1,
-                Level1Name = "Level1 - 1",
+                Level1Name = "TINGIR",
                 Unidade_Id = 1,
                 Unidade = "Lins",
-                ProcentagemNc = 90.8M,
-                Meta = 8.9M,
-                NC = 13.74M,
-                Av = 12.34M
+                ProcentagemNc = 66M,
+                Meta = 5M,
+                NC = 2M,
+                Av = 3M
             });
             _mock.listResultSetLevel1.Add(new RelDiarioResultSet()
             {
                 level1_Id = 2,
-                Level1Name = "Level1 - 2",
+                Level1Name = "SECAR",
                 Unidade_Id = 1,
-                Unidade = "Lins2",
-                ProcentagemNc = 130.8M,
-                Meta = 5M,
-                NC = 8M,
-                Av = 12M
+                Unidade = "Lins",
+                ProcentagemNc = 0M,
+                Meta = 10M,
+                NC = 0M,
+                Av = 3M
             });
 
             var counter = 0;
