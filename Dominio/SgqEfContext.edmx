@@ -158,7 +158,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.budgets' does not have a primary key 
           <Property Name="AlertLevel" Type="int" />
           <Property Name="Sequential" Type="int" />
           <Property Name="Side" Type="int" />
-          <Property Name="WeiEvaluation" Type="decimal" Precision="10" Scale="5" />
+          <Property Name="WeiEvaluation" Type="decimal" Precision="30" Scale="5" />
           <Property Name="Defects" Type="decimal" Precision="30" Scale="8" />
           <Property Name="WeiDefects" Type="decimal" Precision="15" Scale="5" />
           <Property Name="TotalLevel3WithDefects" Type="int" />
@@ -214,7 +214,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.budgets' does not have a primary key 
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="ConsolidationDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Evaluation" Type="decimal" Precision="10" Scale="8" />
+          <Property Name="Evaluation" Type="decimal" Precision="30" Scale="8" />
           <Property Name="AtualAlert" Type="int" />
           <Property Name="WeiEvaluation" Type="decimal" Precision="10" Scale="5" />
           <Property Name="EvaluateTotal" Type="decimal" Precision="10" Scale="5" />
@@ -318,8 +318,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TipoInformacao" Type="varchar" MaxLength="150" />
-          <Property Name="IndicadorTecnico" Type="varchar" MaxLength="150" />
+          <Property Name="DataType" Type="varchar" MaxLength="150" />
+          <Property Name="TechnicalIndicator" Type="varchar" MaxLength="150" />
+          <Property Name="ParFrequency_id" Type="int" />
         </EntityType>
         <EntityType Name="Employees">
           <Key>
@@ -434,18 +435,14 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="InstantDatetime" Type="datetime" />
+          <Property Name="AddDate" Type="datetime" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime" />
           <Property Name="ReferenceDatetime" Type="datetime" />
           <Property Name="UserSGQ_Id" Type="int" />
           <Property Name="ParCompany_Id" Type="int" />
-          <Property Name="ParFrequency_Id" Type="int" />
-          <Property Name="Shift" Type="int" />
-          <Property Name="DataType" Type="nvarchar" MaxLength="110" />
+          <Property Name="DimManutencaoColetaITs_id" Type="int" />
           <Property Name="AmountData" Type="decimal" Precision="32" Scale="10" />
-          <Property Name="ParMeasurementUnit_Id" Type="int" />
           <Property Name="Comments" Type="varchar" MaxLength="800" />
-          <Property Name="AddDate" Type="datetime" Nullable="false" />
-          <Property Name="AlterDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="NQA">
@@ -1816,6 +1813,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ManDataCollectIT_DimManutencaoColetaITs_id">
+          <End Role="DimManutencaoColetaITs" Type="Self.DimManutencaoColetaITs" Multiplicity="0..1" />
+          <End Role="ManDataCollectIT" Type="Self.ManDataCollectIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimManutencaoColetaITs">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ManDataCollectIT">
+              <PropertyRef Name="DimManutencaoColetaITs_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParCluster_ParClusterGroup">
           <End Role="ParClusterGroup" Type="Self.ParClusterGroup" Multiplicity="1" />
           <End Role="ParCluster" Type="Self.ParCluster" Multiplicity="*" />
@@ -2972,6 +2981,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParLevel2Level1" EntitySet="ParLevel2Level1" />
           </AssociationSet>
+          <AssociationSet Name="FK_ManDataCollectIT_DimManutencaoColetaITs_id" Association="Self.FK_ManDataCollectIT_DimManutencaoColetaITs_id">
+            <End Role="DimManutencaoColetaITs" EntitySet="DimManutencaoColetaITs" />
+            <End Role="ManDataCollectIT" EntitySet="ManDataCollectIT" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParCluster_ParClusterGroup" Association="Self.FK_ParCluster_ParClusterGroup">
             <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
             <End Role="ParCluster" EntitySet="ParCluster" />
@@ -3730,8 +3743,12 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
             <End Role="CollectionLevel21" EntitySet="CollectionLevel2" />
           </AssociationSet>
-          <EntitySet Name="ManDataCollectIT" EntityType="SgqDbModel.ManDataCollectIT" />
           <EntitySet Name="DimManutencaoColetaITs" EntityType="SgqDbModel.DimManutencaoColetaITs" />
+          <EntitySet Name="ManDataCollectIT" EntityType="SgqDbModel.ManDataCollectIT" />
+          <AssociationSet Name="FK_ManDataCollectIT_DimManutencaoColetaITs_id" Association="SgqDbModel.FK_ManDataCollectIT_DimManutencaoColetaITs_id">
+            <End Role="DimManutencaoColetaITs" EntitySet="DimManutencaoColetaITs" />
+            <End Role="ManDataCollectIT" EntitySet="ManDataCollectIT" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -4048,7 +4065,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="AlertLevel" Type="Int32" />
           <Property Name="Sequential" Type="Int32" />
           <Property Name="Side" Type="Int32" />
-          <Property Name="WeiEvaluation" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="WeiEvaluation" Type="Decimal" Precision="30" Scale="5" />
           <Property Name="Defects" Type="Decimal" Precision="30" Scale="8" />
           <Property Name="WeiDefects" Type="Decimal" Precision="15" Scale="5" />
           <Property Name="TotalLevel3WithDefects" Type="Int32" />
@@ -4123,7 +4140,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="ConsolidationDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Evaluation" Type="Decimal" Precision="10" Scale="8" />
+          <Property Name="Evaluation" Type="Decimal" Precision="30" Scale="8" />
           <Property Name="AtualAlert" Type="Int32" />
           <Property Name="WeiEvaluation" Type="Decimal" Precision="10" Scale="5" />
           <Property Name="EvaluateTotal" Type="Decimal" Precision="10" Scale="5" />
@@ -6444,33 +6461,44 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ManDataCollectIT">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="InstantDatetime" Type="DateTime" Precision="3" />
-          <Property Name="ReferenceDatetime" Type="DateTime" Precision="3" />
-          <Property Name="UserSGQ_Id" Type="Int32" />
-          <Property Name="ParCompany_Id" Type="Int32" />
-          <Property Name="ParFrequency_Id" Type="Int32" />
-          <Property Name="Shift" Type="Int32" />
-          <Property Name="DataType" Type="String" MaxLength="110" FixedLength="false" Unicode="true" />
-          <Property Name="AmountData" Type="Decimal" Precision="32" Scale="10" />
-          <Property Name="ParMeasurementUnit_Id" Type="Int32" />
-          <Property Name="Comments" Type="String" MaxLength="800" FixedLength="false" Unicode="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="DimManutencaoColetaITs">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TipoInformacao" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="IndicadorTecnico" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="DataType" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="TechnicalIndicator" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ParFrequency_id" Type="Int32" />
+          <NavigationProperty Name="ManDataCollectIT" Relationship="SgqDbModel.FK_ManDataCollectIT_DimManutencaoColetaITs_id" FromRole="DimManutencaoColetaITs" ToRole="ManDataCollectIT" />
         </EntityType>
+        <EntityType Name="ManDataCollectIT">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="ReferenceDatetime" Type="DateTime" Precision="3" />
+          <Property Name="UserSGQ_Id" Type="Int32" />
+          <Property Name="ParCompany_Id" Type="Int32" />
+          <Property Name="DimManutencaoColetaITs_id" Type="Int32" />
+          <Property Name="AmountData" Type="Decimal" Precision="32" Scale="10" />
+          <Property Name="Comments" Type="String" MaxLength="800" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="DimManutencaoColetaITs" Relationship="SgqDbModel.FK_ManDataCollectIT_DimManutencaoColetaITs_id" FromRole="ManDataCollectIT" ToRole="DimManutencaoColetaITs" />
+        </EntityType>
+        <Association Name="FK_ManDataCollectIT_DimManutencaoColetaITs_id">
+          <End Type="SgqDbModel.DimManutencaoColetaITs" Role="DimManutencaoColetaITs" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ManDataCollectIT" Role="ManDataCollectIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimManutencaoColetaITs">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ManDataCollectIT">
+              <PropertyRef Name="DimManutencaoColetaITs_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7860,32 +7888,29 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DimManutencaoColetaITs">
+            <EntityTypeMapping TypeName="SgqDbModel.DimManutencaoColetaITs">
+              <MappingFragment StoreEntitySet="DimManutencaoColetaITs">
+                <ScalarProperty Name="ParFrequency_id" ColumnName="ParFrequency_id" />
+                <ScalarProperty Name="TechnicalIndicator" ColumnName="TechnicalIndicator" />
+                <ScalarProperty Name="DataType" ColumnName="DataType" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ManDataCollectIT">
             <EntityTypeMapping TypeName="SgqDbModel.ManDataCollectIT">
               <MappingFragment StoreEntitySet="ManDataCollectIT">
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
-                <ScalarProperty Name="ParMeasurementUnit_Id" ColumnName="ParMeasurementUnit_Id" />
                 <ScalarProperty Name="AmountData" ColumnName="AmountData" />
-                <ScalarProperty Name="DataType" ColumnName="DataType" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="ParFrequency_Id" ColumnName="ParFrequency_Id" />
+                <ScalarProperty Name="DimManutencaoColetaITs_id" ColumnName="DimManutencaoColetaITs_id" />
                 <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
                 <ScalarProperty Name="UserSGQ_Id" ColumnName="UserSGQ_Id" />
                 <ScalarProperty Name="ReferenceDatetime" ColumnName="ReferenceDatetime" />
-                <ScalarProperty Name="InstantDatetime" ColumnName="InstantDatetime" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DimManutencaoColetaITs">
-            <EntityTypeMapping TypeName="SgqDbModel.DimManutencaoColetaITs">
-              <MappingFragment StoreEntitySet="DimManutencaoColetaITs">
-                <ScalarProperty Name="IndicadorTecnico" ColumnName="IndicadorTecnico" />
-                <ScalarProperty Name="TipoInformacao" ColumnName="TipoInformacao" />
-                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
