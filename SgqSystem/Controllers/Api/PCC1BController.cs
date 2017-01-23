@@ -55,8 +55,8 @@ namespace SgqSystem.Controllers.Api
 
             //if (GlobalConfig.Brasil)
             //{
-            //    userName = "sa";
-            //    pass = "1qazmko0";
+            userName = "sa";
+            pass = "1qazmko0";
             //}
 
             using (var db = new SgqDbDevEntities())
