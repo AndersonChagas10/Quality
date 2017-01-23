@@ -60,8 +60,8 @@ namespace SgqSystem.Controllers.Api
 
             using (var db = new FactoryADO(company.IPServer, company.DBServer, pass, userName))
             {
-                var query = "EXEC FBED_GRTTipificacao " + receive.Data + ", " + company.IntegrationId.ToString() + ", "+ receive.sequencialAtual.ToString();
-                var resultQuery = db.SearchQuery<ResultadosSequencialBanda>(query);
+                var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.IntegrationId.ToString() + ", "+ receive.sequencialAtual.ToString();
+                var resultQuery = db.SearchQuery<ResultadosSequencialBanda>(query).ToList();
                 if (resultQuery != null)
                     _result = resultQuery.FirstOrDefault();
             }

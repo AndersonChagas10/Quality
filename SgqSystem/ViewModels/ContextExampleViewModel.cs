@@ -30,6 +30,7 @@ namespace SgqSystem.ViewModels
         public int IntegerProp { get; set; }
 
         public decimal DecimalProp { get; set; }
+        public Nullable<decimal> DecimalNullProp { get; set; }
 
         public float FloatProp { get; set; }
         public DateTime DateTimeProp { get; set; }

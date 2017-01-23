@@ -61,7 +61,30 @@
                     @Html.ValidationMessageFor(model => model.DecimalProp, "", new { @class = "text-danger" })
                 </div>
             </div>
-    
+            
+            @*
+                INPUT DECIMAL NULO
+            *@  
+            @if (Model.DecimalNullProp.HasValue)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DecimalProp, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.DecimalNullProp, Model.DecimalNullProp.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control decimal" })
+                        @Html.ValidationMessageFor(model => model.DecimalProp, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+
+
+                           @*<div class="form-group">
+                    @Html.LabelFor(model => model.DecimalNullProp, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBox("DecimalNullProp", 0, htmlAttributes: new { @class = "form-control decimal" })
+                    </div>
+                </div>*@
+
+
             @*
                 INPUT FLOAT
             *@

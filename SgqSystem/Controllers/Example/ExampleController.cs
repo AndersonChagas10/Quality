@@ -36,6 +36,7 @@ namespace SgqSystem.Controllers
         [HttpGet]
         public ActionResult TiposDeInputSgq()
         {
+
             return View(new ContextExampleViewModel() { IntegerProp = 2, DecimalProp = 3.983M });
         }
 

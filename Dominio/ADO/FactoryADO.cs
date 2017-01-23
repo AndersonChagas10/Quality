@@ -151,19 +151,20 @@ namespace Dominio.ADO
         }
 
         [SecuritySafeCritical]
-        protected void closeConnection()
+        protected void closeConnection(bool disposing = false)
         {
             if (((connection != null)))
             {
                 connection.Close();
-                connection.Dispose();
+                if(!disposing)
+                    connection.Dispose();
             }
         }
      
         public void Dispose()
         {
-            closeConnection();
-            Dispose();
+            closeConnection(true);
+            //Dispose();
         }
 
 
