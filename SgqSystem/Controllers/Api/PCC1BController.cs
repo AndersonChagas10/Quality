@@ -23,6 +23,7 @@ namespace SgqSystem.Controllers.Api
         public String Data { get; set; }
         public int Unit { get; set; }
         public int ParLevel2 { get; set; }
+        public int HashKey { get; set; }
     }
 
     [HandleApi()]
@@ -67,11 +68,10 @@ namespace SgqSystem.Controllers.Api
             {
                 var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.IntegrationId.ToString() + ", " + receive.sequencialAtual.ToString();
                 var resultQuery = db.SearchQuery<ResultadosSequencialBanda>(query).ToList();
-                if (resultQuery != null)
-                    _result = resultQuery.FirstOrDefault();
+                if (resultQuery != null && resultQuery.Count() > 0)
+                    retorno.Sequential = resultQuery.FirstOrDefault().iSequencial;
 
-                retorno.serverSide = "jbs factory";
-                retorno.Sequential = _result.iSequencial;
+                retorno.serverSide = company.IPServer + company.DBServer + pass + userName;
                 return retorno;
             }
 
@@ -81,19 +81,23 @@ namespace SgqSystem.Controllers.Api
         [Route("TotalNC/{parLevel2IdDianteiro}/{parLevel2Id2Traseiro}")]
         public ResultTotalNC TotalNC(_Receive receive, int parLevel2IdDianteiro, int parLevel2Id2Traseiro)
         {
-
+            ParLevel1 parLevel1 = new ParLevel1();
+            using (var db = new SgqDbDevEntities())
+            {
+                parLevel1 = db.ParLevel1.FirstOrDefault(r => r.hashKey == receive.HashKey);
+            }
             var _result = new ResultTotalNC();
 
-            var query = "\n SELECT * from (SELECT ISNULL (SUM(CONVERT(Decimal,DefectsResult)), 0) as ncDianteiro                                                                " +
+            var query = "\n SELECT * from (SELECT ISNULL (SUM(CONVERT(Decimal,DefectsResult)), 0) as ncDianteiro                                            " +
                         "\n FROM CollectionLevel2                                                                                                           " +
-                        "\n WHERE parlevel1_Id = 3                                                                                                          " +
+                        "\n WHERE parlevel1_Id = " + parLevel1.Id + "                                                                                       " +
                         "\n and ParLevel2_Id = " + parLevel2IdDianteiro + " --Dianteiro                                                                     " +
                         "\n and UnitId = " + receive.Unit +
                         "\n and CollectionDate Between ('" + receive.Data.ToString() + " 00:00:00.0000000') and ('" + receive.Data + " 23:59:59.0000000')   " +
-                        "\n ) j, (                                                                                                                      " +
-                        "\n select ISNULL (SUM(CONVERT(Decimal,DefectsResult)), 0) as ncTraseiro                                                                                " +
+                        "\n ) j, (                                                                                                                          " +
+                        "\n select ISNULL (SUM(CONVERT(Decimal,DefectsResult)), 0) as ncTraseiro                                                            " +
                         "\n from CollectionLevel2                                                                                                           " +
-                        "\n where parlevel1_Id = 3                                                                                                          " +
+                        "\n WHERE parlevel1_Id = " + parLevel1.Id + "                                                                                       " +
                         "\n and ParLevel2_Id = " + parLevel2Id2Traseiro + " --Traseiro                                                                      " +
                         "\n and UnitId = " + receive.Unit +
                         "\n and CollectionDate Between ('" + receive.Data + " 00:00:00.0000000') and ('" + receive.Data + " 23:59:59.0000000')              " +
