@@ -16,10 +16,10 @@ namespace Dominio.ADO
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="dataSource"></param>
-        /// <param name="catalog"></param>
-        /// <param name="password"></param>
-        /// <param name="user"></param>
+        /// <param name="dataSource">Ip do DB ou caminho físico.</param>
+        /// <param name="catalog">Nome do catalogo do DB.</param>
+        /// <param name="password">Senha.</param>
+        /// <param name="user">User.</param>
         public FactoryADO(string dataSource, string catalog, string password, string user)
         {
             connectionString = new SqlConnectionStringBuilder();
@@ -109,6 +109,39 @@ namespace Dominio.ADO
             {
                 SqlCommand command = new SqlCommand(query, connection);
                 return command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                closeConnection();
+                throw e;
+            }
+        }
+
+        public List<T> ExecuteStoredProcedure<T>(string query)
+        {
+            var listReturn = new List<T>();
+            try
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    // iterate through results, printing each to console
+                    while (reader.Read())
+                    {
+                        //var columns = Enumerable.Range(0, reader.FieldCount).Select(reader.GetName).ToList();
+                        object instance = Activator.CreateInstance(typeof(T));
+
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            if (!reader.IsDBNull(i))
+                                instance.GetType().GetProperty(reader.GetName(i)).SetValue(instance, reader[i]);
+                        }
+                        listReturn.Add((T)instance);
+                    }
+                }
+                return listReturn;
             }
             catch (Exception e)
             {
