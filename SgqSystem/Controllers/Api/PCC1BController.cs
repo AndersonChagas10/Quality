@@ -13,6 +13,7 @@ namespace SgqSystem.Controllers.Api
     {
         public int Sequential { get; set; }
         public int Side { get; set; }
+        public string serverSide { get; set; }
     };
 
     public partial class _Receive
@@ -32,7 +33,7 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("testeContext")]
-        public bool testeContext ()
+        public bool testeContext()
         {
             return RequestContext.IsLocal;
         }
@@ -45,13 +46,16 @@ namespace SgqSystem.Controllers.Api
             string userName = "grJsoluco3s";
             string pass = "UserGQualidade";
             ParCompany company;
+            var retorno = new _PCC1B();
+            retorno.Side = 1;
+
             ResultadosSequencialBanda _result = new ResultadosSequencialBanda();
 
-            if (RequestContext.IsLocal)
-            {
-                userName = "sa";
-                pass = "1qazmko0";
-            }
+            //if (RequestContext.IsLocal)
+            //{
+            userName = "sa";
+            pass = "1qazmko0";
+            //}
 
             using (var db = new SgqDbDevEntities())
             {
@@ -60,13 +64,15 @@ namespace SgqSystem.Controllers.Api
 
             using (var db = new FactoryADO(company.IPServer, company.DBServer, pass, userName))
             {
-                var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.IntegrationId.ToString() + ", "+ receive.sequencialAtual.ToString();
+                var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.IntegrationId.ToString() + ", " + receive.sequencialAtual.ToString();
                 var resultQuery = db.SearchQuery<ResultadosSequencialBanda>(query).ToList();
                 if (resultQuery != null)
                     _result = resultQuery.FirstOrDefault();
-            }
 
-            return new _PCC1B() { Side = 1, Sequential = _result.iSequencial }; ;
+                retorno.serverSide = "jbs factory";
+                retorno.Sequential = _result.iSequencial;
+                return retorno;
+            }
 
         }
 
