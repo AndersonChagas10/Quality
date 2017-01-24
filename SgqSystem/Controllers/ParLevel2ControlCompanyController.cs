@@ -9,6 +9,7 @@ using System.Web.Mvc;
 namespace SgqSystem.Controllers
 {
     [CustomAuthorize]
+    [FilterUnit(filtraUnidadeDoUsuario = true)]
     public class ParLevel2ControlCompanyController : BaseController
     {
         private IBaseDomain<ParLevel3Level2Level1, ParLevel3Level2Level1DTO> _baseParLevel3Level2Level1;

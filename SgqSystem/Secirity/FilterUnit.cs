@@ -16,7 +16,7 @@ namespace SgqSystem.Secirity
     /// </summary>
     public class FilterUnit : ActionFilterAttribute
     {
-        //public IEnumerable<ParCompanyDTO> _ParCompanyDTO { get; set; }
+        public bool filtraUnidadeDoUsuario { get; set; }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -41,30 +41,37 @@ namespace SgqSystem.Secirity
                     UserSgq userLogado = db.UserSgq.FirstOrDefault(r => r.Id == userId);
 
                     filterContext.Controller.ViewBag.UserSgq = db.UserSgq.ToList();
-                 
-                        if (userId > 0)
-                            if (!string.IsNullOrEmpty(cookie.Values["rolesCompany"])) /*Se user possuir mais de uma unidade*/
-                            {
-                                rolesCompany = cookie.Values["rolesCompany"].ToString();
 
-                                #region Query Unidades
+                    if (userId > 0)
+                    {
 
-                                var _companyXUserSgq = db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == userId).Select(r => r.ParCompany).ToList().OrderBy(r => r.Name).GroupBy(r => r.Id).Select(group => group.First()).ToList();
+                        if (filtraUnidadeDoUsuario)
+                        {
+                            filterContext.Controller.ViewBag.UnidadeUsuario = Mapper.Map<IEnumerable<ParCompanyDTO>>(db.ParCompany.Where(r => r.Id == userLogado.ParCompany_Id));
+                        }
+                        else if (!string.IsNullOrEmpty(cookie.Values["rolesCompany"])) /*Se user possuir mais de uma unidade*/
+                        {
+                            rolesCompany = cookie.Values["rolesCompany"].ToString();
 
-                                filterContext.Controller.ViewBag.UnidadeUsuario = Mapper.Map<IEnumerable<ParCompanyDTO>>(_companyXUserSgq);
+                            #region Query Unidades
 
-                                #endregion
-                            }
-                            else /*Se não possui mais de uma undiade*/
-                            {
-                                var unidades = db.ParCompany.ToList();
+                            var _companyXUserSgq = db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == userId).Select(r => r.ParCompany).ToList().OrderBy(r => r.Name).GroupBy(r => r.Id).Select(group => group.First()).ToList();
 
-                                if (unidades == null || unidades.Count() > 0)
-                                    unidades = db.ParCompany.Where(r => r.Id == userLogado.ParCompany_Id).ToList();
+                            filterContext.Controller.ViewBag.UnidadeUsuario = Mapper.Map<IEnumerable<ParCompanyDTO>>(_companyXUserSgq);
 
-                                filterContext.Controller.ViewBag.UnidadeUsuario = Mapper.Map<IEnumerable<ParCompanyDTO>>(unidades);
-                            }
-                    
+                            #endregion
+                        }
+                        else /*Se não possui mais de uma undiade*/
+                        {
+                            var unidades = db.ParCompany.ToList();
+
+                            if (unidades == null || unidades.Count() > 0)
+                                unidades = db.ParCompany.Where(r => r.Id == userLogado.ParCompany_Id).ToList();
+
+                            filterContext.Controller.ViewBag.UnidadeUsuario = Mapper.Map<IEnumerable<ParCompanyDTO>>(unidades);
+                        }
+
+                    }
                 }
                 //return retorno;
             }
