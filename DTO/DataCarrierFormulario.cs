@@ -36,9 +36,9 @@ namespace DTO
 
         public string startDate { get; set; }
         public string endDate { get; set; }
-        public int level01Id { get; set; }
-        public int level02Id { get; set; }
-        public int level03Id { get; set; }
+        public int level1Id { get; set; }
+        public int level2Id { get; set; }
+        public int level3Id { get; set; }
         public int unitId { get; set; }
         public int auditorId { get; set; }
         public int shift { get; set; }

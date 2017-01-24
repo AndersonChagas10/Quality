@@ -55,9 +55,15 @@ namespace SgqSystem.Controllers.Api
 
             //if (GlobalConfig.Brasil)
             //{
-            userName = "sa";
-            pass = "1qazmko0";
+            //    userName = "sa";
+            //    pass = "1qazmko0";
             //}
+
+            if (receive.sequencialAtual == 0)
+            {
+                retorno.Sequential = 1;
+                return retorno;
+            }
 
             using (var db = new SgqDbDevEntities())
             {
@@ -66,7 +72,7 @@ namespace SgqSystem.Controllers.Api
 
             using (var db = new FactoryADO(company.IPServer, company.DBServer, pass, userName))
             {
-                var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.IntegrationId.ToString() + ", " + receive.sequencialAtual.ToString();
+                var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.CompanyNumber.ToString() + ", " + receive.sequencialAtual.ToString();
                 var resultQuery = db.SearchQuery<ResultadosSequencialBanda>(query).ToList();
                 if (resultQuery != null && resultQuery.Count() > 0)
                     retorno.Sequential = resultQuery.FirstOrDefault().iSequencial;
