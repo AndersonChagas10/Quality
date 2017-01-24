@@ -53,6 +53,7 @@
                     if (toggle == undefined)
                         $('#menu-toggle').click();
                     GerarTabela(r);
+                    FiltrosPorColuna();
                 } catch (e) {
                     console.log(e);
                 } finally {
@@ -132,6 +133,8 @@
                 }
             });
 
+
+
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
                     // {
@@ -183,6 +186,8 @@
             );
 
         }
+
+        
 
         function ValidaDadosParaEnvio() {
 

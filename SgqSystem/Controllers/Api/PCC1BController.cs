@@ -66,7 +66,7 @@ namespace SgqSystem.Controllers.Api
 
             using (var db = new FactoryADO(company.IPServer, company.DBServer, pass, userName))
             {
-                var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.IntegrationId.ToString() + ", " + receive.sequencialAtual.ToString();
+                var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.CompanyNumber.ToString() + ", " + receive.sequencialAtual.ToString();
                 var resultQuery = db.SearchQuery<ResultadosSequencialBanda>(query).ToList();
                 if (resultQuery != null && resultQuery.Count() > 0)
                     retorno.Sequential = resultQuery.FirstOrDefault().iSequencial;
@@ -84,7 +84,7 @@ namespace SgqSystem.Controllers.Api
             ParLevel1 parLevel1 = new ParLevel1();
             using (var db = new SgqDbDevEntities())
             {
-                parLevel1 = db.ParLevel1.FirstOrDefault(r => r.hashKey == receive.HashKey);
+                parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == 3);
             }
             var _result = new ResultTotalNC();
 
