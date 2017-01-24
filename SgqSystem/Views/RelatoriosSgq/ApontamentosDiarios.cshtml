@@ -53,6 +53,7 @@
                     if (toggle == undefined)
                         $('#menu-toggle').click();
                     GerarTabela(r);
+                    FiltrosPorColuna();
                 } catch (e) {
                     console.log(e);
                 } finally {
@@ -135,6 +136,8 @@
                 }
             });
 
+
+
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
                     // {
@@ -151,6 +154,7 @@
                     //},
                     {
                         extend: 'print',
+                        text: 'Imprimir',
                         customize: function (win) {
                             //$(win.document.body)
                             //    .css( 'font-size', '10pt' )
@@ -168,13 +172,27 @@
                     },
                     {
                         extend: 'excelHtml5',
+                        text: 'Excel',
                         exportOptions: {
                             columns: ':visible'
                         }
                     },
                     //'excel',
-                    'pdf',
-                    'colvis',
+                     {
+                         extend: 'pdf',
+                         text: 'PDF',
+                         exportOptions: {
+                             columns: ':visible'
+                         }
+                     },
+                      {
+                          extend: 'colvis',
+                          text: 'Colunas Visíveis',
+                          exportOptions: {
+                              columns: ':visible'
+                          }
+                      },
+                    
                     //, 'print'
 
 
@@ -186,6 +204,8 @@
             );
 
         }
+
+        
 
         function ValidaDadosParaEnvio() {
 

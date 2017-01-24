@@ -90,7 +90,7 @@ namespace SgqSystem.Controllers.Api
             ParLevel1 parLevel1 = new ParLevel1();
             using (var db = new SgqDbDevEntities())
             {
-                parLevel1 = db.ParLevel1.FirstOrDefault(r => r.hashKey == receive.HashKey);
+                parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == 3);
             }
             var _result = new ResultTotalNC();
 

@@ -344,9 +344,32 @@
             return o;
         };
 
+        function FiltrosPorColuna() {
+
+                $('.dataTable thead th').each(function (i) {
+                    var title = $('.dataTable thead th').eq($(this).index()).text();
+                    $(this).html(title + '<br><input type="text" style="font-size:x-small; color: #555; text-align:center;" placeholder="Filtrar ' + title + '" data-index="' + i + '" />');
+                });
+
+                // DataTable
+                var table = $('.dataTable').DataTable();
+
+                // Filter event handler
+                $(table.table().container()).on('keyup', 'thead input', function () {
+                    table
+                        .column($(this).data('index'))
+                        .search(this.value)
+                        .draw();
+                });
+
+            }
+
         $(document).ready(function () {
             //var settngs = $.data($('form')[0], 'validator').settings;
             //settngs.ignore = ".ignore";
+
+            
+
         });
     </script>
 
