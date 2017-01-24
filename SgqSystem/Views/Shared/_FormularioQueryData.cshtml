@@ -221,6 +221,13 @@
         </li>
 
         <li>
+            <div id="showUnit" style="display:none">
+                <span class="redLabel">@Resources.Resource.unit</span>
+                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+            </div>
+        </li>
+
+        <li>
             <div id="showLevel1" style="display:none">
                 <span class="redLabel">@Resources.Resource.level1</span>
                 @Html.DropDownList("level1Id", new SelectList(ViewBag.Level1, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
@@ -240,13 +247,7 @@
                 @Html.DropDownList("level3Id", new SelectList(ViewBag.Level3, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
             </div>
         </li>
-
-        <li>
-            <div id="showUnit" style="display:none">
-                <span class="redLabel">@Resources.Resource.unit</span>
-                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-            </div>
-        </li>
+      
 
         <li>
             <div id="showShift" style="display:none">
