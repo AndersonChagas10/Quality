@@ -75,7 +75,9 @@
 
             var table = $('#results').empty().DataTable({
                 data: retornoArray,
-                columns: [{ title: "Unidade", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
+                columns: [
+                    { title: "Editar", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">View</button>' },
+                    { title: "Unidade", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
                     { title: "Data", mData: "_Data" },
                     { title: "Indicador", mData: "Indicador" },
                     { title: "Monitoramento", mData: "Monitoramento" },
@@ -98,11 +100,12 @@
                     { title: "Não Conforme (Com peso)", mData: "NC_Peso" },
                     { title: "Avaliação.", mData: "Avaliacao" },
                     { title: "Amostra", mData: "Amostra" },
+                    
                 ],
-                fixedHeader: {
-                    header: true,
-                    footer: true
-                },
+                //fixedHeader: {
+                //    header: true,
+                //    footer: true
+                //},
                 scrollX: true,
                 lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
                 pageLength: 10,
@@ -199,8 +202,8 @@
         $(document).ready(function () {
             formControl.showFullCallendar();
             formControl.showUnit();
-            formControl.showUnit();
-            formControl.showUnit();
+            formControl.showLevel2();
+            formControl.showLevel1();
         });
 
     </script>
