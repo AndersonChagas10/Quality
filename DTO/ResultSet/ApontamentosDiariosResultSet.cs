@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO;
+using System;
 
 public class ApontamentosDiariosResultSet
 {
@@ -29,16 +30,28 @@ public class ApontamentosDiariosResultSet
     public string Unidade { get; set; }
 
 
-    public string Select(DateTime dtInicio, DateTime dtFim, int unidadeId)
+    public string Select(DataCarrierFormulario form)
     {
-        var dtInit = dtInicio.ToString("yyyyMMdd");
-        var dtF = dtFim.ToString("yyyyMMdd");
+        var dtInit = form._dataInicio.ToString("yyyyMMdd");
+        var dtF = form._dataFim.ToString("yyyyMMdd");
 
         var sqlUnidade = "";
+        var sqlLevel1 = "";
+        var sqlLevel2 = "";
 
-        if(unidadeId != 0)
+        if(form.unitId > 0)
         {
-            sqlUnidade = "\n AND UN.Id = " + unidadeId;
+            sqlUnidade = "\n AND UN.Id = " + form.unitId;
+        }
+
+        if (form.level1Id > 0)
+        {
+            sqlLevel1 = "\n AND L1.Id = " + form.level1Id;
+        }
+
+        if (form.level2Id > 0)
+        {
+            sqlLevel2 = "\n AND C2.ParLevel2_Id = " + form.level2Id;
         }
 
         return " SELECT                                    " +
@@ -69,7 +82,7 @@ public class ApontamentosDiariosResultSet
                 " \n LEFT JOIN ParLevel1 L1                 " +
                 " \n ON L1.Id = C2.ParLevel1_Id             " +
                 " \n WHERE C2.CollectionDate BETWEEN '" + dtInit + " 00:00' AND '" + dtF + " 23:59'" +
-                sqlUnidade;
+                sqlUnidade + sqlLevel1 + sqlLevel2;
 
 
 

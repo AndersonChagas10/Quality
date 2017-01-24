@@ -72,7 +72,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id, AddDate, AlterDate, ReferenceDatetime, UserSGQ_Id, ParCompany_Id, ParFrequency_Id, Shift, DataType, AmountData, ParMeasurementUnit_Id, IsActive, Comments")] ManDataCollectIT manDataCollectIT)
+        public ActionResult Create([Bind(Include = "Id, AddDate, AlterDate, ReferenceDatetime, UserSGQ_Id, ParCompany_Id, ParFrequency_Id, DimManutencaoColetaITs_Id, AmountData, IsActive, Comments")] ManDataCollectIT manDataCollectIT)
         {
             manDataCollectIT.IsActive = true;
             manDataCollectIT.UserSGQ_Id = Guard.GetUsuarioLogado_Id(HttpContext);
@@ -108,7 +108,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AddDate,AlterDate,ReferenceDatetime,UserSGQ_Id,ParCompany_Id,ParFrequency_Id,Shift,DataType,AmountData,ParMeasurementUnit_Id,IsActive,Comments")] ManDataCollectIT manDataCollectIT)
+        public ActionResult Edit([Bind(Include = "Id, AddDate, AlterDate, ReferenceDatetime, UserSGQ_Id, ParCompany_Id, ParFrequency_Id, DimManutencaoColetaITs_Id, AmountData, IsActive, Comments")] ManDataCollectIT manDataCollectIT)
         {
             if (ModelState.IsValid)
             {

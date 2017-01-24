@@ -63,36 +63,35 @@
                     </div>
                 </div>
 
-                <div class="form-group hide">
-                    @Html.Label("Periodicidade", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.ParFrequency_Id, new SelectList(ViewBag.listaParFrequency, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.ParFrequency_Id, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+                @*<div class="form-group hide">
+                        @Html.Label("Periodicidade", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.ParFrequency_Id, new SelectList(ViewBag.listaParFrequency, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ParFrequency_Id, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
 
-                <div class="form-group">
-                    @Html.Label("Turno", htmlAttributes: new { @class = "control-label col-md-2" })
-                    @*@Html.LabelFor(model => model.shift, htmlAttributes: new { @class = "control-label col-md-2" })*@
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Shift, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Shift, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+                @*<div class="form-group">
+                        @Html.Label("Turno", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Shift, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Shift, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
 
                 <div class="form-group">
                     @Html.Label("Descrição da Coleta", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.DataType, new SelectList(ViewBag.listaDataDataType, "id", "IndicadorTecnico"), Resources.Resource.select + "...", new { @class = "form-control" })              
+                        @Html.DropDownListFor(model => model.DimManutencaoColetaITs_id, new SelectList(ViewBag.listaDataDataType, "id", "TechnicalIndicator"), Resources.Resource.select + "...", new { @class = "form-control"})
                         <script>
 
-                            var dataTypeSelecionado = @Html.Raw(Json.Encode(Model.DataType));
+                            var dataTypeSelecionado = @Html.Raw(Json.Encode(Model.DimManutencaoColetaITs_id));
 
                             $('#dataType').val(dataTypeSelecionado).change()
 
                         </script>
-                        @*@Html.EditorFor(model => model.dataType, new { htmlAttributes = new { @class = "form-control" } })*@
-                        @Html.ValidationMessageFor(model => model.DataType, "", new { @class = "text-danger" })
+
+                        @Html.ValidationMessageFor(model => model.DimManutencaoColetaITs_id, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -100,25 +99,19 @@
                     @Html.Label("Quantidade", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
 
-                        @*AmountData deve ser decimal e não nullable<decimal> para que o filtro funcione*@
-                        @if (Model.ReferenceDatetime.HasValue)
-                        {
-                            @Html.TextBoxFor(model => model.AmountData, Model.AmountData.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" })
-                        }
-
-                        
+                        @Html.TextBoxFor(model => model.AmountData, Model.AmountData.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.AmountData, "", new { @class = "text-danger" })
 
                     </div>
                 </div>
 
-                <div class="form-group hide">
-                    @Html.Label("Unidade de Medida", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.ParMeasurementUnit_Id, new SelectList(ViewBag.listaParMeasurementUnit, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.ParMeasurementUnit_Id, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+                @*<div class="form-group hide">
+                        @Html.Label("Unidade de Medida", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.ParMeasurementUnit_Id, new SelectList(ViewBag.listaParMeasurementUnit, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ParMeasurementUnit_Id, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
 
                 <div class="form-group">
                     @Html.Label("Comentários", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -156,6 +149,8 @@
         }
 
         <script>
+
+            //$('#DimManutencaoColetaITs_id').prop( "disabled", true );
 
             $('#AmountData').inputmask("decimal", { rightAlign: false });
 

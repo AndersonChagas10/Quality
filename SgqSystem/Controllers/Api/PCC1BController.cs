@@ -1,4 +1,6 @@
 ﻿using Dominio;
+using Dominio.ADO;
+using DTO;
 using SgqSystem.Handlres;
 using System;
 using System.Collections.Generic;
@@ -12,13 +14,16 @@ namespace SgqSystem.Controllers.Api
     {
         public int Sequential { get; set; }
         public int Side { get; set; }
+        public string serverSide { get; set; }
     };
 
     public partial class _Receive
     {
+        public int sequencialAtual { get; set; }
         public String Data { get; set; }
         public int Unit { get; set; }
         public int ParLevel2 { get; set; }
+        public int HashKey { get; set; }
     }
 
     [HandleApi()]
@@ -27,65 +32,78 @@ namespace SgqSystem.Controllers.Api
     {
         private _PCC1B pcc1b { get; set; }
 
+
+        [HttpPost]
+        [Route("testeContext")]
+        public bool testeContext()
+        {
+            return RequestContext.IsLocal;
+        }
+
         [HttpPost]
         [Route("Next")]
         public _PCC1B Next(_Receive receive)
         {
 
-            List<_PCC1B> _list = new List<_PCC1B>();
+            string pass = "grJsoluco3s";
+            string userName = "UserGQualidade";
+            ParCompany company;
+            var retorno = new _PCC1B();
+            retorno.Side = 1;
+
+            ResultadosSequencialBanda _result = new ResultadosSequencialBanda();
+
+            //if (GlobalConfig.Brasil)
+            //{
+            //    userName = "sa";
+            //    pass = "1qazmko0";
+            //}
+
+            if (receive.sequencialAtual == 0)
+            {
+                retorno.Sequential = 1;
+                return retorno;
+            }
 
             using (var db = new SgqDbDevEntities())
             {
-
-                string querySequencial =
-                        "SELECT                                                                                             " +
-                        "\n IsNull(Max(Sequential), 0) AS Sequential,                                                       " +
-                        "\n 0 AS Side from CollectionLevel2                                                                 " +
-                        "\n WHERE ParLevel1_Id=3 and ParLevel2_Id = " + receive.ParLevel2 + " AND                            " +
-                        "\n UnitId=" + receive.Unit + " AND                                                                     " +
-                        "\n CollectionDate BETWEEN '" + receive.Data + " 00:00:00' AND '" + receive.Data + " 23:59:59'       ";
-
-                _list = db.Database.SqlQuery<_PCC1B>(querySequencial).ToList();
-
-                if (_list.Count > 0)
-                {
-                    pcc1b = _list[0];
-
-                    string queryBanda =
-                        "SELECT                                                                                             " +
-                        "\n IsNull(Max(Sequential), 0) AS Sequential,                                                       " +
-                        "\n IsNull(Max(Side), 0) AS Side from CollectionLevel2                                              " +
-                        "\n WHERE ParLevel1_Id=3 and ParLevel2_Id = " + receive.ParLevel2 + "                               " +
-                        "\n AND UnitId=" + receive.Unit + " AND CollectionDate                                              " +
-                        "\n BETWEEN '" + receive.Data + " 00:00:00' AND '" + receive.Data + " 23:59:59'                     " +
-                        "\n AND Sequential = " + pcc1b.Sequential + "                                                         ";
-
-                    _list = db.Database.SqlQuery<_PCC1B>(queryBanda).ToList();
-
-                    pcc1b = _list[0];
-                }
+                company = db.ParCompany.FirstOrDefault(r => r.Id == receive.Unit);
             }
 
-            return pcc1b;
+            using (var db = new FactoryADO(company.IPServer, company.DBServer, pass, userName))
+            {
+                var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.CompanyNumber.ToString() + ", " + receive.sequencialAtual.ToString();
+                var resultQuery = db.SearchQuery<ResultadosSequencialBanda>(query).ToList();
+                if (resultQuery != null && resultQuery.Count() > 0)
+                    retorno.Sequential = resultQuery.FirstOrDefault().iSequencial;
+
+                retorno.serverSide = company.IPServer + company.DBServer + pass + userName;
+                return retorno;
+            }
+
         }
 
         [HttpPost]
         [Route("TotalNC/{parLevel2IdDianteiro}/{parLevel2Id2Traseiro}")]
         public ResultTotalNC TotalNC(_Receive receive, int parLevel2IdDianteiro, int parLevel2Id2Traseiro)
         {
-
+            ParLevel1 parLevel1 = new ParLevel1();
+            using (var db = new SgqDbDevEntities())
+            {
+                parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == 3);
+            }
             var _result = new ResultTotalNC();
 
-            var query = "\n SELECT * from (SELECT ISNULL (SUM(CONVERT(Decimal,DefectsResult)), 0) as ncDianteiro                                                                " +
+            var query = "\n SELECT * from (SELECT ISNULL (SUM(CONVERT(Decimal,DefectsResult)), 0) as ncDianteiro                                            " +
                         "\n FROM CollectionLevel2                                                                                                           " +
-                        "\n WHERE parlevel1_Id = 3                                                                                                          " +
+                        "\n WHERE parlevel1_Id = " + parLevel1.Id + "                                                                                       " +
                         "\n and ParLevel2_Id = " + parLevel2IdDianteiro + " --Dianteiro                                                                     " +
                         "\n and UnitId = " + receive.Unit +
                         "\n and CollectionDate Between ('" + receive.Data.ToString() + " 00:00:00.0000000') and ('" + receive.Data + " 23:59:59.0000000')   " +
-                        "\n ) j, (                                                                                                                      " +
-                        "\n select ISNULL (SUM(CONVERT(Decimal,DefectsResult)), 0) as ncTraseiro                                                                                " +
+                        "\n ) j, (                                                                                                                          " +
+                        "\n select ISNULL (SUM(CONVERT(Decimal,DefectsResult)), 0) as ncTraseiro                                                            " +
                         "\n from CollectionLevel2                                                                                                           " +
-                        "\n where parlevel1_Id = 3                                                                                                          " +
+                        "\n WHERE parlevel1_Id = " + parLevel1.Id + "                                                                                       " +
                         "\n and ParLevel2_Id = " + parLevel2Id2Traseiro + " --Traseiro                                                                      " +
                         "\n and UnitId = " + receive.Unit +
                         "\n and CollectionDate Between ('" + receive.Data + " 00:00:00.0000000') and ('" + receive.Data + " 23:59:59.0000000')              " +
@@ -99,9 +117,12 @@ namespace SgqSystem.Controllers.Api
             return _result;
         }
 
-
     }
 
+    public class ResultadosSequencialBanda
+    {
+        public int iSequencial { get; set; }
+    }
 
     public class ResultTotalNC
     {
@@ -140,4 +161,5 @@ namespace SgqSystem.Controllers.Api
             }
         }
     }
+
 }
