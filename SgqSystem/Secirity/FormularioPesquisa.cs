@@ -25,6 +25,9 @@ namespace SgqSystem.Secirity
     {
         //public IEnumerable<ParCompanyDTO> _ParCompanyDTO { get; set; }
         public bool filtraUnidadePorUsuario { get; set; }
+        public bool filtraUnidadeDoUsuario { get; set; }
+        public bool parLevel1e2 { get; set; }
+        public bool parLevel3 { get; set; }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -32,6 +35,19 @@ namespace SgqSystem.Secirity
             {
 
                 db.Configuration.LazyLoadingEnabled = false;
+
+                filterContext.Controller.ViewBag.Level1 = new List<ParLevel1DTO>();
+                filterContext.Controller.ViewBag.Level2 = new List<ParLevel2DTO>();
+                filterContext.Controller.ViewBag.Level3 = new List<ParLevel3DTO>();
+
+                if (parLevel1e2)
+                {
+                    filterContext.Controller.ViewBag.Level1 = Mapper.Map<List<ParLevel1DTO>>(db.ParLevel1.ToList());
+                    filterContext.Controller.ViewBag.Level2 = Mapper.Map<List<ParLevel2DTO>>(db.ParLevel2.ToList());
+                }
+
+                if (parLevel3)
+                    filterContext.Controller.ViewBag.Level3 = Mapper.Map<List<ParLevel3DTO>>(db.ParLevel3.ToList());
 
                 HttpCookie cookie = filterContext.HttpContext.Request.Cookies.Get("webControlCookie");
 
@@ -86,13 +102,20 @@ namespace SgqSystem.Secirity
                                 filterContext.Controller.ViewBag.UnidadeUsuario = Mapper.Map<IEnumerable<ParCompanyDTO>>(unidades);
                             }
                     }
+
+                    if (filtraUnidadeDoUsuario)
+                    {
+                        if (filterContext.Controller.ViewBag.UnidadeUsuario != null)
+                            filterContext.Controller.ViewBag.UnidadeUsuario = Mapper.Map<IEnumerable<ParCompanyDTO>>(db.ParCompany.Where(r => r.Id == userLogado.ParCompany_Id));
+                    }
                 }
+
                 //return retorno;
             }
             base.OnActionExecuting(filterContext);
         }
 
-    
+
 
         //public override void OnActionExecuted(ActionExecutedContext filterContext)
         //{

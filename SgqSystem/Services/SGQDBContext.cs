@@ -53,6 +53,7 @@ namespace SGQDBContext
 
             //var parLevel1List = (List<ParLevel1>)db.Query<ParLevel1>(sql);
 
+
             var parLevel1List = db.Query<ParLevel1>(sql);
 
             return parLevel1List;
@@ -1387,5 +1388,67 @@ namespace SGQDBContext
                 throw;
             }
         }
+    }
+
+    public partial class CollectionLevel2
+    {
+        public int Id { get; set; }
+        public string Key { get; set; }
+        public int ConsolidationLevel2_Id { get; set; }
+        public int ParLevel1_Id { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public int UnitId { get; set; }
+        public int AuditorId { get; set; }
+        public int Shift { get; set; }
+        public int Period { get; set; }
+        public int Phase { get; set; }
+        public bool ReauditIs { get; set; }
+        public int ReauditNumber { get; set; }
+        public DateTime CollectionDate { get; set; }
+        public DateTime? StartPhaseDate { get; set; }
+        public int EvaluationNumber { get; set; }
+        public int Sample { get; set; }
+        public DateTime AddDate { get; set; }
+        public DateTime? AlterDate { get; set; }
+        public bool ConsecutiveFailureIs { get; set; }
+        public int ConsecutiveFailureTotal { get; set; }
+        public bool NotEvaluatedIs { get; set; }
+        public bool Duplicated { get; set; }
+        public bool HaveCorrectiveAction { get; set; }
+        public bool HaveReaudit { get; set; }
+        public bool HavePhase { get; set; }
+        public bool Completed { get; set; }
+        public int ParFrequency_Id { get; set; }
+        public int AlertLevel { get; set; }
+        public int Sequential { get; set; }
+        public int Side { get; set; }
+        public decimal WeiEvaluation { get; set; }
+        public decimal Defects { get; set; }
+        public decimal WeiDefects { get; set; }
+        public int TotalLevel3WithDefects { get; set; }
+        public int TotalLevel3Evaluation { get; set; }
+        public int LastEvaluationAlert { get; set; }
+        public int EvaluatedResult { get; set; }
+        public int DefectsResult { get; set; }
+        public bool IsEmptyLevel3 { get; set; }
+
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public CollectionLevel2 GetByKey(string key)
+        {
+            try
+            {
+                string sql = "SELECT * FROM CollectionLevel2 WHERE [Key] = '" + key + "'";
+
+                SqlConnection db = new SqlConnection(conexao);
+                var obj = db.Query<CollectionLevel2>(sql).FirstOrDefault();
+                return obj;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }
