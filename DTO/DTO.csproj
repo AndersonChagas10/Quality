@@ -91,6 +91,7 @@
     <Compile Include="DTO\Level03DTO.cs" />
     <Compile Include="DTO\Level01DTO.cs" />
     <Compile Include="DTO\ContextExampleDTO.cs" />
+    <Compile Include="DTO\Manutencao\ManDataCollectITsDTO.cs" />
     <Compile Include="DTO\Manutencao\DimManutencaoColetaITsDTO.cs" />
     <Compile Include="DTO\Params\NxN.cs" />
     <Compile Include="DTO\Params\ParamsDdl.cs" />
@@ -161,7 +162,9 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DTO\ManDataCollectITs\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

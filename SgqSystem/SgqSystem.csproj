@@ -372,6 +372,7 @@
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
     <Compile Include="Mappers\Manutencao\DimManutencaoColetaITsMapperProfile.cs" />
+    <Compile Include="Mappers\Manutencao\ManDataCollectITsMapperProfile.cs" />
     <Compile Include="Mappers\ParamsBrasil\ParLevel2ControlCompanyMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel2Level1MapperProfile.cs" />
@@ -1293,6 +1294,7 @@
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaTbl1.cshtml" />
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaTbl2.cshtml" />
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaArea - Copy.cshtml" />
+    <Content Include="Views\manDataCollectITs\Create2.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1302,6 +1304,7 @@
     <Folder Include="Areas\HelpPage\Views\Shared\" />
     <Folder Include="Arquivos\uploads\" />
     <Folder Include="DataCollect\" />
+    <Folder Include="Mappers\NewFolder1\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
     <Folder Include="Views\RelatorioController\" />
