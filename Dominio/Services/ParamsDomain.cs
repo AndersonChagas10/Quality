@@ -801,6 +801,29 @@ namespace Dominio.Services
 
         }
 
+        public ParMultipleValues SetDefaultMultiplaEscolha(int idHeader, int idMultiple)
+        {
+
+            var headerFieldList = _baseRepoParMultipleValues.GetAll().Where(r => r.ParHeaderField_Id == idHeader && r.Id != idMultiple);
+
+            foreach(ParMultipleValues m in headerFieldList)
+            {
+                m.IsDefaultOption = false;
+                _baseRepoParMultipleValues.AddOrUpdate(m);
+            }
+
+            var multiple = _baseRepoParMultipleValues.GetById(idMultiple);
+            if (multiple.IsDefaultOption == null || multiple.IsDefaultOption == false)
+                multiple.IsDefaultOption = true;
+            else
+                multiple.IsDefaultOption = false;
+
+            _baseRepoParMultipleValues.AddOrUpdate(multiple);
+
+            return multiple;
+
+        }
+        
         //public void verificaVinculos(int level1 = 0, int level2 = 0, int level3 = 0)
         //{
         //    var hasVinculoLevel32 = "select * from parlevel3level2 where  ParLevel3_Id = 1074";
