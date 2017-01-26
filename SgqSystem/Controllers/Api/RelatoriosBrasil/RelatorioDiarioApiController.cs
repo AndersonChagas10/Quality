@@ -1,4 +1,5 @@
-﻿using SgqSystem.ViewModels;
+﻿using Dominio;
+using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,11 @@ namespace SgqSystem.Controllers.Api
     {
         private PanelResulPanel _mock { get; set; }
 
+        public PanelResulPanel _listGrafico1Level1 { get; set; }
+
         public RelatorioDiarioApiController()
         {
+            _listGrafico1Level1 = new PanelResulPanel();
             CriaMockGrafico1Level1();
             //CriaMockLevel1();
         }
@@ -23,13 +27,245 @@ namespace SgqSystem.Controllers.Api
         [Route("Grafico1")]
         public PanelResulPanel GetGrafico1Level1([FromBody] FormularioParaRelatorioViewModel form)
         {
-            //var query = "";
-            //using (var db = new SgqDbDevEntities())
-            //{
-            //    _listGrafico1Level1 = db.Database.SqlQuery<RelDiarioGrafico1Result>(query).ToList();
-            //}
+            var queryGrafico1 = "" +
+                "\n SELECT " + 
+                "\n  level1_Id " +
+                "\n ,Level1Name " +
+                "\n ,Unidade_Id " +
+                "\n ,Unidade " +
+                "\n ,ProcentagemNc " +
+                "\n ,Meta " +
+                "\n ,NC " +
+                "\n ,Av " +
+                "\n FROM " +
+                "\n ( " +
+                "\n     SELECT " +
+                "\n     * " +
+                "\n     , CASE WHEN AV IS NULL OR AV = 0 THEN 0 ELSE NC / AV * 100 END AS ProcentagemNc " +
+                "\n     , CASE WHEN CASE WHEN AV IS NULL OR AV = 0 THEN 0 ELSE NC / AV * 100 END > META THEN 1 ELSE 0 END RELATORIO_DIARIO " +
+                "\n     FROM " +
+                "\n     ( " +
+                "\n         SELECT " +
+                "\n          IND.Id         AS level1_Id " +
+                "\n         , IND.Name       AS Level1Name " +
+                "\n         , UNI.Id         AS Unidade_Id " +
+                "\n         , UNI.Name       AS Unidade " +
+                "\n         , CASE " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
+                "\n         ELSE 0 " +
+                "\n        END AS Av " +
+                "\n         , CASE " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN WeiDefects " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
+                "\n         ELSE 0 " +
 
-            return _mock;
+                "\n         END AS NC " +
+                "\n         , (SELECT TOP 1 PercentValue FROM ParGoal WHERE ParLevel1_Id = CL1.ParLevel1_Id AND(ParCompany_Id = CL1.UnitId OR ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC) AS Meta " +
+                "\n         FROM ConsolidationLevel1 CL1 " +
+                "\n         INNER JOIN ParLevel1 IND " +
+                "\n         ON IND.Id = CL1.ParLevel1_Id " +
+                "\n         INNER JOIN ParCompany UNI " +
+                "\n         ON UNI.Id = CL1.UnitId " +
+                "\n         WHERE CL1.ConsolidationDate = '20170124' " +
+                "\n         AND CL1.UnitId = 1 " +
+                "\n     ) S1 " +
+                "\n ) S2 " +
+                "\n WHERE RELATORIO_DIARIO = 1 " +
+                "\n ORDER BY 5 DESC";
+
+            var queryGraficoTendencia = "" +
+                "\n SELECT " +
+                "\n  level1_Id " +
+                "\n ,Level1Name " +
+                "\n ,'Tendência do Indicador ' + Level1Name AS Level2Name " +
+                "\n ,Unidade_Id " +
+                "\n ,Unidade " +
+                "\n ,ProcentagemNc " +
+                "\n ,Meta " +
+                "\n ,NC " +
+                "\n ,Av " +
+                "\n ,Data AS _Data " +
+                "\n FROM " +
+                "\n ( " +
+                "\n 	SELECT  " +
+                "\n 	* " +
+                "\n 	,CASE WHEN AV IS NULL OR AV = 0 THEN 0 ELSE NC/AV * 100 END AS ProcentagemNc " +
+                "\n 	,CASE WHEN CASE WHEN AV IS NULL OR AV = 0 THEN 0 ELSE NC/AV * 100 END > META THEN 1 ELSE 0 END RELATORIO_DIARIO " +
+                "\n 	FROM " +
+                "\n 	( " +
+                "\n 		SELECT " +
+                "\n 		 IND.Id			AS level1_Id " +
+                "\n 		,IND.Name		AS Level1Name " +
+                "\n 		,UNI.Id			AS Unidade_Id " +
+                "\n 		,UNI.Name		AS Unidade " +
+                "\n 		,CASE  " +
+                "\n 		WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation " +
+                "\n 		WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
+                "\n 		WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
+                "\n 		ELSE 0 " +
+                "\n 		END AS Av " +
+                "\n 		,CASE  " +
+                "\n 		WHEN IND.ParConsolidationType_Id = 1 THEN WeiDefects " +
+                "\n 		WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects " +
+                "\n 		WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
+                "\n 		ELSE 0 " +
+                "\n 		END AS NC " +
+                "\n 		, (SELECT TOP 1 PercentValue FROM ParGoal WHERE ParLevel1_Id = CL1.ParLevel1_Id AND (ParCompany_Id = CL1.UnitId OR ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC ) AS Meta " +
+                "\n 		,CL1.ConsolidationDate as Data " +
+                "\n 		FROM ConsolidationLevel1 CL1 " +
+                "\n 		INNER JOIN ParLevel1 IND " +
+                "\n 		ON IND.Id = CL1.ParLevel1_Id " +
+                "\n 		INNER JOIN ParCompany UNI " +
+                "\n 		ON UNI.Id = CL1.UnitId " +
+                "\n 		WHERE CL1.ConsolidationDate = '20170124' " +
+                "\n    		AND CL1.UnitId = 1 " +
+                 "\n	) S1 " +
+                "\n ) S2 " +
+                "\n WHERE RELATORIO_DIARIO = 1 ";
+
+            var queryGrafico3 = "" +
+                "\n SELECT " +
+                "\n  " +
+                "\n  level1_Id " +
+                "\n ,Level1Name " +
+                "\n ,level2_Id " +
+                "\n ,Level2Name " +
+                "\n ,Unidade_Id " +
+                "\n ,Unidade " +
+                "\n ,Av " +
+                "\n ,NC " +
+                "\n FROM " +
+                "\n ( " +
+                "\n 	SELECT " +
+                "\n 	 MON.Id			AS level2_Id " +
+                "\n 	,'Level 2 ' + MON.Name		AS Level2Name " +
+                "\n 	,IND.Id AS level1_Id " +
+                "\n 	,IND.Name AS Level1Name " +
+                "\n 	,UNI.Id			AS Unidade_Id " +
+                "\n 	,UNI.Name		AS Unidade " +
+                "\n 	,CASE  " +
+                "\n 	WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation " +
+                "\n 	WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation " +
+                "\n 	WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult " +
+                "\n 	ELSE 0 " +
+                "\n 	END AS Av " +
+                "\n 	,CASE  " +
+                "\n 	WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiDefects " +
+                "\n 	WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects " +
+                "\n 	WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult " +
+                "\n 	ELSE 0 " +
+                "\n 	END AS NC " +
+                "\n 	FROM ConsolidationLevel2 CL2 " +
+                "\n 	INNER JOIN ConsolidationLevel1 CL1 " +
+                "\n 	ON CL1.Id = CL2.ConsolidationLevel1_Id " +
+                "\n 	INNER JOIN ParLevel1 IND " +
+                "\n 	ON IND.Id = CL1.ParLevel1_Id " +
+                "\n 	INNER JOIN ParLevel2 MON " +
+                "\n 	ON MON.Id = CL2.ParLevel2_Id " +
+                "\n 	INNER JOIN ParCompany UNI " +
+                "\n 	ON UNI.Id = CL1.UnitId " +
+                "\n 	WHERE CL2.ConsolidationDate = '20170124' " +
+                "\n 	AND CL2.UnitId = 1 " +
+                "\n 	AND CL1.ParLevel1_Id IN (1, 22, 11) " +
+                "\n ) S1 " +
+                "\n ORDER BY 8 DESC";
+
+            var queryGrafico4 = "" +
+                "\n SELECT " +
+                "\n  " +
+                "\n  IND.Id AS level1_Id " +
+                "\n ,IND.Name AS Level1Name " +
+                "\n ,MON.Id AS level2_Id " +
+                "\n ,MON.Name AS Level2Name " +
+                "\n ,R3.ParLevel3_Id AS level3_Id " +
+                "\n ,R3.ParLevel3_Name AS Level3Name " +
+                "\n ,UNI.Name AS Unidade " +
+                "\n ,UNI.Id AS Unidade_Id " +
+                "\n ,SUM(R3.WeiDefects) AS NC " +
+                "\n FROM Result_Level3 R3 " +
+                "\n INNER JOIN CollectionLevel2 C2 " +
+                "\n ON C2.Id = R3.CollectionLevel2_Id " +
+                "\n INNER JOIN ConsolidationLevel2 CL2 " +
+                "\n ON CL2.Id = C2.ConsolidationLevel2_Id " +
+                "\n INNER JOIN ConsolidationLevel1 CL1 " +
+                "\n ON CL1.Id = CL2.ConsolidationLevel1_Id " +
+                "\n INNER JOIN ParCompany UNI " +
+                "\n ON UNI.Id = CL1.UnitId " +
+                "\n INNER JOIN ParLevel1 IND  " +
+                "\n ON IND.Id = CL1.ParLevel1_Id " +
+                "\n INNER JOIN ParLevel2 MON " +
+                "\n ON MON.Id = CL2.ParLevel2_Id " +
+                "\n WHERE IND.Id IN (1, 22, 11) " +
+                "\n /* and MON.Id = 1 */" +
+                "\n and UNI.Id = 1 " +
+                "\n GROUP BY " +
+                "\n  IND.Id " +
+                "\n ,IND.Name " +
+                "\n ,MON.Id " +
+                "\n ,MON.Name " +
+                "\n ,R3.ParLevel3_Id " +
+                "\n ,R3.ParLevel3_Name " +
+                "\n ,UNI.Name " +
+                "\n ,UNI.Id " +
+                "\n ORDER BY 9 DESC";
+
+            var queryGraficoTarefasAcumuladas = "" +
+                "\n SELECT " +
+                "\n  " +
+                "\n  IND.Id AS level1_Id " +
+                "\n ,IND.Name AS Level1Name " +
+                "\n ,IND.Id AS level2_Id " +
+                "\n ,IND.Name AS Level2Name " +
+                "\n ,R3.ParLevel3_Id AS level3_Id " +
+                "\n ,R3.ParLevel3_Name AS Level3Name " +
+                "\n ,UNI.Name AS Unidade " +
+                "\n ,UNI.Id AS Unidade_Id " +
+                "\n ,SUM(R3.WeiDefects) AS NC " +
+                "\n FROM Result_Level3 R3 " +
+                "\n INNER JOIN CollectionLevel2 C2 " +
+                "\n ON C2.Id = R3.CollectionLevel2_Id " +
+                "\n INNER JOIN ConsolidationLevel2 CL2 " +
+                "\n ON CL2.Id = C2.ConsolidationLevel2_Id " +
+                "\n INNER JOIN ConsolidationLevel1 CL1 " +
+                "\n ON CL1.Id = CL2.ConsolidationLevel1_Id " +
+                "\n INNER JOIN ParCompany UNI " +
+                "\n ON UNI.Id = CL1.UnitId " +
+                "\n INNER JOIN ParLevel1 IND  " +
+                "\n ON IND.Id = CL1.ParLevel1_Id " +
+                "\n INNER JOIN ParLevel2 MON " +
+                "\n ON MON.Id = CL2.ParLevel2_Id " +
+                "\n WHERE IND.Id IN (1, 22, 11) " +
+                "\n /* and MON.Id = 1 */" +
+                "\n and UNI.Id = 1 " +
+                "\n GROUP BY " +
+                "\n  IND.Id " +
+                "\n ,IND.Name " +
+                "\n ,R3.ParLevel3_Id " +
+                "\n ,R3.ParLevel3_Name " +
+                "\n ,UNI.Name " +
+                "\n ,UNI.Id " +
+                "\n ORDER BY 9 DESC";
+
+
+
+
+
+
+            using (var db = new SgqDbDevEntities())
+            {
+                _listGrafico1Level1.listResultSetLevel1 = new List<RelDiarioResultSet>();
+                _listGrafico1Level1.listResultSetLevel1 = db.Database.SqlQuery<RelDiarioResultSet>(queryGrafico1).ToList();
+                _listGrafico1Level1.listResultSetTendencia = db.Database.SqlQuery<RelDiarioResultSet>(queryGraficoTendencia).ToList();
+                _listGrafico1Level1.listResultSetLevel2 = db.Database.SqlQuery<RelDiarioResultSet>(queryGrafico3).ToList();
+                _listGrafico1Level1.listResultSetTarefaPorIndicador = db.Database.SqlQuery<RelDiarioResultSet>(queryGraficoTarefasAcumuladas).ToList();
+                _listGrafico1Level1.listResultSetLevel3 = db.Database.SqlQuery<RelDiarioResultSet>(queryGrafico4).ToList();
+
+            }
+
+            return _listGrafico1Level1;
         }
 
         private void CriaMockGrafico1Level1()
@@ -263,6 +499,7 @@ namespace SgqSystem.Controllers.Api
         public decimal NC { get; set; }
         public decimal NC_Peso { get; set; }
         public double Data { get; internal set; }
+        public DateTime _Data { get; set; }
     }
 
     public class PanelResulPanel

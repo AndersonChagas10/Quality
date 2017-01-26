@@ -53,11 +53,11 @@ namespace SgqSystem.Controllers.Api
 
             ResultadosSequencialBanda _result = new ResultadosSequencialBanda();
 
-            //if (GlobalConfig.Brasil)
-            //{
-            //    userName = "sa";
-            //    pass = "1qazmko0";
-            //}
+            if (GlobalConfig.Brasil)
+            {
+                userName = "sa";
+                pass = "1qazmko0";
+            }
 
             if (receive.sequencialAtual == 0)
             {
