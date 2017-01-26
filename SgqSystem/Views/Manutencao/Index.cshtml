@@ -530,10 +530,10 @@
 
                                                     for (i = 0; i < xOrcada.length; i++) {
                                                         if (xOrcada[i] < xRealizada[i]) {
-                                                            xRealizada[i] = { y: xRealizada[i], color: '#a00808' };  //fica vermelho que a despesa for maior que o orçado
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#ff7575' }; //'#a00808' };  //fica vermelho que a despesa for maior que o orçado
 
                                                         } else {
-                                                            xRealizada[i] = { y: xRealizada[i], color: '#116606' }; //fica verde que a despesa for menor que o orçado
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#aef2ae' };// '#116606' }; //fica verde que a despesa for menor que o orçado
                                                         }
                                                     }
 
@@ -547,7 +547,6 @@
                                             //locação primeiro gráfico
                                             function GraficoDespesaTodasRegionais1(name, x1, x2, mediaDesvio, media) {
                                                 $(function () {
-
 
                                                     (function (H) {
                                                         var Axis = H.Axis,
@@ -614,7 +613,6 @@
                                                             zoomType: 'x, y',
                                                             alignThresholds: true,
                                                             type: 'column'
-                                                            
                                                         },
 
                                                         title: {
@@ -646,15 +644,15 @@
                                                                 text: 'Desvio %'
                                                             },
 
-                                                            opposite: true
+                                                            opposite: true,
+                                                            gridLineWidth: 0
 
                                                         }, {
                                                             allowDecimals: false,
                                                             title: {
                                                                 text: 'R$ em milhares'
                                                             },
-
-
+                                                            gridLineWidth: 0
 
                                                         }],
 
@@ -663,7 +661,10 @@
                                                                 borderWidth: 0,
                                                                 dataLabels: {
                                                                     enabled: true,
-                                                                    format: '{point.y:.,0f}'
+                                                                    format: '{point.y:.,0f}',
+                                                                    style: {
+                                                                        fontWeight: ' normal '
+                                                                    }
                                                                 }
                                                             }
                                                         },
@@ -673,11 +674,16 @@
                                                             data: x1,
                                                             //data: [1,2,3,4],
                                                             yAxis: 1,
+                                                            color:' #ADB4D8',
+
 
                                                             point: {
                                                                 events: {
                                                                     click: function () {
-                                                                        MountGraficoDespesaTodasRegionais()
+                                                                        $('#GraficoDespesaTodasRegionais').empty();
+                                                                        $('#GraficoDespesaTodasRegionaisPorPacote').empty();
+                                                                        $('#GrafDespReg').empty();
+                                                                        MountGraficoDespesaTodasRegionais(this.category)
                                                                     }
                                                                 }
                                                             }
@@ -686,12 +692,16 @@
                                                             data: x2,
                                                             //data: [4,3,2,1],
                                                             yAxis: 1,
-
-
+                                                            color: '#aef2ae',
 
                                                             point: {
                                                                 events: {
-                                                                    click: function () { MountGraficoDespesaTodasRegionais() }
+                                                                    click: function () {
+                                                                        $('#GraficoDespesaTodasRegionais').empty();
+                                                                        $('#GraficoDespesaTodasRegionaisPorPacote').empty();
+                                                                        $('#GrafDespReg').empty();
+                                                                        MountGraficoDespesaTodasRegionais(this.category)
+                                                                    }
                                                                 }
                                                             }
                                                         }, {
@@ -700,6 +710,7 @@
                                                             //data: [-17.12454, -8.78, -2.46, -3.87],
                                                             yAxis: 0,
                                                             visible: false,
+                                                            color: '#f7f580',
                                                             dataLabels: {
                                                                 enabled: true,
                                                                 color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
@@ -711,7 +722,12 @@
 
                                                             point: {
                                                                 events: {
-                                                                    click: function () { MountGrafDespReg(this.category) }
+                                                                    click: function () {
+                                                                        $('#GraficoDespesaTodasRegionais').empty();
+                                                                        $('#GraficoDespesaTodasRegionaisPorPacote').empty();
+                                                                        $('#GrafDespReg').empty();
+                                                                        MountGraficoDespesaTodasRegionais(this.category)
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -754,8 +770,8 @@
                                             }
 
                                             //chamada ajax para montar terceiro gráfico
-                                            function MountGraficoDespesaTodasRegionaisPorPacote() {
-                                                $.post('../api/Manutencao/getSelectGraficoRegionalPorPacote/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + getManutencaoRegional() + '/', function (lista) {
+                                            function MountGraficoDespesaTodasRegionaisPorPacote(regional) {
+                                                $.post('../api/Manutencao/getSelectGraficoRegionalPorPacote/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + getManutencaoRegional() + '/' + escape(regional.replace(/[/]/g, '|')) + '/', function (lista) {
 
                                                     var regional = [];
 
@@ -790,10 +806,10 @@
 
                                                     for (i = 0; i < xOrcada.length; i++) {
                                                         if (xOrcada[i] < xRealizada[i]) {
-                                                            xRealizada[i] = { y: xRealizada[i], color: '#a00808' };  //fica vermelho que a despesa for maior que o orçado
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#ff7575' };  //fica vermelho que a despesa for maior que o orçado
 
                                                         } else {
-                                                            xRealizada[i] = { y: xRealizada[i], color: '#116606' }; //fica verde que a despesa for menor que o orçado
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#aef2ae' }; //fica verde que a despesa for menor que o orçado
                                                         }
                                                     }
 
@@ -870,7 +886,7 @@
                                                         },
 
                                                         chart: {
-                                                            height: 250,
+                                                            height: 200,
                                                             zoomType: 'x, y',
                                                             alignThresholds: true,
                                                             type: 'column'
@@ -904,11 +920,12 @@
                                                             title: {
                                                                 text: 'Desvio %'
                                                             },
-
+                                                            gridLineWidth: 0,
                                                             opposite: true
 
                                                         }, {
                                                             allowDecimals: false,
+                                                            gridLineWidth: 0,
                                                             title: {
                                                                 text: 'R$ em milhares'
                                                             },
@@ -922,7 +939,10 @@
                                                                 borderWidth: 0,
                                                                 dataLabels: {
                                                                     enabled: true,
-                                                                    format: '{point.y:.,0f}'
+                                                                    format: '{point.y:.,0f}',
+                                                                    style: {
+                                                                        fontWeight: ' normal '
+                                                                    }
                                                                 }
                                                             }
                                                         },
@@ -932,6 +952,7 @@
                                                             data: x1,
                                                             //data: [1,2,3,4],
                                                             yAxis: 1,
+                                                            color: ' #ADB4D8',
 
                                                             point: {
                                                                 events: {
@@ -943,7 +964,7 @@
                                                             data: x2,
                                                             //data: [4,3,2,1],
                                                             yAxis: 1,
-
+                                                            color: '#aef2ae',
 
 
                                                             point: {
@@ -957,6 +978,7 @@
                                                             //data: [-17.12454, -8.78, -2.46, -3.87],
                                                             yAxis: 0,
                                                             visible: false,
+                                                            color: '#f7f580',
                                                             dataLabels: {
                                                                 enabled: true,
                                                                 color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
@@ -1011,8 +1033,9 @@
                                             }
 
                                             //chamada ajax para montar o segundo gráfico
-                                            function MountGraficoDespesaTodasRegionais() {
-                                                $.post('../api/Manutencao/getSelectGrafico1/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + getManutencaoRegional() + '/', function (lista) {
+                                            function MountGraficoDespesaTodasRegionais(regional) {
+                                                $.post('../api/Manutencao/getSelectGrafico1/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + getManutencaoRegional() + '/' + regional + '/', function (lista) {
+                         
 
                                                     var regional = [];
 
@@ -1047,10 +1070,10 @@
 
                                                     for (i = 0; i < xOrcada.length; i++) {
                                                         if (xOrcada[i] < xRealizada[i]) {
-                                                            xRealizada[i] = { y: xRealizada[i], color: '#a00808' };  //fica vermelho que a despesa for maior que o orçado
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#ff7575' };  //fica vermelho que a despesa for maior que o orçado
 
                                                         } else {
-                                                            xRealizada[i] = { y: xRealizada[i], color: '#116606' }; //fica verde que a despesa for menor que o orçado
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#aef2ae' }; //fica verde que a despesa for menor que o orçado
                                                         }
                                                     }
 
@@ -1161,15 +1184,15 @@
                                                             title: {
                                                                 text: 'Desvio %'
                                                             },
-
+                                                            gridLineWidth: 0,
                                                             opposite: true
 
                                                         }, {
                                                             allowDecimals: false,
+                                                            gridLineWidth: 0,
                                                             title: {
                                                                 text: 'R$ em milhares'
                                                             },
-
 
 
                                                         }],
@@ -1179,7 +1202,10 @@
                                                                 borderWidth: 0,
                                                                 dataLabels: {
                                                                     enabled: true,
-                                                                    format: '{point.y:.,0f}'
+                                                                    format: '{point.y:.,0f}',
+                                                                    style: {
+                                                                        fontWeight: ' normal '
+                                                                    }
                                                                 }
                                                             }
                                                         },
@@ -1189,11 +1215,14 @@
                                                             data: x1,
                                                             //data: [1,2,3,4],
                                                             yAxis: 1,
+                                                            color: ' #ADB4D8',
 
                                                             point: {
-                                                                events: {                                                                  
+                                                                events: {
                                                                     click: function () {
-                                                                        MountGraficoDespesaTodasRegionaisPorPacote(),
+                                                                        $('#GraficoDespesaTodasRegionaisPorPacote').empty();
+                                                                        $('#GrafDespReg').empty();
+                                                                        MountGraficoDespesaTodasRegionaisPorPacote(this.category),
                                                                         MountGrafDespReg(this.category)
                                                                     }
                                                                 }
@@ -1203,13 +1232,15 @@
                                                             data: x2,
                                                             //data: [4,3,2,1],
                                                             yAxis: 1,
-
+                                                            color: '#aef2ae',
 
 
                                                             point: {
                                                                 events: {
                                                                     click: function () {
-                                                                        MountGraficoDespesaTodasRegionaisPorPacote(),
+                                                                        $('#GraficoDespesaTodasRegionaisPorPacote').empty();
+                                                                        $('#GrafDespReg').empty();
+                                                                        MountGraficoDespesaTodasRegionaisPorPacote(this.category),
                                                                         MountGrafDespReg(this.category)
                                                                     }
                                                                 }
@@ -1220,6 +1251,7 @@
                                                             //data: [-17.12454, -8.78, -2.46, -3.87],
                                                             yAxis: 0,
                                                             visible: false,
+                                                            color: '#f7f580',
                                                             dataLabels: {
                                                                 enabled: true,
                                                                 color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
@@ -1232,6 +1264,8 @@
                                                             point: {
                                                                 events: {
                                                                     click: function () {
+                                                                        $('#GraficoDespesaTodasRegionaisPorPacote').empty();
+                                                                        $('#GrafDespReg').empty();
                                                                         MountGraficoDespesaTodasRegionaisPorPacote(),
                                                                         MountGrafDespReg(this.category)
                                                                     }
@@ -1313,10 +1347,10 @@
 
                                                     for (i = 0; i < xOrçada.length; i++) {
                                                         if (xOrçada[i] < xRealizada[i]) {
-                                                            xRealizada[i] = { y: xRealizada[i], color: '#a00808' };  //fica vermelho que a despesa for maior que o orçado
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#ff7575' };  //fica vermelho que a despesa for maior que o orçado
 
                                                         } else {
-                                                            xRealizada[i] = { y: xRealizada[i], color: '#116606' }; //fica verde que a despesa for menor que o orçado
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#aef2ae' }; //fica verde que a despesa for menor que o orçado
                                                         }
                                                     }
 
@@ -1427,16 +1461,15 @@
                                                             title: {
                                                                 text: 'Desvio %'
                                                             },
-
+                                                            gridLineWidth: 0,
                                                             opposite: true
 
                                                         }, {
                                                             allowDecimals: false,
+                                                            gridLineWidth: 0,
                                                             title: {
                                                                 text: 'R$ em milhares'
                                                             },
-
-
 
                                                         }],
 
@@ -1445,7 +1478,10 @@
                                                                 borderWidth: 0,
                                                                 dataLabels: {
                                                                     enabled: true,
-                                                                    format: '{point.y:.,0f}'
+                                                                    format: '{point.y:.,0f}',
+                                                                    style: {
+                                                                        fontWeight: ' normal '
+                                                                    }
                                                                 }
                                                             }
                                                         },
@@ -1455,6 +1491,7 @@
                                                             data: xOrçada,
                                                             //data: [1,2,3,4],
                                                             yAxis: 1,
+                                                            color: ' #ADB4D8',
 
                                                             point: {
                                                                 events: {
@@ -1466,7 +1503,7 @@
                                                             data: xRealizada,
                                                             //data: [4,3,2,1],
                                                             yAxis: 1,
-
+                                                            color: '#aef2ae',
 
 
                                                             point: {
@@ -1480,6 +1517,7 @@
                                                             //data: [-17.12454, -8.78, -2.46, -3.87],
                                                             yAxis: 0,
                                                             visible: false,
+                                                            color: '#f7f580',
                                                             dataLabels: {
                                                                 enabled: true,
                                                                 color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
@@ -3147,13 +3185,15 @@
                 return;
             }
 
-
+            
             $('#GraficoDespesaTodasRegionais').empty();
             $('#firstTable').empty();
             $('#GrafDespReg').empty();
 
             $('#TabelaDespesaTodasRegionais').empty();
             $('#secoundTableTeste').empty();
+
+            $('#GraficoDespesaTodasRegionaisPorPacote').empty();
 
             $('#GrafImpacFatTecDesv').empty();
             $('#TabelaITPorUni').empty();
