@@ -51,13 +51,25 @@
 
                                             <div id="mostrarBalao" style="display:none; position:fixed; width:20px; height:20px; border:1px solid #000; top:100px; right:0; z-index:9999; background-color: black; color:white;"><</div>
 
-                                            <div id="GraficoDespesaTodasRegionais1" style="cursor:pointer; width:100%;"></div>
+                                            <style>
 
-                                            <div id="GraficoDespesaTodasRegionais" style="cursor:pointer; width:100%;"></div>
+                                                .graficoPainel4{
+                                                    margin-left: auto; 
+                                                    margin-right:auto; 
+                                                    width:100%; 
+                                                    height:200px;
+                                                }
 
-                                            <div id="GraficoDespesaTodasRegionaisPorPacote" style="cursor:pointer; width:100%;"></div>
+                                            </style>
 
-                                            <div id="GrafDespReg" style="cursor:pointer; width:100%;"></div>
+                                            <div id="GraficoDespesaTodasRegionais1" class="graficoPainel4"></div>
+
+                                            <div id="GraficoDespesaTodasRegionais" class="graficoPainel4"></div>
+
+                                            <div id="GraficoDespesaTodasRegionaisPorPacote" class="graficoPainel4"></div>
+
+                                            <div id="GrafDespReg" class="graficoPainel4"></div>
+
                                             <div id="TabelaDespesaTodasRegionais" style="display:none; cursor:pointer; position: relative; overflow: auto; width: 100%; margin-left: auto; margin-right: auto; "></div>
 
                                             <br /><br />
@@ -609,7 +621,22 @@
                                                         },
 
                                                         title: {
-                                                            text: 'Despesas por Regional'
+                                                            text: 'Despesas por Regional',
+                                                            style: {
+                                                                fontSize: 'small'
+                                                            }
+                                                        },
+
+                                                        legend: {
+                                                            layout: 'vertical',
+                                                            align: 'right',
+                                                            verticalAlign: 'center',
+                                                            borderWidth: 0,
+                                                            floating: true,
+                                                            backgroundColor: '#eeeeee',
+                                                            style: {
+                                                                fontSize: 'x-small'
+                                                            }
                                                         },
 
                                                         xAxis: {
