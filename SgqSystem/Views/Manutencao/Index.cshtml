@@ -1,4 +1,4 @@
-﻿    @model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
     ViewBag.Title = "Manutenção";
     var url1 = Url.Action("Index", "manDataCollectITs");
@@ -11,7 +11,7 @@
 
         <div class="page-content-wrapper">
             <!-- BEGIN CONTENT BODY -->
-                <a id="linkGambiara" href="@url1" >Coleta de Indicadores Técnicos</a>
+            <a id="linkGambiara" href="@url1">Coleta de Indicadores Técnicos</a>
             <div class="page-content" style="min-height: 600px;">
                 <!-- BEGIN PAGE HEADER-->
                 <!-- BEGIN PAGE BAR -->
@@ -52,14 +52,12 @@
                                             <div id="mostrarBalao" style="display:none; position:fixed; width:20px; height:20px; border:1px solid #000; top:100px; right:0; z-index:9999; background-color: black; color:white;"><</div>
 
                                             <style>
-
-                                                .graficoPainel4{
-                                                    margin-left: auto; 
-                                                    margin-right:auto; 
-                                                    width:100%; 
-                                                    height:200px;
+                                                .graficoPainel4 {
+                                                    margin-left: auto;
+                                                    margin-right: auto;
+                                                    width: 100%;
+                                                    /*height: 200px;*/
                                                 }
-
                                             </style>
 
                                             <div id="GraficoDespesaTodasRegionais1" class="graficoPainel4"></div>
@@ -73,13 +71,13 @@
                                             <div id="TabelaDespesaTodasRegionais" style="display:none; cursor:pointer; position: relative; overflow: auto; width: 100%; margin-left: auto; margin-right: auto; "></div>
 
                                             <br /><br />
-                                            
+
                                             <div id="secoundTableTeste" style="display:none; cursor:pointer; position: relative; overflow: auto; width: 100%; margin-left: auto; margin-right: auto; "></div>
 
                                             <br /><br />
 
                                             <div id="GrafImpacFatTecDesv" style="display:none; cursor:pointer"></div>
-                                            <div id="TabelaITPorUni" style="display:none; cursor:pointer; position: relative; overflow: auto; width: 100%; "></div>                                            
+                                            <div id="TabelaITPorUni" style="display:none; cursor:pointer; position: relative; overflow: auto; width: 100%; "></div>
                                             <div id="RegionalChart" style="display:none; cursor:pointer"></div>
                                             <div id="EvolutivoOrcamentoGeralChart" style="display:none; cursor:pointer"></div>
                                             <div id="EvolutivoDaContaPorUnidade" style="display:none; cursor:pointer"></div>
@@ -131,7 +129,6 @@
                                                     }
                                                 }
                                             }
-
 
                                             //monta a matriz
                                             function montaTabela(id, div, altura, colunaFixa1, titulosColunasCorpo, valoresColuna1, dadosPrincipais, footerColumn1, footerColumnsBody, footerTotal, titleTotal, columnsTotal) {
@@ -298,7 +295,7 @@
 
                                                 var color = corColunasAlternadas1;
 
-                                                for (var i = 0; i < titulosColunasCorpo[1].length-4; i++) {
+                                                for (var i = 0; i < titulosColunasCorpo[1].length - 4; i++) {
 
                                                     if (i % 4 == 0) {
                                                         color == corColunasAlternadas1 ? color = corColunasAlternadas2 : color = corColunasAlternadas1;
@@ -325,7 +322,7 @@
                                                         //tabela += "<td height=\"" + alturaDasCelulasDeValor + "\" onclick=\"secoundTable(this)\"align=\"center\" x=\"" + dadosPrincipais[i][j][1] + "\" y=\"" + dadosPrincipais[i][j][2] + "\"style=\"min-width:" + larguraDasCelulasDeValor + ";  background-color: " + dadosPrincipais[i][j][4] + "\">" + (dadosPrincipais[i][j][3] == '%' ? '<i>' + dadosPrincipais[i][j][0] + '<i>%' : float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000))) + "</td>";
 
                                                         tabela += "<td onclick=\"clickTabela(" + id + ", this)\"align=\"center\" x=\"" + dadosPrincipais[i][j][1] + "\" y=\"" + dadosPrincipais[i][j][2] + "\" align=\"center\" style=\"min-width:" + larguraDasCelulasDeValor + "; padding:0px; height: " + alturaDasCelulasDeValor + ";\">";
-                                                        tabela += (dadosPrincipais[i][j][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + dadosPrincipais[i][j][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + dadosPrincipais[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" :  k == 1 && dadosPrincipais[i][j-1][0] < dadosPrincipais[i][j][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000)) + '</span>' :  float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000))) + "</td>";
+                                                        tabela += (dadosPrincipais[i][j][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + dadosPrincipais[i][j][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + dadosPrincipais[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : k == 1 && dadosPrincipais[i][j - 1][0] < dadosPrincipais[i][j][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000)) + '</span>' : float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000))) + "</td>";
                                                         if (k == 3) {
                                                             k = 0;
                                                         } else {
@@ -355,9 +352,9 @@
                                                     if (i % 4 == 0) {
                                                         color == corColunasAlternadas1 ? color = corColunasAlternadas2 : color = corColunasAlternadas1;
                                                     }
-                                                    
+
                                                     tabela += "<td align=\"center\" style=\"background-color: " + color + "; min-width:" + larguraDasCelulasDeValor + "; padding:0px; height: " + alturaDasCelulasDeValor + ";\">";
-                                                    tabela += (footerColumnsBody[0][i][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + footerColumnsBody[0][i][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + footerColumnsBody[0][i][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : k == 1 && footerColumnsBody[0][i - 1][0] < footerColumnsBody[0][i][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000)) + '</span>' :  float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000))) + "</td>";
+                                                    tabela += (footerColumnsBody[0][i][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + footerColumnsBody[0][i][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + footerColumnsBody[0][i][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : k == 1 && footerColumnsBody[0][i - 1][0] < footerColumnsBody[0][i][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000)) + '</span>' : float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000))) + "</td>";
                                                     if (k == 3) {
                                                         k = 0;
                                                     } else {
@@ -427,7 +424,7 @@
                                                     for (var j = 0; j < columnsTotal[i].length; j++) {
 
                                                         tabela += "<td align=\"center\" style=\"min-width:" + larguraDasCelulasDeValor + "; padding:0px; height: " + alturaDasCelulasDeValor + ";\">";
-                                                        tabela += (columnsTotal[i][j][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + columnsTotal[i][j][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + columnsTotal[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : k == 1 && columnsTotal[i][j - 1][0] < columnsTotal[i][j][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000)) + '</span>' :  float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000))) + "</td>";
+                                                        tabela += (columnsTotal[i][j][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + columnsTotal[i][j][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + columnsTotal[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : k == 1 && columnsTotal[i][j - 1][0] < columnsTotal[i][j][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000)) + '</span>' : float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000))) + "</td>";
                                                         if (k == 3) {
                                                             k = 0;
                                                         } else {
@@ -498,7 +495,7 @@
                                             //chamada ajax para montar primeiro gráfico
                                             function MountGraficoDespesaTodasRegionais1() {
 
-                                                $.post('../api/Manutencao/getSelectGrafico0/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/'+getManutencaoMes()+'/'+getManutencaoAno()+'/' + '/', function (lista) {
+                                                $.post('../api/Manutencao/getSelectGrafico0/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + '/', function (lista) {
 
                                                     var regional = [];
 
@@ -527,7 +524,7 @@
                                                         mediaDesvio[i] = Math.round(((xRealizada[i] - xOrcada[i]) / xOrcada[i] * 100)); // (real - orcado) / orçado * 100
                                                         desvio1 += xOrcada[i]
                                                         desvio2 += xOrcada[i]
-                                                        //mediaDesvio[i] = mediaDesvio[i] 
+                                                        //mediaDesvio[i] = mediaDesvio[i]
                                                     }
                                                     var media = (desvio2 / desvio1 - 1) * 100;
 
@@ -613,9 +610,11 @@
                                                         },
 
                                                         chart: {
+                                                            height: 150,
                                                             zoomType: 'x, y',
                                                             alignThresholds: true,
                                                             type: 'column'
+                                                            
                                                         },
 
                                                         title: {
@@ -631,7 +630,7 @@
                                                             verticalAlign: 'center',
                                                             borderWidth: 0,
                                                             floating: true,
-                                                            backgroundColor: '#eeeeee',
+                                                            backgroundColor: 'rgba(238, 238, 238,0.5)',
                                                             style: {
                                                                 fontSize: 'x-small'
                                                             }
@@ -646,7 +645,7 @@
                                                             title: {
                                                                 text: 'Desvio %'
                                                             },
-                                                            
+
                                                             opposite: true
 
                                                         }, {
@@ -677,7 +676,9 @@
 
                                                             point: {
                                                                 events: {
-                                                                    //click: function () { MountGrafDespReg(this.category) }
+                                                                    click: function () {
+                                                                        MountGraficoDespesaTodasRegionais()
+                                                                    }
                                                                 }
                                                             }
                                                         }, {
@@ -690,7 +691,7 @@
 
                                                             point: {
                                                                 events: {
-                                                                    //click: function () { MountGrafDespReg(this.category) }
+                                                                    click: function () { MountGraficoDespesaTodasRegionais() }
                                                                 }
                                                             }
                                                         }, {
@@ -752,7 +753,7 @@
                                                 });
                                             }
 
-                                            //chamada ajax para montar primeiro gráfico
+                                            //chamada ajax para montar terceiro gráfico
                                             function MountGraficoDespesaTodasRegionaisPorPacote() {
                                                 $.post('../api/Manutencao/getSelectGraficoRegionalPorPacote/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + getManutencaoRegional() + '/', function (lista) {
 
@@ -783,7 +784,7 @@
                                                         mediaDesvio[i] = Math.round(((xRealizada[i] - xOrcada[i]) / xOrcada[i] * 100)); // (real - orcado) / orçado * 100
                                                         desvio1 += xOrcada[i]
                                                         desvio2 += xOrcada[i]
-                                                        //mediaDesvio[i] = mediaDesvio[i] 
+                                                        //mediaDesvio[i] = mediaDesvio[i]
                                                     }
                                                     var media = (desvio2 / desvio1 - 1) * 100;
 
@@ -803,7 +804,7 @@
                                                 });
                                             }
 
-                                            //locação primeiro gráfico
+                                            //locação terceiro gráfico
                                             function GraficoDespesaTodasRegionaisPorPacote(name, x1, x2, mediaDesvio, media) {
                                                 $(function () {
 
@@ -869,13 +870,29 @@
                                                         },
 
                                                         chart: {
+                                                            height: 250,
                                                             zoomType: 'x, y',
                                                             alignThresholds: true,
                                                             type: 'column'
                                                         },
 
                                                         title: {
-                                                            text: 'Despesas por Sub-Regional por Pacote'
+                                                            text: 'Despesas por Sub-Regional por Pacote',
+                                                            style: {
+                                                                fontSize: 'small'
+                                                            }
+                                                        },
+
+                                                        legend: {
+                                                            layout: 'vertical',
+                                                            align: 'right',
+                                                            verticalAlign: 'center',
+                                                            borderWidth: 0,
+                                                            floating: true,
+                                                            backgroundColor: 'rgba(238, 238, 238,0.5)',
+                                                            style: {
+                                                                fontSize: 'x-small'
+                                                            }
                                                         },
 
                                                         xAxis: {
@@ -993,9 +1010,9 @@
                                                 });
                                             }
 
-                                            //chamada ajax para montar primeiro gráfico
+                                            //chamada ajax para montar o segundo gráfico
                                             function MountGraficoDespesaTodasRegionais() {
-                                                $.post('../api/Manutencao/getSelectGrafico1/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/'+getManutencaoMes()+'/'+getManutencaoAno()+'/' + getManutencaoRegional() + '/',function (lista) {
+                                                $.post('../api/Manutencao/getSelectGrafico1/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + getManutencaoRegional() + '/', function (lista) {
 
                                                     var regional = [];
 
@@ -1024,9 +1041,9 @@
                                                         mediaDesvio[i] = Math.round(((xRealizada[i] - xOrcada[i]) / xOrcada[i] * 100)); // (real - orcado) / orçado * 100
                                                         desvio1 += xOrcada[i]
                                                         desvio2 += xOrcada[i]
-                                                        //mediaDesvio[i] = mediaDesvio[i] 
+                                                        //mediaDesvio[i] = mediaDesvio[i]
                                                     }
-                                                    var media = (desvio2 / desvio1-1)*100;
+                                                    var media = (desvio2 / desvio1 - 1) * 100;
 
                                                     for (i = 0; i < xOrcada.length; i++) {
                                                         if (xOrcada[i] < xRealizada[i]) {
@@ -1044,7 +1061,7 @@
                                                 });
                                             }
 
-                                            //locação primeiro gráfico
+                                            //locação segundo gráfico
                                             function GraficoDespesaTodasRegionais(name, x1, x2, mediaDesvio, media) {
                                                 $(function () {
 
@@ -1110,13 +1127,29 @@
                                                         },
 
                                                         chart: {
+                                                            height: 150,
                                                             zoomType: 'x, y',
                                                             alignThresholds: true,
                                                             type: 'column'
                                                         },
 
                                                         title: {
-                                                            text: 'Despesas por Sub-Regional'
+                                                            text: 'Despesas por Sub-Regional',
+                                                            style: {
+                                                                fontSize: 'small'
+                                                            }
+                                                        },
+
+                                                        legend: {
+                                                            layout: 'vertical',
+                                                            align: 'right',
+                                                            verticalAlign: 'center',
+                                                            borderWidth: 0,
+                                                            floating: true,
+                                                            backgroundColor: 'rgba(238, 238, 238,0.5)',
+                                                            style: {
+                                                                fontSize: 'x-small'
+                                                            }
                                                         },
 
                                                         xAxis: {
@@ -1128,7 +1161,7 @@
                                                             title: {
                                                                 text: 'Desvio %'
                                                             },
-                                                           
+
                                                             opposite: true
 
                                                         }, {
@@ -1158,8 +1191,11 @@
                                                             yAxis: 1,
 
                                                             point: {
-                                                                events: {
-                                                                    click: function () { MountGrafDespReg(this.category) }
+                                                                events: {                                                                  
+                                                                    click: function () {
+                                                                        MountGraficoDespesaTodasRegionaisPorPacote(),
+                                                                        MountGrafDespReg(this.category)
+                                                                    }
                                                                 }
                                                             }
                                                         }, {
@@ -1172,12 +1208,15 @@
 
                                                             point: {
                                                                 events: {
-                                                                    click: function () { MountGrafDespReg(this.category) }
+                                                                    click: function () {
+                                                                        MountGraficoDespesaTodasRegionaisPorPacote(),
+                                                                        MountGrafDespReg(this.category)
+                                                                    }
                                                                 }
                                                             }
                                                         }, {
                                                             name: 'Desvio %',
-                                                             data: mediaDesvio,
+                                                            data: mediaDesvio,
                                                             //data: [-17.12454, -8.78, -2.46, -3.87],
                                                             yAxis: 0,
                                                             visible: false,
@@ -1192,7 +1231,10 @@
 
                                                             point: {
                                                                 events: {
-                                                                    click: function () { MountGrafDespReg(this.category) }
+                                                                    click: function () {
+                                                                        MountGraficoDespesaTodasRegionaisPorPacote(),
+                                                                        MountGrafDespReg(this.category)
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -1233,10 +1275,10 @@
                                                     });
                                                 });
                                             }
-                                            
+
                                             //ajax - monta GRÁFICO DE DESPESA POR REGIONAL
                                             function MountGrafDespReg(regional) {
-                                                $.post('../api/Manutencao/getSelectGrafDespReg/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/'+getManutencaoMes()+'/'+getManutencaoAno()+'/' + escape(regional.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/', function (lista) {
+                                                $.post('../api/Manutencao/getSelectGrafDespReg/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + escape(regional.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/', function (lista) {
 
                                                     var titleLine = [];
 
@@ -1265,7 +1307,7 @@
                                                         mediaDesvio[i] = Math.round(((xRealizada[i] - xOrçada[i]) / xOrçada[i] * 100)); // (real - orcado) / orçado * 100
                                                         desvio1 += xOrçada[i]
                                                         desvio2 += xRealizada[i]
-                                                        //mediaDesvio[i] = mediaDesvio[i] 
+                                                        //mediaDesvio[i] = mediaDesvio[i]
                                                     }
                                                     var media = (desvio2 / desvio1 - 1) * 100;
 
@@ -1351,13 +1393,29 @@
                                                         },
 
                                                         chart: {
+                                                            height: 200,
                                                             zoomType: 'x, y',
                                                             alignThresholds: true,
                                                             type: 'column'
                                                         },
 
                                                         title: {
-                                                            text: 'Despesas por Unidade - ' + regional
+                                                            text: 'Despesas por Unidade - ' + regional,
+                                                            style: {
+                                                                fontSize: 'small'
+                                                            }
+                                                        },
+
+                                                        legend: {
+                                                            layout: 'vertical',
+                                                            align: 'right',
+                                                            verticalAlign: 'center',
+                                                            borderWidth: 0,
+                                                            floating: true,
+                                                            backgroundColor: 'rgba(238, 238, 238,0.5)',
+                                                            style: {
+                                                                fontSize: 'x-small'
+                                                            }
                                                         },
 
                                                         xAxis: {
@@ -1369,7 +1427,7 @@
                                                             title: {
                                                                 text: 'Desvio %'
                                                             },
-                                                            
+
                                                             opposite: true
 
                                                         }, {
@@ -1477,7 +1535,6 @@
 
                                             }
 
-
                                             //locação primeira matriz (loca e exibe primeira tabela)
                                             function firstTable(name) {
 
@@ -1489,13 +1546,13 @@
                                                     opacity: 0.4,
                                                 }, 1500);
                                                 var tabela1;
-                                                $.post('../api/Manutencao/getTabela1/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/'+getManutencaoMes()+'/'+getManutencaoAno()+'/' + getManutencaoRegional() + '/', function (lista) {
+                                                $.post('../api/Manutencao/getTabela1/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + getManutencaoRegional() + '/', function (lista) {
 
                                                     // titleColumn1 - Mostrar na primeira coluna a primeira linha em branco e a segunda com nome fixo PACOTE
                                                     var titleColumn1 = [];
                                                     titleColumn1[0] = ['&nbsp;', 1];
                                                     titleColumn1[1] = ['Pacotes', 1];
-                                                    
+
                                                     //titleColumnsBody - [0] Indica as regionais obtidas, [1] Indica os subtítulos dos resultados
                                                     var titleColumns = [];
                                                     lista[0].ListaRegionais.forEach(function (nameReg) {
@@ -1638,7 +1695,7 @@
                                                     });
 
                                                     orderMapaDeCalor = orderMapaDeCalor.sort(function (a, b) { return a - b; });
-                                                   
+
                                                     var minVal = orderMapaDeCalor[0];
                                                     var tamanhoArray = orderMapaDeCalor.length;
                                                     var maxVal = orderMapaDeCalor[tamanhoArray - 1];
@@ -1651,7 +1708,7 @@
                                                         i++;
                                                     });
 
-                                                    var arrayCor = [];                                                 
+                                                    var arrayCor = [];
                                                     var local = 0;
 
                                                     for (var i = 0; i < valorMapaDeCalor.length; i++) {
@@ -1666,7 +1723,7 @@
                                                     }
 
                                                     var i = 0
-                                                    lista.forEach(function (entry) {                                                        
+                                                    lista.forEach(function (entry) {
                                                         var dataColumn = [];
                                                         var orcada = [];
                                                         var real = [];
@@ -1699,7 +1756,7 @@
                                                         columnsTotal.push(dataColumn);
                                                         i++;
                                                     });
-                                                    
+
                                                     i = 0;
                                                     // titleTotal
                                                     var titleTotal = [];
@@ -1740,7 +1797,7 @@
                                                     lineR.push(0);
 
                                                     //desvioP
-                                                    lineDP.push(Math.round(real / orcada * 100)-100);
+                                                    lineDP.push(Math.round(real / orcada * 100) - 100);
                                                     lineDP.push(0);
                                                     lineDP.push(0);
                                                     lineDP.push('%');
@@ -1773,7 +1830,7 @@
                                                         i++;
                                                     });
 
-                                                    orderMapaDeCalor = orderMapaDeCalor.sort(function (a, b) { return a - b; });                                                    
+                                                    orderMapaDeCalor = orderMapaDeCalor.sort(function (a, b) { return a - b; });
 
                                                     var minVal = orderMapaDeCalor[0];
                                                     var tamanhoArray = orderMapaDeCalor.length;
@@ -1786,7 +1843,7 @@
                                                         corPercent[i] = ((valor - minVal) / (maxVal - minVal));
                                                         i++;
                                                     });
-                                                    var arrayCor = [];                                                  
+                                                    var arrayCor = [];
                                                     var local = 0;
 
                                                     for (i = 0; i < valorMapaDeCalor.length; i++) {
@@ -1801,7 +1858,7 @@
                                                     }
                                                     /****** FIM GERAÇÃO DO MAPA DE CALOR *********/
 
-                                                    for (i = 0; i < lista[0].totalColunaReg.length; i++) {                                                  
+                                                    for (i = 0; i < lista[0].totalColunaReg.length; i++) {
                                                         var orcada = [];
                                                         var real = [];
                                                         var desvioP = [];
@@ -1839,9 +1896,9 @@
 
                                             //quando clicar nas tabelas
                                             function clickTabela(id, obj) {
-                                                //quando clicar na primeira tabela será montado e exibida a segunda tabela 
+                                                //quando clicar na primeira tabela será montado e exibida a segunda tabela
                                                 if (id == 1) {
-                                                   
+
                                                     $('#secoundTableTeste').empty();
                                                     $('#GrafImpacFatTecDesv').empty();
                                                     $('#RegionalChart').empty();
@@ -1855,14 +1912,14 @@
                                                     $('#secoundTableTeste').html('Carregando...');
                                                     $("#secoundTableTeste").animate({
                                                         opacity: 0.4,
-                                                    }, 1500);                                                    
+                                                    }, 1500);
 
                                                     var pacote = obj.getAttribute("x");
                                                     var regional = obj.getAttribute("y");
 
                                                     regionalSelecionada = regional;
                                                     var regFiltro = $('#cbxlistaRegionais select').val().length == 0 ? "null" : $('#cbxlistaRegionais select').val();
-                                                    $.post('../api/Manutencao/getTabela2/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/'+getManutencaoMes()+'/'+getManutencaoAno()+'/' + escape(pacote.replace(/[/]/g, '|')) + '/' + escape(regional.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/', function (lista) {
+                                                    $.post('../api/Manutencao/getTabela2/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + escape(pacote.replace(/[/]/g, '|')) + '/' + escape(regional.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/', function (lista) {
                                                         // titleColumn1 - Mostrar na primeira coluna a primeira linha em branco e a segunda com nome fixo PACOTE
                                                         var titleColumn1 = [];
                                                         titleColumn1[0] = ['&nbsp;', 1];
@@ -2038,7 +2095,7 @@
                                                         }
 
                                                         var i = 0
-                                                        
+
                                                         lista.forEach(function (entry) {
                                                             var x = [];
                                                             var orcada = [];
@@ -2073,7 +2130,7 @@
                                                             i++;
 
                                                         });
-                                                        
+
 
                                                         i = 0;
                                                         // titleTotal
@@ -2209,16 +2266,16 @@
                                                         footerColumnsBody[0] = line;
 
                                                         montaTabela('2', '#secoundTableTeste', '170px', titleColumn1, titleColumnsBody, column1, dataColumn, footerColumn1, footerColumnsBody, footerTotal, titleTotal, columnsTotal);
-                                                        
+
                                                     });
 
-                                                   
-                                                   
-                                                   
-                                                    
-                                                
+
+
+
+
+
                                                 }
-                                                //quando clicar na tabela 2 será montado o gráfico ferramentas de manutenção
+                                                    //quando clicar na tabela 2 será montado o gráfico ferramentas de manutenção
                                                 else if (id == 2) {
 
                                                     $('#GrafImpacFatTecDesv').empty();
@@ -2232,49 +2289,48 @@
                                                     var unidade = obj.getAttribute("y");
                                                     var regional = regionalSelecionada;
                                                     var regFiltro = $('#cbxlistaRegionais select').val().length == 0 ? "null" : $('#cbxlistaRegionais select').val();
-                                                    $.post('../api/Manutencao/getGraficoRegionalTecnico/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/'+getManutencaoMes()+'/'+getManutencaoAno()+'/' + escape(regional.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, ' | ')) + '/' + getManutencaoRegional() + '/', function (lista) {
+                                                    $.post('../api/Manutencao/getGraficoRegionalTecnico/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + escape(regional.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, ' | ')) + '/' + getManutencaoRegional() + '/', function (lista) {
 
-                                                    var reg = regional
+                                                        var reg = regional
 
-                                                    var titleLine = [];
+                                                        var titleLine = [];
 
-                                                    lista.forEach(function (entry) {
-                                                        titleLine.push(entry.EmpresaSigla);
-                                                    });
+                                                        lista.forEach(function (entry) {
+                                                            titleLine.push(entry.EmpresaSigla);
+                                                        });
 
-                                                    var xDesvQtdeBoi = [];
+                                                        var xDesvQtdeBoi = [];
 
-                                                    lista.forEach(function (entry) {
-                                                        xDesvQtdeBoi.push(Math.round(entry.DesvQtdeBoi * 100));
-                                                    });
+                                                        lista.forEach(function (entry) {
+                                                            xDesvQtdeBoi.push(Math.round(entry.DesvQtdeBoi * 100));
+                                                        });
 
-                                                    var xDesvQtdeConsumoUN = [];
+                                                        var xDesvQtdeConsumoUN = [];
 
-                                                    lista.forEach(function (entry) {
-                                                        xDesvQtdeConsumoUN.push(Math.round(entry.DesvQtdeConsumoUN * 100));
-                                                    });
+                                                        lista.forEach(function (entry) {
+                                                            xDesvQtdeConsumoUN.push(Math.round(entry.DesvQtdeConsumoUN * 100));
+                                                        });
 
-                                                    var xDesvPrecoUN = [];
+                                                        var xDesvPrecoUN = [];
 
-                                                    lista.forEach(function (entry) {
-                                                        xDesvPrecoUN.push(Math.round(entry.DesvPrecoUN * 100));
-                                                    });
+                                                        lista.forEach(function (entry) {
+                                                            xDesvPrecoUN.push(Math.round(entry.DesvPrecoUN * 100));
+                                                        });
 
-                                                    var xDesvUNBoi = [];
+                                                        var xDesvUNBoi = [];
 
-                                                    lista.forEach(function (entry) {
-                                                        xDesvUNBoi.push(Math.round(entry.DesvUNBoi * 100));
-                                                    });
-                                                    
-                                                    GrafImpacFatTecDesv(titleLine, xDesvQtdeBoi, xDesvQtdeConsumoUN, xDesvPrecoUN, xDesvUNBoi, reg, conta);
+                                                        lista.forEach(function (entry) {
+                                                            xDesvUNBoi.push(Math.round(entry.DesvUNBoi * 100));
+                                                        });
+
+                                                        GrafImpacFatTecDesv(titleLine, xDesvQtdeBoi, xDesvQtdeConsumoUN, xDesvPrecoUN, xDesvUNBoi, reg, conta);
 
                                                     })
-                                                  
+
                                                     MountEvolutivoOrcamentoGeralChart(unidade, conta);
                                                     MountDadosTecnicosContaChart(unidade, conta);
                                                 }
                                             } MountEvolutivoOrcamentoGeralChart
-                                            
 
                                             //locação e exibição do gráfico de ferramentas de Manutenção
                                             function GrafImpacFatTecDesv(name, xDesvQtdeBoi, xDesvQtdeConsumoUN, xDesvPrecoUN, xDesvUNBoi, regional, conta) {
@@ -2285,7 +2341,7 @@
                                                     PrecoUnidadeMedida = 'Preço KW';
 
                                                 } else if (conta == 'COMBUSTÍVEL PARA CALDEIRA') {
-                                                    
+
                                                     UnidadeMedida = 'MCAL';
                                                     UnidadeMedidaPorBoi = 'MCAL/BOI';
                                                     PrecoUnidadeMedida = 'Preço MCAL';
@@ -2297,7 +2353,7 @@
                                                     PrecoUnidadeMedida = 'Preço M³';
 
                                                 } else {
-                                                    
+
                                                     UnidadeMedida = 'UnidadeMedida';
                                                     UnidadeMedidaPorBoi = 'UnidadeMedidaPorBoi';
                                                     PrecoUnidadeMedida = 'PrecoUnidadeMedida';
@@ -2310,7 +2366,7 @@
                                                     frase = "<p align=\"center\"><b>Não existem dados técnicos para a conta " + conta + "</b></p><br><br>";
                                                     $('#GrafImpacFatTecDesv').show();
                                                     $('#GrafImpacFatTecDesv').html(frase);
-                                                }else{
+                                                } else {
 
 
                                                     $('#GrafImpacFatTecDesv').show();
@@ -2368,10 +2424,10 @@
                                                                 }
                                                             },
                                                             series: [{
-                                                                name: UnidadeMedida ,
-                                                                
-                                                            
-                                                                
+                                                                name: UnidadeMedida,
+
+
+
                                                                 data: xDesvQtdeConsumoUN,
                                                                 point: {
                                                                     events: {
@@ -2439,7 +2495,7 @@
                                             function MountRegionalChart(u, conta) {
                                                 var tipo = u.series.name;
                                                 var regFiltro = $('#cbxlistaRegionais select').val().length == 0 ? "null" : $('#cbxlistaRegionais select').val();
-                                                $.post('../api/Manutencao/getSelectGraficoFatoresTecnicoMateriaPrimaRegionalEConta/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/'+getManutencaoMes()+'/'+getManutencaoAno()+'/' + escape(regionalSelecionada.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/' + escape(tipo.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/', function (lista) {
+                                                $.post('../api/Manutencao/getSelectGraficoFatoresTecnicoMateriaPrimaRegionalEConta/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + escape(regionalSelecionada.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/' + escape(tipo.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/', function (lista) {
 
                                                     var titleLine = [];
 
@@ -2467,7 +2523,7 @@
 
                                             //locação unit gráfico
                                             function RegionalChart(name, xOrcado, xRealizado, tipo) {
-                                                $('#RegionalChart').show();                                               
+                                                $('#RegionalChart').show();
 
                                                 $(function () {
                                                     Highcharts.chart('RegionalChart', {
@@ -2524,7 +2580,7 @@
                                                             name: 'Real',
                                                             data: xRealizado,
 
-                                                        
+
                                                         }]
                                                     });
                                                 });
@@ -2532,11 +2588,11 @@
 
                                             //chamada ajax terceiro gráfico
                                             function MountEvolutivoOrcamentoGeralChart(u, conta) {
-                                                
+
                                                 var regFiltro = $('#cbxlistaRegionais select').val().length == 0 ? "null" : $('#cbxlistaRegionais select').val();
                                                 unidadeSelecionada = u;
                                                 var unidade = u;
-                                                $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidade/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/'+getManutencaoMes() +'/'+getManutencaoAno()+'/' + escape(unidade.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/' , function (lista) {
+                                                $.post('../api/Manutencao/getSelectGraficoEvolutivoPorUnidade/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + escape(unidade.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/', function (lista) {
 
                                                     var titleLine = [];
 
@@ -2657,17 +2713,17 @@
                                                             type: 'column',
                                                             name: 'Despesa Orçada',
                                                             data: xOrçada,
-                                                           
+
                                                         }, {
                                                             type: 'column',
                                                             name: 'Despesa Real',
                                                             data: xRealizada,
-                                                           
+
                                                         }, {
                                                             type: 'column',
                                                             name: 'Desvio R$',
                                                             data: xDesvioReal,
-                                                            
+
                                                         }, {
                                                             type: 'spline',
                                                             name: 'Desvio R$ Acumulado',
@@ -2697,7 +2753,7 @@
                                                         },
                                                         chart: {
                                                             zoomType: 'x, y',
-                                                            backgroundColor: null                                                  
+                                                            backgroundColor: null
                                                         },
                                                         xAxis: {
                                                             categories: name
@@ -2750,12 +2806,11 @@
                                                 });
                                             }
 
-
                                             //chamada ajax gráfico de DADOS TECNICOS POR CONTA SELECIONADA
                                             function MountDadosTecnicosContaChart(unidade, conta) {
                                                 var regFiltro = $('#cbxlistaRegionais select').val().length == 0 ? "null" : $('#cbxlistaRegionais select').val();
                                                 //fazer ajax
-                                                $.post('../api/Manutencao/getGraficoUnidadeTecnico/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/'+getManutencaoMes()+'/'+getManutencaoAno()+'/' + escape(unidade.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/', function (lista) {
+                                                $.post('../api/Manutencao/getGraficoUnidadeTecnico/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + escape(unidade.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/', function (lista) {
 
                                                     var titleLine = [];
 
@@ -2765,9 +2820,9 @@
 
                                                     var xDesvQtdeBoi = [];
 
-                                                        lista.forEach(function (entry) {
-                                                            xDesvQtdeBoi.push(Math.round(entry.DesvQtdeBoi * 100));
-                                                        });
+                                                    lista.forEach(function (entry) {
+                                                        xDesvQtdeBoi.push(Math.round(entry.DesvQtdeBoi * 100));
+                                                    });
 
                                                     var xDesvQtdeConsumoUN = [];
 
@@ -2791,7 +2846,7 @@
 
                                                 })
 
-                                               
+
                                             }
 
                                             //locação do gráfico de DADOS TECNICOS POR CONTA SELECIONADA
@@ -2803,7 +2858,7 @@
                                                     PrecoUnidadeMedida = 'Preço KW';
 
                                                 } else if (conta == 'COMBUSTÍVEL PARA CALDEIRA') {
-                                                    
+
                                                     UnidadeMedida = 'MCAL';
                                                     UnidadeMedidaPorBoi = 'MCAL/BOI';
                                                     PrecoUnidadeMedida = 'Preço MCAL';
@@ -2815,7 +2870,7 @@
                                                     PrecoUnidadeMedida = 'Preço M³';
 
                                                 } else {
-                                                    
+
                                                     UnidadeMedida = 'UnidadeMedida';
                                                     UnidadeMedidaPorBoi = 'UnidadeMedidaPorBoi';
                                                     PrecoUnidadeMedida = 'PrecoUnidadeMedida';
@@ -2899,7 +2954,7 @@
                                                                     valueSuffix: '%'
                                                                 }
 
-                                                                
+
 
                                                             }, {
                                                                 name: UnidadeMedidaPorBoi,
@@ -2948,9 +3003,9 @@
 
                                             //chamada ajax unit gráfico
                                             function MountUnitChart(u, conta) {
-                                               
+
                                                 var tipo = u.series.name;
-                                                $.post('../api/Manutencao/getSelectGraficoFatoresTecnicoMateriaPrimaUnidadeEConta/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/'+getManutencaoMes()+'/'+getManutencaoAno()+'/' + escape(unidadeSelecionada.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/' + escape(tipo.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/', function (lista) {
+                                                $.post('../api/Manutencao/getSelectGraficoFatoresTecnicoMateriaPrimaUnidadeEConta/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + escape(unidadeSelecionada.replace(/[/]/g, '|')) + '/' + escape(conta.replace(/[/]/g, '|')) + '/' + escape(tipo.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/', function (lista) {
 
                                                     var titleLine = [];
 
@@ -2977,7 +3032,6 @@
                                                 });
 
                                             }
-
 
                                             //locação unit gráfico
                                             function UnitChart(name, xOrcado, xRealizado, x3, line, unidade, tipo) {
@@ -3039,7 +3093,7 @@
                                                             name: 'Real',
                                                             data: xRealizado,
 
-                                                        
+
                                                         }]
                                                     });
                                                 });
@@ -3092,18 +3146,18 @@
                 $btn.button('reset');
                 return;
             }
-          
+
 
             $('#GraficoDespesaTodasRegionais').empty();
             $('#firstTable').empty();
             $('#GrafDespReg').empty();
-            
+
             $('#TabelaDespesaTodasRegionais').empty();
             $('#secoundTableTeste').empty();
 
             $('#GrafImpacFatTecDesv').empty();
             $('#TabelaITPorUni').empty();
-            
+
 
             $('#UnitChart').empty();
             $('#EvolutivoOrcamentoGeralChart').empty();
@@ -3111,8 +3165,8 @@
             $('#DadosTecnicosContaChart').empty();
 
             MountGraficoDespesaTodasRegionais1();
-            MountGraficoDespesaTodasRegionaisPorPacote();
-            MountGraficoDespesaTodasRegionais();
+            //MountGraficoDespesaTodasRegionaisPorPacote();
+            //MountGraficoDespesaTodasRegionais();
             firstTable("");
 
 
@@ -3144,7 +3198,7 @@
             return ret;
         }
 
-        $('body > div > div.page-header.navbar.navbar-fixed-top > div > div.page-logo > div').click();        
+        $('body > div > div.page-header.navbar.navbar-fixed-top > div > div.page-logo > div').click();
 
         $('#balao').click(function () {
 
