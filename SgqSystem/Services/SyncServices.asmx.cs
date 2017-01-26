@@ -2775,22 +2775,21 @@ namespace SgqSystem.Services
                     case 1:
                         var listMultiple = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
                         var optionsMultiple = "";
+                        bool hasDefault = false;
                         foreach (var value in listMultiple)
                         {
                             if (value.IsDefaultOption == 1)
                             {
                                 optionsMultiple += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
+                                hasDefault = true;
                             }
-                            else if (listMultiple.ElementAt(0) == value && value.IsDefaultOption == 0)
-                            {
-                                optionsMultiple += "<option selected=\"selected\" value=\"0\">" + Resources.Resource.select + "...</option>";
-                                optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
-                            }
-                            else
-                            {
+                            else {
                                 optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                             }
                         }
+                        if(!hasDefault)
+                            optionsMultiple = "<option selected=\"selected\" value=\"0\">" + Resources.Resource.select + "...</option>"+ optionsMultiple;
+
                         form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsMultiple + "</select>";
                         break;
                     //Integrações
