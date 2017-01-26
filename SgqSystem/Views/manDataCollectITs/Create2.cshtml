@@ -1,17 +1,21 @@
 ﻿@model Dominio.ManDataCollectIT
-
+@{
+    var urlSave = Url.Action("SaveCreate", "Api/Manutencao");
+}
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content" style="min-height: 650px;">
 
         <div class="form-group">
+            <h3>Coleta de Dados de Indicadores Técnicos</h3>
+            <h4>Inserir</h4>
+            <hr />
+
             @Html.Label("Data de Coleta", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
 
-                <input class = "form-control simpleCalendar" id="date" name="" type="text">
-
-                @*@Html.EditorFor(model => model.ReferenceDatetime, new { htmlAttributes = new { @class = "form-control simpleCalendar" } })*@
+                <input class="form-control simpleCalendar" id="date" name="" type="text">
                 @Html.ValidationMessageFor(model => model.ReferenceDatetime, "", new { @class = "text-danger" })
 
             </div>
@@ -22,6 +26,8 @@
                 @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
             </div>
         </div>
+        <br />
+        <br />
 
         <table id="dataTable" class="display" width="100%" cellspacing="0">
             <thead>
@@ -32,17 +38,10 @@
                     <th>Salvar</th>
                 </tr>
             </thead>
-            @*<tfoot>
-                    <tr>
-                        <th>Descrição da Coleta</th>
-                        <th>Quantidade</th>
-                        <th>Comentarios</th>
-                        <th>Salvar</th>
-                    </tr>
-                </tfoot>*@
             <tbody></tbody>
         </table>
-
+        <br />
+        <br />
         <div class="form-group">
 
             <input type="submit" value="@Resources.Resource.save" class="btn btn-default" />
@@ -58,8 +57,7 @@
 
 <script>
 
-    var urlEdit = ""
-
+    var url1 = '@Html.Raw(@urlSave)';
 
     $(document).ready(function () {
 
@@ -90,25 +88,18 @@
 
             }
 
-            //$('#dataTable_length').hide();
-            //$('#dataTable_filter').hide();
-            //$('#dataTable_info').hide();
-            //$('#dataTable_paginate').hide();
         }
 
-
-
-        //$('button').click( function() {
-        //    var data = table.$('input, select').serialize();
-        //    alert(
-        //        "The following data would have been submitted to the server: \n\n"+
-        //        data.substr( 0, 120 )+'...'
-        //    );
-        //    return false;
-        //} );
-
         var table = $('#dataTable').DataTable({
+
+            paging: false,
+            "searching": false,
+            "lengthChange": false,
+            "info": false,
+            "ordering": false,
+
             'initComplete': function() {
+
                 $('#dataTable tbody').on('click', 'button', function (data, a, b) {
 
                     var data = table.row($(this).parents('tr')).data();
@@ -126,46 +117,17 @@
                     obj['data'] = date;
                     obj['parCompany'] = parCompany_Id;
 
-                    console.log(obj);
+                    //console.log(obj);
 
-                    $.post(urlEdit + "/", obj, function (r, x, e) {
+                    if(validaParaEnvio(obj)){
 
-                    });
+                        Enviar(obj,"obj");
+
+                    }
 
                 });
             }
         });
-
-
-        ////Start config datepickerrange simple
-        //$('.simpleCalendar').daterangepicker({
-        //    singleDatePicker: true,
-        //    autoUpdateInput: false,
-        //    autoApply: true,
-        //    showDropdowns: true,
-        //    startDate: start,
-        //    endDate: end,
-        //    //opens: "left",
-        //    //"locale": localCultureRangePicker,
-        //    locale: {
-        //        cancelLabel: 'Clear'
-        //    }
-        //}, function (start, end, label) {
-        //    //console.log("New date range selected: ' + start.format('MM/DD/YYYY') + ' to ' + end.format('MM/DD/YYYY') + ' (predefined range: ' + label + ')");
-        //    enviar['startDate'] = start.format();
-        //    enviar['endDate'] = start.format();
-        //});
-
-        //$('.simpleCalendar').on('apply.daterangepicker', function (ev, picker) {
-        //    $(this).val(picker.startDate.format());
-        //});
-
-        //$('.simpleCalendar').on('cancel.daterangepicker', function (ev, picker) {
-        //    $(this).val('');
-        //    //enviar['startDate'] = "";
-        //    //enviar['endDate'] = "";
-        //});
-        ////Start config datepickerrange simple
 
         $('.simpleCalendar').daterangepicker({
             singleDatePicker: true,
@@ -175,6 +137,28 @@
             }
         });
 
+        ;
+
+        $('tbody #quantidade').inputmask("decimal", { rightAlign: false })
+
     });
+
+
+    function Enviar(dataToSend, jsonObjectName) {
+
+        $.post(url1, { jsonObjectName : JSON.stringify(dataToSend) }, function(data) {
+
+            console.log(data);
+
+        });
+
+    }
+
+    function validaParaEnvio(obj){
+        if(obj.quantidade == ""){
+            alert("Campo Quantidade obrigatório");
+            $(this).find('#quantidade').focus;
+        }
+    }
 
 </script>

@@ -64,7 +64,7 @@ namespace SgqSystem.Controllers
         // GET: manDataCollectITs/Create
         public ActionResult Create()
         {
-            return View(new ManDataCollectIT() {AmountData=0});
+            return View(new ManDataCollectIT() { AmountData = 0 });
         }
 
         // POST: manDataCollectITs/Create
@@ -160,29 +160,9 @@ namespace SgqSystem.Controllers
         public ActionResult Create2()
         {
             return View(new ManDataCollectIT() { AmountData = 0 });
-        }
-
-        // POST: manDataCollectITs/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create2([Bind(Include = "Id, AddDate, AlterDate, ReferenceDatetime, UserSGQ_Id, ParCompany_Id, ParFrequency_Id, DimManutencaoColetaITs_Id, AmountData, IsActive, Comments")] ManDataCollectIT manDataCollectIT)
-        {
-            manDataCollectIT.IsActive = true;
-            manDataCollectIT.UserSGQ_Id = Guard.GetUsuarioLogado_Id(HttpContext);
-
-            if (ModelState.IsValid)
-            {
-                manDataCollectIT.AddDate = DateTime.Now;
-                db.ManDataCollectIT.Add(manDataCollectIT);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(manDataCollectIT);
-        }
-
+        }       
 
     }
+
+
 }
