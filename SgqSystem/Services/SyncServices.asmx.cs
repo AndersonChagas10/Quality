@@ -1147,7 +1147,7 @@ namespace SgqSystem.Services
             {
                 ///podemos melhorar a verificação para Id zero, id null e id not null
                 //Caso contrário  é u Update
-                sql = "UPDATE CollectionLevel02 SET NotEvaluatedIs='" + NotEvaluateIs + "' WHERE Id='" + id + "'";
+                sql = "UPDATE CollectionLevel2 SET NotEvaluatedIs='" + NotEvaluateIs + "', AlterDate='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', HaveReaudit='" + haveReaudit + "', HaveCorrectiveAction='" + haveCorrectiveAction + "', WeiEvaluation=" + WeiEvaluation + ", Defects=" + defectsresult + ", WeiDefects=" + WeiDefects + ", TotalLevel3WithDefects=" +  TotalLevel3WithDefects + ", TotalLevel3Evaluation=" + totalLevel3evaluation + ", LastEvaluationAlert=" + avaliacaoultimoalerta + ", EvaluatedResult=" + evaluatedresult + ", DefectsResult=" +defectsresult + ", IsEmptyLevel3=" + isemptylevel3 + " WHERE Id='" + id + "'";
 
                 sql += " SELECT '" + id + "' AS 'Identity'";
             }
@@ -1177,10 +1177,29 @@ namespace SgqSystem.Services
             //Caso ocorra alguma exception, grava no log e retorna zero
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2");
                 if (ex.Number == 2627)
                 {
-                    return 0;
+                   if(hashKey == "1")
+                    {
+                        var CollectionLevel2DB = new SGQDBContext.CollectionLevel2();
+                        var collectionLevel2 = CollectionLevel2DB.GetByKey(key);
+
+                        var updateLevel2Id = InsertCollectionLevel2(ConsolidationLevel1, ConsolidationLevel2, AuditorId, Shift, Period, Phase, Reaudit, ReauditNumber, CollectionDate, StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, haveCorrectiveAction, HavePhase, Completed, collectionLevel2.Id.ToString(), AlertLevel, sequential, side, WeiEvaluation, Defects, WeiDefects, TotalLevel3WithDefects, totalLevel3evaluation, avaliacaoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, hashKey);
+                        if(updateLevel2Id > 0)
+                        {
+                            int removeLevel3 = ResultLevel3Delete(collectionLevel2.Id);
+                            return updateLevel2Id;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                    else
+                    {
+                        int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2");
+                        return 0;
+                    }
                 }
                 throw ex;
             }
@@ -1190,7 +1209,40 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
+        public int ResultLevel3Delete(int CollectionLevel2_Id)
+        {
 
+            string sql = "DELETE FROM Result_Level3 WHERE CollectionLevel2_Id=" + CollectionLevel2_Id;
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        var i = Convert.ToInt32(command.ExecuteNonQuery());
+                        if (i > 0)
+                        {
+                            return i;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         public int InsertCollectionLevel2HeaderField(int CollectionLevel2Id, string headerList)
         {
 

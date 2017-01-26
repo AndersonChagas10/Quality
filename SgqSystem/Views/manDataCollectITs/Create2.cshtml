@@ -1,0 +1,180 @@
+﻿@model Dominio.ManDataCollectIT
+
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 650px;">
+
+        <div class="form-group">
+            @Html.Label("Data de Coleta", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+
+                <input class = "form-control simpleCalendar" id="date" name="" type="text">
+
+                @*@Html.EditorFor(model => model.ReferenceDatetime, new { htmlAttributes = new { @class = "form-control simpleCalendar" } })*@
+                @Html.ValidationMessageFor(model => model.ReferenceDatetime, "", new { @class = "text-danger" })
+
+            </div>
+
+            @Html.Label("Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.ParCompany_Id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <table id="dataTable" class="display" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Descrição da Coleta</th>
+                    <th>Quantidade</th>
+                    <th>Comentarios</th>
+                    <th>Salvar</th>
+                </tr>
+            </thead>
+            @*<tfoot>
+                    <tr>
+                        <th>Descrição da Coleta</th>
+                        <th>Quantidade</th>
+                        <th>Comentarios</th>
+                        <th>Salvar</th>
+                    </tr>
+                </tfoot>*@
+            <tbody></tbody>
+        </table>
+
+        <div class="form-group">
+
+            <input type="submit" value="@Resources.Resource.save" class="btn btn-default" />
+            @Html.ActionLink(Resources.Resource.back, "Index")
+        </div>
+    </div>
+
+    @*@section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }*@
+
+</div>
+
+<script>
+
+    var urlEdit = ""
+
+
+    $(document).ready(function () {
+
+        var myDarlingViewBag = @Html.Raw(Json.Encode(ViewBag.listaDataDataType));
+
+        if(myDarlingViewBag != null){
+
+            for (var i = 0; i < myDarlingViewBag.length; i++) {
+
+                var newRow = $("<tr>");
+                var cols = "";
+
+                cols += '<td>'+$(myDarlingViewBag[i]).attr('TechnicalIndicator')+'</td>';
+
+                //cols += '<td style="display:none;">'+$(myDarlingViewBag[i]).attr('id')+'</td>';
+
+                cols += '<td><input id="quantidade" name="row-1-age" type="text"></td>';
+
+                cols += '<td><input id="comentarios" name="row-1-position" value="" type="text"></td>';
+
+                cols += '<td><button id="save" class="btn btn-large btn-danger" type="button">Salvar</button></td>';
+
+                cols += '</td>';
+
+                newRow.append(cols);
+
+                $("#dataTable").append(newRow);
+
+            }
+
+            //$('#dataTable_length').hide();
+            //$('#dataTable_filter').hide();
+            //$('#dataTable_info').hide();
+            //$('#dataTable_paginate').hide();
+        }
+
+
+
+        //$('button').click( function() {
+        //    var data = table.$('input, select').serialize();
+        //    alert(
+        //        "The following data would have been submitted to the server: \n\n"+
+        //        data.substr( 0, 120 )+'...'
+        //    );
+        //    return false;
+        //} );
+
+        var table = $('#dataTable').DataTable({
+            'initComplete': function() {
+                $('#dataTable tbody').on('click', 'button', function (data, a, b) {
+
+                    var data = table.row($(this).parents('tr')).data();
+
+                    var quantidade = $(this).parents('tr').find('#quantidade').val();
+                    var comentarios = $(this).parents('tr').find('#comentarios').val();
+                    var date = $("#date").val();
+                    var parCompany_Id = $("#ParCompany_Id").val();
+
+                    var obj = {};
+
+                    obj['descricao'] = data[0];
+                    obj['quantidade'] = quantidade;
+                    obj['comentarios'] = comentarios;
+                    obj['data'] = date;
+                    obj['parCompany'] = parCompany_Id;
+
+                    console.log(obj);
+
+                    $.post(urlEdit + "/", obj, function (r, x, e) {
+
+                    });
+
+                });
+            }
+        });
+
+
+        ////Start config datepickerrange simple
+        //$('.simpleCalendar').daterangepicker({
+        //    singleDatePicker: true,
+        //    autoUpdateInput: false,
+        //    autoApply: true,
+        //    showDropdowns: true,
+        //    startDate: start,
+        //    endDate: end,
+        //    //opens: "left",
+        //    //"locale": localCultureRangePicker,
+        //    locale: {
+        //        cancelLabel: 'Clear'
+        //    }
+        //}, function (start, end, label) {
+        //    //console.log("New date range selected: ' + start.format('MM/DD/YYYY') + ' to ' + end.format('MM/DD/YYYY') + ' (predefined range: ' + label + ')");
+        //    enviar['startDate'] = start.format();
+        //    enviar['endDate'] = start.format();
+        //});
+
+        //$('.simpleCalendar').on('apply.daterangepicker', function (ev, picker) {
+        //    $(this).val(picker.startDate.format());
+        //});
+
+        //$('.simpleCalendar').on('cancel.daterangepicker', function (ev, picker) {
+        //    $(this).val('');
+        //    //enviar['startDate'] = "";
+        //    //enviar['endDate'] = "";
+        //});
+        ////Start config datepickerrange simple
+
+        $('.simpleCalendar').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            'locale': {
+                "format": "DD/MM/YYYY",
+            }
+        });
+
+    });
+
+</script>

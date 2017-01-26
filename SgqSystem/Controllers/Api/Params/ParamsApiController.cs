@@ -44,6 +44,12 @@ namespace SgqSystem.Controllers.Api.Params
             return _paramdDomain.SetRequiredCamposCabecalho(id);
         }
 
+        [HttpPost]
+        [Route("SetDefaultCCAB/{IdHeader}/{IdMultiple}")]
+        public ParMultipleValues SetDefaultMultiplaEscolha(int idHeader, int idMultiple)
+        {
+            return _paramdDomain.SetDefaultMultiplaEscolha(idHeader, idMultiple);
+        }
 
         [HttpPost]
         [Route("AddUpdateLevel2")]
