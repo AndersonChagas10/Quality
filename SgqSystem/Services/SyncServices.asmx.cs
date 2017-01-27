@@ -2144,12 +2144,12 @@ namespace SgqSystem.Services
             return login;
         }
         [WebMethod]
-        public string getAPPLevels(int UserSgq_Id, int ParCompany_Id)
+        public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
         {
             //colocar autenticação
 
 
-            string APPMain = getAPPMain(UserSgq_Id, ParCompany_Id); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
+            string APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date.AddDays(-1)); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
@@ -2204,7 +2204,7 @@ namespace SgqSystem.Services
             return sample;
         }
 
-        public string getAPPMain(int UserSgq_Id, int ParCompany_Id, string culture = "pt-br")
+        public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date, string culture = "pt-br")
         {
             var html = new Html();
 
@@ -2214,7 +2214,7 @@ namespace SgqSystem.Services
 
                                          outerhtml: breadCrumb +
                                                     GetLevel01(ParCompany_Id: ParCompany_Id,                     /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
-                                                               dataCollect: DateTime.Now)
+                                                               dateCollect: Date)
 
                                         , classe: "container");
 
@@ -2405,7 +2405,7 @@ namespace SgqSystem.Services
         /// Recupera Level1 e seus monitoramentos e tarefas relacionados
         /// </summary>
         /// <returns></returns>
-        public string GetLevel01(int ParCompany_Id, DateTime dataCollect)
+        public string GetLevel01(int ParCompany_Id, DateTime dateCollect)
         {
             ///SE NÃO HOUVER NENHUM LEVEL1, LEVEL2, LEVEL3 INFORMAR QUE NÃO ENCONTROU MONITORAMENTOS
             var html = new Html();
@@ -2451,7 +2451,7 @@ namespace SgqSystem.Services
                     }
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas();
-                    var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dataCollect);
+                    var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dateCollect);
 
                     if (parlevel1.ParCriticalLevel_Id > 0)
                     {
@@ -2505,7 +2505,7 @@ namespace SgqSystem.Services
                     string level3Group = null;
 
                     //Busca os Level2 e reforna no level3Group;
-                    listLevel2 += GetLevel02(parlevel1, ParCompany_Id, ref level3Group);
+                    listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
 
                     //Incrementa Level3Group
                     listLevel3 += level3Group;
@@ -2568,7 +2568,7 @@ namespace SgqSystem.Services
         /// <param name="ParCompany_Id"></param>
         /// <param name="level3Group"></param>
         /// <returns></returns>
-        public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, ref string level3Group)
+        public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, DateTime dateCollect, ref string level3Group)
         {
             //Inicializa ParLevel2
             var ParLevel2DB = new SGQDBContext.ParLevel2();
@@ -2730,7 +2730,7 @@ namespace SgqSystem.Services
                                                     );
 
                 //Gera monitoramento do level3
-                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id);
+                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect);
                 level3Group += groupLevel3;
             }
             //aqui tem que fazer a pesquisa se tem itens sao do level1 ex: cca,htp
@@ -2850,7 +2850,7 @@ namespace SgqSystem.Services
         /// <param name="ParLevel1"></param>
         /// <param name="ParLevel2"></param>
         /// <returns></returns>
-        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id)
+        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect)
         {
             var html = new Html();
 
@@ -2870,7 +2870,7 @@ namespace SgqSystem.Services
 
             //Pega uma lista de parleve3
             //pode colocar par level3 por unidades, como nos eua
-            var parlevel3List = ParLevel3DB.getLevel3ByLevel2(ParLevel2.Id, ParCompany_Id);
+            var parlevel3List = ParLevel3DB.getLevel3ByLevel2(ParLevel1, ParLevel2, ParCompany_Id, dateCollect);
 
             string tipoTela = "";
 
