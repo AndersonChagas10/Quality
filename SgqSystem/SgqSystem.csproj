@@ -422,6 +422,7 @@
     <Compile Include="Mappers\Params\ParStructureGroupMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
     <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
+    <Compile Include="Mappers\ResultLevel3MapperProfile.cs" />
     <Compile Include="Mappers\ShiftMapperProfile.cs" />
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMapperProfile.cs" />
@@ -1293,6 +1294,7 @@
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaTbl1.cshtml" />
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaTbl2.cshtml" />
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaArea - Copy.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_ResultLevel3Edit.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

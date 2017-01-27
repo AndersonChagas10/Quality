@@ -2,12 +2,14 @@
 @{
     ViewBag.Title = "Apontamentos Diarios";
     var url = Url.Action("Index", "Home");
-    var urlGetApontamentosDiarios = Url.Action("GetApontamentosDiarios", "api/ApontamentosDiarios");
+    var urlGet = Url.Action("Get", "api/ApontamentosDiarios");
+    var urlEdit = Url.Action("Edit", "api/ApontamentosDiarios");
+    var urlSave = Url.Action("Save", "api/ApontamentosDiarios");
 }
 
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
-
+    
     <div id="formBodyContent">
 
         <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
@@ -16,6 +18,7 @@
         </div>
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+        @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
 
         <table id="results" class="display" cellspacing="0" style="width:100%"></table>
     </div>
@@ -26,7 +29,9 @@
 
     <script type="text/javascript">
 
-        var url1 = '@Html.Raw(@urlGetApontamentosDiarios)';
+        var urlGet = '@Html.Raw(@urlGet)';
+        var urlEdit = '@Html.Raw(@urlEdit)';
+        var urlSave = '@Html.Raw(@urlSave)';
         var $btn = $('#btnSend');
 
         $('#simpleCallendar').hide().attr('disabled', true);
@@ -47,9 +52,9 @@
             }
 
             //AJAX
-            $.post(url1, enviar, function (r) {
+            $.post(urlGet, enviar, function (r) {
                 try {
-                    
+
                     if (toggle == undefined)
                         $('#menu-toggle').click();
                     GerarTabela(r);
@@ -101,7 +106,7 @@
                     { title: "Não Conforme (Com peso)", mData: "NC_Peso" },
                     { title: "Avaliação.", mData: "Avaliacao" },
                     { title: "Amostra", mData: "Amostra" },
-                    
+
                 ],
                 //fixedHeader: {
                 //    header: true,
@@ -125,14 +130,34 @@
                             oTable.fnAdjustColumnSizing();
                         }
                     }, 100);
+
+                    $('#results tbody').on('click', 'button', function (data, a, b) {
+
+                        var data = table.row($(this).parents('tr')).data();
+                        console.log(data);
+                        $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
+
+                            $('#Level3Name').html(r.ParLevel3_Name);
+                            $('#ResultLevel3_Id').val(r.Id);
+                            
+                            $('#changeConform').empty();
+                            $('#changeConform').append($(r.showIntervalos));
+                            $('#changeConform').append($(r.showConform));
+                            $('#changeConform').append($(r.showCalculado));
+                            $('#changeConform').append($(r.showNumeroDefeitos));
+
+                            console.log(r.Id);
+                        });
+
+                    });
                 },
                 createdRow: function (row, data, index) {
 
-                
+
                 },
                 fnDrawCallback: function (data, d, o) {
 
-                   
+
                 }
             });
 
@@ -192,7 +217,7 @@
                               columns: ':visible'
                           }
                       },
-                    
+
                     //, 'print'
 
 
@@ -205,13 +230,39 @@
 
         }
 
-        
+        function SalvarResultLevel3() {
+
+            var dadosResultLevel3 = {};
+
+            dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
+            dadosResultLevel3["isQueryInsert"] = true;
+            dadosResultLevel3["IsNotEvaluate"] = $('#evaluated').is(':checked');
+            if ($('#decimal') != undefined)
+                dadosResultLevel3["Value"] = $('#decimal').val() + "x10^" + $('#precisao').val();
+            if ($('#numeroDeDefeitos') != undefined)
+                dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
+            if ($('#intervaloValor') != undefined)
+                dadosResultLevel3["Value"] = $('#intervaloValor').val();
+
+            dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
+            
+            $.post(urlSave, dadosResultLevel3, function (r, x, e) {
+
+                openMessageModal("Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
+
+            }).fail(function (r, x, e) {
+                console.log(r);
+                console.log(x);
+                console.log(e);
+                openMessageModal("Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
+            });
+        }
 
         function ValidaDadosParaEnvio() {
 
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
-         
+
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
             GuardJs.esconderMensagem();

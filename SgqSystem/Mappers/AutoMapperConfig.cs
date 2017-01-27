@@ -91,6 +91,9 @@ namespace SgqSystem.Mappers
                 /*ParamsBrasil*/
 
                 x.AddProfile<ParLevel2ControlCompanyMapperProfile>();
+                x.AddProfile<ResultLevel3MapperProfile>();
+
+
 
                 /*Manutencao*/
                 x.AddProfile<DimManutencaoColetaITsMapperProfile>();

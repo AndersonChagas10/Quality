@@ -17,7 +17,6 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParLevel1()
         {
-            this.CollectionLevel2 = new HashSet<CollectionLevel2>();
             this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
             this.ParCounterXLocal = new HashSet<ParCounterXLocal>();
             this.ParGoal = new HashSet<ParGoal>();
@@ -32,6 +31,7 @@ namespace Dominio
             this.ParLevel3Level2Level1 = new HashSet<ParLevel3Level2Level1>();
             this.ParNotConformityRuleXLevel = new HashSet<ParNotConformityRuleXLevel>();
             this.ParRelapse = new HashSet<ParRelapse>();
+            this.CollectionLevel2 = new HashSet<CollectionLevel2>();
         }
     
         public int Id { get; set; }
@@ -60,8 +60,6 @@ namespace Dominio
         public Nullable<bool> haveRealTimeConsolidation { get; set; }
         public Nullable<int> RealTimeConsolitationUpdate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
         public virtual ParConsolidationType ParConsolidationType { get; set; }
@@ -92,5 +90,7 @@ namespace Dominio
         public virtual ICollection<ParNotConformityRuleXLevel> ParNotConformityRuleXLevel { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParRelapse> ParRelapse { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
     }
 }
