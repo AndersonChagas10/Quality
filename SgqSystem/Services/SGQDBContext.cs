@@ -631,6 +631,7 @@ namespace SGQDBContext
             return parLevel3List;
 
         }
+        //
         public IEnumerable<ParLevel3> getLevel3ByLevel2(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime DateCollect)
         {
             SqlConnection db = new SqlConnection(conexao);
