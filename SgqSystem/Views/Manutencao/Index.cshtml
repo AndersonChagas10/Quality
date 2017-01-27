@@ -53,16 +53,16 @@
 
                                             <style>
                                                 .graficoPainel4 {
-                                                    margin-left: auto;
+                                                    /*margin-left: auto;
                                                     margin-right: auto;
-                                                    width: 100%;
+                                                    width: 100%;*/
                                                     /*height: 200px;*/
                                                 }
                                             </style>
 
-                                            <div id="GraficoDespesaTodasRegionais1" class="graficoPainel4"></div>
+                                            <div id="GraficoDespesaTodasRegionais1" class="graficoPainel4" style="float: left"></div>
 
-                                            <div id="GraficoDespesaTodasRegionais" class="graficoPainel4"></div>
+                                            <div id="GraficoDespesaTodasRegionais" class="graficoPainel4" style="width: 50%; float: right"></div>
 
                                             <div id="GraficoDespesaTodasRegionaisPorPacote" class="graficoPainel4"></div>
 
@@ -609,7 +609,7 @@
                                                         },
 
                                                         chart: {
-                                                            height: 150,
+                                                            height: 200,
                                                             zoomType: 'x, y',
                                                             alignThresholds: true,
                                                             type: 'column'
@@ -622,17 +622,17 @@
                                                             }
                                                         },
 
-                                                        legend: {
-                                                            layout: 'vertical',
-                                                            align: 'right',
-                                                            verticalAlign: 'center',
-                                                            borderWidth: 0,
-                                                            floating: true,
-                                                            backgroundColor: 'rgba(238, 238, 238,0.5)',
-                                                            style: {
-                                                                fontSize: 'x-small'
-                                                            }
-                                                        },
+                                                        //legend: {
+                                                        //    layout: 'vertical',
+                                                        //    align: 'right',
+                                                        //    verticalAlign: 'center',
+                                                        //    borderWidth: 0,
+                                                        //    floating: true,
+                                                        //    backgroundColor: 'rgba(238, 238, 238,0.5)',
+                                                        //    style: {
+                                                        //        fontSize: 'x-small'
+                                                        //    }
+                                                        //},
 
                                                         xAxis: {
                                                             categories: name
@@ -680,9 +680,12 @@
                                                             point: {
                                                                 events: {
                                                                     click: function () {
+                                                                        $('#GraficoDespesaTodasRegionais1').css('width', '50%');
+                                                                        
                                                                         $('#GraficoDespesaTodasRegionais').empty();
                                                                         $('#GraficoDespesaTodasRegionaisPorPacote').empty();
                                                                         $('#GrafDespReg').empty();
+                                                                        resizeHighcharts()
                                                                         MountGraficoDespesaTodasRegionais(this.category)
                                                                     }
                                                                 }
@@ -697,9 +700,12 @@
                                                             point: {
                                                                 events: {
                                                                     click: function () {
+                                                                        $('#GraficoDespesaTodasRegionais1').css('width', '50%');
+                                                                        
                                                                         $('#GraficoDespesaTodasRegionais').empty();
                                                                         $('#GraficoDespesaTodasRegionaisPorPacote').empty();
                                                                         $('#GrafDespReg').empty();
+                                                                        resizeHighcharts()
                                                                         MountGraficoDespesaTodasRegionais(this.category)
                                                                     }
                                                                 }
@@ -956,7 +962,10 @@
 
                                                             point: {
                                                                 events: {
-                                                                    click: function () { MountGrafDespReg(this.category) }
+                                                                    click: function () {
+                                                                        
+                                                                        MountGrafDespReg(this.category)
+                                                                    }
                                                                 }
                                                             }
                                                         }, {
@@ -1150,7 +1159,7 @@
                                                         },
 
                                                         chart: {
-                                                            height: 150,
+                                                            height: 200,
                                                             zoomType: 'x, y',
                                                             alignThresholds: true,
                                                             type: 'column'
@@ -1163,17 +1172,17 @@
                                                             }
                                                         },
 
-                                                        legend: {
-                                                            layout: 'vertical',
-                                                            align: 'right',
-                                                            verticalAlign: 'center',
-                                                            borderWidth: 0,
-                                                            floating: true,
-                                                            backgroundColor: 'rgba(238, 238, 238,0.5)',
-                                                            style: {
-                                                                fontSize: 'x-small'
-                                                            }
-                                                        },
+                                                        //legend: {
+                                                        //    layout: 'vertical',
+                                                        //    align: 'right',
+                                                        //    verticalAlign: 'center',
+                                                        //    borderWidth: 0,
+                                                        //    floating: true,
+                                                        //    backgroundColor: 'rgba(238, 238, 238,0.5)',
+                                                        //    style: {
+                                                        //        fontSize: 'x-small'
+                                                        //    }
+                                                        //},
 
                                                         xAxis: {
                                                             categories: name
@@ -3177,8 +3186,13 @@
         }
 
         function Send() {
+
             $btn.button('loading');
             $('#results').empty();
+
+
+            resizeHighcharts()
+            $('#GraficoDespesaTodasRegionais1').css('width', '100%');
 
             if (!ValidaDadosParaEnvio()) {
                 $btn.button('reset');
@@ -3297,6 +3311,14 @@
                 novo = ponto + n.charAt(i) + novo;
             }
             return novo;
+        }
+
+        function resizeHighcharts() {
+            $(Highcharts.charts).each(function (c, chart) {
+                if (chart != undefined) {
+                    chart.reflow()
+                }
+            });
         }
 
 
