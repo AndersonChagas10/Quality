@@ -234,6 +234,15 @@
 
             var dadosResultLevel3 = {};
 
+            if ($('#sample') != undefined){
+                if ($('#sample').val() > $('#numeroDeDefeitos').val()) {
+                    openMessageModal("O numero de defeitos não pode ser maior que o numero avaliado.")
+                    return;
+                } else {
+                    dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
+                }
+            }
+
             dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
             dadosResultLevel3["isQueryInsert"] = true;
             dadosResultLevel3["IsNotEvaluate"] = $('#evaluated').is(':checked');
