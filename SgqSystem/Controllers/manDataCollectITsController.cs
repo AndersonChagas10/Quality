@@ -64,7 +64,7 @@ namespace SgqSystem.Controllers
         // GET: manDataCollectITs/Create
         public ActionResult Create()
         {
-            return View(new ManDataCollectIT() {AmountData=0});
+            return View(new ManDataCollectIT() { AmountData = 0 });
         }
 
         // POST: manDataCollectITs/Create
@@ -155,5 +155,14 @@ namespace SgqSystem.Controllers
             base.Dispose(disposing);
         }
 
+
+        // GET: manDataCollectITs/Create
+        public ActionResult Create2()
+        {
+            return View(new ManDataCollectIT() { AmountData = 0 });
+        }       
+
     }
+
+
 }

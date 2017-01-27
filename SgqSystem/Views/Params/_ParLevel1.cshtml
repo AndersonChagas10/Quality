@@ -248,7 +248,8 @@
                                                     <th style="width:20%">Nome</th>
                                                     <th style="width:20%">Tipo</th>
                                                     <th style="width:20%">Preview</th>
-                                                    <th style="width:20%"></th>
+                                                    <th style="width:10%"></th>
+                                                    <th style="width:10%"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -338,6 +339,9 @@
                                                                     }
                                                                 </button>
 
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this))" class="btn btn-primary btn-xs">Padrão</button>
                                                             </td>
 
                                                         </tr>
@@ -461,6 +465,22 @@
     }
 
     var Cabecalhos = {
+        SetMultipleDefault: function(elem){
+            var idMultiple = $(elem).parent().parent().find('select option:selected').val();
+            var idHeader = $(elem).parent().parent().find('select').attr('id');
+            if(parseInt(idMultiple) > 0){
+                $.post(urlSetDefaultCCAB + "/" + idHeader+"/"+idMultiple, function(r){
+                    console.log(r);
+                    if(r){
+                        if(r.IsDefaultOption == true){
+                            openMessageModal("Sucesso", r.Name+" se tornou o valor padrão.");
+                        }else{
+                            openMessageModal("Sucesso", r.Name+" não é mais o valor padrão.");
+                        }
+                    }
+                });
+            }
+        },
         SetRequired: function(e, id){
             $.post(urlSetRequiredCCAB + "/" + id, function(r){
                 if(r){
@@ -630,6 +650,7 @@
             var opcoes = $('#objMultiplaEscolhaName').val();
             var valor = $('#objMultiplaEscolhaPunishmentValue').val();
             var obj = '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');"><i class="fa fa-times"></i></button>';//Btn excluir;
+            
 
             /*Obj*/
             Cabecalhos.ParMultiplaEscolhaOpcoes.push({
@@ -639,6 +660,7 @@
                 'Description': '',
                 'ParFieldType_Id': tipoVal,
                 'ParLevelDefinition_Id': nivelDoCampoVal,
+                'IsDefaultOption' : '0',
                 'PunishmentValue': valor
             });
 

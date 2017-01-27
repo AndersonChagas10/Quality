@@ -1,0 +1,164 @@
+﻿@model Dominio.ManDataCollectIT
+@{
+    var urlSave = Url.Action("SaveCreate", "Api/Manutencao");
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 650px;">
+
+        <div class="form-group">
+            <h3>Coleta de Dados de Indicadores Técnicos</h3>
+            <h4>Inserir</h4>
+            <hr />
+
+            @Html.Label("Data de Coleta", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+
+                <input class="form-control simpleCalendar" id="date" name="" type="text">
+                @Html.ValidationMessageFor(model => model.ReferenceDatetime, "", new { @class = "text-danger" })
+
+            </div>
+
+            @Html.Label("Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.ParCompany_Id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+        <br />
+
+        <table id="dataTable" class="display" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Descrição da Coleta</th>
+                    <th>Quantidade</th>
+                    <th>Comentarios</th>
+                    <th>Salvar</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br />
+        <br />
+        <div class="form-group">
+
+            <input type="submit" value="@Resources.Resource.save" class="btn btn-default" />
+            @Html.ActionLink(Resources.Resource.back, "Index")
+        </div>
+    </div>
+
+    @*@section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }*@
+
+</div>
+
+<script>
+
+    var url1 = '@Html.Raw(@urlSave)';
+
+    $(document).ready(function () {
+
+        var myDarlingViewBag = @Html.Raw(Json.Encode(ViewBag.listaDataDataType));
+
+        if(myDarlingViewBag != null){
+
+            for (var i = 0; i < myDarlingViewBag.length; i++) {
+
+                var newRow = $("<tr>");
+                var cols = "";
+
+                cols += '<td>'+$(myDarlingViewBag[i]).attr('TechnicalIndicator')+'</td>';
+
+                //cols += '<td style="display:none;">'+$(myDarlingViewBag[i]).attr('id')+'</td>';
+
+                cols += '<td><input id="quantidade" name="row-1-age" type="text"></td>';
+
+                cols += '<td><input id="comentarios" name="row-1-position" value="" type="text"></td>';
+
+                cols += '<td><button id="save" class="btn btn-large btn-danger" type="button">Salvar</button></td>';
+
+                cols += '</td>';
+
+                newRow.append(cols);
+
+                $("#dataTable").append(newRow);
+
+            }
+
+        }
+
+        var table = $('#dataTable').DataTable({
+
+            paging: false,
+            "searching": false,
+            "lengthChange": false,
+            "info": false,
+            "ordering": false,
+
+            'initComplete': function() {
+
+                $('#dataTable tbody').on('click', 'button', function (data, a, b) {
+
+                    var data = table.row($(this).parents('tr')).data();
+
+                    var quantidade = $(this).parents('tr').find('#quantidade').val();
+                    var comentarios = $(this).parents('tr').find('#comentarios').val();
+                    var date = $("#date").val();
+                    var parCompany_Id = $("#ParCompany_Id").val();
+
+                    var obj = {};
+
+                    obj['descricao'] = data[0];
+                    obj['quantidade'] = quantidade;
+                    obj['comentarios'] = comentarios;
+                    obj['data'] = date;
+                    obj['parCompany'] = parCompany_Id;
+
+                    //console.log(obj);
+
+                    if(validaParaEnvio(obj)){
+
+                        Enviar(obj,"obj");
+
+                    }
+
+                });
+            }
+        });
+
+        $('.simpleCalendar').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            'locale': {
+                "format": "DD/MM/YYYY",
+            }
+        });
+
+        ;
+
+        $('tbody #quantidade').inputmask("decimal", { rightAlign: false })
+
+    });
+
+
+    function Enviar(dataToSend, jsonObjectName) {
+
+        $.post(url1, { jsonObjectName : JSON.stringify(dataToSend) }, function(data) {
+
+            console.log(data);
+
+        });
+
+    }
+
+    function validaParaEnvio(obj){
+        if(obj.quantidade == ""){
+            alert("Campo Quantidade obrigatório");
+            $(this).find('#quantidade').focus;
+        }
+    }
+
+</script>

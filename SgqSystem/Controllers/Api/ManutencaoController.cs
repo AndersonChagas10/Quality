@@ -32,8 +32,8 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("getSelectGrafico1/{dataIni}/{dataFim}/{meses}/{anos}/{regFiltro}")]
-        public List<Reg> getSelectGrafico1(string dataIni, string dataFim, string meses, string anos, string regFiltro)
+        [Route("getSelectGrafico1/{dataIni}/{dataFim}/{meses}/{anos}/{regFiltro}/{regional}")]
+        public List<Reg> getSelectGrafico1(string dataIni, string dataFim, string meses, string anos, string regFiltro, string regional)
         {
             var lista = new List<Reg>();
 
@@ -49,6 +49,9 @@ namespace SgqSystem.Controllers.Api
             {
                 regionaisFiltradas = queryReg(regionalFiltDecode);
             }
+
+            var regionalFilter = regional;
+            //regionalFilter = regionalFilter.Replace("|", "/");
 
             using (var db = new SgqDbDevEntities())
             {
@@ -63,6 +66,7 @@ namespace SgqSystem.Controllers.Api
                 sql += "WHERE 1=1 ";
                 sql += "and MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
                 sql += "AND TipoInformacao = 'CustoFixo' ";
+                sql += "AND EmpresaRegionalGrupo = '" + regionalFilter + "' ";
                 sql += regionaisFiltradas;
                 sql += "group by EmpresaRegional ";
                 sql += "order by EmpresaRegional ";
@@ -75,8 +79,8 @@ namespace SgqSystem.Controllers.Api
 
 
         [HttpPost]
-        [Route("getSelectGraficoRegionalPorPacote/{dataIni}/{dataFim}/{meses}/{anos}/{regFiltro}")]
-        public List<Reg> getSelectGraficoRegionalPorPacote(string dataIni, string dataFim, string meses, string anos, string regFiltro)
+        [Route("getSelectGraficoRegionalPorPacote/{dataIni}/{dataFim}/{meses}/{anos}/{regFiltro}/{regional}")]
+        public List<Reg> getSelectGraficoRegionalPorPacote(string dataIni, string dataFim, string meses, string anos, string regFiltro, string regional)
         {
             var lista = new List<Reg>();
 
@@ -93,6 +97,10 @@ namespace SgqSystem.Controllers.Api
                 regionaisFiltradas = queryReg(regionalFiltDecode);
             }
 
+            var regionalFilter = regional;
+            regionalFilter = regionalFilter.Replace("|", "/");
+            
+
             using (var db = new SgqDbDevEntities())
             {
                 var sql = "";
@@ -106,6 +114,7 @@ namespace SgqSystem.Controllers.Api
                 sql += "WHERE 1=1 ";
                 sql += "and MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
                 sql += "AND TipoInformacao = 'CustoFixo' ";
+                sql += "AND EmpresaRegional = '"+ regionalFilter + "' ";
                 sql += regionaisFiltradas;
                 sql += "group by EmpresaRegional, pacote ";
                 sql += "order by EmpresaRegional, pacote ";

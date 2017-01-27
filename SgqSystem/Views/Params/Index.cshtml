@@ -16,6 +16,7 @@
     var checkVinculoL1L2 = Url.Action("VerificaShowBtnRemVinculoL1L2", "api/ParamsApi");
     var desvinculoVinculoL1L2 = Url.Action("RemVinculoL1L2", "api/ParamsApi");
     var urlSetRequiredCCAB = Url.Action("SetRequiredCCAB", "api/ParamsApi");
+    var urlSetDefaultCCAB = Url.Action("SetDefaultCCAB", "api/ParamsApi");
 
     var removeLevel3Group = Url.Action("RemoveParLevel3Group", "api/ParamsApi");
     var AddLevel3Group = Url.Action("AddUpdateParLevel3Group", "api/ParamsApi");
@@ -326,6 +327,7 @@
     var desvinculoVinculoL1L2 = '@Html.Raw(@desvinculoVinculoL1L2)';
     var checkVinculoL1L2 = '@Html.Raw(@checkVinculoL1L2)';
     var urlSetRequiredCCAB = @Html.Raw(Json.Encode(urlSetRequiredCCAB));
+    var urlSetDefaultCCAB = @Html.Raw(Json.Encode(urlSetDefaultCCAB));
 
     var AddLevel3Group = '@Html.Raw(@AddLevel3Group)';
 
