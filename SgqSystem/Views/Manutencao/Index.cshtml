@@ -60,10 +60,7 @@
                                                     width: 100%;*/
                                                     /*height: 200px;*/
                                                 }
-
-                                                .fullScreen {
-                                                    margin-top: 0px !important;
-                                                }
+                                               
                                             </style>
 
                                             <div id="GraficoDespesaTodasRegionais1" class="graficoPainel4" style="float: left"></div>
@@ -3356,53 +3353,6 @@
                     chart.reflow()
                 }
             });
-        }
-
-        //Esconde o header e o footer quando tecla f11
-        $(document).keyup(function (e) {
-            if (e.which == 122) {
-                e.preventDefault();
-
-                expand();
-
-
-                return false;
-            }
-        });
-
-        function expand() {
-
-            $(".navbar").toggle();
-            $(".page-header-fixed .page-container").toggleClass("fullScreen");
-            $("footer").toggle();
-
-        }
-
-        function toggleFullScreen() {
-            if (!document.fullscreenElement &&   
-                !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {  // current working methods
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) {
-                    document.documentElement.msRequestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) {
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                }
-            }
-
-            expand();
         }
 
         function destroyChart(id) {
