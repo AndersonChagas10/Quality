@@ -210,7 +210,7 @@
         Remove: function(idHeaderLevel2, button){
             HeaderLevel2.object.Id = idHeaderLevel2;
             $.post(urlHeaderLevel2, HeaderLevel2.object, function(r){
-                var btn = "<button type='button' class='btn btn-danger btn-sm' onclick='HeaderLevel2.Add(\""+r.ParHeaderField_Id+"\", $(this));'><i class='fa fa-check'></i>  Não</button>";
+                var btn = "<button type='button' class='btn btn-danger btn-sm' onclick='HeaderLevel2.Add(\""+r.ParHeaderField_Id+"\", $(this));'><i class='fa fa-times'></i>  Não</button>";
                 
                 $(button).replaceWith(btn);
             });
