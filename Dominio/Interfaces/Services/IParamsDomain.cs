@@ -28,5 +28,6 @@ namespace Dominio.Interfaces.Services
         bool VerificaShowBtnRemVinculoL1L2(int idLevel1, int idLevel2);
         bool SetRequiredCamposCabecalho(int id);
         ParMultipleValues SetDefaultMultiplaEscolha(int idHeader, int idMultiple);
+        ParLevel2XHeaderField AddRemoveParHeaderLevel2(ParLevel2XHeaderField parLevel2XHeaderField);
     }
 }

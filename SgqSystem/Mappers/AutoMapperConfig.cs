@@ -68,6 +68,7 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParCompanyMapperProfile>();
                 x.AddProfile<ParEvaluationMapperProfile>();
                 x.AddProfile<ParSampleMapperProfile>();
+                x.AddProfile<ParLevel2XHeaderFieldMapperProfile>();
 
 
                 /*

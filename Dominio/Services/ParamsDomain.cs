@@ -43,6 +43,7 @@ namespace Dominio.Services
         private IBaseRepository<ParCompany> _baseParCompany;
         private IBaseRepository<ParHeaderField> _baseRepoParHeaderField;
         private IBaseRepository<ParLevel1XHeaderField> _baseRepoParLevel1XHeaderField;
+        private IBaseRepository<ParLevel2XHeaderField> _baseRepoParLevel2XHeaderField;
         private IBaseRepository<ParMultipleValues> _baseRepoParMultipleValues;
         private IBaseRepository<ParEvaluation> _baseParEvaluation;
         private IBaseRepository<ParSample> _baseParSample;
@@ -84,6 +85,7 @@ namespace Dominio.Services
                             IBaseRepository<ParNotConformityRuleXLevel> baseParNotConformityRuleXLevel,
                             IBaseRepository<ParCompany> baseParCompany,
                             IBaseRepository<ParLevel1XHeaderField> baseRepoParLevel1XHeaderField,
+                            IBaseRepository<ParLevel2XHeaderField> baseRepoParLevel2XHeaderField,
                             IBaseRepository<ParMultipleValues> baseRepoParMultipleValues,
                             IBaseRepository<ParHeaderField> baseRepoParHeaderField,
                             IBaseRepository<ParEvaluation> baseParEvaluation,
@@ -108,6 +110,7 @@ namespace Dominio.Services
             _paramsRepo = paramsRepo;
             _baseRepoParCounterXLocal = baseRepoParCounterXLocal;
             _baseRepoParLevel1XHeaderField = baseRepoParLevel1XHeaderField;
+            _baseRepoParLevel2XHeaderField = baseRepoParLevel2XHeaderField;
             _baseRepoParMultipleValues = baseRepoParMultipleValues;
             _baseRepoParHeaderField = baseRepoParHeaderField;
             _baseRepoParLevel1 = baseRepoParLevel1;
@@ -314,7 +317,20 @@ namespace Dominio.Services
             level2.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parLevel2.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Reincidencia*/
             level2.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parLevel2.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Contadores*/
             level2.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(parLevel2.ParNotConformityRuleXLevel.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Regra de Alerta*/
+
             
+            var headerFieldLevel1 = _baseRepoParLevel1XHeaderField.GetAll();
+            var headerFieldLevel2 = _baseRepoParLevel2XHeaderField.GetAll();
+//            SELECT* from ParLevel1XHeaderField
+//where id not in 
+//(select id from ParLevel2XHeaderField
+//where ParLevel2_Id
+//in (select id from parlevel2 where id = 1))
+
+            level2.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(headerFieldLevel1.Where(r => r.IsActive == true && r.ParLevel1_Id == level1Id));/*Cabeçalhos do Level 1*/
+            level2.cabecalhosExclusos = Mapper.Map<List<ParLevel2XHeaderFieldDTO>>(headerFieldLevel2.Where(r => r.IsActive == true && r.ParLevel1_Id == level1Id && r.ParLevel2_Id == idParLevel2));/*Cabeçalhos não permitidos no Level 2*/
+            
+
             #region DropDown - Level3
 
             /*Todos os Vinculos com este level2 / level3.*/
@@ -823,7 +839,17 @@ namespace Dominio.Services
             return multiple;
 
         }
-        
+
+        public ParLevel2XHeaderField AddRemoveParHeaderLevel2(ParLevel2XHeaderField parLevel2XHeaderField)
+        {
+            parLevel2XHeaderField.AddDate = DateTime.Now;
+            parLevel2XHeaderField.IsActive = true;
+
+            parLevel2XHeaderField = _paramsRepo.SaveParHeaderLevel2(parLevel2XHeaderField);
+
+            return parLevel2XHeaderField;
+        }
+
         //public void verificaVinculos(int level1 = 0, int level2 = 0, int level3 = 0)
         //{
         //    var hasVinculoLevel32 = "select * from parlevel3level2 where  ParLevel3_Id = 1074";

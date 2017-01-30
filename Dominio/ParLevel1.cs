@@ -59,6 +59,7 @@ namespace Dominio
         public Nullable<int> hashKey { get; set; }
         public Nullable<bool> haveRealTimeConsolidation { get; set; }
         public Nullable<int> RealTimeConsolitationUpdate { get; set; }
+        public Nullable<bool> IsPartialSave { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
