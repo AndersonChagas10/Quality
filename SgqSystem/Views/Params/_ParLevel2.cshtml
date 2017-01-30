@@ -47,7 +47,7 @@
                         </tr>
 
                         <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasSampleTotal, new { @class = "form-control checkbox-erp" }), @Html.Label("HasSampleTotal"), Table.PosicaoLabel.left, null, null)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasSampleTotal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_sample_total), Table.PosicaoLabel.left, null, null)
                         </tr>
 
                         <tr class="row">
@@ -59,6 +59,64 @@
 
 
                 @Html.Partial("_AvaliacaoAmostra", Model)
+
+
+                @if (Model.paramsDto.parLevel2Dto.cabecalhosInclusos != null)
+                {
+                    <div class="panel-group accordion" id="level2_header_accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_header_accordion" href="#level2_header_collapse" aria-expanded="false"> @Resources.Resource.headers</a>
+                                </h4>
+                            </div>
+                            <div id="level2_header_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:50%">Nome do Cabeçalho</th>
+                                                <th style="width:50%">Mostrar nesse nível?</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel2Dto.cabecalhosInclusos)
+                                            {
+                                                var added = 0;
+                                                <tr>
+                                                    <td>@parLevel1XHeaderField.ParHeaderField.Name</td>
+                                                    <td>
+                                                        @if (Model.paramsDto.parLevel2Dto.cabecalhosExclusos.Count == 0)
+                                                        {
+                                                            <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  Não</button>
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var parLevel2XHeaderField in Model.paramsDto.parLevel2Dto.cabecalhosExclusos)
+                                                            {
+                                                                if (parLevel1XHeaderField.ParHeaderField.Id == parLevel2XHeaderField.ParHeaderField_Id)
+                                                                {
+                                                                    added = 1;
+                                                                    <button type="button" class="btn btn-primary btn-sm" onclick="HeaderLevel2.Remove(@parLevel2XHeaderField.Id, $(this));"><i class="fa fa-check"></i>  Sim</button>
+                                                                }
+                                                            }
+                                                            if (added == 0)
+                                                            {
+                                                                <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  Não</button>
+                                                            }
+                                                        }
+                                                    </td>
+
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
 
                 @Html.Partial("_GroupXLevel", Model)
 
@@ -112,63 +170,6 @@
 
                 @Html.Partial("_CounterXLevel", Model)
                 
-
-                @if (Model.paramsDto.parLevel2Dto.cabecalhosInclusos != null)
-                {
-                <div class="panel-group accordion" id="level2_header_accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_header_accordion" href="#level2_header_collapse" aria-expanded="false"> @Resources.Resource.headers</a>
-                            </h4>
-                        </div>
-                        <div id="level2_header_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="width:50%">Nome do Cabeçalho</th>
-                                            <th style="width:50%">Mostrar nesse nível?</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                            @foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel2Dto.cabecalhosInclusos)
-                                            {
-                                                var added = 0;
-                                                <tr>
-                                                    <td>@parLevel1XHeaderField.ParHeaderField.Name</td>
-                                                    <td>
-                                                        @if (Model.paramsDto.parLevel2Dto.cabecalhosExclusos.Count == 0)
-                                                        {
-                                                            <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  Não</button>
-                                                        }
-                                                        else
-                                                        {
-                                                            foreach (var parLevel2XHeaderField in Model.paramsDto.parLevel2Dto.cabecalhosExclusos)
-                                                            {
-                                                                if (parLevel1XHeaderField.ParHeaderField.Id == parLevel2XHeaderField.ParHeaderField_Id)
-                                                                {
-                                                                    added = 1;
-                                                                    <button type="button" class="btn btn-primary btn-sm" onclick="HeaderLevel2.Remove(@parLevel2XHeaderField.Id, $(this));"><i class="fa fa-check"></i>  Sim</button>
-                                                                }
-                                                            }
-                                                            if (added == 0)
-                                                            {
-                                                                <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  Não</button>
-                                                            }
-                                                        }                                                        
-                                                    </td>
-
-                                                </tr>
-                                            }
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                }
                 @*<table class="table-erp">
                         <tbody>
                             <tr class="row hide">

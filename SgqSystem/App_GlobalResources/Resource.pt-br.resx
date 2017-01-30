@@ -765,4 +765,7 @@
   <data name="headers" xml:space="preserve">
     <value>Cabeçalhos</value>
   </data>
+  <data name="has_sample_total" xml:space="preserve">
+    <value>Tem amostra total</value>
+  </data>
 </root>
