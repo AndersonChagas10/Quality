@@ -2769,7 +2769,7 @@ namespace SgqSystem.Services
                 {
                     if (ParLevelHeaderDB.isHeaderLeve2Exception(ParLevel1_Id, ParLevel2_Id, header.ParHeaderField_Id))
                     {
-                        break;
+                        continue;
                     }
                 }
 
