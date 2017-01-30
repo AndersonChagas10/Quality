@@ -26,7 +26,8 @@ public class ApontamentosDiariosResultSet
     public Nullable<decimal> NC_Peso { get; set; }
     public Nullable<int> Avaliacao { get; set; }
     public int Amostra { get; set; }
-
+    public int ResultLevel3Id { get; set; }
+    
     public string Unidade { get; set; }
 
 
@@ -70,6 +71,7 @@ public class ApontamentosDiariosResultSet
                 " \n ,C2.EvaluationNumber AS 'Avaliacao'    " +
                 " \n ,C2.Sample AS 'Amostra'                " +
                 " \n ,UN.Name AS 'Unidade'                  " +
+                " \n ,R3.Id AS 'ResultLevel3Id'             " +
                 " \n FROM CollectionLevel2 C2               " +
                 " \n LEFT JOIN ParCompany UN                " +
                 " \n ON UN.Id = c2.UnitId                   " +
