@@ -688,6 +688,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="hashKey" Type="int" />
           <Property Name="haveRealTimeConsolidation" Type="bit" />
           <Property Name="RealTimeConsolitationUpdate" Type="int" />
+          <Property Name="IsPartialSave" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SgqDbDev.dbo.ParLevel1VariableProduction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -784,16 +785,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.ParLevel1VariableProductionXLevel1' d
           <Property Name="AlterDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SgqDbDev.dbo.ParLevel2XHeaderField' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ParLevel2XHeaderField">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ParLevel2_Id" />
-            <PropertyRef Name="ParLevel1_Id" />
-            <PropertyRef Name="ParHeaderField_Id" />
-            <PropertyRef Name="AddDate" />
-            <PropertyRef Name="IsActive" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
@@ -1534,18 +1528,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Principal>
             <Dependent Role="CollectionLevel03">
               <PropertyRef Name="Level03Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel2_CollectionLevel2">
-          <End Role="CollectionLevel2" Type="Self.CollectionLevel2" Multiplicity="1" />
-          <End Role="CollectionLevel21" Type="Self.CollectionLevel2" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="CollectionLevel2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel21">
-              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2651,6 +2633,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="ParLevel2" EntityType="Self.ParLevel2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2ControlCompany" EntityType="Self.ParLevel2ControlCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2Level1" EntityType="Self.ParLevel2Level1" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParLevel2XHeaderField" EntityType="Self.ParLevel2XHeaderField" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3" EntityType="Self.ParLevel3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolFalse" EntityType="Self.ParLevel3BoolFalse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolTrue" EntityType="Self.ParLevel3BoolTrue" Schema="dbo" store:Type="Tables" />
@@ -2719,17 +2702,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
     [ParLevel1VariableProductionXLevel1].[AddDate] AS [AddDate], 
     [ParLevel1VariableProductionXLevel1].[AlterDate] AS [AlterDate]
     FROM [dbo].[ParLevel1VariableProductionXLevel1] AS [ParLevel1VariableProductionXLevel1]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="ParLevel2XHeaderField" EntityType="Self.ParLevel2XHeaderField" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ParLevel2XHeaderField].[Id] AS [Id], 
-    [ParLevel2XHeaderField].[ParLevel2_Id] AS [ParLevel2_Id], 
-    [ParLevel2XHeaderField].[ParLevel1_Id] AS [ParLevel1_Id], 
-    [ParLevel2XHeaderField].[ParHeaderField_Id] AS [ParHeaderField_Id], 
-    [ParLevel2XHeaderField].[AddDate] AS [AddDate], 
-    [ParLevel2XHeaderField].[AlterDate] AS [AlterDate], 
-    [ParLevel2XHeaderField].[IsActive] AS [IsActive]
-    FROM [dbo].[ParLevel2XHeaderField] AS [ParLevel2XHeaderField]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ResultLevel2HeaderField" EntityType="Self.ResultLevel2HeaderField" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -2900,10 +2872,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <AssociationSet Name="FK_CollectionLevel03_Level03" Association="Self.FK_CollectionLevel03_Level03">
             <End Role="Level03" EntitySet="Level03" />
             <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel2_CollectionLevel2" Association="Self.FK_CollectionLevel2_CollectionLevel2">
-            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
-            <End Role="CollectionLevel21" EntitySet="CollectionLevel2" />
           </AssociationSet>
           <AssociationSet Name="FK_CollectionLevel2_ConsolidationLevel2" Association="Self.FK_CollectionLevel2_ConsolidationLevel2">
             <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
@@ -3365,7 +3333,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="Deviation" EntityType="SgqDbModel.Deviation" />
           <EntitySet Name="ParLevel1VariableProduction" EntityType="SgqDbModel.ParLevel1VariableProduction" />
           <EntitySet Name="ParLevel1VariableProductionXLevel1" EntityType="SgqDbModel.ParLevel1VariableProductionXLevel1" />
-          <EntitySet Name="ParLevel2XHeaderField" EntityType="SgqDbModel.ParLevel2XHeaderField" />
           <EntitySet Name="ResultLevel2HeaderField" EntityType="SgqDbModel.ResultLevel2HeaderField" />
           <AssociationSet Name="FK_CollectionLevel02_ConsolidationLevel02" Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02">
             <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
@@ -3769,6 +3736,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="ManDataCollectIT" EntitySet="ManDataCollectIT" />
           </AssociationSet>
+          <EntitySet Name="ParLevel2XHeaderField" EntityType="SgqDbModel.ParLevel2XHeaderField" />
           </EntityContainer>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -4668,6 +4636,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel1" FromRole="ParLevel1" ToRole="ParRelapse" />
           <Property Name="haveRealTimeConsolidation" Type="Boolean" />
           <Property Name="RealTimeConsolitationUpdate" Type="Int32" />
+          <Property Name="IsPartialSave" Type="Boolean" />
         </EntityType>
         <EntityType Name="ParLevel1XCluster">
           <Key>
@@ -5270,23 +5239,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="ParLevel2XHeaderField">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ParLevel2_Id" />
-            <PropertyRef Name="ParLevel1_Id" />
-            <PropertyRef Name="ParHeaderField_Id" />
-            <PropertyRef Name="AddDate" />
-            <PropertyRef Name="IsActive" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParHeaderField_Id" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ResultLevel2HeaderField">
           <Key>
@@ -6533,6 +6485,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ParLevel2XHeaderField">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParHeaderField_Id" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7328,6 +7292,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySetMapping Name="ParLevel1">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel1">
               <MappingFragment StoreEntitySet="ParLevel1">
+                <ScalarProperty Name="IsPartialSave" ColumnName="IsPartialSave" />
                 <ScalarProperty Name="RealTimeConsolitationUpdate" ColumnName="RealTimeConsolitationUpdate" />
                 <ScalarProperty Name="haveRealTimeConsolidation" ColumnName="haveRealTimeConsolidation" />
                 <ScalarProperty Name="hashKey" ColumnName="hashKey" />
@@ -7894,19 +7859,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ParLevel2XHeaderField">
-            <EntityTypeMapping TypeName="SgqDbModel.ParLevel2XHeaderField">
-              <MappingFragment StoreEntitySet="ParLevel2XHeaderField">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
-                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
-                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ResultLevel2HeaderField">
             <EntityTypeMapping TypeName="SgqDbModel.ResultLevel2HeaderField">
               <MappingFragment StoreEntitySet="ResultLevel2HeaderField">
@@ -7944,6 +7896,19 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
                 <ScalarProperty Name="ReferenceDatetime" ColumnName="ReferenceDatetime" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParLevel2XHeaderField">
+            <EntityTypeMapping TypeName="SgqDbModel.ParLevel2XHeaderField">
+              <MappingFragment StoreEntitySet="ParLevel2XHeaderField">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
+                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

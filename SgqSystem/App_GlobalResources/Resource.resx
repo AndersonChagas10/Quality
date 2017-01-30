@@ -765,4 +765,7 @@
   <data name="quantity" xml:space="preserve">
     <value>Quantity</value>
   </data>
+  <data name="headers" xml:space="preserve">
+    <value>Headers</value>
+  </data>
 </root>

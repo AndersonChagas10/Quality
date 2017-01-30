@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="41481c9360bf485fb122760b8cb9857f" Name="Diagram1" ZoomLevel="99">
+      <Diagram DiagramId="41481c9360bf485fb122760b8cb9857f" Name="Diagram1" ZoomLevel="113">
         <EntityTypeShape EntityType="SgqDbModel.BkpCollection" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="SgqDbModel.CollectionHtml" Width="1.5" PointX="2.75" PointY="3.75" />
         <EntityTypeShape EntityType="SgqDbModel.CollectionJson" Width="1.5" PointX="4.75" PointY="3.75" />
@@ -84,7 +84,6 @@
         <EntityTypeShape EntityType="SgqDbModel.Deviation" Width="1.5" PointX="10.75" PointY="6.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel1VariableProduction" Width="1.5" PointX="4.75" PointY="11.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel1VariableProductionXLevel1" Width="1.5" PointX="6.75" PointY="11.75" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel2XHeaderField" Width="1.5" PointX="8.75" PointY="11.75" />
         <EntityTypeShape EntityType="SgqDbModel.ResultLevel2HeaderField" Width="1.5" PointX="12.75" PointY="0.75" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_Level01" />
@@ -188,6 +187,7 @@
         <EntityTypeShape EntityType="SgqDbModel.ManDataCollectIT" Width="1.5" PointX="3.875" PointY="26.875" />
         <AssociationConnector Association="SgqDbModel.FK_ManDataCollectIT_DimManutencaoColetaITs_id" />
         <AssociationConnector Association="SgqDbModel.FK_ManDataCollectIT_ParCompany_id" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel2XHeaderField" Width="1.5" PointX="9.375" PointY="11.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -88,7 +88,9 @@ namespace DTO.DTO.Params
 
         public List<ParSampleDTO> listSample { get; set; }
         public List<ParEvaluationDTO> listEvaluation { get; set; }
-
+        public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }
+        public List<ParLevel2XHeaderFieldDTO> cabecalhosExclusos { get; set; }
+        
         public void CriaListaSampleEvaluation()
         {
             listSample = new List<ParSampleDTO>();
