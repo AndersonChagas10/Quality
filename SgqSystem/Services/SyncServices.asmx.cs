@@ -1725,8 +1725,30 @@ namespace SgqSystem.Services
 
                     Level2Result.SampleLast = lastSampleConsolidation;
 
+                    string partialResults = null;
+                    if(c.IsPartialSave ==  true)
+                    {
+
+                        var ParLevel1DB = new SGQDBContext.ParLevel1();
+                        var parLevel1 = ParLevel1DB.getById(Level2Result.ParLevel1_Id);
+
+                        var ParLevel2DB = new SGQDBContext.ParLevel2();
+                        var parLevel2 = ParLevel2DB.getById(Level2Result.ParLevel2_Id);
+
+                        var ParLevel3DB = new SGQDBContext.ParLevel3();
+                        var parLevel3InLevel2List = ParLevel3DB.getLevel3InLevel2(parLevel1, parLevel2, Convert.ToInt32(ParCompany_Id), data);
+ 
+                        foreach (var l3 in parLevel3InLevel2List)
+                        {
+                            partialResults += "<div id=\"" + l3.Id + "\" class=\"r3l2\"></div>";
+                        }
+
+                    }
+
                     // Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"false\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\"></div>";
-                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\"></div>";
+                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\">" +
+                                partialResults +
+                               "</div>";
                 }
             }
             return Results;
@@ -2149,7 +2171,7 @@ namespace SgqSystem.Services
             //colocar autenticação
 
 
-            string APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date.AddDays(-1)); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
+            string APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +

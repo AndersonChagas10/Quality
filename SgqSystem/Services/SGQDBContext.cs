@@ -30,7 +30,21 @@ namespace SGQDBContext
         {
 
         }
+        public ParLevel1 getById(int Id)
+        {
+            try
+            {
+                SqlConnection db = new SqlConnection(conexao);
+                string sql = "SELECT * FROM ParLevel1 WHERE Id='" +  Id + "'";                                                                                
+                var parLevel1List = db.Query<ParLevel1>(sql).FirstOrDefault();
 
+                return parLevel1List;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
@@ -248,6 +262,20 @@ namespace SGQDBContext
         public ParLevel2()
         {
 
+        }
+        public ParLevel2 getById(int Id)
+        {
+            try
+            {
+                SqlConnection db = new SqlConnection(conexao);
+                string sql = "SELECT * FROM ParLevel2 WHERE Id='" + Id + "'";
+                var parLevel1List = db.Query<ParLevel2>(sql).FirstOrDefault();
+                return parLevel1List;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public IEnumerable<ParLevel2> getLevel2ByIdLevel1(int ParLevel1_Id, int ParCompany_Id)
         {
@@ -645,41 +673,41 @@ namespace SGQDBContext
             //Pega a data pela regra da frequencia
             syncServices.getFrequencyDate(ParLevel1.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
 
-            string queryResult = null;
-            if(ParLevel1.IsPartialSave == true)
-            {
-                queryResult = "/*tirar as tarefas que já foram lançadas no período */" +
+            //string queryResult = null;
+            //if(ParLevel1.IsPartialSave == true)
+            //{
+            //    queryResult = "/*tirar as tarefas que já foram lançadas no período */" +
 
-                              "AND L3.Id NOT IN " +
-                              "( " +
-                              "SELECT R3.ParLevel3_Id FROM RESULT_LEVEL3 R3 " +
-                              "INNER JOIN CollectionLevel2 C2 " +
-                              "ON C2.Id = R3.CollectionLevel2_Id " +
-                              "INNER JOIN( " +
-                              "SELECT L3.Id as ParLevel3_Id, L2.Id as ParLevel2_Id, L321.ParLevel1_Id as ParLevel1_Id " +
-                              "FROM ParLevel3 AS L3 INNER JOIN " +
-                              "ParLevel3Value AS L3V ON L3V.ParLevel3_Id = L3.Id INNER JOIN " +
-                              "ParLevel3InputType AS L3IT ON L3IT.Id = L3V.ParLevel3InputType_Id LEFT OUTER JOIN " +
-                              "ParLevel3BoolFalse AS L3BF ON L3BF.Id = L3V.ParLevel3BoolFalse_Id LEFT OUTER JOIN " +
-                              "ParLevel3BoolTrue AS L3BT ON L3BT.Id = L3V.ParLevel3BoolTrue_Id LEFT OUTER JOIN " +
-                              "ParMeasurementUnit AS MU ON MU.Id = L3V.ParMeasurementUnit_Id LEFT OUTER JOIN " +
-                              "ParLevel3Level2 AS L32 ON L32.ParLevel3_Id = L3.Id LEFT OUTER JOIN " +
-                              "ParLevel3Group AS L3G ON L3G.Id = L32.ParLevel3Group_Id INNER JOIN " +
-                              "ParLevel2 AS L2 ON L2.Id = L32.ParLevel2_Id INNER JOIN " +
-                              "ParLevel3Level2Level1 AS L321 ON L321.ParLevel3Level2_Id = L32.Id " +
-                              "WHERE(L3.IsActive = 1) AND(L32.IsActive = 1) AND(L2.Id = '" + ParLevel2.Id + "') AND(L32.ParCompany_Id = '" + ParCompany_Id + "' OR " +
-                              "                  L32.ParCompany_Id IS NULL) AND L321.ParLevel1_Id = '" + ParLevel1.Id + "' " +
-                              "GROUP BY L321.ParLevel1_Id, L2.Id, L3.Id, L3.Name, L3G.Id, L3G.Name, L3IT.Id, L3IT.Name, L3V.ParLevel3BoolFalse_Id, L3BF.Name, L3V.ParLevel3BoolTrue_Id, L3BT.Name, L3V.IntervalMin, L3V.IntervalMax, MU.Name, L32.Weight, " +
-                              "                   L32.ParCompany_Id " +
-                              ") TAREFAS " +
-                              "ON TAREFAS.ParLevel3_Id = R3.ParLevel3_Id AND TAREFAS.ParLevel2_Id = C2.ParLevel2_Id AND TAREFAS.ParLevel1_Id = C2.ParLevel1_Id " +
-                              "AND C2.UnitId = '" + ParCompany_Id + "' " +
-                              "AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' " +
+            //                  "AND L3.Id NOT IN " +
+            //                  "( " +
+            //                  "SELECT R3.ParLevel3_Id FROM RESULT_LEVEL3 R3 " +
+            //                  "INNER JOIN CollectionLevel2 C2 " +
+            //                  "ON C2.Id = R3.CollectionLevel2_Id " +
+            //                  "INNER JOIN( " +
+            //                  "SELECT L3.Id as ParLevel3_Id, L2.Id as ParLevel2_Id, L321.ParLevel1_Id as ParLevel1_Id " +
+            //                  "FROM ParLevel3 AS L3 INNER JOIN " +
+            //                  "ParLevel3Value AS L3V ON L3V.ParLevel3_Id = L3.Id INNER JOIN " +
+            //                  "ParLevel3InputType AS L3IT ON L3IT.Id = L3V.ParLevel3InputType_Id LEFT OUTER JOIN " +
+            //                  "ParLevel3BoolFalse AS L3BF ON L3BF.Id = L3V.ParLevel3BoolFalse_Id LEFT OUTER JOIN " +
+            //                  "ParLevel3BoolTrue AS L3BT ON L3BT.Id = L3V.ParLevel3BoolTrue_Id LEFT OUTER JOIN " +
+            //                  "ParMeasurementUnit AS MU ON MU.Id = L3V.ParMeasurementUnit_Id LEFT OUTER JOIN " +
+            //                  "ParLevel3Level2 AS L32 ON L32.ParLevel3_Id = L3.Id LEFT OUTER JOIN " +
+            //                  "ParLevel3Group AS L3G ON L3G.Id = L32.ParLevel3Group_Id INNER JOIN " +
+            //                  "ParLevel2 AS L2 ON L2.Id = L32.ParLevel2_Id INNER JOIN " +
+            //                  "ParLevel3Level2Level1 AS L321 ON L321.ParLevel3Level2_Id = L32.Id " +
+            //                  "WHERE(L3.IsActive = 1) AND(L32.IsActive = 1) AND(L2.Id = '" + ParLevel2.Id + "') AND(L32.ParCompany_Id = '" + ParCompany_Id + "' OR " +
+            //                  "                  L32.ParCompany_Id IS NULL) AND L321.ParLevel1_Id = '" + ParLevel1.Id + "' " +
+            //                  "GROUP BY L321.ParLevel1_Id, L2.Id, L3.Id, L3.Name, L3G.Id, L3G.Name, L3IT.Id, L3IT.Name, L3V.ParLevel3BoolFalse_Id, L3BF.Name, L3V.ParLevel3BoolTrue_Id, L3BT.Name, L3V.IntervalMin, L3V.IntervalMax, MU.Name, L32.Weight, " +
+            //                  "                   L32.ParCompany_Id " +
+            //                  ") TAREFAS " +
+            //                  "ON TAREFAS.ParLevel3_Id = R3.ParLevel3_Id AND TAREFAS.ParLevel2_Id = C2.ParLevel2_Id AND TAREFAS.ParLevel1_Id = C2.ParLevel1_Id " +
+            //                  "AND C2.UnitId = '" + ParCompany_Id + "' " +
+            //                  "AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' " +
 
-                               ") " +
-                                "/****************************************************/ ";
+            //                   ") " +
+            //                    "/****************************************************/ ";
 
-            }
+            //}
 
             string sql = "SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
                          "L3V.IntervalMin AS IntervalMin, L3V.IntervalMax AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L32.ParCompany_Id                                                                                                                                                                                                                                     " +
@@ -707,7 +735,7 @@ namespace SGQDBContext
                          " AND L321.ParLevel1_Id='" + ParLevel1.Id + "'                                                                                                        " +
 
 
-                         queryResult + 
+                         //queryResult + 
 
 
                          " GROUP BY " +
@@ -733,6 +761,64 @@ namespace SGQDBContext
             var parLevel3List = db.Query<ParLevel3>(sql);
 
             return parLevel3List;
+        }
+        /// <summary>
+        /// Recupera as tarefas que foram feitas no Level2
+        /// </summary>
+        /// <param name="ParLevel1">Indicador</param>
+        /// <param name="ParLevel2">Monitoramento</param>
+        /// <param name="ParCompany_Id">Company</param>
+        /// <param name="DateCollect">Data Coleta</param>
+        /// <returns></returns>
+        public IEnumerable<ParLevel3> getLevel3InLevel2(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime DateCollect)
+        {
+            try
+            {
+                var syncServices = new SgqSystem.Services.SyncServices();
+
+                //Instanciamos variavel de data
+                string dataInicio = null;
+                string dataFim = null;
+
+                //Pega a data pela regra da frequencia
+                syncServices.getFrequencyDate(ParLevel1.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
+
+                SqlConnection db = new SqlConnection(conexao);
+
+                string sql = "SELECT R3.ParLevel3_Id AS Id FROM RESULT_LEVEL3 R3 " +
+                              "INNER JOIN CollectionLevel2 C2 " +
+                              "ON C2.Id = R3.CollectionLevel2_Id " +
+                              "INNER JOIN( " +
+                              "SELECT L3.Id as ParLevel3_Id, L2.Id as ParLevel2_Id, L321.ParLevel1_Id as ParLevel1_Id " +
+                              "FROM ParLevel3 AS L3 INNER JOIN " +
+                              "ParLevel3Value AS L3V ON L3V.ParLevel3_Id = L3.Id INNER JOIN " +
+                              "ParLevel3InputType AS L3IT ON L3IT.Id = L3V.ParLevel3InputType_Id LEFT OUTER JOIN " +
+                              "ParLevel3BoolFalse AS L3BF ON L3BF.Id = L3V.ParLevel3BoolFalse_Id LEFT OUTER JOIN " +
+                              "ParLevel3BoolTrue AS L3BT ON L3BT.Id = L3V.ParLevel3BoolTrue_Id LEFT OUTER JOIN " +
+                              "ParMeasurementUnit AS MU ON MU.Id = L3V.ParMeasurementUnit_Id LEFT OUTER JOIN " +
+                              "ParLevel3Level2 AS L32 ON L32.ParLevel3_Id = L3.Id LEFT OUTER JOIN " +
+                              "ParLevel3Group AS L3G ON L3G.Id = L32.ParLevel3Group_Id INNER JOIN " +
+                              "ParLevel2 AS L2 ON L2.Id = L32.ParLevel2_Id INNER JOIN " +
+                              "ParLevel3Level2Level1 AS L321 ON L321.ParLevel3Level2_Id = L32.Id " +
+                              "WHERE(L3.IsActive = 1) AND(L32.IsActive = 1) AND(L2.Id = '" + ParLevel2.Id + "') AND(L32.ParCompany_Id = '" + ParCompany_Id + "' OR " +
+                              "                  L32.ParCompany_Id IS NULL) AND L321.ParLevel1_Id = '" + ParLevel1.Id + "' " +
+                              "GROUP BY L321.ParLevel1_Id, L2.Id, L3.Id, L3.Name, L3G.Id, L3G.Name, L3IT.Id, L3IT.Name, L3V.ParLevel3BoolFalse_Id, L3BF.Name, L3V.ParLevel3BoolTrue_Id, L3BT.Name, L3V.IntervalMin, L3V.IntervalMax, MU.Name, L32.Weight, " +
+                              "                   L32.ParCompany_Id " +
+                              ") TAREFAS " +
+                              "ON TAREFAS.ParLevel3_Id = R3.ParLevel3_Id AND TAREFAS.ParLevel2_Id = C2.ParLevel2_Id AND TAREFAS.ParLevel1_Id = C2.ParLevel1_Id " +
+                              "AND C2.UnitId = '" + ParCompany_Id + "' " +
+                              "AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
+
+
+                var parLevel3List = db.Query<ParLevel3>(sql);
+
+                return parLevel3List;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 
@@ -804,17 +890,26 @@ namespace SGQDBContext
 
         public int ParLevel1_Id { get; set; }
         public int ParFrequency_Id { get; set; }
+        public bool IsPartialSave { get; set; }
 
         public IEnumerable<ParLevel1ConsolidationXParFrequency> getList(int ParCompany_Id)
         {
-            SqlConnection db = new SqlConnection(conexao);
+            try
+            {
+                SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT CDL1.ParLevel1_Id, PL1.ParFrequency_Id FROM ConsolidationLevel1 CDL1 " +
-                         "INNER JOIN ParLevel1 PL1 ON CDL1.ParLevel1_Id = PL1.Id WHERE CDL1.UnitId = '" + ParCompany_Id + "' GROUP BY CDL1.ParLevel1_Id, PL1.ParFrequency_Id";
+                string sql = "SELECT CDL1.ParLevel1_Id, PL1.ParFrequency_Id, PL1.IsPartialSave FROM ConsolidationLevel1 CDL1 " +
+                             "INNER JOIN ParLevel1 PL1 ON CDL1.ParLevel1_Id = PL1.Id WHERE CDL1.UnitId = '" + ParCompany_Id + "' GROUP BY CDL1.ParLevel1_Id, PL1.ParFrequency_Id,  PL1.IsPartialSave";
 
-            var consolidation = db.Query<ParLevel1ConsolidationXParFrequency>(sql);
+                var consolidation = db.Query<ParLevel1ConsolidationXParFrequency>(sql);
 
-            return consolidation;
+                return consolidation;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
     }
