@@ -295,7 +295,7 @@ namespace SgqSystem.Controllers.Api
                 {
                     if (ParLevel3.IsNotNull())
                         if (ParLevel3.ParLevel3Value.IsNotNull())
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 3) != null)//INTERVALOS ??
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 3).IsNotNull())//INTERVALOS ??
                             {
                                 return "<div>" +
                                             "<label for='Conforme: '> Intervalo Max: </label>" + IntervalMax +
@@ -319,7 +319,7 @@ namespace SgqSystem.Controllers.Api
                 {
                     if (ParLevel3.IsNotNull())
                         if (ParLevel3.ParLevel3Value.IsNotNull())
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 1) != null)//é um BINARIO
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 1).IsNotNull())//é um BINARIO
                             {
                                 var checkedAttr = IsConform.GetValueOrDefault() ? "checked='checked'" : "";
                                 return "<div>" +
@@ -338,7 +338,7 @@ namespace SgqSystem.Controllers.Api
                 {
                     if (ParLevel3.IsNotNull())
                         if (ParLevel3.ParLevel3Value.IsNotNull())
-                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 4) != null)//é um CALCULADO
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 4).IsNotNull())//é um CALCULADO
                             {
                                 return "<div>" +
                                             "<label for='Conforme: '> Intervalo Max: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
