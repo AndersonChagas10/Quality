@@ -25,7 +25,10 @@ namespace SgqSystem.Controllers
         // GET: VacuoGRDs
         public ActionResult Index()
         {
-            var vacuoGRD = db.VolumeVacuoGRD.Include(v => v.ParCompany).Include(v => v.ParLevel1).OrderByDescending(v => v.Data);
+            var userId = Guard.GetUsuarioLogado_Id(HttpContext);
+            var userLogado = db.UserSgq.Where(r => r.Id == userId);
+            var vacuoGRD = db.VolumeVacuoGRD.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
+            //var vacuoGRD = db.VolumeVacuoGRD.Include(v => v.ParCompany).Include(v => v.ParLevel1).OrderByDescending(v => v.Data);
             return View(vacuoGRD.ToList());
         }
 

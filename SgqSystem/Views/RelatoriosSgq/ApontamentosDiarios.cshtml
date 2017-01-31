@@ -10,7 +10,7 @@
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
     
-    <div id="formBodyContent" style="max-width:1000px">
+    <div id="formBodyContent" >
 
         <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
 
@@ -20,7 +20,7 @@
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
         @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
 
-        <table id="results" class="display nowrap responsive" cellspacing="0" style="width:100%"></table>
+        <table id="results" class="display" cellspacing="0" style="width:100%"></table>
     </div>
 </div>
 
@@ -112,8 +112,8 @@
                 //    header: true,
                 //    footer: true
                 //},
-                //scrollX: true,
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                scrollX: true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
                 pageLength: 10,
                 responsive: true,
                 //paginate: false,
@@ -224,11 +224,11 @@
             dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
             dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
             dadosResultLevel3["IsNotEvaluate"] = $('#evaluated').is(':checked');
-            if ($('#decimal') != undefined)
+            if ($('#decimal').length)
                 dadosResultLevel3["Value"] = $('#decimal').val() + "x10^" + $('#precisao').val();
-            if ($('#numeroDeDefeitos') != undefined)
+            if ($('#numeroDeDefeitos').length)
                 dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
-            if ($('#intervaloValor') != undefined)
+            if ($('#intervaloValor').length)
                 dadosResultLevel3["Value"] = $('#intervaloValor').val();
 
             
