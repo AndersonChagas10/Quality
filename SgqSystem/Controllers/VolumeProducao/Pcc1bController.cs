@@ -16,7 +16,10 @@ namespace SgqSystem.Controllers
         // GET: Pcc1b
         public ActionResult Index()
         {
-            var pcc1b = db.VolumePcc1b.Include(p => p.ParCompany).Include(p => p.ParLevel1).OrderByDescending(p => p.Data);
+            var userId = Guard.GetUsuarioLogado_Id(HttpContext);
+            var userLogado = db.UserSgq.Where(r => r.Id == userId);
+            var pcc1b = db.VolumePcc1b.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
+            //var pcc1b = db.VolumePcc1b.Include(p => p.ParCompany).Include(p => p.ParLevel1).OrderByDescending(p => p.Data);
             return View(pcc1b.ToList());
         }
 

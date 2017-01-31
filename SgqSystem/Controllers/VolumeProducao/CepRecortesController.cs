@@ -6,6 +6,7 @@ using Dominio;
 using System.Data.Entity.Infrastructure;
 using System;
 using SgqSystem.Secirity;
+using DTO.Helpers;
 
 namespace SgqSystem.Controllers
 {
@@ -40,7 +41,10 @@ namespace SgqSystem.Controllers
         // GET: CepRecortes
         public ActionResult Index()
         {
-            var cepRecortes = db.VolumeCepRecortes.Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
+            var userId = Guard.GetUsuarioLogado_Id(HttpContext);
+            var userLogado = db.UserSgq.Where(r => r.Id == userId);
+            var cepRecortes = db.VolumeCepRecortes.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
+            //var cepRecortes = db.VolumeCepRecortes.Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
             return View(cepRecortes.ToList());
         }
 
