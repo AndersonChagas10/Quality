@@ -306,6 +306,8 @@ namespace Dominio.Services
             var paramsDto = new ParamsDTO();
             var parLevel2 = _baseRepoParLevel2.GetById(idParLevel2);
             var level2 = Mapper.Map<ParLevel2DTO>(parLevel2);
+            var headerFieldLevel1 = _baseRepoParLevel1XHeaderField.GetAll();
+            var headerFieldLevel2 = _baseRepoParLevel2XHeaderField.GetAll();
 
             /*Avaliação e amostra*/
             level2.listEvaluation = Mapper.Map<List<ParEvaluationDTO>>(parLevel2.ParEvaluation.Where(r => r.IsActive == true));
@@ -318,19 +320,15 @@ namespace Dominio.Services
             level2.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parLevel2.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Contadores*/
             level2.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(parLevel2.ParNotConformityRuleXLevel.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Regra de Alerta*/
 
-            
-            var headerFieldLevel1 = _baseRepoParLevel1XHeaderField.GetAll();
-            var headerFieldLevel2 = _baseRepoParLevel2XHeaderField.GetAll();
-//            SELECT* from ParLevel1XHeaderField
-//where id not in 
-//(select id from ParLevel2XHeaderField
-//where ParLevel2_Id
-//in (select id from parlevel2 where id = 1))
+            //SELECT* from ParLevel1XHeaderField
+            //where id not in 
+            //(select id from ParLevel2XHeaderField
+            //where ParLevel2_Id
+            //in (select id from parlevel2 where id = 1))
 
             level2.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(headerFieldLevel1.Where(r => r.IsActive == true && r.ParLevel1_Id == level1Id));/*Cabeçalhos do Level 1*/
             level2.cabecalhosExclusos = Mapper.Map<List<ParLevel2XHeaderFieldDTO>>(headerFieldLevel2.Where(r => r.IsActive == true && r.ParLevel1_Id == level1Id && r.ParLevel2_Id == idParLevel2));/*Cabeçalhos não permitidos no Level 2*/
             
-
             #region DropDown - Level3
 
             /*Todos os Vinculos com este level2 / level3.*/
@@ -343,15 +341,12 @@ namespace Dominio.Services
             //    vinculosComOLevel2 = _baseRepoParLevel2Level1.GetAll().Where(r=>r.ParLevel1_Id == level1Id && r.ParLevel2_Id == level2.Id ).Select(r=>r.)
 
             level2.listParLevel3Level2Dto = Mapper.Map<List<ParLevel3Level2DTO>>(vinculosComOLevel2);
-            level2.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3NLL.GetAll().Where(r => r.IsActive == true)), level2.listParLevel3Level2Dto); 
-            
+            level2.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel3DTO>>(_baseRepoParLevel3NLL.GetAll().Where(r => r.IsActive == true)), level2.listParLevel3Level2Dto);
+
             #endregion
 
-            /*Estas prop deveriam estar dentro do parlevel2*/
-            paramsDto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();/*Regra de Alerta, sem isto dava estouro...*/
-
-            /*Cria select Level 2 e 3 vinculados*/
-            paramsDto.listParLevel3GroupDto = new List<ParLevel3GroupDTO>();
+            paramsDto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();/*Estas prop deveriam estar dentro do parlevel2 Regra de Alerta, sem isto dava estouro...*/
+            paramsDto.listParLevel3GroupDto = new List<ParLevel3GroupDTO>();/*Cria select Level 2 e 3 vinculados*/
             level2.listParLevel3GroupDto = Mapper.Map<List<ParLevel3GroupDTO>>(parLevel2.ParLevel3Group.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));
 
             if (parLevel2.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == level3Id && r.IsActive == true) != null)/*Peso do vinculo*/
@@ -361,6 +356,9 @@ namespace Dominio.Services
 
             paramsDto.parLevel2Dto = level2;
             paramsDto.parLevel2Dto.listParLevel3Level2Dto = null;
+
+            if (level1Id > 0)/*Caso exista Level1 Selecionado, é necessario verificar regras especificas para este ao mostrar os fields do level2*/
+                paramsDto.parLevel2Dto.RegrasParamsLevel1(Mapper.Map<ParLevel1DTO>(_baseRepoParLevel1.GetById(level1Id)));//Configura regras especificas do level2 de acordo com level1.
 
             return paramsDto;
         }
@@ -820,7 +818,7 @@ namespace Dominio.Services
         public ParMultipleValues SetDefaultMultiplaEscolha(int idHeader, int idMultiple)
         {
 
-            var headerFieldList = _baseRepoParMultipleValues.GetAll().Where(r => r.ParHeaderField_Id == idHeader && r.Id != idMultiple);
+            var headerFieldList = _baseRepoParMultipleValues.GetAll().Where(r => r.ParHeaderField_Id == idHeader);
 
             foreach(ParMultipleValues m in headerFieldList)
             {
@@ -828,13 +826,18 @@ namespace Dominio.Services
                 _baseRepoParMultipleValues.AddOrUpdate(m);
             }
 
-            var multiple = _baseRepoParMultipleValues.GetById(idMultiple);
-            if (multiple.IsDefaultOption == null || multiple.IsDefaultOption == false)
-                multiple.IsDefaultOption = true;
-            else
-                multiple.IsDefaultOption = false;
+            var multiple = new ParMultipleValues();
 
-            _baseRepoParMultipleValues.AddOrUpdate(multiple);
+            if (idMultiple > 0)
+            {
+                multiple = _baseRepoParMultipleValues.GetById(idMultiple);
+                if (multiple.IsDefaultOption == null || multiple.IsDefaultOption == false)
+                    multiple.IsDefaultOption = true;
+                else
+                    multiple.IsDefaultOption = false;
+
+                _baseRepoParMultipleValues.AddOrUpdate(multiple);
+            }            
 
             return multiple;
 

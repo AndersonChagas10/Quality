@@ -28,7 +28,7 @@ namespace SgqSystem.Controllers.Api
         public PanelResulPanel GetGrafico1Level1([FromBody] FormularioParaRelatorioViewModel form)
         {
             var queryGrafico1 = "" +
-                "\n SELECT " + 
+                "\n SELECT " +
                 "\n  level1_Id " +
                 "\n ,Level1Name " +
                 "\n ,Unidade_Id " +
@@ -69,8 +69,8 @@ namespace SgqSystem.Controllers.Api
                 "\n         ON IND.Id = CL1.ParLevel1_Id " +
                 "\n         INNER JOIN ParCompany UNI " +
                 "\n         ON UNI.Id = CL1.UnitId " +
-                "\n         WHERE CL1.ConsolidationDate = '20170124' " +
-                "\n         AND CL1.UnitId = 1 " +
+                "\n         WHERE CL1.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                "\n         AND CL1.UnitId = " + form.unitId +
                 "\n     ) S1 " +
                 "\n ) S2 " +
                 "\n WHERE RELATORIO_DIARIO = 1 " +
@@ -120,8 +120,8 @@ namespace SgqSystem.Controllers.Api
                 "\n 		ON IND.Id = CL1.ParLevel1_Id " +
                 "\n 		INNER JOIN ParCompany UNI " +
                 "\n 		ON UNI.Id = CL1.UnitId " +
-                "\n 		WHERE CL1.ConsolidationDate = '20170124' " +
-                "\n    		AND CL1.UnitId = 1 " +
+                "\n 		WHERE CL1.ConsolidationDate BETWEEN '" + new DateTime(form._dataInicio.AddMonths(-1).Year, form._dataInicio.AddMonths(-1).Month, 1).ToString("yyyyMMdd") + "' AND '" + form._dataFimSQL + "'" +
+                "\n    		AND CL1.UnitId = " + form.unitId +
                  "\n	) S1 " +
                 "\n ) S2 " +
                 "\n WHERE RELATORIO_DIARIO = 1 ";
@@ -167,9 +167,9 @@ namespace SgqSystem.Controllers.Api
                 "\n 	ON MON.Id = CL2.ParLevel2_Id " +
                 "\n 	INNER JOIN ParCompany UNI " +
                 "\n 	ON UNI.Id = CL1.UnitId " +
-                "\n 	WHERE CL2.ConsolidationDate = '20170124' " +
-                "\n 	AND CL2.UnitId = 1 " +
-                "\n 	AND CL1.ParLevel1_Id IN (1, 22, 11) " +
+                "\n 	WHERE CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                "\n 	AND CL2.UnitId = " + form.unitId +
+                "\n 	--AND CL1.ParLevel1_Id IN (1, 22, 11) " +
                 "\n ) S1 " +
                 "\n ORDER BY 8 DESC";
 
@@ -198,9 +198,9 @@ namespace SgqSystem.Controllers.Api
                 "\n ON IND.Id = CL1.ParLevel1_Id " +
                 "\n INNER JOIN ParLevel2 MON " +
                 "\n ON MON.Id = CL2.ParLevel2_Id " +
-                "\n WHERE IND.Id IN (1, 22, 11) " +
+                "\n WHERE 1 = 1 --IND.Id IN (1, 22, 11) " +
                 "\n /* and MON.Id = 1 */" +
-                "\n and UNI.Id = 1 " +
+                "\n and UNI.Id = " + form.unitId +
                 "\n GROUP BY " +
                 "\n  IND.Id " +
                 "\n ,IND.Name " +
@@ -210,6 +210,7 @@ namespace SgqSystem.Controllers.Api
                 "\n ,R3.ParLevel3_Name " +
                 "\n ,UNI.Name " +
                 "\n ,UNI.Id " +
+                "\n HAVING SUM(R3.WeiDefects) > 0" +
                 "\n ORDER BY 9 DESC";
 
             var queryGraficoTarefasAcumuladas = "" +
@@ -237,9 +238,9 @@ namespace SgqSystem.Controllers.Api
                 "\n ON IND.Id = CL1.ParLevel1_Id " +
                 "\n INNER JOIN ParLevel2 MON " +
                 "\n ON MON.Id = CL2.ParLevel2_Id " +
-                "\n WHERE IND.Id IN (1, 22, 11) " +
+                "\n WHERE 1 = 1 --IND.Id IN (1, 22, 11) " +
                 "\n /* and MON.Id = 1 */" +
-                "\n and UNI.Id = 1 " +
+                "\n and UNI.Id = " + form.unitId +
                 "\n GROUP BY " +
                 "\n  IND.Id " +
                 "\n ,IND.Name " +
@@ -247,6 +248,7 @@ namespace SgqSystem.Controllers.Api
                 "\n ,R3.ParLevel3_Name " +
                 "\n ,UNI.Name " +
                 "\n ,UNI.Id " +
+                "\n HAVING SUM(R3.WeiDefects) > 0" +
                 "\n ORDER BY 9 DESC";
 
 
