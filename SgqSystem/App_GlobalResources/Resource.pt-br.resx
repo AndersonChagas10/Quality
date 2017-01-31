@@ -771,4 +771,16 @@
   <data name="controls" xml:space="preserve">
     <value>Controles</value>
   </data>
+  <data name="daily_apointments" xml:space="preserve">
+    <value>Apontamentos Diários</value>
+  </data>
+  <data name="daily_report" xml:space="preserve">
+    <value>Relatório Diário</value>
+  </data>
+  <data name="family" xml:space="preserve">
+    <value>Familias</value>
+  </data>
+  <data name="scorecard" xml:space="preserve">
+    <value>Scorecard</value>
+  </data>
 </root>

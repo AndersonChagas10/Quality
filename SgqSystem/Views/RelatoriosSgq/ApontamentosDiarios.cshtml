@@ -28,6 +28,9 @@
 
 
     <script type="text/javascript">
+        
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
 
         var urlGet = '@Html.Raw(@urlGet)';
         var urlEdit = '@Html.Raw(@urlEdit)';
@@ -259,6 +262,8 @@
             formControl.showUnit();
             formControl.showLevel2();
             formControl.showLevel1();
+
+            openLeftSidebar();
         });
 
     </script>
