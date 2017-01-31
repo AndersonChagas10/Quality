@@ -460,11 +460,13 @@
 
         if( $('#paramsDto_parLevel1Dto_Id').val() > 0 &&  $('#paramsDto_parLevel2Dto_Id').val() > 0){
             $.post(checkVinculoL1L2 + "/" + $('#paramsDto_parLevel1Dto_Id').val() + "/" + $('#paramsDto_parLevel2Dto_Id').val(), function(r) {
-                if(!r){
-                    $('#desVinculoLevel1').hide();
-                }else{
-                    $('#desVinculoLevel1').show();
-                }
+                //if(_PermiteEditarVinculoComTarefa){
+                    if(!r){
+                        $('#desVinculoLevel1').hide();
+                    }else{
+                        $('#desVinculoLevel1').show();
+                    }
+                //}
             }).fail(function (e, h, x) {
                 //closeLoader();
                 console.log(e);
