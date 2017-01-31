@@ -820,7 +820,7 @@ namespace Dominio.Services
         public ParMultipleValues SetDefaultMultiplaEscolha(int idHeader, int idMultiple)
         {
 
-            var headerFieldList = _baseRepoParMultipleValues.GetAll().Where(r => r.ParHeaderField_Id == idHeader && r.Id != idMultiple);
+            var headerFieldList = _baseRepoParMultipleValues.GetAll().Where(r => r.ParHeaderField_Id == idHeader);
 
             foreach(ParMultipleValues m in headerFieldList)
             {
@@ -828,13 +828,18 @@ namespace Dominio.Services
                 _baseRepoParMultipleValues.AddOrUpdate(m);
             }
 
-            var multiple = _baseRepoParMultipleValues.GetById(idMultiple);
-            if (multiple.IsDefaultOption == null || multiple.IsDefaultOption == false)
-                multiple.IsDefaultOption = true;
-            else
-                multiple.IsDefaultOption = false;
+            var multiple = new ParMultipleValues();
 
-            _baseRepoParMultipleValues.AddOrUpdate(multiple);
+            if (idMultiple > 0)
+            {
+                multiple = _baseRepoParMultipleValues.GetById(idMultiple);
+                if (multiple.IsDefaultOption == null || multiple.IsDefaultOption == false)
+                    multiple.IsDefaultOption = true;
+                else
+                    multiple.IsDefaultOption = false;
+
+                _baseRepoParMultipleValues.AddOrUpdate(multiple);
+            }            
 
             return multiple;
 
