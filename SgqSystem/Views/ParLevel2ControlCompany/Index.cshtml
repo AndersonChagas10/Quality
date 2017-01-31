@@ -1,6 +1,6 @@
 ﻿@using SgqSystem.Helpers
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = Resources.Resource.family;
     Layout = "~/Views/Shared/_Layout.cshtml";
     var urlSend = Url.Action("Save", "api/ParLevel2ControlCompany"); //URL relativa
     var urlChangeLevel2 = Url.Action("ChangeLevel2", "ParLevel2ControlCompany"); //URL relativa
@@ -15,7 +15,7 @@
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE TITLE-->
         <h1 class="page-title">
-            @Resources.Resource.customization
+            @Resources.Resource.family
         </h1>
         <!-- END PAGE TITLE-->
         <!-- BEGIN PAGE BAR -->
@@ -26,7 +26,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.customization</span>
+                    <span>@Resources.Resource.family</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -36,20 +36,10 @@
                 </div>
             </div>
         </div>
-        <!-- END PAGE BAR -->
-        <!-- END PAGE HEADER-->
-
-
 
         <div class="row">
             <div class="col-xs-12">
                 <div class="portlet light bordered">
-                    <div class="portlet-title tabbable-line">
-                        <div class="caption">
-                            <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">Familias</span>
-                        </div>
-                    </div>
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
@@ -224,15 +214,7 @@ else
     $(document).ajaxStop(function () {
         closeLoader();
     });
-
-    //$(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
-    //    console.log("There was an ajax error!");
-    //    //console.log(event);
-    //    //console.log(xhr);
-    //    //console.log(ajaxOptions);
-    //    //console.log(thrownError);
-    //});
-
+    
 </script>
 <script>
 

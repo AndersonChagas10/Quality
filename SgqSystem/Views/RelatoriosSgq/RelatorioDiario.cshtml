@@ -45,6 +45,9 @@
 
 
     <script type="text/javascript">
+        
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
 
         var meses = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
         var url1 = '@Html.Raw(@urlGrafico1)';
@@ -59,6 +62,8 @@
 
             formControl.showSimpleDate();
             formControl.showUnit();
+
+            openLeftSidebar();
         });
 
         function Send() {

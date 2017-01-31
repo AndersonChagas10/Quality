@@ -190,8 +190,10 @@
     </div>
 
     <footer class="wrapper">
-        <p class="page-content-wrapper">&copy; @DateTime.Now.Year - @Resources.Resource.jbs_and_grt_aplication </p>
-        <p class="page-content-wrapper">Version: @Html.AssemblyVersion() </p>
+        <p class="page-content-wrapper">
+            <label class="pull-left">&copy; @DateTime.Now.Year - @Resources.Resource.jbs_and_grt_aplication </label>
+            <label class="pull-right">Version: @Html.AssemblyVersion()</label>
+        </p>
     </footer>
     
     @RenderSection("scripts", required: false)
