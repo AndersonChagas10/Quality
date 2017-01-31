@@ -111,7 +111,7 @@
 
                         var divTarefaIndicador = DivManager.criaDiv(divMonitoramento, o.level1_Id, "tarefaIndicador");
                         var tarefaPorIndicador = $.grep(r.listResultSetTarefaPorIndicador, function (level2, c) { return level2.level1_Id == o.level1_Id });
-                        GraficoTarefaIndicadores(tarefaPorIndicador, divTarefaIndicador, "NC por Tarefas acumuladas: " + tarefaPorIndicador.Level2Name);//Processa e cria grafico
+                        GraficoTarefaIndicadores(tarefaPorIndicador, divTarefaIndicador, "NC por Tarefas acumuladas: " + tendencia[0].Level1Name);//Processa e cria grafico
 
                         level2DoLevel1.forEach(function (oo, cc) {
                             var divTarefas = DivManager.criaDiv(divMonitoramento, oo.level2_Id, "monitoramento");
