@@ -44,7 +44,7 @@ namespace SgqSystem.Controllers.Api
         [Route("Save")]
         public Result_Level3DTO SaveResultLevel3([FromBody] Result_Level3DTO resultLevel3)
         {
-           
+
             var query = resultLevel3.CreateUpdate();
 
             using (var db = new SgqDbDevEntities())
@@ -59,13 +59,13 @@ namespace SgqSystem.Controllers.Api
                     throw e;
                 }
             }
-            
+
             return Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(resultLevel3.Id));
         }
 
         public class Result_Level3DTO
         {
-                
+
             public static Result_Level3 GetById(int id)
             {
                 Result_Level3 resultLevel3;
@@ -89,13 +89,17 @@ namespace SgqSystem.Controllers.Api
                     if (ParLevel3.IsNull())
                     {
                         databaseSgq.Configuration.LazyLoadingEnabled = false;
+
                         var resultOld = databaseSgq.Result_Level3.FirstOrDefault(r => r.Id == Id);
-                        ParLevel3 = Mapper.Map<ParLevel3DTO>(databaseSgq.ParLevel3.AsNoTracking().FirstOrDefault(r => r.Id == resultOld.ParLevel3_Id));
-                        ParLevel3.ParLevel3Value = Mapper.Map<List<ParLevel3ValueDTO>>(databaseSgq.ParLevel3Value.AsNoTracking().Where(r => r.ParLevel3_Id == resultOld.ParLevel3_Id).ToList());
+                        var parL3vel3 = databaseSgq.ParLevel3.AsNoTracking().FirstOrDefault(r => r.Id == resultOld.ParLevel3_Id);
+                        var parLevel3Value = databaseSgq.ParLevel3Value.AsNoTracking().Where(r => r.ParLevel3_Id == resultOld.ParLevel3_Id).ToList();
+
                         Weight = resultOld.Weight;
-                        PunishmentValue = resultOld.PunishmentValue;
                         IntervalMax = resultOld.IntervalMax;
                         IntervalMin = resultOld.IntervalMin;
+                        PunishmentValue = resultOld.PunishmentValue;
+                        ParLevel3 = Mapper.Map<ParLevel3DTO>(parL3vel3);
+                        ParLevel3.ParLevel3Value = Mapper.Map<List<ParLevel3ValueDTO>>(parLevel3Value);
                     }
                 }
             }
@@ -139,7 +143,7 @@ namespace SgqSystem.Controllers.Api
                         }
                         catch (Exception e)
                         {
-                            throw new Exception ("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 1", e);
+                            throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 1", e);
                         }
 
                         try
@@ -289,19 +293,22 @@ namespace SgqSystem.Controllers.Api
             {
                 get
                 {
-                    if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 3) != null)//INTERVALOS ??
-                    {
-                        return "<div>" +
-                                    "<label for='Conforme: '> Intervalo Max: </label>" + IntervalMax +
-                                    "<br>" +
-                                    "<label for='Conforme: '> Intervalo Min: </label>" + IntervalMin +
-                                    "<br>" +
-                                    "<label for='Conforme: '> Valor atual: </label>" + Value +
-                                    "<br>" +
-                                    "<label for='Conforme: '> Novo Valor: </label> &nbsp " +
-                                     "<input type='text' id='intervaloValor' class='form-control decimal' />" +
-                                "</div>";
-                    }
+                    if (ParLevel3.IsNotNull())
+                        if (ParLevel3.ParLevel3Value.IsNotNull())
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 3).IsNotNull())//INTERVALOS ??
+                            {
+                                return "<div>" +
+                                            "<label for='Conforme: '> Intervalo Max: </label>" + IntervalMax +
+                                            "<br>" +
+                                            "<label for='Conforme: '> Intervalo Min: </label>" + IntervalMin +
+                                            "<br>" +
+                                            "<label for='Conforme: '> Valor atual: </label>" + Value +
+                                            "<br>" +
+                                            "<label for='Conforme: '> Novo Valor: </label> &nbsp " +
+                                             "<input type='text' id='intervaloValor' class='form-control decimal' />" +
+                                        "</div>";
+                            }
+
                     return string.Empty;
                 }
             }
@@ -310,14 +317,17 @@ namespace SgqSystem.Controllers.Api
             {
                 get
                 {
-                    if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 1) != null)//é um BINARIO
-                    {
-                        var checkedAttr = IsConform.GetValueOrDefault() ? "checked='checked'" : "";
-                        return "<div>" +
-                                    "<label for='Conforme: '> Conforme: </label>" +
-                                     "<input class='.check-box' id='conform' name='conform' " + checkedAttr + " type='checkbox' value='true'><input name = 'conform' type='hidden' value='false'>" +
-                                "</div>";
-                    }
+                    if (ParLevel3.IsNotNull())
+                        if (ParLevel3.ParLevel3Value.IsNotNull())
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 1).IsNotNull())//é um BINARIO
+                            {
+                                var checkedAttr = IsConform.GetValueOrDefault() ? "checked='checked'" : "";
+                                return "<div>" +
+                                            "<label for='Conforme: '> Conforme: </label>" +
+                                             "<input class='.check-box' id='conform' name='conform' " + checkedAttr + " type='checkbox' value='true'><input name = 'conform' type='hidden' value='false'>" +
+                                        "</div>";
+                            }
+
                     return string.Empty;
                 }
             }
@@ -326,19 +336,22 @@ namespace SgqSystem.Controllers.Api
             {
                 get
                 {
-                    if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 4) != null)//é um CALCULADO
-                    {
-                        return "<div>" +
-                                    "<label for='Conforme: '> Intervalo Max: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
-                                    "<br>" +
-                                    "<label for='Conforme: '> Intervalo Min: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
-                                    "<br>" +
-                                    "<label for='Conforme: '> Valor atual: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
-                                    "<br>" +
-                                    "<label for='Conforme: '> Novo Valor: </label> &nbsp" +
-                                "<input type='text' id='decimal' class='decimal' /> ^10x <input type='text' id='precisao' class='decimal' />" +
-                                "</div>";
-                    }
+                    if (ParLevel3.IsNotNull())
+                        if (ParLevel3.ParLevel3Value.IsNotNull())
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 4).IsNotNull())//é um CALCULADO
+                            {
+                                return "<div>" +
+                                            "<label for='Conforme: '> Intervalo Max: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                                            "<br>" +
+                                            "<label for='Conforme: '> Intervalo Min: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
+                                            "<br>" +
+                                            "<label for='Conforme: '> Valor atual: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                                            "<br>" +
+                                            "<label for='Conforme: '> Novo Valor: </label> &nbsp" +
+                                        "<input type='text' id='decimal' class='decimal' /> ^10x <input type='text' id='precisao' class='decimal' />" +
+                                        "</div>";
+                            }
+
                     return string.Empty;
                 }
             }
