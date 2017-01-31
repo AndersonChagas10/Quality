@@ -21,6 +21,18 @@ namespace DTO
             }
         }
 
+        public String _dataInicioSQL
+        {
+            get
+            {
+                if (startDate != null)
+                {
+                    return _dataInicio.ToString("yyyyMMdd");
+                }
+                return DateTime.Now.ToString("yyyyMMdd");
+            }
+        }
+
         public DateTime _dataFim
         {
             get
@@ -31,6 +43,18 @@ namespace DTO
                     return _dtvalueFim;
                 }
                 return DateTime.Now;
+            }
+        }
+
+        public String _dataFimSQL
+        {
+            get
+            {
+                if (endDate != null)
+                {
+                    return _dataFim.ToString("yyyyMMdd");
+                }
+                return DateTime.Now.ToString("yyyyMMdd");
             }
         }
 

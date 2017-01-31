@@ -253,9 +253,9 @@
                                                     <th style="width:20%">Nível do campo</th>
                                                     <th style="width:20%">Nome</th>
                                                     <th style="width:15%">Tipo</th>
-                                                    <th style="width:15%">Preview</th>
+                                                    <th style="width:10%">Preview</th>
                                                     <th style="width:15%"></th>
-                                                    <th style="width:15%"></th>
+                                                    <th style="width:20%">Padrão</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -347,8 +347,32 @@
 
                                                             </td>
                                                             <td>
-                                                                <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-primary btn-xs">Padrão</button>
+                                                                @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
+                                                                {
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-btn">
+                                                                            <select class="form-control input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id">
+                                                                                <option value="0" selected>Nenhum</option>
+                                                                                @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
+                                                                                {
+                                                                                    if (radioOpt.IsDefaultOption == true)
+                                                                                    {
+                                                                                        <option value="@radioOpt.Id" selected>@radioOpt.Name</option>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <option value="@radioOpt.Id">@radioOpt.Name</option>
+                                                                                    }
+                                                                                }
+                                                                            </select>
+                                                                            <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+
                                                             </td>
+
+
 
                                                         </tr>
                                                     }
@@ -472,20 +496,18 @@
 
     var Cabecalhos = {
         SetMultipleDefault: function(elem){
-            var idMultiple = $(elem).parent().parent().find('select option:selected').val();
-            var idHeader = $(elem).parent().parent().find('select').attr('id');
-            if(parseInt(idMultiple) > 0){
-                $.post(urlSetDefaultCCAB + "/" + idHeader+"/"+idMultiple, function(r){
-                    console.log(r);
-                    if(r){
-                        if(r.IsDefaultOption == true){
-                            openMessageModal("Sucesso", r.Name+" se tornou o valor padrão.");
-                        }else{
-                            openMessageModal("Sucesso", r.Name+" não é mais o valor padrão.");
-                        }
+            var idMultiple = $(elem).siblings('select').children('option:selected').val();
+            var idHeader = $(elem).siblings('select').attr('id');
+            $.post(urlSetDefaultCCAB + "/" + idHeader+"/"+idMultiple, function(r){
+                console.log(r);
+                if(r){
+                    if(r.IsDefaultOption == true){
+                        openMessageModal("Sucesso", r.Name+" se tornou o valor padrão.");
+                    }else{
+                        openMessageModal("Sucesso", " Não existe mais um valor padrão.");
                     }
-                });
-            }
+                }
+            });
         },
         SetRequired: function(e, id){
             $.post(urlSetRequiredCCAB + "/" + id, function(r){
