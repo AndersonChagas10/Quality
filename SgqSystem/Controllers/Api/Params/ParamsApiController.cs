@@ -129,5 +129,12 @@ namespace SgqSystem.Controllers.Api.Params
             return teste;
         }
 
+        [HttpPost]
+        [Route("AddRemoveParHeaderLevel2")]
+        public ParLevel2XHeaderField AddRemoveParHeaderLevel2(ParLevel2XHeaderField parLevel2XHeaderField)
+        {
+            return _paramdDomain.AddRemoveParHeaderLevel2(parLevel2XHeaderField);
+        }
+
     }
 }

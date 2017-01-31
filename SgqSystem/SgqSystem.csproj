@@ -376,6 +376,7 @@
     <Compile Include="Mappers\Manutencao\ManDataCollectITsMapperProfile.cs" />
     <Compile Include="Mappers\ParamsBrasil\ParLevel2ControlCompanyMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParLevel2XHeaderFieldMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel2Level1MapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyXStructureMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCounterLocalMapperProfile.cs" />

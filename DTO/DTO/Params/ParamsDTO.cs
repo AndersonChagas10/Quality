@@ -24,6 +24,7 @@ namespace DTO.DTO.Params
         public List<ParCounterXLocalDTO> listParCounterXLocal { get; set; }
         public ParHeaderFieldDTO parHeaderFieldDto { get; set; }
         public ParLevel1XHeaderFieldDTO parLevel1HeaderFieldDto { get; set; }
+        public ParLevel2XHeaderFieldDTO parLevel2HeaderFieldDto { get; set; }
 
         /*Fim Ja implementados */
 

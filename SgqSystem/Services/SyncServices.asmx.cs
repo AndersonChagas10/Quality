@@ -2758,12 +2758,21 @@ namespace SgqSystem.Services
 
             return ParLevel2List;
         }
-        public string GetHeaderHtml(IEnumerable<ParLevelHeader> list, ParFieldType ParFieldTypeDB, Html html)
+        public string GetHeaderHtml(IEnumerable<ParLevelHeader> list, ParFieldType ParFieldTypeDB, Html html, int ParLevel1_Id = 0, int ParLevel2_Id = 0, ParLevelHeader ParLevelHeaderDB = null)
         {
             string retorno = "";
 
             foreach (var header in list)
             {
+
+                if(ParLevel1_Id > 0 && ParLevel2_Id > 0 && ParLevelHeaderDB != null)
+                {
+                    if (ParLevelHeaderDB.isHeaderLeve2Exception(ParLevel1_Id, ParLevel2_Id, header.ParHeaderField_Id))
+                    {
+                        continue;
+                    }
+                }
+
                 var label = "<label class=\"font-small\">" + header.ParHeaderField_Name + "</label>";
 
                 var form_control = "";
@@ -2783,12 +2792,13 @@ namespace SgqSystem.Services
                                 optionsMultiple += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                                 hasDefault = true;
                             }
-                            else {
+                            else
+                            {
                                 optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                             }
                         }
-                        if(!hasDefault)
-                            optionsMultiple = "<option selected=\"selected\" value=\"0\">" + Resources.Resource.select + "...</option>"+ optionsMultiple;
+                        if (!hasDefault)
+                            optionsMultiple = "<option selected=\"selected\" value=\"0\">" + Resources.Resource.select + "...</option>" + optionsMultiple;
 
                         form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsMultiple + "</select>";
                         break;
@@ -2839,6 +2849,7 @@ namespace SgqSystem.Services
                                             classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
                                             style: "padding-right: 4px !important; padding-left: 4px !important;"
                                             );
+
 
             }
 
@@ -3419,7 +3430,8 @@ namespace SgqSystem.Services
                 //Painel
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
-                var painelLevel3HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html);
+                var painelLevel3HeaderListHtml = GetHeaderHtml(
+                    ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html, ParLevel1.Id, ParLevel2.Id, ParLevelHeaderDB);
 
                 //string HeaderLevel02 = null;
 
