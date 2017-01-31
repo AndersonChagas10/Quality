@@ -17,7 +17,9 @@ namespace SgqSystem.Controllers
         // GET: CepDesossas
         public ActionResult Index()
         {
-            var cepDesossa = db.VolumeCepDesossa.Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
+            var userId = Guard.GetUsuarioLogado_Id(HttpContext);
+            var userLogado = db.UserSgq.Where(r=>r.Id == userId);
+            var cepDesossa = db.VolumeCepDesossa.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c=>c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
             return View(cepDesossa.ToList());
         }
 

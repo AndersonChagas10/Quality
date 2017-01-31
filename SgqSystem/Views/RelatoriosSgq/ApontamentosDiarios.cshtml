@@ -10,7 +10,7 @@
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
     
-    <div id="formBodyContent">
+    <div id="formBodyContent" >
 
         <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
 
@@ -28,6 +28,9 @@
 
 
     <script type="text/javascript">
+        
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
 
         var urlGet = '@Html.Raw(@urlGet)';
         var urlEdit = '@Html.Raw(@urlEdit)';
@@ -113,15 +116,16 @@
                 //    footer: true
                 //},
                 scrollX: true,
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
                 pageLength: 10,
+                responsive: true,
                 //paginate: false,
                 //paging: false,
                 //bSort: false,
                 loadingRecords: true,
                 destroy: true,
                 info: true,
-                responsive: true,
+                //responsive: true,
                 initComplete: function () {
                     $('#loading').hide();
                     setTimeout(function (e) {
@@ -161,32 +165,14 @@
                 }
             });
 
-
+            new $.fn.dataTable.Responsive(table);
 
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
-                    // {
-                    //     extend: 'colvisGroup',
-                    //     text: 'Sintético',
-
-                    //     show: [3, 4, 5, 6, 9, 10, 12],
-                    //     hide: [0, 1, 2, 7, 8, 11]
-                    // },
-                    //{
-                    //    extend: 'colvisGroup',
-                    //    text: 'Analítico',
-                    //    show: ':hidden'
-                    //},
                     {
                         extend: 'print',
                         text: 'Imprimir',
                         customize: function (win) {
-                            //$(win.document.body)
-                            //    .css( 'font-size', '10pt' )
-                            //    .prepend(
-                            //        '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
-                            //    );
-
                             $(win.document.body).find('table')
                                 .addClass('compact')
                                 .css('font-size', 'inherit');
@@ -202,7 +188,6 @@
                             columns: ':visible'
                         }
                     },
-                    //'excel',
                      {
                          extend: 'pdf',
                          text: 'PDF',
@@ -217,10 +202,6 @@
                               columns: ':visible'
                           }
                       },
-
-                    //, 'print'
-
-
                 ]
             });
 
@@ -243,22 +224,19 @@
                 }
             }
 
+            dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
             dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
-            dadosResultLevel3["isQueryInsert"] = true;
             dadosResultLevel3["IsNotEvaluate"] = $('#evaluated').is(':checked');
-            if ($('#decimal') != undefined)
+            if ($('#decimal').length)
                 dadosResultLevel3["Value"] = $('#decimal').val() + "x10^" + $('#precisao').val();
-            if ($('#numeroDeDefeitos') != undefined)
+            if ($('#numeroDeDefeitos').length)
                 dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
-            if ($('#intervaloValor') != undefined)
+            if ($('#intervaloValor').length)
                 dadosResultLevel3["Value"] = $('#intervaloValor').val();
 
-            dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
             
             $.post(urlSave, dadosResultLevel3, function (r, x, e) {
-
                 openMessageModal("Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
-
             }).fail(function (r, x, e) {
                 console.log(r);
                 console.log(x);
@@ -274,8 +252,8 @@
 
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
-            GuardJs.esconderMensagem();
 
+            GuardJs.esconderMensagem();
             return true;
         }
 
@@ -284,6 +262,8 @@
             formControl.showUnit();
             formControl.showLevel2();
             formControl.showLevel1();
+
+            openLeftSidebar();
         });
 
     </script>

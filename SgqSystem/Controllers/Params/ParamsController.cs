@@ -54,7 +54,7 @@ namespace SgqSystem.Controllers.Params
 
             return PartialView("_ParLevel2", viewModelPreenchido);/*Retorna View com Model ParLevel2 encontrado no DB.*/
         }
-
+        
         public ActionResult GetParLevel3ById(int id, int? idParLevel2 = 0)
         {
             ViewModel.levelControl = 3;

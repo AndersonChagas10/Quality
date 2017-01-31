@@ -36,32 +36,19 @@ namespace SgqSystem.Controllers.Api
         [Route("Edit/{id}")]
         public Result_Level3DTO EditResultLevel3(int id)//ENVIAR UNIT
         {
-            var retorno = Mapper.Map<Result_Level3DTO>(Get(id));
+            var retorno = Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(id));
             return retorno;
         }
-
 
         [HttpPost]
         [Route("Save")]
         public Result_Level3DTO SaveResultLevel3([FromBody] Result_Level3DTO resultLevel3)
         {
-            resultLevel3.isQueryInsert = true;
-            //Result_Level3 resultLevel3Old;
-            var query = "UPDATE [dbo].[Result_Level3] SET ";
+           
+            var query = resultLevel3.CreateUpdate();
 
             using (var db = new SgqDbDevEntities())
             {
-                resultLevel3.GetDataToInsertEdit();
-
-                #region UpdateLevel3
-
-                query += "\n [IsConform] = " + resultLevel3._IsConform + ",";
-                query += "\n [Defects] = " + resultLevel3._Defects + ",";
-                query += "\n [WeiDefects] = " + resultLevel3._WeiDefects + ",";
-                query += "\n [Value] = " + resultLevel3._Value + ",";
-                query = query.Remove(query.Length - 1);//Remove a ultima virgula antes do where.
-                query += "\n WHERE Id = " + resultLevel3.Id;
-
                 try
                 {
                     db.Database.ExecuteSqlCommand(query);
@@ -71,140 +58,31 @@ namespace SgqSystem.Controllers.Api
                 {
                     throw e;
                 }
-
-                #endregion
             }
             
-            return Mapper.Map<Result_Level3DTO>(Get(resultLevel3.Id));
-        }
-
-        private Result_Level3 Get(int id)
-        {
-            Result_Level3 resultLevel3;
-            using (var db = new SgqDbDevEntities())
-            {
-                db.Configuration.LazyLoadingEnabled = false;
-                //db.Configuration.ProxyCreationEnabled = false;
-                resultLevel3 = db.Result_Level3.AsNoTracking().FirstOrDefault(r => r.Id == id);
-                resultLevel3.ParLevel3 = db.ParLevel3.AsNoTracking().FirstOrDefault(r => r.Id == resultLevel3.ParLevel3_Id);
-                resultLevel3.ParLevel3.ParLevel3Value = db.ParLevel3Value.AsNoTracking().Where(r => r.ParLevel3_Id == resultLevel3.ParLevel3_Id).ToList();
-                resultLevel3.CollectionLevel2 = db.CollectionLevel2.AsNoTracking().FirstOrDefault(r => r.Id == resultLevel3.CollectionLevel2_Id);
-            }
-
-            return resultLevel3;
-        }
-
-        //public void a(int inputType, Result_Level3 resultLevel3)
-        //{
-
-        //    //Calculo da avaliação ponderada
-        //    //Calculo do número de avaliações
-        //    //Calculo level3 avaliados
-        //    switch (inputType)
-        //    {
-        //        case 1:
-        //            resultLevel3.WeiEvaluation = resultLevel3.Weight;
-        //            break;
-        //        case 2:
-        //            resultLevel3.WeiEvaluation = numeroAmostragem;
-        //            break;
-        //        case 3:
-        //            resultLevel3.WeiEvaluation = resultLevel.Weight;
-        //            break;
-        //        case 4:
-        //            avaliacoesPonderadas = resultLevel.Weight;
-        //            break;
-        //        default:
-        //            avaliacoesPonderadas = resultLevel.Weight;
-        //            break;
-        //    }
-        //}
-
-        //private void b(int inputType, Result_Level3 resultLevel)
-        //{
-        //    //Calculo do defeito
-        //    //Calculo de Defeitos Ponderados
-        //    //Is Conform
-        //    switch (inputType)
-        //    {
-        //        case 1:
-
-        //            var vvalor = parseFloat(resultLevel.Value.Replace(",", "."));
-        //            var vmin = parseFloat(level3.attr('intervalmin').replace(",", "."));
-        //            var vmax = parseFloat(level3.attr('intervalmax').replace(",", "."));
-
-        //            if (vvalor >= vmin && vvalor <= vmax)
-        //            {
-
-        //                defeitosVar = 0;
-
-        //            }
-        //            else
-        //            {
-
-        //                if (isNaN(vvalor))
-        //                {
-        //                    defeitosVar = parseFloat(level3.attr('defects'));
-        //                }
-        //                else
-        //                {
-        //                    defeitosVar = 1;
-        //                }
-
-        //            }
-
-        //            defeitos = defeitosVar > 0 ? 1 : 0;
-        //            defeitosPonderados = (defeitos * peso) + (punicao * peso);
-        //            level3ComDefeitos = defeitosPonderados > 0 ? 1 : 0;
-        //            break;
-        //        case 2:
-        //            defeitos = parseFloat(level3.attr('value').replace(",", "."));
-        //            defeitosPonderados = (parseFloat(level3.attr('value').replace(",", ".")) * peso) + (punicao * peso);
-        //            level3ComDefeitos = defeitosPonderados > 0 ? 1 : 0;
-        //            break;
-        //        case 3:
-        //            if (valor >= limiteInferior && valor <= limiteSuperior)
-        //            {
-        //                defeitos = 0;
-        //            }
-        //            else
-        //            {
-        //                defeitos = 1;
-        //            }
-        //            defeitosPonderados = (defeitos * peso) + (punicao * peso);
-        //            level3ComDefeitos = defeitosPonderados > 0 ? 1 : 0;
-        //            break;
-        //        case 4:
-        //            if (valor >= limiteInferior && valor <= limiteSuperior)
-        //            {
-        //                defeitos = 0;
-        //            }
-        //            else
-        //            {
-        //                defeitos = 1;
-        //            }
-        //            defeitosPonderados = (defeitos * peso) + (punicao * peso);
-        //            level3ComDefeitos = defeitosPonderados > 0 ? 1 : 0;
-        //            break;
-        //        default:
-        //            defeitos = 0;
-        //            defeitosPonderados = 0;
-        //            level3ComDefeitos = defeitosPonderados > 0 ? 1 : 0;
-        //            break;
-        //    }
-
-        //}
-
-        public class EditedResultLevel3
-        {
-            public string messageStatus { get; set; }
-            public string message { get; set; }
+            return Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(resultLevel3.Id));
         }
 
         public class Result_Level3DTO
         {
-           
-            public void GetDataToInsertEdit()
+                
+            public static Result_Level3 GetById(int id)
+            {
+                Result_Level3 resultLevel3;
+                using (var db = new SgqDbDevEntities())
+                {
+                    db.Configuration.LazyLoadingEnabled = false;
+                    //db.Configuration.ProxyCreationEnabled = false;
+                    resultLevel3 = db.Result_Level3.AsNoTracking().FirstOrDefault(r => r.Id == id);
+                    resultLevel3.ParLevel3 = db.ParLevel3.AsNoTracking().FirstOrDefault(r => r.Id == resultLevel3.ParLevel3_Id);
+                    resultLevel3.ParLevel3.ParLevel3Value = db.ParLevel3Value.AsNoTracking().Where(r => r.ParLevel3_Id == resultLevel3.ParLevel3_Id).ToList();
+                    resultLevel3.CollectionLevel2 = db.CollectionLevel2.AsNoTracking().FirstOrDefault(r => r.Id == resultLevel3.CollectionLevel2_Id);
+                }
+
+                return resultLevel3;
+            }
+
+            private void GetDataToEdit()
             {
                 using (var databaseSgq = new SgqDbDevEntities())
                 {
@@ -222,7 +100,23 @@ namespace SgqSystem.Controllers.Api
                 }
             }
 
-            public bool isQueryInsert { get; set; }
+            internal string CreateUpdate()
+            {
+                isQueryEdit = true;
+                GetDataToEdit();
+
+                var query = "UPDATE [dbo].[Result_Level3] SET ";
+                query += "\n [IsConform] = " + _IsConform + ",";
+                query += "\n [Defects] = " + _Defects + ",";
+                query += "\n [WeiDefects] = " + _WeiDefects + ",";
+                query += "\n [Value] = " + _Value + ",";
+                query = query.Remove(query.Length - 1);//Remove a ultima virgula antes do where.
+                query += "\n WHERE Id = " + Id;
+
+                return query;
+            }
+
+            public bool isQueryEdit { get; set; }
             public int Id { get; set; }
             public int CollectionLevel2_Id { get; set; }
             public int ParLevel3_Id { get; set; }
@@ -232,20 +126,42 @@ namespace SgqSystem.Controllers.Api
             public string IntervalMax { get; set; }
 
             public string Value { get; set; }
-            public string _Value
+            public string _Value //RN 45
             {
                 get
                 {
-                    if (isQueryInsert)
+                    if (isQueryEdit)
                     {
-                        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 1) != null)//BINARIO
-                            return "0";
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
-                            return Guard.ConverteValorCalculado(Value).ToString("G29");
-                        else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 3) != null)//INTERVALOS
-                            return Guard.ConverteValorCalculado(Value).ToString("G29");
-                        //else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 2) != null)//N° DEFEITOS
-                        //    return Guard.ConverteValorCalculado(Value).ToString("G29");
+                        try
+                        {
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 1) != null)//BINARIO
+                                return "0";
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception ("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 1", e);
+                        }
+
+                        try
+                        {
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
+                                return Guard.ConverteValorCalculado(Value).ToString("G29"); //10x104 = 10.0000
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 2", e); throw;
+                        }
+
+                        try
+                        {
+                            if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 3) != null)//INTERVALOS
+                                return Guard.ConverteValorCalculado(Value).ToString("G29"); //010.0000 = 10
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 3", e); throw;
+                        }
+
                     }
 
                     return string.Empty;
@@ -255,12 +171,12 @@ namespace SgqSystem.Controllers.Api
             public string ValueText { get; set; }
 
             public Nullable<bool> IsConform { get; set; }
-            public string _IsConform
+            public string _IsConform //RN 46
             {
                 get
                 {
 
-                    if (isQueryInsert)
+                    if (isQueryEdit)
                     {
                         if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 1) != null)//BINARIO
                         {
@@ -282,14 +198,6 @@ namespace SgqSystem.Controllers.Api
                             var dentroDoRange = (valorDefinido < vmax && valorDefinido > vmin);
                             return dentroDoRange ? "1" : "0";
                         }
-                        //else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 2) != null)//N° DEFEITOS
-                        //{
-                        //    var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
-                        //    var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
-                        //    var valorDefinido = Guard.ConverteValorCalculado(_Value);
-                        //    var dentroDoRange = (valorDefinido < vmax && valorDefinido > vmin);
-                        //    return dentroDoRange ? "1" : "0";
-                        //}
                     }
 
                     return string.Empty;
@@ -306,7 +214,7 @@ namespace SgqSystem.Controllers.Api
                 {
 
                     var defects = 0M;
-                    if (isQueryInsert)
+                    if (isQueryEdit)
                     {
                         if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 1) != null)//é um BINARIO
                         {
@@ -342,7 +250,7 @@ namespace SgqSystem.Controllers.Api
                 get
                 {
                     var defects = 0M;
-                    if (isQueryInsert)
+                    if (isQueryEdit)
                     {
                         if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 1) != null)//é um BINARIO
                         {
@@ -376,6 +284,7 @@ namespace SgqSystem.Controllers.Api
             public CollectionLevel2 CollectionLevel2 { get; set; }
 
             public int? unit { get; set; }
+
             public string showIntervalos
             {
                 get
@@ -434,48 +343,7 @@ namespace SgqSystem.Controllers.Api
                 }
             }
 
-            //public string showNumeroDefeitos
-            //{
-            //    get
-            //    {
-            //        if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 2) != null)//N° DEFEITOS
-            //        {
-            //            return "<div>" +
-            //                        "<label for='Conforme: '> Numero de amostras: </label>" + CollectionLevel2.Sample +
-            //                        " <input type='hidden' value='" + CollectionLevel2.Sample + "' id='sample' />" +
-            //                        "<label for='Conforme: '> Valor atual: </label>" + Value +
-            //                        "<br>" +
-            //                        "<label for='Conforme: '> Novo Valor: </label> &nbsp <input type='text' id='numeroDeDefeitos' class='decimal form-control' />" +
-            //                    "</div>";
-            //        }
-            //        return string.Empty;
-            //    }
-            //}
-
         }
 
     }
 }
-
-
-
-
-//var query = "UPDATE [dbo].[Result_Level3]
-//   SET[CollectionLevel2_Id] = < CollectionLevel2_Id, int,>
-//      ,[ParLevel3_Id] = <ParLevel3_Id, int,>
-//      ,[ParLevel3_Name] = <ParLevel3_Name, nvarchar(max),>
-//      ,[Weight] = <Weight, decimal(10,5),>
-//      ,[IntervalMin] = <IntervalMin, nvarchar(max),>
-//      ,[IntervalMax] = <IntervalMax, nvarchar(max),>
-//      ,[Value] = <Value, nvarchar(max),>
-//      ,[ValueText] = <ValueText, nvarchar(max),>
-//      ,[IsConform] = <IsConform, bit,>
-//      ,[IsNotEvaluate] = <IsNotEvaluate, bit,>
-//      ,[Defects] = <Defects, decimal(10,5),>
-//      ,[PunishmentValue] = <PunishmentValue, decimal(10,5),>
-//      ,[WeiEvaluation] = <WeiEvaluation, decimal(10,5),>
-//      ,[Evaluation] = <Evaluation, decimal(10,5),>
-//      ,[WeiDefects] = <WeiDefects, decimal(30,8),>
-//      ,[CT4Eva3] = <CT4Eva3, decimal(10,5),>
-//      ,[Sampling] = <Sampling, decimal(10,5),>
-// WHERE<Search Conditions,,>"

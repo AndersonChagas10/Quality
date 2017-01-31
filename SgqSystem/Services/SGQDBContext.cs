@@ -1018,6 +1018,24 @@ namespace SGQDBContext
 
             return parLevel3List;
         }
+
+        public bool isHeaderLeve2Exception(int ParLevel1_Id, int ParLevel2_Id, int HeaderField_Id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "SELECT * FROM ParLevel2XHeaderField                                                   \n"+
+                         "WHERE ParLevel1_Id = "+ ParLevel1_Id +"                                              \n"+
+                         "AND ParLevel2_Id = "+ ParLevel2_Id + "                                               \n"+
+                         "AND ParHeaderField_Id = " + HeaderField_Id+"                                         \n"+
+                         "AND IsActive = 1;                                                                    \n";                                                                                                                            
+
+            var parLevel3List = db.Query<ParLevelHeader>(sql);
+
+            if (parLevel3List.Count() > 0)
+                return true;
+            else
+                return false;
+        }
     }
     public partial class ParFieldType
     {

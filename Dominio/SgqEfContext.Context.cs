@@ -117,11 +117,11 @@ namespace Dominio
         public virtual DbSet<Deviation> Deviation { get; set; }
         public virtual DbSet<ParLevel1VariableProduction> ParLevel1VariableProduction { get; set; }
         public virtual DbSet<ParLevel1VariableProductionXLevel1> ParLevel1VariableProductionXLevel1 { get; set; }
-        public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
         public virtual DbSet<ResultLevel2HeaderField> ResultLevel2HeaderField { get; set; }
         public virtual DbSet<DimManutencaoColetaITs> DimManutencaoColetaITs { get; set; }
         public virtual DbSet<ManDataCollectIT> ManDataCollectIT { get; set; }
         public virtual DbSet<CollectionLevel2> CollectionLevel2 { get; set; }
+        public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

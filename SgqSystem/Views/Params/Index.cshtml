@@ -194,6 +194,9 @@
         $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
         $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
         $(".check-box").bootstrapSwitch();
+
+        $('#paramsDto_parLevel1Dto_IsRuleConformity').bootstrapSwitch('onText', '@Resources.Resource.conform');
+        $('#paramsDto_parLevel1Dto_IsRuleConformity').bootstrapSwitch('offText', '@Resources.Resource.not_conform');
     }
 
     function loadSelect2(){
@@ -296,9 +299,7 @@
         '@Resources.Resource.october',
         '@Resources.Resource.november',
         '@Resources.Resource.december'];
-
-    closeLeftSidebar();
-
+    
     function twoDigits(str) {
         str = ("000" + str).slice(-2);
         return str;
@@ -560,6 +561,7 @@
                 //CounterLevel2.UpdateCounters();
                 var dados = $('#newLevel2Modal > form').serializeObject();
                 RegraNcL2.incluiNoObjetoParaSubmit(dados);
+                HeaderL2.incluiNoObjetoParaSubmit(dados);
                 ContadoresL2.incluiNoObjetoParaSubmit(dados);
                 ReincidenciaL2.incluiNoObjetoParaSubmit(dados);
                 GroupL2.incluiNoObjetoParaSubmit(dados);
@@ -624,15 +626,15 @@
                 indexParamsLevel2.resetaForm();
             }
             else {
-                indexParamsLevel2.GetLevel2(valorSelecionado, $('#paramsDto_parLevel3Dto_Id').val());
+                indexParamsLevel2.GetLevel2(valorSelecionado, $('#paramsDto_parLevel3Dto_Id').val(), false, $('#paramsDto_parLevel1Dto_Id').val());
             }
 
             indexParamsLevel2.resetaValidacao();
 
         },/*Executa ao selecionar um level2*/
-        GetLevel2: function(thislevel2Id, thislevel3Id, isSave) {
-            //openLoader(indexParamsLevel2.loading_the_level2);
-            $.get('GetParLevel2ById',{  level2Id: thislevel2Id, level3Id: thislevel3Id}, function (obj, responseText, xhr) {
+        GetLevel2: function(thislevel2Id, thislevel3Id, isSave, thislevel1Id) {
+            thislevel1Id = !thislevel1Id ? '0' : thislevel1Id; 
+            $.get('GetParLevel2ById',{  level2Id: thislevel2Id, level3Id: thislevel3Id, level1Id: thislevel1Id}, function (obj, responseText, xhr) {
 
                 if (obj != null) {
                     $('#ParLevel2').empty();

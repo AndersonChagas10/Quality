@@ -83,7 +83,6 @@
         <EntityTypeShape EntityType="SgqDbModel.Deviation" Width="1.5" PointX="10.75" PointY="6.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel1VariableProduction" Width="1.5" PointX="4.75" PointY="11.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel1VariableProductionXLevel1" Width="1.5" PointX="6.75" PointY="11.75" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel2XHeaderField" Width="1.5" PointX="8.75" PointY="11.75" />
         <EntityTypeShape EntityType="SgqDbModel.ResultLevel2HeaderField" Width="1.5" PointX="12.75" PointY="0.75" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_Level01" />
@@ -187,6 +186,7 @@
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_UserSgq" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" />
         <AssociationConnector Association="SgqDbModel.FK_Result_Level3_CollectionLevel2" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel2XHeaderField" Width="1.5" PointX="9.375" PointY="11.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -792,6 +792,27 @@ namespace Data.Repositories
             }
         }
 
+        public ParLevel2XHeaderField SaveParHeaderLevel2(ParLevel2XHeaderField parLevel2HeaderField)
+        {
+            using (var ts = db.Database.BeginTransaction())
+            {
+                if (parLevel2HeaderField.Id == 0)
+                {
+                    parLevel2HeaderField = db.ParLevel2XHeaderField.Add(parLevel2HeaderField);
+                }
+                else
+                { 
+                    parLevel2HeaderField.IsActive = false;
+                    Guard.verifyDate(parLevel2HeaderField, "AlterDate");
+                    db.ParLevel2XHeaderField.Attach(parLevel2HeaderField);
+                    db.Entry(parLevel2HeaderField).State = EntityState.Modified;
+                }
+                db.SaveChanges();
+                ts.Commit();
+            }
+            return parLevel2HeaderField;
+        }
+
         #endregion
 
         public void RemoveParLevel3Group(ParLevel3Group paramLevel03group)

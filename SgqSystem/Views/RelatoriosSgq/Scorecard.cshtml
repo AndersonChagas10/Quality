@@ -27,6 +27,8 @@
 
 <script type="text/javascript">
 
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
 
     var url1 = '@Html.Raw(@urlScorecard)';
     var $btn = $('#btnSend');
@@ -238,6 +240,8 @@
     $(document).ready(function () {
         formControl.showFullCallendar();
         formControl.showUnit();
+
+        openLeftSidebar();
     });
         </script>
 

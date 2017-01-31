@@ -1,7 +1,8 @@
 ﻿@{
     Layout = null;
+    var urlDataCollection = ViewBag.UrlDataCollect;
 }
-
+@using DTO
 <div class="page-sidebar-wrapper hide">
     <div class="page-sidebar navbar-collapse collapse">
         <ul class="page-sidebar-menu  page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
@@ -10,17 +11,109 @@
                     <span></span>icon-home
                 </div>
             </li>
+            <li class="nav-item" id="navbar10">
+                <a href="@Url.Action("Index", "Home")" class="nav-link nav-toggle">
+                    <i class="fa fa-home"></i>
+                    <span class="title">@Resources.Resource.home</span>
+                </a>
+            </li>
+            <li class="nav-item" id="navbar10">
+                <a href="@urlDataCollection" class="nav-link nav-toggle">
+                    <i class="fa fa-bookmark"></i>
+                    <span class="title">@Resources.Resource.data_collection</span>
+                </a>
+            </li>
+            <li class="nav-item" id="navbar10">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="fa fa-tasks"></i>
+                    <span class="title">@Resources.Resource.management</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub-menu">
+                    @if (GlobalConfig.Brasil)
+                    {
+                        <li class="nav-item">
+                            <a href="@Url.Action("Scorecard", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.scorecard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("RelatorioDiario", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.daily_report</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("ApontamentosDiarios", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.daily_apointments</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (GlobalConfig.Eua)
+                    {
+                        <li class="nav-item">
+                            <a href="@Url.Action("CorrectiveActionReport", "Reports")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.corrective_action_reports</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("DataCollectionReport", "Reports")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.data_collection_reports</span>
+                            </a>
+                        </li>
+                    }
+                    
+                </ul>
+            </li>
             <li class="heading">
                 <h3 class="uppercase">@Resources.Resource.main</h3>
             </li>
-            <!-- END SIDEBAR TOGGLER BUTTON -->
             <li class="nav-item" id="navbar1">
                 <a href="@Url.Action("Index", "Params")" class="nav-link nav-toggle">
-                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
                     <span class="title">@Resources.Resource.customization</span>
                     <span class="selected"></span>
                     <span class="arrow closed"></span>
                 </a>
+            </li>
+            <li class="heading">
+                <h3 class="uppercase">@Resources.Resource.controls</h3>
+            </li>
+            <li class="nav-item" id="navbar6">
+                <a href="@Url.Action("Index", "ParLevel2ControlCompany")" class="nav-link nav-toggle">
+                    <i class="fa fa-sliders"></i>
+                    <span class="title">@Resources.Resource.family</span>
+                    <span class="arrow"></span>
+                </a>
+            </li>
+            <li class="nav-item" id="navbar7">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="fa fa-tasks"></i>
+                    <span class="title">@Resources.Resource.volume</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub-menu">
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index", "CepDesossas")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.cep_desossa</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index", "CepRecortes")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.cep_recortes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index", "VacuoGRDs")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.vacuo_grd</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index", "Pcc1b")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.pcc1b</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li class="heading">
                 <h3 class="uppercase">@Resources.Resource.register</h3>
@@ -52,55 +145,6 @@
                     <span class="title">@Resources.Resource.measurement_unit</span>
                     <span class="arrow"></span>
                 </a>
-            </li>
-            <li class="nav-item" id="navbar6">
-                <a href="@Url.Action("Index", "ParLevel2ControlCompany")" class="nav-link nav-toggle">
-                    <i class="fa fa-sliders"></i>
-                    <span class="title">Famílias</span>
-                    <span class="arrow"></span>
-                </a>
-                @*<ul class="sub-menu">
-                    <li class="nav-item">
-                        <a href='#' class="nav-link nav-toggle">
-                            <span class="title">Famílias</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.vacuo_grd</span>
-                        </a>
-                    </li>
-                    
-                </ul>*@
-            </li>
-            <li class="nav-item" id="navbar7">
-                <a href="javascript:;" class="nav-link nav-toggle">
-                    <i class="fa fa-tasks"></i>
-                    <span class="title">@Resources.Resource.volume</span>
-                    <span class="arrow"></span>
-                </a>
-                <ul class="sub-menu">
-                    <li class="nav-item">
-                        <a href="@Url.Action("Index", "CepDesossas")" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.cep_desossa</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("Index", "CepRecortes")" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.cep_recortes</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("Index", "VacuoGRDs")" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.vacuo_grd</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("Index", "Pcc1b")" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.pcc1b</span>
-                        </a>
-                    </li>
-                </ul>
             </li>
             
         </ul>

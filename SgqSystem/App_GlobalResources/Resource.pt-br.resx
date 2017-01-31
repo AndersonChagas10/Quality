@@ -358,7 +358,7 @@
     <value>Define se haverá botão de não avaliado (n/a) no Monitoramento.</value>
   </data>
   <data name="not_conform" xml:space="preserve">
-    <value>Não conforme</value>
+    <value>Não conf.</value>
   </data>
   <data name="positive_value" xml:space="preserve">
     <value>Valor Positivo</value>
@@ -761,5 +761,26 @@
   </data>
   <data name="quantity" xml:space="preserve">
     <value>Quantidade</value>
+  </data>
+  <data name="headers" xml:space="preserve">
+    <value>Cabeçalhos</value>
+  </data>
+  <data name="has_sample_total" xml:space="preserve">
+    <value>Tem amostra total</value>
+  </data>
+  <data name="controls" xml:space="preserve">
+    <value>Controles</value>
+  </data>
+  <data name="daily_apointments" xml:space="preserve">
+    <value>Apontamentos Diários</value>
+  </data>
+  <data name="daily_report" xml:space="preserve">
+    <value>Relatório Diário</value>
+  </data>
+  <data name="family" xml:space="preserve">
+    <value>Familias</value>
+  </data>
+  <data name="scorecard" xml:space="preserve">
+    <value>Scorecard</value>
   </data>
 </root>

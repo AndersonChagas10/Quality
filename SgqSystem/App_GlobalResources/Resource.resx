@@ -765,4 +765,25 @@
   <data name="quantity" xml:space="preserve">
     <value>Quantity</value>
   </data>
+  <data name="headers" xml:space="preserve">
+    <value>Headers</value>
+  </data>
+  <data name="has_sample_total" xml:space="preserve">
+    <value>Has total sample</value>
+  </data>
+  <data name="controls" xml:space="preserve">
+    <value>Controls</value>
+  </data>
+  <data name="daily_apointments" xml:space="preserve">
+    <value>Daily Apointments</value>
+  </data>
+  <data name="daily_report" xml:space="preserve">
+    <value>Daily Report</value>
+  </data>
+  <data name="family" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="scorecard" xml:space="preserve">
+    <value>Scorecard</value>
+  </data>
 </root>

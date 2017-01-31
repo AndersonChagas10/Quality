@@ -102,6 +102,7 @@
     <Compile Include="DTO\Params\ParDepartmentDTO.cs" />
     <Compile Include="DTO\Params\ParCounterDTO.cs" />
     <Compile Include="DTO\Params\ParCounterXLocalDTO.cs" />
+    <Compile Include="DTO\Params\ParLevel2XHeaderFieldDTO.cs" />
     <Compile Include="DTO\Params\ParLevel2ControlCompanyDTO.cs" />
     <Compile Include="DTO\Params\ParLevel2Level1DTO.cs" />
     <Compile Include="DTO\Params\ParLevel2SampleEvaluationDTO.cs" />
