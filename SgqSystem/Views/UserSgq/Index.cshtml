@@ -1,9 +1,8 @@
-﻿@model IEnumerable<Dominio.VolumePcc1b>
+﻿@model IEnumerable<Dominio.UserSgq>
 
 @{
-    ViewBag.Title = "PCC1b - Volume";
+    ViewBag.Title = Resources.Resource.users;
 }
-
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
@@ -15,10 +14,10 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                  
+
                 </li>
                 <li>
-                    <span>Volume de @Resources.Resource.pcc1b</span>
+                    <span>@Resources.Resource.users</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -37,7 +36,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.pcc1b</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.users</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -45,24 +44,18 @@
 
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
-                                    @Html.ActionLink("Novo volume de PCC1b", "Create")
+                                    @Html.ActionLink("Novo", "Create")
                                 </p>
-                                <table class="table table-condensed">
+                                <table class="table">
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Data)
-                                        </th>
-                                        @*<th>
-                                            @Html.DisplayNameFor(model => model.ParLevel1.Name)
-                                        </th>*@
-                                        <th>
-                                            Unidade
+                                            @Resources.Resource.username
                                         </th>
                                         <th>
-                                            Avaliações
+                                            @Resources.Resource.name
                                         </th>
                                         <th>
-                                            Amostras
+                                            @Resources.Resource.email
                                         </th>
                                         <th></th>
                                     </tr>
@@ -71,28 +64,22 @@
                                     {
                                         <tr>
                                             <td>
-                                                @*@Html.DisplayFor(modelItem => item.Data)*@
-                                                @item.Data.Value.ToString("dd/MM/yyyy")
-                                            </td>
-                                            @*<td>
-                                                @Html.DisplayFor(modelItem => item.ParLevel1.Name)
-                                            </td>*@
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ParCompany.Name)
+                                                @Html.DisplayFor(modelItem => item.Name)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Avaliacoes)
+                                                @Html.DisplayFor(modelItem => item.FullName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Amostras)
+                                                @Html.DisplayFor(modelItem => item.Email)
                                             </td>
                                             <td>
-                                                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
-                                                @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
-                                                @Html.ActionLink("Excluir", "Delete", new { id = item.Id })
+                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }) |
+                                                @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |
+                                                @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })
                                             </td>
                                         </tr>
                                     }
+
                                 </table>
                             </div>
 
@@ -108,6 +95,6 @@
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
-    navbarSelect("navbar7");
+    navbarSelect("navbar15");
 
 </script>
