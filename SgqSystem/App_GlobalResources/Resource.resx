@@ -768,4 +768,10 @@
   <data name="headers" xml:space="preserve">
     <value>Headers</value>
   </data>
+  <data name="has_sample_total" xml:space="preserve">
+    <value>Has total sample</value>
+  </data>
+  <data name="controls" xml:space="preserve">
+    <value>Controls</value>
+  </data>
 </root>
