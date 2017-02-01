@@ -786,4 +786,25 @@
   <data name="scorecard" xml:space="preserve">
     <value>Scorecard</value>
   </data>
+  <data name="users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="new_user" xml:space="preserve">
+    <value>New user</value>
+  </data>
+  <data name="edit_user" xml:space="preserve">
+    <value>Edit user</value>
+  </data>
+  <data name="confirm_password" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="phone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="role" xml:space="preserve">
+    <value>Role</value>
+  </data>
 </root>
