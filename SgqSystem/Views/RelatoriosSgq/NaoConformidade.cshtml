@@ -189,7 +189,7 @@
 
         function GetMonitoramento(indicador){
 
-            $.post(urlGraficoMonitoramento + "/" + indicador, function (r) {
+            $.post(urlGraficoMonitoramento + "/" + escape(indicador), function (r) {
                 try {
                     GraficoMonitoramento(r);
                 } catch (e) {
