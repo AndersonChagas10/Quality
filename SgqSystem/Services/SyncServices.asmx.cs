@@ -4464,11 +4464,12 @@ namespace SgqSystem.Services
         }
 
         [WebMethod]
-        public string _CollectionLevel02_ConsolidationLevel2Update()
+        public string _CollectionLevel02_ConsolidationLevel2Update(string dataInicio, string dataFim)
         {
             string sql = "SELECT CL2.Id, CL1.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, CAST(CL2.ConsolidationDate AS DATE) " +
                          "FROM ConsolidationLevel2 CL2 INNER JOIN " +
-                         "ConsolidationLevel1 CL1 ON CL2.ConsolidationLevel1_Id = CL1.Id   ";
+                         "ConsolidationLevel1 CL1 ON CL2.ConsolidationLevel1_Id = CL1.Id   " +
+                         "WHERE CAST(CL2.ConsolidationDate AS DATE) BETWEEN '" + dataInicio + "' AND '" + dataFim + "' ";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
