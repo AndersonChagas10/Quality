@@ -265,16 +265,6 @@
   <ItemGroup>
     <Compile Include="App_GlobalResources\Resource.designer.cs" />
     <Compile Include="App_GlobalResources\Resource.pt-br.designer.cs" />
-    <Compile Include="App_GlobalResources\Resource.pt-br1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.pt-br.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Resource1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
