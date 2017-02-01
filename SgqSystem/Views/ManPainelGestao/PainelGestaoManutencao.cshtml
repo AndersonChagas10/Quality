@@ -1,0 +1,265 @@
+﻿@*@model IEnumerable<Dominio.ManColetaDados>*@
+
+@{
+    ViewBag.Title = "Panel de Gestão Diário";
+    var url = Url.Action("Index", "Home");
+    var urlGet = Url.Action("Get", "api/GetManColetaDados");
+}
+
+<style>
+    .panel-info {
+        border-color: #999;
+    }
+
+        .panel-info > .panel-heading {
+            background-color: #ccc;
+            border-color: #999;
+            color: #333;
+        }
+
+    .chart-inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<div class="page-content" style="min-height: 600px;">
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+    <div id="formBodyContent">
+        <table id="results" class="display nowrap responsive" cellspacing="0" style="width:100%"></table>
+
+    </div>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        var urlGet = '@Html.Raw(@urlGet)';
+
+        //var meses = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+        var $btn = $('#btnSend');
+
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $(document).ready(function () {
+
+            $("#btnSend").click(function (e) {
+                Send();
+            });
+
+            //formControl.showFullCallendar();
+            //formControl.showUnit();
+        });
+
+        Send();
+
+        //function Send() {
+
+        //    $btn.button('loading');
+        //    $('#results').empty();
+
+        //    if (!ValidaDadosParaEnvio()) {
+        //        $btn.button('reset');
+        //        return;
+        //    }
+
+        //    $('#menu-toggle').click();
+
+        //    //AJAX
+        //    $.post("", enviar, function (r) {
+
+        //        try {
+
+
+
+        //        } catch (e) {
+        //            console.log(e);
+        //        } finally {
+        //            $btn.button('reset');
+        //        }
+
+        //    }).fail(function (e, h, x) {
+        //        $btn.button('reset');
+        //        if (e.status == 0) {
+        //            GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+        //        } else {
+        //            GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+        //        }
+        //    });
+
+        //};
+
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+
+            /*Validação Específica*/
+
+            /*FIM Validação Específica*/
+
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
+        function Send(toggle) {
+            $btn.button('loading');
+            $('#results').empty();
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            //AJAX
+            $.post(urlGet, enviar, function (r) {
+                try {
+
+                    if (toggle == undefined)
+                        $('#menu-toggle').click();
+
+                    GerarTabela(r);
+                    FiltrosPorColuna();
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    $btn.button('reset');
+                    //Hotfix: table não alinha resultados de centro no meio da tr....
+                }
+            }).fail(function (e, h, x) {
+                //closeLoader();
+                $btn.button('reset');
+                if (e.status == 0) {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+                //openMessageModal("Alerta", e.responseJSON.Message);
+            });
+        };
+
+        function GerarTabela(retornoArray) {
+
+            var table = $('#results').empty().DataTable({
+                data: retornoArray,
+                columns: getIndex(retornoArray),
+                
+                fixedHeader: {
+                    header: true,
+                    footer: true
+                },
+                "scrollX": true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                pageLength: 10,
+                responsive: true,
+                //paginate: false,
+                //paging: false,
+                //bSort: false,
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                //responsive: true,
+                //initComplete: function () {
+                //    $('#loading').hide();
+                //    setTimeout(function (e) {
+                //        var oTable = $('#results').dataTable();
+                //        if (oTable.length > 0) {
+                //            oTable.fnAdjustColumnSizing();
+                //        }
+                //    }, 100);
+
+                //    $('#results tbody').on('click', 'button', function (data, a, b) {
+
+                //        var data = table.row($(this).parents('tr')).data();
+                //        console.log(data);
+                //        $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
+
+                //            $('#Level3Name').html(r.ParLevel3_Name);
+                //            $('#ResultLevel3_Id').val(r.Id);
+
+                //            $('#changeConform').empty();
+                //            $('#changeConform').append($(r.showIntervalos));
+                //            $('#changeConform').append($(r.showConform));
+                //            $('#changeConform').append($(r.showCalculado));
+                //            $('#changeConform').append($(r.showNumeroDefeitos));
+
+                //            console.log(r.Id);
+                //        });
+
+                //    });
+                //},
+
+                createdRow: function (row, data, index) {
+
+                },
+                fnDrawCallback: function (data, d, o) {
+
+                }
+            });
+
+            new $.fn.dataTable.Responsive(table);
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                     {
+                         extend: 'pdf',
+                         text: 'PDF',
+                         exportOptions: {
+                             columns: ':visible'
+                         }
+                     },
+                      {
+                          extend: 'colvis',
+                          text: 'Colunas Visíveis',
+                          exportOptions: {
+                              columns: ':visible'
+                          }
+                      },
+                ]
+            });
+
+            table.buttons(0, null).container().prependTo(
+                table.table().container()
+            );
+
+        } 
+
+        function getIndex(obj) {
+
+            var titles = [];
+           
+            for (var key in obj[0]){
+                
+                titles.push({title: key, mData: key});
+                            
+            }
+            
+            return titles;
+        }
+
+    </script>
+
+}

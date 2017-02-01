@@ -26,7 +26,6 @@
 
 @section Scripts {
 
-
     <script type="text/javascript">
 
         var urlGet = '@Html.Raw(@urlGet)';
@@ -59,6 +58,7 @@
                         $('#menu-toggle').click();
                     GerarTabela(r);
                     FiltrosPorColuna();
+
                 } catch (e) {
                     console.log(e);
                 } finally {
@@ -122,7 +122,7 @@
                 loadingRecords: true,
                 destroy: true,
                 info: true,
-                //responsive: true,
+                responsive: true,
                 initComplete: function () {
                     $('#loading').hide();
                     setTimeout(function (e) {
