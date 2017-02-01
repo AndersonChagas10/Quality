@@ -804,4 +804,7 @@
   <data name="role" xml:space="preserve">
     <value>Regra</value>
   </data>
+  <data name="profiles" xml:space="preserve">
+    <value>Perfis</value>
+  </data>
 </root>

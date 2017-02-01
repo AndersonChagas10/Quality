@@ -14,7 +14,10 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "UserSgq")">@Resources.Resource.users</a>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <span>@Resources.Resource.edit_user</span>
@@ -167,6 +170,8 @@
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar15");
+
+    $('#AlterDate').val(new Date($.now()).toUTCString());
 
 </script>
 

@@ -7,12 +7,23 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dominio;
+using Dominio.Interfaces.Services;
+using DTO.DTO.Params;
 
 namespace SgqSystem.Controllers
 {
     public class UserSgqController : Controller
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
+
+        private IBaseDomain<ParCompany, ParCompanyDTO> _baseDomainParCompany;
+
+        public UserSgqController(IBaseDomain<ParCompany, ParCompanyDTO> baseDomainParCompany)
+        {
+            _baseDomainParCompany = baseDomainParCompany;
+
+            ViewBag.listaParCompany = _baseDomainParCompany.GetAll();
+        }
 
         // GET: UserSgq
         public ActionResult Index()

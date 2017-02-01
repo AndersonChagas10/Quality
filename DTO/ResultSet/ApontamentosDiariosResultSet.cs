@@ -73,15 +73,15 @@ public class ApontamentosDiariosResultSet
                 " \n ,UN.Name AS 'Unidade'                  " +
                 " \n ,R3.Id AS 'ResultLevel3Id'             " +
                 " \n FROM CollectionLevel2 C2               " +
-                " \n LEFT JOIN ParCompany UN                " +
+                " \n INNER JOIN ParCompany UN                " +
                 " \n ON UN.Id = c2.UnitId                   " +
-                " \n LEFT JOIN Result_Level3 R3             " +
+                " \n INNER JOIN Result_Level3 R3             " +
                 " \n ON R3.CollectionLevel2_Id = C2.Id      " +
-                " \n LEFT JOIN ParLevel3 L3                 " +
+                " \n INNER JOIN ParLevel3 L3                 " +
                 " \n ON L3.Id = R3.ParLevel3_Id             " +
-                " \n LEFT JOIN ParLevel2 L2                 " +
+                " \n INNER JOIN ParLevel2 L2                 " +
                 " \n ON L2.Id = C2.ParLevel2_Id             " +
-                " \n LEFT JOIN ParLevel1 L1                 " +
+                " \n INNER JOIN ParLevel1 L1                 " +
                 " \n ON L1.Id = C2.ParLevel1_Id             " +
                 " \n WHERE C2.CollectionDate BETWEEN '" + dtInit + " 00:00' AND '" + dtF + " 23:59'" +
                 sqlUnidade + sqlLevel1 + sqlLevel2;
