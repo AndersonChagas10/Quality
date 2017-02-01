@@ -4435,14 +4435,32 @@ namespace SgqSystem.Services
                             //Se encontrar, retorna o Id da Consolidação
                             while (r.Read())
                             {
-                                    int ParLevel1_Id = Convert.ToInt32(r[0]);
-                                    int ParLevel2_Id = Convert.ToInt32(r[1]);
-                                    int ParCompany_Id = Convert.ToInt32(r[2]);
-                                    DateTime CollectionDate = Convert.ToDateTime(r[3]);
+                                int ParLevel1_Id = Convert.ToInt32(r[0]);
+                                int ParLevel2_Id = Convert.ToInt32(r[1]);
+                                int ParCompany_Id = Convert.ToInt32(r[2]);
+                                DateTime CollectionDate = Convert.ToDateTime(r[3]);
 
-                                    var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, CollectionDate);
-                                    var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, consolidationLevel1.Id, ParLevel2_Id);
-           
+                                var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, CollectionDate);
+                                if (consolidationLevel1 == null)
+                                {
+                                    consolidationLevel1 = InsertConsolidationLevel1(ParCompany_Id, ParLevel1_Id, CollectionDate);
+                                    if (consolidationLevel1 == null)
+                                    {
+                                        throw new Exception();
+                                    }
+                                }
+
+                                var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, consolidationLevel1.Id, ParLevel2_Id);
+
+                                if (consolidationLevel2 == null)
+                                {
+                                    consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2_Id, ParCompany_Id, CollectionDate);
+                                    if (consolidationLevel2 == null)
+                                    {
+                                        throw new Exception();
+                                    }
+                                }
+
                             }
                             //Se não encontrar, retorna zero
                             return null;
