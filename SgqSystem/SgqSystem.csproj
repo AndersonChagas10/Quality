@@ -265,11 +265,6 @@
   <ItemGroup>
     <Compile Include="App_GlobalResources\Resource.designer.cs" />
     <Compile Include="App_GlobalResources\Resource.pt-br.designer.cs" />
-    <Compile Include="App_GlobalResources\Resource.pt-br1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.pt-br.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -332,7 +327,6 @@
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\RelatoriosBrasil\RelatoriosSgqController.cs" />
-    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserSgqController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
@@ -1306,7 +1300,6 @@
     <Content Include="Views\UserSgq\Details.cshtml" />
     <Content Include="Views\UserSgq\Edit.cshtml" />
     <Content Include="Views\UserSgq\Index.cshtml" />
-    <Content Include="Views\Role\Roles.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
