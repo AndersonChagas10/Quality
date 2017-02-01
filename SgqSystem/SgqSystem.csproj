@@ -270,6 +270,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.pt-br.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Resource1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -332,6 +337,7 @@
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\RelatoriosBrasil\RelatoriosSgqController.cs" />
+    <Compile Include="Controllers\UserSgqController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
     <Compile Include="Controllers\GlobalConfigController.cs" />
@@ -1299,6 +1305,11 @@
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaArea - Copy.cshtml" />
     <Content Include="Views\manDataCollectITs\Create2.cshtml" />
     <Content Include="Views\RelatoriosSgq\_ResultLevel3Edit.cshtml" />
+    <Content Include="Views\UserSgq\Create.cshtml" />
+    <Content Include="Views\UserSgq\Delete.cshtml" />
+    <Content Include="Views\UserSgq\Details.cshtml" />
+    <Content Include="Views\UserSgq\Edit.cshtml" />
+    <Content Include="Views\UserSgq\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

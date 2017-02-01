@@ -167,7 +167,9 @@
         /*GET*/
 
         function GetGraficoIndicadorUnidade (unidade) {
-            $.post(urlGraficoIndicador + "/" + unidade, function (r) {
+
+
+            $.post(urlGraficoIndicador + "/" + unidade, enviar, function (r) {
                 try {
                     GraficoIndicadorUnidade(r);
                 } catch (e) {
