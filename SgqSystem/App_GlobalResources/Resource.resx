@@ -810,4 +810,7 @@
   <data name="profiles" xml:space="preserve">
     <value>Profiles</value>
   </data>
+  <data name="nc_report" xml:space="preserve">
+    <value>Errors Report</value>
+  </data>
 </root>
