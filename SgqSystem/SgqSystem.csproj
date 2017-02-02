@@ -1302,6 +1302,7 @@
     <Content Include="Views\manDataCollectITs\Create2.cshtml" />
     <Content Include="Views\RelatoriosSgq\_ResultLevel3Edit.cshtml" />
     <Content Include="Views\ManPainelGestao\PainelGestaoManutencao.cshtml" />
+    <Content Include="Views\ManPainelGestao\PainelIndicadoresUniManutenção.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

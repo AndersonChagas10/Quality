@@ -1,6 +1,5 @@
 ﻿using Dominio;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Http;
 
@@ -21,8 +20,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
             using (var db = new SgqDbDevEntities())
             {
 
-                var d = db.Database.SqlQuery<ManColetaDados>(sql);
-               
+                var d = db.Database.SqlQuery<ManColetaDados>(sql);             
+
                 return d.ToList();
             }
             

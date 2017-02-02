@@ -17,6 +17,11 @@ namespace SgqSystem.Controllers.Manutencao
             return View();
         }
 
-
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult PainelIndicadoresUniManutenção()
+        {
+            return View();
+        }
     }
+
 }

@@ -123,7 +123,7 @@
                         $('#menu-toggle').click();
 
                     GerarTabela(r);
-                    FiltrosPorColuna();
+                    //FiltrosPorColuna();
                 } catch (e) {
                     console.log(e);
                 } finally {
@@ -153,6 +153,7 @@
                     footer: true
                 },
                 "scrollX": true,
+                "autoWidth": false,
                 lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
                 pageLength: 10,
                 responsive: true,
@@ -196,12 +197,13 @@
                 createdRow: function (row, data, index) {
 
                 },
+
                 fnDrawCallback: function (data, d, o) {
 
                 }
             });
 
-            new $.fn.dataTable.Responsive(table);
+            //new $.fn.dataTable.Responsive(table);
 
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
@@ -258,6 +260,14 @@
             }
             
             return titles;
+        }
+
+        function formatDate(obj) {
+            $(obj).each(function () {
+
+               
+
+            });
         }
 
     </script>
