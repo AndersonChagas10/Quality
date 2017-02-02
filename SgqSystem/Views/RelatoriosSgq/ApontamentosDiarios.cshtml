@@ -20,7 +20,10 @@
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
         @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
 
-        <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+        <div id="load"></div>
+        <div id="divTable">
+            <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+        </div>
     </div>
 </div>
 
@@ -40,7 +43,7 @@
 
         $(document).ready(function () {
             $("#btnSend").click(function (e) {
-                Send();
+                Send(true);
             });
         });
 
@@ -53,35 +56,12 @@
                 return;
             }
 
-            //AJAX
-            $.post(urlGet, enviar, function (r) {
-                try {
-
-                    if (toggle == undefined)
-                        $('#menu-toggle').click();
-                    GerarTabela(r);
-                    FiltrosPorColuna();
-
-                } catch (e) {
-                    console.log(e);
-                } finally {
-                    $btn.button('reset');
-                    //Hotfix: table não alinha resultados de centro no meio da tr....
-                }
-            }).fail(function (e, h, x) {
-                //closeLoader();
-                $btn.button('reset');
-                if (e.status == 0) {
-                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
-                } else {
-                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-                }
-                //openMessageModal("Alerta", e.responseJSON.Message);
-            });
+            $('#divTable').hide();
+            EasyAjax(urlGet, enviar, GerarTabela, "load", toggle);//AJAX
         };
 
         function GerarTabela(retornoArray) {
-
+            $('#divTable').show();
             var table = $('#results').empty().DataTable({
                 data: retornoArray,
                 columns: [
@@ -111,17 +91,10 @@
                     { title: "Amostra", mData: "Amostra" },
 
                 ],
-                //fixedHeader: {
-                //    header: true,
-                //    footer: true
-                //},
                 scrollX: true,
                 lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
                 pageLength: 10,
                 responsive: true,
-                //paginate: false,
-                //paging: false,
-                //bSort: false,
                 loadingRecords: true,
                 destroy: true,
                 info: true,
@@ -141,7 +114,7 @@
                         console.log(data);
                         $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
 
-                            $('#Level3Name').html(r.ParLevel3_Name);
+                            $('#estName').html(r.ParLevel3_Name);
                             $('#ResultLevel3_Id').val(r.Id);
                             
                             $('#changeConform').empty();
@@ -164,8 +137,6 @@
 
                 }
             });
-
-           // new $.fn.dataTable.Responsive(table);
 
             new $.fn.dataTable.Buttons(table, {
                 buttons: [

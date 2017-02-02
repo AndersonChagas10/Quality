@@ -68,12 +68,12 @@
                 return;
             }
 
-            EasyAjax(urlGrafico1, enviar, CallbackGrafico1, "grafico1");
-            EasyAjax(urlTabela1, enviar, function () { $('#tabela1div').empty().append(r); }, "tabela1div");
+            EasyAjax(urlGrafico1, enviar, CallbackGrafico1, "grafico1", toggle);
+            EasyAjax(urlTabela1, enviar, function (r) { $('#tabela1div').empty().append(r); }, "tabela1div");
         };
 
         function GetTabela2() {
-            EasyAjax(urlTabela1, enviar, function () { $('#tabela2div').empty().append(r); }, "tabela2div");
+            EasyAjax(urlTabela1, enviar, function (r) { $('#tabela2div').empty().append(r); }, "tabela2div");
         }
 
         function CallbackGrafico1(data) {
@@ -772,7 +772,7 @@
         $(document).ready(function () {
 
             $("#btnSend").click(function (e) {
-                Send();
+                Send(true);
             });
 
             formControl.showFullCallendar();

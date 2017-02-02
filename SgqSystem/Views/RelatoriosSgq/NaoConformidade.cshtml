@@ -98,7 +98,7 @@
 
         $(document).ready(function () {
             $("#btnSend").click(function (e) {
-                Send();
+                Send(true);
             });
             formControl.showFullCallendar();
             //formControl.showUnit();
@@ -111,7 +111,7 @@
             }
         });
 
-        function Send() {
+        function Send(toggle) {
 
             $btn.button('loading');
             $('#results').empty();
@@ -123,9 +123,7 @@
                 return;
             }
 
-            $('#menu-toggle').click();
-
-            EasyAjax(urlGraficoUnidades, enviar, GraficoUnidade, "RGUnidadesGrafico");//AJAX
+            EasyAjax(urlGraficoUnidades, enviar, GraficoUnidade, "RGUnidadesGrafico", toggle);//AJAX
         
         };
 

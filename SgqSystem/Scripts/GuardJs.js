@@ -1,5 +1,5 @@
 ﻿
-function EasyAjax(url, dados, callback, loader) {
+function EasyAjax(url, dados, callback, loader, toggle) {
 
     if (!!loader)
         $('#' + loader).empty().addClass('loader');
@@ -10,6 +10,8 @@ function EasyAjax(url, dados, callback, loader) {
     //AJAX
     $.post(url, dados, function (r) {
         try {
+            if (toggle != undefined)
+                $('#menu-toggle').click();
 
             if (!!loader)
                 $('#' + loader).removeClass('loader');
