@@ -146,7 +146,11 @@
 
     function Enviar(dataToSend, jsonObjectName) {
 
-        $.post(url1, { jsonObjectName : JSON.stringify(dataToSend) }, function(data) {
+        var data= {};
+
+        data[jsonObjectName] = JSON.stringify(dataToSend);
+
+        $.post(url1, data , function(data) {
 
             console.log(data);
 
@@ -158,6 +162,10 @@
         if(obj.quantidade == ""){
             alert("Campo Quantidade obrigatório");
             $(this).find('#quantidade').focus;
+            return false;
+        }else{
+
+            return true;
         }
     }
 

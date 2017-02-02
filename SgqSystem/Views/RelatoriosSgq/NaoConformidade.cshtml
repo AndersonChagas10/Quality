@@ -101,7 +101,7 @@
                 Send();
             });
             formControl.showFullCallendar();
-            formControl.showUnit();
+            //formControl.showUnit();
 
             if (UnidadeUsuario.length == 1) {
                 //$('#divFiltrarRegionais').hide();
@@ -153,10 +153,10 @@
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
             /*Especifico*/
-            if (!($('#unitId :selected').val() > 0)) {
-                GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
-                return false;
-            }
+            //if (!($('#unitId :selected').val() > 0)) {
+            //    GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
+            //    return false;
+            //}
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
             GuardJs.esconderMensagem();
@@ -168,8 +168,9 @@
 
         function GetGraficoIndicadorUnidade (unidade) {
 
+            enviar["unitName"] = unidade;
 
-            $.post(urlGraficoIndicador + "/" + unidade, enviar, function (r) {
+            $.post(urlGraficoIndicador, enviar, function (r) {
                 try {
                     GraficoIndicadorUnidade(r);
                 } catch (e) {
@@ -189,7 +190,9 @@
 
         function GetMonitoramento(indicador){
 
-            $.post(urlGraficoMonitoramento + "/" + escape(indicador), function (r) {
+            enviar["level1Name"] = indicador;
+
+            $.post(urlGraficoMonitoramento, enviar, function (r) {
                 try {
                     GraficoMonitoramento(r);
                 } catch (e) {
@@ -209,7 +212,9 @@
 
         function GetTarefa(monitoramento){
 
-            $.post(urlGraficoTarefa + "/" + monitoramento, function (r) {
+            enviar["level2Name"] = monitoramento;
+
+            $.post(urlGraficoTarefa, enviar, function (r) {
                 try {
                     GraficoTarefas(r);
                 } catch (e) {
