@@ -77,7 +77,6 @@ namespace SgqSystem
             bundles.Add(new StyleBundle("~/Content/select2css").Include(
                    "~/Content/css/select2.min.css"));
 
-
             bundles.Add(new StyleBundle("~/Content/Tables").Include(
                     "~/Content/DataTables/css/jquery.dataTables.min.css",
                     "~/Content/DataTables/css/buttons.dataTables.min.css",

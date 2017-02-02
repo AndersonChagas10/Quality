@@ -11,32 +11,6 @@
     var urlGrafico5 = Url.Action("Grafico5", "api/VisaoGeralDaArea");
 }
 
-<style>
-
-    .loader {
-      border: 16px solid black;
-      border-radius: 50%;
-      border-top: 16px solid white;
-      border-right: 16px solid black;
-      border-bottom: 16px solid white;
-      width: 120px;
-      height: 120px;
-      -webkit-animation: spin 2s linear infinite;
-      animation: spin 2s linear infinite;
-    }
-
-    @@-webkit-keyframes spin {
-      0% { -webkit-transform: rotate(0deg); }
-      100% { -webkit-transform: rotate(360deg); }
-    }
-
-    @@keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-</style>
-
 <div class="page-content" style="min-height: 600px;">
 
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
@@ -777,43 +751,6 @@
                     }]
                 });
 
-        }
-
-        /*Auxiliares*/
-
-        function EasyAjax(url, dados, callback, loader) {
-
-            if (!!loader)
-                $('#' + loader).addClass('loader');
-
-            if (dados == undefined)
-                dados = {};
-
-            //AJAX
-            $.post(url, dados, function (r) {
-                try {
-                   
-                    if (!!loader)
-                        $('#' + loader).removeClass('loader');
-
-                    callback(r);
-
-                } catch (e) {
-                    console.log(e);
-                } finally {
-                    $btn.button('reset');
-                }
-            }).fail(function (e, h, x) {
-                $btn.button('reset');
-                if (e.status == 0) {
-                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
-                } else {
-                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-                }
-            }).always(function () {
-                if (!!loader)
-                    $('#' + loader).removeClass('loader');
-            });
         }
 
         function ValidaDadosParaEnvio() {

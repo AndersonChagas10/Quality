@@ -1,4 +1,40 @@
-﻿$(document).ready(function () {
+﻿
+function EasyAjax(url, dados, callback, loader) {
+
+    if (!!loader)
+        $('#' + loader).empty().addClass('loader');
+
+    if (dados == undefined)
+        dados = {};
+
+    //AJAX
+    $.post(url, dados, function (r) {
+        try {
+
+            if (!!loader)
+                $('#' + loader).removeClass('loader');
+
+            callback(r);
+
+        } catch (e) {
+            console.log(e);
+        } finally {
+            $btn.button('reset');
+        }
+    }).fail(function (e, h, x) {
+        $btn.button('reset');
+        if (e.status == 0) {
+            GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+        } else {
+            GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+        }
+    }).always(function () {
+        if (!!loader)
+            $('#' + loader).removeClass('loader');
+    });
+}
+
+$(document).ready(function () {
     $('.integer').each(function (index) {
         $(this).inputmask("integer", { rightAlign: false });
     });
