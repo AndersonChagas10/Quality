@@ -292,6 +292,9 @@
     <Compile Include="LogSgqGlobal.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ManColetaDados.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ManDataCollectIT.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

@@ -98,10 +98,10 @@
 
         $(document).ready(function () {
             $("#btnSend").click(function (e) {
-                Send();
+                Send(true);
             });
             formControl.showFullCallendar();
-            formControl.showUnit();
+            //formControl.showUnit();
 
             if (UnidadeUsuario.length == 1) {
                 //$('#divFiltrarRegionais').hide();
@@ -111,52 +111,30 @@
             }
         });
 
-        function Send() {
+        function Send(toggle) {
 
             $btn.button('loading');
             $('#results').empty();
+            $("#RGOperacoesGrafico").empty();
+            $("#PanelFull0").hide();
 
             if (!ValidaDadosParaEnvio()) {
                 $btn.button('reset');
                 return;
             }
 
-            $('#menu-toggle').click();
-
-            //AJAX
-            $.post(urlGraficoUnidades, enviar, function (r) {
-
-                try {
-
-                    GraficoUnidade(r);
-
-                } catch (e) {
-                    console.log(e);
-                } finally {
-                    $btn.button('reset');
-                }
-
-            }).fail(function (e, h, x) {
-
-                $btn.button('reset');
-                if (e.status == 0) {
-                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
-                } else {
-                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-                }
-
-            });
-
+            EasyAjax(urlGraficoUnidades, enviar, GraficoUnidade, "RGUnidadesGrafico", toggle);//AJAX
+        
         };
 
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
             /*Especifico*/
-            if (!($('#unitId :selected').val() > 0)) {
-                GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
-                return false;
-            }
+            //if (!($('#unitId :selected').val() > 0)) {
+            //    GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
+            //    return false;
+            //}
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
             GuardJs.esconderMensagem();
@@ -167,64 +145,21 @@
         /*GET*/
 
         function GetGraficoIndicadorUnidade (unidade) {
-
-
-            $.post(urlGraficoIndicador + "/" + unidade, enviar, function (r) {
-                try {
-                    GraficoIndicadorUnidade(r);
-                } catch (e) {
-                    console.log(e);
-                } finally {
-                    //$btn.button('reset');
-                }
-            }).fail(function (e, h, x) {
-                //$btn.button('reset');
-                if (e.status == 0) {
-                    openMessageModal("Não foi possivel buscar os dados: " + e.statusText);
-                } else {
-                    openMessageModal("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-                }
-            });
+            $("#PanelFull0").hide();
+            enviar["unitName"] = unidade;
+            EasyAjax(urlGraficoIndicador, enviar, GraficoIndicadorUnidade, "RGOperacoesGrafico");
         };
 
         function GetMonitoramento(indicador){
-
-            $.post(urlGraficoMonitoramento + "/" + indicador, function (r) {
-                try {
-                    GraficoMonitoramento(r);
-                } catch (e) {
-                    console.log(e);
-                } finally {
-                    //$btn.button('reset');
-                }
-            }).fail(function (e, h, x) {
-                //$btn.button('reset');
-                if (e.status == 0) {
-                    openMessageModal("Não foi possivel buscar os dados: " + e.statusText);
-                } else {
-                    openMessageModal("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-                }
-            });
+            $("#PanelFull0").hide();
+            $("#RGMonitoramentosGrafico").empty();
+            enviar["level1Name"] = indicador;
+            EasyAjax(urlGraficoMonitoramento, enviar, GraficoMonitoramento, "RGTarefasGrafico");
         };
 
         function GetTarefa(monitoramento){
-
-            $.post(urlGraficoTarefa + "/" + monitoramento, function (r) {
-                try {
-                    GraficoTarefas(r);
-                } catch (e) {
-                    console.log(e);
-                } finally {
-                    //$btn.button('reset');
-                }
-            }).fail(function (e, h, x) {
-                //$btn.button('reset');
-                if (e.status == 0) {
-                    openMessageModal("Não foi possivel buscar os dados: " + e.statusText);
-                } else {
-                    openMessageModal("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-                }
-            });
+            enviar["level2Name"] = monitoramento;
+            EasyAjax(urlGraficoTarefa, enviar, GraficoTarefas, "RGMonitoramentosGrafico");
         };
 
         /*END GET*/

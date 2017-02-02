@@ -1609,6 +1609,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profiles.
+        /// </summary>
+        internal static string profiles {
+            get {
+                return ResourceManager.GetString("profiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Punishment/reward value.
         /// </summary>
         internal static string punishment_value {

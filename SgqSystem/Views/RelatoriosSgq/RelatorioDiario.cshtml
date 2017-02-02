@@ -26,14 +26,14 @@
 
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
-    
+
     <div id="formBodyContent">
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
         <div id="load"></div>
-        <div id="plotPrincipal" ></div>
+        <div id="plotPrincipal"></div>
         <div class="panel panel-info" id="PanelFull" style="display:none">
             <div class="panel-heading"></div>
-            <div class="panel-body" id="g1" >
+            <div class="panel-body" id="g1">
             </div>
             *O Peso atribuído as Tarefas influenciam no resultado gráfico.
         </div>
@@ -45,7 +45,7 @@
 
 
     <script type="text/javascript">
-        
+
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
 
@@ -57,7 +57,7 @@
 
         $(document).ready(function () {
             $("#btnSend").click(function (e) {
-                Send();
+                Send(true);
             });
 
             formControl.showSimpleDate();
@@ -66,7 +66,7 @@
             openLeftSidebar();
         });
 
-        function Send() {
+        function Send(toggle) {
             $btn.button('loading');
             $('#results').empty();
 
@@ -75,70 +75,60 @@
                 return;
             }
 
-            $('#plotPrincipal').empty();
-            //Auxiliares.loading("load", "btnCarregaGraficoDiario");
+            $('#plotPrincipal').empty().hide();
 
             //Preenche dados para o FTA.
             FTA._unidadeId = $('#Unidade').val(),
             FTA._dataInicio = $('#dataInicio').val(),
             FTA._dataFim = FTA._dataInicio,
-             $('#menu-toggle').click();
 
-            //AJAX
-            $.post(url1, enviar, function (r) {
-                try {
-                                     
-                    GraficoInicialLeTodosLevel1(r.listResultSetLevel1);
+            EasyAjax(url1, enviar, CallbackGraficos, "load", toggle);//AJAX
+          
+        };
 
-                    r.listResultSetLevel1.forEach(function (o, c) {
+        function CallbackGraficos(r) {
+            try {
+                $('#plotPrincipal').empty().show();
 
-                        var divClonada = $('#PanelFull').clone();
-                        divClonada.attr('id', divClonada.attr('id') + o.level1_Id).show();
-                        divClonada.find('.panel-body').attr('id', divClonada.find('.panel-body').attr('id') + o.level1_Id);
-                        var idDivTendencia = divClonada.find('.panel-body').attr('id');
-                        $('#plotPrincipal').append(divClonada);
-                        var div = DivManager.criaDiv(idDivTendencia, o.level1_Id, "temperatura");
-                        divClonada.find('.panel-heading').html(o.Level1Name); // Insere Titulo no Panel
+                GraficoInicialLeTodosLevel1(r.listResultSetLevel1);
 
-                        var tendencia = $.grep(r.listResultSetTendencia, function (level2, c) { return level2.level1_Id == o.level1_Id });
-                        GraficoTendencia(tendencia, div, "Tendência do Indicador: " + tendencia[0].Level1Name + " - " + meses[0], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
+                r.listResultSetLevel1.forEach(function (o, c) {
 
-                        //GraficoTendencia(listResults["Tendencia"], div, o);//Processa e cria grafico
-                        var divMonitoramento = DivManager.criaDiv(idDivTendencia, o.level1_Id, "monitoramento");
-                        var level2DoLevel1 = $.grep(r.listResultSetLevel2, function(level2,c) { return level2.level1_Id == o.level1_Id});
-                        GraficoMonitoramentos(level2DoLevel1, divMonitoramento);//Processa e cria grafico
-                        
+                    var divClonada = $('#PanelFull').clone();
+                    divClonada.attr('id', divClonada.attr('id') + o.level1_Id).show();
+                    divClonada.find('.panel-body').attr('id', divClonada.find('.panel-body').attr('id') + o.level1_Id);
+                    var idDivTendencia = divClonada.find('.panel-body').attr('id');
+                    $('#plotPrincipal').append(divClonada);
+                    var div = DivManager.criaDiv(idDivTendencia, o.level1_Id, "temperatura");
+                    divClonada.find('.panel-heading').html(o.Level1Name); // Insere Titulo no Panel
 
-                        var divTarefaIndicador = DivManager.criaDiv(divMonitoramento, o.level1_Id, "tarefaIndicador");
-                        var tarefaPorIndicador = $.grep(r.listResultSetTarefaPorIndicador, function (level2, c) { return level2.level1_Id == o.level1_Id });
-                        GraficoTarefaIndicadores(tarefaPorIndicador, divTarefaIndicador, "NC por Tarefas acumuladas: " + tendencia[0].Level1Name);//Processa e cria grafico
+                    var tendencia = $.grep(r.listResultSetTendencia, function (level2, c) { return level2.level1_Id == o.level1_Id });
+                    GraficoTendencia(tendencia, div, "Tendência do Indicador: " + tendencia[0].Level1Name + " - " + meses[0], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
 
-                        level2DoLevel1.forEach(function (oo, cc) {
-                            var divTarefas = DivManager.criaDiv(divMonitoramento, oo.level2_Id, "monitoramento");
-                            var level3DoLevel2 = $.grep(r.listResultSetLevel3, function (level2, c) { return level2.level2_Id == oo.level2_Id });
-                            GraficoTarefa(level3DoLevel2, divTarefas, "Nc por Tarefa: " + level3DoLevel2[0].Level2Name, o.level1_Id);//Processa e cria grafico
-                        });
+                    //GraficoTendencia(listResults["Tendencia"], div, o);//Processa e cria grafico
+                    var divMonitoramento = DivManager.criaDiv(idDivTendencia, o.level1_Id, "monitoramento");
+                    var level2DoLevel1 = $.grep(r.listResultSetLevel2, function (level2, c) { return level2.level1_Id == o.level1_Id });
+                    GraficoMonitoramentos(level2DoLevel1, divMonitoramento);//Processa e cria grafico
 
+
+                    var divTarefaIndicador = DivManager.criaDiv(divMonitoramento, o.level1_Id, "tarefaIndicador");
+                    var tarefaPorIndicador = $.grep(r.listResultSetTarefaPorIndicador, function (level2, c) { return level2.level1_Id == o.level1_Id });
+                    GraficoTarefaIndicadores(tarefaPorIndicador, divTarefaIndicador, "NC por Tarefas acumuladas: " + tendencia[0].Level1Name);//Processa e cria grafico
+
+                    level2DoLevel1.forEach(function (oo, cc) {
+                        var divTarefas = DivManager.criaDiv(divMonitoramento, oo.level2_Id, "monitoramento");
+                        var level3DoLevel2 = $.grep(r.listResultSetLevel3, function (level2, c) { return level2.level2_Id == oo.level2_Id });
+                        GraficoTarefa(level3DoLevel2, divTarefas, "Nc por Tarefa: " + level3DoLevel2[0].Level2Name, o.level1_Id);//Processa e cria grafico
                     });
 
-                } catch (e) {
-                    console.log(e);
-                } finally {
-                    $btn.button('reset');
-                    //Hotfix: table não alinha resultados de centro no meio da tr....
-                }
-
-            }).fail(function (e, h, x) {
-                //closeLoader();
+                });
+            } catch (e) {
+                console.log(e);
+            } finally {
                 $btn.button('reset');
-                if (e.status == 0) {
-                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
-                } else {
-                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-                }
-                //openMessageModal("Alerta", e.responseJSON.Message);
-            });
-        };
+            }
+        }
+
 
         function GraficoInicialLeTodosLevel1(data) {
 
@@ -178,7 +168,7 @@
                     Chart.SimpleSerie(nc, "Total NC", Chart.CorTotalNc(), false, 1),
                     Chart.SimpleSerie(totalAvaliado, "Total Av", Chart.CorTotalAv(), false, 1)
                 ],
-                
+
             });
 
         }

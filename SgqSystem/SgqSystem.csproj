@@ -308,6 +308,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\Api\Manutencao\ManColetaDadosController.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManDataCollectITsController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
@@ -332,6 +333,7 @@
     <Compile Include="Controllers\GestaoController.cs" />
     <Compile Include="Controllers\manDataCollectITsController.cs" />
     <Compile Include="Controllers\ManutencaoController.cs" />
+    <Compile Include="Controllers\Manutencao\ManPainelGestaoController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\RelatoriosBrasil\RelatoriosSgqController.cs" />
@@ -502,6 +504,14 @@
     <Content Include="admin-lte\css\skins\_all-skins.min.css" />
     <Content Include="admin-lte\js\app.js" />
     <Content Include="admin-lte\js\app.min.js" />
+    <Content Include="App_GlobalResources\Resource.pt-br.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Resource.pt-br1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Resource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Resource1.designer.cs</LastGenOutput>
+    </Content>
     <Content Include="App_Readme\readme.txt" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-datepicker.css" />
@@ -1308,6 +1318,8 @@
     <Content Include="Views\UserSgq\Details.cshtml" />
     <Content Include="Views\UserSgq\Edit.cshtml" />
     <Content Include="Views\UserSgq\Index.cshtml" />
+    <Content Include="Views\ManPainelGestao\PainelGestaoManutencao.cshtml" />
+    <Content Include="Views\ManPainelGestao\PainelIndicadoresUniManutenção.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1349,16 +1361,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_GlobalResources\Resource.pt-br.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource.pt-br1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Resource.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource1.designer.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

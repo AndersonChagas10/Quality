@@ -60,15 +60,25 @@ namespace DTO
 
         public string startDate { get; set; }
         public string endDate { get; set; }
+
         public int level1Id { get; set; }
+        public string level1Name { get; set; }
+
         public int level2Id { get; set; }
+        public string level2Name { get; set; }
+
         public int level3Id { get; set; }
+        public string level3Name { get; set; }
+
         public int unitId { get; set; }
+        public string unitName { get; set; }
+
         public int auditorId { get; set; }
+        public string auditorName { get; set; }
+
         public int shift { get; set; }
         public int period { get; set; }
 
-       
 
     }
 }
