@@ -768,4 +768,46 @@
   <data name="headers" xml:space="preserve">
     <value>Headers</value>
   </data>
+  <data name="has_sample_total" xml:space="preserve">
+    <value>Has total sample</value>
+  </data>
+  <data name="controls" xml:space="preserve">
+    <value>Controls</value>
+  </data>
+  <data name="daily_apointments" xml:space="preserve">
+    <value>Daily Apointments</value>
+  </data>
+  <data name="daily_report" xml:space="preserve">
+    <value>Daily Report</value>
+  </data>
+  <data name="family" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="scorecard" xml:space="preserve">
+    <value>Scorecard</value>
+  </data>
+  <data name="users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="new_user" xml:space="preserve">
+    <value>New user</value>
+  </data>
+  <data name="edit_user" xml:space="preserve">
+    <value>Edit user</value>
+  </data>
+  <data name="confirm_password" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="phone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="role" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="profiles" xml:space="preserve">
+    <value>Profiles</value>
+  </data>
 </root>

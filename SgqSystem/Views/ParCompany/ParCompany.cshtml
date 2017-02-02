@@ -1,6 +1,7 @@
 ﻿@using SgqSystem.Helpers
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, new { @id = string.Empty }, FormMethod.Post,
+    new { @id = "formParCompany" }))
 {
     <div class="row">
         <div class="col-lg-6">
@@ -32,7 +33,7 @@
                     </tr>
                     <tr class="row">
                         <td class="td-erp">
-                            <button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick="indexParCompany.enviarDadosParaApi($($('form')[0]).serializeObject());" class='btn btn-primary btn-sm margin pull-right'><i class="fa fa-save"></i> @Resources.Resource.save</button>
+                            <button type='button' data-loading-text='@Resources.Resource.saving' id='btnSaveCompany' onclick='indexParCompany.enviarDadosParaApi()' class='btn btn-primary btn-sm margin pull-right'><i class="fa fa-save"></i> @Resources.Resource.save</button>
                         </td>
                     </tr>
                 </tbody>
@@ -43,7 +44,7 @@
             <table class="table-erp">
                 <tbody>
                     <tr class="row">
-                        @Table.GerarColunaButton(@Html.DropDownList("structureGroupListId", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "structureGroupListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnSaveCompany' onclick='structureGroupListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
+                        @Table.GerarColunaButton(@Html.DropDownList("structureGroupListId", new SelectList(ViewBag.listaParStructure, "Id", "Name"), Resources.Resource.select + "...", new { @id = "structureGroupListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnAddGroup' onclick='structureGroupListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
                     </tr>
                 </tbody>
             </table>
@@ -58,7 +59,7 @@
             <table class="table-erp">
                 <tbody>
                     <tr class="row">
-                        @Table.GerarColunaButton(@Html.DropDownList("clusterListId", new SelectList(ViewBag.listaParCluster, "Id", "Name"), Resources.Resource.select + "...", new { @id = "clusterListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnSaveCompany' onclick='clusterListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
+                        @Table.GerarColunaButton(@Html.DropDownList("clusterListId", new SelectList(ViewBag.listaParCluster, "Id", "Name"), Resources.Resource.select + "...", new { @id = "clusterListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnAddCluster' onclick='clusterListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
                     </tr>
                 </tbody>
             </table>
@@ -106,43 +107,32 @@
 
 <script>
 
-    function clusterListAdd(modal) {
-        if(modal){
-             
-        }else{
-            if ($('#clusterListId :selected').val() != "") {
-                if ($('#clusterList').children('tbody').children('tr[value=' + $('#clusterListId :selected').val() + ']').length == 0)
-                    $('#clusterList').children('tbody').append('<tr value=' + $('#clusterListId :selected').val() + '><td>' + $('#clusterListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeClusterList(' + $('#clusterListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
-            } 
-        }
+    function clusterListAdd() {
+        if ($('#clusterListId :selected').val() != "") {
+            if ($('#clusterList').children('tbody').children('tr[value=' + $('#clusterListId :selected').val() + ']').length == 0)
+                $('#clusterList').children('tbody').append('<tr value=' + $('#clusterListId :selected').val() + '><td>' + $('#clusterListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeClusterList(' + $('#clusterListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
+
+            if ($('#clusterList').children('tbody').children('tr[value=' + $('#clusterListId :selected').val() + ']').length == 1)
+                $("#btnAddCluster").addClass("disabled");
+
+        } 
               
     }
 
-    function structureGroupListAdd(modal) {
-        if(modal){
-            
-        }else{
-            if ($('#structureGroupListId :selected').val() != "") {
-                if ($('#structureGroupList').children('tbody').children('tr[value=' + $('#structureGroupListId :selected').val() + ']').length == 0)
-                    $('#structureGroupList').children('tbody').append('<tr value=' + $('#structureGroupListId :selected').val() + '><td>' + $('#structureGroupListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeStructureGroupList(' + $('#structureGroupListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
-            }
+    function structureGroupListAdd() {
+        if ($('#structureGroupListId :selected').val() != "") {
+            if ($('#structureGroupList').children('tbody').children('tr[value=' + $('#structureGroupListId :selected').val() + ']').length == 0)
+                $('#structureGroupList').children('tbody').append('<tr value=' + $('#structureGroupListId :selected').val() + '><td>' + $('#structureGroupListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeStructureGroupList(' + $('#structureGroupListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
         }
     }
 
-    function removeClusterList(value, modal) {
-        if(modal){
-            
-        }else{
-            $('#clusterList').children('tbody').children('tr[value=' + value + ']').remove();
-        }
+    function removeClusterList(value) {
+        $('#clusterList').children('tbody').children('tr[value=' + value + ']').remove();
+        $("#btnAddCluster").removeClass("disabled");
     }
 
     function removeStructureGroupList(value, modal) {
-        if(modal){
-            
-        }else{
-            $('#structureGroupList').children('tbody').children('tr[value=' + value + ']').remove();
-        }
+        $('#structureGroupList').children('tbody').children('tr[value=' + value + ']').remove();
     }
 
 </script>

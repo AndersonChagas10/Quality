@@ -42,6 +42,7 @@ namespace DTO.DTO.Params
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
         public List<int> removeReincidencia { get; set; }
 
+     
 
         public List<ParLevel3GroupDTO> ParLevel3Group { get; set; }
         public ParEvaluationDTO ParamEvaluation { get; set; }
@@ -90,7 +91,7 @@ namespace DTO.DTO.Params
         public List<ParEvaluationDTO> listEvaluation { get; set; }
         public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }
         public List<ParLevel2XHeaderFieldDTO> cabecalhosExclusos { get; set; }
-        
+
         public void CriaListaSampleEvaluation()
         {
             listSample = new List<ParSampleDTO>();
@@ -152,7 +153,7 @@ namespace DTO.DTO.Params
                     else
                     {
                         coiso.sampleId = 0;
-                        coiso.sampleNumber = listEvaluation.FirstOrDefault(r=>r.ParCompany_Id == null).Number;
+                        coiso.sampleNumber = listEvaluation.FirstOrDefault(r => r.ParCompany_Id == null).Number;
                     }
 
                     coiso.IsActive = i.IsActive;
@@ -165,5 +166,27 @@ namespace DTO.DTO.Params
                 }
 
         }
+
+
+        public void RegrasParamsLevel1(ParLevel1DTO parLevel1)
+        {
+            if (parLevel1.IsSpecific)
+            {
+                _PermiteCadastroEspecificoPorUnidade = parLevel1.IsSpecific;
+                _PermiteEditarCamposCabecalho = parLevel1.IsSpecificHeaderField;
+                //_PermiteEditarNumeroDeAv = parLevel1.IsSpecificHeaderField;
+                //_PermiteEditarNumeroDeAv = parLevel1.IsSpecificHeaderField;
+                _PermiteEditarVinculoComTarefa = parLevel1.IsSpecificLevel3;
+            }
+        }
+
+        public bool _PermiteCadastroEspecificoPorUnidade { get; set; }
+        public bool _PermiteEditarCamposCabecalho { get; set; }
+        public bool _PermiteEditarNumeroDeAv { get; set; }
+        public bool _PermiteEditarNumeroDeAm { get; set; }
+        public bool _PermiteEditarVinculoComTarefa { get; set; }
+        public bool _PermiteEditarMetaDoIndicadorComTarefa { get; set; }
+
+
     }
 }

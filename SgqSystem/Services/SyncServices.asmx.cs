@@ -1725,8 +1725,30 @@ namespace SgqSystem.Services
 
                     Level2Result.SampleLast = lastSampleConsolidation;
 
+                    string partialResults = null;
+                    if(c.IsPartialSave ==  true)
+                    {
+
+                        var ParLevel1DB = new SGQDBContext.ParLevel1();
+                        var parLevel1 = ParLevel1DB.getById(Level2Result.ParLevel1_Id);
+
+                        var ParLevel2DB = new SGQDBContext.ParLevel2();
+                        var parLevel2 = ParLevel2DB.getById(Level2Result.ParLevel2_Id);
+
+                        var ParLevel3DB = new SGQDBContext.ParLevel3();
+                        var parLevel3InLevel2List = ParLevel3DB.getLevel3InLevel2(parLevel1, parLevel2, Convert.ToInt32(ParCompany_Id), data);
+ 
+                        foreach (var l3 in parLevel3InLevel2List)
+                        {
+                            partialResults += "<div id=\"" + l3.Id + "\" class=\"r3l2\"></div>";
+                        }
+
+                    }
+
                     // Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"false\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\"></div>";
-                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\"></div>";
+                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\">" +
+                                partialResults +
+                               "</div>";
                 }
             }
             return Results;
@@ -2149,7 +2171,7 @@ namespace SgqSystem.Services
             //colocar autenticação
 
 
-            string APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date.AddDays(-1)); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
+            string APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
@@ -4388,6 +4410,210 @@ namespace SgqSystem.Services
             return ResultsKeys;
         }
 
+        [WebMethod]
+        public string _ConsolidationByCollectionLevel2()
+        {
+            //Converte a data no padrão de busca do Banco de Dados
+
+            string sql = "select ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE) from CollectionLevel2 GROUP BY ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE)";
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        using (SqlDataReader r = command.ExecuteReader())
+                        {
+
+                            var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1();
+                            var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2();
+
+
+                            //Se encontrar, retorna o Id da Consolidação
+                            while (r.Read())
+                            {
+                                int ParLevel1_Id = Convert.ToInt32(r[0]);
+                                int ParLevel2_Id = Convert.ToInt32(r[1]);
+                                int ParCompany_Id = Convert.ToInt32(r[2]);
+                                DateTime CollectionDate = Convert.ToDateTime(r[3]);
+
+                                var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, CollectionDate);
+                                if (consolidationLevel1 == null)
+                                {
+                                    consolidationLevel1 = InsertConsolidationLevel1(ParCompany_Id, ParLevel1_Id, CollectionDate);
+                                    if (consolidationLevel1 == null)
+                                    {
+                                        throw new Exception();
+                                    }
+                                }
+
+                                var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, consolidationLevel1.Id, ParLevel2_Id);
+
+                                if (consolidationLevel2 == null)
+                                {
+                                    consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2_Id, ParCompany_Id, CollectionDate);
+                                    if (consolidationLevel2 == null)
+                                    {
+                                        throw new Exception();
+                                    }
+                                }
+
+                            }
+                            //Se não encontrar, retorna zero
+                            return null;
+                        }
+                    }
+                }
+            }
+            //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
+                return ex.Message;
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
+                return ex.Message;
+            }
+        }
+
+        [WebMethod]
+        public string _CollectionLevel02_ConsolidationLevel2Update(string dataInicio, string dataFim)
+        {
+            string sql = "SELECT CL2.Id, CL1.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, CAST(CL2.ConsolidationDate AS DATE) " +
+                         "FROM ConsolidationLevel2 CL2 INNER JOIN " +
+                         "ConsolidationLevel1 CL1 ON CL2.ConsolidationLevel1_Id = CL1.Id   " +
+                         "WHERE CAST(CL2.ConsolidationDate AS DATE) BETWEEN '" + dataInicio + "' AND '" + dataFim + "' ";
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        using (SqlDataReader r = command.ExecuteReader())
+                        {
+
+                          //Se encontrar, retorna o Id da Consolidação
+                            while (r.Read())
+                            {
+                                int ConsolidationLevel2_Id = Convert.ToInt32(r[0]);
+                                int ParLevel1_Id = Convert.ToInt32(r[1]);
+                                int ParLevel2_Id = Convert.ToInt32(r[2]);
+                                int ParCompany_Id = Convert.ToInt32(r[3]);
+                                DateTime ConsolidationDate = Convert.ToDateTime(r[4]);
+
+                                _CollectionLevel02_Update(ConsolidationLevel2_Id, ParLevel1_Id, ParLevel2_Id, ParCompany_Id, ConsolidationDate);
+
+                            }
+                            //Se não encontrar, retorna zero
+                            return null;
+                        }
+                    }
+                }
+            }
+            //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
+                return ex.Message;
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
+                return ex.Message;
+            }
+        }
+
+        [WebMethod]
+        public string _ReConsolidation(int ParCompany_Id)
+        {
+
+            string sql = "SELECT Id, ParLevel2_Id, ConsolidationLevel1_Id FROM ConsolidationLevel2 WHERE UnitId='" + ParCompany_Id + "'";
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        using (SqlDataReader r = command.ExecuteReader())
+                        {
+
+                            //Se encontrar, retorna o Id da Consolidação
+                            while (r.Read())
+                            {
+
+                                int ConsolidationLevel2_Id = Convert.ToInt32(r[0]);
+                                int ParLevel2_Id = Convert.ToInt32(r[1]);
+                                int ConsolidationLevel1_Id = Convert.ToInt32(r[2]);
+
+                                var CollectionLevel2ConsolidationDB = new SGQDBContext.CollectionLevel2Consolidation();
+                                var collectionLevel2Consolidation = CollectionLevel2ConsolidationDB.getConsolidation(ConsolidationLevel2_Id, ParLevel2_Id);
+
+                                var updateConsolidationLevel2Id = updateConsolidationLevel2(ConsolidationLevel2_Id, "0", "0", collectionLevel2Consolidation);
+
+                                var ConsolidationLevel1XConsolidationLevel2DB = new ConsolidationLevel1XConsolidationLevel2();
+                                var consolidationLevel1XConsolidationLevel2 = ConsolidationLevel1XConsolidationLevel2DB.getConsolidation(ConsolidationLevel1_Id);
+
+                                var updateConsolidationLevel1Id = updateConsolidationLevel1(ConsolidationLevel1_Id, "0", "0", consolidationLevel1XConsolidationLevel2);
+
+
+                            }
+                            //Se não encontrar, retorna zero
+                            return null;
+                        }
+                    }
+                }
+            }
+            //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
+                return ex.Message;
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
+                return ex.Message;
+            }
+        }
+        public void _CollectionLevel02_Update(int ConsolidationLevel2_Id, int ParLevel1_Id, int ParLevel2_Id, int ParCompany_Id, DateTime ConsolidationDate)
+        {
+            //CollectionDate
+            string sql = "UPDATE CollectionLevel2  SET ConsolidationLevel2_Id='" + ConsolidationLevel2_Id + "' WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND ParLevel2_Id='" + ParLevel2_Id + "' AND UnitId='" +  ParCompany_Id + "' AND CAST(CollectionDate AS DATE) = '" + ConsolidationDate.ToString("yyyyMMdd") + "'";
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        var i = Convert.ToInt32(command.ExecuteNonQuery());
+                     
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "_CollectionLevel02_Update");
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "_CollectionLevel02_Update");
+                throw ex;
+            }
+        }
     }
 
 }

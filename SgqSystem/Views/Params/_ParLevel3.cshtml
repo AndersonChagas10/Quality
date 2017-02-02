@@ -27,63 +27,81 @@
                          , Table.PosicaoLabel.top
                          , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Dto.Description, null, new { @class = "text-danger" }))
 
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "form-control input-sm", @id = "selectTipoInput" })
-                         , @Html.Label(Resources.Resource.data_type_entry)
-                         , Table.PosicaoLabel.top
-                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }))
 
                     </tr>
-
-
-                    <tr class="row ParIntervalos" style="display: none;">
-                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, new { @Id = "parLevel3Value_IntervalMax", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
-                        <td style="display: none;">
-                            <label>@Resources.Resource.values_between</label>
-                            <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
-                        </td>
-                    </tr>
-                    <tr class="row" style="display:none;padding:10px;">
-                        <td colspan="3">
-                            *
-                            <span id="ParIntervalosLabel"></span>
-                        </td>
-                    </tr>
-
-                    <tr class="row ParBinarios" style="display: none;">
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
-                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                    </tr>
-                    <tr class="row" id="companyValueL3">
-                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeParL3Value" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
-                   , button: "<button type='button' id='btnSaveCounter' onclick='level3Value.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
-
-                    </tr>
-
                     <tr class="row">
                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                     </tr>
-
-
                 </table>
 
-                <table id="tableLevel3Value" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar tipo de dados de entrada:">
-                    <thead>
-                        <tr>
-                            <th>@Resources.Resource.data_type_entry</th>
-                            <th>@Resources.Resource.company</th>
-                            <th>@Resources.Resource.measurement_unit</th>
-                            <th>@Resources.Resource.minimum_range</th>
-                            <th>@Resources.Resource.maximum_range</th>
-                            <th>@Resources.Resource.values_between</th>
-                            <th>@Resources.Resource.positive_value</th>
-                            <th>@Resources.Resource.negative_value</th>
-                            <th style="min-width: 65px;"></th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <div class="panel-group accordion" id="level3_data_type_accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level3_data_type_accordion" href="#level3_data_type_collapse" aria-expanded="false"> @Resources.Resource.data_type_entry</a>
+                            </h4>
+                        </div>
+                        <div id="level3_data_type_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                            <div class="panel-body">
+
+                                <table class="table-erp">
+                                    <tr class="row">
+                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3InputType_Id", Model.paramsDdl.DdlParLevel3InputType, htmlAttributes: new { @class = "form-control input-sm", @id = "selectTipoInput" })
+                         , @Html.Label(Resources.Resource.data_type_entry)
+                         , Table.PosicaoLabel.top
+                         , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }), colspan: 3)
+                                    </tr>
+
+                                    <tr class="row ParIntervalos" style="display: none;">
+                                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
+                                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, new { @Id = "parLevel3Value_IntervalMax", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
+                                        <td style="display: none;">
+                                            <label>@Resources.Resource.values_between</label>
+                                            <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
+                                        </td>
+                                    </tr>
+                                    <tr class="row" style="display:none;padding:10px;">
+                                        <td colspan="3">
+                                            *
+                                            <span id="ParIntervalosLabel"></span>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="row ParBinarios" style="display: none;">
+                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
+                                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
+                                    </tr>
+                                    <tr class="row" id="companyValueL3">
+                                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeParL3Value" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
+                   , button: "<button type='button' id='btnSaveCounter' onclick='level3Value.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
+
+                                    </tr>
+                                </table>
+
+                                <table id="tableLevel3Value" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar tipo de dados de entrada:">
+                                    <thead>
+                                        <tr>
+                                            <th>@Resources.Resource.data_type_entry</th>
+                                            <th>@Resources.Resource.company</th>
+                                            <th>@Resources.Resource.measurement_unit</th>
+                                            <th>@Resources.Resource.minimum_range</th>
+                                            <th>@Resources.Resource.maximum_range</th>
+                                            <th>@Resources.Resource.values_between</th>
+                                            <th>@Resources.Resource.positive_value</th>
+                                            <th>@Resources.Resource.negative_value</th>
+                                            <th style="min-width: 65px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
 
                 @{
                     Model.levelControl = 3;
@@ -100,59 +118,59 @@
             </div>
         </div>
         <!-- Modal -->
-                    <div class="modal fade" id="modalPositiveNegative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog  modal-sm" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.positive_negative</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-xs-12">@Resources.Resource.positive_value</div>
-                                        <div class="col-xs-12">
-                                            <input class="form-control input-sm" id="modalInputPositive" />
-                                        </div>
-                                        <div class="col-xs-12">@Resources.Resource.negative_value</div>
-                                        <div class="col-xs-12">
-                                            <input class="form-control input-sm" id="modalInputNegative" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" onclick="clicModalBinarioSave()">@Resources.Resource.save</button>
-                                </div>
+        <div class="modal fade" id="modalPositiveNegative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog  modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">@Resources.Resource.positive_negative</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">@Resources.Resource.positive_value</div>
+                            <div class="col-xs-12">
+                                <input class="form-control input-sm" id="modalInputPositive" />
+                            </div>
+                            <div class="col-xs-12">@Resources.Resource.negative_value</div>
+                            <div class="col-xs-12">
+                                <input class="form-control input-sm" id="modalInputNegative" />
                             </div>
                         </div>
                     </div>
-                    @Html.HiddenFor(m => m.paramsDto.parLevel3Value.Id)
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="clicModalBinarioSave()">@Resources.Resource.save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.paramsDto.parLevel3Value.Id)
 
         <!-- Modal -->
-                    <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog  modal-sm" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.measurement_unit</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
-                                        <div class="col-xs-12">
-                                            <input class="form-control input-sm" id="modalInputMeasurementUnit" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">@Resources.Resource.save</button>
-                                </div>
+        <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog  modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">@Resources.Resource.measurement_unit</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
+                            <div class="col-xs-12">
+                                <input class="form-control input-sm" id="modalInputMeasurementUnit" />
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">@Resources.Resource.save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                    }
+        }
 
 </div>
 <script>

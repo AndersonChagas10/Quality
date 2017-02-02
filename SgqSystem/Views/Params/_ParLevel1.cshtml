@@ -27,13 +27,13 @@
                                    , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, null, new { @class = "text-danger" }))
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
                         </tr>
-                        <tr class="row">
+                        <tr class="row hide">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.save_button_on_level2), Table.PosicaoLabel.left, null, Resources.Resource.save_button_on_level2_popover)
                             <td>
                                 <p style="color:red; font-weight:bold;">ERRO!</p>
                             </td>
                         </tr>
-                        <tr class="row">
+                        <tr class="row hide">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasNoApplicableLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.not_applicable_on_level_2), Table.PosicaoLabel.left, null, Resources.Resource.not_applicable_on_level_2_popover)
                             <td>
                                 <p style="color:red; font-weight:bold;">ERRO!</p>
@@ -53,6 +53,7 @@
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, null, Resources.Resource.allow_specific_register_by_unit_popover)
                         </tr>
+
                         <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_field_edition_of_the_header, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                         </tr>
@@ -69,10 +70,11 @@
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificGoal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_goal_of_the_level1_by_unit, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                         </tr>
                         <tr class="row">
-                            @Table.GerarColunaRadioButton(@Html.Label(Resources.Resource.standard), @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true", new { @class = "icheck" }), @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false", new { @class = "icheck" }), Resources.Resource.conform, Resources.Resource.not_conform, Table.PosicaoLabel.top, null, null)
+                           <!-- Table.GerarColunaRadioButton(Html.Label(Resources.Resource.standard), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true", new { class = "icheck" }), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false", new { class = "icheck" }), Resources.Resource.conform, Resources.Resource.not_conform, Table.PosicaoLabel.top, null, null)-->
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.standard, new { @class = "" }), Table.PosicaoLabel.left, null, null)
                         </tr>
                         <tr class="row">
-                            @Table.GerarColunaRadioButton(@Html.Label(Resources.Resource.register_total_evaluated), @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, "true", new { @class = "radio-erp" }), @Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, "false", new { @class = "radio-erp" }), Resources.Resource.permanent, Resources.Resource.variable, Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsFixedEvaluetionNumber, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.register_total_evaluated, new { @class = "" }), Table.PosicaoLabel.left, null, null)
                         </tr>
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsLimitedEvaluetionNumber, new { @class = "form-control checkbox-erp", @checked = "checked" }), @Html.Label(Resources.Resource.limited_number_of_evaluations), Table.PosicaoLabel.left, null, null)
@@ -81,6 +83,10 @@
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                         </tr>
+
+                        @*<tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
+                        </tr>*@
 
                     </tbody>
                 </table>
@@ -247,9 +253,9 @@
                                                     <th style="width:20%">Nível do campo</th>
                                                     <th style="width:20%">Nome</th>
                                                     <th style="width:15%">Tipo</th>
-                                                    <th style="width:15%">Preview</th>
+                                                    <th style="width:10%">Preview</th>
                                                     <th style="width:15%"></th>
-                                                    <th style="width:15%"></th>
+                                                    <th style="width:20%">Padrão</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -341,8 +347,32 @@
 
                                                             </td>
                                                             <td>
-                                                                <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-primary btn-xs">Padrão</button>
+                                                                @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
+                                                                {
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-btn">
+                                                                            <select class="form-control input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id">
+                                                                                <option value="0" selected>Nenhum</option>
+                                                                                @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
+                                                                                {
+                                                                                    if (radioOpt.IsDefaultOption == true)
+                                                                                    {
+                                                                                        <option value="@radioOpt.Id" selected>@radioOpt.Name</option>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <option value="@radioOpt.Id">@radioOpt.Name</option>
+                                                                                    }
+                                                                                }
+                                                                            </select>
+                                                                            <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+
                                                             </td>
+
+
 
                                                         </tr>
                                                     }
@@ -420,7 +450,7 @@
                 <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
         </div>
-                    }
+    }
 </div>
 
 
@@ -466,20 +496,18 @@
 
     var Cabecalhos = {
         SetMultipleDefault: function(elem){
-            var idMultiple = $(elem).parent().parent().find('select option:selected').val();
-            var idHeader = $(elem).parent().parent().find('select').attr('id');
-            if(parseInt(idMultiple) > 0){
-                $.post(urlSetDefaultCCAB + "/" + idHeader+"/"+idMultiple, function(r){
-                    console.log(r);
-                    if(r){
-                        if(r.IsDefaultOption == true){
-                            openMessageModal("Sucesso", r.Name+" se tornou o valor padrão.");
-                        }else{
-                            openMessageModal("Sucesso", r.Name+" não é mais o valor padrão.");
-                        }
+            var idMultiple = $(elem).siblings('select').children('option:selected').val();
+            var idHeader = $(elem).siblings('select').attr('id');
+            $.post(urlSetDefaultCCAB + "/" + idHeader+"/"+idMultiple, function(r){
+                console.log(r);
+                if(r){
+                    if(r.IsDefaultOption == true){
+                        openMessageModal("Sucesso", r.Name+" se tornou o valor padrão.");
+                    }else{
+                        openMessageModal("Sucesso", " Não existe mais um valor padrão.");
                     }
-                });
-            }
+                }
+            });
         },
         SetRequired: function(e, id){
             $.post(urlSetRequiredCCAB + "/" + id, function(r){

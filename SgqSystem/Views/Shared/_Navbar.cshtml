@@ -15,9 +15,14 @@
 <div class="page-header navbar navbar-fixed-top">
     <div class="page-header-inner">
         <div class="page-logo hidden-sm hidden-xs" style="min-width: 235px;">
-            <a href="@Url.Action("Index", "Home")">
+            <a href="@Url.Action("Index", "Home")" class="hide">
                 <img style="height: 45px; margin: 4px;" src="~/Imagens/Logo.png" />
             </a>
+            <div class="pull-left">
+                <a href="@Url.Action("Index", "Home")">
+                    <h1 style="color: #ffffff; margin-top: 5px !important; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif">SGQ</h1>
+                </a>
+            </div>
             <div class="menu-toggler sidebar-toggler hide">
                 <span></span>
             </div>
@@ -27,7 +32,7 @@
         @*@if (Session["username"] != null)*@
         @if (HttpContext.Current.Request.Cookies["webControlCookie"] != null)
             {
-            <div class="hor-menu" id="navbarLeft">
+            <div class="hor-menu hide" id="navbarLeft">
                 <ul class="nav navbar-nav pull-left">
                     <li class="mega-menu-dropdown" aria-haspopup="true">
                         <a href="@urlHome" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
@@ -181,11 +186,17 @@
         function openLeftSidebar() {
             $('.page-sidebar-menu').removeClass('page-sidebar-menu-closed');
             $('body').removeClass('page-sidebar-closed');
+            $('#sidebar-wrapper').css('margin-left', '-65px');
+            $('.report-wrapper').css('margin-left', '240px');
+
         }
 
         function closeLeftSidebar() {
             $('.page-sidebar-menu').addClass('page-sidebar-menu-closed');
             $('body').addClass('page-sidebar-closed');
+            $('#sidebar-wrapper').css('margin-left', '-255px');
+            $('.report-wrapper').css('margin-left', '50px');
         }
 
+        
 </script>

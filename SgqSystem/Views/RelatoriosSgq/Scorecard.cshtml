@@ -27,6 +27,8 @@
 
 <script type="text/javascript">
 
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
 
     var url1 = '@Html.Raw(@urlScorecard)';
     var $btn = $('#btnSend');
@@ -129,42 +131,6 @@
             },
             fnDrawCallback: function (data, d, o) {
 
-                //var api = this.api();
-                //var scorecardTotal = 0;
-                //var pontosTotal = 0;
-                //var pontosAtingidos = 0;
-
-                ////sum ( atingidos  - disputados)
-                //for (var i = 0 ; i < data.aoData.length ; i++) {
-                //    for (var j = 0 ; j < data.aoData[i]._aData.length ; j++) {
-
-                //        /*Se for "avaliado"*/
-                //        if (data.aoData[0]._aData.AV > 0) {
-                //            pontosTotal += data.aoData[0]._aData.PontosAtingidos - data.aoData[0]._aData.Pontos;
-                //            scorecardTotal += data.aoData[0]._aData.Scorecard;
-                //        }
-
-                //    }
-                //}
-               
-                //$("#results").find('tbody')
-                //       .append($('<tr>')
-                //           .append($('<td >', { colspan: 7 }))
-                //           .append($('<td class=" dt-center">')
-                //               .text('Total')
-                //           )
-                //           .append($('<td class=" dt-center">')
-                //               .text(pontosTotal)
-                //           )
-                //           .append($('<td >', { colspan: '2' }))
-                //           .append($('<td class=" dt-center">')
-                //               .text(pontosTotal)
-                //           )
-                //           .append($('<td class=" dt-center">')
-                //               .text(scorecardTotal + "%")
-                //           )
-                //       );
-
             }
         });
 
@@ -238,6 +204,8 @@
     $(document).ready(function () {
         formControl.showFullCallendar();
         formControl.showUnit();
+
+        openLeftSidebar();
     });
         </script>
 

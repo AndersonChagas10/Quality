@@ -167,7 +167,9 @@
         /*GET*/
 
         function GetGraficoIndicadorUnidade (unidade) {
-            $.post(urlGraficoIndicador + "/" + unidade, function (r) {
+
+
+            $.post(urlGraficoIndicador + "/" + unidade, enviar, function (r) {
                 try {
                     GraficoIndicadorUnidade(r);
                 } catch (e) {
@@ -187,7 +189,7 @@
 
         function GetMonitoramento(indicador){
 
-            $.post(urlGraficoMonitoramento + "/" + indicador, function (r) {
+            $.post(urlGraficoMonitoramento + "/" + escape(indicador), function (r) {
                 try {
                     GraficoMonitoramento(r);
                 } catch (e) {

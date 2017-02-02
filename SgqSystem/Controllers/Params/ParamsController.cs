@@ -45,14 +45,12 @@ namespace SgqSystem.Controllers.Params
 
         public ActionResult GetParLevel2ById(int level2Id, int level3Id = 0, int level1Id = 0)
         {
-            ViewModel.levelControl = 2;
             if (level2Id <= 0) /*Retorna View Vazia*/
                 return PartialView("_ParLevel2", ViewModel);
 
-            var viewModelPreenchido = ViewModel;
-            viewModelPreenchido.paramsDto = _paramDomain.GetLevel2(level2Id, level3Id, level1Id);
-
-            return PartialView("_ParLevel2", viewModelPreenchido);/*Retorna View com Model ParLevel2 encontrado no DB.*/
+            ViewModel.levelControl = 2;
+            ViewModel.paramsDto = _paramDomain.GetLevel2(level2Id, level3Id, level1Id);
+            return PartialView("_ParLevel2", ViewModel);/*Retorna View com Model ParLevel2 encontrado no DB.*/
         }
         
         public ActionResult GetParLevel3ById(int id, int? idParLevel2 = 0)
