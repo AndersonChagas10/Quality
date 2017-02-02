@@ -85,8 +85,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
 
         [HttpPost]
-        [Route("GraficoIndicador/{unidade}")]
-        public List<NaoConformidadeResultsSet> GraficoIndicador(string unidade, [FromBody] FormularioParaRelatorioViewModel form)
+        [Route("GraficoIndicador")]
+        public List<NaoConformidadeResultsSet> GraficoIndicador([FromBody] FormularioParaRelatorioViewModel form)
         {
             //_list = CriaMockGraficoNcPorUnidadeIndicador();
 
@@ -154,7 +154,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         INNER JOIN ParCompany UNI " +
                 "\n         ON UNI.Id = CL1.UnitId " +
                 "\n         WHERE CL1.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
-                "\n         AND UNI.Name = '" + unidade + "'" +
+                "\n         AND UNI.Name = '" + form.unitName + "'" +
 
                 "\n     ) S1 " +
 
@@ -174,24 +174,76 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         }
 
         [HttpPost]
-        [Route("GraficoMonitoramento/{indicador}")]
-        public List<NaoConformidadeResultsSet> GraficoMonitoramento(string indicador)
+        [Route("GraficoMonitoramento")]
+        public List<NaoConformidadeResultsSet> GraficoMonitoramento([FromBody] FormularioParaRelatorioViewModel form)
         {
-            _list = CriaMockGraficoMonitoramento();
+            //_list = CriaMockGraficoMonitoramento();
 
             //var query = new NaoConformidadeResultsSet().Select(form._dataInicio, form._dataFim, form.unitId);
 
-            //using (var db = new SgqDbDevEntities())
-            //{
-            //    _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
-            //}
+
+
+            var query = "" +
+               "\n SELECT " +
+               "\n  " +
+               "\n  --level1_Id " +
+               "\n  --,Level1Name " +
+               "\n  --,level2_Id " +
+               "\n Level2Name AS MonitoramentoName " +
+               "\n --,Unidade_Id " +
+               "\n --,Unidade " +
+               "\n ,sum(Av) as av " +
+               "\n ,sum(NC) as nc " +
+               "\n ,sum(NC) / Sum(Av) AS [Proc] " +
+               "\n FROM " +
+               "\n ( " +
+               "\n 	SELECT " +
+               "\n 	 MON.Id			AS level2_Id " +
+               "\n 	,MON.Name		AS Level2Name " +
+               "\n 	,IND.Id AS level1_Id " +
+               "\n 	,IND.Name AS Level1Name " +
+               "\n 	,UNI.Id			AS Unidade_Id " +
+               "\n 	,UNI.Name		AS Unidade " +
+               "\n 	,CASE  " +
+               "\n 	WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation " +
+               "\n 	WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation " +
+               "\n 	WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult " +
+               "\n 	ELSE 0 " +
+               "\n 	END AS Av " +
+               "\n 	,CASE  " +
+               "\n 	WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiDefects " +
+               "\n 	WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects " +
+               "\n 	WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult " +
+               "\n 	ELSE 0 " +
+               "\n 	END AS NC " +
+               "\n 	FROM ConsolidationLevel2 CL2 " +
+               "\n 	INNER JOIN ConsolidationLevel1 CL1 " +
+               "\n 	ON CL1.Id = CL2.ConsolidationLevel1_Id " +
+               "\n 	INNER JOIN ParLevel1 IND " +
+               "\n 	ON IND.Id = CL1.ParLevel1_Id " +
+               "\n 	INNER JOIN ParLevel2 MON " +
+               "\n 	ON MON.Id = CL2.ParLevel2_Id " +
+               "\n 	INNER JOIN ParCompany UNI " +
+               "\n 	ON UNI.Id = CL1.UnitId " +
+               "\n 	WHERE CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+               "\n 	AND UNI.Name = '" + form.unitName + "'" +
+               "\n 	AND IND.Name = '" + form.level1Name + "' " + //
+               
+               "\n ) S1 " +
+
+            "\n  GROUP BY Level2Name ";
+
+            using (var db = new SgqDbDevEntities())
+            {
+                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+            }
 
             return _list;
         }
 
         [HttpPost]
-        [Route("GraficoTarefa/{indicador}")]
-        public List<NaoConformidadeResultsSet> GraficoTarefa(string indicador)
+        [Route("GraficoTarefa")]
+        public List<NaoConformidadeResultsSet> GraficoTarefa([FromBody] FormularioParaRelatorioViewModel form)
         {
             _list = CriaMockGraficoTarefas();
 
@@ -206,8 +258,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         }
 
         [HttpPost]
-        [Route("GraficoTarefasAcumulada/{indicador}")]
-        public List<NaoConformidadeResultsSet> GraficoTarefasAcumulada(string indicador)
+        [Route("GraficoTarefasAcumulada")]
+        public List<NaoConformidadeResultsSet> GraficoTarefasAcumulada([FromBody] FormularioParaRelatorioViewModel form)
         {
             _list = CriaMockGraficoTarefasAcumuladas();
 
