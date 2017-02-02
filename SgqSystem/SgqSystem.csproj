@@ -263,8 +263,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_GlobalResources\Resource.designer.cs" />
-    <Compile Include="App_GlobalResources\Resource.pt-br.designer.cs" />
     <Compile Include="App_GlobalResources\Resource.pt-br1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
