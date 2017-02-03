@@ -1076,6 +1076,38 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SgqDbDev.dbo.RoleSGQ' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="RoleSGQ">
+          <Key>
+            <PropertyRef Name="ScreenComponent_Id" />
+          </Key>
+          <Property Name="ScreenComponent_Id" Type="int" Nullable="false" />
+          <Property Name="Role" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SgqDbDev.dbo.RoleType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="RoleType">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Type" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SgqDbDev.dbo.ScreenComponent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ScreenComponent">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="HashKey" />
+            <PropertyRef Name="Component" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="HashKey" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Component" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Type" Type="int" />
+        </EntityType>
         <EntityType Name="Shift">
           <Key>
             <PropertyRef Name="Id" />
@@ -2716,6 +2748,26 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
     [ResultLevel2HeaderField].[IsActive] AS [IsActive]
     FROM [dbo].[ResultLevel2HeaderField] AS [ResultLevel2HeaderField]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="RoleSGQ" EntityType="Self.RoleSGQ" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [RoleSGQ].[ScreenComponent_Id] AS [ScreenComponent_Id], 
+    [RoleSGQ].[Role] AS [Role]
+    FROM [dbo].[RoleSGQ] AS [RoleSGQ]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="RoleType" EntityType="Self.RoleType" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [RoleType].[Id] AS [Id], 
+    [RoleType].[Type] AS [Type]
+    FROM [dbo].[RoleType] AS [RoleType]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ScreenComponent" EntityType="Self.ScreenComponent" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ScreenComponent].[Id] AS [Id], 
+    [ScreenComponent].[HashKey] AS [HashKey], 
+    [ScreenComponent].[Component] AS [Component], 
+    [ScreenComponent].[Type] AS [Type]
+    FROM [dbo].[ScreenComponent] AS [ScreenComponent]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="DelDados" EntityType="Self.DelDados" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [DelDados].[TESTE] AS [TESTE]
@@ -3733,6 +3785,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="Result_Level3" EntitySet="Result_Level3" />
           </AssociationSet>
           <EntitySet Name="ParLevel2XHeaderField" EntityType="SgqDbModel.ParLevel2XHeaderField" />
+          <EntitySet Name="RoleSGQ" EntityType="SgqDbModel.RoleSGQ" />
+          <EntitySet Name="RoleType" EntityType="SgqDbModel.RoleType" />
+          <EntitySet Name="ScreenComponent" EntityType="SgqDbModel.ScreenComponent" />
           </EntityContainer>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -6479,6 +6534,32 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="RoleSGQ">
+          <Key>
+            <PropertyRef Name="ScreenComponent_Id" />
+          </Key>
+          <Property Name="ScreenComponent_Id" Type="Int32" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RoleType">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Type" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ScreenComponent">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="HashKey" />
+            <PropertyRef Name="Component" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="HashKey" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Component" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7891,6 +7972,32 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
                 <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleSGQ">
+            <EntityTypeMapping TypeName="SgqDbModel.RoleSGQ">
+              <MappingFragment StoreEntitySet="RoleSGQ">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="ScreenComponent_Id" ColumnName="ScreenComponent_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleType">
+            <EntityTypeMapping TypeName="SgqDbModel.RoleType">
+              <MappingFragment StoreEntitySet="RoleType">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScreenComponent">
+            <EntityTypeMapping TypeName="SgqDbModel.ScreenComponent">
+              <MappingFragment StoreEntitySet="ScreenComponent">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Component" ColumnName="Component" />
+                <ScalarProperty Name="HashKey" ColumnName="HashKey" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

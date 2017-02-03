@@ -807,4 +807,34 @@
   <data name="profiles" xml:space="preserve">
     <value>Perfis</value>
   </data>
+  <data name="profiles_and_roles" xml:space="preserve">
+    <value>Perfis e Regras</value>
+  </data>
+  <data name="roles" xml:space="preserve">
+    <value>Regras</value>
+  </data>
+  <data name="roles_sgq" xml:space="preserve">
+    <value>Regras SGQ</value>
+  </data>
+  <data name="screen_components" xml:space="preserve">
+    <value>Componentes de Tela</value>
+  </data>
+  <data name="new_role" xml:space="preserve">
+    <value>Nova Regra</value>
+  </data>
+  <data name="new_component" xml:space="preserve">
+    <value>Novo Componente</value>
+  </data>
+  <data name="component" xml:space="preserve">
+    <value>Componente</value>
+  </data>
+  <data name="hashkey" xml:space="preserve">
+    <value>HashKey</value>
+  </data>
+  <data name="type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="screen_component" xml:space="preserve">
+    <value>Componente de Tela</value>
+  </data>
 </root>

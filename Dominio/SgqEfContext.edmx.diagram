@@ -187,6 +187,9 @@
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" />
         <AssociationConnector Association="SgqDbModel.FK_Result_Level3_CollectionLevel2" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel2XHeaderField" Width="1.5" PointX="9.375" PointY="11.75" />
+        <EntityTypeShape EntityType="SgqDbModel.RoleSGQ" Width="1.5" PointX="11.75" PointY="10.75" />
+        <EntityTypeShape EntityType="SgqDbModel.RoleType" Width="1.5" PointX="0.75" PointY="13.75" />
+        <EntityTypeShape EntityType="SgqDbModel.ScreenComponent" Width="1.5" PointX="13.75" PointY="4.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
