@@ -1,0 +1,42 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "Indicadores Manutencão Por Unidade";
+    var url = Url.Action("Index", "Home");
+    var urlGrafico1 = Url.Action("Grafico1", "api/RelDiario");
+    var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/RelDiario");
+}
+
+<style>
+    .panel-info {
+        border-color: #999;
+    }
+
+        .panel-info > .panel-heading {
+            background-color: #ccc;
+            border-color: #999;
+            color: #333;
+        }
+
+    .chart-inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<div class="page-content" style="min-height: 600px;">
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+    <div id="formBodyContent">
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+        <div id="load"></div>
+        <div id="plotPrincipal"></div>
+        <div class="panel panel-info" id="PanelFull" style="display:none">
+            <div class="panel-heading"></div>
+            <div class="panel-body" id="g1">
+            </div>
+            *O Peso atribuído as Tarefas influenciam no resultado gráfico.
+        </div>
+        @*<table id="results" class="display" cellspacing="0" style="width:100%"></table>*@
+    </div>
+</div>

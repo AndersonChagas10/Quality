@@ -14,26 +14,28 @@ namespace SgqSystem.Controllers.Api.Manutencao
         [HttpPost]
         [HandleApi()]
         [Route("SaveCreate")]
-        public int SaveCreate(ManDataCollectIT manDataCollectITs)
+        public int SaveCreate(Obj obj)
         {
-            string sql = "INSERT INTO [dbo].[ManDataCollectIT]" +
-              "([AddDate]" +
-              ",[ReferenceDatetime]" +
-              ",[UserSGQ_Id]" +
-              ",[ParCompany_Id]" +
-              ",[DimManutencaoColetaITs_id]" +
-              ",[AmountData]" +
-              ",[Comments]" +
-              ",[IsActive])" +
-              "VALUES" +
-              "(" + DateTime.Now + "," +
-              "," + manDataCollectITs.ReferenceDatetime +
-              //"," + Guard.GetUsuarioLogado_Id(System.Web.HttpContext) +
-              "," + manDataCollectITs.ParCompany_Id +
-              "," + manDataCollectITs.DimManutencaoColetaITs_id +
-              "," + manDataCollectITs.AmountData +
-              "," + manDataCollectITs.Comments +
-              "," + true + ")";
+            string sql = "";
+
+            //string sql = "INSERT INTO [dbo].[ManDataCollectIT]" +
+            //  "([AddDate]" +
+            //  ",[ReferenceDatetime]" +
+            //  ",[UserSGQ_Id]" +
+            //  ",[ParCompany_Id]" +
+            //  ",[DimManutencaoColetaITs_id]" +
+            //  ",[AmountData]" +
+            //  ",[Comments]" +
+            //  ",[IsActive])" +
+            //  "VALUES" +
+            //  "(" + DateTime.Now + "," +
+              //"," + manDataCollectITs.ReferenceDatetime +
+              ////"," + Guard.GetUsuarioLogado_Id(System.Web.HttpContext) +
+              //"," + manDataCollectITs.ParCompany_Id +
+              //"," + manDataCollectITs.DimManutencaoColetaITs_id +
+              //"," + manDataCollectITs.AmountData +
+              //"," + manDataCollectITs.Comments +
+              //"," + true + ")";
 
             using (var db = new SgqDbDevEntities())
             {

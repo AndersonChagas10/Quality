@@ -263,8 +263,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_GlobalResources\Resource.designer.cs" />
-    <Compile Include="App_GlobalResources\Resource.pt-br.designer.cs" />
+    <Compile Include="App_GlobalResources\Resource.pt-br1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.pt-br.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Resource1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -300,6 +308,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\Api\Manutencao\ManColetaDadosController.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManDataCollectITsController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
@@ -324,10 +333,10 @@
     <Compile Include="Controllers\GestaoController.cs" />
     <Compile Include="Controllers\manDataCollectITsController.cs" />
     <Compile Include="Controllers\ManutencaoController.cs" />
+    <Compile Include="Controllers\Manutencao\ManPainelGestaoController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\RelatoriosBrasil\RelatoriosSgqController.cs" />
-    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserSgqController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
@@ -423,7 +432,6 @@
     <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
     <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
     <Compile Include="Mappers\ResultLevel3MapperProfile.cs" />
-    <Compile Include="Mappers\RoleMapperProfile.cs" />
     <Compile Include="Mappers\ShiftMapperProfile.cs" />
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMapperProfile.cs" />
@@ -496,6 +504,14 @@
     <Content Include="admin-lte\css\skins\_all-skins.min.css" />
     <Content Include="admin-lte\js\app.js" />
     <Content Include="admin-lte\js\app.min.js" />
+    <Content Include="App_GlobalResources\Resource.pt-br.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Resource.pt-br1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Resource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Resource1.designer.cs</LastGenOutput>
+    </Content>
     <Content Include="App_Readme\readme.txt" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-datepicker.css" />
@@ -1302,9 +1318,8 @@
     <Content Include="Views\UserSgq\Details.cshtml" />
     <Content Include="Views\UserSgq\Edit.cshtml" />
     <Content Include="Views\UserSgq\Index.cshtml" />
-    <Content Include="Views\Role\Index.cshtml" />
-    <Content Include="Views\Role\ScreenComponent.cshtml" />
-    <Content Include="Views\Role\RoleSGQ.cshtml" />
+    <Content Include="Views\ManPainelGestao\PainelGestaoManutencao.cshtml" />
+    <Content Include="Views\ManPainelGestao\PainelIndicadoresUniManutenção.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1346,16 +1361,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_GlobalResources\Resource.pt-br.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource.pt-br1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Resource.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource1.designer.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

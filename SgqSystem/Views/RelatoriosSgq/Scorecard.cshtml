@@ -10,203 +10,171 @@
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
     <div id="formBodyContent">
-   
+
         <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
-             
-            <button type="button" class="btn btn-primary" id="btnSend" onclick="Send(true);">Atualizar Scorecard</button>
+
+            <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">Atualizar Scorecard</button>
         </div>
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-
-        <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+        <div id="load"></div>
+        <div id="divTable">
+            <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+        </div>
     </div>
 </div>
 
 @section Scripts {
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    $(".sidebar-toggler").removeClass("hide");
-    $(".page-sidebar-wrapper").removeClass("hide");
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
 
-    var url1 = '@Html.Raw(@urlScorecard)';
-    var $btn = $('#btnSend');
-    $('#simpleCallendar').hide().attr('disabled', true);
+        var url1 = '@Html.Raw(@urlScorecard)';
+        var $btn = $('#btnSend');
+        $('#simpleCallendar').hide().attr('disabled', true);
 
-    $(document).ready(function () {
-        $("#btnSend").click(function (e) {
-            Send();
+        $(document).ready(function () {
+            $("#btnSend").click(function (e) {
+                Send(true);
+            });
         });
-    });
 
-    function Send(toggle) {
-        $btn.button('loading');
-        $('#results').empty();
+        function Send(toggle) {
+            $btn.button('loading');
+            $('#results').empty();
 
-        if (!ValidaDadosParaEnvio()) {
-            $btn.button('reset');
-            return;
-        }
-
-        //AJAX
-        $.post(url1, enviar, function (r) {
-            try {
-                var retornoArray = [];
-                var arrayItarator = r.Retorno;
-                if (toggle == undefined)
-                    $('#menu-toggle').click();
-                GerarTabela(r);
-            } catch (e) {
-                console.log(e);
-            } finally {
+            if (!ValidaDadosParaEnvio()) {
                 $btn.button('reset');
-                //Hotfix: table não alinha resultados de centro no meio da tr....
+                return;
             }
-        }).fail(function (e, h, x) {
-            //closeLoader();
-            $btn.button('reset');
-            if (e.status == 0) {
-                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
-            } else {
-                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-            }
-            //openMessageModal("Alerta", e.responseJSON.Message);
-        });
-    };
-    function GerarTabela(retornoArray) {
 
-        var table = $('#results').empty().DataTable({
-            data: retornoArray,
-            columns: [{ title: "Cluster", mData: "ClusterName" },
-                { title: "Regional", mData: "RegionalName" },
-                { title: "Empresa", mData: "ParCompanyName" },
-                { title: "Tipo Indicador", mData: "TipoIndicadorName" },
-                { title: "Indicador", mData: "Level1Name" },
-                { title: "AV", mData: "AV" },
-                { title: "NC/C", mData: "NC" },
-                { title: "Critério", mData: "CriterioName" },
-                { title: "Pontos", mData: "Pontos" },
-                { title: "Meta %", mData: "Meta" },
-                { title: "Real %", mData: "Real" },
-                { title: "Pontos Ating.", mData: "PontosAtingidos" },
-                { title: "Scorecard", mData: "Scorecard" },
-            ],
-            fixedHeader: {
-                header: true,
-                footer: true
-            },
-            scrollX: true,
-            //lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-            //pageLength: 10,
-            paginate: false,
-            paging: false,
-            bSort: false,
-            loadingRecords: true,
-            destroy: true,
-            info: true,
-            responsive: true,
-            initComplete: function () {
-                $('#loading').hide();
-                setTimeout(function (e) {
-                    var oTable = $('#results').dataTable();
-                    if (oTable.length > 0) {
-                        oTable.fnAdjustColumnSizing();
-                    }
-                }, 100);
-            },
-            createdRow: function (row, data, index) {
+            $('#divTable').hide();
+            EasyAjax(url1, enviar, GerarTabela, "load", toggle);//AJAX
+        };
+        function GerarTabela(retornoArray) {
+            $('#divTable').show();
 
-                if (data["Scorecard"] > 99 || (data["CriterioName"] == 'Maior' && (data["AV"] == 0 && data["NC"] == 0))) {
-                    // green
-                    $('td', row).eq(12).css("background-color", '#33FF33');
-                } else if (data["Scorecard"] < 70) {
-                    // red
-                    $('td', row).eq(12).css("background-color", '#FF6666');
-                }
-                else if (data["Scorecard"] < 99) {
-                    $('td', row).eq(12).css("background-color", 'yellow');
-                }
-
-            },
-            fnDrawCallback: function (data, d, o) {
-
-            }
-        });
-
-        new $.fn.dataTable.Buttons(table, {
-            buttons: [
-                 {
-                     extend: 'colvisGroup',
-                     text: 'Sintético',
-
-                     show: [3, 4, 5, 6, 9, 10, 12],
-                     hide: [0, 1, 2, 7, 8, 11]
-                 },
-                {
-                    extend: 'colvisGroup',
-                    text: 'Analítico',
-                    show: ':hidden'
+            var table = $('#results').empty().DataTable({
+                data: retornoArray,
+                columns: [{ title: "Cluster", mData: "ClusterName" },
+                    { title: "Regional", mData: "RegionalName" },
+                    { title: "Empresa", mData: "ParCompanyName" },
+                    { title: "Tipo Indicador", mData: "TipoIndicadorName" },
+                    { title: "Indicador", mData: "Level1Name" },
+                    { title: "AV", mData: "AV" },
+                    { title: "NC/C", mData: "NC" },
+                    { title: "Critério", mData: "CriterioName" },
+                    { title: "Pontos", mData: "Pontos" },
+                    { title: "Meta %", mData: "Meta" },
+                    { title: "Real %", mData: "Real" },
+                    { title: "Pontos Ating.", mData: "PontosAtingidos" },
+                    { title: "Scorecard", mData: "Scorecard" },
+                ],
+                destroy: true,
+                fixedHeader: {
+                    header: true,
+                    footer: true
                 },
-                {
-                    extend: 'print',
-                    customize: function (win) {
-                        //$(win.document.body)
-                        //    .css( 'font-size', '10pt' )
-                        //    .prepend(
-                        //        '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
-                        //    );
+                scrollX: true,
+                paginate: false,
+                paging: false,
+                bSort: false,
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                responsive: true,
+                initComplete: function () {
+                    $('#loading').hide();
+                    setTimeout(function (e) {
+                        var oTable = $('#results').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 100);
+                },
+                createdRow: function (row, data, index) {
 
-                        $(win.document.body).find('table')
-                            .addClass('compact')
-                            .css('font-size', 'inherit');
+                    if (data["Scorecard"] > 99 || (data["CriterioName"] == 'Maior' && (data["AV"] == 0 && data["NC"] == 0))) {
+                        // green
+                        $('td', row).eq(12).css("background-color", '#33FF33');
+                    } else if (data["Scorecard"] < 70) {
+                        // red
+                        $('td', row).eq(12).css("background-color", '#FF6666');
+                    }
+                    else if (data["Scorecard"] < 99) {
+                        $('td', row).eq(12).css("background-color", 'yellow');
+                    }
+
+                },
+                fnDrawCallback: function (data, d, o) {
+
+                }
+            });
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                     {
+                         extend: 'colvisGroup',
+                         text: 'Sintético',
+
+                         show: [3, 4, 5, 6, 9, 10, 12],
+                         hide: [0, 1, 2, 7, 8, 11]
+                     },
+                    {
+                        extend: 'colvisGroup',
+                        text: 'Analítico',
+                        show: ':hidden'
                     },
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'excelHtml5',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                //'excel',
-                'pdf',
-                //'colvis',
-                //, 'print'
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    'pdf',
+                ]
+            });
 
+            table.buttons(0, null).container().prependTo(
+                table.table().container()
+            );
 
-            ]
-        });
-
-        table.buttons(0, null).container().prependTo(
-            table.table().container()
-        );
-
-    }
-    function ValidaDadosParaEnvio() {
-        GuardJs.resetForValidation();
-        GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
-        /*Especifico*/
-        if (!($('#unitId :selected').val() > 0))
-        {
-            GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
-            return false;
         }
-        if (!GuardJs.isValid)
-            return !GuardJs.isValid;
-        GuardJs.esconderMensagem();
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            /*Especifico*/
+            if (!($('#unitId :selected').val() > 0)) {
+                GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
+                return false;
+            }
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
 
-        return true;
-    }
+            return true;
+        }
 
-    $(document).ready(function () {
-        formControl.showFullCallendar();
-        formControl.showUnit();
+        $(document).ready(function () {
+            formControl.showFullCallendar();
+            formControl.showUnit();
 
-        openLeftSidebar();
-    });
-        </script>
+            openLeftSidebar();
+        });
+    </script>
 
 }

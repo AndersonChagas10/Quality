@@ -31,13 +31,37 @@ namespace SgqSystem.Controllers.Api
                 var totalPontosAtingidos = 0.0M;
                 var totalScorecard = 0.0M;
 
-                foreach (var i in _list)
+                var pontosDisputados = 0.0M;
+                var pontosAtingidos = 0.0M;
+
+                foreach (var i in _list.ToList())
                 {
+
+                    pontosDisputados = 0;
+
+                    if (i.Pontos != null)
+                    {
+                        pontosDisputados = i.Pontos.Value;
+                    }
+                    else
+                    {
+                        _list.Remove(i);
+                    }
+
                     if (i.AV > 0)
                     {
 
-                        totalPontosDisputados += i.Pontos.Value;
-                        totalPontosAtingidos += i.PontosAtingidos.Value;
+                        totalPontosDisputados += pontosDisputados;
+
+
+                        pontosAtingidos = 0;
+
+                        if(i.PontosAtingidos != null)
+                        {
+                            pontosAtingidos = i.PontosAtingidos.Value;
+                        }
+
+                        totalPontosAtingidos += pontosAtingidos;
 
 
                         //total.Pontos += i.PontosAtingidos - i.Pontos;
@@ -47,6 +71,7 @@ namespace SgqSystem.Controllers.Api
                         //else
                         //    total.Scorecard += i.Scorecard;
                     }
+
                 }
 
                 totalScorecard = totalPontosDisputados == 0 ? 0 : Math.Round((totalPontosAtingidos / totalPontosDisputados * 100) , 2);
