@@ -807,4 +807,7 @@
   <data name="profiles" xml:space="preserve">
     <value>Perfis</value>
   </data>
+  <data name="nc_report" xml:space="preserve">
+    <value>Relatório de Não Conformidades</value>
+  </data>
 </root>

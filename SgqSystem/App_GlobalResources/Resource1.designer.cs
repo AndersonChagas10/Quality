@@ -1312,6 +1312,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errors Report.
+        /// </summary>
+        internal static string nc_report {
+            get {
+                return ResourceManager.GetString("nc_report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Negative.
         /// </summary>
         internal static string negative {
