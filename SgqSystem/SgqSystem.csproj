@@ -310,6 +310,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManColetaDadosController.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManDataCollectITsController.cs" />
+    <Compile Include="Controllers\Api\Manutencao\PainelIndicadoresUniManutencaoController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
@@ -507,6 +508,7 @@
     <Content Include="App_GlobalResources\Resource.pt-br.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Resource.pt-br1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\Resource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -1320,6 +1322,7 @@
     <Content Include="Views\UserSgq\Index.cshtml" />
     <Content Include="Views\ManPainelGestao\PainelGestaoManutencao.cshtml" />
     <Content Include="Views\ManPainelGestao\PainelIndicadoresUniManutenção.cshtml" />
+    <Content Include="Views\Role\Roles.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

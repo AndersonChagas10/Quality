@@ -93,6 +93,7 @@
     <Compile Include="DTO\ContextExampleDTO.cs" />
     <Compile Include="DTO\Manutencao\ManDataCollectITsDTO.cs" />
     <Compile Include="DTO\Manutencao\DimManutencaoColetaITsDTO.cs" />
+    <Compile Include="DTO\Manutencao\PainelIndicadoresUniManutencaoDTO.cs" />
     <Compile Include="DTO\Params\NxN.cs" />
     <Compile Include="DTO\Params\ParamsDdl.cs" />
     <Compile Include="DTO\Params\ParamsDTO.cs" />

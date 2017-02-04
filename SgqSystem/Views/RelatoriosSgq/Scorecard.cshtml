@@ -74,6 +74,7 @@
             //openMessageModal("Alerta", e.responseJSON.Message);
         });
     };
+
     function GerarTabela(retornoArray) {
 
         var table = $('#results').empty().DataTable({
@@ -185,6 +186,7 @@
         );
 
     }
+
     function ValidaDadosParaEnvio() {
         GuardJs.resetForValidation();
         GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
