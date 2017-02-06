@@ -34,6 +34,7 @@ namespace Dominio
             this.ParNotConformityRuleXLevel = new HashSet<ParNotConformityRuleXLevel>();
             this.ParSample = new HashSet<ParSample>();
             this.ManDataCollectIT = new HashSet<ManDataCollectIT>();
+            this.Defect = new HashSet<Defect>();
         }
     
         public int Id { get; set; }
@@ -84,5 +85,7 @@ namespace Dominio
         public virtual ICollection<ParSample> ParSample { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ManDataCollectIT> ManDataCollectIT { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Defect> Defect { get; set; }
     }
 }

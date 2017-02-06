@@ -439,6 +439,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Component.
+        /// </summary>
+        internal static string component {
+            get {
+                return ResourceManager.GetString("component", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete this.
         /// </summary>
         internal static string confirm_delete {
@@ -831,6 +840,15 @@ namespace Resources {
         internal static string groups {
             get {
                 return ResourceManager.GetString("groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HashKey.
+        /// </summary>
+        internal static string hashkey {
+            get {
+                return ResourceManager.GetString("hashkey", resourceCulture);
             }
         }
         
@@ -1312,7 +1330,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errors Report.
+        ///   Looks up a localized string similar to NC Report.
         /// </summary>
         internal static string nc_report {
             get {
@@ -1344,6 +1362,15 @@ namespace Resources {
         internal static string new_cluster {
             get {
                 return ResourceManager.GetString("new_cluster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New component.
+        /// </summary>
+        internal static string new_component {
+            get {
+                return ResourceManager.GetString("new_component", resourceCulture);
             }
         }
         
@@ -1389,6 +1416,15 @@ namespace Resources {
         internal static string new_level3 {
             get {
                 return ResourceManager.GetString("new_level3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Role.
+        /// </summary>
+        internal static string new_role {
+            get {
+                return ResourceManager.GetString("new_role", resourceCulture);
             }
         }
         
@@ -1627,6 +1663,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Perfis e Regras.
+        /// </summary>
+        internal static string profiles_and_roles {
+            get {
+                return ResourceManager.GetString("profiles_and_roles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Punishment/reward value.
         /// </summary>
         internal static string punishment_value {
@@ -1749,6 +1794,24 @@ namespace Resources {
         internal static string role {
             get {
                 return ResourceManager.GetString("role", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roles.
+        /// </summary>
+        internal static string roles {
+            get {
+                return ResourceManager.GetString("roles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roles SGQ.
+        /// </summary>
+        internal static string roles_sgq {
+            get {
+                return ResourceManager.GetString("roles_sgq", resourceCulture);
             }
         }
         
@@ -1906,6 +1969,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Screen Component.
+        /// </summary>
+        internal static string screen_component {
+            get {
+                return ResourceManager.GetString("screen_component", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Screen Components.
+        /// </summary>
+        internal static string screen_components {
+            get {
+                return ResourceManager.GetString("screen_components", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select.
         /// </summary>
         internal static string select {
@@ -2019,6 +2100,15 @@ namespace Resources {
         internal static string structure_register {
             get {
                 return ResourceManager.GetString("structure_register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string type {
+            get {
+                return ResourceManager.GetString("type", resourceCulture);
             }
         }
         

@@ -93,6 +93,8 @@ namespace SgqSystem.Mappers
 
                 x.AddProfile<ParLevel2ControlCompanyMapperProfile>();
                 x.AddProfile<ResultLevel3MapperProfile>();
+                x.AddProfile<RoleMapperProfile>();
+                x.AddProfile<DefectMapperProfile>();
 
 
 
