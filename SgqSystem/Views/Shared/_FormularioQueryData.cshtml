@@ -189,6 +189,10 @@
     .fullScreen {
         margin-top: 0px !important;
     }
+    /*Fullscreen*/
+    #showIndicadoresManutencao label{
+        font-size: 11px;
+    }
 
 </style>
 
@@ -354,7 +358,106 @@
 
                 <div class="form-group" id="cbxlistaMeses"></div>
 
+                <br />
             </div>
+
+            <div id="showIndicadoresManutencao" style="display:none">
+                <table>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Bois Abatidos">Bois Abatidos</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Manutenção R$">Manutenção R$</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Eficiên.Programção">Eficiên.Programção</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Apropr Planej...to">Apropr Planej...to</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Rend.(Sebo+Farinha)">Rend.(Sebo+Farinha)</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Sebo Flotado">Sebo Flotado</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Scorecard Unidade">Scorecard Unidade</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Scorecard Vácuo">Scorecard Vácuo</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Scorecard  Água">Scorecard  Água</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Scorecard Aspersão">Scorecard Aspersão</label></td>                       
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Scorecard Energia">Scorecard Energia</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Scorecard Vapor">Scorecard Vapor</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Pilar Manutenção">Pilar Manutenção</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Devoluções %">Devoluções %</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Devoluções R$">Devoluções R$</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Absenteísmo">Absenteísmo</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Rotatividade">Rotatividade</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Head Count">Head Count</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="R$/CB Manut">R$/CB Manut</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="R$/CB Manut+Utilid">R$/CB Manut+Utilid</label></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Sobra de Animais">Sobra de Animais</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="R$ Manut Comb.">R$ Manut Comb.</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Energia R$">Energia R$</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="KWh/Boi Proc">KWh/Boi Proc</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Caldeira R$">Caldeira R$</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Mcal/Boi Proc">Mcal/Boi Proc</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Fator de Potência">Fator de Potência</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Água M³/Boi">Água M³/Boi</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="M³ de Lenha">M³ de Lenha</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Disponibilidade Ab">Disponibilidade Ab</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Disponibilidade Des">Disponibilidade Des</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="KWh">KWh</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Parada Abate (min)">Parada Abate (min)</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Parada Des. (min)">Parada Des. (min)</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="OBRAS">OBRAS</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Horas Extras R$">Horas Extras R$</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Horas Extras Nº">Horas Extras Nº</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Taxa de Frequência">Taxa de Frequência</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Apropriação de O.S">Apropriação de O.S</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="CARTA META">CARTA METAS</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Scorecard M. Amb">Scorecard M. Amb</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="CAPEX">CAPEX</label></td>
+                    </tr>
+                </table>
+
+                
+                
+                
+                
+                
+</div>
+
+
         </li>
 
         <li>
@@ -595,6 +698,9 @@
             });
 
             $("#showManutencao").find(".select2").css("width", "210px");
+        },
+        showIndicadoresManutencao: function () {
+            $("#showIndicadoresManutencao").show();
         }
     }
 

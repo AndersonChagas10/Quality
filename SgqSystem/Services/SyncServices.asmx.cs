@@ -1496,7 +1496,7 @@ namespace SgqSystem.Services
             //AuditStartTime = StartTimeAudit.ToString("yyyy-MM-dd HH:mm:ss");
 
             //Script de Insert
-            string sql = "INSERT INTO CorrectiveAction ([AuditorId],[CollectionLevel2_Id],[SlaughterId],[TechinicalId],[DateTimeSlaughter],[DateTimeTechinical],[AddDate],[AlterDate],[DateCorrectiveAction],[AuditStartTime],[DescriptionFailure],[ImmediateCorrectiveAction],[ProductDisposition],[PreventativeMeasure]) " +
+            string sql = "INSERT INTO CorrectiveAction ([AuditorId],[CollectionLevel02Id],[SlaughterId],[TechinicalId],[DateTimeSlaughter],[DateTimeTechinical],[AddDate],[AlterDate],[DateCorrectiveAction],[AuditStartTime],[DescriptionFailure],[ImmediateCorrectiveAction],[ProductDisposition],[PreventativeMeasure]) " +
                          "VALUES " +
                          "('" + AuditorId + "','" + CollectionLevel02Id + "','" + SlaughterId + "','" + TechinicalId + "',CAST(N'" + DateTimeSlaughter + "' AS DateTime),CAST(N'" + DateTimeTechinical + "' AS DateTime),GETDATE(),NULL,CAST(N'" + DateCorrectiveAction + "' AS DateTime),CAST(N'" + AuditStartTime + "' AS DateTime),'" + DescriptionFailure + "','" + ImmediateCorrectiveAction + "','" + ProductDisposition + "','" + PreventativeMeasure + "')";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -2282,7 +2282,37 @@ namespace SgqSystem.Services
             //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                       " +
             //                    "    <div class=\"head\" style=\"height:35px;line-height:35px;padding-left:10px;padding-right:10px\">View <a href=\"#\" class=\"pull-right close\" style=\"color:#000;text-decoration:none\">X</a></div> " +
             //                    "    <div class=\"body\" style=\"height:565px;overflow-y:auto;padding-left:5px;padding-right:5px;padding-bottom:5px;\"></div>                                                                            " +
-            //                    "</div>                                                                                                                                                                                                  ";
+            //                    "</div>       
+
+            string debug = "<div id = 'ControlaDivDebugAlertas' onclick='showHideDivDebugAlerta();'></div> " +
+
+                           "<div id = 'divDebugAlertas' > " +
+                           "     <p class='titDebugAlertas'>Acompanhamento do indicador</p> " +
+                           "     Indicador: <div id = 'level1' class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Volume total do indicador: <div id = 'volumeTotal'  class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Meta %: <div id = 'meta'  class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Meta Tolerância: <div id = 'metaTolerancia'  class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Meta Dia: <div id = 'metaDia'  class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Meta Avaliação: <div id = 'metaAvaliacao'  class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Total Avaliado: <div id = 'totalAv'  class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Total NC: <div id = 'totalNc'  class='clDebugAlertas'></div> " +
+
+
+                           "</div> " +
+
+                           "<script> " +
+
+                           "     $('#ControlaDivDebugAlertas').hide(); " +
+                           "     $('#divDebugAlertas').hide(); " +
+
+                           " </script> ";
 
             return html.div(
                             outerhtml: navBar(UserSgq_Id, ParCompany_Id) +
@@ -2299,8 +2329,12 @@ namespace SgqSystem.Services
                            modalVF +
                            modalPCC1B +
                            message +
-                           messageConfirm;
+                           messageConfirm +
+                           debug;
         }
+
+       
+
         public string navBar(int UserSgq_Id, int ParCompany_Id)
         {
             string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                         " +

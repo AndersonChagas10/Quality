@@ -374,7 +374,7 @@ namespace SgqSystem.Services
 
             //Gera o level3
             string level3 = link(
-                                        outerhtml: span(outerhtml: parLevel3.Name, classe: "levelName"),
+                                        outerhtml: span(outerhtml: parLevel3.Name, classe: "levelName") + "<br>" + span(outerhtml: "", classe: "levelNameDebug"),
                                         classe: "col-xs-4"
                                         );
 
