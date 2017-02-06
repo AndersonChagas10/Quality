@@ -1,351 +1,272 @@
 ﻿@model ICollection<DTO.DTO.Manutencao.PainelIndicadoresUniManutencaoDTO>
-    @{
-        ViewBag.Title = "Indicadores Por Unidade";
-        var url = Url.Action("Index", "Home");
-        var urlTabela = Url.Action("GetTabela", "api/GetIndicadoresUniManutencao");
-        var urlGraficoEvolucao = Url.Action("CriaGraficoEvolucao", "api/GetIndicadoresUniManutencao");
-        var urlGraficoAcumulado = Url.Action("CriaGraficoAcumulado", "api/GetIndicadoresUniManutencao");
+@{
+    ViewBag.Title = "Indicadores Por Unidade";
+    var url = Url.Action("Index", "Home");
+    var urlTabela = Url.Action("GetTabela", "api/GetIndicadoresUniManutencao");
+    var urlGraficoEvolucao = Url.Action("CriaGraficoEvolucao", "api/GetIndicadoresUniManutencao");
+    var urlGraficoAcumulado = Url.Action("CriaGraficoAcumulado", "api/GetIndicadoresUniManutencao");
+}
+
+<style>
+    .panel-info {
+        border-color: #999;
     }
 
-    <style>
-        .panel-info {
+        .panel-info > .panel-heading {
+            background-color: #ccc;
             border-color: #999;
+            color: #333;
         }
 
-            .panel-info > .panel-heading {
-                background-color: #ccc;
-                border-color: #999;
-                color: #333;
-            }
+    .chart-inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
 
-        .chart-inner {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-    </style>
+    #tabela_wrapper {
+        width: 50%;
+        float: left;
+    }
 
-    <div class="page-content" style="min-height: 600px;">
-        @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+    #graficoEvolucao {
+        width: 50%;
+        float: right;
+        margin-top: 40px;
+    }
+
+    #graficoAcumulado {
+        width: 50%;
+        float: left;
+    }
+
+    #graficoDesvios {
+        width: 50%;
+        float: right;
+    }
+</style>
+
+<div class="page-content" style="min-height: 600px;">
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+    <div id="formBodyContent">
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+        <div id="load"></div>
+        <div id="plotPrincipal"></div>
+        <div class="panel panel-info" id="PanelFull" style="display:none">
+            <div class="panel-heading"></div>
+            <div class="panel-body" id="g1"></div>
+
+        </div>
 
         <div id="formBodyContent">
-            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-            <div id="load"></div>
-            <div id="plotPrincipal"></div>
-            <div class="panel panel-info" id="PanelFull" style="display:none">
-                <div class="panel-heading"></div>
-                <div class="panel-body" id="g1"></div>
 
-            </div>
+            <table id="tabela" class="display" cellspacing="0"></table>
 
-            <div id="formBodyContent">
+            <div id="graficoEvolucao"></div>
 
-                <table id="tabela" class="display" cellspacing="0" style="width:100%; float: left"></table>
+            <div id="graficoAcumulado"></div>
 
-                <div id="graficoEvolucao" style="width:50%; float: right"></div>
+            <div id="graficoDesvios"></div>
 
-                <div id="graficoAcumulado" style="width:50%; float: left"></div>
-
-                <div id="graficoDesvios" style="width:50%; float: right"></div>
-
-            </div>
         </div>
     </div>
+</div>
 
-    @section Scripts {
-        <script type="text/javascript">
-            var urlTabela = '@Html.Raw(urlTabela)'
-            var urlGraficoEvolucao = '@Html.Raw(urlGraficoEvolucao)'
-            var urlGraficoAcumulado = '@Html.Raw(urlGraficoAcumulado)'
-            var dados = {};
+@section Scripts {
+    <script type="text/javascript">
+        var urlTabela = '@Html.Raw(urlTabela)'
+        var urlGraficoEvolucao = '@Html.Raw(urlGraficoEvolucao)'
+        var urlGraficoAcumulado = '@Html.Raw(urlGraficoAcumulado)'
+        var dados = {};
 
-            function Send(Toggle) {
+        function Send(Toggle) {
 
-                //Funçoes para destruir os graficos
+            //Funçoes para destruir os graficos
 
-                //$btn.button('loading');
+            //$btn.button('loading');
 
-                if (!ValidaDadosParaEnvio()) {
-                    $btn.button('reset');
-                    return;
-                }
-
-                if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined) {
-
-                    dados = { "indicador": $("#showIndicadoresManutencao input:radio:checked").val() }
-
-                    //Funçao para criar a tabela
-                    GetTabela(dados);
-                }
-    
-                //Funcoes para gerar os graficos
-                //GetGraficoEvolucao();
-                //GetGraficoAcumulado();
-
-            };
-
-            //Ajax DataTable
-            function GetTabela(dados) {
-                EasyAjax(urlTabela /*+ "/" + value*/, dados, GerarTabela, "graficoEvolucao");
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
             }
 
-            //Gerar DataTable
-            function GerarTabela(retornoArray) {
+            if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined) {
 
-                var meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
-                var realizado = MapeiaValorParaHC(retornoArray, 'realizado'); 
-                var orcado = MapeiaValorParaHC(retornoArray, 'orcado');
-                var desvio = MapeiaValorParaHC(retornoArray, 'desvio');
-                var porcDesvio = MapeiaValorParaHC(retornoArray, 'porcDesvio');
-                var vetorTeste = [];
-                var dataTableVetor = [];
+                dados = {
+                    "indicador": $("#showIndicadoresManutencao input:radio:checked").val(),
+                    "unidade" : $('#unitId :selected').val()}
 
-                for (var i = 0; i < orcado.length; i++) {
-                    vetorTeste[0] = meses[i];
-                    vetorTeste[1] = orcado[i];
-                    vetorTeste[2] = realizado[i];
-                    vetorTeste[3] = desvio[i];
-                    vetorTeste[4] = Math.floor(porcDesvio[i] * 100) / 100
-
-                    dataTableVetor.push(vetorTeste);
-
-                    vetorTeste = [];
-                }
-
-                console.log(realizado);
-
-                var table = $('#tabela').empty().DataTable({
-                    data: dataTableVetor,
-                    columns: [
-                    { title: "Mes" },
-                    { title: "Orçado" },
-                    { title: "Realizado" },
-                    { title: "Desvio" },
-                    { title: "(%)" }
-                    ],
-
-                    fixedHeader: {
-                        header: true,
-                        footer: true
-                    },
-                    "scrollX": true,
-                    "autoWidth": false,
-                    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-                    pageLength: 12,
-                    responsive: true,
-                    paginate: false,
-                    //paging: false,
-                    //bSort: false,
-                    loadingRecords: true,
-                    destroy: true,
-                    info: true,
-
-                    createdRow: function (row, data, index) {
-
-                    },
-
-                    fnDrawCallback: function (data, d, o) {
-
-                    }
-                });
-
-                //new $.fn.dataTable.Responsive(table);
-
-                new $.fn.dataTable.Buttons(table, {
-                    buttons: [
-                        {
-                            extend: 'print',
-                            text: 'Imprimir',
-                            customize: function (win) {
-                                $(win.document.body).find('table')
-                                    .addClass('compact')
-                                    .css('font-size', 'inherit');
-                            },
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        {
-                            extend: 'excelHtml5',
-                            text: 'Excel',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                         {
-                             extend: 'pdf',
-                             text: 'PDF',
-                             exportOptions: {
-                                 columns: ':visible'
-                             }
-                         },
-                          {
-                              extend: 'colvis',
-                              text: 'Colunas Visíveis',
-                              exportOptions: {
-                                  columns: ':visible'
-                              }
-                          },
-                    ]
-                });
-
-                table.buttons(0, null).container().prependTo(
-                    table.table().container()
-                );
-
-                CallbackGraficoEvolucao(orcado, realizado);
-                CallbackGraficoAcumulado(orcado, realizado, desvio);
-                CallbackGraficoDesvio(realizado,orcado);
+                //Funçao para criar a tabela
+                GetTabela(dados);
             }
 
-            //Ajax grafico Evolução
-            //function GetGraficoEvolucao(value) {
-            //    EasyAjax(urlGraficoEvolucao /*+ "/" + value*/, enviar, CallbackGraficoEvolucao, "graficoEvolucao");
-            //}
+            //Funcoes para gerar os graficos
+            //GetGraficoEvolucao();
+            //GetGraficoAcumulado();
 
-            //Gera grafico Evolução
-            function CallbackGraficoEvolucao(orcado, realizado) {
+        };
 
-                //var realizado = MapeiaValorParaHC(data, 'CabAbat_QteBoiAbatidosReal'); //colocar o valor do filtro
-                //var orcado = MapeiaValorParaHC(data, 'CabAbat_QteBoiAbatidosMeta'); //colocar o valor do filtro
+        //Ajax DataTable
+        function GetTabela(dados) {
+            EasyAjax(urlTabela /*+ "/" + value*/, dados, GerarTabela, "graficoEvolucao");
+        }
 
-                $('#graficoEvolucao').empty().highcharts({
-                    credits: {
-                        enabled: false
+        //Gerar DataTable
+        function GerarTabela(retornoArray) {
+
+            var meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+            var realizado = MapeiaValorParaHC(retornoArray, 'realizado');
+            var orcado = MapeiaValorParaHC(retornoArray, 'orcado');
+            var desvio = MapeiaValorParaHC(retornoArray, 'desvio');
+            var porcDesvio = MapeiaValorParaHC(retornoArray, 'porcDesvio');
+            var vetorTeste = [];
+            var dataTableVetor = [];
+
+            for (var i = 0; i < orcado.length; i++) {
+                vetorTeste[0] = meses[i];
+                vetorTeste[1] = orcado[i];
+                vetorTeste[2] = realizado[i];
+                vetorTeste[3] = desvio[i];
+                vetorTeste[4] = Math.floor(porcDesvio[i] * 100) / 100
+
+                dataTableVetor.push(vetorTeste);
+
+                vetorTeste = [];
+            }
+
+            var table = $('#tabela').empty().DataTable({
+                data: dataTableVetor,
+                columns: [
+                { title: "Mes" },
+                { title: "Orçado" },
+                { title: "Realizado" },
+                { title: "Desvio" },
+                { title: "(%)" }
+                ],
+
+                fixedHeader: {
+                    header: true,
+                    footer: true
+                },
+                "ordering": false,
+                "scrollX": true,
+                "autoWidth": false,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                pageLength: 12,
+                responsive: true,
+                paginate: false,
+                //paging: false,
+                //bSort: false,
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+
+                createdRow: function (row, data, index) {
+
+                },
+
+                fnDrawCallback: function (data, d, o) {
+
+                }
+            });
+
+            //new $.fn.dataTable.Responsive(table);
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
                     },
-                    chart: {
-                        zoomType: 'xy'
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                     {
+                         extend: 'pdf',
+                         text: 'PDF',
+                         exportOptions: {
+                             columns: ':visible'
+                         }
+                     },
+                      {
+                          extend: 'colvis',
+                          text: 'Colunas Visíveis',
+                          exportOptions: {
+                              columns: ':visible'
+                          }
+                      },
+                ]
+            });
+
+            table.buttons(0, null).container().prependTo(
+                table.table().container()
+            );
+
+            CallbackGraficoEvolucao(orcado, realizado);
+            CallbackGraficoAcumulado(orcado, realizado, desvio);
+            CallbackGraficoDesvio(realizado, orcado);
+
+        }
+
+        //Ajax grafico Evolução
+        //function GetGraficoEvolucao(value) {
+        //    EasyAjax(urlGraficoEvolucao /*+ "/" + value*/, enviar, CallbackGraficoEvolucao, "graficoEvolucao");
+        //}
+
+        //Gera grafico Evolução
+        function CallbackGraficoEvolucao(orcado, realizado) {
+
+            //var realizado = MapeiaValorParaHC(data, 'CabAbat_QteBoiAbatidosReal'); //colocar o valor do filtro
+            //var orcado = MapeiaValorParaHC(data, 'CabAbat_QteBoiAbatidosMeta'); //colocar o valor do filtro
+
+            $('#graficoEvolucao').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Evolução'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: [{
+                    categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],//NomeRegional,
+                    crosshair: true,
+                    title: {
+                        text: 'Meses',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }],
+                yAxis: [{ // Primary yAxis
+                    labels: {
+                        //format: '{point.y:.2f}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
                     },
                     title: {
-                        text: 'Evolução'
-                    },
-                    subtitle: {
-                        text: ''
-                    },
-                    xAxis: [{
-                        categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],//NomeRegional,
-                        crosshair: true,
-                        title: {
-                            text: 'Meses',
-                            style: {
-                                color: Highcharts.getOptions().colors[1]
-                            }
-                        },
-                    }],
-                    yAxis: [{ // Primary yAxis
-                        labels: {
-                            format: '{value} %',
-                            style: {
-                                color: Highcharts.getOptions().colors[1]
-                            }
-                        },
-                        title: {
-                            text: '% Scorecard',
-                            style: {
-                                color: Highcharts.getOptions().colors[1]
-                            }
-                        },
-                        plotLines: [{
-                            value: 80,
-                            width: 2,
-                            color: 'black',
-                            dashStyle: 'dash',
-                            zIndex: 4,
-                            label: {
-                                text: 'Meta 80%',
-                                align: 'right',
-                                y: -10,
-                                x: 0
-                            }
-                        }]
-                    }],
-                    tooltip: {
-                        shared: true
-                    },
-                    series: [
-                        {
-                            name: 'Realizado',
-                            data: realizado,
-                            type: 'column',
-                            yAxis: 0,
-                            color: Highcharts.getOptions().colors[0],
-                        },
-                        {
-                            type: 'spline',
-                            name: 'Orçado',
-                            data: orcado, //Colocar o array de orçado
-                            marker: {
-                                lineWidth: 2,
-                                lineColor: Highcharts.getOptions().colors[3],
-                                fillColor: 'white'
-                            },
-                            color: Highcharts.getOptions().colors[3],
+                        text: 'Valor em milhões',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
                         }
-                    ]
-                });
-
-                //CallbackGraficoDesvio(realizado, orcado);
-            }
-
-            //Ajax grafico Acumulado
-            //function GetGraficoAcumulado(value) {
-            //    EasyAjax(urlGraficoAcumulado /*+ "/" + value*/, enviar, CallbackGraficoAcumulado, "graficoAcumulado");
-            //}
-
-            //Gera grafico Acumulado
-            function CallbackGraficoAcumulado(orcado, realizado, desvio) {
-
-                //var desvio = [];
-                //var realizado = MapeiaValorParaHC(data, 'CabAbat_QteBoiAbatidosReal'); //colocar o valor do filtro
-                //var orcado = MapeiaValorParaHC(data, 'CabAbat_QteBoiAbatidosMeta'); //colocar o valor do filtro
-                //desvio.push(orcado - realizado);
-
-                //Somar os valores dos vetores
-                
-                
-                
-
-                $('#graficoAcumulado').empty().highcharts({
-                    credits: {
-                        enabled: false
-                    },
-                    chart: {
-                        type: 'column',
-                        zoomType: 'xy'
-                    },
-                    title: {
-                        text: 'Acumulado'
-                    },
-                    subtitle: {
-                        text: ''
-                    },
-                    xAxis: [{
-                        type: 'category'
-                        //categories: ['Orçado', 'Realizado', 'Desvio'],
-                        //crosshair: true,
-                        //title: {
-                        //    text: 'Meses',
-                        //    style: {
-                        //        color: Highcharts.getOptions().colors[1]
-                        //    }
-                        //},
-                    }],
-                    yAxis: {
-                        title: {
-                            text: 'Total percent market share'
-                        }
-                    },
-                    plotOptions: {
-                        series: {
-                            borderWidth: 0,
-                            dataLabels: {
-                                enabled: true,
-                                format: '{point.y:.1f}%'
-                            }
-                        }
-                    },
-                    legend: {
-                        enabled: false
                     },
                     //plotLines: [{
                     //    value: 80,
@@ -360,247 +281,355 @@
                     //        x: 0
                     //    }
                     //}]
-
-                    tooltip: {
-                        shared: true,
-                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+                }],
+                tooltip: {
+                    shared: true
+                },
+                series: [
+                    {
+                        name: 'Realizado',
+                        data: realizado,
+                        type: 'column',
+                        yAxis: 0,
+                        color: Highcharts.getOptions().colors[0],
                     },
-                    //series: [
-                    //    {
-                    //        type: 'column',
-                    //        name: 'Orçado',
-                    //        data: orcado,
-                    //        //yAxis: 0,
-                    //        color: Highcharts.getOptions().colors[0],
-                    //    },
-                    //    {
-                    //        type: 'column',
-                    //        name: 'Realizado',
-                    //        data: realizado,
-                    //        //yAxis: 0,
-                    //        color: Highcharts.getOptions().colors[0],
-                    //    },
-                    //    {
-                    //        type: 'column',
-                    //        name: 'Desvio',
-                    //        data: desvio,
-                    //        //yAxis: 0,
-                    //        color: Highcharts.getOptions().colors[0],
+                    {
+                        type: 'spline',
+                        name: 'Orçado',
+                        data: orcado, //Colocar o array de orçado
+                        marker: {
+                            lineWidth: 2,
+                            lineColor: Highcharts.getOptions().colors[3],
+                            fillColor: 'white'
+                        },
+                        color: Highcharts.getOptions().colors[3],
+                    }
+                ]
+            });
+
+            //CallbackGraficoDesvio(realizado, orcado);
+        }
+
+        //Ajax grafico Acumulado
+        //function GetGraficoAcumulado(value) {
+        //    EasyAjax(urlGraficoAcumulado /*+ "/" + value*/, enviar, CallbackGraficoAcumulado, "graficoAcumulado");
+        //}
+
+        //Gera grafico Acumulado
+        function CallbackGraficoAcumulado(orcado, realizado, desvio) {
+
+            //var desvio = [];
+            //var realizado = MapeiaValorParaHC(data, 'CabAbat_QteBoiAbatidosReal'); //colocar o valor do filtro
+            //var orcado = MapeiaValorParaHC(data, 'CabAbat_QteBoiAbatidosMeta'); //colocar o valor do filtro
+            //desvio.push(orcado - realizado);
+
+            //Somar os valores dos vetores
+            $('#graficoAcumulado').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'column',
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Acumulado'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: [{
+                    type: 'category'
+                    //categories: ['Orçado', 'Realizado', 'Desvio'],
+                    //crosshair: true,
+                    //title: {
+                    //    text: 'Meses',
+                    //    style: {
+                    //        color: Highcharts.getOptions().colors[1]
                     //    }
-                    //]
-                    series: [{
-                        name: 'Brands',
-                        colorByPoint: true,
-                        data: [{
-                            name: 'Orcado',
-                            y: SomaVetor(orcado),
-                            drilldown: null
-                        }, {
-                            name: 'Real',
-                            y: SomaVetor(realizado),
-                            drilldown: null
-                        }, {
-                            name: 'Desvio',
-                            y: SomaVetor(desvio),
-                            drilldown: null
-                        }]
-                    }],
-                });
+                    //},
+                }],
+                yAxis: {
+                    title: {
+                        text: 'Valor total acumulado'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            //format: '{point.y:.1f}%'
+                        }
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                //plotLines: [{
+                //    value: 80,
+                //    width: 2,
+                //    color: 'black',
+                //    dashStyle: 'dash',
+                //    zIndex: 4,
+                //    label: {
+                //        text: 'Meta 80%',
+                //        align: 'right',
+                //        y: -10,
+                //        x: 0
+                //    }
+                //}]
+
+                tooltip: {
+                    shared: true,
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+                },
+                //series: [
+                //    {
+                //        type: 'column',
+                //        name: 'Orçado',
+                //        data: orcado,
+                //        //yAxis: 0,
+                //        color: Highcharts.getOptions().colors[0],
+                //    },
+                //    {
+                //        type: 'column',
+                //        name: 'Realizado',
+                //        data: realizado,
+                //        //yAxis: 0,
+                //        color: Highcharts.getOptions().colors[0],
+                //    },
+                //    {
+                //        type: 'column',
+                //        name: 'Desvio',
+                //        data: desvio,
+                //        //yAxis: 0,
+                //        color: Highcharts.getOptions().colors[0],
+                //    }
+                //]
+                series: [{
+                    name: 'Brands',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Orcado',
+                        y: SomaVetor(orcado),
+                        drilldown: null
+                    }, {
+                        name: 'Real',
+                        y: SomaVetor(realizado),
+                        drilldown: null
+                    }, {
+                        name: 'Desvio',
+                        y: SomaVetor(desvio),
+                        drilldown: null
+                    }]
+                }],
+            });
 
 
+        }
+
+        //Gera grafico Desvios
+        function CallbackGraficoDesvio(realizado, orcado) {
+
+            var positivo = [];
+            var negativo = [];
+
+            for (var i = 0; i < 12; i++) {
+                if (orcado[i] > realizado[i]) {
+                    positivo[i] = orcado[i] - realizado[i]
+                    negativo[i] = null
+                } else {
+                    negativo[i] = orcado[i] - realizado[i];
+                    positivo[i] = null
+                }
             }
 
-            //Gera grafico Desvios
-            function CallbackGraficoDesvio(realizado, orcado) {
 
-                var positivo = [];
-                var negativo = [];
+            $('#graficoDesvios').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
 
-                for (var i = 0; i < 12; i++) {
-                    if (orcado[i] > realizado[i]) {
-                        positivo[i] = orcado[i] - realizado[i]
-                        negativo[i] = null
-                    } else {
-                        negativo[i] = orcado[i] - realizado[i];
-                        positivo[i] = null
-                    }
-                }
+                chart: {
+                    type: 'column',
+                    zoomType: 'xy'
+                },
 
+                title: {
+                    text: 'Desvio'
+                },
 
-                $('#graficoDesvios').empty().highcharts({
+                legend: {
+                    enabled: false
+                },
 
-                    chart: {
-                        type: 'column'
-                    },
+                xAxis: {
+                    categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                },
+
+                yAxis: {
+                    allowDecimals: false,
 
                     title: {
-                        text: 'Desvio'
-                    },
-
-                    xAxis: {
-                        categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                    },
-
-                    yAxis: {
-                        allowDecimals: false,
-
-                        title: {
-                            text: 'Number of fruits'
-                        }
-                    },
-
-                    tooltip: {
-                        formatter: function () {
-                            return '<b>' + this.x + '</b><br/>' +
-                              this.series.name + ': ' + this.y + '<br/>' +
-                              'Total: ' + this.point.stackTotal;
-                        }
-                    },
-
-                    plotOptions: {
-                        column: {
-                            stacking: 'normal'
-                        }
-                    },
-
-                    series: [{
-                        name: 'Positivo',
-                        data: positivo,
-                        stack: 'Conta',
-                        color: '#aef2ae'
-                    }, {
-                        name: 'Negativo',
-                        data: negativo,
-                        stack: 'Conta',
-                        color: '#ff7575'
-                    }]
-                });
-
-            }
-
-            /*Auxiliares*/
-
-            function EasyAjax(url, dados, callback, loader) {
-
-                if (!!loader)
-                    $('#' + loader).addClass('loader');
-
-                if (dados == undefined)
-                    dados = {};
-
-                //AJAX
-                $.post(url, dados, function (r) {
-                    try {
-
-                        if (!!loader)
-                            $('#' + loader).removeClass('loader');
-
-                        callback(r);
-
-                    } catch (e) {
-                        console.log(e);
-                    } finally {
-                        //$btn.button('reset');
+                        text: 'Valor do desvio em milhões'
                     }
-                }).fail(function (e, h, x) {
-                    //$btn.button('reset');
-                    if (e.status == 0) {
-                        GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
-                    } else {
-                        GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                },
+
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.x + '</b><br/>' +
+                          this.series.name + ': ' + this.y + '<br/>' +
+                          'Total: ' + this.point.stackTotal;
                     }
-                }).always(function () {
+                },
+
+                plotOptions: {
+                    column: {
+                        stacking: 'normal'
+                    }
+                },
+
+                series: [{
+                    name: 'Positivo',
+                    data: positivo,
+                    stack: 'Conta',
+                    color: '#aef2ae'
+                }, {
+                    name: 'Negativo',
+                    data: negativo,
+                    stack: 'Conta',
+                    color: '#ff7575'
+                }]
+            });
+
+        }
+
+        /*Auxiliares*/
+
+        function EasyAjax(url, dados, callback, loader) {
+
+            if (!!loader)
+                $('#' + loader).addClass('loader');
+
+            if (dados == undefined)
+                dados = {};
+
+            //AJAX
+            $.post(url, dados, function (r) {
+                try {
+
                     if (!!loader)
                         $('#' + loader).removeClass('loader');
-                });
-            }
 
-            function ValidaDadosParaEnvio() {
-                GuardJs.resetForValidation();
-                GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
-                /*Especifico*/
-                //if (!($('#unitId :selected').val() > 0))
-                //{
-                //    GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
-                //    return false;
-                //}
-                if (!GuardJs.isValid)
-                    return !GuardJs.isValid;
-                GuardJs.esconderMensagem();
+                    callback(r);
 
-                return true;
-            }
-
-            function GeraVetorDesvio(realizado, orcado) {
-
-                var positivo = [];
-                var negativo = [];
-
-                for (var i = 0; i < 12; i++) {
-
-                    vetor[i].push(orcado[i] - realizado[i]);
-
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    //$btn.button('reset');
                 }
+            }).fail(function (e, h, x) {
+                //$btn.button('reset');
+                if (e.status == 0) {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+            }).always(function () {
+                if (!!loader)
+                    $('#' + loader).removeClass('loader');
+            });
+        }
 
-                return vetor;
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+
+            //GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            /*Especifico*/
+            //if (!($('#unitId :selected').val() > 0))
+            //{
+            //    GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
+            //    return false;
+            //}
+
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
+        function GeraVetorDesvio(realizado, orcado) {
+
+            var positivo = [];
+            var negativo = [];
+
+            for (var i = 0; i < 12; i++) {
+
+                vetor[i].push(orcado[i] - realizado[i]);
+
             }
 
-            $(document).ready(function () {
+            return vetor;
+        }
 
-                $("#btnSend").click(function (e) {
-                    if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined)
+        $(document).ready(function () {
+
+            $("#btnSend").click(function (e) {
+                if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined)
                     Send();
-                });
-
-                //formControl.showFullCallendar();
-                formControl.showUnit();
-                formControl.showIndicadoresManutencao();
-
-                $("#showIndicadoresManutencao label").on("click", function () {
-                    Send();
-                });
             });
 
-            var ajaxCount = 0;
+            //formControl.showFullCallendar();
+            formControl.showUnit();
+            formControl.showIndicadoresManutencao();
 
-            $(document).ajaxStart(function () {
-                ajaxCount++;
+            $("#showIndicadoresManutencao label").on("click", function () {
+                Send();
             });
+        });
 
-            $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
-                ajaxCount--;
-            });
+        var ajaxCount = 0;
 
-            $(document).ajaxStop(function () {
-                ajaxCount--;
-                if (ajaxCount == 0) {
-                    $(".loader").removeClass("loader");
-                }
-            });
+        $(document).ajaxStart(function () {
+            ajaxCount++;
+        });
 
-            function addMes(retornoArray) {
+        $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
+            ajaxCount--;
+        });
 
-                var arrayTable = [];
+        $(document).ajaxStop(function () {
+            ajaxCount--;
+            if (ajaxCount == 0) {
+                $(".loader").removeClass("loader");
+            }
+        });
 
-                for (var i = 0; i < retornoArray.length() ; i++) {
+        function addMes(retornoArray) {
 
-                }
+            var arrayTable = [];
 
-                return arrayTable
+            for (var i = 0; i < retornoArray.length() ; i++) {
+
             }
 
-            function SomaVetor(vetor) {
+            return arrayTable
+        }
 
-                var vetorSomado = 0;
+        function SomaVetor(vetor) {
 
-                for (var i = 0; i < vetor.length; i++) {
+            var vetorSomado = 0;
 
-                    vetorSomado += vetor[i];
-                }
+            for (var i = 0; i < vetor.length; i++) {
 
-                return vetorSomado;
+                vetorSomado += vetor[i];
             }
 
-        </script>
-    }
+            return vetorSomado;
+        }
+
+    </script>
+}
