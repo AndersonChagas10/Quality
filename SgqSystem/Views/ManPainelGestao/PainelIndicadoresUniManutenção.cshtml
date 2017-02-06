@@ -44,31 +44,50 @@
         width: 50%;
         float: right;
     }
+
+    #tabela th {
+        font-size: 12px;
+    }
+
+    #tabela td {
+        font-size: 11px;
+    }
+
+    #primeiro {
+        min-height: 450px;
+    }
 </style>
 
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
-
     <div id="formBodyContent">
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+        <div id="title"style="float:right"><h3></h3></div>
         <div id="load"></div>
         <div id="plotPrincipal"></div>
         <div class="panel panel-info" id="PanelFull" style="display:none">
             <div class="panel-heading"></div>
             <div class="panel-body" id="g1"></div>
-
         </div>
 
         <div id="formBodyContent">
+            <div id="primeiro">
+                <table id="tabela" class="display" cellspacing="0">
+                    <thead></thead>
+                    <tbody></tbody>
+                    <tfoot></tfoot>
+                </table>
 
-            <table id="tabela" class="display" cellspacing="0"></table>
+                <div id="graficoEvolucao"></div>
 
-            <div id="graficoEvolucao"></div>
+            </div>
+            <div id="segundo">
 
-            <div id="graficoAcumulado"></div>
+                <div id="graficoAcumulado"></div>
 
-            <div id="graficoDesvios"></div>
+                <div id="graficoDesvios"></div>
 
+            </div>
         </div>
     </div>
 </div>
@@ -95,11 +114,14 @@
 
                 dados = {
                     "indicador": $("#showIndicadoresManutencao input:radio:checked").val(),
-                    "unidade" : $('#unitId :selected').val()}
+                    "unidade": $('#unitId :selected').val()
+                }
 
                 //Funçao para criar a tabela
                 GetTabela(dados);
             }
+            
+            $("#title h3").text("Painel de Indicadores de " + $("#showIndicadoresManutencao input:radio:checked").val() + " - " + $('#unitId :selected').text())
 
             //Funcoes para gerar os graficos
             //GetGraficoEvolucao();
@@ -128,12 +150,23 @@
                 vetorTeste[1] = orcado[i];
                 vetorTeste[2] = realizado[i];
                 vetorTeste[3] = desvio[i];
-                vetorTeste[4] = Math.floor(porcDesvio[i] * 100) / 100
+                vetorTeste[4] = Math.floor(porcDesvio[i] * 100) / 100;
 
                 dataTableVetor.push(vetorTeste);
 
                 vetorTeste = [];
             }
+
+            vetorTeste[0] = "Total"
+            vetorTeste[1] = SomaVetor(orcado);
+            vetorTeste[2] = SomaVetor(realizado);
+            vetorTeste[3] = SomaVetor(desvio);
+            vetorTeste[4] = SomaVetor(Math.floor(porcDesvio[i] * 100) / 100)
+
+
+            dataTableVetor.push(vetorTeste);
+
+            vetorTeste = [];
 
             var table = $('#tabela').empty().DataTable({
                 data: dataTableVetor,
@@ -144,7 +177,6 @@
                 { title: "Desvio" },
                 { title: "(%)" }
                 ],
-
                 fixedHeader: {
                     header: true,
                     footer: true
@@ -160,7 +192,19 @@
                 //bSort: false,
                 loadingRecords: true,
                 destroy: true,
-                info: true,
+                info: false,
+                "drawCallback": function () {
+                    var api = this.api();
+                    nb_cols = api.columns().nodes().length;
+
+                    j = 1;
+
+                    while (j < nb_cols) {
+                        var pageTotal = api.column(j, { page: 'current' }).data().sum();
+                        $('#tabela tfoot tr:eq(0) th:eq(' + j + ')').html(Math.round(pageTotal * 100) / 100);
+                        j++;
+                    }
+                },
 
                 createdRow: function (row, data, index) {
 
@@ -383,7 +427,7 @@
                 tooltip: {
                     shared: true,
                     headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>R${point.y:.2f}</b><br/>'
                 },
                 //series: [
                 //    {
@@ -495,12 +539,12 @@
                     name: 'Positivo',
                     data: positivo,
                     stack: 'Conta',
-                    color: '#aef2ae'
+                    color: '#ff7575'
                 }, {
                     name: 'Negativo',
                     data: negativo,
                     stack: 'Conta',
-                    color: '#ff7575'
+                    color: '#aef2ae'
                 }]
             });
 
@@ -510,8 +554,8 @@
 
         function EasyAjax(url, dados, callback, loader) {
 
-            if (!!loader)
-                $('#' + loader).addClass('loader');
+            //if (!!loader)
+            //    $('#' + loader).addClass('loader');
 
             if (dados == undefined)
                 dados = {};
@@ -520,8 +564,8 @@
             $.post(url, dados, function (r) {
                 try {
 
-                    if (!!loader)
-                        $('#' + loader).removeClass('loader');
+                    //if (!!loader)
+                    //    $('#' + loader).removeClass('loader');
 
                     callback(r);
 
@@ -542,6 +586,7 @@
                     $('#' + loader).removeClass('loader');
             });
         }
+
 
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();
@@ -630,6 +675,20 @@
 
             return vetorSomado;
         }
+
+        //SUM DataTable
+        jQuery.fn.dataTable.Api.register('sum()', function () {
+            return this.flatten().reduce(function (a, b) {
+                if (typeof a === 'string') {
+                    a = a.replace(/[^\d.-]/g, '') * 1;
+                }
+                if (typeof b === 'string') {
+                    b = b.replace(/[^\d.-]/g, '') * 1;
+                }
+
+                return a + b;
+            }, 0);
+        });
 
     </script>
 }
