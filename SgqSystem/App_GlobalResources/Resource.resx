@@ -840,4 +840,7 @@
   <data name="screen_component" xml:space="preserve">
     <value>Screen Component</value>
   </data>
+  <data name="nc_report" xml:space="preserve">
+    <value>NC Report</value>
+  </data>
 </root>

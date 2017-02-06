@@ -308,6 +308,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManColetaDadosController.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManDataCollectITsController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\ApontamentosDiariosApiController.cs" />
@@ -432,6 +433,8 @@
     <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
     <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
     <Compile Include="Mappers\ResultLevel3MapperProfile.cs" />
+    <Compile Include="Mappers\DefectMapperProfile.cs" />
+    <Compile Include="Mappers\RoleMapperProfile.cs" />
     <Compile Include="Mappers\ShiftMapperProfile.cs" />
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMapperProfile.cs" />
@@ -463,6 +466,7 @@
     <Compile Include="ViewModels\IdentityModels.cs" />
     <Compile Include="ViewModels\ColetaViewModel.cs" />
     <Compile Include="ViewModels\ContextExampleViewModel.cs" />
+    <Compile Include="ViewModels\DefectViewModel.cs" />
     <Compile Include="ViewModels\ParamsViewModel.cs" />
     <Compile Include="ViewModels\ReportsCorrectiveActionViewModel.cs" />
     <Compile Include="ViewModels\ReqController.cs" />
@@ -1320,6 +1324,9 @@
     <Content Include="Views\UserSgq\Index.cshtml" />
     <Content Include="Views\ManPainelGestao\PainelGestaoManutencao.cshtml" />
     <Content Include="Views\ManPainelGestao\PainelIndicadoresUniManutenção.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\RoleSGQ.cshtml" />
+    <Content Include="Views\Role\ScreenComponent.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

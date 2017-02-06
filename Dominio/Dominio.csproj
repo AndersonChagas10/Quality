@@ -142,6 +142,9 @@
     <Compile Include="CorrectiveAction.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Defect.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="DelDados.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -258,6 +261,7 @@
     <Compile Include="Interfaces\Repositories\ISaveCollectionRepo.cs" />
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICollectionLevel02Repo.cs" />
+    <Compile Include="Interfaces\Services\IDefectDomain.cs" />
     <Compile Include="Interfaces\Services\ICorrectiveActionDomain.cs" />
     <Compile Include="Interfaces\Services\ICompanyDomain.cs" />
     <Compile Include="Interfaces\Services\IGetConsolidateDataCollectionDomain.cs" />
@@ -581,6 +585,9 @@
     <Compile Include="Result_Level3.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="RoleJBS.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="RoleSGQ.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -593,6 +600,7 @@
     <Compile Include="ScreenComponent.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Services\DefectDomain.cs" />
     <Compile Include="Services\CompanyDomain.cs" />
     <Compile Include="ADO\FactoryADO.cs" />
     <Compile Include="Services\GetConsolidateDataCollectionDomain.cs" />

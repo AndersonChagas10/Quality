@@ -7,7 +7,7 @@ namespace SgqSystem.Controllers.Api.Company
 {
     [RoutePrefix("api/Company")]
     [HandleApi()]
-    public class CompanyApiController : ApiController
+    public class  CompanyApiController : ApiController
     {
 
         #region Construtor para injeção de dependencia

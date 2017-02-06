@@ -17,6 +17,7 @@ namespace CrossCutting.IOC.Module
             Bind<IExampleDomain>().To<ExampleDomain>();
             Bind<IParamsDomain>().To<ParamsDomain>();
             Bind<ICompanyDomain>().To<CompanyDomain>();
+            Bind<IDefectDomain>().To<DefectDomain>();
         }
     }
 }

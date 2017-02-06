@@ -837,4 +837,7 @@
   <data name="screen_component" xml:space="preserve">
     <value>Componente de Tela</value>
   </data>
+  <data name="nc_report" xml:space="preserve">
+    <value>Relatório de Não Conformidade</value>
+  </data>
 </root>

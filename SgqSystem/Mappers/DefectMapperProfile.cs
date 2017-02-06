@@ -8,12 +8,12 @@ using System.Web;
 
 namespace SgqSystem.Mappers
 {
-    public class RoleMapperProfile : Profile
+    public class DefectMapperProfile : Profile
     {
-        public RoleMapperProfile()
+        public DefectMapperProfile()
         {
-            CreateMap<RoleType, RoleTypeDTO>();
-            CreateMap<RoleTypeDTO, RoleType>();
+            CreateMap<Defect, DefectDTO>();
+            CreateMap<DefectDTO, Defect>();
         }
     }
 }

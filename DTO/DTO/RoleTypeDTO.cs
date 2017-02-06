@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DTO.DTO
 {
-    class RoleTypeDTO : EntityBase
+    public class RoleTypeDTO : EntityBase
     {
         public int Id { get; set; }
         public string Type { get; set; }
