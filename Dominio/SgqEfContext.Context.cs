@@ -46,7 +46,6 @@ namespace Dominio
         public virtual DbSet<CollectionLevel03> CollectionLevel03 { get; set; }
         public virtual DbSet<CollectionLevel2XParHeaderField> CollectionLevel2XParHeaderField { get; set; }
         public virtual DbSet<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
-        public virtual DbSet<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
         public virtual DbSet<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
         public virtual DbSet<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
         public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
@@ -128,6 +127,7 @@ namespace Dominio
         public virtual DbSet<RoleType> RoleType { get; set; }
         public virtual DbSet<ScreenComponent> ScreenComponent { get; set; }
         public virtual DbSet<Defect> Defect { get; set; }
+        public virtual DbSet<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

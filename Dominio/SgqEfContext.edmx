@@ -247,6 +247,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.budgets' does not have a primary key 
           <Property Name="LastEvaluationAlert" Type="int" />
           <Property Name="EvaluatedResult" Type="int" />
           <Property Name="DefectsResult" Type="int" />
+          <Property Name="LastLevel2Alert" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="CorrectiveAction">
           <Key>
@@ -3488,7 +3489,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="CollectionLevel03" EntityType="SgqDbModel.CollectionLevel03" />
           <EntitySet Name="CollectionLevel2XParHeaderField" EntityType="SgqDbModel.CollectionLevel2XParHeaderField" />
           <EntitySet Name="ConsolidationLevel01" EntityType="SgqDbModel.ConsolidationLevel01" />
-          <EntitySet Name="ConsolidationLevel02" EntityType="SgqDbModel.ConsolidationLevel02" />
           <EntitySet Name="ConsolidationLevel1" EntityType="SgqDbModel.ConsolidationLevel1" />
           <EntitySet Name="ConsolidationLevel2" EntityType="SgqDbModel.ConsolidationLevel2" />
           <EntitySet Name="CorrectiveAction" EntityType="SgqDbModel.CorrectiveAction" />
@@ -3560,10 +3560,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="ParLevel1VariableProduction" EntityType="SgqDbModel.ParLevel1VariableProduction" />
           <EntitySet Name="ParLevel1VariableProductionXLevel1" EntityType="SgqDbModel.ParLevel1VariableProductionXLevel1" />
           <EntitySet Name="ResultLevel2HeaderField" EntityType="SgqDbModel.ResultLevel2HeaderField" />
-          <AssociationSet Name="FK_CollectionLevel02_ConsolidationLevel02" Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02">
-            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-          </AssociationSet>
           <AssociationSet Name="FK_CollectionLevel02_Level01" Association="SgqDbModel.FK_CollectionLevel02_Level01">
             <End Role="Level01" EntitySet="Level01" />
             <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
@@ -3603,14 +3599,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <AssociationSet Name="FK_ConsolidationLevel01_Unit" Association="SgqDbModel.FK_ConsolidationLevel01_Unit">
             <End Role="Unit" EntitySet="Unit" />
             <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel02_ConsolidationLevel01" Association="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01">
-            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
-            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel02_Level02" Association="SgqDbModel.FK_ConsolidationLevel02_Level02">
-            <End Role="Level02" EntitySet="Level02" />
-            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
           </AssociationSet>
           <AssociationSet Name="FK_ConsolidationLevel1_Department" Association="SgqDbModel.FK_ConsolidationLevel1_Department">
             <End Role="Department" EntitySet="Department" />
@@ -3974,6 +3962,19 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="Defect" EntitySet="Defect" />
           </AssociationSet>
+          <EntitySet Name="ConsolidationLevel02" EntityType="SgqDbModel.ConsolidationLevel02" />
+          <AssociationSet Name="FK_CollectionLevel02_ConsolidationLevel02" Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02">
+            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
+            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel02_ConsolidationLevel01" Association="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01">
+            <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
+            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel02_Level02" Association="SgqDbModel.FK_ConsolidationLevel02_Level02">
+            <End Role="Level02" EntitySet="Level02" />
+            <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -4235,11 +4236,11 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="Completed" Type="Boolean" />
           <Property Name="EvaluatedResult" Type="Int32" />
           <Property Name="DefectsResult" Type="Int32" />
-          <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="CollectionLevel02" ToRole="ConsolidationLevel02" />
           <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_CollectionLevel02_Level01" FromRole="CollectionLevel02" ToRole="Level01" />
           <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_CollectionLevel02_Level02" FromRole="CollectionLevel02" ToRole="Level02" />
           <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="CollectionLevel02" ToRole="UserSgq" />
           <NavigationProperty Name="CollectionLevel03" Relationship="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" FromRole="CollectionLevel02" ToRole="CollectionLevel03" />
+          <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="CollectionLevel02" ToRole="ConsolidationLevel02" />
         </EntityType>
         <EntityType Name="CollectionLevel03">
           <Key>
@@ -4286,21 +4287,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Level01" FromRole="ConsolidationLevel01" ToRole="Level01" />
           <NavigationProperty Name="Unit" Relationship="SgqDbModel.FK_ConsolidationLevel01_Unit" FromRole="ConsolidationLevel01" ToRole="Unit" />
           <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01" FromRole="ConsolidationLevel01" ToRole="ConsolidationLevel02" />
-        </EntityType>
-        <EntityType Name="ConsolidationLevel02">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Level01ConsolidationId" Type="Int32" Nullable="false" />
-          <Property Name="Level02Id" Type="Int32" Nullable="false" />
-          <Property Name="UnitId" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="ConsolidationDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="ConsolidationLevel02" ToRole="CollectionLevel02" />
-          <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01" FromRole="ConsolidationLevel02" ToRole="ConsolidationLevel01" />
-          <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_ConsolidationLevel02_Level02" FromRole="ConsolidationLevel02" ToRole="Level02" />
         </EntityType>
         <EntityType Name="ConsolidationLevel1">
           <Key>
@@ -4352,6 +4338,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" FromRole="ConsolidationLevel2" ToRole="ParCompany" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" FromRole="ConsolidationLevel2" ToRole="ParLevel2" />
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="ConsolidationLevel2" ToRole="CollectionLevel2" />
+          <Property Name="LastLevel2Alert" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CorrectiveAction">
           <Key>
@@ -5445,18 +5432,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
-        <Association Name="FK_CollectionLevel02_ConsolidationLevel02">
-          <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ConsolidationLevel02">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel02">
-              <PropertyRef Name="ConsolidationLevel02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CollectionLevel02_Level01">
           <End Type="SgqDbModel.Level01" Role="Level01" Multiplicity="1" />
           <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
@@ -5574,30 +5549,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Principal>
             <Dependent Role="ConsolidationLevel01">
               <PropertyRef Name="UnitId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel02_ConsolidationLevel01">
-          <End Type="SgqDbModel.ConsolidationLevel01" Role="ConsolidationLevel01" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ConsolidationLevel01">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel02">
-              <PropertyRef Name="Level01ConsolidationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel02_Level02">
-          <End Type="SgqDbModel.Level02" Role="Level02" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level02">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel02">
-              <PropertyRef Name="Level02Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6907,6 +6858,57 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ConsolidationLevel02">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Level01ConsolidationId" Type="Int32" Nullable="false" />
+          <Property Name="Level02Id" Type="Int32" Nullable="false" />
+          <Property Name="UnitId" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="ConsolidationDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="ConsolidationLevel02" ToRole="CollectionLevel02" />
+          <NavigationProperty Name="ConsolidationLevel01" Relationship="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01" FromRole="ConsolidationLevel02" ToRole="ConsolidationLevel01" />
+          <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_ConsolidationLevel02_Level02" FromRole="ConsolidationLevel02" ToRole="Level02" />
+        </EntityType>
+        <Association Name="FK_CollectionLevel02_ConsolidationLevel02">
+          <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidationLevel02">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel02">
+              <PropertyRef Name="ConsolidationLevel02Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel02_ConsolidationLevel01">
+          <End Type="SgqDbModel.ConsolidationLevel01" Role="ConsolidationLevel01" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidationLevel01">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel02">
+              <PropertyRef Name="Level01ConsolidationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel02_Level02">
+          <End Type="SgqDbModel.Level02" Role="Level02" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel02" Role="ConsolidationLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level02">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel02">
+              <PropertyRef Name="Level02Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7204,19 +7206,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ConsolidationLevel02">
-            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel02">
-              <MappingFragment StoreEntitySet="ConsolidationLevel02">
-                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
-                <ScalarProperty Name="Level02Id" ColumnName="Level02Id" />
-                <ScalarProperty Name="Level01ConsolidationId" ColumnName="Level01ConsolidationId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ConsolidationLevel1">
             <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel1">
               <MappingFragment StoreEntitySet="ConsolidationLevel1">
@@ -7244,6 +7233,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySetMapping Name="ConsolidationLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel2">
               <MappingFragment StoreEntitySet="ConsolidationLevel2">
+                <ScalarProperty Name="LastLevel2Alert" ColumnName="LastLevel2Alert" />
                 <ScalarProperty Name="DefectsResult" ColumnName="DefectsResult" />
                 <ScalarProperty Name="EvaluatedResult" ColumnName="EvaluatedResult" />
                 <ScalarProperty Name="LastEvaluationAlert" ColumnName="LastEvaluationAlert" />
@@ -8481,6 +8471,19 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
                 <ScalarProperty Name="Defects" ColumnName="Defects" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConsolidationLevel02">
+            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel02">
+              <MappingFragment StoreEntitySet="ConsolidationLevel02">
+                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+                <ScalarProperty Name="Level02Id" ColumnName="Level02Id" />
+                <ScalarProperty Name="Level01ConsolidationId" ColumnName="Level01ConsolidationId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
