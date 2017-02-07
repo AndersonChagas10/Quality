@@ -106,11 +106,12 @@
                 return;
             }
 
-            if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined) {
+            if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined && $('#yearId :selected').val() != null) {
 
                 dados = {
                     "indicador": $("#showIndicadoresManutencao input:radio:checked").val(),
-                    "unidade": $('#unitId :selected').val()
+                    "unidade": $('#unitId :selected').val(),
+                    "ano" : $('#yearId :selected').val()
                 }
 
                 //Funçao para criar a tabela
@@ -642,6 +643,7 @@
             //formControl.showFullCallendar();
             formControl.showUnit();
             formControl.showIndicadoresManutencao();
+            formControl.showYear();
 
             $("#showIndicadoresManutencao label").on("click", function () {
                 Send();

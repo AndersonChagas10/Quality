@@ -231,6 +231,13 @@
         </li>
 
         <li>
+            <div class="dropdown" id="showYearManutencao" style="display:none">
+                <span class="redLabel">Ano</span>
+                @Html.DropDownList("yearId", new SelectList(ViewBag.Anos, "Ano", "Ano"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+            </div>
+        </li>
+
+        <li>
             <div id="showUnit" style="display:none">
                 <span class="redLabel">@Resources.Resource.unit</span>
                 @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
@@ -698,6 +705,10 @@
         },
         showIndicadoresManutencao: function () {
             $("#showIndicadoresManutencao").show();
+        },
+
+        showYear: function () {
+            $("#showYearManutencao").show();
         }
     }
 
@@ -751,5 +762,4 @@
     }
 
 </script>
-
 
