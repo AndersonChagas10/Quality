@@ -6,6 +6,7 @@ using DTO.DTO.Params;
 using DTO.DTO;
 using System.Collections.Generic;
 using System.Linq;
+using DTO.Helpers;
 
 namespace Dominio.Services
 {
@@ -80,75 +81,11 @@ namespace Dominio.Services
 
             var list = Mapper.Map<List<DefectDTO>>(_baseRepoDefect.GetAll().Where(r =>
                 r.ParCompany_Id == ParCompany_Id &&
-                InsideFrequency(r.Date.Date, r.ParLevel1.ParFrequency_Id)));/*Clusters*/
+                Guard.InsideFrequency(r.Date.Date, r.ParLevel1.ParFrequency_Id)));/*Clusters*/
 
             return list;
         }
-
-        private bool InsideFrequency(DateTime currentDate,int Frequency_Id)
-        {
-            DateTime startDate = DateTime.Now.Date;
-            DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
-
-            DateTime firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            DateTime lastDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 23, 59, 59).AddMonths(1).AddDays(-1);
-
-            switch (Frequency_Id)
-            {
-                case 1: //Por Período
-                    if (currentDate >= startDate && currentDate <= endDate)
-                    {
-                        return true;
-                    }
-                    break;
-                case 2: //Por Turno
-                    if (currentDate >= startDate && currentDate <= endDate)
-                    {
-                        return true;
-                    }
-                    break;
-                case 3: //Diário
-                    if (currentDate >= startDate && currentDate <= endDate)
-                    {
-                        return true;
-                    }
-                    break;
-                case 4: //Semanal
-                    startDate = startDate.AddDays(-(int) startDate.DayOfWeek);
-                    endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, startDate.Day + 6, 23, 59, 59);
-                    if (currentDate >= firstDayOfMonth && currentDate <= lastDayOfMonth)
-                    {
-                        return true;
-                    }
-                    break;
-                case 5: //Quinzenal
-                    if(currentDate.Day <= 15)
-                    {
-                        startDate = firstDayOfMonth;
-                        endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15, 23, 59, 59);
-                    }
-                    else
-                    {
-                        startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 16);
-                        endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, lastDayOfMonth.Day, 23, 59, 59);
-                    }
-                    if (currentDate >= firstDayOfMonth && currentDate <= lastDayOfMonth)
-                    {
-                        return true;
-                    }
-                    break;
-                case 6: //Mensal
-                    if (currentDate >= firstDayOfMonth && currentDate <= lastDayOfMonth)
-                    {
-                        return true;
-                    }
-                    break;
-                default:
-                    throw new ExceptionHelper(Frequency_Id + " Invalid Frequency.");
-            }
-            return false;
-        }
-
+        
         #endregion
     }
 }
