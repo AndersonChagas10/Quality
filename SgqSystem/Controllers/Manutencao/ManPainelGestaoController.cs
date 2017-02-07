@@ -1,6 +1,5 @@
 ﻿using Dominio;
 using SgqSystem.Secirity;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Manutencao
@@ -18,7 +17,7 @@ namespace SgqSystem.Controllers.Manutencao
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
-        public ActionResult PainelIndicadoresUniManutenção()
+        public ActionResult PainelIndicadoresUniManutencao()
         {
             return View();
         }

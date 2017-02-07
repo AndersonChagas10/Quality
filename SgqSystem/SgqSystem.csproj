@@ -1323,7 +1323,7 @@
     <Content Include="Views\UserSgq\Edit.cshtml" />
     <Content Include="Views\UserSgq\Index.cshtml" />
     <Content Include="Views\ManPainelGestao\PainelGestaoManutencao.cshtml" />
-    <Content Include="Views\ManPainelGestao\PainelIndicadoresUniManutenção.cshtml" />
+    <Content Include="Views\ManPainelGestao\PainelIndicadoresUniManutencao.cshtml" />
     <Content Include="Views\Role\Roles.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
