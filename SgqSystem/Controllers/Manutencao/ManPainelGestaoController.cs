@@ -4,7 +4,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Manutencao
 {
-    [CustomAuthorize]
+    [CustomAuthorize(Roles = "somentemanutencao-sgq")]
     [OutputCache(Duration = 20, VaryByParam = "none")]
     public class ManPainelGestaoController : BaseController
     {
