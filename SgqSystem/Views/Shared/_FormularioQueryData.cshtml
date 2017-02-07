@@ -190,10 +190,13 @@
         margin-top: 0px !important;
     }
     /*Fullscreen*/
-    #showIndicadoresManutencao label{
+    #showIndicadoresManutencao label {
         font-size: 11px;
     }
 
+    #showIndicadoresManutencao table {
+        min-width: 280px;
+    }
 </style>
 
 <!-- Sidebar -->
@@ -226,10 +229,20 @@
                 </div>
             </div>
         </li>
-
+        @if (ViewBag.Anos != null)
+        {
+            <li>
+                <div class="dropdown" id="showYearManutencao" style="display:none">
+                    <span class="redLabel">Ano</span>
+                    @Html.DropDownList("yearId", new SelectList(ViewBag.Anos, "Ano", "Ano"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                </div>
+            </li>
+        }
+              
         <li>
             <div id="showUnit" style="display:none">
                 <span class="redLabel">@Resources.Resource.unit</span>
+                
                 @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
@@ -381,7 +394,7 @@
                     </tr>
                     <tr>
                         <td><label class="radio"><input type="radio" name="optradio" value="Scorecard  Água">Scorecard  Água</label></td>
-                        <td><label class="radio"><input type="radio" name="optradio" value="Scorecard Aspersão">Scorecard Aspersão</label></td>                       
+                        <td><label class="radio"><input type="radio" name="optradio" value="Scorecard Aspersão">Scorecard Aspersão</label></td>
                     </tr>
                     <tr>
                         <td><label class="radio"><input type="radio" name="optradio" value="Scorecard Energia">Scorecard Energia</label></td>
@@ -403,7 +416,7 @@
                         <td><label class="radio"><input type="radio" name="optradio" value="R$/CB Manut">R$/CB Manut</label></td>
                         <td><label class="radio"><input type="radio" name="optradio" value="R$/CB Manut+Utilid">R$/CB Manut+Utilid</label></td>
                     </tr>
-                    
+
                     <tr>
                         <td><label class="radio"><input type="radio" name="optradio" value="Sobra de Animais">Sobra de Animais</label></td>
                         <td><label class="radio"><input type="radio" name="optradio" value="R$ Manut Comb.">R$ Manut Comb.</label></td>
@@ -450,13 +463,7 @@
                     </tr>
                 </table>
 
-                
-                
-                
-                
-                
-</div>
-
+            </div>
 
         </li>
 
@@ -701,6 +708,10 @@
         },
         showIndicadoresManutencao: function () {
             $("#showIndicadoresManutencao").show();
+        },
+
+        showYear: function () {
+            $("#showYearManutencao").show();
         }
     }
 
@@ -754,5 +765,4 @@
     }
 
 </script>
-
 

@@ -1,0 +1,715 @@
+﻿@model ICollection<DTO.DTO.Manutencao.PainelIndicadoresUniManutencaoDTO>
+@{
+    ViewBag.Title = "Indicadores Por Unidade";
+    var url = Url.Action("Index", "Home");
+    var urlTabela = Url.Action("GetTabela", "api/GetIndicadoresUniManutencao");
+    var urlGraficoEvolucao = Url.Action("CriaGraficoEvolucao", "api/GetIndicadoresUniManutencao");
+    var urlGraficoAcumulado = Url.Action("CriaGraficoAcumulado", "api/GetIndicadoresUniManutencao");
+}
+
+<style>
+    .panel-info {
+        border-color: #999;
+    }
+
+        .panel-info > .panel-heading {
+            background-color: #ccc;
+            border-color: #999;
+            color: #333;
+        }
+
+    .chart-inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    #tabela_wrapper {
+        width: 50%;
+        float: left;
+    }
+
+    #graficoEvolucao {
+        width: 50%;
+        float: right;
+        margin-top: 40px;
+    }
+
+    #graficoAcumulado {
+        width: 50%;
+        float: left;
+    }
+
+    #graficoDesvios {
+        width: 50%;
+        float: right;
+    }
+
+    #tabela th {
+        font-size: 12px;
+    }
+
+    #tabela td {
+        font-size: 11px;
+    }
+
+    #primeiro {
+        min-height: 450px;
+    }
+</style>
+
+<div class="page-content" style="min-height: 600px;">
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+    <div id="formBodyContent">
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+        <div id="title" style="float:right"><h3></h3></div>
+        <div id="load"></div>
+        <div id="plotPrincipal"></div>
+        <div class="panel panel-info" id="PanelFull" style="display:none">
+            <div class="panel-heading"></div>
+            <div class="panel-body" id="g1"></div>
+        </div>
+
+        <div id="formBodyContent">
+            <div id="primeiro">
+                <table id="tabela" class="display" cellspacing="0"></table>
+
+                <div id="graficoEvolucao"></div>
+
+            </div>
+            <div id="segundo">
+
+                <div id="graficoAcumulado"></div>
+
+                <div id="graficoDesvios"></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        var urlTabela = '@Html.Raw(urlTabela)'
+        var urlGraficoEvolucao = '@Html.Raw(urlGraficoEvolucao)'
+        var urlGraficoAcumulado = '@Html.Raw(urlGraficoAcumulado)'
+        var dados = {};
+
+        function Send(Toggle) {
+
+            //Funçoes para destruir os graficos
+
+            //$btn.button('loading');
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined && $('#yearId :selected').val() != null) {
+
+                dados = {
+                    "indicador": $("#showIndicadoresManutencao input:radio:checked").val(),
+                    "unidade": $('#unitId :selected').val(),
+                    "ano" : $('#yearId :selected').val()
+                }
+
+                //Funçao para criar a tabela
+                GetTabela(dados);
+            }
+
+            $("#title h3").text("Painel de Indicadores de " + $("#showIndicadoresManutencao input:radio:checked").val() + " - " + $('#unitId :selected').text())
+
+        };
+
+        //Ajax DataTable
+        function GetTabela(dados) {
+            EasyAjax(urlTabela /*+ "/" + value*/, dados, GerarTabela, "graficoEvolucao");
+        }
+
+        //Gerar DataTable
+        function GerarTabela(retornoArray) {
+
+            var meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+            var realizado = MapeiaValorParaHC(retornoArray, 'realizado');
+            var orcado = MapeiaValorParaHC(retornoArray, 'orcado');
+            var desvio = MapeiaValorParaHC(retornoArray, 'desvio');
+            var porcDesvio = MapeiaValorParaHC(retornoArray, 'porcDesvio');
+            var vetorTeste = [];
+            var dataTableVetor = [];
+
+            for (var i = 0; i < orcado.length; i++) {
+                vetorTeste[0] = meses[i];
+                vetorTeste[1] = formatReal(Math.round(orcado[i] * 100) / 100);
+                vetorTeste[2] = formatReal(Math.round(realizado[i] * 100) / 100);
+                vetorTeste[3] = formatReal(Math.round(desvio[i] * 100) / 100);
+                vetorTeste[4] = Math.floor(porcDesvio[i] * 100) / 100;
+
+                dataTableVetor.push(vetorTeste);
+
+                vetorTeste = [];
+            }
+
+            vetorTeste[0] = "Total"
+            vetorTeste[1] = formatReal(Math.round(SomaVetor(orcado) * 100)/100);
+            vetorTeste[2] = formatReal(Math.round(SomaVetor(realizado) * 100)/100);
+            vetorTeste[3] = formatReal(Math.round(SomaVetor(desvio) * 100)/100);
+            vetorTeste[4] = SomaVetor(Math.floor(porcDesvio[i] * 100) / 100)
+
+            dataTableVetor.push(vetorTeste);
+
+            vetorTeste = [];
+
+            var table = $('#tabela').empty().DataTable({
+                data: dataTableVetor,
+                columns: [
+                { title: "Mes" },
+                { title: "Orçado" },
+                { title: "Realizado" },
+                { title: "Desvio" },
+                { title: "(%)" }
+                ],
+                fixedHeader: {
+                    header: true,
+                    footer: true
+                },
+                "searching": false,
+                "ordering": false,
+                "scrollX": true,
+                "autoWidth": false,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                pageLength: 12,
+                responsive: true,
+                paginate: false,
+                //paging: false,
+                //bSort: false,
+                loadingRecords: true,
+                destroy: true,
+                info: false,
+                //"drawCallback": function () {
+                //    var api = this.api();
+                //    nb_cols = api.columns().nodes().length;
+
+                //    j = 1;
+
+                //    while (j < nb_cols) {
+                //        var pageTotal = api.column(j, { page: 'current' }).data().sum();
+                //        $('#tabela tfoot tr:eq(0) th:eq(' + j + ')').html(Math.round(pageTotal * 100) / 100);
+                //        j++;
+                //    }
+                //},
+
+                createdRow: function (row, data, index) {
+
+                },
+
+                fnDrawCallback: function (data, d, o) {
+
+                }
+            });
+
+            //new $.fn.dataTable.Responsive(table);
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                     {
+                         extend: 'pdf',
+                         text: 'PDF',
+                         exportOptions: {
+                             columns: ':visible'
+                         }
+                     },
+                      {
+                          extend: 'colvis',
+                          text: 'Colunas Visíveis',
+                          exportOptions: {
+                              columns: ':visible'
+                          }
+                      },
+                ]
+            });
+
+            table.buttons(0, null).container().prependTo(
+                table.table().container()
+            );
+
+            CallbackGraficoEvolucao(orcado, realizado);
+            CallbackGraficoAcumulado(orcado, realizado, desvio);
+            CallbackGraficoDesvio(realizado, orcado);
+
+        }
+
+
+        //Gera grafico Evolução
+        function CallbackGraficoEvolucao(orcado, realizado) {
+
+            var unidade = "";
+
+            if ($('#unitId :selected').text() == null)
+                indicador = "Todos";
+            else
+                unidade = $('#unitId :selected').text();
+
+            var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
+
+
+            $('#graficoEvolucao').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Evolução de ' + indicador + ' em ' + unidade + ''
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: [{
+                    categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    crosshair: true,
+                    title: {
+                        text: 'Meses',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }],
+                yAxis: [{ // Primary yAxis
+                    labels: {
+                        //format: '{point.y:.2f}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Valor em milhões',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    //plotLines: [{
+                    //    value: 80,
+                    //    width: 2,
+                    //    color: 'black',
+                    //    dashStyle: 'dash',
+                    //    zIndex: 4,
+                    //    label: {
+                    //        text: 'Meta 80%',
+                    //        align: 'right',
+                    //        y: -10,
+                    //        x: 0
+                    //    }
+                    //}]
+                }],
+                tooltip: {
+                    shared: true
+                },
+                series: [
+                    {
+                        name: 'Realizado',
+                        data: realizado,
+                        type: 'column',
+                        yAxis: 0,
+                        color: Highcharts.getOptions().colors[0],
+                    },
+                    {
+                        type: 'spline',
+                        name: 'Orçado',
+                        data: orcado, //Colocar o array de orçado
+                        marker: {
+                            lineWidth: 2,
+                            lineColor: Highcharts.getOptions().colors[3],
+                            fillColor: 'white'
+                        },
+                        color: Highcharts.getOptions().colors[3],
+                    }
+                ]
+            });
+
+            //CallbackGraficoDesvio(realizado, orcado);
+        }
+
+
+        //Gera grafico Acumulado
+        function CallbackGraficoAcumulado(orcado, realizado, desvio) {
+
+            if ($('#unitId :selected').text() == null)
+                indicador = "Todos";
+            else
+                unidade = $('#unitId :selected').text();
+
+            var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
+
+            var somaDesvio = Math.round(SomaVetor(desvio) * 100) / 100;
+
+            if (somaDesvio <= 0) {
+
+                somaDesvio = { y: somaDesvio, color: '#aef2ae', name: 'Desvio', drilldown: null };
+            } else {
+
+                somaDesvio = { y: somaDesvio, color: '#ff7575', name: 'Desvio', drilldown: null };
+            }
+
+            //Somar os valores dos vetores
+            $('#graficoAcumulado').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'column',
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Acumulado de ' + indicador + ' em ' + unidade + ''
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: [{
+                    type: 'category'
+                    //categories: ['Orçado', 'Realizado', 'Desvio'],
+                    //crosshair: true,
+                    //title: {
+                    //    text: 'Meses',
+                    //    style: {
+                    //        color: Highcharts.getOptions().colors[1]
+                    //    }
+                    //},
+                }],
+                yAxis: {
+                    title: {
+                        text: 'Valor total acumulado'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            //format: '{point.y:.1f}%'
+                        }
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                //plotLines: [{
+                //    value: 80,
+                //    width: 2,
+                //    color: 'black',
+                //    dashStyle: 'dash',
+                //    zIndex: 4,
+                //    label: {
+                //        text: 'Meta 80%',
+                //        align: 'right',
+                //        y: -10,
+                //        x: 0
+                //    }
+                //}]
+
+                tooltip: {
+                    shared: true,
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>R${point.y:.2f}</b><br/>'
+                },
+                //series: [
+                //    {
+                //        type: 'column',
+                //        name: 'Orçado',
+                //        data: orcado,
+                //        //yAxis: 0,
+                //        color: Highcharts.getOptions().colors[0],
+                //    },
+                //    {
+                //        type: 'column',
+                //        name: 'Realizado',
+                //        data: realizado,
+                //        //yAxis: 0,
+                //        color: Highcharts.getOptions().colors[0],
+                //    },
+                //    {
+                //        type: 'column',
+                //        name: 'Desvio',
+                //        data: desvio,
+                //        //yAxis: 0,
+                //        color: Highcharts.getOptions().colors[0],
+                //    }
+                //]
+                series: [{
+                    name: 'Brands',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Orcado',
+                        y: Math.round(SomaVetor(orcado), -2),
+                        drilldown: null
+                    }, {
+                        name: 'Real',
+                        y: Math.round(SomaVetor(realizado), -2),
+                        drilldown: null
+                    }, somaDesvio
+                    //{
+                    //    name: 'Desvio',
+                    //    y: SomaVetor(desvio),
+                    //    //somaDesvio,
+                    //    drilldown: null,
+                    //}
+                    ]
+                }],
+            });
+
+        }
+
+        //Gera grafico Desvios
+        function CallbackGraficoDesvio(realizado, orcado) {
+
+            if ($('#unitId :selected').text() == null)
+                indicador = "Todos";
+            else
+                unidade = $('#unitId :selected').text();
+
+            var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
+
+            var positivo = [];
+            var negativo = [];
+
+            for (var i = 0; i < 12; i++) {
+                if (orcado[i] > realizado[i]) {
+                    positivo[i] = orcado[i] - realizado[i]
+                    negativo[i] = null
+                } else {
+                    negativo[i] = orcado[i] - realizado[i];
+                    positivo[i] = null
+                }
+            }
+
+
+            $('#graficoDesvios').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+
+                chart: {
+                    type: 'column',
+                    zoomType: 'xy'
+                },
+
+                title: {
+                    text: 'Desvio de ' + indicador + ' em ' + unidade + ''
+                },
+
+                legend: {
+                    enabled: false
+                },
+
+                xAxis: {
+                    categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                },
+
+                yAxis: {
+                    allowDecimals: false,
+
+                    title: {
+                        text: 'Valor do desvio em milhões'
+                    }
+                },
+
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.x + '</b><br/>' +
+                          this.series.name + ': ' + this.y + '<br/>' +
+                          'Total: ' + this.point.stackTotal;
+                    }
+                },
+
+                plotOptions: {
+                    column: {
+                        stacking: 'normal'
+                    }
+                },
+
+                series: [{
+                    name: 'Positivo',
+                    data: positivo,
+                    stack: 'Conta',
+                    color: '#ff7575'
+                }, {
+                    name: 'Negativo',
+                    data: negativo,
+                    stack: 'Conta',
+                    color: '#aef2ae'
+                }]
+            });
+
+        }
+
+        /*Auxiliares*/
+
+        function EasyAjax(url, dados, callback, loader) {
+
+            //if (!!loader)
+            //    $('#' + loader).addClass('loader');
+
+            if (dados == undefined)
+                dados = {};
+
+            //AJAX
+            $.post(url, dados, function (r) {
+                try {
+
+                    //if (!!loader)
+                    //    $('#' + loader).removeClass('loader');
+
+                    callback(r);
+
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    //$btn.button('reset');
+                }
+            }).fail(function (e, h, x) {
+                //$btn.button('reset');
+                if (e.status == 0) {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+                } else {
+                    GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+                }
+            }).always(function () {
+                if (!!loader)
+                    $('#' + loader).removeClass('loader');
+            });
+        }
+
+
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+
+            //GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            /*Especifico*/
+            //if (!($('#unitId :selected').val() > 0))
+            //{
+            //    GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
+            //    return false;
+            //}
+
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
+        function GeraVetorDesvio(realizado, orcado) {
+
+            var positivo = [];
+            var negativo = [];
+
+            for (var i = 0; i < 12; i++) {
+
+                vetor[i].push(orcado[i] - realizado[i]);
+
+            }
+
+            return vetor;
+        }
+
+        $(document).ready(function () {
+
+            $("#btnSend").click(function (e) {
+                if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined)
+                    Send();
+            });
+
+            //formControl.showFullCallendar();
+            formControl.showUnit();
+            formControl.showIndicadoresManutencao();
+            formControl.showYear();
+
+            $("#showIndicadoresManutencao label").on("click", function () {
+                Send();
+            });
+        });
+
+        var ajaxCount = 0;
+
+        $(document).ajaxStart(function () {
+            ajaxCount++;
+        });
+
+        $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
+            ajaxCount--;
+        });
+
+        $(document).ajaxStop(function () {
+            ajaxCount--;
+            if (ajaxCount == 0) {
+                $(".loader").removeClass("loader");
+            }
+        });
+
+        function addMes(retornoArray) {
+
+            var arrayTable = [];
+
+            for (var i = 0; i < retornoArray.length() ; i++) {
+
+            }
+
+            return arrayTable
+        }
+
+        function SomaVetor(vetor) {
+
+            var vetorSomado = 0;
+
+            for (var i = 0; i < vetor.length; i++) {
+
+                vetorSomado += vetor[i];
+            }
+
+            return vetorSomado;
+        }
+
+        //SUM DataTable
+        //jQuery.fn.dataTable.Api.register('sum()', function () {
+        //    return this.flatten().reduce(function (a, b) {
+        //        if (typeof a === 'string') {
+        //            a = a.replace(/[^\d.-]/g, '') * 1;
+        //        }
+        //        if (typeof b === 'string') {
+        //            b = b.replace(/[^\d.-]/g, '') * 1;
+        //        }
+
+        //        return a + b;
+        //    }, 0);
+        //});
+
+        function formatReal(num) {
+            var p = num.toFixed(2).split(".");
+            return p[0].split("").reverse().reduce(function (acc, num, i, orig) {
+                return num == "-" ? acc : num + (i && !(i % 3) ? "." : "") + acc;
+            }, "") + "," + p[1];
+        }
+
+    </script>
+}
