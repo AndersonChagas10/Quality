@@ -86,6 +86,9 @@ namespace Dominio.Services
 
         private bool InsideFrequency(DateTime currentDate,int Frequency_Id)
         {
+            DateTime startDate = DateTime.Now.Date;
+            DateTime endDate = DateTime.Now.Date;
+
             switch (Frequency_Id)
             {
                 case 1: //Por Período
@@ -93,7 +96,8 @@ namespace Dominio.Services
                 case 2: //Por Turno
                     break;
                 case 3: //Diário
-                    
+                    if (currentDate >= startDate && currentDate >= endDate)
+                        return true;
                     break;
                 case 4: //Semanal
                     break;
