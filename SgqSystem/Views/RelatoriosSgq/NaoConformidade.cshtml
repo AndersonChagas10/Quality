@@ -75,9 +75,11 @@
 </div>
 
 @section Scripts {
-
-
+    
     <script type="text/javascript">
+        
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
 
         var Grafico1 = 'NC por unidade';
         var GraficoDepto = 'NC por departamento: ';
@@ -97,6 +99,9 @@
         $('#simpleCallendar').hide().attr('disabled', true);
 
         $(document).ready(function () {
+
+            closeLeftSidebar();
+
             $("#btnSend").click(function (e) {
                 Send(true);
             });

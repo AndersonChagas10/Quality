@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
+using DTO.DTO;
+using AutoMapper;
 
 namespace SgqSystem.Controllers
 {
@@ -57,8 +59,9 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Password,AcessDate,AddDate,AlterDate,Role,FullName,Email,Phone,ParCompany_Id")] UserSgq userSgq)
+        public ActionResult Create(UserSgqDTO userSgqDto)
         {
+            UserSgq userSgq = Mapper.Map<UserSgq>(userSgqDto);
             if (ModelState.IsValid)
             {
                 db.UserSgq.Add(userSgq);

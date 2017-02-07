@@ -24,6 +24,12 @@
 
         <script>
 
+            $(document).ready(function () {
+                $(".sidebar-toggler").removeClass("hide");
+                $(".page-sidebar-wrapper").removeClass("hide");
+                closeLeftSidebar();
+            });
+
             var version = '@Html.Raw(ViewBag.Asembly)';
 
             @*var isConfiguradoLinkGlobal = @Html.Raw(Json.Encode(Dominio.GlobalConfig.linkDataCollectJaConfigurado));
@@ -50,6 +56,6 @@
 
         </script>
 
-
     }
 
+</div>

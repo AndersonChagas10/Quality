@@ -7,6 +7,9 @@ namespace Dominio.Interfaces.Services
 {
     public interface IDefectDomain
     {
-        List<Defect> MergeDefect(List<DefectDTO> defectDTO);
+        void MergeDefect(List<DefectDTO> defectDTO);
+        List<DefectDTO> GetDefects(int ParCompany_Id);
+
+
     }
 }

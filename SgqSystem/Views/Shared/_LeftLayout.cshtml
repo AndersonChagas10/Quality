@@ -4,7 +4,7 @@
 }
 @using DTO
 <div class="page-sidebar-wrapper hide">
-    <div class="page-sidebar navbar-collapse collapse">
+    <div class="page-sidebar navbar-collapse collapse" style="position: fixed !important; height: 100% !important; z-index: 2000;">
         <ul class="page-sidebar-menu  page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <li class="sidebar-toggler-wrapper hide">
                 <div class="sidebar-toggler">
@@ -148,14 +148,14 @@
                     <span class="arrow"></span>
                 </a>
             </li>
-            <li class="nav-item hide" id="navbar15">
+            <li class="nav-item" id="navbar15">
                 <a href="@Url.Action("Index", "UserSgq")" class="nav-link nav-toggle">
                     <i class="fa fa-users" aria-hidden="true"></i>
                     <span class="title">@Resources.Resource.users</span>
                     <span class="arrow"></span>
                 </a>
             </li>
-            <li class="nav-item hide" id="navbar16">
+            <li class="nav-item" id="navbar16">
                 <a href="@Url.Action("Index", "Role")" class="nav-link nav-toggle">
                     <i class="fa fa-address-card-o" aria-hidden="true"></i>
                     <span class="title">@Resources.Resource.profiles_and_roles</span>

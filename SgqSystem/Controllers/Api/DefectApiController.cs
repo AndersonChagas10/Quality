@@ -3,6 +3,7 @@ using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO;
 using SgqSystem.Handlres;
+using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -29,9 +30,16 @@ namespace SgqSystem.Controllers.Api
 
         [Route("MergeDefect")]
         [HttpPost]
-        public List<Defect> MergeDefect(List<DefectDTO> listDefectDTO)
+        public void MergeDefect(List<DefectDTO> listDefectDTO)
         {
-           return _defectDomain.MergeDefect(listDefectDTO);
+           _defectDomain.MergeDefect(listDefectDTO);
+        }
+
+        [Route("GetDefects")]
+        [HttpGet]
+        public List<DefectDTO> GetDefects(int parCompany_Id)
+        {
+            return _defectDomain.GetDefects(parCompany_Id);
         }
         
         #endregion
