@@ -70,6 +70,7 @@
         text-align: center;
         margin-bottom: 20px;
     }
+
 </style>
 
 <div class="page-content" style="min-height: 600px;">
@@ -157,7 +158,7 @@
             if ($("#tipoRelatorio :selected").val() == 'Por Unidade') {
                 coluna = "Mês";
             } else
-                coluna = "Unidade";
+                coluna = "Uni";
 
             for (var i = 0; i < dado.length; i++) {
                 //vetorTeste[0] = meses[i]; 
@@ -171,15 +172,15 @@
                 vetorTeste = [];
             }
 
-            vetorTeste[0] = "Total"
-            vetorTeste[1] = formatReal(Math.round(SomaVetor(orcado) * 100) / 100);
-            vetorTeste[2] = formatReal(Math.round(SomaVetor(realizado) * 100) / 100);
-            vetorTeste[3] = formatReal(Math.round(SomaVetor(desvio) * 100) / 100);
-            vetorTeste[4] = SomaVetor(Math.floor(porcDesvio[i] * 100) / 100)
+            //vetorTeste[0] = "Total"
+            //vetorTeste[1] = formatReal(Math.round(SomaVetor(orcado) * 100) / 100);
+            //vetorTeste[2] = formatReal(Math.round(SomaVetor(realizado) * 100) / 100);
+            //vetorTeste[3] = formatReal(Math.round(SomaVetor(desvio) * 100) / 100);
+            //vetorTeste[4] = SomaVetor(Math.floor(porcDesvio[i] * 100) / 100)
 
-            dataTableVetor.push(vetorTeste);
+            //dataTableVetor.push(vetorTeste);
 
-            vetorTeste = [];
+            //vetorTeste = [];
 
             var table = $('#tabela').empty().DataTable({
                 data: dataTableVetor,
@@ -230,6 +231,8 @@
 
                 }
             });
+
+            $(".dataTables_scroll").append('<div class="dataTables_scrollFoot"><div class="dataTables_scrollFootInner"><table class="display no-footer dataTable" cellspacing="0" role="grid"><thead><tr role="row"><th class="dt-center sorting_disabled" rowspan="1" colspan="1">Total</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">'+formatReal(Math.round(SomaVetor(orcado) * 100) / 100)+'</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">'+formatReal(Math.round(SomaVetor(realizado) * 100) / 100)+'</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">'+formatReal(Math.round(SomaVetor(desvio) * 100) / 100)+'</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">0</th></tr></thead></table></div></div>');
 
             //new $.fn.dataTable.Responsive(table);
 
