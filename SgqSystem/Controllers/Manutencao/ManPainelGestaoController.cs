@@ -31,6 +31,11 @@ namespace SgqSystem.Controllers.Manutencao
 
             return View();
         }
+
+        public ActionResult Index()
+        {
+            return View();
+        }
     }
 
     public class Date
