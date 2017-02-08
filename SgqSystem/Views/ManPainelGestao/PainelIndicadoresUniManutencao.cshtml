@@ -113,8 +113,6 @@
 
             //Funçoes para destruir os graficos
 
-            //$btn.button('loading');
-
             if (!ValidaDadosParaEnvio()) {
                 $btn.button('reset');
                 return;
@@ -123,8 +121,10 @@
             if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined && $('#yearId :selected').val() != null) {
 
                 dados = {
+                    "tipoRelatorio": $("#tipoRelatorio :selected").val(),
                     "indicador": $("#showIndicadoresManutencao input:radio:checked").val(),
                     "unidade": $('#unitId :selected').val(),
+                    "regional": $('#RegionalId :selected').val(),
                     "ano": $('#yearId :selected').val()
                 }
 
@@ -144,29 +144,28 @@
         //Gerar DataTable
         function GerarTabela(retornoArray) {
 
-            var meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+            //var meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+            var dado = MapeiaValorParaHC(retornoArray, 'dado')
             var realizado = MapeiaValorParaHC(retornoArray, 'realizado');
             var orcado = MapeiaValorParaHC(retornoArray, 'orcado');
             var desvio = MapeiaValorParaHC(retornoArray, 'desvio');
             var porcDesvio = MapeiaValorParaHC(retornoArray, 'porcDesvio');
             var vetorTeste = [];
             var dataTableVetor = [];
+            var coluna = "";
 
-            for (var i = 0; i < 12; i++) {
-                vetorTeste[0] = meses[i];
-                if (orcado[i] == undefined)
-                    orcado[i] = 0
-                vetorTeste[1] = formatReal(Math.round(orcado[i] * 100) / 100);
-                if (realizado[i] == undefined) 
-                    realizado[i] = 0
-                vetorTeste[2] = formatReal(Math.round(realizado[i] * 100) / 100);
-                if (desvio[i] == undefined) 
-                    desvio[i] = 0               
-                vetorTeste[3] = formatReal(Math.round(desvio[i] * 100) / 100);
-                if (porcDesvio[i] == undefined)
-                    porcDesvio[i] = 0
+            if ($("#tipoRelatorio :selected").val() == 'Por Unidade') {
+                coluna = "Mês";
+            } else
+                coluna = "Unidade";
+
+            for (var i = 0; i < dado.length; i++) {
+                //vetorTeste[0] = meses[i]; 
+                vetorTeste[0] = dado[i];
+                vetorTeste[1] = formatReal(Math.round(orcado[i] * 100) / 100);               
+                vetorTeste[2] = formatReal(Math.round(realizado[i] * 100) / 100);                      
+                vetorTeste[3] = formatReal(Math.round(desvio[i] * 100) / 100);              
                 vetorTeste[4] = Math.floor(porcDesvio[i] * 100) / 100;
-
                 dataTableVetor.push(vetorTeste);
 
                 vetorTeste = [];
@@ -185,7 +184,7 @@
             var table = $('#tabela').empty().DataTable({
                 data: dataTableVetor,
                 columns: [
-                { title: "Mes" },
+                { title: coluna },
                 { title: "Orçado" },
                 { title: "Realizado" },
                 { title: "Desvio" },
@@ -199,6 +198,8 @@
                 "ordering": false,
                 "scrollX": true,
                 "autoWidth": false,
+                "scrollCollapse": true,
+                "scrollY": "350px",
                 lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
                 pageLength: 12,
                 responsive: true,
@@ -232,57 +233,14 @@
 
             //new $.fn.dataTable.Responsive(table);
 
-            //new $.fn.dataTable.Buttons(table, {
-            //    buttons: [
-            //        {
-            //            extend: 'print',
-            //            text: 'Imprimir',
-            //            customize: function (win) {
-            //                $(win.document.body).find('table')
-            //                    .addClass('compact')
-            //                    .css('font-size', 'inherit');
-            //            },
-            //            exportOptions: {
-            //                columns: ':visible'
-            //            }
-            //        },
-            //        {
-            //            extend: 'excelHtml5',
-            //            text: 'Excel',
-            //            exportOptions: {
-            //                columns: ':visible'
-            //            }
-            //        },
-            //         {
-            //             extend: 'pdf',
-            //             text: 'PDF',
-            //             exportOptions: {
-            //                 columns: ':visible'
-            //             }
-            //         },
-            //          {
-            //              extend: 'colvis',
-            //              text: 'Colunas Visíveis',
-            //              exportOptions: {
-            //                  columns: ':visible'
-            //              }
-            //          },
-            //    ]
-            //});
-
-            //table.buttons(0, null).container().prependTo(
-            //    table.table().container()
-            //);
-
-            CallbackGraficoEvolucao(orcado, realizado);
+            CallbackGraficoEvolucao(orcado, realizado, dado);
             CallbackGraficoAcumulado(orcado, realizado, desvio);
-            CallbackGraficoDesvio(realizado, orcado);
+            CallbackGraficoDesvio(realizado, orcado, dado);
 
         }
 
-
         //Gera grafico Evolução
-        function CallbackGraficoEvolucao(orcado, realizado) {
+        function CallbackGraficoEvolucao(orcado, realizado, dado) {
 
             var unidade = "";
 
@@ -308,7 +266,7 @@
                     text: ''
                 },
                 xAxis: [{
-                    categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    categories: dado,
                     crosshair: true,
                     title: {
                         text: 'Meses',
@@ -371,7 +329,6 @@
 
             //CallbackGraficoDesvio(realizado, orcado);
         }
-
 
         //Gera grafico Acumulado
         function CallbackGraficoAcumulado(orcado, realizado, desvio) {
@@ -503,7 +460,7 @@
         }
 
         //Gera grafico Desvios
-        function CallbackGraficoDesvio(realizado, orcado) {
+        function CallbackGraficoDesvio(realizado, orcado, dado) {
 
             if ($('#unitId :selected').text() == null)
                 indicador = "Todos";
@@ -515,7 +472,7 @@
             var positivo = [];
             var negativo = [];
 
-            for (var i = 0; i < 12; i++) {
+            for (var i = 0; i < dado.length; i++) {
                 if (orcado[i] > realizado[i]) {
                     positivo[i] = orcado[i] - realizado[i]
                     negativo[i] = null
@@ -545,7 +502,7 @@
                 },
 
                 xAxis: {
-                    categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    categories: dado,
                 },
 
                 yAxis: {
@@ -622,7 +579,6 @@
             });
         }
 
-
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();
 
@@ -657,16 +613,24 @@
 
         $(document).ready(function () {
 
+            $('#tipoRelatorio').change(function () {
+                if ($(this).val() == "Por Regional") {
+                    $('#unitId').prop('disabled', true);
+                } else {
+                    $('#unitId').prop('disabled', false);
+                }
+            });
+
             $("#btnSend").click(function (e) {
                 if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined)
                     Send();
             });
-
-            //formControl.showFullCallendar();
+           
             formControl.showUnit();
             formControl.showIndicadoresManutencao();
             formControl.showYear();
             formControl.showFiltroManutencao();
+            formControl.showRegionaisManutencao();
 
             $("#showIndicadoresManutencao label").on("click", function () {
                 Send();
@@ -712,20 +676,6 @@
 
             return vetorSomado;
         }
-
-        //SUM DataTable
-        //jQuery.fn.dataTable.Api.register('sum()', function () {
-        //    return this.flatten().reduce(function (a, b) {
-        //        if (typeof a === 'string') {
-        //            a = a.replace(/[^\d.-]/g, '') * 1;
-        //        }
-        //        if (typeof b === 'string') {
-        //            b = b.replace(/[^\d.-]/g, '') * 1;
-        //        }
-
-        //        return a + b;
-        //    }, 0);
-        //});
 
         function formatReal(num) {
             var p = num.toFixed(2).split(".");
