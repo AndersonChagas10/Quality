@@ -2185,7 +2185,7 @@ namespace SgqSystem.Services
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
                                "<div class=\"ResultsKeys hide\"></div>" +
-                              "<div class=\"Deviations\"></div>" +
+                              "<div class=\"Deviations hide\"></div>" +
                               "<div class=\"Users hide\"></div>" +
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
