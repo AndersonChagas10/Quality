@@ -42,6 +42,9 @@
         $('#simpleCallendar').hide().attr('disabled', true);
 
         $(document).ready(function () {
+
+            closeLeftSidebar();
+
             $("#btnSend").click(function (e) {
                 Send(true);
             });
@@ -234,7 +237,7 @@
             formControl.showLevel2();
             formControl.showLevel1();
 
-            openLeftSidebar();
+            closeLeftSidebar();
         });
 
     </script>

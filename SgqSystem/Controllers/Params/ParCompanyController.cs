@@ -50,12 +50,12 @@ namespace SgqSystem.Controllers
 
         public ActionResult GetParStructure()
         {
-            return PartialView("ParStructure");//retorna partial ParCompany
+            return PartialView("ParStructure");//retorna partial ParStructure
         }
 
         public ActionResult GetParStructureGroup()
         {
-            return PartialView("ParStructureGroup");//retorna partial ParCompany
+            return PartialView("ParStructureGroup");//retorna partial ParStructureGroup
         }
 
 

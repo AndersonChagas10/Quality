@@ -73,7 +73,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n ) S2 " +
                 "\n WHERE nc > 0 " +
-                "\n ORDER BY 1 DESC";
+                "\n ORDER BY 3 DESC";
 
             using (var db = new SgqDbDevEntities())
             {
@@ -162,7 +162,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n ) S2 " +
                 "\n WHERE nc > 0 " +
-                "\n ORDER BY 1 DESC";
+                "\n ORDER BY 5 DESC";
 
             using (var db = new SgqDbDevEntities())
             {
@@ -194,7 +194,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                "\n --,Unidade " +
                "\n ,sum(Av) as av " +
                "\n ,sum(NC) as nc " +
-               "\n ,sum(NC) / Sum(Av) AS [Proc] " +
+               "\n ,sum(NC) / Sum(Av) * 100 AS [Proc] " +
                "\n FROM " +
                "\n ( " +
                "\n 	SELECT " +
@@ -230,8 +230,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                "\n 	AND IND.Name = '" + form.level1Name + "' " + //
                
                "\n ) S1 " +
+               
 
-            "\n  GROUP BY Level2Name ";
+            "\n  GROUP BY Level2Name " +
+            "\n  HAVING sum(NC) > 0 " +
+            "\n  ORDER BY 4 DESC ";
 
             using (var db = new SgqDbDevEntities())
             {
@@ -245,14 +248,59 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         [Route("GraficoTarefa")]
         public List<NaoConformidadeResultsSet> GraficoTarefa([FromBody] FormularioParaRelatorioViewModel form)
         {
-            _list = CriaMockGraficoTarefas();
+            //_list = CriaMockGraficoTarefas();
 
             //var query = new NaoConformidadeResultsSet().Select(form._dataInicio, form._dataFim, form.unitId);
 
-            //using (var db = new SgqDbDevEntities())
-            //{
-            //    _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
-            //}
+                    //Av = av + i,
+                    //Nc = nc + i,
+                    //Proc = proc + i,
+                    //TarefaName = tarefaName + i.ToString()
+
+            var query = "SELECT " +
+                         "\n  " +
+                    //     "\n  IND.Id AS level1_Id " +
+                    //     "\n ,IND.Name AS Level1Name " +
+                    //     "\n ,IND.Id AS level2_Id " +
+                    //     "\n ,IND.Name AS Level2Name " +
+                    //     "\n ,R3.ParLevel3_Id AS level3_Id " +
+                         "\n R3.ParLevel3_Name AS TarefaName " +
+                    //     "\n ,UNI.Name AS Unidade " +
+                    //     "\n ,UNI.Id AS Unidade_Id " +
+                         "\n ,SUM(R3.WeiDefects) AS Nc " +
+                         "\n ,SUM(R3.WeiEvaluation) AS Av " +
+                         "\n ,SUM(R3.WeiDefects) / SUM(R3.WeiEvaluation) * 100 AS [Proc] " +
+                         "\n FROM Result_Level3 R3 " +
+                         "\n INNER JOIN CollectionLevel2 C2 " +
+                         "\n ON C2.Id = R3.CollectionLevel2_Id " +
+                         "\n INNER JOIN ConsolidationLevel2 CL2 " +
+                         "\n ON CL2.Id = C2.ConsolidationLevel2_Id " +
+                         "\n INNER JOIN ConsolidationLevel1 CL1 " +
+                         "\n ON CL1.Id = CL2.ConsolidationLevel1_Id " +
+                         "\n INNER JOIN ParCompany UNI " +
+                         "\n ON UNI.Id = CL1.UnitId " +
+                         "\n INNER JOIN ParLevel1 IND  " +
+                         "\n ON IND.Id = CL1.ParLevel1_Id " +
+                         "\n INNER JOIN ParLevel2 MON " +
+                         "\n ON MON.Id = CL2.ParLevel2_Id " +
+                         "\n WHERE IND.Name = '" + form.level1Name + "' " +
+                         "\n    and MON.Name = '" + form.level2Name + "' " +
+                         "\n 	AND UNI.Name = '" + form.unitName + "'" +
+                         "\n 	AND CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                         "\n GROUP BY " +
+                         "\n  IND.Id " +
+                         "\n ,IND.Name " +
+                         "\n ,R3.ParLevel3_Id " +
+                         "\n ,R3.ParLevel3_Name " +
+                         "\n ,UNI.Name " +
+                         "\n ,UNI.Id " +
+                         "\n HAVING SUM(R3.WeiDefects) > 0" +
+                         "\n ORDER BY 4 DESC";
+
+            using (var db = new SgqDbDevEntities())
+            {
+                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+            }
 
             return _list;
         }
@@ -261,14 +309,54 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         [Route("GraficoTarefasAcumulada")]
         public List<NaoConformidadeResultsSet> GraficoTarefasAcumulada([FromBody] FormularioParaRelatorioViewModel form)
         {
-            _list = CriaMockGraficoTarefasAcumuladas();
+            //_list = CriaMockGraficoTarefasAcumuladas();
 
             //var query = new NaoConformidadeResultsSet().Select(form._dataInicio, form._dataFim, form.unitId);
 
-            //using (var db = new SgqDbDevEntities())
-            //{
-            //    _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
-            //}
+            var query = "SELECT " +
+                        "\n  " +
+                        //     "\n  IND.Id AS level1_Id " +
+                        //     "\n ,IND.Name AS Level1Name " +
+                        //     "\n ,IND.Id AS level2_Id " +
+                        //     "\n ,IND.Name AS Level2Name " +
+                        //     "\n ,R3.ParLevel3_Id AS level3_Id " +
+                        "\n R3.ParLevel3_Name AS TarefaName " +
+                        //     "\n ,UNI.Name AS Unidade " +
+                        //     "\n ,UNI.Id AS Unidade_Id " +
+                        "\n ,SUM(R3.WeiDefects) AS Nc " +
+                        "\n ,SUM(R3.WeiEvaluation) AS Av " +
+                        "\n ,SUM(R3.WeiDefects) / SUM(R3.WeiEvaluation) * 100 AS [Proc] " +
+                        "\n FROM Result_Level3 R3 " +
+                        "\n INNER JOIN CollectionLevel2 C2 " +
+                        "\n ON C2.Id = R3.CollectionLevel2_Id " +
+                        "\n INNER JOIN ConsolidationLevel2 CL2 " +
+                        "\n ON CL2.Id = C2.ConsolidationLevel2_Id " +
+                        "\n INNER JOIN ConsolidationLevel1 CL1 " +
+                        "\n ON CL1.Id = CL2.ConsolidationLevel1_Id " +
+                        "\n INNER JOIN ParCompany UNI " +
+                        "\n ON UNI.Id = CL1.UnitId " +
+                        "\n INNER JOIN ParLevel1 IND  " +
+                        "\n ON IND.Id = CL1.ParLevel1_Id " +
+                        "\n INNER JOIN ParLevel2 MON " +
+                        "\n ON MON.Id = CL2.ParLevel2_Id " +
+                        "\n WHERE IND.Name ='" + form.level1Name + "' " +
+                        "\n /* and MON.Id = 1 */" +
+                        "\n 	AND UNI.Name = '" + form.unitName + "'" +
+                        "\n 	AND CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                        "\n GROUP BY " +
+                        "\n  IND.Id " +
+                        "\n ,IND.Name " +
+                        "\n ,R3.ParLevel3_Id " +
+                        "\n ,R3.ParLevel3_Name " +
+                        "\n ,UNI.Name " +
+                        "\n ,UNI.Id " +
+                        "\n HAVING SUM(R3.WeiDefects) > 0" +
+                        "\n ORDER BY 4 DESC";
+
+            using (var db = new SgqDbDevEntities())
+            {
+                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+            }
 
             return _list;
         }

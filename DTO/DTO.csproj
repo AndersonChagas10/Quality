@@ -85,6 +85,7 @@
     <Compile Include="DTO\ConsolidationLevel01DTO.cs" />
     <Compile Include="DTO\CorrectiveActionLevelsDTO.cs" />
     <Compile Include="DTO\CorrectiveActionDTO.cs" />
+    <Compile Include="DTO\DefectDTO.cs" />
     <Compile Include="DTO\DepartmentDTO.cs" />
     <Compile Include="DTO\GetSyncDTO.cs" />
     <Compile Include="DTO\Level02DTO.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="DTO\ContextExampleDTO.cs" />
     <Compile Include="DTO\Manutencao\ManDataCollectITsDTO.cs" />
     <Compile Include="DTO\Manutencao\DimManutencaoColetaITsDTO.cs" />
+    <Compile Include="DTO\Manutencao\PainelIndicadoresUniManutencaoDTO.cs" />
     <Compile Include="DTO\Params\NxN.cs" />
     <Compile Include="DTO\Params\ParamsDdl.cs" />
     <Compile Include="DTO\Params\ParamsDTO.cs" />
@@ -140,6 +142,9 @@
     <Compile Include="DTO\Params\ParLevel1XHeaderFieldDTO.cs" />
     <Compile Include="DTO\Params\ParMultipleValuesDTO.cs" />
     <Compile Include="DTO\Params\ParFrequencyDTO.cs" />
+    <Compile Include="DTO\RoleTypeDTO.cs" />
+    <Compile Include="DTO\ScreenComponentDTO.cs" />
+    <Compile Include="DTO\UserSgqDTO.cs" />
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="ResultSet\ApontamentosDiariosResultSet.cs" />
     <Compile Include="ResultSet\ScorecardResultSet.cs" />

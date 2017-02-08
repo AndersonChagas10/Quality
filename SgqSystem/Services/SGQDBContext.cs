@@ -925,6 +925,7 @@ namespace SGQDBContext
         public decimal TotalLevel3EvaluationL1 { get; set; }
         public decimal TotalLevel3WithDefectsL1 { get; set; }
         public int LastEvaluationAlertL1 { get; set; }
+        public int LastLevel2AlertL1 { get; set; }
 
 
         public int AlertLevelL2 { get; set; }
@@ -954,7 +955,7 @@ namespace SGQDBContext
             SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT " +
-                         "CDL1.AtualAlert AS AlertLevelL1, CDL1.WeiEvaluation AS WeiEvaluationL1, CDL1.EvaluateTotal AS EvaluateTotalL1, CDL1.DefectsTotal AS DefectsTotalL1, CDL1.WeiDefects AS WeiDefectsL1, CDL1.TotalLevel3Evaluation AS TotalLevel3EvaluationL1, CDL1.TotalLevel3WithDefects AS TotalLevel3WithDefectsL1, CDL1.LastEvaluationAlert AS LastEvaluationAlertL1, CDL1.EvaluatedResult AS EvaluatedResultL1, CDL1.DefectsResult AS DefectsResultL1, " +
+                         "CDL1.AtualAlert AS AlertLevelL1, CDL1.WeiEvaluation AS WeiEvaluationL1, CDL1.EvaluateTotal AS EvaluateTotalL1, CDL1.DefectsTotal AS DefectsTotalL1, CDL1.WeiDefects AS WeiDefectsL1, CDL1.TotalLevel3Evaluation AS TotalLevel3EvaluationL1, CDL1.TotalLevel3WithDefects AS TotalLevel3WithDefectsL1, CDL1.LastEvaluationAlert AS LastEvaluationAlertL1, CDL1.LastLevel2Alert AS LastLevel2AlertL1, CDL1.EvaluatedResult AS EvaluatedResultL1, CDL1.DefectsResult AS DefectsResultL1, " +
                          "CDL2.AlertLevel AS AlertLevelL2, CDL2.WeiEvaluation AS WeiEvaluationL2, CDL2.DefectsTotal AS DefectsL2, CDL2.WeiDefects AS WeiDefectsL2, CDL2.TotalLevel3WithDefects AS TotalLevel3WithDefectsL2, CDL2.TotalLevel3Evaluation AS TotalLevel3EvaluationL2, CDL2.EvaluateTotal AS EvaluateTotalL2, CDL2.DefectsTotal AS DefectsTotalL2, CDL2.EvaluatedResult AS EvaluatedResultL2, CDL2.DefectsResult AS DefectsResultL2, CL2.HaveCorrectiveAction AS HaveCorrectiveAction, MIN(CL2.Id) AS CollectionLevel2_ID_CorrectiveAction, MIN(CL2.Period) AS CollectionLevel2_Period_CorrectiveAction " +
                          "FROM ConsolidationLevel2 AS CDL2 " +
                          "INNER JOIN " +
@@ -962,7 +963,7 @@ namespace SGQDBContext
                          "LEFT JOIN " +
                          "CollectionLevel2 CL2 ON CL2.ConsolidationLevel2_Id=CDL2.Id AND CL2.HaveCorrectiveAction=1 " +
                          "WHERE(CDL2.ParLevel2_Id = " + ParLevel2_Id + ") AND (CDL1.UnitId = " + ParCompany_Id + ") " +
-                         "GROUP BY CDL1.AtualAlert, CDL1.WeiEvaluation,CDL1.EvaluateTotal, CDL1.DefectsTotal, CDL1.WeiDefects,  CDL1.TotalLevel3Evaluation, CDL1.TotalLevel3WithDefects, CDL1.LastEvaluationAlert, CDL1.EvaluatedResult, CDL1.DefectsResult, CDL2.AlertLevel, CDL2.WeiEvaluation, CDL2.DefectsTotal, CDL2.WeiDefects, CDL2.TotalLevel3WithDefects, CDL2.TotalLevel3Evaluation, CDL2.EvaluateTotal, CDL2.EvaluatedResult, CDL2.DefectsResult,  CL2.HaveCorrectiveAction";
+                         "GROUP BY CDL1.AtualAlert, CDL1.WeiEvaluation,CDL1.EvaluateTotal, CDL1.DefectsTotal, CDL1.WeiDefects,  CDL1.TotalLevel3Evaluation, CDL1.TotalLevel3WithDefects, CDL1.LastEvaluationAlert, CDL1.LastLevel2Alert, CDL1.EvaluatedResult, CDL1.DefectsResult, CDL2.AlertLevel, CDL2.WeiEvaluation, CDL2.DefectsTotal, CDL2.WeiDefects, CDL2.TotalLevel3WithDefects, CDL2.TotalLevel3Evaluation, CDL2.EvaluateTotal, CDL2.EvaluatedResult, CDL2.DefectsResult,  CL2.HaveCorrectiveAction";
 
             var consolidation = db.Query<ConsolidationResultL1L2>(sql).FirstOrDefault();
 
@@ -1345,6 +1346,7 @@ namespace SGQDBContext
         public int TotalLevel3Evaluation { get; set; }
         public int TotalLevel3WithDefects { get; set; }
         public int LastEvaluationAlert { get; set; }
+        public int LastLevel2Alert { get; set; }
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
 
@@ -1356,8 +1358,8 @@ namespace SGQDBContext
             {
                 SqlConnection db = new SqlConnection(conexao);
 
-                string sql = "SELECT ConsolidationLevel2_Id, ParLevel2_Id, SUM(WeiEvaluation) AS [WeiEvaluationTotal], SUM(Defects) AS [DefectsTotal], SUM(WeiDefects) AS[WeiDefectsTotal], SUM(TotalLevel3WithDefects) AS [TotalLevel3WithDefects], SUM(TotalLevel3Evaluation) AS [TotalLevel3Evaluation], MAX(LastEvaluationAlert) AS LastEvaluationAlert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult " +
-                             "FROM CollectionLevel2 WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND ParLevel2_Id = " + ParLevel2_Id + " AND NotEvaluatedIs=0" +
+                string sql = "SELECT ConsolidationLevel2_Id, ParLevel2_Id, SUM(WeiEvaluation) AS [WeiEvaluationTotal], SUM(Defects) AS [DefectsTotal], SUM(WeiDefects) AS[WeiDefectsTotal], SUM(TotalLevel3WithDefects) AS [TotalLevel3WithDefects], SUM(TotalLevel3Evaluation) AS [TotalLevel3Evaluation], MAX(LastEvaluationAlert) AS LastEvaluationAlert, (SELECT top 1 LastLevel2Alert FROM CollectionLevel2 WHERE Id = max(c2.id)) AS LastLevel2Alert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult " +
+                             "FROM CollectionLevel2 C2 WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND ParLevel2_Id = " + ParLevel2_Id + " AND NotEvaluatedIs=0" +
                              "group by ConsolidationLevel2_Id, ParLevel2_Id";
 
                 var consolidationLevel2 = db.Query<CollectionLevel2Consolidation>(sql).FirstOrDefault();
@@ -1384,6 +1386,7 @@ namespace SGQDBContext
         public decimal TotalLevel3Evaluation { get; set; }
         public decimal TotalLevel3WithDefects { get; set; }
         public int LastEvaluationAlert { get; set; }
+        public int LastLevel2Alert { get; set; }
 
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
@@ -1397,7 +1400,7 @@ namespace SGQDBContext
             {
                 SqlConnection db = new SqlConnection(conexao);
 
-                string sql = "select  SUM(WeiEvaluation) AS WeiEvaluation, SUM(EvaluateTotal) AS EvaluateTotal, SUM(DefectsTotal) AS DefectsTotal, SUM(WeiDefects) AS WeiDefects,  SUM(TotalLevel3Evaluation) AS TotalLevel3Evaluation, SUM(TotalLevel3WithDefects) AS TotalLevel3WithDefects, MAX(LastEvaluationAlert) AS LastEvaluationAlert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult FROM ConsolidationLevel2 where ConsolidationLevel1_Id=" + ConsolidationLevel1_Id + "";
+                string sql = "select  SUM(WeiEvaluation) AS WeiEvaluation, SUM(EvaluateTotal) AS EvaluateTotal, SUM(DefectsTotal) AS DefectsTotal, SUM(WeiDefects) AS WeiDefects,  SUM(TotalLevel3Evaluation) AS TotalLevel3Evaluation, SUM(TotalLevel3WithDefects) AS TotalLevel3WithDefects, MAX(LastEvaluationAlert) AS LastEvaluationAlert, (SELECT top 1 LastLevel2Alert FROM CollectionLevel2 WHERE Id = max(c2.id)) AS LastLevel2Alert, SUM(EvaluatedResult) AS EvaluatedResult, SUM(DefectsResult) AS DefectsResult FROM ConsolidationLevel2 C2 where ConsolidationLevel1_Id=" + ConsolidationLevel1_Id + "";
 
                 var consolidationLevel1 = db.Query<ConsolidationLevel1XConsolidationLevel2>(sql).FirstOrDefault();
 
@@ -1430,6 +1433,7 @@ namespace SGQDBContext
         public int TotalLevel3Evaluation { get; set; }
         public int TotalLevel3WithDefects { get; set; }
         public int LastEvaluationAlert { get; set; }
+        public int LastLevel2Alert { get; set; }
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
 
@@ -1468,6 +1472,7 @@ namespace SGQDBContext
         public int TotalLevel3Evaluation { get; set; }
         public int TotalLevel3WithDefects { get; set; }
         public int LastEvaluationAlert { get; set; }
+        public int LastLevel2Alert { get; set; }
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
 
@@ -1593,6 +1598,7 @@ namespace SGQDBContext
         public int TotalLevel3WithDefects { get; set; }
         public int TotalLevel3Evaluation { get; set; }
         public int LastEvaluationAlert { get; set; }
+        public int LastLevel2Alert { get; set; }
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
         public bool IsEmptyLevel3 { get; set; }
