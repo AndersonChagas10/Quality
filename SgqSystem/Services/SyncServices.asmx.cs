@@ -2303,7 +2303,8 @@ namespace SgqSystem.Services
                            "     Total Avaliado: <div id = 'totalAv'  class='clDebugAlertas'></div> " +
                            "     <br> " +
                            "     Total NC: <div id = 'totalNc'  class='clDebugAlertas'></div> " +
-
+                           "     <br> " +
+                           "     Total NC na avaliação: <div id = 'totalNcNaAvalicao'  class='clDebugAlertas'></div> " +
 
                            "</div> " +
 
