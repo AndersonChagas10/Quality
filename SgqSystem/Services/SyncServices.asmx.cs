@@ -3951,10 +3951,19 @@ namespace SgqSystem.Services
                 string alertNumber = deviation[5];
                 string defects = deviation[6];
                 string deviationDate = deviation[7];
+                string deviationMessage = deviation[8];
+                if(string.IsNullOrEmpty(deviationMessage))
+                {
+                    deviationMessage = "null";
+                }
+                else
+                {
+                    deviationMessage = "'" + deviationMessage + "'";
+                }
 
-                sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail]) " +
+                sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail], [DeviationMessage]) " +
                         "VALUES " +
-                        "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', GetDate() , GetDate(), 0)";
+                        "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', GetDate() , GetDate(), 0, " + deviationMessage + ")";
             }
 
 
@@ -3976,7 +3985,7 @@ namespace SgqSystem.Services
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         connection.Open();
-                        var i = Convert.ToInt32(command.ExecuteScalar());
+                        var i = Convert.ToInt32(command.ExecuteNonQuery());
                         //Se o registro for inserido retorno o Id da Consolidação
                         if (i > 0)
                         {
@@ -4668,12 +4677,12 @@ namespace SgqSystem.Services
                                 var CollectionLevel2ConsolidationDB = new SGQDBContext.CollectionLevel2Consolidation();
                                 var collectionLevel2Consolidation = CollectionLevel2ConsolidationDB.getConsolidation(ConsolidationLevel2_Id, ParLevel2_Id);
 
-                                var updateConsolidationLevel2Id = updateConsolidationLevel2(ConsolidationLevel2_Id, "0", "0", collectionLevel2Consolidation);
+                                var updateConsolidationLevel2Id = updateConsolidationLevel2(ConsolidationLevel2_Id, "0", "0", "0", collectionLevel2Consolidation);
 
                                 var ConsolidationLevel1XConsolidationLevel2DB = new ConsolidationLevel1XConsolidationLevel2();
                                 var consolidationLevel1XConsolidationLevel2 = ConsolidationLevel1XConsolidationLevel2DB.getConsolidation(ConsolidationLevel1_Id);
 
-                                var updateConsolidationLevel1Id = updateConsolidationLevel1(ConsolidationLevel1_Id, "0", "0", consolidationLevel1XConsolidationLevel2);
+                                var updateConsolidationLevel1Id = updateConsolidationLevel1(ConsolidationLevel1_Id, "0", "0", "0", consolidationLevel1XConsolidationLevel2);
 
 
                             }

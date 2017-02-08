@@ -32,7 +32,6 @@
     #graficoEvolucao {
         width: 50%;
         float: right;
-        margin-top: 40px;
     }
 
     #graficoAcumulado {
@@ -54,7 +53,22 @@
     }
 
     #primeiro {
-        min-height: 450px;
+        min-height: 480px;
+    }
+
+    table.dataTable thead th, table.dataTable thead td {
+        padding: 2px;
+    }
+
+    table.dataTable tbody th, table.dataTable tbody td {
+        padding: 4px;
+    }
+
+    #title{
+        float: left;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
     }
 </style>
 
@@ -62,7 +76,7 @@
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
     <div id="formBodyContent">
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        <div id="title" style="float:right"><h3></h3></div>
+        <div id="title"><h3></h3></div>
         <div id="load"></div>
         <div id="plotPrincipal"></div>
         <div class="panel panel-info" id="PanelFull" style="display:none">
@@ -111,7 +125,7 @@
                 dados = {
                     "indicador": $("#showIndicadoresManutencao input:radio:checked").val(),
                     "unidade": $('#unitId :selected').val(),
-                    "ano" : $('#yearId :selected').val()
+                    "ano": $('#yearId :selected').val()
                 }
 
                 //Funçao para criar a tabela
@@ -138,11 +152,19 @@
             var vetorTeste = [];
             var dataTableVetor = [];
 
-            for (var i = 0; i < orcado.length; i++) {
+            for (var i = 0; i < 12; i++) {
                 vetorTeste[0] = meses[i];
+                if (orcado[i] == undefined)
+                    orcado[i] = 0
                 vetorTeste[1] = formatReal(Math.round(orcado[i] * 100) / 100);
+                if (realizado[i] == undefined) 
+                    realizado[i] = 0
                 vetorTeste[2] = formatReal(Math.round(realizado[i] * 100) / 100);
+                if (desvio[i] == undefined) 
+                    desvio[i] = 0               
                 vetorTeste[3] = formatReal(Math.round(desvio[i] * 100) / 100);
+                if (porcDesvio[i] == undefined)
+                    porcDesvio[i] = 0
                 vetorTeste[4] = Math.floor(porcDesvio[i] * 100) / 100;
 
                 dataTableVetor.push(vetorTeste);
@@ -151,9 +173,9 @@
             }
 
             vetorTeste[0] = "Total"
-            vetorTeste[1] = formatReal(Math.round(SomaVetor(orcado) * 100)/100);
-            vetorTeste[2] = formatReal(Math.round(SomaVetor(realizado) * 100)/100);
-            vetorTeste[3] = formatReal(Math.round(SomaVetor(desvio) * 100)/100);
+            vetorTeste[1] = formatReal(Math.round(SomaVetor(orcado) * 100) / 100);
+            vetorTeste[2] = formatReal(Math.round(SomaVetor(realizado) * 100) / 100);
+            vetorTeste[3] = formatReal(Math.round(SomaVetor(desvio) * 100) / 100);
             vetorTeste[4] = SomaVetor(Math.floor(porcDesvio[i] * 100) / 100)
 
             dataTableVetor.push(vetorTeste);
@@ -210,47 +232,47 @@
 
             //new $.fn.dataTable.Responsive(table);
 
-            new $.fn.dataTable.Buttons(table, {
-                buttons: [
-                    {
-                        extend: 'print',
-                        text: 'Imprimir',
-                        customize: function (win) {
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        },
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'excelHtml5',
-                        text: 'Excel',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                     {
-                         extend: 'pdf',
-                         text: 'PDF',
-                         exportOptions: {
-                             columns: ':visible'
-                         }
-                     },
-                      {
-                          extend: 'colvis',
-                          text: 'Colunas Visíveis',
-                          exportOptions: {
-                              columns: ':visible'
-                          }
-                      },
-                ]
-            });
+            //new $.fn.dataTable.Buttons(table, {
+            //    buttons: [
+            //        {
+            //            extend: 'print',
+            //            text: 'Imprimir',
+            //            customize: function (win) {
+            //                $(win.document.body).find('table')
+            //                    .addClass('compact')
+            //                    .css('font-size', 'inherit');
+            //            },
+            //            exportOptions: {
+            //                columns: ':visible'
+            //            }
+            //        },
+            //        {
+            //            extend: 'excelHtml5',
+            //            text: 'Excel',
+            //            exportOptions: {
+            //                columns: ':visible'
+            //            }
+            //        },
+            //         {
+            //             extend: 'pdf',
+            //             text: 'PDF',
+            //             exportOptions: {
+            //                 columns: ':visible'
+            //             }
+            //         },
+            //          {
+            //              extend: 'colvis',
+            //              text: 'Colunas Visíveis',
+            //              exportOptions: {
+            //                  columns: ':visible'
+            //              }
+            //          },
+            //    ]
+            //});
 
-            table.buttons(0, null).container().prependTo(
-                table.table().container()
-            );
+            //table.buttons(0, null).container().prependTo(
+            //    table.table().container()
+            //);
 
             CallbackGraficoEvolucao(orcado, realizado);
             CallbackGraficoAcumulado(orcado, realizado, desvio);
@@ -644,6 +666,7 @@
             formControl.showUnit();
             formControl.showIndicadoresManutencao();
             formControl.showYear();
+            formControl.showFiltroManutencao();
 
             $("#showIndicadoresManutencao label").on("click", function () {
                 Send();

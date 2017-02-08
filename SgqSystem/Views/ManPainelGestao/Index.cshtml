@@ -1,9 +1,8 @@
 ﻿
 @{
-    ViewBag.Title = "Gestão";
-    var urlScorecard = Url.Action("Scorecard", "RelatoriosSgq");
-    var urlRelatorioDiario = Url.Action("RelatorioDiario", "RelatoriosSgq");
-    var urlApontamentosDiarios = Url.Action("ApontamentosDiarios", "RelatoriosSgq");
+    ViewBag.Title = "Manutenção";
+    var urlKPI = Url.Action("Index", "Manutencao");
+    var urlPainelIndicadoresUniManutencao = Url.Action("PainelIndicadoresUniManutencao", "ManPainelGestao");
 }
 
 <style>
@@ -39,6 +38,7 @@
         text-align: center;
         font-weight: bold;
         color: #333;
+        
     }
 
     #circulo1Plan {
@@ -50,13 +50,13 @@
     #circulo2Do {
         background-color: #9fe598;
         float: right;
-        padding-top: 50px;
+        padding-top: 60px;
         height: 100px;
     }
 
     #circulo3Check {
         background-color: #e59898;
-        padding-top: 40px;
+        padding-top: 60px;
         height: 110px;
     }
 
@@ -237,7 +237,7 @@
 
             <div id="circulo1Plan" class="circuloPDCA" onmouseover="setBgColor(this.id,'#ddb708', '#fff')" onmouseout="setBgColor(this.id,'#e5e498', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
 
-                Planejamento
+                Coleta
 
             </div>
 
@@ -247,13 +247,13 @@
 
             <div id="circulo4Action" class="circuloPDCA" onmouseover="setBgColor(this.id,'#7b8fa4', '#fff')" onmouseout="setBgColor(this.id,'#b4bcc5', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
 
-                Problemas Crônicos e Relatos de Anomalia
+                Plano de Ação
 
             </div>
 
             <div id="circulo2Do" class="circuloPDCA" onmouseover="setBgColor(this.id,'#2d5f0f', '#fff')" onmouseout="setBgColor(this.id,'#9fe598', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
 
-                Execução da Coleta de dados e Planos de Ação
+                Monitoramento
 
             </div>
 
@@ -263,15 +263,13 @@
 
             <div id="circulo3Check" class="circuloPDCA" onmouseover="setBgColor(this.id,'#cb5454', '#fff')" onmouseout="setBgColor(this.id,'#e59898', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
 
-                Avaliação de Resultados e Comunicacão dos Desvios
+                Visões
 
             </div>
 
         </div>
 
         <div id="fundoMenuSuperior">
-
-
 
             <div class="corpoMenuCampos">
 
@@ -280,10 +278,10 @@
                     <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
 
                     <ul id="nav">
+                                              
+                        @*<li><a href="@urlKPI">Visão KPI</a>
 
-                        <li><a href="#">Visão Geral da Área</a>
-
-                        <li><a href="#">Plano de Ação</a></li>
+                        <li><a href="@urlPainelIndicadoresUniManutencao">Visão Painel</a></li>*@
                     </ul>
 
                 </div>
@@ -296,7 +294,7 @@
 
                         <ul id="nav">
 
-                            <li>
+                            @*<li>
                                 <a href="#">Relatórios de coletas</a>
                                 <ul>
                                     <li><a href="#">Paramentrizações</a></li>
@@ -304,7 +302,7 @@
                                     <li><a href="#">Apontamentos Diários</a></li>
                                     <li><a href="#">Verificação do tipificação</a></li>
                                 </ul>
-                            </li>
+                            </li>*@
                         </ul>
                     </div>
 
@@ -317,11 +315,9 @@
                         <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
 
                         <ul id="nav">
-                            <li><a href="@urlRelatorioDiario">Reunião Diária</a></li>
-                            <li><a href="#">Não Conformidades</a></li>
-                            <li><a href="#">Cartas CEP</a></li>
-                            <li><a href="@urlScorecard">Scorecard</a></li>
-                            <li><a href="#">Evolutivo dos indicadores</a></li>
+                            <li><a href="@urlKPI">Visão KPI</a>
+
+                            <li><a href="@urlPainelIndicadoresUniManutencao">Visão Painel</a></li>
                         </ul>
                     </div>
 
@@ -334,7 +330,7 @@
                         <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
 
                         <ul id="nav">
-                            <li><a href="#">Reincidências</a></li>
+                            @*<li><a href="#">Reincidências</a></li>*@
                         </ul>
                     </div>
 
