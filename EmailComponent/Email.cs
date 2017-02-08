@@ -7,6 +7,7 @@ namespace EmailComponent
 {
     public class Email :  ConfigEmail
     {
+        public bool ssl { get; set; }
         public string subject { get; set; }
         public string toName { get; set; }
         public string toEmail { get; set; }
@@ -26,11 +27,12 @@ namespace EmailComponent
                 Message.Body = this.messageBody;
 
                 SmtpClient sc = new SmtpClient();
-                sc.Host = this.smtpServer;
-                sc.Credentials = smtpCredentials;
-                sc.Port = this.port;
-
+                sc.Port = 587;
+                sc.Host = "smtp.live.com";
                 sc.EnableSsl = true; // <-- ATENÇÃO.
+                sc.UseDefaultCredentials = false;
+                sc.Credentials = new NetworkCredential(this.emailLogin, this.pass);
+
 
                 sc.Send(Message);
             }

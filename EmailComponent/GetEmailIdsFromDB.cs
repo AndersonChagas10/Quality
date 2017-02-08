@@ -14,7 +14,7 @@ namespace EmailComponent
             get
             {
                 //MOCK
-                var query = "SELECT 'celsogea@hotmail.com' AS emailLogin    " +
+                var query = "SELECT '' AS emailLogin    " +
                             ", 'celsogea' AS emailLoginName                 " +
                             ", 'smtp.live.com' AS host                      " +
                             ", '587' AS port                                " +
@@ -26,11 +26,22 @@ namespace EmailComponent
 
         public Email GetEmailConfig()
         {
-            using (var db = new FactoryADO(connectionString))
+            //using (var db = new FactoryADO(connectionString))
+            //{
+            //    var result = db.SearchQuery<Email>(getConfig).FirstOrDefault();
+            //    return result;
+            //}
+            var teste = new Email()
             {
-                var result = db.SearchQuery<Email>(getConfig).FirstOrDefault();
-                return result;
-            }
+                emailLogin = "celsogea@hotmail.com",
+                emailLoginName = "celsogea",
+                host = "smtp.live.com",
+                port = 587,
+                pass = "thebost1",
+                ssl = false
+            };
+
+            return teste;
         }
 
         public List<Email> GetListMail()
@@ -53,13 +64,17 @@ namespace EmailComponent
             _list.Add(new Email()
             {
                 subject = "TESTE Subject 1",
-                messageBody = "TESTE messageBody 1"
+                messageBody = "TESTE messageBody 1",
+                toEmail = "celso.bernar@grtsolucoes.com.br",
+                toName = "CelsoGea"
             });
 
             _list.Add(new Email()
             {
                 subject = "TESTE Subject 2",
-                messageBody = "TESTE messageBody 2"
+                messageBody = "TESTE messageBody 2",
+                toEmail = "celso.bernar@grtsolucoes.com.br",
+                toName = "CelsoGea"
             });
 
             return _list;
