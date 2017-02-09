@@ -594,8 +594,8 @@
                 } else {
                     $('#unitId').prop('disabled', false);
                 }
-            });
-
+            });          
+                
             $("#btnSend").click(function (e) {
                 if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined)
                     Send();
@@ -606,10 +606,12 @@
             formControl.showYear();
             formControl.showFiltroManutencao();
             formControl.showRegionaisManutencao();
+            formControl.showSubRegionaisManutencao();
 
             $("#showIndicadoresManutencao label").on("click", function () {
                 Send();
             });
+   
         });
 
         var ajaxCount = 0;

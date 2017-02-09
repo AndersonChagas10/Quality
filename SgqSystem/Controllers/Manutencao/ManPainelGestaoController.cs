@@ -23,18 +23,19 @@ namespace SgqSystem.Controllers.Manutencao
         {
             List<Date> anos;
             List<Regional> regionais;
+            List<SubRegional> subRegionais;
 
             string query = "SELECT DISTINCT ISNULL(YEAR(BASE_DATEREF),YEAR(BASE_DATEADD)) Ano FROM MANCOLETADADOS";
-
             anos = db.Database.SqlQuery<Date>(query).ToList();
-
             ViewBag.Anos = anos;
 
             query = "select Distinct EmpresaRegionalGrupo as Nome from DimManBaseUni";
-
             regionais = db.Database.SqlQuery<Regional>(query).ToList();
-
             ViewBag.Regionais = regionais;
+
+            query = "select distinct EmpresaRegional as Nome, EmpresaRegionalGrupo as Grupo from manutencao";
+            subRegionais = db.Database.SqlQuery<SubRegional>(query).ToList();
+            ViewBag.SubRegionais = subRegionais;
 
             return View();
         }
@@ -53,6 +54,12 @@ namespace SgqSystem.Controllers.Manutencao
     public class Regional
     {
         public string Nome { get; set; }
+    }
+
+    public class SubRegional
+    {
+        public string Nome { get; set; }
+        public string Grupo { get; set; }
     }
 
 }
