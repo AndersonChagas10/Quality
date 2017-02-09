@@ -32,7 +32,6 @@
     #graficoEvolucao {
         width: 50%;
         float: right;
-        margin-top: 40px;
     }
 
     #graficoAcumulado {
@@ -54,7 +53,22 @@
     }
 
     #primeiro {
-        min-height: 450px;
+        min-height: 480px;
+    }
+
+    table.dataTable thead th, table.dataTable thead td {
+        padding: 2px;
+    }
+
+    table.dataTable tbody th, table.dataTable tbody td {
+        padding: 4px;
+    }
+
+    #title {
+        float: left;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
     }
 </style>
 
@@ -62,7 +76,7 @@
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
     <div id="formBodyContent">
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        <div id="title" style="float:right"><h3></h3></div>
+        <div id="title"><h3></h3></div>
         <div id="load"></div>
         <div id="plotPrincipal"></div>
         <div class="panel panel-info" id="PanelFull" style="display:none">
@@ -99,8 +113,6 @@
 
             //Funçoes para destruir os graficos
 
-            //$btn.button('loading');
-
             if (!ValidaDadosParaEnvio()) {
                 $btn.button('reset');
                 return;
@@ -109,9 +121,11 @@
             if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined && $('#yearId :selected').val() != null) {
 
                 dados = {
+                    "tipoRelatorio": $("#tipoRelatorio :selected").val(),
                     "indicador": $("#showIndicadoresManutencao input:radio:checked").val(),
                     "unidade": $('#unitId :selected').val(),
-                    "ano" : $('#yearId :selected').val()
+                    "regional": $('#RegionalId :selected').val(),
+                    "ano": $('#yearId :selected').val()
                 }
 
                 //Funçao para criar a tabela
@@ -130,40 +144,38 @@
         //Gerar DataTable
         function GerarTabela(retornoArray) {
 
-            var meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+            //var meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+            var dado = MapeiaValorParaHC(retornoArray, 'dado')
             var realizado = MapeiaValorParaHC(retornoArray, 'realizado');
             var orcado = MapeiaValorParaHC(retornoArray, 'orcado');
             var desvio = MapeiaValorParaHC(retornoArray, 'desvio');
             var porcDesvio = MapeiaValorParaHC(retornoArray, 'porcDesvio');
             var vetorTeste = [];
             var dataTableVetor = [];
+            var coluna = "";
+            var porcDesvioTotal = 0;
 
-            for (var i = 0; i < orcado.length; i++) {
-                vetorTeste[0] = meses[i];
+            if ($("#tipoRelatorio :selected").val() == 'Por Unidade') {
+                coluna = "Mês";
+            } else
+                coluna = "Uni";
+
+            for (var i = 0; i < dado.length; i++) {
+                //vetorTeste[0] = meses[i];
+                vetorTeste[0] = dado[i];
                 vetorTeste[1] = formatReal(Math.round(orcado[i] * 100) / 100);
                 vetorTeste[2] = formatReal(Math.round(realizado[i] * 100) / 100);
-                vetorTeste[3] = formatReal(Math.round(desvio[i] * 100) / 100);
-                vetorTeste[4] = Math.floor(porcDesvio[i] * 100) / 100;
-
+                vetorTeste[3] = '<i>' + formatReal(Math.round(desvio[i] * 100) / 100) + '</i>';
+                vetorTeste[4] = '<i>' + Math.floor(porcDesvio[i] * 100) / 100 + '%</i>';
                 dataTableVetor.push(vetorTeste);
 
                 vetorTeste = [];
             }
 
-            vetorTeste[0] = "Total"
-            vetorTeste[1] = formatReal(Math.round(SomaVetor(orcado) * 100)/100);
-            vetorTeste[2] = formatReal(Math.round(SomaVetor(realizado) * 100)/100);
-            vetorTeste[3] = formatReal(Math.round(SomaVetor(desvio) * 100)/100);
-            vetorTeste[4] = SomaVetor(Math.floor(porcDesvio[i] * 100) / 100)
-
-            dataTableVetor.push(vetorTeste);
-
-            vetorTeste = [];
-
             var table = $('#tabela').empty().DataTable({
                 data: dataTableVetor,
                 columns: [
-                { title: "Mes" },
+                { title: coluna },
                 { title: "Orçado" },
                 { title: "Realizado" },
                 { title: "Desvio" },
@@ -177,6 +189,8 @@
                 "ordering": false,
                 "scrollX": true,
                 "autoWidth": false,
+                "scrollCollapse": true,
+                "scrollY": "350px",
                 lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
                 pageLength: 12,
                 responsive: true,
@@ -186,81 +200,22 @@
                 loadingRecords: true,
                 destroy: true,
                 info: false,
-                //"drawCallback": function () {
-                //    var api = this.api();
-                //    nb_cols = api.columns().nodes().length;
-
-                //    j = 1;
-
-                //    while (j < nb_cols) {
-                //        var pageTotal = api.column(j, { page: 'current' }).data().sum();
-                //        $('#tabela tfoot tr:eq(0) th:eq(' + j + ')').html(Math.round(pageTotal * 100) / 100);
-                //        j++;
-                //    }
-                //},
-
-                createdRow: function (row, data, index) {
-
-                },
-
-                fnDrawCallback: function (data, d, o) {
-
-                }
+               
             });
 
-            //new $.fn.dataTable.Responsive(table);
+            porcDesvioTotal = (SomaVetor(realizado) / SomaVetor(orcado) - 1) * 100
 
-            new $.fn.dataTable.Buttons(table, {
-                buttons: [
-                    {
-                        extend: 'print',
-                        text: 'Imprimir',
-                        customize: function (win) {
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        },
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'excelHtml5',
-                        text: 'Excel',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                     {
-                         extend: 'pdf',
-                         text: 'PDF',
-                         exportOptions: {
-                             columns: ':visible'
-                         }
-                     },
-                      {
-                          extend: 'colvis',
-                          text: 'Colunas Visíveis',
-                          exportOptions: {
-                              columns: ':visible'
-                          }
-                      },
-                ]
-            });
+            //Adiciona "dataTables_scrollFoot" na DataTable
+            $(".dataTables_scroll").append('<div class="dataTables_scrollFoot" style="font-size: 11px;><div class="dataTables_scrollFootInner"><table class="display no-footer dataTable" cellspacing="0" role="grid"><thead><tr role="row"><th class="dt-center sorting_disabled" rowspan="1" colspan="1">Total</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(orcado) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(realizado) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + formatReal(Math.round(SomaVetor(desvio) * 100) / 100) + '</i></th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + Math.round(porcDesvioTotal * 100) / 100 + '%</i></th></tr></thead></table></div></div>');
 
-            table.buttons(0, null).container().prependTo(
-                table.table().container()
-            );
-
-            CallbackGraficoEvolucao(orcado, realizado);
+            CallbackGraficoEvolucao(orcado, realizado, dado);
             CallbackGraficoAcumulado(orcado, realizado, desvio);
-            CallbackGraficoDesvio(realizado, orcado);
+            CallbackGraficoDesvio(realizado, orcado, dado);
 
         }
 
-
         //Gera grafico Evolução
-        function CallbackGraficoEvolucao(orcado, realizado) {
+        function CallbackGraficoEvolucao(orcado, realizado, dado) {
 
             var unidade = "";
 
@@ -286,7 +241,7 @@
                     text: ''
                 },
                 xAxis: [{
-                    categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    categories: dado,
                     crosshair: true,
                     title: {
                         text: 'Meses',
@@ -349,7 +304,6 @@
 
             //CallbackGraficoDesvio(realizado, orcado);
         }
-
 
         //Gera grafico Acumulado
         function CallbackGraficoAcumulado(orcado, realizado, desvio) {
@@ -481,7 +435,7 @@
         }
 
         //Gera grafico Desvios
-        function CallbackGraficoDesvio(realizado, orcado) {
+        function CallbackGraficoDesvio(realizado, orcado, dado) {
 
             if ($('#unitId :selected').text() == null)
                 indicador = "Todos";
@@ -493,7 +447,7 @@
             var positivo = [];
             var negativo = [];
 
-            for (var i = 0; i < 12; i++) {
+            for (var i = 0; i < dado.length; i++) {
                 if (orcado[i] > realizado[i]) {
                     positivo[i] = orcado[i] - realizado[i]
                     negativo[i] = null
@@ -523,7 +477,7 @@
                 },
 
                 xAxis: {
-                    categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    categories: dado,
                 },
 
                 yAxis: {
@@ -600,7 +554,6 @@
             });
         }
 
-
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();
 
@@ -635,15 +588,24 @@
 
         $(document).ready(function () {
 
+            $('#tipoRelatorio').change(function () {
+                if ($(this).val() == "Por Regional") {
+                    $('#unitId').prop('disabled', true);
+                } else {
+                    $('#unitId').prop('disabled', false);
+                }
+            });
+
             $("#btnSend").click(function (e) {
                 if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined)
                     Send();
             });
 
-            //formControl.showFullCallendar();
             formControl.showUnit();
             formControl.showIndicadoresManutencao();
             formControl.showYear();
+            formControl.showFiltroManutencao();
+            formControl.showRegionaisManutencao();
 
             $("#showIndicadoresManutencao label").on("click", function () {
                 Send();
@@ -689,20 +651,6 @@
 
             return vetorSomado;
         }
-
-        //SUM DataTable
-        //jQuery.fn.dataTable.Api.register('sum()', function () {
-        //    return this.flatten().reduce(function (a, b) {
-        //        if (typeof a === 'string') {
-        //            a = a.replace(/[^\d.-]/g, '') * 1;
-        //        }
-        //        if (typeof b === 'string') {
-        //            b = b.replace(/[^\d.-]/g, '') * 1;
-        //        }
-
-        //        return a + b;
-        //    }, 0);
-        //});
 
         function formatReal(num) {
             var p = num.toFixed(2).split(".");

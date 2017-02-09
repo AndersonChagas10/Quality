@@ -22,6 +22,7 @@ namespace SgqSystem.Controllers.Manutencao
         public ActionResult PainelIndicadoresUniManutencao()
         {
             List<Date> anos;
+            List<Regional> regionais;
 
             string query = "SELECT DISTINCT ISNULL(YEAR(BASE_DATEREF),YEAR(BASE_DATEADD)) Ano FROM MANCOLETADADOS";
 
@@ -29,6 +30,17 @@ namespace SgqSystem.Controllers.Manutencao
 
             ViewBag.Anos = anos;
 
+            query = "select Distinct EmpresaRegionalGrupo as Nome from DimManBaseUni";
+
+            regionais = db.Database.SqlQuery<Regional>(query).ToList();
+
+            ViewBag.Regionais = regionais;
+
+            return View();
+        }
+
+        public ActionResult Index()
+        {
             return View();
         }
     }
@@ -36,6 +48,11 @@ namespace SgqSystem.Controllers.Manutencao
     public class Date
     {
         public int Ano { get; set; }
+    }
+
+    public class Regional
+    {
+        public string Nome { get; set; }
     }
 
 }

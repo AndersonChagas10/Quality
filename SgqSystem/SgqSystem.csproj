@@ -1330,6 +1330,7 @@
     <Content Include="Views\Role\Index.cshtml" />
     <Content Include="Views\Role\RoleSGQ.cshtml" />
     <Content Include="Views\Role\ScreenComponent.cshtml" />
+    <Content Include="Views\ManPainelGestao\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
