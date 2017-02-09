@@ -2323,7 +2323,7 @@ namespace SgqSystem.Services
                                        buttons +
                                        footer(),
                              classe: "App hide",
-                             tags: "breadmainlevel=\"Indicadores\" culture=\"" + culture + "\""
+                             tags: "breadmainlevel=\"Indicadores\" culture=\"" + culture + "\" turningtime=\"03:00\""
                            ) +
                            correctiveAction() +
                            viewModal +
